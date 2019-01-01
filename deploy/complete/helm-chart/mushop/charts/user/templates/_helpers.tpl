@@ -44,41 +44,50 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
-
-
-{{/* OADB Connection environment */}}
+{{/*
+  OADB Connection environment
+  - use secret names (chart || global) if provided, otherwise use values
+*/}}
 {{- define "user.oadb.connection" -}}
 {{- $globalOsb := index (.Values.global | default .) "osb" -}}
-{{- $keyName := (and .Values.osb.atp .Chart.Name) | (default (and $globalOsb.atp ($globalOsb.instanceName | default "mushop"))) | default .Chart.Name -}}
+{{- $usesOsbDb := (index (.Values.global | default .Values) "osb").atp | default .Values.osb.atp -}}
+{{- $secretPrefix := (and .Values.osb.atp .Chart.Name) | default (and $globalOsb.atp ($globalOsb.instanceName | default "mushop")) | default .Chart.Name -}}
+{{- $credentialSecret := (and $usesOsbDb (printf "%s-oadb-connection" $secretPrefix)) | default .Values.oadbUserSecret | default (printf "%s-oadb-credentials" $secretPrefix) -}}
+{{- $connectionSecret := .Values.oadbConnectionSecret | default (.Values.global.oadbConnectionSecret | default (printf "%s-oadb-connection" $secretPrefix)) -}}
+# secretPrefix: {{ $secretPrefix }}
+# credentialSecret: {{ $credentialSecret }}
+# connectionSecret: {{ $connectionSecret }}
 - name: OADB_USER
   {{- if $globalOsb.atp }}
   value: {{ printf "mu_%s_user" .Chart.Name }}
   {{- else }}
   valueFrom:
     secretKeyRef:
-      name: {{ $keyName }}-oadb-connection
+      name: {{ $credentialSecret }}
       key: oadb_user
   {{- end }}
 - name: OADB_PW
   valueFrom:
     secretKeyRef:
-      name: {{ $keyName }}-oadb-connection
+      name: {{ $credentialSecret }}
       key: oadb_pw
 - name: OADB_SERVICE
   valueFrom:
     secretKeyRef:
-      name: {{ $keyName }}-oadb-connection
+      name: {{ $connectionSecret }}
       key: oadb_service
 {{- end -}}
 
 {{/* OADB ADMIN environment */}}
 {{- define "user.oadb.admin" -}}
 {{- $globalOsb := index (.Values.global | default .) "osb" -}}
-{{- $keyName := (and .Values.osb.atp .Chart.Name) | (default (and $globalOsb.atp ($globalOsb.instanceName | default "mushop"))) | default .Chart.Name -}}
+{{- $usesOsbDb := (index (.Values.global | default .Values) "osb").atp | default .Values.osb.atp -}}
+{{- $secretPrefix := (and .Values.osb.atp .Chart.Name) | default (and $globalOsb.atp ($globalOsb.instanceName | default "mushop")) | default .Chart.Name -}}
+{{- $adminSecret := (and $usesOsbDb (printf "%s-oadb-admin" $secretPrefix)) | default .Values.oadbAdminSecret | default .Values.global.oadbAdminSecret | default (printf "%s-oadb-admin" $secretPrefix) -}}
 - name: OADB_ADMIN_PW
   valueFrom:
     secretKeyRef:
-      name: {{ $keyName }}-oadb-admin
+      name: {{ $adminSecret }}
       key: oadb_admin_pw
 {{- end -}}
 
@@ -88,6 +97,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
   mountPath: /usr/lib/oracle/19.3/client64/lib/network/admin/
   readOnly: true
 {{- end -}}
+
 
 {{/* OADB Wallet BINDING initContainer */}}
 {{- define "user.init.wallet" -}}
@@ -109,35 +119,29 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 {{- end -}}
 
+
 {{/* OADB dbtools mount template */}}
 {{- define "user.mount.initdb" -}}
 - name: initdb
   mountPath: /work/
 {{- end -}}
 
-{{/* USER CONTAINER VOLUME TEMPLATE */}}
+
+{{/* CONTAINER VOLUME TEMPLATE */}}
 {{- define "user.volumes" -}}
-{{/* graceful loading of .Values.global.osb */}}
-{{- $globalOsb := index (.Values.global | default .Values) "osb" -}}
-{{- if .Values.osb.atp }}
-# Service-specific wallet binding
+{{- $globalOsb := index (.Values.global | default .) "osb" -}}
+{{- if or .Values.osb.atp $globalOsb.atp }}
+# osb wallet binding
 - name: wallet-binding
   secret:
-    secretName: {{ .Chart.Name }}-oadb-wallet-binding
-- name: wallet
-  emptyDir: {}
-{{- else if $globalOsb.atp }}
-# global atp wallet binding
-- name: wallet-binding
-  secret:
-    secretName: {{ $globalOsb.instanceName | default "mushop" }}-oadb-wallet-binding
+    secretName: {{ printf "%s-oadb-wallet-binding" ((and .Values.osb.atp .Chart.Name) | default ($globalOsb.instanceName | default "mushop")) }}
 - name: wallet
   emptyDir: {}
 {{- else }}
 # local wallet
 - name: wallet
   secret:
-    secretName: {{ .Chart.Name }}-oadb-wallet
+    secretName: {{ .Values.oadbWalletSecret | default (.Values.global.oadbWalletSecret | default (printf "%s-oadb-wallet" .Chart.Name)) }}
     defaultMode: 256
 {{- end }}
 # service init configMap

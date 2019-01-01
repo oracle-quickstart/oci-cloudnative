@@ -19,67 +19,10 @@ ingress:
   # If TLS is provided, cert-manager needs to be installed.
   tls: true
 
-api:
-  enabled: true
-  hpa:
-    enabled: true
-
-carts:
-  enabled: true
-
-catalogue:
-  enabled: true
-  hpa:
-    enabled: true
-
-edge:
-  enabled: true
-  hpa:
-    enabled: true
-  service:
-    port: 80
-
-orders:
-  enabled: true
-
-payment:
-  enabled: true
-
-session:
-  enabled: true
-
-shipping:
-  enabled: true
-
-storefront:
-  enabled: true
-  hpa:
-    enabled: true
-
-stream:
-  enabled: true
-
-user:
-  enabled: true
-  hpa:
-    enabled: true
-
 secrets:
   streams:
-    compartmentId:
-    tenantId:
-    userId:
     region:
-    fingerprint:
-    passphrase:
-    keyFile:
+    compartmentId:
     streamName:
     # future support
     streamId:
-  serviceBroker:
-    tenantId:
-    userId:
-    region:
-    fingerprint:
-    passphrase:
-    keyFile:

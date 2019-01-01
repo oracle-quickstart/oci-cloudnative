@@ -10,7 +10,7 @@ carts:
     oadbAdminPassword:
     oadbWalletPassword:
     oadbService:
-    # provide your own if oadbAdminPassword is available
+    # Access is created when oadbAdminPassword is specified. Must be unique for each service
     oadbUser:
     oadbPassword:
 
@@ -18,7 +18,7 @@ catalogue:
   secrets:
     oadbAdminPassword:
     oadbService:
-    # provide your own if oadbAdminPassword is available
+    # Access is created when oadbAdminPassword is specified. Must be unique for each service
     oadbUser:
     oadbPassword:
 
@@ -27,7 +27,7 @@ orders:
     oadbAdminPassword:
     oadbWalletPassword:
     oadbService:
-    # provide your own if oadbAdminPassword is available
+    # Access is created when oadbAdminPassword is specified. Must be unique for each service
     oadbUser:
     oadbPassword:
 
@@ -35,17 +35,12 @@ user:
   secrets:
     oadbAdminPassword:
     oadbService:
-    # provide your own if oadbAdminPassword is available
+    # Access is created when oadbAdminPassword is specified. Must be unique for each service
     oadbUser:
     oadbPassword:
  
 secrets:
   streams:
+    streamId:
     streamName:
-    tenantId: 
     compartmentId: 
-    userId: 
-    region: 
-    fingerprint: 
-    passphrase: 
-    keyFile: 

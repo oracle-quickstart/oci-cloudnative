@@ -59,6 +59,6 @@ machine:
 
 ## Uninstalling the Chart:
 
-  helm delete --purge {{ .Release.Name }}
+  helm delete {{ .Release.Name }}
 
 {{ end }}
