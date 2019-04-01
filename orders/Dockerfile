@@ -57,6 +57,11 @@ ARG APPLICATION_NAME
 ARG VERSION
 
 #
+# bake this in to a build container layer ?
+# 
+COPY ./config /app/config
+
+#
 # copy the generated application distribution
 # 
 COPY --from=appbuild /usr/src/app/build/libs/${APPLICATION_NAME}-${VERSION}.jar /app/${APPLICATION_NAME}-${VERSION}.jar
