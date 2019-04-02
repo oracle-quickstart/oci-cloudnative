@@ -7,6 +7,9 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.io.Serializable;
+
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -17,7 +20,7 @@ import lombok.Builder;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Cart {
+public class Cart implements Serializable{
 
     @NotNull
     @ManyToOne
@@ -25,7 +28,7 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @OneToMany
     private List<Item> items = new ArrayList<>();

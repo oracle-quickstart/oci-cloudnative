@@ -11,6 +11,8 @@ import org.springframework.data.annotation.CreatedDate;
 
 import javax.annotation.Generated;
 import javax.persistence.*;
+import java.io.Serializable;
+
 
 import java.util.Calendar;
 import java.util.Collection;
@@ -28,11 +30,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CustomerOrder {
+public class CustomerOrder implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Customer customer;

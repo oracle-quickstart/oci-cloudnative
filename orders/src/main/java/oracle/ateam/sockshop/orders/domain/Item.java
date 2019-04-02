@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 import javax.persistence.*;
+import java.io.Serializable;
+
 
 import javax.validation.constraints.NotNull;
 
@@ -15,11 +17,10 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Item {
+public class Item implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-
-    private long id;
+    private Long id;
 
     @NotNull(message = "Item Id must not be null")
     private String name;

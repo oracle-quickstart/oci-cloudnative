@@ -3,6 +3,8 @@ package oracle.ateam.sockshop.orders.domain;
 import java.util.UUID;
 
 import javax.persistence.*;
+import java.io.Serializable;
+
 
 
 import lombok.Data;
@@ -15,10 +17,10 @@ import lombok.Builder;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Shipment {
+public class Shipment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     private String name;
 
 }

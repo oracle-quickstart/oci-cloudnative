@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 
 @Data
@@ -13,11 +14,11 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Address {
+public class Address implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     private String street_number;
     private String street;

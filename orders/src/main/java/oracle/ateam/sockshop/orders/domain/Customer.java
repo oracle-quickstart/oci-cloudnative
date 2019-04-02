@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
+import java.io.Serializable;
+
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,11 +17,11 @@ import lombok.Builder;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Customer {
+public class Customer implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     private String firstName;
     private String lastName;

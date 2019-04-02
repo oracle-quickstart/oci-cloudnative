@@ -14,14 +14,17 @@ FROM phx.ocir.io/intvravipati/jeevan/mvn-jdbc:latest as buildenv
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-#
-# copy buildscript and cache all dependencies
-# only the build.gradle, and the gradle warpper are required.
 # 
-COPY build.gradle /usr/src/app
+# Get Gradle.
+#
 COPY settings.gradle /usr/src/app
 COPY gradle /usr/src/app/gradle
 COPY gradlew /usr/src/app
+RUN ./gradlew --refresh-dependencies
+#
+# copy buildscript and cache all dependencies
+# 
+COPY build.gradle /usr/src/app
 RUN ./gradlew --refresh-dependencies
 #
 # ------------

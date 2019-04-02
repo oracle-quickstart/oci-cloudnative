@@ -10,7 +10,7 @@ import java.util.List;
 
 @RepositoryRestResource(path = "orders", itemResourceRel = "order", collectionResourceRel = "orders")
 public interface CustomerOrderRepository extends PagingAndSortingRepository<CustomerOrder, String> {
-    @RestResource(path = "customerId")
-    List<CustomerOrder> findByCustomerId(@Param("custId") String id);
+    @RestResource(path = "customer")
+    List<CustomerOrder> findByCustomerId(@Param("custId") Long id);
 }
 
