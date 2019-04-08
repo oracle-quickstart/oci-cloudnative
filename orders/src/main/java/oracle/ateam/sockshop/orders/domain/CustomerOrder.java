@@ -1,13 +1,9 @@
 package oracle.ateam.sockshop.orders.domain;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.*;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.annotation.Generated;
 import javax.persistence.*;
@@ -26,14 +22,12 @@ import java.util.List;
 // curl http://localhost:8082/orders/search/customerId\?custId\=1
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class CustomerOrder implements Serializable{
 
+public class CustomerOrder implements Serializable{
+	
+	@JsonProperty("orderId")
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -57,6 +51,147 @@ public class CustomerOrder implements Serializable{
     private Date orderDate = Calendar.getInstance().getTime();
 
     private float total;
+    
+    public CustomerOrder() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+	
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+	public Card getCard() {
+		return card;
+	}
+
+	public void setCard(Card card) {
+		this.card = card;
+	}
+
+	public Collection<Item> getItems() {
+		return items;
+	}
+
+	public void setItems(Collection<Item> items) {
+		this.items = items;
+	}
+
+	public Shipment getShipment() {
+		return shipment;
+	}
+
+	public void setShipment(Shipment shipment) {
+		this.shipment = shipment;
+	}
+
+	public Date getOrderDate() {
+		return orderDate;
+	}
+
+	public void setOrderDate(Date orderDate) {
+		this.orderDate = orderDate;
+	}
+
+	public float getTotal() {
+		return total;
+	}
+
+	public void setTotal(float total) {
+		this.total = total;
+	}
+	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((address == null) ? 0 : address.hashCode());
+		result = prime * result + ((card == null) ? 0 : card.hashCode());
+		result = prime * result + ((customer == null) ? 0 : customer.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((items == null) ? 0 : items.hashCode());
+		result = prime * result + ((orderDate == null) ? 0 : orderDate.hashCode());
+		result = prime * result + ((shipment == null) ? 0 : shipment.hashCode());
+		result = prime * result + Float.floatToIntBits(total);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CustomerOrder other = (CustomerOrder) obj;
+		if (address == null) {
+			if (other.address != null)
+				return false;
+		} else if (!address.equals(other.address))
+			return false;
+		if (card == null) {
+			if (other.card != null)
+				return false;
+		} else if (!card.equals(other.card))
+			return false;
+		if (customer == null) {
+			if (other.customer != null)
+				return false;
+		} else if (!customer.equals(other.customer))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (items == null) {
+			if (other.items != null)
+				return false;
+		} else if (!items.equals(other.items))
+			return false;
+		if (orderDate == null) {
+			if (other.orderDate != null)
+				return false;
+		} else if (!orderDate.equals(other.orderDate))
+			return false;
+		if (shipment == null) {
+			if (other.shipment != null)
+				return false;
+		} else if (!shipment.equals(other.shipment))
+			return false;
+		if (Float.floatToIntBits(total) != Float.floatToIntBits(other.total))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "CustomerOrder [id=" + id + ", customer=" + customer + ", address=" + address + ", card=" + card
+				+ ", items=" + items + ", shipment=" + shipment + ", orderDate=" + orderDate + ", total=" + total + "]";
+	}
+    
+    
 
     
 }
