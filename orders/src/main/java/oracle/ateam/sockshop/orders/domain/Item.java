@@ -82,6 +82,11 @@ public class Item implements Serializable{
 	public void setUnitPrice(float unitPrice) {
 		this.unitPrice = unitPrice;
 	}
+	
+	public float getTotal() {
+		return this.unitPrice*this.quantity;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -50,7 +50,7 @@ public class CustomerOrder implements Serializable{
     @CreatedDate
     private Date orderDate = Calendar.getInstance().getTime();
 
-    private float total;
+    private Double total;
     
     public CustomerOrder() {
 		// TODO Auto-generated constructor stub
@@ -94,6 +94,8 @@ public class CustomerOrder implements Serializable{
 
 	public void setItems(Collection<Item> items) {
 		this.items = items;
+		Double currentTotal = items.stream().map(Item::getTotal).mapToDouble(Float::floatValue).sum();
+		this.setTotal(currentTotal);
 	}
 
 	public Shipment getShipment() {
@@ -112,11 +114,11 @@ public class CustomerOrder implements Serializable{
 		this.orderDate = orderDate;
 	}
 
-	public float getTotal() {
+	public Double getTotal() {
 		return total;
 	}
 
-	public void setTotal(float total) {
+	public void setTotal(Double total) {
 		this.total = total;
 	}
 	
@@ -132,7 +134,6 @@ public class CustomerOrder implements Serializable{
 		result = prime * result + ((items == null) ? 0 : items.hashCode());
 		result = prime * result + ((orderDate == null) ? 0 : orderDate.hashCode());
 		result = prime * result + ((shipment == null) ? 0 : shipment.hashCode());
-		result = prime * result + Float.floatToIntBits(total);
 		return result;
 	}
 
@@ -179,8 +180,6 @@ public class CustomerOrder implements Serializable{
 			if (other.shipment != null)
 				return false;
 		} else if (!shipment.equals(other.shipment))
-			return false;
-		if (Float.floatToIntBits(total) != Float.floatToIntBits(other.total))
 			return false;
 		return true;
 	}

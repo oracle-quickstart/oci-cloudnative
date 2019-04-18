@@ -49,7 +49,6 @@ public class BootstrapServiceImpl implements BootstrapService{
 		order.setAddress(myAddress);
 		order.setCard(myCard);
 		order.setCustomer(me);
-		order.setTotal(5000);
 		order.setItems(items);
 		
 		orderrepo.save(order);
