@@ -1,4 +1,4 @@
-package oracle.ateam.shipping;
+package oracle.ateam.sockshop.shipping;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

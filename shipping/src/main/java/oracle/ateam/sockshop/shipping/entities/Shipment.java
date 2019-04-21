@@ -1,6 +1,8 @@
-package oracle.ateam.shipping.entities;
+package oracle.ateam.sockshop.shipping.entities;
 
 import java.util.UUID;
+
+import org.json.JSONObject;
 
 /*
  * 
@@ -31,6 +33,16 @@ public class Shipment {
         this.name = name;
     }
 
+    /*
+     * 
+     */
+    public JSONObject ToJson() {
+    	JSONObject json = new JSONObject();
+    	json.put("id", id);
+    	json.put("name", name);
+    	return json;
+    }
+    
     /*
      * 
      */

@@ -1,4 +1,4 @@
-package oracle.ateam.shipping.configuration;
+package oracle.ateam.sockshop.shipping.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

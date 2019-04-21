@@ -1,11 +1,14 @@
-package oracle.ateam.shipping.streams;
+package oracle.ateam.sockshop.shipping.streams;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,38 +18,82 @@ import com.oracle.bmc.streaming.model.PutMessagesResultEntry;
 import com.oracle.bmc.streaming.requests.PutMessagesRequest;
 import com.oracle.bmc.streaming.responses.PutMessagesResponse;
 
-import oracle.ateam.shipping.configuration.OciStreamsConfiguration;
+import oracle.ateam.sockshop.shipping.configuration.OciStreamsConfiguration;
+import oracle.ateam.sockshop.shipping.entities.Shipment;
 
 @Configuration
-public class StreamsManager {
+public class StreamsPublisher {
 	
 	@Autowired
     OciStreamsConfiguration streamsConfig;
+	
 
+	/*
+	 * 
+	 */
+	public List<PutMessagesDetailsEntry>  buildMessageList(int count, String message) {
+		List<PutMessagesDetailsEntry> messages = new ArrayList<>();
+		
+		if (message==null) {
+			message = "test message ";
+		}
+		for (int i = 0; i < count; i++) {
+			JSONObject json = new JSONObject();
+			try {
+				json.put("id", UUID.randomUUID());
+				json.put("name", message + " " + i);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			
+			messages.add(buildMessageDetailJson(json));	
+		}
+		return messages;
+	}
+	
+	/*
+	 * Builds a message detail entry with JSON
+	 */
+	private PutMessagesDetailsEntry buildMessageDetailJson(JSONObject json) {
+		
+		// Use the line below for Strings
+		//.value( String.format(message).getBytes(UTF_8) )
+		
+		return PutMessagesDetailsEntry.builder()
+		.key( String.valueOf(System.currentTimeMillis()).getBytes(UTF_8) )
+		.value( json.toString().getBytes(UTF_8) )
+		.build(); 
+	}
 	
 	/*
 	 * 
 	 */
-	public void publishMessage(String msg) {
+	private List<PutMessagesDetailsEntry> addMessageToList(Shipment shipment) {
+		
 		List<PutMessagesDetailsEntry> messages = new ArrayList<>();
-		messages.add(
-			PutMessagesDetailsEntry.builder()
-			.key( String.valueOf(System.currentTimeMillis()).getBytes(UTF_8) )
-			.value( String.format(msg).getBytes(UTF_8) )
-			.build() 
-		);
-		System.out.println("Created list of messages"); 
-		publishToStreams(messages);
+		messages.add(buildMessageDetailJson(shipment.ToJson()));
+		System.out.println("Created list of with one message"); 
+		return messages;
 	}
+	
+	/*
+	  * 
+	  */
+	 public void publishMessage(Shipment shipment) {
+
+		 List<PutMessagesDetailsEntry> messages = addMessageToList(shipment);
+		 publishMessages(messages);
+	 }
 	 
 	 /*
 	  * 
 	  */
-	 private void publishToStreams(List<PutMessagesDetailsEntry> messages) {
+	 public void publishMessages(List<PutMessagesDetailsEntry> messages) {
 
 		 
 		 System.out.println(
 				 String.format("Publishing %s messages to stream %s.", messages.size(), streamsConfig.getStreamId()));
+		 
 		 PutMessagesDetails messagesDetails =
 				 PutMessagesDetails.builder().messages(messages).build();
 
