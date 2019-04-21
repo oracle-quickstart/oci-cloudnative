@@ -17,7 +17,7 @@ spec:
         run: ship-exposed
     spec:
       containers:
-      - image: localhost:5000/ship:0.1.0
+      - image: phx.ocir.io/intvravipati/julio/sox-shipping:latest
         name: ship
         env:
          - name: TENANT_ID
