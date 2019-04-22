@@ -60,7 +60,7 @@ public class StreamsPublisher {
 		//.value( String.format(message).getBytes(UTF_8) )
 		
 		return PutMessagesDetailsEntry.builder()
-		.key( String.valueOf(System.currentTimeMillis()).getBytes(UTF_8) )
+		.key( ((String)json.get("id")).getBytes(UTF_8) )
 		.value( json.toString().getBytes(UTF_8) )
 		.build(); 
 	}
