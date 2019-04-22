@@ -1,4 +1,4 @@
-ARG APPLICATION_NAME="shipping"
+ARG APPLICATION_NAME="queuemaster"
 ARG VERSION="0.0.1-SNAPSHOT"
 
 # ------------
