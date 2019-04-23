@@ -40,7 +40,7 @@ public class StreamsPublisher {
 		for (int i = 0; i < count; i++) {
 			JSONObject json = new JSONObject();
 			try {
-				json.put("id", UUID.randomUUID());
+				json.put("id", UUID.randomUUID().toString());
 				json.put("name", message + " " + i);
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -59,9 +59,8 @@ public class StreamsPublisher {
 		// Use the line below for Strings
 		//.value( String.format(message).getBytes(UTF_8) )
 		
-		UUID id = (UUID) json.get("id");
 		return PutMessagesDetailsEntry.builder()
-		.key( id.toString().getBytes(UTF_8) )
+		.key( json.get("id").toString().getBytes(UTF_8) )
 		.value( json.toString().getBytes(UTF_8) )
 		.build(); 
 	}
