@@ -9,12 +9,13 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import com.oracle.bmc.streaming.StreamClient;
 import com.oracle.bmc.streaming.model.CreateCursorDetails;
-import com.oracle.bmc.streaming.model.Message;
 import com.oracle.bmc.streaming.model.CreateCursorDetails.Type;
+import com.oracle.bmc.streaming.model.Message;
 import com.oracle.bmc.streaming.requests.CreateCursorRequest;
 import com.oracle.bmc.streaming.requests.GetMessagesRequest;
 import com.oracle.bmc.streaming.responses.CreateCursorResponse;
@@ -32,17 +33,26 @@ public class AppStartupRunner implements ApplicationRunner {
 	
 	@Autowired
 	private ShippingTaskHandler shippingTaskHandler;
+	
+	@Autowired
+	private Environment env;
  
     @Override
     public void run(ApplicationArguments args) throws Exception {
-    	System.out.println("run method in class AppStartupRunner");
 
     	try {
 			streamConfig.initConnection();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-    	consumeShippingStream();
+
+    	// If running unit tests the job.autorun.enabled property is set to false
+    	// This enables tests to complete since consumeShippingStream has infinite loop
+    	String autorun = env.getProperty("job.autorun.enabled");
+    	System.out.println("job.autorun.enabled: " + autorun);
+    	if (autorun==null) {
+    		consumeShippingStream();
+    	} 
     }
     
     private void consumeShippingStream() {
@@ -72,6 +82,7 @@ public class AppStartupRunner implements ApplicationRunner {
                             .build();
 
             GetMessagesResponse getResponse = streamClient.getMessages(getRequest);
+            //System.out.println(String.format("Read %s messages.", getResponse.getItems().size()));
             for (Message message : getResponse.getItems()) {
             	String name = new String(message.getValue(), UTF_8);
             	// first try to build json object since the message is expected to be in json format
