@@ -59,8 +59,9 @@ public class StreamsPublisher {
 		// Use the line below for Strings
 		//.value( String.format(message).getBytes(UTF_8) )
 		
+		UUID id = (UUID) json.get("id");
 		return PutMessagesDetailsEntry.builder()
-		.key( ((String)json.get("id")).getBytes(UTF_8) )
+		.key( id.toString().getBytes(UTF_8) )
 		.value( json.toString().getBytes(UTF_8) )
 		.build(); 
 	}
