@@ -10,45 +10,45 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      run: queuemaster-exposed
+      run: queuemaster
   template:
     metadata:
       labels:
-        run: queuemaster-exposed
+        run: queuemaster
     spec:
       containers:
-      - image: phx.ocir.io/intvravipati/julio/sox-queuemaster:latest
+      - image: phx.ocir.io/intvravipati/julio/queuemaster:latest
         name: queuemaster
         env:
          - name: TENANT_ID
            valueFrom:
              configMapKeyRef:
-              name: queuemaster-configmap
+              name: stream-configmap
               key: tenant_id
          - name: USER_ID
            valueFrom:
              configMapKeyRef:
-              name: queuemaster-configmap
+              name: stream-configmap
               key: user_id
          - name: FINGERPRINT
            valueFrom:
              configMapKeyRef:
-              name: queuemaster-configmap
+              name: stream-configmap
               key: fingerprint
          - name: OCI_API_KEY
            valueFrom:
              configMapKeyRef:
-              name: queuemaster-configmap
+              name: stream-configmap
               key: oci_api_key
          - name: REGION
            valueFrom:
              configMapKeyRef:
-              name: queuemaster-configmap
+              name: stream-configmap
               key: region
          - name: COMPARTMENT_ID
            valueFrom:
              configMapKeyRef:
-              name: queuemaster-configmap
+              name: stream-configmap
               key: compartment_id
         ports:
         - containerPort: 8080
@@ -69,5 +69,5 @@ spec:
     protocol: TCP
     targetPort: 8080
   selector:
-    run: queuemaster-exposed
+    run: queuemaster
   type: NodePort

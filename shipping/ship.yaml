@@ -4,51 +4,51 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    run: shipp
+    run: ship
   name: ship
 spec:
   replicas: 1
   selector:
     matchLabels:
-      run: ship-exposed
+      run: ship
   template:
     metadata:
       labels:
-        run: ship-exposed
+        run: ship
     spec:
       containers:
-      - image: phx.ocir.io/intvravipati/julio/sox-shipping:latest
+      - image: phx.ocir.io/intvravipati/julio/shipping:latest
         name: ship
         env:
          - name: TENANT_ID
            valueFrom:
              configMapKeyRef:
-              name: ship-configmap
+              name: stream-configmap
               key: tenant_id
          - name: USER_ID
            valueFrom:
              configMapKeyRef:
-              name: ship-configmap
+              name: stream-configmap
               key: user_id
          - name: FINGERPRINT
            valueFrom:
              configMapKeyRef:
-              name: ship-configmap
+              name: stream-configmap
               key: fingerprint
          - name: OCI_API_KEY
            valueFrom:
              configMapKeyRef:
-              name: ship-configmap
+              name: stream-configmap
               key: oci_api_key
          - name: REGION
            valueFrom:
              configMapKeyRef:
-              name: ship-configmap
+              name: stream-configmap
               key: region
          - name: COMPARTMENT_ID
            valueFrom:
              configMapKeyRef:
-              name: ship-configmap
+              name: stream-configmap
               key: compartment_id
         ports:
         - containerPort: 8080
@@ -69,5 +69,5 @@ spec:
     protocol: TCP
     targetPort: 8080
   selector:
-    run: ship-exposed
+    run: ship
   type: NodePort
