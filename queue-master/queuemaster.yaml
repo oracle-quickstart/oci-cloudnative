@@ -4,21 +4,21 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    run: ship
-  name: ship
+    run: queuemaster
+  name: queuemaster
 spec:
   replicas: 1
   selector:
     matchLabels:
-      run: ship
+      run: queuemaster
   template:
     metadata:
       labels:
-        run: ship
+        run: queuemaster
     spec:
       containers:
-      - image: phx.ocir.io/intvravipati/julio/shipping:latest
-        name: ship
+      - image: phx.ocir.io/intvravipati/julio/queuemaster:latest
+        name: queuemaster
         env:
          - name: TENANT_ID
            valueFrom:
@@ -61,13 +61,13 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    run: ship
-  name: ship
+    run: queuemaster
+  name: queuemaster
 spec:
   ports:
   - port: 8080
     protocol: TCP
     targetPort: 8080
   selector:
-    run: ship
+    run: queuemaster
   type: NodePort
