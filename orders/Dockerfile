@@ -69,11 +69,11 @@ COPY ./config /app/config
 # 
 COPY --from=appbuild /usr/src/app/build/libs/${APPLICATION_NAME}-${VERSION}.jar /app/${APPLICATION_NAME}-${VERSION}.jar
 
-EXPOSE 8080
+EXPOSE 80
 WORKDIR /app
 ENV APPLICATION_NAME=${APPLICATION_NAME}
 ENV VERSION=${VERSION}
-ENTRYPOINT java $JAVA_OPTS -jar /app/${APPLICATION_NAME}-${VERSION}.jar
+ENTRYPOINT java $JAVA_OPTS -jar /app/${APPLICATION_NAME}-${VERSION}.jar --port=80
 #
 # ------------
 

@@ -29,6 +29,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.springframework.data:spring-data-rest-hal-browser'
 	implementation 'org.springframework.cloud:spring-cloud-starter-zipkin'
+	implementation 'io.micrometer:micrometer-core:1.0.1'
+	implementation 'io.micrometer:micrometer-registry-prometheus:1.0.1'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
@@ -37,6 +39,7 @@ dependencies {
 	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'com.h2database:h2'
+	testImplementation 'com.openpojo:openpojo:0.8.12'
 	
 }
 
