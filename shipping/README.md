@@ -44,18 +44,24 @@ This returns the health of the application and connection to OCI Streams.
 ## REST Interfaces
 
 `http://<host>:8080/shipping`
+
 Method: Post
+
 Content-Type: application/json
+
 The body should contain a JSON similar to this:
-{
+`{
 	"id" : "123",
 	"name" : "shipment A"
-}
+}`
+
 The name is mandatory, the id is auto-generated if not sent.
 This REST call causes the JSON message to be added to the OCI Stream
 
 `http://{{host}}:8080/shipping/testbulk?count=7&message=test`
+
 Method: Post
+
 This REST call is for convenience in testing. It creates a bulk of
 messages, where count is the number of messages generated and the 
 text of each message is the string in message appended by the count.
