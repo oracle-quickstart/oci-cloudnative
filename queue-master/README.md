@@ -1,4 +1,4 @@
-# shipping
+# Queuemaster
 A microservices-demo service that consumes shipping messages from OCI Streams.
 
 This build is built, tested and released using gradle and maven.
