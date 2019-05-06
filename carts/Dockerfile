@@ -1,4 +1,4 @@
-ARG APPLICATION_NAME="orders"
+ARG APPLICATION_NAME="carts"
 ARG VERSION="0.0.1-SNAPSHOT"
 
 # ------------

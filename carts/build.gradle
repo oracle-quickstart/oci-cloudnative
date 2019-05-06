@@ -5,7 +5,7 @@ plugins {
 
 apply plugin: 'io.spring.dependency-management'
 
-group = 'oracle.ateam.sockshop.orders'
+group = 'oracle.ateam.sockshop.carts'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
