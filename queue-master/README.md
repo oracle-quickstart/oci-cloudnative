@@ -12,7 +12,8 @@ OCI-java-sdk is a dependency and needs to be manually uploaded to
 the local maven repository. 
 * download oci-java-sdk
 * install oci-java-sdk jar to local maven repository
-mvn install:install-file -Dfile=libs/oci-java-sdk-full-shaded-1.5.0.jar -DgroupId=com.oracle.oci -DartifactId=oci-java-sdk -Dversion=1.5.0 -Dpackaging=jar
+
+`mvn install:install-file -Dfile=libs/oci-java-sdk-full-shaded-1.5.0.jar -DgroupId=com.oracle.oci -DartifactId=oci-java-sdk -Dversion=1.5.0 -Dpackaging=jar`
 
 
 `mvn install`
@@ -46,6 +47,7 @@ Here are instructions to deploy this application to K8S
 
 ## Publish image to OCIR
 `docker tag queuemaster:latest phx.ocir.io/<your tenancy>/<repository>/shipping:latest`
+
 `docker push phx.ocir.io/<your tenancy>/<repository>/queuemaster:latest`
 
 ## Create configmap
