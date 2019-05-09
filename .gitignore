@@ -1,1 +1,7 @@
 orders/bin/
+**/.gradle/**
+**/.settings/**
+**/build/**
+**/.vscode/**
+**/.project
+**/.classpath
