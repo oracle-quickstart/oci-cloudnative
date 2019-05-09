@@ -100,15 +100,14 @@ The installation has a layout
 
 ## Containerization
 
-Now that the application is builable, lets make it's execution environment portable by containerizing it.
+Now that the application is buildable, lets make it's execution environment portable by containerizing it.
 When we containerize the application, we need to focus on the following aspects
 
-- Image optimization - We should take care to put only the required content in our container images, so that we reduce the image size.
+- Image optimization - We should take care to put only the required content in our container images, so that we reduce the image size. We should also consider the layers in the filesystem such that frequently changed files are on the top most layer so that image pulls can be faster since only the requireds layers ned to be pulled.
 - Sensitive data - sensitive data on the image increases the exposure risk, so avoiding it makes our images more secure and configurable.
 - Externalized configuration - externalizing configuration makes the the application images more portable and reusable.
 
-There are many ways to create a docker image for a java application. Here we are going to take an approach that utilizes the docker multi-stage build to 
-create an build environment and then build the application within that environment. We then extract the application distribution alone and create a separate image out of it.
+There are many ways to create a docker image for a java application. Here we are going to take an approach that utilizes the docker multi-stage build to create an build environment and then build the application within that environment. We then extract the application distribution alone and create a separate image out of it.
 
 > **Proprietary libraries and dependencies**  
 A common pattern for enterprises to leverage proprietary libraries in their centralized build environments is using their own enterprise artifact repository (like artifactory) and importing the licensed dependencies there. Here however, for brevity and simplicity, we will populate and containerize a maven repository for the purpose. This approach still gives users a way to utilize an automated build process and version the build environments themselves, and can be a useful tool when an enterprise wide artifact repository is not available.
