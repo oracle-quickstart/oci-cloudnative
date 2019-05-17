@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+   name: ship-configmap
+   namespace: default
+data:
+  compartment_id: "<your compartment Id>" 
+  tenant_id: "<your tenancy Id>"
+  user_id: "<your user Id>"
+  fingerprint: "<your fingerprint>"
+  region: "<your region, i.e. us-phoenix-1>"
+  oci_api_key: |
+    -----BEGIN RSA PRIVATE KEY-----
+    <your key from oci_api_key.pem file>
+    -----END RSA PRIVATE KEY-----

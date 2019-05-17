@@ -10,3 +10,11 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+
+orders/bin/
+**/.gradle/**
+**/.settings/**
+**/build/**
+**/.vscode/**
+**/.project
+**/.classpath

@@ -1,0 +1,73 @@
+# APP DEPLOYMENT
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    run: queuemaster
+  name: queuemaster
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: queuemaster
+  template:
+    metadata:
+      labels:
+        run: queuemaster
+    spec:
+      containers:
+      - image: phx.ocir.io/intvravipati/julio/queuemaster:latest
+        name: queuemaster
+        env:
+         - name: TENANT_ID
+           valueFrom:
+             configMapKeyRef:
+              name: stream-configmap
+              key: tenant_id
+         - name: USER_ID
+           valueFrom:
+             configMapKeyRef:
+              name: stream-configmap
+              key: user_id
+         - name: FINGERPRINT
+           valueFrom:
+             configMapKeyRef:
+              name: stream-configmap
+              key: fingerprint
+         - name: OCI_API_KEY
+           valueFrom:
+             configMapKeyRef:
+              name: stream-configmap
+              key: oci_api_key
+         - name: REGION
+           valueFrom:
+             configMapKeyRef:
+              name: stream-configmap
+              key: region
+         - name: COMPARTMENT_ID
+           valueFrom:
+             configMapKeyRef:
+              name: stream-configmap
+              key: compartment_id
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+---
+
+# APP SERVICE
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: queuemaster
+  name: queuemaster
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    run: queuemaster
+  type: NodePort
