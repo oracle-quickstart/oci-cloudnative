@@ -25,6 +25,9 @@ build-catalogue:
   steps:
     - wercker/golint
     - script:
+        name: Go to Catalogue Go folder
+        code: cd src/catalogue/
+    - script:
         name: go build
         code: |
-          GO111MODULE=on GOARCH=amd64 GOOS=linux go build -a -installsuffix cgo -o /app mushop/catalogue/cmd/cataloguesvc
+          GO111MODULE=on GOARCH=amd64 GOOS=linux go build -a -installsuffix cgo -o /app cmd/cataloguesvc
