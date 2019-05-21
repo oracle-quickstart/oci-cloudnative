@@ -26,8 +26,8 @@ build-catalogue:
     - wercker/golint
     - script:
         name: Go to Catalogue Go folder
-        code: ls
+        code: cat lint_results.txt
     - script:
         name: go build
         code: |
-          GO111MODULE=on GOARCH=amd64 GOOS=linux go build -a -installsuffix cgo -o /app github.com/junior/mushop/catalogue/cmd/cataloguesvc
+          GO111MODULE=on GOARCH=amd64 GOOS=linux go build -a -installsuffix cgo -o /app src/catalogue/cmd/cataloguesvc
