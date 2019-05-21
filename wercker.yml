@@ -32,8 +32,12 @@ build-catalogue:
         code: echo $GO_PATH
     - script:
         name: Temp
-        code: cd src/catalogue
+        code: pwd
     - script:
         name: go build
         code: |
-          GO111MODULE=on GOARCH=amd64 GOOS=linux go build -a -installsuffix cgo -o /app cmd/cataloguesvc
+          cd src/catalogue
+          GO111MODULE=on GOARCH=amd64 GOOS=linux go build -a -installsuffix cgo -o /app src/catalogue/cmd/cataloguesvc
+    - script:
+        name: Temp
+        code: pwd
