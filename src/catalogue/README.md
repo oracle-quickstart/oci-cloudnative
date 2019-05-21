@@ -10,7 +10,7 @@ This service is built, tested and released by wercker.
 
 Checkout the API Spec [here](https://mushop.docs.apiary.io)
 
-
+![OCI Service Broker](https://cdn.app.compendium.com/uploads/user/e7c690e8-6ff9-102a-ac6d-e4aebca50425/41d1c169-5ecc-4442-ab54-fc8d9cb3cdc6/Image/9a2cd983e25311180b4bf604fd7d58d9/svc_brkr_arch_4.jpg "OCI Service Broker")
 ### To build this service:
 
 
@@ -20,7 +20,7 @@ $GOPATH directory: $GOPATH/src/mushop/catalogue/. Once that is in place you can 
 
 ```
 cd $GOPATH/src/mushop/catalogue/cmd/cataloguesvc/
-go build -o catalogue
+GO111MODULE=on go build -o catalogue
 ```
 
 The result is a binary named `catalogue`, in the current directory.
