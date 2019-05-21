@@ -31,6 +31,4 @@ build-catalogue:
         name: go build
         code: |
           cd src/catalogue
-          cp cmd/cataloguesvc/*.go /usr/local/go/src/mushop/catalogue/cmd/cataloguesvc/
-          cd /usr/local/go/src/
-          GO111MODULE=on GOARCH=amd64 GOOS=linux go build -a -installsuffix cgo -o /app mushop/cmd/cataloguesvc
+          GO111MODULE=on GOARCH=amd64 GOOS=linux go build -a -installsuffix cgo -o /app ./cmd/cataloguesvc
