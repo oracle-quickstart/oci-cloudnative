@@ -1,5 +1,4 @@
-
-
+[![wercker status](https://app.wercker.com/status/f59f625d8e8d9c33c00378517e1b26bb/s/ "wercker status")](https://app.wercker.com/project/byKey/f59f625d8e8d9c33c00378517e1b26bb)
 
 # Catalogue
 A microservices demo service that provides catalogue/product information stored on Oracle Autonomous Database. 
