@@ -28,16 +28,7 @@ build-catalogue:
         name: Go Lint Results
         code: cat lint_results.txt
     - script:
-        name: Temp
-        code: echo $GO_PATH
-    - script:
-        name: Temp
-        code: pwd
-    - script:
         name: go build
         code: |
           cd src/catalogue
-          GO111MODULE=on GOARCH=amd64 GOOS=linux go build -a -installsuffix cgo -o /app src/catalogue/cmd/cataloguesvc
-    - script:
-        name: Temp
-        code: pwd
+          GO111MODULE=on GOARCH=amd64 GOOS=linux go build -a -installsuffix cgo -o /app cmd/cataloguesvc
