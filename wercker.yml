@@ -1,0 +1,30 @@
+# The container definition we want to use for developing our app
+box:
+  id: busybox
+
+build:
+  steps:
+    - script:
+      name: echo environment
+      code: env
+
+# Defining the dev pipeline
+dev:
+  steps:
+    - internal/watch:
+        code: |
+          go build ./...
+          ./source
+        reload: true
+
+build-catalogue:
+  box:
+    id: golang:1.12
+    ports:
+      - "5000"
+  steps:
+    - wercker/golint
+    - script:
+        name: go build
+        code: |
+          GO111MODULE=on GOARCH=amd64 GOOS=linux go build -a -installsuffix cgo -o /app mushop/catalogue/cmd/cataloguesvc
