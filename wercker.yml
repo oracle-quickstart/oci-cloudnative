@@ -32,3 +32,76 @@ build-catalogue:
         code: |
           cd src/catalogue
           GO111MODULE=on GOARCH=amd64 GOOS=linux go build -a -installsuffix cgo -o /app ./cmd/cataloguesvc
+
+coverage-catalogue:
+  box:
+    id: golang:1.12
+    ports:
+      - "5000"
+  steps:
+    - script:
+        name: go test coverage
+        code: |
+          cd src/catalogue
+          go test -race -coverprofile=coverage.txt -covermode=atomic
+    - script:
+        name: Code Coverage Results
+        code: cat coverage.txt
+    - script:
+        name: Code Coverage report
+        code: |
+          bash <(curl -s https://codecov.io/bash)
+
+deploy-to-oke:
+  box:
+        id: alpine
+        cmd: /bin/sh
+  steps:
+    - bash-template
+    
+    - script:
+        name: "Visualise Kubernetes config"
+        code: cat kubernetes-deployment.yml
+    
+    - kubectl:
+        name: delete namespace
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: delete namespace $WERCKER_APPLICATION_OWNER_NAME --ignore-not-found=true
+        
+    - script:
+        name: wait to delete namespace
+        code: sleep 30
+        
+    - kubectl:
+        name: create namespace    
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: create namespace $WERCKER_APPLICATION_OWNER_NAME
+        
+    - kubectl:
+        name: create OCR secret
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: create secret docker-registry wrelease --docker-server=phx.ocir.io --docker-username=$WERCKER_APPLICATION_OWNER_NAME --docker-password=$KUBERNETES_TOKEN --docker-email=${WERCKER_APPLICATION_OWNER_NAME}@mail.com --namespace=$WERCKER_APPLICATION_OWNER_NAME
+
+    - kubectl:
+        name: create TLS secret
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: create secret tls tls-secret --key $WERCKER_ROOT/tls.key --cert $WERCKER_ROOT/tls.crt --namespace=$WERCKER_APPLICATION_OWNER_NAME
+        
+    - kubectl:
+        name: create deplyoment
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: create -f $WERCKER_ROOT/kubernetes-deployment.yml --namespace=$WERCKER_APPLICATION_OWNER_NAME
+
+    - script:
+        name: "Visualise Ingress config"
+        code: cat ingress.yml
