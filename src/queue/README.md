@@ -26,8 +26,8 @@ the local maven repository.
 
 ## Setup environment
 The application depends on some environment variables to connect 
-to OCI Streams. Edit setup-env.sh and replace your own values. Then
-source the script file to create the environment variables.
+to OCI Streams. Edit secret/generate-secret.sh and replace your own values. Then
+run the script file to create the secrets in Kubernetes.
 
 `mvn spring-boot:run`
 

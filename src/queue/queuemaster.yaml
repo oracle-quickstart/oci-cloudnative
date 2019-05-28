@@ -6,6 +6,7 @@ metadata:
   labels:
     run: queuemaster
   name: queuemaster
+  namespace: demo-test
 spec:
   replicas: 1
   selector:
@@ -22,33 +23,33 @@ spec:
         env:
          - name: TENANT_ID
            valueFrom:
-             configMapKeyRef:
-              name: stream-configmap
+             secretKeyRef:
+              name: streams-secret
               key: tenant_id
          - name: USER_ID
            valueFrom:
-             configMapKeyRef:
-              name: stream-configmap
+             secretKeyRef:
+              name: streams-secret
               key: user_id
          - name: FINGERPRINT
            valueFrom:
-             configMapKeyRef:
-              name: stream-configmap
+             secretKeyRef:
+              name: streams-secret
               key: fingerprint
          - name: OCI_API_KEY
            valueFrom:
-             configMapKeyRef:
-              name: stream-configmap
+             secretKeyRef:
+              name: streams-secret
               key: oci_api_key
          - name: REGION
            valueFrom:
-             configMapKeyRef:
-              name: stream-configmap
+             secretKeyRef:
+              name: streams-secret
               key: region
          - name: COMPARTMENT_ID
            valueFrom:
-             configMapKeyRef:
-              name: stream-configmap
+             secretKeyRef:
+              name: streams-secret
               key: compartment_id
         ports:
         - containerPort: 8080
@@ -63,6 +64,7 @@ metadata:
   labels:
     run: queuemaster
   name: queuemaster
+  namespace: demo-test
 spec:
   ports:
   - port: 8080
