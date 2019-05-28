@@ -1,0 +1,72 @@
+include ../mixins/_icon
+
+div.uk-grid-medium.uk-flex-left(uk-grid hidden mu-hide="editing")
+  div.uk-width-1-1.uk-h4(mu-if="legend")
+    div.uk-h4(mu-html="legend")
+  div.uk-width-expand
+    div(mu-if="address")
+      div.uk-text-bolder
+      |{{address.number}} {{address.street}}
+      div.uk-text-muted
+      |{{address.city}} {{address.country}}, {{address.postcode}}
+    div.uk-alert-warning(uk-alert mu-if="!address") 
+      p No {{addressType}} address found.
+  a.uk-icon-link(uk-icon="pencil" mu-click="edit" uk-tooltip="Change Address")
+
+div(hidden mu-hide="!editing")
+  form.uk-form-stacked(mu-form="addressForm")
+    div.uk-grid-medium.uk-child-width-1-1(uk-grid)
+      fieldset.uk-fieldset
+        legend.uk-h4(mu-if="legend" mu-html="legend")
+
+        div.uk-grid-small(uk-grid)
+
+          div(class="uk-width-1-3 uk-width-1-6@s")
+            label
+              div.uk-form-label House
+              input.uk-input(type="text" required name="number" mu-attr mu-attr-value="address.number" mu-attr-disabled="loading")
+
+          div.uk-width-expand
+            label
+              div.uk-form-label Street
+              input.uk-input(type="text" required name="street" mu-attr mu-attr-value="address.street" mu-attr-disabled="loading")
+
+        div.uk-grid-small(uk-grid)
+
+          div.uk-width-expand
+            label
+              div.uk-form-label City
+              input.uk-input(type="text" required name="city" mu-attr mu-attr-value="address.city" mu-attr-disabled="loading")
+
+          div(class="uk-width-1-3 uk-width-1-6@s")
+            label
+              div.uk-form-label Post Code
+              input.uk-input(type="number" required name="postcode" mu-attr mu-attr-value="address.postcode" mu-attr-disabled="loading")
+
+        div.uk-grid-small(uk-grid)
+          div.uk-width-1-1
+            label
+              div.uk-form-label Country
+              select.uk-select(required name="country" mu-attr mu-attr-disabled="loading")
+                option Choose
+                option(value="USA" selected) USA
+
+          div.uk-width-1-1
+            label
+              div.uk-form-label Comment
+              textarea.uk-textarea(
+                rows="5"
+                mu-attr mu-attr-disabled="loading"
+                placeholder="Additional information: phone numbers or doorphone code")
+
+    div.uk-margin.uk-text-right
+      span.uk-text-success.uk-margin-xsmall-right(mu-if="success")
+        +icon('check')
+        span Success
+      span.uk-text-danger.uk-margin-xsmall-right(mu-if="error")
+        +icon('warning')(class="uk-margin-small-right")
+        span(mu-html="error")
+      div(uk-spinner mu-hide="!loading")
+      button.uk-button.uk-button-primary(type="submit" mu-attr mu-attr-disabled="loading") Save
+
+//- div(mu-debug="editing")

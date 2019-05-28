@@ -1,0 +1,383 @@
+-
+  var shopInfo = {
+    phone: '+1 800.392.2999',
+    email: 'example@example.com',
+    address: 'Lanai, Hawaii 96763',
+    openingHours: 'Daily 10:00–22:00',
+    storeLogoText: 'μShop',
+    storeName: 'MuShop',
+    latitude: 20.7379498, 
+    longitude: -156.8871740
+  }
+
+  var catalog = [{
+    name: 'Feeders',
+    id: 'feeders',
+    href: 'category.html',
+    image: 'images/catalog/cat-feeders.svg',
+    quantity: 10,
+    items: [
+      'Auto Feeders',
+      'Bowls',
+      'Placemats',
+      'Storage',
+    ]
+  }, {
+    name: 'Food',
+    id: 'food',
+    href: 'category.html',
+    image: 'images/catalog/cat-food.svg',
+    quantity: 144,
+    items: [
+      'Dry Food',
+      'Wet Food',
+      'Food Pouches',
+      'Limited Diet',
+    ]
+  }, {
+    name: 'Grooming',
+    id: 'grooming',
+    href: 'category.html',
+    image: 'images/catalog/cat-grooming.svg',
+    quantity: 58,
+    items: [
+      'Brushes',
+      'Grooming Tools',
+      'Shampoos and Conditioners'
+    ]
+  }, {
+    name: 'Cat Litter',
+    id: 'litter',
+    href: 'category.html',
+    image: 'images/catalog/cat-litter.svg',
+    quantity: 13,
+    items: [
+      'Cleaning Supplies',
+      'Deodorizers',
+      'Litter Accessories',
+      'Litter Boxes'
+    ]
+  }]
+
+  var toolbarMenu = [{
+    name: 'FAQ',
+    href: 'faq.html'
+  }, {
+    name: 'Payment',
+    href: '#'
+  }]
+
+  var navbarMenu = [{
+    name: 'Catalog',
+    href: 'catalog.html',
+    items: catalog
+  //- }, {
+  //-   name: 'Blog',
+  //-   href: 'blog.html'
+  }, {
+    name: 'About',
+    href: 'about.html'
+  }, {
+    name: 'Contact',
+    href: 'contacts.html'
+  }]
+
+  var footerMenuLeft = [{
+    name: 'Catalog',
+    href: 'catalog.html'
+  }, {
+  //-   name: 'Brands',
+  //-   href: 'brands.html'
+  //- }, {
+    name: 'Delivery',
+    href: 'delivery.html'
+  }, {
+    name: 'FAQ',
+    href: 'faq.html'
+  }]
+
+  var footerMenuRight = [{
+    name: 'About',
+    href: 'about.html'
+  }, {
+    name: 'Contact',
+    href: 'contacts.html'
+  //- }, {
+  //-   name: 'Blog',
+  //-   href: 'blog.html'
+  }]
+
+  var socials = [{
+    name: 'Facebook',
+    icon: 'facebook',
+    href: '#'
+  }, {
+    name: 'Twitter',
+    icon: 'twitter',
+    href: '#'
+  }, {
+    name: 'YouTube',
+    icon: 'youtube',
+    href: '#'
+  }, {
+    name: 'Instagram',
+    icon: 'instagram',
+    href: '#'
+  }]
+
+  //- var compare = [{
+  //-   name: 'Performance',
+  //-   properties: {
+  //-     'Processor': ['Intel&nbsp;Core i7&nbsp;Quad-Core', 'Intel&nbsp;Core i5&nbsp;Dual-Core', 'Intel&nbsp;Core i5&nbsp;Dual-Core'],
+  //-     'Base Clock Speed': ['2.8&nbsp;GHz', '1.3&nbsp;GHz', '1.8&nbsp;GHz'],
+  //-     'Maximum Boost Speed': ['3.8&nbsp;GHz', '3.2&nbsp;GHz', '2.9&nbsp;GHz'],
+  //-     'Total Installed Memory': ['16&nbsp;GB', '8&nbsp;GB', '8&nbsp;GB'],
+  //-     'Memory Type': ['LPDDR3&nbsp;SDRAM', 'LPDDR3&nbsp;SDRAM', 'LPDDR3&nbsp;SDRAM'],
+  //-     'Memory Speed': ['2133&nbsp;MHz', '1866&nbsp;MHz', '1600&nbsp;MHz'],
+  //-     'Onboard Memory': ['16&nbsp;GB', '8&nbsp;GB', '8&nbsp;GB'],
+  //-     'Available Memory Slots': ['—', '—', '—'],
+  //-     'Graphics Type': ['Hybrid', 'Integrated', 'Integrated'],
+  //-     'GPU': ['AMD Radeon&nbsp;Pro 555 with 2&nbsp;GB&nbsp;GDDR5 VRAM,<br>Intel HD Graphics&nbsp;630',
+  //-             'Intel HD Graphics&nbsp;615',
+  //-             'Intel HD Graphics&nbsp;6000']
+  //-   }
+  //- }, {
+  //-   name: 'Display',
+  //-   properties: {
+  //-     'Graphics Type': ['IPS', 'IPS', 'Not specified'],
+  //-     'Size': ['15.4"', '12"', '13.3"'],
+  //-     'Aspect Ratio': ['16:10', '16:10', '16:10'],
+  //-     'Native Resolution': ['2880×1800', '2304×1440', '1440×900'],
+  //-     'Touchscreen': ['—', '—', '—'],
+  //-     'Finish': ['Glossy', 'Glossy', 'Glossy'],
+  //-     'Brightness': ['500&nbsp;cd/m<sup>2</sup>', 'Not specified', 'Not specified'],
+  //-     'Viewing Angle': ['Not specified', 'Not specified', 'Not specified'],
+  //-     'Refresh Rate': ['Not specified', 'Not specified', 'Not specified'],
+  //-     'Response Time': ['Not specified', 'Not specified', 'Not specified'],
+  //-     'Adaptive Sync Technology': ['Not specified', 'Not specified', 'Not specified'],
+  //-     'External Resolution': ['Not specified', 'Not specified', 'Not specified']
+  //-   }
+  //- }, {
+  //-   name: 'Drives',
+  //-   properties: {
+  //-     'Available Slots': ['—', '—', '—'],
+  //-     'Total Capacity': ['256&nbsp;GB', '512&nbsp;GB', '128&nbsp;GB'],
+  //-     'Solid State Storage': ['1 × 256&nbsp;GB&nbsp;Integrated PCIe',
+  //-                             '1 × 512&nbsp;GB&nbsp;Integrated PCIe',
+  //-                             '1 × 128&nbsp;GB&nbsp;Integrated PCIe'],
+  //-     'Optical Drive': ['—', '—', '—']
+  //-   }
+  //- }, {
+  //-   name: 'Input/ Output Connectors',
+  //-   properties: {
+  //-     'Ports': ['4 × Thunderbolt 3&nbsp;via USB Type-C',
+  //-               '1 × USB 3.1 Gen 1&nbsp;Type-C',
+  //-               '2 × USB 3.1 Gen 1&nbsp;Type-A,<br>1 × Thunderbolt 2'],
+  //-     'Display': ['4 × DisplayPort&nbsp;via Type-C',
+  //-                 '1 × DisplayPort&nbsp;1.2&nbsp;via Optional Cable,<br>1 × HDMI&nbsp;via Optional Cable,<br>1 × VGA&nbsp;via Optional Cable',
+  //-                 '1 × Mini DisplayPort&nbsp;via Thunderbolt Port'],
+  //-     'Audio': ['1 × 1/8" (3.5&nbsp;mm) Headphone Output,<br>2 × Integrated Speaker,<br>3 × Integrated Microphone',
+  //-               '1 × 1/8" (3.5&nbsp;mm) Headphone Output,<br>2 × Integrated Speaker,<br>2 × Integrated Microphone',
+  //-               '1 × 1/8" (3.5&nbsp;mm) Headphone Output,<br>2 × Integrated Speaker,<br>2 × Integrated Microphone'],
+  //-     'Expansion Slots': ['—', '—', '—'],
+  //-     'Media Card Slots': ['—', '—', 'SD/SDHC/SDXC']
+  //-   }
+  //- }, {
+  //-   name: 'Communications',
+  //-   properties: {
+  //-     'Network': ['—', '—', '—'],
+  //-     'Modem': ['—', '—', '—'],
+  //-     'Wi-Fi': ['802.11ac; Dual-Band', '802.11ac; Dual-Band', '802.11ac; Dual-Band'],
+  //-     'Bluetooth': ['Bluetooth 4.2', 'Bluetooth 4.2', 'Bluetooth 4.0'],
+  //-     'Mobile Broadband': ['—', '—', '—'],
+  //-     'GPS': ['Not specified', '—', 'Not specified'],
+  //-     'NFC': ['Not specified', '—', 'Not specified'],
+  //-     'Webcam': ['User-Facing: 720p Video', 'User-Facing: 480p Video', 'User-Facing: 720p Video'],
+  //-   }
+  //- }, {
+  //-   name: 'Battery',
+  //-   properties: {
+  //-     'Battery Chemistry': ['Lithium-Ion Polymer', 'Lithium-Ion Polymer', 'Lithium-Ion Polymer'],
+  //-     'Watt Hours / Type': ['76&nbsp;Wh&nbsp;Non-Removable', '41.4&nbsp;Wh&nbsp;Non-Removable', '54&nbsp;Wh&nbsp;Non-Removable'],
+  //-     'Cells': ['Not specified', 'Not specified', 'Not specified'],
+  //-     'Output Voltage': ['Not specified', 'Not specified', 'Not specified'],
+  //-     'Maximum Runtime': ['10&nbsp;Hours', '10&nbsp;Hours', '12&nbsp;Hours'],
+  //-     'Power Requirements': ['100-240&nbsp;VAC, 50-60&nbsp;Hz', '100-240&nbsp;VAC, 50-60&nbsp;Hz', '100-240&nbsp;VAC, 50-60&nbsp;Hz'],
+  //-     'Power Supply': ['1 × 87&nbsp;W', '1 × 29&nbsp;W', '1 × 45&nbsp;W'],
+  //-   }
+  //- }, {
+  //-   name: 'General',
+  //-   properties: {
+  //-     'Operating System': ['macOS High Sierra', 'macOS High Sierra', 'macOS High Sierra'],
+  //-     'Security': ['Not specified', 'Not specified', 'Not specified'],
+  //-     'Keyboard': ['Keys: 64,<br>Type: Standard Notebook Keyboard,<br>Features: Backlight',
+  //-                  'Keys: 78,<br>Type: Standard Notebook Keyboard,<br>Features: Backlight',
+  //-                  'Keys: 78,<br>Type: Standard Notebook Keyboard,<br>Features: Backlight'],
+  //-     'Pointing Device': ['Force Touch Trackpad', 'Force Touch Trackpad', 'TouchPad'],
+  //-     'Dimensions (W × H × D)': ['13.8 × 0.6 × 9.5"&nbsp;/&nbsp;35.1 × 1.5 × 24.1&nbsp;cm',
+  //-                                '11.0 × 0.5 × 7.7"&nbsp;/&nbsp;27.9 × 1.3 × 19.6&nbsp;cm',
+  //-                                '12.8 × 0.7 × 8.9"&nbsp;/&nbsp;32.5 × 1.8 × 22.6&nbsp;cm'],
+  //-     'Weight': ['4.02&nbsp;lb&nbsp;/&nbsp;1.82&nbsp;kg', '2.03&nbsp;lb&nbsp;/&nbsp;.92&nbsp;kg', '2.96&nbsp;lb&nbsp;/&nbsp;1.34&nbsp;kg'],
+  //-     'Warranty Length': ['Limited 1-Year Warranty', 'Limited 1-Year Warranty', 'Limited 1-Year Warranty']
+  //-   }
+  //- }]
+
+  var articles = [{
+    title: 'Everything You Need to Know About the MacBook Pro',
+    description: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sodales eget ipsum id aliquam. Nam consectetur interdum nibh eget sodales. Cras volutpat efficitur ornare.</p>',
+    preview: 'images/articles/macbook-photo.jpg',
+    date: 'May 21, 2018',
+    href: 'article.html'
+  }, {
+    title: 'Apple introduces macOS Mojave',
+    description: '<p>Praesent consequat justo eu massa malesuada posuere. Donec ultricies tincidunt nisl, sed euismod nulla venenatis maximus. Maecenas sit amet semper tellus. Pellentesque imperdiet finibus sapien, a consectetur eros auctor a.</p>',
+    preview: 'images/articles/macos.jpg',
+    date: 'May 21, 2018',
+    href: 'article.html'
+  }]
+
+  //- var profile = {
+  //-   firstName: 'Thomas',
+  //-   lastName: 'Bruns',
+  //-   image: 'images/avatar.jpg',
+  //-   registrationDate: 'June 6, 2018',
+  //-   phone: '8 (800) 555-35-35',
+  //-   dateOFBirth: '1990-01-01',
+  //-   email: 'example@example.com'
+  //- }
+
+  var profileNav = [{
+    id: 1,
+    title: 'Orders',
+    href: 'orders.html'
+  //- }, {
+  //-   id: 2,
+  //-   title: 'Favorites',
+  //-   href: 'favorites.html'
+  }, {
+    id: 3,
+    title: 'Profile',
+    href: 'personal.html'
+  }]
+
+  var orders = [{
+    id: '36637649',
+    date: 'June 17, 2018',
+    items: 7,
+    shipping: 'Pick up from store',
+    payment: 'Online by card',
+    total: '$4896.00',
+    status: 'Processing'
+  }, {
+    id: '36637648',
+    date: 'June 16, 2018',
+    items: 2,
+    shipping: 'Pick up from store',
+    payment: 'Online by card',
+    total: '$599.00',
+    status: 'Canceled'
+  }]
+
+  var informationalNav = [{
+    id: 'about',
+    title: 'About',
+    href: 'about.html'
+  }, {
+    id: 'contact',
+    title: 'Contact',
+    href: 'contacts.html'
+  }, {
+    id: 'blog',
+    title: 'Blog',
+    href: 'blog.html'
+  }, {
+    id: 'faq',
+    title: 'FAQ',
+    href: 'faq.html'
+  }, {
+    id: 'delivery',
+    title: 'Delivery',
+    href: 'delivery.html'
+  }]
+
+  var promo = [{
+    background: '#004950',
+    image: 'images/hero/01.jpg',
+    title: 'Food!',
+    subtitle: 'Feed your feline with proven ingredients',
+    cta: 'Shop Food',
+    href: 'category.html?category=Food',
+    position: 'center-right'
+  }, {
+    background: '#7f7f7f',
+    image: 'images/hero/02.jpg',
+    title: 'Groom On!',
+    subtitle: 'Great deals on grooming accessories',
+    cta: 'Shop Grooming',
+    href: 'category.html?category=Grooming',
+    position: 'center-right'
+  }, {
+    background: '#12110c',
+    image: 'images/hero/03.jpg',
+    title: 'Feeders!',
+    subtitle: 'Witness Pavlovian responses like never before',
+    cta: 'Shop Feeders',
+    href: 'category.html?category=Feeders',
+    position: 'center-left'
+  }]
+
+  var categories = [{
+    title: 'Laptops',
+    href: 'subcategory.html',
+    comment: 'from $149',
+    image: 'images/catalog/laptops.png'
+  }, {
+    title: 'Smartphones',
+    href: 'subcategory.html',
+    comment: 'from $99',
+    image: 'images/catalog/smartphones.png'
+  }, {
+    title: 'Tablets',
+    href: 'subcategory.html',
+    comment: 'from $129',
+    image: 'images/catalog/tablets.png'
+  }, {
+    title: 'Smart Watches',
+    href: 'subcategory.html',
+    comment: 'from $49',
+    image: 'images/catalog/watches.png'
+  }, {
+    title: 'Gaming Consoles',
+    href: 'subcategory.html',
+    comment: 'from $399',
+    image: 'images/catalog/consoles.png'
+  }, {
+    title: 'Cameras',
+    href: 'subcategory.html',
+    comment: 'from $129',
+    image: 'images/catalog/cameras.png'
+  }]
+
+  var advantages = [{
+    title: 'Love cats',
+    description: 'The internet does, so why shouldn\'t we?',
+    icon: 'heart'
+  }, {
+    title: 'Unbeatable',
+    description: 'Our cats price our products, which makes everyone happy',
+    icon: 'happy'
+  }, {
+    title: 'Call us',
+    description: 'A friendly agent might be very surprised',
+    icon: 'receiver'
+  }, {
+    title: 'Mu stores',
+    description: 'Find one and we\'ll be impressed!',
+    icon: 'location'
+  }, {
+    title: 'Feedback',
+    description: 'No guarantees the cats will listen. Mew ¯\\_(ツ)_/¯',
+    icon: 'comments'
+  }]
+
+

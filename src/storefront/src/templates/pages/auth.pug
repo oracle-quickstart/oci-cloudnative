@@ -1,0 +1,10 @@
+extends /layouts/_default
+
+block vars
+  -
+    page = {
+      title: 'Please login'
+    }
+
+block default
+  div(mu-user-view="userNotAuthenticated.html")
