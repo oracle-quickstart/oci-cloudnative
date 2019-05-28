@@ -1,0 +1,35 @@
+logLevel = "INFO"
+
+[web]
+address = ":8080"
+
+[entryPoints]
+  [entryPoints.http]
+    address = ":80"
+
+[file]
+  [backends]
+    # api
+    [backends.app1]
+      [backends.app1.loadbalancer]
+        method = "wrr"
+        sticky = true
+      [backends.app1.servers.server1]
+        url = "http://api:3000"
+    # web
+    [backends.web1]
+      [backends.web1.loadbalancer]
+        method = "wrr"
+      [backends.web1.servers.server1]
+        url = "http://storefront:80"
+
+  [frontends]
+    [frontends.app1]
+      backend = "app1"
+      entrypoints = ["http"]
+      [frontends.app1.routes.test_1]
+        rule = "PathPrefixStrip:/api"
+    [frontends.web1]
+      backend = "web1"
+      entrypoints = ["http"]
+
