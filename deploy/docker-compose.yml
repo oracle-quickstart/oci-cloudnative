@@ -1,15 +1,24 @@
 version: '2'
 
 services:
-  front-end:
-    image: weaveworksdemos/front-end:0.3.12
-    hostname: front-end
+  api:
+    image: phx.ocir.io/intvravipati/mushop/api:latest
+    hostname: api
+    restart: always
+    cap_drop:
+      - all
+    read_only: true
+  storefront:
+    image: phx.ocir.io/intvravipati/mushop/storefront:latest
+    hostname: storefront
     restart: always
     cap_drop:
       - all
     read_only: true
   edge-router:
-    image: aura/edge-router:0.1.1
+    image: phx.ocir.io/intvravipati/mushop/edge-router:latest
+    hostname: edge-router
+    restart: always
     ports:
       - '80:80'
       - '8080:8080'
@@ -24,8 +33,6 @@ services:
     read_only: true
     tmpfs:
       - /var/run:rw,noexec,nosuid
-    hostname: edge-router
-    restart: always
   catalogue:
     image: phx.ocir.io/intvravipati/mushop/catalogue:0.0.1
     hostname: catalogue
