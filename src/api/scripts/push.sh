@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -ev
+# set -ev
 
 if [[ -z "$OCIR" ]] ; then
     echo "Cannot find OCIR env var"
@@ -8,7 +8,9 @@ if [[ -z "$OCIR" ]] ; then
 fi
 
 NAMESPACE="mushop"
-CONTAINER="api"
+SCRIPT_DIR=$(dirname "$0")
+CODE_DIR=$(cd $SCRIPT_DIR/..; pwd)
+CONTAINER=$(basename $CODE_DIR);
 
 push() {
     DOCKER_PUSH=1;
@@ -63,6 +65,3 @@ else
     echo "Error: Unknown context for push"
     exit 1
 fi;
-
-
-

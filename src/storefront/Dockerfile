@@ -27,6 +27,7 @@ RUN rm -rf /tmp/node_modules
 WORKDIR /usr/src/app
 COPY . .
 ENV NODE_ENV "production"
+ENV STATIC_ASSET_URL "https://objectstorage.us-phoenix-1.oraclecloud.com/n/intvravipati/b/mushop-images/o/"
 RUN npm run build
 
 ###############################

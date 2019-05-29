@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 
-set -ev
+# set -ev
 
 if [[ -z "$OCIR" ]] ; then
     echo "Cannot find OCIR env var"
     exit 1
 fi
 
-REPO="mushop"
-CONTAINER="edge-router"
+NAMESPACE="mushop"
+SCRIPT_DIR=$(dirname "$0")
+CODE_DIR=$(cd $SCRIPT_DIR/..; pwd)
+CONTAINER=$(basename $CODE_DIR);
 
 push() {
     DOCKER_PUSH=1;
@@ -30,7 +32,7 @@ tag_and_push_all() {
         TAG=$1
     fi
 
-    DOCKER_REPO=${REPO}/${CONTAINER}
+    DOCKER_REPO=${NAMESPACE}/${CONTAINER}
     OCIR_REPO=${OCIR}/${DOCKER_REPO}
 
     if [ -z "$CI" ]; then
@@ -63,6 +65,3 @@ else
     echo "Error: Unknown context for push"
     exit 1
 fi;
-
-
-

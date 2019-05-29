@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
-set -ev
+# set -ev
 
-SCRIPT_DIR=$(dirname "$0")
 NAMESPACE="mushop"
+SCRIPT_DIR=$(dirname "$0")
+CODE_DIR=$(cd $SCRIPT_DIR/..; pwd)
+REPO=${NAMESPACE}/$(basename $CODE_DIR);
+echo $REPO
 
 TAG=$1
 if [[ -n "$CI" ]]; then
@@ -21,10 +24,5 @@ else
   DOCKER_CMD="sudo docker"
 fi
 
-CODE_DIR=$(cd $SCRIPT_DIR/..; pwd)
-echo $CODE_DIR
-
-REPO=${NAMESPACE}/$(basename api);
-
-echo "Building... $REPO:$TAG"
+echo "Building $REPO:$TAG ..."
 $DOCKER_CMD build -t ${REPO}:${TAG} .
