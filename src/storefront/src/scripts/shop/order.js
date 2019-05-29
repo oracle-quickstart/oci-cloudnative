@@ -29,8 +29,10 @@ export class OrderController {
   _res(res) {
     if (res.data && !(res.data.status_code > 200)) {
       return this._normalize(res.data);
+    } else if (res.data) {
+      return Promise.reject(`${res.data.status_text}: ${res.data.error}`);
     } else {
-      return Promise.reject(res.data.status_text);
+      return Promise.reject(`Not Found`);
     }
   }
   

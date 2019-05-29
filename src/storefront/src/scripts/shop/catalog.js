@@ -58,8 +58,10 @@ export class CatalogController {
   _handleRes(res) {
     if (res.data && !(res.data.status_code > 200)) {
       return res.data;
-    } else {
+    } else if (res.data) {
       return Promise.reject(`${res.data.status_text}: ${res.data.error}`);
+    } else {
+      return Promise.reject(`Not Found`);
     }
   }
 

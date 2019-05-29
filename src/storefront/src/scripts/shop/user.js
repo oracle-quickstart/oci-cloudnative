@@ -39,8 +39,10 @@ export class UserController {
   _getRes(res, setter) {
     if (res.data && res.data.status_code !== 500) {
       return setter(res.data);
+    } else if (res.data) {
+      return Promise.reject(`${res.data.status_text}: ${res.data.error}`);
     } else {
-      return Promise.reject(res.data);
+      return Promise.reject(`Not Found`);
     }
   }
 
