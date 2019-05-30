@@ -25,12 +25,13 @@ deps:
 server:
 	@docker run               \
 		-d                      \
+		--rm										\
 		--name $(CONTAINER)     \
 		-v $$PWD:/usr/src/app   \
 		-P                      \
 		-e NODE_ENV=development \
 		-e PORT=3000            \
-		-p 3000:3000            \
+		-p 8080:3000            \
 		--network mutest_default  \
 		$(IMAGE) supper -i node_modules server.js
 
