@@ -1,8 +1,8 @@
-package oracle.ateam.sockshop.queuemaster;
+package mushop.queuemaster;
 
 import org.springframework.stereotype.Component;
 
-import oracle.ateam.sockshop.shipping.entities.Shipment;
+import mushop.shipping.entities.Shipment;
 
 @Component
 public class ShippingTaskHandler {

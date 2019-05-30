@@ -1,4 +1,4 @@
-package oracle.ateam.sockshop.queuemaster.configuration;
+package mushop.queuemaster.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

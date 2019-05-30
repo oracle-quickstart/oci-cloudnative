@@ -6,7 +6,7 @@ metadata:
   labels:
     run: queuemaster
   name: queuemaster
-  namespace: demo-test
+  namespace: mushop
 spec:
   replicas: 1
   selector:
@@ -18,7 +18,7 @@ spec:
         run: queuemaster
     spec:
       containers:
-      - image: phx.ocir.io/intvravipati/julio/queuemaster:latest
+      - image: phx.ocir.io/intvravipati/mushop/queuemaster:0.0.1
         name: queuemaster
         env:
          - name: TENANT_ID
@@ -64,12 +64,13 @@ metadata:
   labels:
     run: queuemaster
   name: queuemaster
-  namespace: demo-test
+  namespace: mushop
 spec:
   ports:
   - port: 8080
     protocol: TCP
     targetPort: 8080
+    nodePort: 30124
   selector:
     run: queuemaster
   type: NodePort

@@ -1,4 +1,4 @@
-package oracle.ateam.socks.shipping.entities;
+package mushop.test.shipping.entities;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -25,7 +25,7 @@ import com.openpojo.validation.rule.impl.SetterMustExistRule;
 import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
 
-import oracle.ateam.sockshop.shipping.entities.Shipment;
+import mushop.shipping.entities.Shipment;
 
 public class UnitPojo {
     // Configured for expectation, so we know when a class gets added or removed.

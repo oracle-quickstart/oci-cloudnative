@@ -1,4 +1,4 @@
-package oracle.ateam.sockshop.queuemaster.entities;
+package mushop.queuemaster.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonFormat;

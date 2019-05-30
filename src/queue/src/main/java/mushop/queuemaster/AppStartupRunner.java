@@ -1,4 +1,4 @@
-package oracle.ateam.sockshop.queuemaster;
+package mushop.queuemaster;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -21,8 +21,8 @@ import com.oracle.bmc.streaming.requests.GetMessagesRequest;
 import com.oracle.bmc.streaming.responses.CreateCursorResponse;
 import com.oracle.bmc.streaming.responses.GetMessagesResponse;
 
-import oracle.ateam.sockshop.queuemaster.configuration.OciStreamsConfiguration;
-import oracle.ateam.sockshop.shipping.entities.Shipment;
+import mushop.queuemaster.configuration.OciStreamsConfiguration;
+import mushop.shipping.entities.Shipment;
 import shaded.com.oracle.oci.javasdk.com.google.common.util.concurrent.Uninterruptibles;
 
 @Component

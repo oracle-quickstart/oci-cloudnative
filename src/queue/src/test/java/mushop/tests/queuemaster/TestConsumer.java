@@ -1,4 +1,4 @@
-package oracle.ateam.sockshop.queuemaster;
+package mushop.tests.queuemaster;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -14,7 +14,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.oracle.bmc.streaming.StreamClient;
 
-import oracle.ateam.sockshop.queuemaster.configuration.OciStreamsConfiguration;
+import mushop.queuemaster.AppStartupRunner;
+import mushop.queuemaster.configuration.OciStreamsConfiguration;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(properties = {"job.autorun.enabled=false"})

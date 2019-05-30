@@ -1,4 +1,4 @@
-package oracle.ateam.socks.queuemaster;
+package mushop.test.queuemaster;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,7 +31,7 @@ import com.oracle.bmc.streaming.responses.CreateCursorResponse;
 import com.oracle.bmc.streaming.responses.GetMessagesResponse;
 import com.oracle.bmc.streaming.responses.PutMessagesResponse;
 
-import oracle.ateam.sockshop.queuemaster.configuration.OciStreamsConfiguration;
+import mushop.queuemaster.configuration.OciStreamsConfiguration;
 import shaded.com.oracle.oci.javasdk.com.google.common.util.concurrent.Uninterruptibles;
 
 @RunWith(SpringRunner.class)

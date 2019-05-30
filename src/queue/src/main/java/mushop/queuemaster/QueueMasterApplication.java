@@ -1,4 +1,4 @@
-package oracle.ateam.sockshop.queuemaster;
+package mushop.queuemaster;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

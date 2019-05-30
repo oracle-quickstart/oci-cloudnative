@@ -1,4 +1,4 @@
-package oracle.ateam.sockshop.queuemaster.controllers;
+package mushop.queuemaster.controllers;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,8 +23,8 @@ import com.oracle.bmc.streaming.requests.GetMessagesRequest;
 import com.oracle.bmc.streaming.responses.CreateCursorResponse;
 import com.oracle.bmc.streaming.responses.GetMessagesResponse;
 
-import oracle.ateam.sockshop.queuemaster.configuration.OciStreamsConfiguration;
-import oracle.ateam.sockshop.queuemaster.entities.HealthCheck;
+import mushop.queuemaster.configuration.OciStreamsConfiguration;
+import mushop.queuemaster.entities.HealthCheck;
 
 @RestController
 public class HealthCheckController {

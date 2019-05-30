@@ -1,16 +1,11 @@
-package oracle.ateam.sockshop.queuemaster.controllers;
+package mushop.queuemaster.controllers;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import oracle.ateam.sockshop.queuemaster.configuration.OciStreamsConfiguration;
 
 
 /*

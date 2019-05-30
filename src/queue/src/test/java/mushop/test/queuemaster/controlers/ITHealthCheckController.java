@@ -1,4 +1,4 @@
-package oracle.ateam.socks.queuemaster.controlers;
+package mushop.test.queuemaster.controlers;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
