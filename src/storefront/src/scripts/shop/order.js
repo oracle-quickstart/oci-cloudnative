@@ -9,9 +9,10 @@ export class OrderController {
 
   _normalize(order) {
     const { router } = this.mu;
-    order.id = order.id || order._links.self.href.split('/').pop();
-    order.humanId = order.id.slice(-11);
+    order.id = order.id || order.orderId || order._links.self.href.split('/').pop();
+    order.humanId = ('0000000000' + order.id).slice(-11);
     order.href = router.href('orders', { id: order.id });
+    order.date = order.date || order.orderDate;
     // order.shortDate = new Date(order.date).toDateString();
     order.shortDate = order.date.split('.').shift().replace('T', ' ');
     // totals
@@ -74,7 +75,7 @@ export class MuCheckout extends MuMx.compose(null,
       onCard: card => this.setCheck({ card }),
       onAddress: address => this.setCheck({ address }),
       onCartItems: items => this.setCheck({ items }),
-      canCheckout: this.canCheckout.bind(this),
+      canCheckout: this.canCheckout(),
       handleSubmit: this.submitOrder.bind(this),
     });
   }
@@ -86,11 +87,12 @@ export class MuCheckout extends MuMx.compose(null,
   }
 
   refresh() {
-    const didRefresh = this.context.get('didRefresh');
-    if (!didRefresh) {
-      const ready = this.canCheckout();
-      return ready && this.render({ didRefresh: true });
-    }
+    this.context.set('canCheckout', this.canCheckout());
+    // const didRefresh = this.context.get('didRefresh');
+    // if (!didRefresh) {
+    //   const ready = this.canCheckout();
+    //   return ready && this.render({ didRefresh: true });
+    // }
   }
 
   canCheckout() {
@@ -98,7 +100,7 @@ export class MuCheckout extends MuMx.compose(null,
     const ready = (items && items.length) &&
         !!address && 
         !!card;
-    // console.log('check ready', ready, shopCart);
+    console.log('check ready', ready);
     return !submitting && ready;
   }
 
@@ -123,8 +125,12 @@ export class MuOrders extends MuMx.compose(null, ViewTemplateMixin) {
     const get = () => id ? Promise.all([order.get(id)]) : order.list();
     this.render({ loading: true })
       .then(() => get())
-      .then(orders => this.render({ orders, loading: false}))
-      .catch(error => this.render({ error, loading: false}));
+      .then(orders => this.render({ 
+        orders,
+        noHistory: !orders.length,
+        loading: false,
+      }))
+      .catch(error => this.render({ error, loading: false }));
   }
 }
 

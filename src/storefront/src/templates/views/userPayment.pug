@@ -9,7 +9,7 @@ div.uk-grid-medium.uk-flex-left(uk-grid mu-if="!editing")
       span.uk-text-bolder card ending *
       span.uk-text-muted(mu-html="card.number")
           
-    div.uk-alert-warning(uk-alert mu-if="!card") 
+    div.uk-text-danger(mu-if="!card") 
       p No stored payment accounts
   a.uk-icon-link(uk-icon="pencil" mu-click="edit" uk-tooltip="Change Card")
 
