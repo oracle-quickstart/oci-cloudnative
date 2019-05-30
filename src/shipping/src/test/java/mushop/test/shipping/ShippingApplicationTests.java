@@ -1,4 +1,4 @@
-package oracle.ateam.sockshop.shipping;
+package mushop.test.shipping;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.Assert.assertNotNull;
@@ -18,8 +18,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.oracle.bmc.streaming.model.PutMessagesDetailsEntry;
 
-import oracle.ateam.sockshop.shipping.entities.Shipment;
-import oracle.ateam.sockshop.shipping.streams.StreamsPublisher;
+import mushop.shipping.entities.Shipment;
+import mushop.shipping.streams.StreamsPublisher;
 import shaded.com.oracle.oci.javasdk.org.apache.commons.lang3.StringUtils;
 
 @RunWith(SpringRunner.class)
