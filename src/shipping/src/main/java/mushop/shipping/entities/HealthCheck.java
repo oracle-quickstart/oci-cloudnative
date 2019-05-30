@@ -1,4 +1,4 @@
-package oracle.ateam.sockshop.shipping.entities;
+package mushop.shipping.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonFormat;

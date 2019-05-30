@@ -8,7 +8,7 @@
 		<version>2.1.3.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>oracle.ateam</groupId>
+	<groupId>mushop</groupId>
 	<artifactId>shipping</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>shipping</name>

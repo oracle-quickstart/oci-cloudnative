@@ -1,4 +1,4 @@
-package oracle.ateam.sockshop.shipping.middleware;
+package mushop.shipping.middleware;
 
 import io.prometheus.client.Histogram;
 import org.springframework.beans.factory.annotation.Autowired;

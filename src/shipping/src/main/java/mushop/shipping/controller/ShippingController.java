@@ -1,4 +1,4 @@
-package oracle.ateam.sockshop.shipping.controller;
+package mushop.shipping.controller;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,10 +30,10 @@ import com.oracle.bmc.streaming.requests.GetMessagesRequest;
 import com.oracle.bmc.streaming.responses.CreateCursorResponse;
 import com.oracle.bmc.streaming.responses.GetMessagesResponse;
 
-import oracle.ateam.sockshop.shipping.configuration.OciStreamsConfiguration;
-import oracle.ateam.sockshop.shipping.entities.HealthCheck;
-import oracle.ateam.sockshop.shipping.entities.Shipment;
-import oracle.ateam.sockshop.shipping.streams.StreamsPublisher;
+import mushop.shipping.configuration.OciStreamsConfiguration;
+import mushop.shipping.entities.HealthCheck;
+import mushop.shipping.entities.Shipment;
+import mushop.shipping.streams.StreamsPublisher;
 
 /*
  * MVC Controller for the Shipping application

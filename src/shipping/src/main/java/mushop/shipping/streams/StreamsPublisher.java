@@ -1,4 +1,4 @@
-package oracle.ateam.sockshop.shipping.streams;
+package mushop.shipping.streams;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -18,8 +18,8 @@ import com.oracle.bmc.streaming.model.PutMessagesResultEntry;
 import com.oracle.bmc.streaming.requests.PutMessagesRequest;
 import com.oracle.bmc.streaming.responses.PutMessagesResponse;
 
-import oracle.ateam.sockshop.shipping.configuration.OciStreamsConfiguration;
-import oracle.ateam.sockshop.shipping.entities.Shipment;
+import mushop.shipping.configuration.OciStreamsConfiguration;
+import mushop.shipping.entities.Shipment;
 
 @Configuration
 public class StreamsPublisher {
