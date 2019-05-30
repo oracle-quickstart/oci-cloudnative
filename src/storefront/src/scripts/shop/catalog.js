@@ -19,7 +19,7 @@ const CATALOG_MU = {
 };
 
 export function getStaticUrl(src) {
-  const prefix = (STATIC_ASSET_URL || '/api/catalogue/images').replace(/\/$/, '');
+  const prefix = /^\/catalog/.test(src) ? '/api' : (STATIC_ASSET_URL || '/api/catalogue/images').replace(/\/$/, '');
   return `${prefix}/${src.replace(/^\//, '')}`;
 }
 
@@ -29,7 +29,7 @@ export class CatalogController {
     this._serviceReg = new RegExp(`^(${this._serviceUri})`);
     this._normalize = this._normalize.bind(this);
     this._handleRes = this._handleRes.bind(this);
-    console.log({ STATIC_ASSET_URL, PRODUCTION })
+    // console.log({ STATIC_ASSET_URL, PRODUCTION, VERSION })
   }
 
   _normalize(product) {
@@ -158,7 +158,7 @@ export class CategoryPage extends MuMx.compose(null,
    * @param {*} prop 
    */
   _propGroup(skus, prop) {
-    const hash = skus.map(sku => [].concat(sku[prop]))
+    const hash = skus.map(sku => [].concat(sku[prop] || []))
       .reduce((g, vals) => {
         vals.forEach(val => g[val] = (g[val] || 0) + 1);
         return g;
@@ -338,15 +338,17 @@ export class Products extends MuMx.compose(null,
 
       const tests = [];
       // match category
-      if (match.cat.length) {
-        tests.push(item.category.reduce((pass, cat) => {
-          return pass || match.cat.indexOf(cat) > -1;
-        }, false));
-      }
-      if (match.catRx.length) {
-        tests.push(item.category.reduce((pass, cat) => {
-          return pass || !!match.catRx.filter(r => r.test(cat)).length;
-        }, false));
+      if (item.category) {
+        if (match.cat.length) {
+          tests.push(item.category.reduce((pass, cat) => {
+            return pass || match.cat.indexOf(cat) > -1;
+          }, false));
+        }
+        if (match.catRx.length) {
+          tests.push(item.category.reduce((pass, cat) => {
+            return pass || !!match.catRx.filter(r => r.test(cat)).length;
+          }, false));
+        }
       }
       // match brand
       if (match.brand && match.brand.length) {
@@ -395,10 +397,10 @@ export class SingleProduct extends MuMx.compose(null,
       this.render({ loading: true });
       page.on('page', name => {
         if (name === 'product') {
-          this.context.on('product', p => root.context.set('page.title', p.title))
+          this.context.on('product', p => root.context.set('page.title', p.title || p.name))
           const { id } = router.queryparams();
           resolve(this.render({ loading: true })
-            .then(() => catalog.product(id)))
+            .then(() => catalog.product(id)));
         } else {
           reject('Unknown context for product');
         }

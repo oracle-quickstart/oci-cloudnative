@@ -178,6 +178,7 @@ export class MuCart extends MuMx.compose(CartSubscriber,
           loading: false,
           items,
           size,
+          isEmpty: !size,
           totals,
           rawTotals,
         }).then(() => cb(items)));

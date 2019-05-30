@@ -9,7 +9,7 @@ div.uk-grid-medium.uk-flex-left(uk-grid hidden mu-hide="editing")
       |{{address.number}} {{address.street}}
       div.uk-text-muted
       |{{address.city}} {{address.country}}, {{address.postcode}}
-    div.uk-alert-warning(uk-alert mu-if="!address") 
+    div.uk-text-danger(mu-if="!address") 
       p No {{addressType}} address found.
   a.uk-icon-link(uk-icon="pencil" mu-click="edit" uk-tooltip="Change Address")
 
