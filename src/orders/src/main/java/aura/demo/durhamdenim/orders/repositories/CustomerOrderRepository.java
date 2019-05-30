@@ -8,8 +8,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 import aura.demo.durhamdenim.orders.entities.CustomerOrder;
 
-import java.util.List;
-
 @RepositoryRestResource(path = "orders", itemResourceRel = "order")
 public interface CustomerOrderRepository extends PagingAndSortingRepository<CustomerOrder, Long>  {
     @RestResource(path = "customer")
