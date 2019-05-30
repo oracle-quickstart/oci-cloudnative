@@ -1,7 +1,0 @@
-[DEFAULT]
-tenancy = ocid1.tenancy.oc1..aaaaaaaawpqblfemtluwxipipubxhioptheej2r32gvf7em7iftkr3vd2r3a
-user = ocid1.user.oc1..aaaaaaaapzqkxjlgfc5ucp3cjtwxtj2lul4uqwpkg2zfj4d2i6cc3dtr3mwq
-fingerprint = 4e:6d:68:30:a9:60:73:88:d6:7c:52:27:1c:e2:40:cf
-key_file = /root/oci/oci_api_key.pem
-region = us-phoenix-1
-

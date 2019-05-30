@@ -1,12 +1,10 @@
-# APP DEPLOYMENT
-
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
     run: ship
   name: ship
-  namespace: demo-test
+  namespace: mushop
 spec:
   replicas: 1
   selector:
@@ -17,8 +15,10 @@ spec:
       labels:
         run: ship
     spec:
+      imagePullSecrets:
+        - name: ocirsecret        
       containers:
-      - image: phx.ocir.io/intvravipati/julio/shipping:latest
+      - image: phx.ocir.io/intvravipati/mushop/shipping:0.0.1
         name: ship
         env:
          - name: TENANT_ID
@@ -55,21 +55,19 @@ spec:
         - containerPort: 8080
           protocol: TCP
 ---
-
-# APP SERVICE
-
 apiVersion: v1
 kind: Service
 metadata:
   labels:
     run: ship
   name: ship
-  namespace: demo-test
+  namespace: mushop
 spec:
   ports:
   - port: 8080
     protocol: TCP
     targetPort: 8080
+    nodePort: 30123
   selector:
     run: ship
   type: NodePort
