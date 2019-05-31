@@ -48,7 +48,7 @@ services:
         - OADB_PW=default_Password1
         - OADB_SERVICE=mcatalogue_tp
   carts:
-    image: phx.ocir.io/intvravipati/mushop/cart:0.0.2
+    image: phx.ocir.io/intvravipati/mushop/carts:0.0.4
     hostname: carts
     restart: always
     cap_drop:
@@ -59,12 +59,12 @@ services:
     tmpfs:
       - /tmp:rw,noexec,nosuid
     environment:
-      - JDBC_URL=jdbc:oracle:thin:@db3_tp?TNS_ADMIN=./config
-      - DB_USER=ADMIN
-      - DB_PASSWORD=Welcome123$$$$$$
+      - OADB_SERVICE=db3_tp
+      - OADB_USER=ADMIN
+      - OADB_PW=Welcome123$$$$$$
       - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.aura.demo=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
   orders:
-    image: phx.ocir.io/intvravipati/mushop/orders:0.0.4
+    image: phx.ocir.io/intvravipati/mushop/orders:0.0.5
     ports:
      - 8085:80
     hostname: orders
@@ -77,9 +77,9 @@ services:
     tmpfs:
       - /tmp:rw,noexec,nosuid
     environment:
-      - JDBC_URL=jdbc:oracle:thin:@appdb_tp?TNS_ADMIN=./config
-      - DB_USER=ADMIN
-      - DB_PASSWORD=Welcome123$$$$$$
+      - OADB_USER=ADMIN
+      - OADB_PW=Welcome123$$$$$$
+      - OADB_SERVICE=appdb_tp
       - JAVA_OPTS=-Xms128m -Xmx128m -XX:+UseG1GC -Dlogging.level.aura.demo=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
   shipping:
     image: weaveworksdemos/shipping:0.4.8
