@@ -3,6 +3,7 @@ import 'core-js/features/url-search-params';
 
 import { Mu, MuMx } from '../mu';
 import { getWindow } from '../util/window';
+import { MUSHOP } from './constants';
 
 /**
  * Router macro
@@ -186,5 +187,5 @@ export class MuRouteLink {
   }
 }
 
-export default Mu.macro('router', MuRouterMacro, getWindow())
+export default Mu.macro(MUSHOP.MACRO.ROUTER, MuRouterMacro, getWindow())
   .micro(MuRouteLink, '[mu-route],.mu-route');

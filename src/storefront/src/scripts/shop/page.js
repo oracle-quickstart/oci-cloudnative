@@ -1,5 +1,6 @@
 import { Mu } from '../mu';
 import { getDocument } from '../util/window';
+import { MUSHOP } from './constants';
 
 const alias = { home: [/^\/$/] };
 const pages = {
@@ -136,4 +137,4 @@ export class PageController {
 
 }
 
-export default Mu.macro('page', PageController, getDocument());
+export default Mu.macro(MUSHOP.MACRO.PAGE, PageController, getDocument());

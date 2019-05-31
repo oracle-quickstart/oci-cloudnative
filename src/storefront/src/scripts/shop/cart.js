@@ -3,6 +3,7 @@ import { ShopMxSubscriber } from './helper/subscriber';
 import { Badge } from './components/badge';
 import { ViewTemplateMixin } from './helper/viewmx';
 import { MxCtxInsulator } from './helper/mixins';
+import { MUSHOP } from './constants';
 
 // some fixed business info
 const CART = {
@@ -142,8 +143,7 @@ class CartSubscriber extends MuMx.compose(null, ShopMxSubscriber) {
 export class MuCart extends MuMx.compose(CartSubscriber,
   MxCtxInsulator,
   ViewTemplateMixin,
-  // [MuCtxSetterMixin, 'mu-cart'],
-  ) {
+) {
   
   viewTemplateDelegate() {
     // source the template remotely from the property, || use node.innerHTML
@@ -161,9 +161,7 @@ export class MuCart extends MuMx.compose(CartSubscriber,
 
     // load corresponding sku records
 
-    return Promise.resolve(this._viewDidRender ?
-      this.context.set('loading', true) : // simply update context listeners
-      this.render({ loading: true }))
+    return this.render({ loading: true }, true)
         .then(() => cart.combined())
         .then(items => items.map(row => ({
           ...row,
@@ -181,7 +179,7 @@ export class MuCart extends MuMx.compose(CartSubscriber,
           isEmpty: !size,
           totals,
           rawTotals,
-        }).then(() => cb(items)));
+        }, true).then(() => cb(items)));
   }
 
   increment(row, amnt) {
@@ -197,7 +195,7 @@ export class MuCart extends MuMx.compose(CartSubscriber,
   }
 
   updateRow(row, qty) {
-    return this.render({ loading: true })
+    return this.render({ loading: true }, true)
       .then(() => row.actions.update(qty));
   }
 
@@ -218,6 +216,6 @@ export class CartBadge extends CartSubscriber {
   }
 }
 
-export default Mu.macro('cart', CartController)
+export default Mu.macro(MUSHOP.MACRO.CART, CartController)
   .micro(MuCart, '[mu-cart]')
   .micro(CartBadge, '[mu-cart-badge]');

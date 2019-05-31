@@ -2,6 +2,7 @@ import { Mu, MuMx, attrToSelector, MuCtxInheritOnly, MuCtxSetterMixin } from '..
 import { ShopMxSubscriber } from './helper/subscriber';
 import { ViewTemplateMixin } from './helper/viewmx';
 import { MxCtxInsulator } from './helper/mixins';
+import { MUSHOP } from './constants';
 
 const CATEGORY_RULES = {
   // name --> matches
@@ -420,7 +421,7 @@ export class SingleProduct extends MuMx.compose(null,
   }
 }
 
-export default Mu.macro('catalog', CatalogController)
+export default Mu.macro(MUSHOP.MACRO.CATALOG, CatalogController)
   .micro(CategoryPage, attrToSelector(CATALOG_MU.CATEGORY))
   .micro(Products, attrToSelector(CATALOG_MU.PRODUCTS))
   .micro(SingleProduct, attrToSelector(CATALOG_MU.PRODUCT))

@@ -35,11 +35,23 @@ class extends MuMx.compose(ctor, MuCtxAttrMixin) {
 
   }
 
-  render(data) {
-    const view = this._localView || this._remoteView;
-    const renderMethod = this._localView ? 'render': 'renderRemote';
-    this._viewDidRender = true;
-    return view && this.view[renderMethod](this.node, view, this.context.extend(data));
+  /**
+   * render the view
+   * @param {*} data - context to update
+   * @param {boolean} soft - only refresh context if view has been rendered
+   */
+  render(data, soft) {
+    return new Promise(resolve => {
+      const view = this._localView || this._remoteView;
+      const renderMethod = this._localView ? 'render': 'renderRemote';
+      const doRender = !this._viewDidRender || !soft;
+      const ctx = this.context.extend(data);
+      if (doRender) {
+        this._viewDidRender = true;
+        return resolve(view && this.view[renderMethod](this.node, view, ctx));
+      }
+      return resolve();
+    });
   }
   
 }
