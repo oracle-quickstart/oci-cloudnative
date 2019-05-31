@@ -49,6 +49,8 @@ services:
         - OADB_SERVICE=mcatalogue_tp
   carts:
     image: phx.ocir.io/intvravipati/mushop/carts:0.0.4
+    ports:
+     - 8086:80
     hostname: carts
     restart: always
     cap_drop:
