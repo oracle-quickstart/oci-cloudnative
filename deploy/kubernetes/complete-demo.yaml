@@ -131,7 +131,6 @@ metadata:
   namespace: mushop
 spec:
   ports:
-    # the port that this service should serve on
   - port: 80
     targetPort: 80
   selector:
