@@ -9,7 +9,7 @@ export const MuCtxInheritOnly = ctor => {
 }
 
 /**
- * 
+ * Mixin to connect attribute values to context
  * @param {*} ctor 
  */
 export const MuCtxAttrMixin = ctor => class extends ctor {
@@ -64,6 +64,11 @@ export const MuCtxAttrMixin = ctor => class extends ctor {
 
 };
 
+/**
+ * Mixin to connect a single attribute value to context
+ * @param {*} ctor 
+ * @param {*} attr 
+ */
 export const MuCtxSingleAttrMixin = (ctor, attr) => class extends MuCtxAttrMixin(ctor) {
   _ctxAttrProp(a) {
     return super._ctxAttrProp(a || attr);

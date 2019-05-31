@@ -316,7 +316,6 @@ const MUPROP = {
   MU: 'mu',
   MUS: 'mus',
   CTX: 'muctx',
-  DEBOUNCE: 'mudebounce',
   CLOAK: 'mu-cloak',
 };
 
@@ -442,22 +441,18 @@ export class MuView extends MuEmitter {
           const instance = MuUtil.initModule(mod, this.mu, this, ctx);
           MuUtil.defineProp(instance, 'node', node); // assign the node to the instance
           // MuUtil.defineProp(node, MUPROP.CTX, ctx); // assign sticky context to the node for persistence
-          // reference the instance in the target mus
+          // reference the instance in the target's mus
           _mus.push(instance);
           list.push(node);
           return instance.onMount && instance.onMount();
-        } else {
-          // if (!target.contains(node)) {
-          //   console.log('SKIP NODE DETACHED', mod.binding, node);
-          // }
         }
 
       });
-      // TODO: need to find a way to dedupe attachments when a parent contains a child
+
       if (list.length) {
-        // console.log(`attached:${mod.name}`, target);
-        this.emitOnce(`attached:${mod.name}`, target, list);
+        this.emitOnce(mod.ctor, target, list);
       }
+
     });
 
     // remove cloak
@@ -516,13 +511,12 @@ export class Mu extends MuEmitter {
 
   /**
    * register a view micro binding
-   * @param {string} name 
-   * @param {string} selector 
    * @param {Function} ctor 
+   * @param {string} selector 
    * @param  {...any} args 
    */
-  static micro(name, selector, ctor, ...args) {
-    this._micro.push(MuUtil.defineModule(name, selector, ctor, ...args));
+  static micro(ctor, selector, ...args) {
+    this._micro.push(MuUtil.defineModule(null, selector, ctor, ...args));
     return this;
   }
 

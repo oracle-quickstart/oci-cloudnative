@@ -48,5 +48,5 @@ export class UKComponent extends MuMx.compose(null, [MuCtxSetterMixin, UkCompone
 }
 
 export default Mu.macro('ui', MuUi)
-  .micro('ui.kit', attrToSelector(UkComponentAttr), UKComponent);
+  .micro(UKComponent, attrToSelector(UkComponentAttr));
 

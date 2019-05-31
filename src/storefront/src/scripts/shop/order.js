@@ -88,11 +88,6 @@ export class MuCheckout extends MuMx.compose(null,
 
   refresh() {
     this.context.set('canCheckout', this.canCheckout());
-    // const didRefresh = this.context.get('didRefresh');
-    // if (!didRefresh) {
-    //   const ready = this.canCheckout();
-    //   return ready && this.render({ didRefresh: true });
-    // }
   }
 
   canCheckout() {
@@ -100,7 +95,6 @@ export class MuCheckout extends MuMx.compose(null,
     const ready = (items && items.length) &&
         !!address && 
         !!card;
-    console.log('check ready', ready);
     return !submitting && ready;
   }
 
@@ -135,6 +129,6 @@ export class MuOrders extends MuMx.compose(null, ViewTemplateMixin) {
 }
 
 export default Mu.macro('order', OrderController)
-  .micro('order.checkout', attrToSelector(ORDER_MU.CHECKOUT), MuCheckout)
-  .micro('order.orders', attrToSelector(ORDER_MU.ORDERS), MuOrders);
+  .micro(MuCheckout, attrToSelector(ORDER_MU.CHECKOUT))
+  .micro(MuOrders, attrToSelector(ORDER_MU.ORDERS));
 
