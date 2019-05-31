@@ -48,7 +48,9 @@ services:
         - OADB_PW=default_Password1
         - OADB_SERVICE=mcatalogue_tp
   carts:
-    image: phx.ocir.io/intvravipati/mushop/cart:0.0.2
+    image: phx.ocir.io/intvravipati/mushop/carts:0.0.3
+    ports:
+     - 8086:80
     hostname: carts
     restart: always
     cap_drop:
