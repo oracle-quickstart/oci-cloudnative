@@ -1,6 +1,7 @@
 import { Mu, MuMx, attrToSelector } from '../mu';
 import { ViewTemplateMixin } from './helper/viewmx';
 import { MxCtxInsulator } from './helper/mixins';
+import { MUSHOP } from './constants';
 
 export class OrderController {
   constructor() {
@@ -72,17 +73,16 @@ export class MuCheckout extends MuMx.compose(null,
   onMount() {
     super.onMount();
     this.render({
-      onCard: card => this.setCheck({ card }),
-      onAddress: address => this.setCheck({ address }),
-      onCartItems: items => this.setCheck({ items }),
+      onCard: card => this.setCheck('card', card),
+      onAddress: address => this.setCheck('address', address),
+      onCartItems: items => this.setCheck('items', items),
       canCheckout: this.canCheckout(),
       handleSubmit: this.submitOrder.bind(this),
     });
   }
 
-  setCheck(check) {
-    const checks = this.context.get('checks');
-    Object.assign(checks, check);
+  setCheck(check, value) {
+    this.context.set(`checks.${check}`, value);
     this.refresh();
   }
 
@@ -128,7 +128,7 @@ export class MuOrders extends MuMx.compose(null, ViewTemplateMixin) {
   }
 }
 
-export default Mu.macro('order', OrderController)
+export default Mu.macro(MUSHOP.MACRO.ORDER, OrderController)
   .micro(MuCheckout, attrToSelector(ORDER_MU.CHECKOUT))
   .micro(MuOrders, attrToSelector(ORDER_MU.ORDERS));
 

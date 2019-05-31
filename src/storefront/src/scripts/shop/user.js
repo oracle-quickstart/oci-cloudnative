@@ -2,6 +2,7 @@ import { Mu, MuMx, attrToSelector, MuCtxSetterMixin } from '../mu';
 import { ShopMxSubscriber } from './helper/subscriber';
 import { ViewTemplateMixin } from './helper/viewmx';
 import { MxCtxInsulator } from './helper/mixins';
+import { MUSHOP } from './constants';
 
 export class UserController {
   constructor() {
@@ -347,7 +348,7 @@ export class UserPayment extends MuMx.compose(null,
   }
 }
 
-export default Mu.macro('user', UserController)
+export default Mu.macro(MUSHOP.MACRO.USER, UserController)
   .micro(UserView, attrToSelector(USER_MU.VIEW))
   .micro(UserAddress, attrToSelector(USER_MU.ADDRESS))
   .micro(UserPayment, attrToSelector(USER_MU.PAYMENT))

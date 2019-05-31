@@ -1,6 +1,7 @@
 import { Mu, MuMx, attrToSelector, MuCtxSetterMixin } from '../mu';
 import { getGlobal } from '../util/window';
 import { UI_GLOBAL } from '../util/constants';
+import { MUSHOP } from './constants';
 
 export class MuUi {
   constructor() {
@@ -47,6 +48,6 @@ export class UKComponent extends MuMx.compose(null, [MuCtxSetterMixin, UkCompone
 
 }
 
-export default Mu.macro('ui', MuUi)
+export default Mu.macro(MUSHOP.MACRO.UI, MuUi)
   .micro(UKComponent, attrToSelector(UkComponentAttr));
 
