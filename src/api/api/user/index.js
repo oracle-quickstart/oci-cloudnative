@@ -77,7 +77,7 @@
                 return next(error);
             }
             var data = JSON.parse(body);
-            if (data.status_code !== 500 && data._embedded.card ) {
+            if (data.status_code !== 500 && data._embedded.card && data._embedded.card.length ) {
                 var resp = {
                     "number": data._embedded.card.pop().longNum.slice(-4)
                 };
@@ -100,7 +100,7 @@
                 return next(error);
             }
             var data = JSON.parse(body);
-            if (data.status_code !== 500 && data._embedded.address.length) {
+            if (data.status_code !== 500 && data._embedded.address && data._embedded.address.length) {
                 var resp = data._embedded.address.pop();
                 return helpers.respondSuccessBody(res, JSON.stringify(resp));
             }

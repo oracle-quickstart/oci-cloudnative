@@ -6,7 +6,7 @@ services:
 
   # Edge router for docker ingress
   edge-router:
-    image: phx.ocir.io/intvravipati/mushop/edge-router:latest
+    image: phx.ocir.io/intvravipati/mushop/edge-router:0.0.1
     hostname: edge-router
     restart: always
     ports:
@@ -16,7 +16,7 @@ services:
   
   # Storefront UI
   storefront:
-    image: phx.ocir.io/intvravipati/mushop/storefront:latest
+    image: phx.ocir.io/intvravipati/mushop/storefront:0.0.2
     hostname: storefront
     restart: always
     environment:
@@ -24,7 +24,7 @@ services:
 
   # Storefront backend API service
   api:
-    image: phx.ocir.io/intvravipati/mushop/api:latest
+    image: phx.ocir.io/intvravipati/mushop/api:0.0.2
     hostname: api
     restart: always
     environment:
@@ -45,30 +45,43 @@ services:
       - OADB_USER=catalogue_user
       - OADB_PW=default_Password1
       - OADB_SERVICE=mcatalogue_tp
+
+  # OCI Carts service
   carts:
-    image: weaveworksdemos/carts
+    image: phx.ocir.io/intvravipati/mushop/cart:0.0.2
     hostname: carts
     restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid
     environment:
-      - reschedule:on-node-failure
-  carts-db:
-    image: mongo
-    hostname: carts-db
-    restart: always
-    environment:
-      - reschedule:on-node-failure
+      - JDBC_URL=jdbc:oracle:thin:@db3_tp?TNS_ADMIN=./config
+      - DB_USER=ADMIN
+      - DB_PASSWORD=Welcome123$$$$$$
+      - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.aura.demo=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+  
+  # OCI Orders service
   orders:
-    image: weaveworksdemos/orders
+    image: phx.ocir.io/intvravipati/mushop/orders:0.0.3
     hostname: orders
     restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid
     environment:
-      - reschedule:on-node-failure
-  orders-db:
-    image: mongo
-    hostname: orders-db
-    restart: always
-    environment:
-      - reschedule:on-node-failure
+      - JDBC_URL=jdbc:oracle:thin:@appdb_tp?TNS_ADMIN=./config
+      - DB_USER=ADMIN
+      - DB_PASSWORD=Welcome123$$$$$$
+      - JAVA_OPTS=-Xms128m -Xmx128m -XX:+UseG1GC -Dlogging.level.aura.demo=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+
   shipping:
     image: weaveworksdemos/shipping
     hostname: shipping
