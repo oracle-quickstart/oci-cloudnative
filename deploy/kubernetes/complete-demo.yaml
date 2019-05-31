@@ -150,15 +150,18 @@ spec:
          - name: OADB_USER
            valueFrom:
              secretKeyRef:
-               name: atp-catalog-creds
-               key: catdb.user
-         - name: CART_DB_PASSWORD
+               name: atp-secret
+               key: catalogue_oadb_user
+         - name: OADB_PW
            valueFrom:
              secretKeyRef:
-               name: atp-catalog-creds
-               key: catdb.password
+               name: atp-secret
+               key: catalogue_oadb_pw
          - name: OADB_SERVICE
-           value: "mcatalogue_tp"
+           valueFrom:
+             secretKeyRef:
+               name: atp-secret
+               key: catalogue_oadb_service 
         securityContext:
           runAsNonRoot: true
           runAsUser: 10001
