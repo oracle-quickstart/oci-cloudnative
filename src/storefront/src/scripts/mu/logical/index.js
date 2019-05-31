@@ -9,8 +9,9 @@ const LOGICAL_ATTR = {
   EACH: 'mu-each',
   HTML: 'mu-html',
   IF: 'mu-if',
-  SWITCH: 'mu-switch', // TODO
-  GLOBAL: 'mu-global',
+  // TODO:
+  // SWITCH: 'mu-switch',
+  // GLOBAL: 'mu-global',
 };
 
 
@@ -47,7 +48,6 @@ const MxCtxAttrRefresh = (ctor, attr) => class extends MuCtxSingleAttrMixin(ctor
 export class MuIF extends MuMx.compose(null,
   MuCtxInheritOnly,
   [MxCtxAttrRefresh, LOGICAL_ATTR.IF],
-  // [MuCtxSingleAttrMixin, LOGICAL_ATTR.IF]
 ) {
 
   onMount() {
@@ -317,9 +317,9 @@ export class MuClassLogical extends MuMx.compose(null,
   }
 }
 
-export default Mu.micro('logical.attr', attrToSelector(LOGICAL_ATTR.ATTR), MuAttr)
-  .micro('logical.each', attrToSelector(LOGICAL_ATTR.EACH), MuEach)
-  .micro('logical.if', attrToSelector(LOGICAL_ATTR.IF), MuIF)
-  .micro('logical.hide', attrToSelector(LOGICAL_ATTR.HIDE), MuHide)
-  .micro('logical.class', attrToSelector(LOGICAL_ATTR.CLASS), MuClassLogical)
-  .micro('logical.html', attrToSelector(LOGICAL_ATTR.HTML), MuHtml);
+export default Mu.micro(MuAttr, attrToSelector(LOGICAL_ATTR.ATTR))
+  .micro(MuEach, attrToSelector(LOGICAL_ATTR.EACH))
+  .micro(MuIF, attrToSelector(LOGICAL_ATTR.IF))
+  .micro(MuHide, attrToSelector(LOGICAL_ATTR.HIDE))
+  .micro(MuClassLogical, attrToSelector(LOGICAL_ATTR.CLASS))
+  .micro(MuHtml, attrToSelector(LOGICAL_ATTR.HTML));

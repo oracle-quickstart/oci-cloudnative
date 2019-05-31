@@ -421,7 +421,7 @@ export class SingleProduct extends MuMx.compose(null,
 }
 
 export default Mu.macro('catalog', CatalogController)
-  .micro('cat.category', attrToSelector(CATALOG_MU.CATEGORY), CategoryPage)
-  .micro('cat.products', attrToSelector(CATALOG_MU.PRODUCTS), Products)
-  .micro('sku.product', attrToSelector(CATALOG_MU.PRODUCT), SingleProduct)
-  .micro('sku.tile', attrToSelector(CATALOG_MU.TILE), SingleProduct);
+  .micro(CategoryPage, attrToSelector(CATALOG_MU.CATEGORY))
+  .micro(Products, attrToSelector(CATALOG_MU.PRODUCTS))
+  .micro(SingleProduct, attrToSelector(CATALOG_MU.PRODUCT))
+  .micro(SingleProduct, attrToSelector(CATALOG_MU.TILE));

@@ -187,4 +187,4 @@ export class MuRouteLink {
 }
 
 export default Mu.macro('router', MuRouterMacro, getWindow())
-  .micro('router.link', '[mu-route],.mu-route', MuRouteLink); 
+  .micro(MuRouteLink, '[mu-route],.mu-route');

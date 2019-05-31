@@ -23,4 +23,4 @@ export class MuDebug extends MuMx.compose(null, [MuCtxSingleAttrMixin, DEBUG_ATT
   }
 }
 
-export default Mu.micro('shop.debug', attrToSelector(DEBUG_ATTR), MuDebug);
+export default Mu.micro(MuDebug, attrToSelector(DEBUG_ATTR));

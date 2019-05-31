@@ -234,12 +234,11 @@ export class UserToolbar extends MuMx.compose(null, [UserViewMixin, null, 'userT
 }
 
 export class UserAddress extends MuMx.compose(null,
-  // [MuCtxSetterMixin, USER_MU.ADDRESS],
   [UserViewMixin, null, 'address.html'],
 ) {
 
   onInit() {
-    this.subscribeOne('attached:user.address', this.view, () => this.mu.user.address()) // fire GET address when attached
+    this.subscribeOne(UserAddress, this.view, () => this.mu.user.address()) // fire GET address when attached
       .subscribe('user.address', this.mu.user, this._dataUpdate.bind(this, 'address')) // subscribe to address changes
       .subscribe('addressForm', this.context, f => f && f // when form attaches
         .on('submit', this.save.bind(this))
@@ -296,13 +295,12 @@ export class UserAddress extends MuMx.compose(null,
 }
 
 
-export class UserPayment extends MuMx.compose(null, 
-  // [MuCtxSetterMixin, USER_MU.PAYMENT],
+export class UserPayment extends MuMx.compose(null,
   [UserViewMixin, null, 'userPayment.html']
 ) {
-  constructor() {
-    super();
-    this.subscribeOne('attached:user.payment', this.view, () => this.mu.user.card()) // trigger card into
+  
+  onInit() {
+    this.subscribeOne(UserPayment, this.view, () => this.mu.user.card()) // trigger card into
       .subscribe('user.card', this.mu.user, this._dataUpdate.bind(this, 'card')) // subscribe user payment
       .subscribe('paymentForm', this.context, f => f && f.on('submit', this.save.bind(this))); // when form attaches
   }
@@ -350,7 +348,7 @@ export class UserPayment extends MuMx.compose(null,
 }
 
 export default Mu.macro('user', UserController)
-  .micro('user.view', attrToSelector(USER_MU.VIEW), UserView)
-  .micro('user.address', attrToSelector(USER_MU.ADDRESS), UserAddress)
-  .micro('user.payment', attrToSelector(USER_MU.PAYMENT), UserPayment)
-  .micro('user.toolbar', attrToSelector(USER_MU.TOOLBAR), UserToolbar);
+  .micro(UserView, attrToSelector(USER_MU.VIEW))
+  .micro(UserAddress, attrToSelector(USER_MU.ADDRESS))
+  .micro(UserPayment, attrToSelector(USER_MU.PAYMENT))
+  .micro(UserToolbar, attrToSelector(USER_MU.TOOLBAR));

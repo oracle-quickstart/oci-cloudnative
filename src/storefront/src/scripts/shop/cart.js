@@ -219,5 +219,5 @@ export class CartBadge extends CartSubscriber {
 }
 
 export default Mu.macro('cart', CartController)
-  .micro('cart.view', '[mu-cart]', MuCart)
-  .micro('cart.badge', '[mu-cart-badge]', CartBadge);
+  .micro(MuCart, '[mu-cart]')
+  .micro(CartBadge, '[mu-cart-badge]');

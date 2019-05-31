@@ -36,22 +36,8 @@ export class MuSubmit extends MuMx.compose(null,
   [MuCtxEventBindingMixin, [EVENT_ATTR.SUBMIT, 'submit']],
 ) { }
 
-// /**
-//  * create node binding to context
-//  * @example
-//  * <div mu-bind-node="path.to.context.property"></div>
-//  */
-// export class MuBindNode extends AttributeRefBinding {
-//   constructor() {
-//     super('mu-bind-node');
-//   }
-//   bindAttributeTo() {
-//     return this.node;
-//   }
-// }
 
 export default Mu
-  .micro('bind.click', attrToSelector(EVENT_ATTR.CLICK), MuClick)
-  .micro('bind.change', attrToSelector(EVENT_ATTR.CHANGE), MuChange)
-  .micro('bind.submit', attrToSelector(EVENT_ATTR.SUBMIT), MuSubmit)
-  // .micro('bind.node', '[mu-bind-node]', MuBindNode);
+  .micro(MuClick, attrToSelector(EVENT_ATTR.CLICK))
+  .micro(MuChange, attrToSelector(EVENT_ATTR.CHANGE))
+  .micro(MuSubmit, attrToSelector(EVENT_ATTR.SUBMIT));
