@@ -78,16 +78,21 @@ spec:
            value: -Xms64m -Xmx128m -XX:PermSize=32m -XX:MaxPermSize=64m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom
          - name: JDBC_URL
            value: "jdbc:oracle:thin:@db3_tp?TNS_ADMIN=./config"
-         - name: CART_DB_USER
+         - name: OADB_USER
            valueFrom:
              secretKeyRef:
-               name: atp-cart-creds
-               key: cartdb.user
-         - name: CART_DB_PASSWORD
+               name: atp-secret
+               key: carts_oadb_user
+         - name: OADB_PW
            valueFrom:
              secretKeyRef:
-               name: atp-cart-creds
-               key: cartdb.password
+               name: atp-secret
+               key: carts_oadb_pw
+         - name: OADB_SERVICE
+           valueFrom:
+             secretKeyRef:
+               name: atp-secret
+               key: carts_oadb_service   
         securityContext:
           runAsNonRoot: true
           runAsUser: 10001
@@ -261,16 +266,22 @@ spec:
            value: -Xms64m -Xmx128m -XX:PermSize=32m -XX:MaxPermSize=64m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom
          - name: JDBC_URL
            value: "jdbc:oracle:thin:@appdb_tp?TNS_ADMIN=./config"
-         - name: CART_DB_USER
+         
+         - name: OADB_USER
            valueFrom:
              secretKeyRef:
-               name: atp-cart-db-creds
-               key: cartdb.user
-         - name: CART_DB_PASSWORD
+               name: atp-secret
+               key: orders_oadb_user
+         - name: OADB_PW
            valueFrom:
              secretKeyRef:
-               name: atp-cart-db-creds
-               key: cartdb.password        
+               name: atp-secret
+               key: orders_oadb_pw
+         - name: OADB_SERVICE
+           valueFrom:
+             secretKeyRef:
+               name: atp-secret
+               key: orders_oadb_service   
         ports:
         - containerPort: 80
         securityContext:
