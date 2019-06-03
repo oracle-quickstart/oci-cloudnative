@@ -46,7 +46,7 @@ services:
   #     - MYSQL_DATABASE=socksdb
 
   carts:
-    image: phx.ocir.io/intvravipati/mushop/cart:0.0.2
+    image: phx.ocir.io/intvravipati/mushop/carts:0.0.3
     hostname: carts
     restart: always
     cap_drop:
@@ -63,7 +63,7 @@ services:
       - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.aura.demo=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
   
   orders:
-    image: phx.ocir.io/intvravipati/mushop/orders:0.0.3
+    image: phx.ocir.io/intvravipati/mushop/orders:0.0.4
     hostname: orders
     restart: always
     cap_drop:

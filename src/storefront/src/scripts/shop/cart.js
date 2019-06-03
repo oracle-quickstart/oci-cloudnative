@@ -34,14 +34,14 @@ export class CartController {
   }
 
   load() {
-    this.mu.api.get('/cart')
+    this.mu.http.get('/cart')
       .then(res => this._setCart(res.data))
   }
 
   add(item, quantity) {
-    const { api, ui } = this.mu;
+    const { http, ui } = this.mu;
     const { id, name } = item; 
-    return api.post('/cart', { id, quantity })
+    return http.post('/cart', { id, quantity })
       .then(this.load)
       .then(() => ui.notification(`"${name}" added to cart!`, {
         status: 'success',
@@ -51,19 +51,19 @@ export class CartController {
 
   update(item, quantity) {
     const { id } = item;
-    return this.mu.api.post('/cart/update', { id, quantity })
+    return this.mu.http.post('/cart/update', { id, quantity })
       .then(this.load);
   }
 
   remove(item) {
     const id = typeof item === 'string' ? item : item.id;
-    return this.mu.api.delete(`/cart/${id}`)
+    return this.mu.http.delete(`/cart/${id}`)
       .then(this.load);
   }
 
   empty() {
     this.data = null;
-    return this.mu.api.delete('/cart')
+    return this.mu.http.delete('/cart')
       .then(this.load);
   }
 
@@ -162,24 +162,24 @@ export class MuCart extends MuMx.compose(CartSubscriber,
     // load corresponding sku records
 
     return this.render({ loading: true }, true)
-        .then(() => cart.combined())
-        .then(items => items.map(row => ({
-          ...row,
-          // qty manipulation bindings
-          qty: {
-            inc: this.increment.bind(this, row, 1),
-            dec: this.increment.bind(this, row, -1),
-            change: this.qtyChange.bind(this, row),
-          }
-        })))
-        .then(items => this.render({
-          loading: false,
-          items,
-          size,
-          isEmpty: !size,
-          totals,
-          rawTotals,
-        }, true).then(() => cb(items)));
+      .then(() => cart.combined())
+      .then(items => items.map(row => ({
+        ...row,
+        // qty manipulation bindings
+        qty: {
+          inc: this.increment.bind(this, row, 1),
+          dec: this.increment.bind(this, row, -1),
+          change: this.qtyChange.bind(this, row),
+        }
+      })))
+      .then(items => this.render({
+        loading: false,
+        items,
+        size,
+        isEmpty: !size,
+        totals,
+        rawTotals,
+      }).then(() => cb(items)));
   }
 
   increment(row, amnt) {
@@ -195,7 +195,7 @@ export class MuCart extends MuMx.compose(CartSubscriber,
   }
 
   updateRow(row, qty) {
-    return this.render({ loading: true }, true)
+    return this.render({ loading: true })
       .then(() => row.actions.update(qty));
   }
 

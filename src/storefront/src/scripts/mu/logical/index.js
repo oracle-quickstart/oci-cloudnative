@@ -296,7 +296,7 @@ export class MuClassLogical extends MuMx.compose(null,
 
   _rules() {
     try {
-      const rules = this._ctxAttrValue() || JSON.parse(this._ctxAttrProp().replace(/\'/g,'"'));
+      const rules = this._ctxAttrValue() || JSON.parse(this._ctxAttrProp().replace(/['"]/g,'"'));
       return Object.keys(rules)
         .map(k => ({
           exp: rules[k],
@@ -317,9 +317,9 @@ export class MuClassLogical extends MuMx.compose(null,
   }
 }
 
-export default Mu.micro(MuAttr, attrToSelector(LOGICAL_ATTR.ATTR))
-  .micro(MuEach, attrToSelector(LOGICAL_ATTR.EACH))
-  .micro(MuIF, attrToSelector(LOGICAL_ATTR.IF))
-  .micro(MuHide, attrToSelector(LOGICAL_ATTR.HIDE))
-  .micro(MuClassLogical, attrToSelector(LOGICAL_ATTR.CLASS))
-  .micro(MuHtml, attrToSelector(LOGICAL_ATTR.HTML));
+export default Mu.core(MuAttr, attrToSelector(LOGICAL_ATTR.ATTR))
+  .core(MuEach, attrToSelector(LOGICAL_ATTR.EACH))
+  .core(MuIF, attrToSelector(LOGICAL_ATTR.IF))
+  .core(MuHide, attrToSelector(LOGICAL_ATTR.HIDE))
+  .core(MuClassLogical, attrToSelector(LOGICAL_ATTR.CLASS))
+  .core(MuHtml, attrToSelector(LOGICAL_ATTR.HTML));

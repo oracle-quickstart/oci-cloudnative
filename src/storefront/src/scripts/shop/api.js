@@ -9,4 +9,4 @@ export function ApiClient() {
   });
 }
 
-export default Mu.macro(MUSHOP.MACRO.API, ApiClient);
+export default Mu.macro(MUSHOP.MACRO.HTTP, ApiClient);

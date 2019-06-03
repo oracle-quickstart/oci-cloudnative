@@ -38,6 +38,6 @@ export class MuSubmit extends MuMx.compose(null,
 
 
 export default Mu
-  .micro(MuClick, attrToSelector(EVENT_ATTR.CLICK))
-  .micro(MuChange, attrToSelector(EVENT_ATTR.CHANGE))
-  .micro(MuSubmit, attrToSelector(EVENT_ATTR.SUBMIT));
+  .core(MuClick, attrToSelector(EVENT_ATTR.CLICK))
+  .core(MuChange, attrToSelector(EVENT_ATTR.CHANGE))
+  .core(MuSubmit, attrToSelector(EVENT_ATTR.SUBMIT));

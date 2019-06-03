@@ -1,6 +1,6 @@
 export const MUSHOP = {
   MACRO: {
-    API:      'api',
+    HTTP:     'http',
     ROUTER:   'router',
     PAGE:     'page',
     UI:       'ui',

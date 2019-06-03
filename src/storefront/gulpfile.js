@@ -1,18 +1,18 @@
 const gulp         = require('gulp'),
-      util         = require('gulp-util'),
-      less         = require('gulp-less'),
-      sync         = require('browser-sync'),
-      // concat       = require('gulp-concat'),
-      webpack      = require('webpack-stream'),
-      del          = require('del'),
-      imagemin     = require('gulp-imagemin'),
-      pngquant     = require('imagemin-pngquant'),
-      cache        = require('gulp-cache'),
-      autoprefixer = require('autoprefixer'),
-      postcss      = require('gulp-postcss'),
-      csso         = require('gulp-csso'),
-      pug          = require('gulp-pug'),
-      proxy        = require('http-proxy-middleware');
+  util         = require('gulp-util'),
+  less         = require('gulp-less'),
+  sync         = require('browser-sync'),
+  // concat       = require('gulp-concat'),
+  webpack      = require('webpack-stream'),
+  del          = require('del'),
+  imagemin     = require('gulp-imagemin'),
+  pngquant     = require('imagemin-pngquant'),
+  cache        = require('gulp-cache'),
+  autoprefixer = require('autoprefixer'),
+  postcss      = require('gulp-postcss'),
+  csso         = require('gulp-csso'),
+  pug          = require('gulp-pug'),
+  proxy        = require('http-proxy-middleware');
 
 // load .env configurations
 require('dotenv').config();

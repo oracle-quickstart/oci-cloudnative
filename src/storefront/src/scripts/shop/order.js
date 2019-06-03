@@ -39,19 +39,19 @@ export class OrderController {
   }
   
   create() {
-    const { api, cart } = this.mu;
-    return api.post('/orders')
+    const { http, cart } = this.mu;
+    return http.post('/orders')
       .then(res => this._res(res))
       .then(order => cart.empty().then(() => order));
   }
 
   get(id) {
-    return this.mu.api.get(`/orders/${id}`)
+    return this.mu.http.get(`/orders/${id}`)
       .then(res => this._res(res));
   }
 
   list() {
-    return this.mu.api.get('/orders')
+    return this.mu.http.get('/orders')
       .then(res => res.data.map(this._normalize));
   }
 }
@@ -63,8 +63,8 @@ const ORDER_MU = {
 
 export class MuCheckout extends MuMx.compose(null,
   MxCtxInsulator,
-  ViewTemplateMixin,
-) {
+  ViewTemplateMixin) {
+
   constructor() {
     super();
     this.context.set('checks', {});

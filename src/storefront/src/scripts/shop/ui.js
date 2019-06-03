@@ -38,7 +38,7 @@ export class UKComponent extends MuMx.compose(null, [MuCtxSetterMixin, UkCompone
    */
   ukComponent() {
     const uk = this.mu.ui.kit;
-    const ukReg = /^uk\-/;
+    const ukReg = /^uk-/;
     const ukComponent = this.node.getAttributeNames()
       .filter(n => ukReg.test(n))
       .map(n => n.replace(ukReg, ''))
