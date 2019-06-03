@@ -1,4 +1,4 @@
-import { Mu, MuMx, attrToSelector, MuCtxSetterMixin } from '../mu';
+import { Mu, MuMx, attrToSelector } from '../mu';
 import { ShopMxSubscriber } from './helper/subscriber';
 import { ViewTemplateMixin } from './helper/viewmx';
 import { MxCtxInsulator } from './helper/mixins';
@@ -16,7 +16,7 @@ export class UserController {
     // initialize user when ready
     this.mu.on('ready', () => {
       this.getUser()
-        .then(() => this.context.emit('user.ready'));
+        .then(() => this.context.emit('user.ctx.ready'));
     });
   }
 
@@ -58,25 +58,25 @@ export class UserController {
   getUser() {
     // NOTE: the customers service reads from the session cookie and therefore the {id} param is ignored
     // const id = this._user ? this._user.id : 'id';
-    return this.mu.api.get(`/profile`)
+    return this.mu.http.get(`/profile`)
       .then(res => this._getRes(res, this._setUser))
       .catch(e => this._userError(e))
   }
 
   register(profile) {
-    return this.mu.api.post('/register', profile)
+    return this.mu.http.post('/register', profile)
       .then(() => this.getUser());
   }
 
   login(username, password) {
-    return this.mu.api.get('/login', {
+    return this.mu.http.get('/login', {
       auth: { username, password }
     }).then(() => this.getUser());
   }
 
   logout() {
-    this.mu.api.get('/logout')
-      .then(res => this._clear())
+    this.mu.http.get('/logout')
+      .then(() => this._clear())
       .catch(e => this._userError(e));
   }
 
@@ -84,7 +84,7 @@ export class UserController {
    * get user shipping address
    */
   address() {
-    return this.mu.api.get('/address')
+    return this.mu.http.get('/address')
       .then(res => this._getRes(res, this._setAddress))
       .catch(() => this._setAddress(null));
   }
@@ -95,9 +95,10 @@ export class UserController {
    */
   saveAddress(address) {
     const { id } = this._address || {};
+    const { http } = this.mu;
     // the "backend" only supports one address
-    return Promise.resolve(id && this.mu.api.delete(`/addresses/${id}`).catch())
-      .then(() => this.mu.api.post('/addresses', address))
+    return Promise.resolve(id && http.delete(`/addresses/${id}`).catch())
+      .then(() => http.post('/addresses', address))
       .then(res => this._postRes(res))
       .then(() => this.address());
   }
@@ -106,7 +107,7 @@ export class UserController {
    * get stored card information
    */
   card() {
-    return this.mu.api.get('/card')
+    return this.mu.http.get('/card')
       .then(res => this._getRes(res, this._setCard))
       .catch(() => this._setCard(null));
   }
@@ -116,15 +117,16 @@ export class UserController {
    */
   saveCard(card) {
     const { id } = this._card || {};
-    return Promise.resolve(id && this.mu.api.delete(`/cards/${id}`).catch())
-      .then(() => this.mu.api.post('/cards', card))
+    const { http } = this.mu;
+    return Promise.resolve(id && http.delete(`/cards/${id}`).catch())
+      .then(() => http.post('/cards', card))
       .then(res => this._postRes(res))
       .then(() => this.card());
   }
 }
 
 
-const USER_MU = {
+export const USER_MU = {
   VIEW: 'mu-user-view',
   TOOLBAR: 'mu-user-toolbar',
   ADDRESS: 'mu-user-address',
@@ -141,17 +143,12 @@ const USER_MU = {
 export const UserViewMixin = (ctor, attr, viewName) => class extends MuMx.compose(ctor,
   MxCtxInsulator,
   ShopMxSubscriber,
-  [ViewTemplateMixin, attr, viewName],
-  ) {
+  [ViewTemplateMixin, attr, viewName]) {
 
   constructor() {
     super();
     // listen to user change
     this.subscribeAlways('user.profile', this.mu.user, this._dataUpdate.bind(this, 'profile'));
-  }
-
-  _debug(...args) {
-    // console.log(...args);
   }
 
   _dataUpdate(prop, data) {
@@ -234,9 +231,7 @@ export class UserToolbar extends MuMx.compose(null, [UserViewMixin, null, 'userT
 
 }
 
-export class UserAddress extends MuMx.compose(null,
-  [UserViewMixin, null, 'address.html'],
-) {
+export class UserAddress extends MuMx.compose(null, [UserViewMixin, null, 'address.html']) {
 
   onInit() {
     this.subscribeOne(UserAddress, this.view, () => this.mu.user.address()) // fire GET address when attached

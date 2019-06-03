@@ -36,7 +36,7 @@ const restricted = ['personal', 'settings', 'orders', 'checkout'];
 
 function pageHref(page) {
   return pages[page];
-};
+}
 
 export class PageController {
   constructor(document) {
@@ -52,7 +52,7 @@ export class PageController {
 
   _bindAuth() {
     const { user } = this.mu;
-    this.context.on('user.ready', () => {
+    this.context.on('user.ctx.ready', () => {
       user.always('user.profile', this._aclUpdate.bind(this));
     });
   }
@@ -88,8 +88,9 @@ export class PageController {
   }
 
   _aclUpdate(profile) {
+    const { router } = this.mu;
     const auth = this._hasAuth = !!profile;
-    const current = this.mu.router.initial(nfPage);
+    const current = router.initial(nfPage);
     console.log('ACL CHANGE', auth, current);
     const authRedir = this._authRedir; // case when auth was requried due to prior nav 
     if (authRedir) {
@@ -113,7 +114,7 @@ export class PageController {
     return page.charAt(0).toUpperCase() + page.slice(1);
   }
   
-  update(page, search, params) {
+  update(page/*, search, params*/) {
     return this.load(page).then(this.setPage.bind(this, page));
   }
 

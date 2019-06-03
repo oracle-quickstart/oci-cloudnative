@@ -6,16 +6,27 @@
     "start": "gulp",
     "server": "gulp server",
     "watch": "gulp watch",
-    "build": "gulp build --production"
+    "build": "gulp build --production",
+    "lint": "eslint .",
+    "test": "jest"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "core-js": "^3.0.1",
+    "uikit": "^3.1.4"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "autoprefixer": "^9.1.0",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^24.8.0",
     "babel-loader": "^8.0.5",
     "browser-sync": "^2.26.5",
     "del": "^3.0.0",
     "dotenv": "^8.0.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-jest": "^22.6.4",
     "gulp": "^4.0.0",
     "gulp-cache": "^1.0.2",
     "gulp-concat": "^2.6.1",
@@ -27,11 +38,7 @@
     "gulp-util": "^3.0.8",
     "http-proxy-middleware": "^0.19.1",
     "imagemin-pngquant": "^6.0.0",
+    "jest": "^24.8.0",
     "webpack-stream": "^5.2.1"
-  },
-  "dependencies": {
-    "axios": "^0.18.0",
-    "core-js": "^3.0.1",
-    "uikit": "^3.1.4"
   }
 }

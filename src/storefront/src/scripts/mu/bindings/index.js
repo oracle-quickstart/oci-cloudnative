@@ -21,7 +21,7 @@ export const MuCtxAttrMixin = ctor => class extends ctor {
 
   // handler to make any changes to the attribute value before reading in context
   _ctxAttrPropKey(str) {
-    return (str || '').replace(/^\!/, '');
+    return (str || '').replace(/^!/, '');
   }
   
   // resolve the context lookup key
@@ -43,7 +43,7 @@ export const MuCtxAttrMixin = ctor => class extends ctor {
 
   // evaluate boolean expression
   _ctxBool(expression) {
-    const invert = /^\!/.test(expression || '');
+    const invert = /^!/.test(expression || '');
     const ctxKey = this._ctxAttrPropKey(expression);
     const ctxVal = ctxKey && this.context.get(ctxKey);
     let test = !!ctxVal;
@@ -51,7 +51,7 @@ export const MuCtxAttrMixin = ctor => class extends ctor {
       // this is a problem when the flag reprents a conditional method
       // test = ctxVal();
     } else if (!ctxVal && typeof expression === 'string') {
-      try { test = JSON.parse(expression); } catch (e) { }
+      try { test = JSON.parse(expression); } catch (e) { /* noop */ }
     }
     // TODO: invert if promise?
     return invert ? !test : test;

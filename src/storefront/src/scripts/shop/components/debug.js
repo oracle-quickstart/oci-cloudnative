@@ -1,4 +1,4 @@
-import { Mu, MuMx, MuCtxSingleAttrMixin, attrToSelector } from "../../mu";
+import { Mu, MuMx, MuCtxSingleAttrMixin, attrToSelector } from '../../mu';
 
 const DEBUG_ATTR = 'mu-debug';
 

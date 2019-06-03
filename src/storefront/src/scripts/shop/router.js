@@ -1,7 +1,7 @@
 import 'core-js/features/url';
 import 'core-js/features/url-search-params';
 
-import { Mu, MuMx } from '../mu';
+import { Mu } from '../mu';
 import { getWindow } from '../util/window';
 import { MUSHOP } from './constants';
 
@@ -35,12 +35,12 @@ export class MuRouterMacro {
   _push(url, state, title) {
     this._state = state;
     this.history.pushState(state, title, url);
-  };
+  }
 
   _replace(url, state, title) {
     this._state = state;
     this.history.replaceState(state, title, url);
-  };
+  }
 
   state() {
     return this._state;

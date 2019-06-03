@@ -67,21 +67,21 @@ export class CatalogController {
   }
 
   categories() {
-    return this.mu.api.get('/categories')
+    return this.mu.http.get('/categories')
       .then(this._handleRes)
       .then(d => d.categories);
   }
 
   search(params) {
-    const { router, api } = this.mu;
+    const { router, http } = this.mu;
     const qs = typeof params === 'string' ? params : router.querystring(params || {});
-    return api.get(`${this._serviceUri}?${qs}`)
+    return http.get(`${this._serviceUri}?${qs}`)
       .then(this._handleRes)
       .then(data => data.map(this._normalize));
   }
 
   product(id) {
-    return this.mu.api.get(`${this._serviceUri}/${id}`)
+    return this.mu.http.get(`${this._serviceUri}/${id}`)
       .then(this._handleRes)
       .then(sku => this._normalize(sku));
   }
@@ -94,8 +94,7 @@ export class CatalogController {
 export class CategoryPage extends MuMx.compose(null, 
   MxCtxInsulator,
   ShopMxSubscriber,
-  ViewTemplateMixin,
-) {
+  ViewTemplateMixin) {
   
   onInit() {
 
@@ -256,7 +255,7 @@ export class Products extends MuMx.compose(null,
         error,
         items: null,
         loading: false,
-       }));
+      }));
   }
 
   renderPage(items, page) {
@@ -325,8 +324,8 @@ export class Products extends MuMx.compose(null,
       ...(shallow ? { } : {
         search: (text || '').toLowerCase(),
         brand: [].concat(filters.brands || []),
-        min: priceMin && parseFloat(priceMin.replace(/[^\d\.]/, '')),
-        max: priceMax && parseFloat(priceMax.replace(/[^\d\.]/, '')),
+        min: priceMin && parseFloat(priceMin.replace(/[^\d.]/, '')),
+        max: priceMax && parseFloat(priceMax.replace(/[^\d.]/, '')),
       })
     };
     // console.log(match);
