@@ -47,12 +47,12 @@ public class OciStreamsConfiguration {
 	 */
 	public void initConnection() throws Exception {
 		
-		final String tenantId = env.getProperty("TENANT_ID");
-        final String userId = env.getProperty("USER_ID");
-        final String fingerprint = env.getProperty("FINGERPRINT");
+		final String tenantId = env.getProperty("OCI_TENANT_ID");
+        final String userId = env.getProperty("OCI_USER_ID");
+        final String fingerprint = env.getProperty("OCI_FINGERPRINT");
         final String privateKey = env.getProperty("OCI_API_KEY");
-        //final String passPhrase = env.getProperty("PASS_PHRASE");
-        final String region = env.getProperty("REGION");
+        //final String passPhrase = env.getProperty("OCI_PASS_PHRASE");
+        final String region = env.getProperty("OCI_REGION");
 		
         AuthenticationDetailsProvider provider = SimpleAuthenticationDetailsProvider.builder()
             .tenantId(tenantId)
@@ -68,7 +68,7 @@ public class OciStreamsConfiguration {
         final String streamName = "shipping-stream";
         final int partitions = 1;
 
-        Stream stream = getStream(adminClient, env.getProperty("COMPARTMENT_ID"), streamName, partitions);
+        Stream stream = getStream(adminClient, env.getProperty("OCI_COMPARTMENT_ID"), streamName, partitions);
         
      // Streams are assigned a specific endpoint url based on where they are provisioned.
         // Create a stream client using the provided message endpoint.
