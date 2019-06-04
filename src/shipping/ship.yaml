@@ -52,7 +52,7 @@ spec:
               name: streams-secret
               key: oci_compartment_id
         ports:
-        - containerPort: 8080
+        - containerPort: 80
           protocol: TCP
 ---
 apiVersion: v1
@@ -64,10 +64,10 @@ metadata:
   namespace: mushop
 spec:
   ports:
-  - port: 8080
+  - port: 80
     protocol: TCP
-    targetPort: 8080
-    nodePort: 30123
+    targetPort: 80
+    #nodePort: 30123
   selector:
     run: ship
   type: NodePort
