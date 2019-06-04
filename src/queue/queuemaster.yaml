@@ -1,5 +1,3 @@
-# APP DEPLOYMENT
-
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -17,47 +15,46 @@ spec:
       labels:
         run: queuemaster
     spec:
+      imagePullSecrets:
+        - name: ocirsecret     
       containers:
-      - image: phx.ocir.io/intvravipati/mushop/queuemaster:0.0.1
+      - image: phx.ocir.io/intvravipati/mushop/queuemaster:0.0.4
         name: queuemaster
         env:
-         - name: TENANT_ID
+         - name: OCI_TENANT_ID
            valueFrom:
              secretKeyRef:
               name: streams-secret
-              key: tenant_id
-         - name: USER_ID
+              key: oci_tenant_id
+         - name: OCI_USER_ID
            valueFrom:
              secretKeyRef:
               name: streams-secret
-              key: user_id
-         - name: FINGERPRINT
+              key: oci_user_id
+         - name: OCI_FINGERPRINT
            valueFrom:
              secretKeyRef:
               name: streams-secret
-              key: fingerprint
+              key: oci_fingerprint
          - name: OCI_API_KEY
            valueFrom:
              secretKeyRef:
               name: streams-secret
               key: oci_api_key
-         - name: REGION
+         - name: OCI_REGION
            valueFrom:
              secretKeyRef:
               name: streams-secret
-              key: region
-         - name: COMPARTMENT_ID
+              key: oci_region
+         - name: OCI_COMPARTMENT_ID
            valueFrom:
              secretKeyRef:
               name: streams-secret
-              key: compartment_id
+              key: oci_compartment_id
         ports:
-        - containerPort: 8080
+        - containerPort: 80
           protocol: TCP
 ---
-
-# APP SERVICE
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -67,10 +64,10 @@ metadata:
   namespace: mushop
 spec:
   ports:
-  - port: 8080
+  - port: 80
     protocol: TCP
-    targetPort: 8080
-    nodePort: 30124
+    targetPort: 80
+    #nodePort: 30124
   selector:
     run: queuemaster
   type: NodePort

@@ -1,6 +1,7 @@
 import { Mu, MuMx, attrToSelector, MuCtxSetterMixin } from '../mu';
 import { getGlobal } from '../util/window';
 import { UI_GLOBAL } from '../util/constants';
+import { MUSHOP } from './constants';
 
 export class MuUi {
   constructor() {
@@ -37,7 +38,7 @@ export class UKComponent extends MuMx.compose(null, [MuCtxSetterMixin, UkCompone
    */
   ukComponent() {
     const uk = this.mu.ui.kit;
-    const ukReg = /^uk\-/;
+    const ukReg = /^uk-/;
     const ukComponent = this.node.getAttributeNames()
       .filter(n => ukReg.test(n))
       .map(n => n.replace(ukReg, ''))
@@ -47,6 +48,6 @@ export class UKComponent extends MuMx.compose(null, [MuCtxSetterMixin, UkCompone
 
 }
 
-export default Mu.macro('ui', MuUi)
-  .micro('ui.kit', attrToSelector(UkComponentAttr), UKComponent);
+export default Mu.macro(MUSHOP.MACRO.UI, MuUi)
+  .micro(UKComponent, attrToSelector(UkComponentAttr));
 

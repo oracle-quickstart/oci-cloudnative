@@ -1,11 +1,13 @@
-import { Mu, MuMx, attrToSelector, MuCtxSetterMixin } from '../mu';
+import { Mu, MuMx, attrToSelector } from '../mu';
 import { ShopMxSubscriber } from './helper/subscriber';
 import { ViewTemplateMixin } from './helper/viewmx';
 import { MxCtxInsulator } from './helper/mixins';
+import { MUSHOP } from './constants';
 
 export class UserController {
   constructor() {
-    this.user = null;
+    this.getUser = this.getUser.bind(this);
+
     // prepare prop setters
     this._setUser = this._setProp.bind(this, 'profile');
     this._setAddress = this._setProp.bind(this, 'address');
@@ -15,7 +17,7 @@ export class UserController {
     // initialize user when ready
     this.mu.on('ready', () => {
       this.getUser()
-        .then(() => this.context.emit('user.ready'));
+        .then(() => this.context.emit('user.ctx.ready'));
     });
   }
 
@@ -57,25 +59,25 @@ export class UserController {
   getUser() {
     // NOTE: the customers service reads from the session cookie and therefore the {id} param is ignored
     // const id = this._user ? this._user.id : 'id';
-    return this.mu.api.get(`/profile`)
+    return this.mu.http.get(`/profile`)
       .then(res => this._getRes(res, this._setUser))
       .catch(e => this._userError(e))
   }
 
   register(profile) {
-    return this.mu.api.post('/register', profile)
-      .then(() => this.getUser());
+    return this.mu.http.post('/register', profile)
+      .then(this.getUser);
   }
 
   login(username, password) {
-    return this.mu.api.get('/login', {
+    return this.mu.http.get('/login', {
       auth: { username, password }
-    }).then(() => this.getUser());
+    }).then(this.getUser);
   }
 
   logout() {
-    this.mu.api.get('/logout')
-      .then(res => this._clear())
+    this.mu.http.get('/logout')
+      .then(() => this._clear())
       .catch(e => this._userError(e));
   }
 
@@ -83,7 +85,7 @@ export class UserController {
    * get user shipping address
    */
   address() {
-    return this.mu.api.get('/address')
+    return this.mu.http.get('/address')
       .then(res => this._getRes(res, this._setAddress))
       .catch(() => this._setAddress(null));
   }
@@ -94,9 +96,10 @@ export class UserController {
    */
   saveAddress(address) {
     const { id } = this._address || {};
+    const { http } = this.mu;
     // the "backend" only supports one address
-    return Promise.resolve(id && this.mu.api.delete(`/addresses/${id}`).catch())
-      .then(() => this.mu.api.post('/addresses', address))
+    return Promise.resolve(id && http.delete(`/addresses/${id}`).catch())
+      .then(() => http.post('/addresses', address))
       .then(res => this._postRes(res))
       .then(() => this.address());
   }
@@ -105,7 +108,7 @@ export class UserController {
    * get stored card information
    */
   card() {
-    return this.mu.api.get('/card')
+    return this.mu.http.get('/card')
       .then(res => this._getRes(res, this._setCard))
       .catch(() => this._setCard(null));
   }
@@ -115,15 +118,16 @@ export class UserController {
    */
   saveCard(card) {
     const { id } = this._card || {};
-    return Promise.resolve(id && this.mu.api.delete(`/cards/${id}`).catch())
-      .then(() => this.mu.api.post('/cards', card))
+    const { http } = this.mu;
+    return Promise.resolve(id && http.delete(`/cards/${id}`).catch())
+      .then(() => http.post('/cards', card))
       .then(res => this._postRes(res))
       .then(() => this.card());
   }
 }
 
 
-const USER_MU = {
+export const USER_MU = {
   VIEW: 'mu-user-view',
   TOOLBAR: 'mu-user-toolbar',
   ADDRESS: 'mu-user-address',
@@ -140,17 +144,12 @@ const USER_MU = {
 export const UserViewMixin = (ctor, attr, viewName) => class extends MuMx.compose(ctor,
   MxCtxInsulator,
   ShopMxSubscriber,
-  [ViewTemplateMixin, attr, viewName],
-  ) {
+  [ViewTemplateMixin, attr, viewName]) {
 
   constructor() {
     super();
     // listen to user change
     this.subscribeAlways('user.profile', this.mu.user, this._dataUpdate.bind(this, 'profile'));
-  }
-
-  _debug(...args) {
-    // console.log(...args);
   }
 
   _dataUpdate(prop, data) {
@@ -190,56 +189,49 @@ export class UserToolbar extends MuMx.compose(null, [UserViewMixin, null, 'userT
     return super.onMount();
   }
 
-  modal() {
-    return this.context.get('ui.modal');
-  }
-
   success(message) {
+    this.loading(false);
     this.mu.ui.notification(`<span uk-icon="icon: check"></span> ${message}`, {
       status: 'success',
       pos: 'top-left',
     });
   }
 
+  error(data) {
+    this.loading(false).extend('error', data);
+  }
+
+  loading(loading) {
+    return this.context.extend({ 
+      loading,
+      error: null,
+    });
+  }
+
   submitAuth(form, e) {
     // console.log('SUBMIT AUTH', this.context._id);
+    this.loading(true);
     const fields = form.getData();
     const { username, password } = fields;
     this.mu.user.login(username, password)
       .then(u => this.success(`Welcome back ${u.firstName}!`))
-      .catch(() => this.renderShow('form.auth', {
-        fields,
-        register: false,
-        error: { auth: 'Invalid Credentials' },
-      }));
+      .catch(() => this.error({ auth: 'Invalid Credentials' }));
   }
 
   submitReg(form, e) {
+    this.loading(true);
     const fields = form.getData();
     this.mu.user.register(fields)
       .then(() => this.success(`Welcome ${fields.firstName}`))
-      .catch(() => this.renderShow('form.reg', {
-        fields,
-        register: true,
-        error: { reg: `Unable to register username: ${fields.username}` },
-      }));
-  }
-
-  renderShow(after, data) {
-    // modal resides inside an async render function
-    this.context.on(after, () => this.modal().show());
-    return this.render(data)
+      .catch(() => this.error({ reg: `Unable to register username: ${fields.username}` }));
   }
 
 }
 
-export class UserAddress extends MuMx.compose(null,
-  // [MuCtxSetterMixin, USER_MU.ADDRESS],
-  [UserViewMixin, null, 'address.html'],
-) {
+export class UserAddress extends MuMx.compose(null, [UserViewMixin, null, 'userAddress.html']) {
 
   onInit() {
-    this.subscribeOne('attached:user.address', this.view, () => this.mu.user.address()) // fire GET address when attached
+    this.subscribeOne(UserAddress, this.view, () => this.mu.user.address()) // fire GET address when attached
       .subscribe('user.address', this.mu.user, this._dataUpdate.bind(this, 'address')) // subscribe to address changes
       .subscribe('addressForm', this.context, f => f && f // when form attaches
         .on('submit', this.save.bind(this))
@@ -296,13 +288,12 @@ export class UserAddress extends MuMx.compose(null,
 }
 
 
-export class UserPayment extends MuMx.compose(null, 
-  // [MuCtxSetterMixin, USER_MU.PAYMENT],
+export class UserPayment extends MuMx.compose(null,
   [UserViewMixin, null, 'userPayment.html']
 ) {
-  constructor() {
-    super();
-    this.subscribeOne('attached:user.payment', this.view, () => this.mu.user.card()) // trigger card into
+  
+  onInit() {
+    this.subscribeOne(UserPayment, this.view, () => this.mu.user.card()) // trigger card into
       .subscribe('user.card', this.mu.user, this._dataUpdate.bind(this, 'card')) // subscribe user payment
       .subscribe('paymentForm', this.context, f => f && f.on('submit', this.save.bind(this))); // when form attaches
   }
@@ -349,8 +340,8 @@ export class UserPayment extends MuMx.compose(null,
   }
 }
 
-export default Mu.macro('user', UserController)
-  .micro('user.view', attrToSelector(USER_MU.VIEW), UserView)
-  .micro('user.address', attrToSelector(USER_MU.ADDRESS), UserAddress)
-  .micro('user.payment', attrToSelector(USER_MU.PAYMENT), UserPayment)
-  .micro('user.toolbar', attrToSelector(USER_MU.TOOLBAR), UserToolbar);
+export default Mu.macro(MUSHOP.MACRO.USER, UserController)
+  .micro(UserView, attrToSelector(USER_MU.VIEW))
+  .micro(UserAddress, attrToSelector(USER_MU.ADDRESS))
+  .micro(UserPayment, attrToSelector(USER_MU.PAYMENT))
+  .micro(UserToolbar, attrToSelector(USER_MU.TOOLBAR));

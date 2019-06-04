@@ -13,7 +13,7 @@ const MuUtil = {
    * resolve path to its tree
    */
   propPath(path) {
-    return (path || '').split(/[:\.]/).filter(p => !!p);
+    return (path || '').split(/[:.]/).filter(p => !!p);
   },
 
   propTarget(object, prop) {
@@ -59,13 +59,13 @@ const MuUtil = {
 
   /**
    * create module definitions for later instantiation
+   * @param {Function} ctor - module constructor
    * @param {*} name - unique module name
    * @param {string} binding - module binding selector
-   * @param {Function} ctor - module constructor
    * @param  {...any} args - dependencies
    */
-  defineModule(name, binding, ctor, ...args) {
-    const mod = { name, binding, ctor, args };
+  defineModule(ctor, name, binding, ...args) {
+    const mod = { ctor, name, binding, args };
     return mod;
   },
 
@@ -141,6 +141,16 @@ export const MuMx = {
 
 };
 
+export class MuLogger {
+  constructor() {
+    this.init();
+  }
+
+  init() {
+    Object.assign(this, console);
+  }
+}
+
 /**
  * 
  */
@@ -151,6 +161,7 @@ export class MuEmitter {
     this._listeners = new Map();
     this._emits = new Map();
     this._id = MuUtil.randId();
+    this._logger = new MuLogger();
   }
 
   on(hook, listener) {
@@ -198,7 +209,7 @@ export class MuEmitter {
   _emitLast(hook, listener) {
     const args = this._emits.get(hook);
     if (args) {
-      console.log(`${this._name}::${hook}`);
+      this._logger.log(`${this._name}::${hook}`);
       listener(...args);
     }
   }
@@ -282,7 +293,7 @@ export class MuContext extends MuEmitter {
 
   /**
    * extend the root context with the new object
-   * @param {object} data 
+   * @param {object|string} prop 
    * @param {object} [data] 
    */
   extend(prop, data) {
@@ -316,7 +327,6 @@ const MUPROP = {
   MU: 'mu',
   MUS: 'mus',
   CTX: 'muctx',
-  DEBOUNCE: 'mudebounce',
   CLOAK: 'mu-cloak',
 };
 
@@ -334,7 +344,7 @@ export class MuView extends MuEmitter {
     this.options = options;
     this.loader = axios.create();
     this._viewCache = new Map();
-    this._templatePattern = /\{\{([\w\.:]+)\}\}/; // TODO, make option
+    this._templatePattern = /\{\{([\w.:]+)\}\}/; // TODO, make option
   }
 
   virtual(html, selector) {
@@ -442,22 +452,18 @@ export class MuView extends MuEmitter {
           const instance = MuUtil.initModule(mod, this.mu, this, ctx);
           MuUtil.defineProp(instance, 'node', node); // assign the node to the instance
           // MuUtil.defineProp(node, MUPROP.CTX, ctx); // assign sticky context to the node for persistence
-          // reference the instance in the target mus
+          // reference the instance in the target's mus
           _mus.push(instance);
           list.push(node);
           return instance.onMount && instance.onMount();
-        } else {
-          // if (!target.contains(node)) {
-          //   console.log('SKIP NODE DETACHED', mod.binding, node);
-          // }
         }
 
       });
-      // TODO: need to find a way to dedupe attachments when a parent contains a child
+
       if (list.length) {
-        // console.log(`attached:${mod.name}`, target);
-        this.emitOnce(`attached:${mod.name}`, target, list);
+        this.emitOnce(mod.ctor, target, list);
       }
+
     });
 
     // remove cloak
@@ -497,9 +503,10 @@ export class Mu extends MuEmitter {
   /**
    * reset Mu
    */
-  static reset() {
-    this._macro = [];
-    this._micro = [];
+  static clean() {
+    this._core = this._core || [];
+    this._macro = []; // define static macro singleton modules on mu instance
+    this._micro = []; // define static micro components for view bindings
     return this;
   }
 
@@ -510,24 +517,46 @@ export class Mu extends MuEmitter {
    * @param  {...any} args 
    */
   static macro(name, ctor, ...args) {
-    this._macro.push(MuUtil.defineModule(name, null, ctor, ...args));
+    this._macro.push(MuUtil.defineModule(ctor, name, null, ...args));
     return this;
   }
 
   /**
    * register a view micro binding
-   * @param {string} name 
-   * @param {string} selector 
    * @param {Function} ctor 
+   * @param {string} selector 
    * @param  {...any} args 
    */
-  static micro(name, selector, ctor, ...args) {
-    this._micro.push(MuUtil.defineModule(name, selector, ctor, ...args));
+  static micro(ctor, selector, ...args) {
+    this._micro.push(MuUtil.defineModule(ctor, null, selector, ...args));
     return this;
   }
 
   /**
-   * 
+   * Create core micros
+   * @param {Function} ctor 
+   * @param {string} selector 
+   */
+  static core(ctor, selector) {
+    this._core.push(MuUtil.defineModule(ctor, null, selector));
+    return this;
+  }
+
+  /**
+   * Main Mu Start point
+   * @param {HTMLElement} main 
+   * @param {object} options
+   * @param {string} options.root - root node selector
+   * @param {string} options.baseViewUrl - base url for view loading
+   * @param {*} options.context - global context
+   */
+  static run(main, options) {
+    const { mu, view } = this.init(main, options);
+    return this.start(mu, view);
+  }
+
+  /**
+   * Main Mu instance Initializer
    * @param {HTMLElement} main 
    * @param {object} options
    * @param {string} options.root - root node selector
@@ -545,13 +574,14 @@ export class Mu extends MuEmitter {
     }, options || {});
   
     // create singleton view engine with micro bindings
-    var view = new MuView(mu, {
-      micro: this._micro,
+    const micro = [].concat(this._core, this._micro);
+    const view = new MuView(mu, {
+      micro,
       basePath: opts.baseViewUrl,
     });
 
     // create global context
-    var context = new MuContext(options.context);
+    const context = new MuContext(options.context);
 
     // assign root object
     MuUtil.defineProp(mu, 'root', {
@@ -562,19 +592,27 @@ export class Mu extends MuEmitter {
   
     // init macros with global context
     this._macro.forEach(mod => {
-      var instance = MuUtil.initModule(mod, mu, view, context);
+      const instance = MuUtil.initModule(mod, mu, view, context);
       // assign to the mu instance (as macro)
       MuUtil.mergeProp(mu, mod.name, instance);
     });
-  
+
+    return { mu, view };
+  }
+
+  /**
+   * helper for testing
+   * @param {Mu} mu 
+   * @param {MuView} view 
+   */
+  static start(mu, view) {
     // attach main node to view (without any default context)
-    view.attach(main, null);
-  
+    view.attach(mu.root.element, null);
     // emit ready
     mu.emit('ready');
     return mu;
   }
+
 }
 
-Mu._macro = []; // define static macro singleton modules on mu instance
-Mu._micro = []; // define static micro components for view bindings
+Mu.clean();
