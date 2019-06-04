@@ -66,7 +66,7 @@ services:
       - OADB_PW=Welcome123$$$$$$
       - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.aura.demo=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
   orders:
-    image: phx.ocir.io/intvravipati/mushop/orders:0.0.5
+    image: phx.ocir.io/intvravipati/mushop/orders:latest
     ports:
      - 8085:80
     hostname: orders
@@ -79,10 +79,10 @@ services:
     tmpfs:
       - /tmp:rw,noexec,nosuid
     environment:
-      - OADB_USER=ADMIN
-      - OADB_PW=Welcome123$$$$$$
-      - OADB_SERVICE=appdb_tp
-      - JAVA_OPTS=-Xms128m -Xmx128m -XX:+UseG1GC -Dlogging.level.aura.demo=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+      - OADB_USER=orders_user
+      - OADB_PW=Default_Password123#
+      - OADB_SERVICE=morders_tp
+      - JAVA_OPTS=-Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.aura.demo=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
   shipping:
     image: weaveworksdemos/shipping:0.4.8
     hostname: shipping
