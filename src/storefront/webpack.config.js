@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 
-const package = require('./package.json');
+const pkg = require('./package.json');
 const buildDir = path.resolve(__dirname, 'build');
 
 //https://objectstorage.us-phoenix-1.oraclecloud.com/n/intvravipati/b/mushop-images/o/MU-US-001.png
@@ -43,7 +43,7 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      VERSION: JSON.stringify(package.version),
+      VERSION: JSON.stringify(pkg.version),
       PRODUCTION: JSON.stringify(NODE_ENV === 'production'),
       STATIC_ASSET_URL: JSON.stringify(STATIC_ASSET_URL),
     }),

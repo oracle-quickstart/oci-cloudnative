@@ -75,7 +75,7 @@ export class MuForm extends MuMx.compose(null, [MuCtxSetterMixin, 'mu-form']) {
   
     return data;
   
-  };
+  }
 }
 
-export default Mu.micro('ctrl.form', '[mu-form]', MuForm);
+export default Mu.micro(MuForm, '[mu-form]');

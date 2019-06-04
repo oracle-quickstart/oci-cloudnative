@@ -1,0 +1,28 @@
+{
+  "parser": "babel-eslint",
+  "extends": ["eslint:recommended"],
+  "plugins": ["jest"],
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "env": {
+    "es6": true,
+    "node": true,
+    "browser": true,
+    "jest/globals": true
+  },
+  "globals": {
+    "STATIC_ASSET_URL": "readonly",
+    "PRODUCTION": "readonly",
+    "VERSION": "readonly"
+  },
+  "rules": {
+    "indent": ["error", 2],
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "no-unused-vars": "off",
+    "no-cond-assign": "off",
+    "no-console": "off"
+  }
+}

@@ -1,4 +1,4 @@
-import { Mu, MuMx, MuCtxSingleAttrMixin, attrToSelector } from "../../mu";
+import { Mu, MuMx, MuCtxSingleAttrMixin, attrToSelector } from '../../mu';
 
 const DEBUG_ATTR = 'mu-debug';
 
@@ -23,4 +23,4 @@ export class MuDebug extends MuMx.compose(null, [MuCtxSingleAttrMixin, DEBUG_ATT
   }
 }
 
-export default Mu.micro('shop.debug', attrToSelector(DEBUG_ATTR), MuDebug);
+export default Mu.micro(MuDebug, attrToSelector(DEBUG_ATTR));

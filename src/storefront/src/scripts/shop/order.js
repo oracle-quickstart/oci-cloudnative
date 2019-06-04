@@ -1,6 +1,7 @@
 import { Mu, MuMx, attrToSelector } from '../mu';
 import { ViewTemplateMixin } from './helper/viewmx';
 import { MxCtxInsulator } from './helper/mixins';
+import { MUSHOP } from './constants';
 
 export class OrderController {
   constructor() {
@@ -38,19 +39,19 @@ export class OrderController {
   }
   
   create() {
-    const { api, cart } = this.mu;
-    return api.post('/orders')
+    const { http, cart } = this.mu;
+    return http.post('/orders')
       .then(res => this._res(res))
       .then(order => cart.empty().then(() => order));
   }
 
   get(id) {
-    return this.mu.api.get(`/orders/${id}`)
+    return this.mu.http.get(`/orders/${id}`)
       .then(res => this._res(res));
   }
 
   list() {
-    return this.mu.api.get('/orders')
+    return this.mu.http.get('/orders')
       .then(res => res.data.map(this._normalize));
   }
 }
@@ -62,8 +63,8 @@ const ORDER_MU = {
 
 export class MuCheckout extends MuMx.compose(null,
   MxCtxInsulator,
-  ViewTemplateMixin,
-) {
+  ViewTemplateMixin) {
+
   constructor() {
     super();
     this.context.set('checks', {});
@@ -72,27 +73,21 @@ export class MuCheckout extends MuMx.compose(null,
   onMount() {
     super.onMount();
     this.render({
-      onCard: card => this.setCheck({ card }),
-      onAddress: address => this.setCheck({ address }),
-      onCartItems: items => this.setCheck({ items }),
+      onCard: card => this.setCheck('card', card),
+      onAddress: address => this.setCheck('address', address),
+      onCartItems: items => this.setCheck('items', items),
       canCheckout: this.canCheckout(),
       handleSubmit: this.submitOrder.bind(this),
     });
   }
 
-  setCheck(check) {
-    const checks = this.context.get('checks');
-    Object.assign(checks, check);
+  setCheck(check, value) {
+    this.context.set(`checks.${check}`, value);
     this.refresh();
   }
 
   refresh() {
     this.context.set('canCheckout', this.canCheckout());
-    // const didRefresh = this.context.get('didRefresh');
-    // if (!didRefresh) {
-    //   const ready = this.canCheckout();
-    //   return ready && this.render({ didRefresh: true });
-    // }
   }
 
   canCheckout() {
@@ -100,7 +95,6 @@ export class MuCheckout extends MuMx.compose(null,
     const ready = (items && items.length) &&
         !!address && 
         !!card;
-    console.log('check ready', ready);
     return !submitting && ready;
   }
 
@@ -134,7 +128,7 @@ export class MuOrders extends MuMx.compose(null, ViewTemplateMixin) {
   }
 }
 
-export default Mu.macro('order', OrderController)
-  .micro('order.checkout', attrToSelector(ORDER_MU.CHECKOUT), MuCheckout)
-  .micro('order.orders', attrToSelector(ORDER_MU.ORDERS), MuOrders);
+export default Mu.macro(MUSHOP.MACRO.ORDER, OrderController)
+  .micro(MuCheckout, attrToSelector(ORDER_MU.CHECKOUT))
+  .micro(MuOrders, attrToSelector(ORDER_MU.ORDERS));
 

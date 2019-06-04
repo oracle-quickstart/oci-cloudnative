@@ -40,7 +40,7 @@ block pages
           div(uk-spinner)
 
         div(mu-hide="loading")
-          div.uk-text-warning.uk-text-center.uk-card-body(mu-if="!items.length")
+          div.uk-text-warning.uk-text-center.uk-card-body(mu-if="isEmpty")
             +icon('ban')(class="uk-margin-small-right")
             span There are no items in your cart
 
