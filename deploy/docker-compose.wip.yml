@@ -86,19 +86,32 @@ services:
         - JAVA_OPTS=-Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
 
   shipping:
-    image: weaveworksdemos/shipping
+    image: phx.ocir.io/intvravipati/mushop/shipping:0.0.3
     hostname: shipping
     restart: always
     environment:
       - reschedule:on-node-failure
-  queue-master:
-    image: weaveworksdemos/queue-master
-    hostname: queue-master
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - PORT=80
+      - OCI_TENANT_ID
+      - OCI_COMPARTMENT_ID
+      - OCI_REGION
+      - OCI_USER_ID
+      - OCI_FINGERPRINT
+      - OCI_API_KEY
+  queuemaster:
+    image: phx.ocir.io/intvravipati/mushop/queuemaster:0.0.3
+    hostname: queuemaster
     restart: always
     environment:
       - reschedule:on-node-failure
+      - PORT=80
+      - OCI_TENANT_ID
+      - OCI_COMPARTMENT_ID
+      - OCI_REGION
+      - OCI_USER_ID
+      - OCI_FINGERPRINT
+      - OCI_API_KEY
+  
   rabbitmq:
     image: rabbitmq:3
     hostname: rabbitmq
