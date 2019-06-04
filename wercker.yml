@@ -52,6 +52,33 @@ coverage-catalogue:
         code: |
           bash <(curl -s https://codecov.io/bash)
 
+build-storefront:
+  box:
+    id: node:10-alpine
+  steps:
+    - script:
+        name: Change to storefront
+        code: |
+          cd src/storefront
+    # install dependencies with `npm ci`
+    - mvandervliet/npm-ci
+    # build
+    - script:
+        name: Build
+        code: |
+          npm run build
+
+test-storefront:
+  box:
+    id: node:10-alpine
+  steps:
+    - script:
+        name: Change to storefront
+        code: |
+          cd src/storefront    
+    # test
+    - npm-test
+
 deploy-to-oke:
   box:
         id: alpine

@@ -11,19 +11,30 @@ describe('User', () => {
   beforeAll(() => mocker = MockMu.mock());
 
   describe('Controller', () => {
-    let ctrl;
-
-    beforeAll(() => ctrl = mocker.mu[MUSHOP.MACRO.USER]);
     
-    test(`should initialize as '${MUSHOP.MACRO.USER}' macro`, () => 
-      expect(ctrl instanceof UserController).toBe(true));
+    test(`should initialize as '${MUSHOP.MACRO.USER}' macro`, () => {
+      const { user } = mocker.mu;
+      expect(user instanceof UserController).toBe(true);
+    });
+      
     
     test('should fetch user on mu:ready', () => {
-      mocker.silence(ctrl); // silence emits
+      const { user } = mocker.mu;
       // MockHttp.mock(mocker.mu, 'get', MockHttp.response(MockUser)); // mock the http response
-      const spy = jest.spyOn(ctrl, 'getUser').mockResolvedValue(MockUser);
-      mocker.run();
+      const spy = jest.spyOn(user, 'getUser');
+      mocker.silence(user).run();
       expect(spy).toHaveBeenCalled();
+    });
+
+    test('should update user on changes', async () => {
+      const { user, http } = mocker.mu;
+      const spy = jest.spyOn(user, 'getUser');
+      mocker.silence(user);
+      
+      await user.register(MockUser);
+      await user.login('test', 'foo');
+      await user.logout();
+      expect(spy).toHaveBeenCalledTimes(2);
     });
 
   });

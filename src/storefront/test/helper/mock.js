@@ -11,12 +11,10 @@ import { MuLogger } from '../../src/scripts/mu/mu';
  */
 function mockHttpViewLoader(view) {
   const dir = path.join(__dirname, '../../build');
-  jest.spyOn(view.loader, 'get').mockImplementation(file => {
+  jest.spyOn(view.loader, 'get').mockImplementation(file => new Promise((resolve, reject) => {
     const template = path.join(dir, file);
-    return new Promise((resolve, reject) => {
-      fs.readFile(template, (err, html) => err ? reject(err) : resolve(MockHttp.response(html)));
-    });
-  });
+    fs.readFile(template, (err, html) => err ? reject(err) : resolve(MockHttp.response(html)));
+  }));
 }
 
 export class MockMu {
@@ -26,13 +24,18 @@ export class MockMu {
   }
 
   constructor(options = {}) {
+    options = {
+      id: 'mockapp',
+      ...options,
+    };
+
     // noop logging from within the logger
     jest.spyOn(MuLogger.prototype, 'init').mockImplementation(function() {
       const noop = (() => {});
       Object.keys(console).forEach(k => this[k] = noop);
     });
 
-    const id = 'mockapp';
+    const { id } = options;
     document.body.innerHTML = `<div id="${id}"></div>`;
 
     // instantiate mu
@@ -44,6 +47,7 @@ export class MockMu {
     // grab constituents
     this.mu = mu;
     this.view = view;
+    this.http = MockHttp.mock(mu);
 
     mockHttpViewLoader(view);
   }
@@ -51,6 +55,7 @@ export class MockMu {
   silence(emittable) {
     jest.spyOn(emittable, 'emit').mockReturnThis();
     jest.spyOn(emittable, 'emitOnce').mockReturnThis();
+    return this;
   }
 
   html(html) {
@@ -66,14 +71,11 @@ export class MockMu {
 export class MockHttp {
 
   /**
-   * mock a response
+   * create mock spys of all http methods
    * @param {Mu} mu 
-   * @param {string} method 
-   * @param {Promise<object>} [response] - mock response payload
    */
   static mock(mu, method, response) {
-    const { [MUSHOP.MACRO.HTTP]: http } = mu;
-    jest.spyOn(http, method).mockResolvedValueOnce(response);
+    return new MockHttp(mu);
   }
 
   static response(data = {}, options = {}) {
@@ -89,6 +91,12 @@ export class MockHttp {
 
   static error(err = {}) {
     return Promise.reject(err);
+  }
+
+  constructor(mu) {
+    const { [MUSHOP.MACRO.HTTP]: http } = mu;
+    ['get', 'put', 'post', 'patch', 'delete', 'head', 'options']
+      .forEach(m => this[m] = jest.spyOn(http, m).mockResolvedValue(MockHttp.response()));
   }
 
 }

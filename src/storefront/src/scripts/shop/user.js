@@ -6,7 +6,8 @@ import { MUSHOP } from './constants';
 
 export class UserController {
   constructor() {
-    this.user = null;
+    this.getUser = this.getUser.bind(this);
+
     // prepare prop setters
     this._setUser = this._setProp.bind(this, 'profile');
     this._setAddress = this._setProp.bind(this, 'address');
@@ -65,13 +66,13 @@ export class UserController {
 
   register(profile) {
     return this.mu.http.post('/register', profile)
-      .then(() => this.getUser());
+      .then(this.getUser);
   }
 
   login(username, password) {
     return this.mu.http.get('/login', {
       auth: { username, password }
-    }).then(() => this.getUser());
+    }).then(this.getUser);
   }
 
   logout() {
