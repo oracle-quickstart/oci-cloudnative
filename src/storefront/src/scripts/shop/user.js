@@ -188,50 +188,46 @@ export class UserToolbar extends MuMx.compose(null, [UserViewMixin, null, 'userT
     return super.onMount();
   }
 
-  modal() {
-    return this.context.get('ui.modal');
-  }
-
   success(message) {
+    this.loading(false);
     this.mu.ui.notification(`<span uk-icon="icon: check"></span> ${message}`, {
       status: 'success',
       pos: 'top-left',
     });
   }
 
+  error(data) {
+    this.loading(false).extend('error', data);
+  }
+
+  loading(loading) {
+    return this.context.extend({ 
+      loading,
+      error: null,
+    });
+  }
+
   submitAuth(form, e) {
     // console.log('SUBMIT AUTH', this.context._id);
+    this.loading(true);
     const fields = form.getData();
     const { username, password } = fields;
     this.mu.user.login(username, password)
       .then(u => this.success(`Welcome back ${u.firstName}!`))
-      .catch(() => this.renderShow('form.auth', {
-        fields,
-        register: false,
-        error: { auth: 'Invalid Credentials' },
-      }));
+      .catch(() => this.error({ auth: 'Invalid Credentials' }));
   }
 
   submitReg(form, e) {
+    this.loading(true);
     const fields = form.getData();
     this.mu.user.register(fields)
       .then(() => this.success(`Welcome ${fields.firstName}`))
-      .catch(() => this.renderShow('form.reg', {
-        fields,
-        register: true,
-        error: { reg: `Unable to register username: ${fields.username}` },
-      }));
-  }
-
-  renderShow(after, data) {
-    // modal resides inside an async render function
-    this.context.on(after, () => this.modal().show());
-    return this.render(data)
+      .catch(() => this.error({ reg: `Unable to register username: ${fields.username}` }));
   }
 
 }
 
-export class UserAddress extends MuMx.compose(null, [UserViewMixin, null, 'address.html']) {
+export class UserAddress extends MuMx.compose(null, [UserViewMixin, null, 'userAddress.html']) {
 
   onInit() {
     this.subscribeOne(UserAddress, this.view, () => this.mu.user.address()) // fire GET address when attached

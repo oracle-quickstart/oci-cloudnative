@@ -44,7 +44,8 @@ div(mu-if="!profile")
               span.uk-text-warning.uk-margin-small-right(hidden mu-hide="!error.auth")
                 +icon('warning')(class="uk-margin-small-right")
                 span(mu-html="error.auth")
-              button.uk-button.uk-button-primary(type="submit")
+              div(uk-spinner mu-hide="!loading")
+              button.uk-button.uk-button-primary(type="submit" mu-attr mu-attr-disabled="loading")
                 +icon('sign-in', 'ratio: .75')(class="uk-margin-xsmall-right")
                 |Sign In
 
@@ -82,6 +83,7 @@ div(mu-if="!profile")
               span.uk-text-warning.uk-margin-small-right(hidden mu-hide="!error.reg")
                 +icon('warning')(class="uk-margin-small-right")
                 span(mu-html="error.reg")
-              button.uk-button.uk-button-primary(type="submit")
+              div(uk-spinner mu-hide="!loading")
+              button.uk-button.uk-button-primary(type="submit" mu-attr mu-attr-disabled="loading")
                 +icon('sign-in', 'ratio: .75')(class="uk-margin-xsmall-right")
                 |Register
