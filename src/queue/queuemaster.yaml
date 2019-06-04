@@ -18,7 +18,7 @@ spec:
       imagePullSecrets:
         - name: ocirsecret     
       containers:
-      - image: phx.ocir.io/intvravipati/mushop/queuemaster:0.0.3
+      - image: phx.ocir.io/intvravipati/mushop/queuemaster:0.0.4
         name: queuemaster
         env:
          - name: OCI_TENANT_ID
@@ -52,7 +52,7 @@ spec:
               name: streams-secret
               key: oci_compartment_id
         ports:
-        - containerPort: 8080
+        - containerPort: 80
           protocol: TCP
 ---
 apiVersion: v1
@@ -64,9 +64,9 @@ metadata:
   namespace: mushop
 spec:
   ports:
-  - port: 8080
+  - port: 80
     protocol: TCP
-    targetPort: 8080
+    targetPort: 80
     #nodePort: 30124
   selector:
     run: queuemaster
