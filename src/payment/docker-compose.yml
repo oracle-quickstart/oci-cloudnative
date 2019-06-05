@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+    payment:
+        build: 
+            context: .
+            dockerfile: docker/payment/Dockerfile
+        image: mushop/payment
+        hostname: payment
+        restart: always
+        cap_drop:
+            - all
+        cap_add:
+            - NET_BIND_SERVICE
+        read_only: true
+        ports:
+            - "8080:80"
