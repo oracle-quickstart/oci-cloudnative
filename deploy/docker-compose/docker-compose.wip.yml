@@ -106,7 +106,7 @@ services:
     environment:
       - reschedule:on-node-failure
   payment:
-    image: weaveworksdemos/payment
+    image: phx.ocir.io/intvravipati/mushop/payment:0.0.1
     hostname: payment
     restart: always
     environment:
@@ -117,14 +117,14 @@ services:
       - -port=80
       - -decline=999
   user:
-    image: weaveworksdemos/user
+    image: phx.ocir.io/intvravipati/mushop/user:0.0.1
     hostname: user
     restart: always
     environment:
       - MONGO_HOST=user-db:27017
       - reschedule=on-node-failure
   user-db:
-    image: weaveworksdemos/user-db
+    image: phx.ocir.io/intvravipati/mushop/user-db:0.0.1
     hostname: user-db
     restart: always
     environment:
