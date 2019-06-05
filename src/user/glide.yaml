@@ -1,0 +1,30 @@
+package: github.com/junior/mushop/src/user
+import:
+- package: github.com/go-kit/kit
+  version: v0.4.0
+  subpackages:
+  - endpoint
+  - log
+  - metrics
+  - metrics/prometheus
+  - tracing/opentracing
+  - transport/http
+  - circuitbreaker
+- package: github.com/gorilla/mux
+- package: github.com/opentracing/opentracing-go
+- package: github.com/openzipkin/zipkin-go-opentracing
+- package: github.com/prometheus/client_golang
+  subpackages:
+  - prometheus
+  - prometheus/promhttp
+- package: gopkg.in/mgo.v2
+  subpackages:
+  - bson
+- package: gopkg.in/tomb.v2
+- package: github.com/afex/hystrix-go
+  subpackages:
+  - hystrix
+- package: github.com/felixge/httpsnoop
+- package: github.com/weaveworks/common
+  subpackages:
+  - middleware
