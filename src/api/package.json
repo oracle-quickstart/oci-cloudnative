@@ -22,11 +22,11 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "chai-http": "^3.0.0",
-    "sinon": "^1.17.5",
-    "mocha": "^3.0.0",
-    "mocha-junit-reporter": "^1.12.1",
+    "chai-http": "^4.3.0",
     "istanbul": "^0.4.4",
-    "mongodb": "^2.2.5"
+    "mocha": "^6.1.4",
+    "mocha-junit-reporter": "^1.12.1",
+    "mongodb": "^2.2.5",
+    "sinon": "^1.17.5"
   }
 }
