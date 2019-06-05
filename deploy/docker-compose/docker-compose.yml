@@ -135,6 +135,8 @@ services:
     cap_add:
       - NET_BIND_SERVICE
     read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid
     environment:
       - reschedule:on-node-failure
       - OCI_TENANT_ID
@@ -145,9 +147,9 @@ services:
       - OCI_API_KEY
   
   # OCI Stream
-  queuemaster:
-    image: phx.ocir.io/intvravipati/mushop/queuemaster:0.0.3
-    hostname: queuemaster
+  stream:
+    image: phx.ocir.io/intvravipati/mushop/stream:0.0.1
+    hostname: stream
     restart: always
     cap_drop:
       - all
