@@ -17,7 +17,7 @@ dev:
           ./source
         reload: true
 
-build-catalogue:
+go-lint:
   box:
     id: golang:1.12
     ports:
@@ -27,6 +27,13 @@ build-catalogue:
     - script:
         name: Go Lint Results
         code: cat lint_results.txt
+
+build-catalogue:
+  box:
+    id: golang:1.12
+    ports:
+      - "5000"
+  steps:
     - script:
         name: go build
         code: |
