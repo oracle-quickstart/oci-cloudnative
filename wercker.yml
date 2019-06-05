@@ -40,6 +40,28 @@ build-catalogue:
           cd src/catalogue
           GO111MODULE=on GOARCH=amd64 GOOS=linux go build -a -installsuffix cgo -o /app ./cmd/cataloguesvc
 
+build-user:
+  box:
+    id: golang:1.12
+    ports:
+      - "5000"
+  steps:
+    - script:
+        name: go build
+        code: |
+          pwd
+
+build-payment:
+  box:
+    id: golang:1.12
+    ports:
+      - "5000"
+  steps:
+    - script:
+        name: go build
+        code: |
+          pwd
+
 coverage-catalogue:
   box:
     id: golang:1.12
