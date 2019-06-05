@@ -48,7 +48,7 @@ services:
         - OADB_PW=default_Password1
         - OADB_SERVICE=mcatalogue_tp
   carts:
-    image: phx.ocir.io/intvravipati/mushop/carts:0.0.3
+    image: phx.ocir.io/intvravipati/mushop/carts:1.0.0
     ports:
      - 8086:80
     hostname: carts
@@ -61,12 +61,12 @@ services:
     tmpfs:
       - /tmp:rw,noexec,nosuid
     environment:
-      - JDBC_URL=jdbc:oracle:thin:@db3_tp?TNS_ADMIN=./config
-      - DB_USER=ADMIN
-      - DB_PASSWORD=Welcome123$$$$$$
-      - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.aura.demo=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+      - OADB_USER=carts_user
+      - OADB_PW=Default_Password123#
+      - OADB_SERVICE=mcarts_tp
+      - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
   orders:
-    image: phx.ocir.io/intvravipati/mushop/orders:0.0.4
+    image: phx.ocir.io/intvravipati/mushop/orders:1.0.0
     ports:
      - 8085:80
     hostname: orders
@@ -79,10 +79,10 @@ services:
     tmpfs:
       - /tmp:rw,noexec,nosuid
     environment:
-      - JDBC_URL=jdbc:oracle:thin:@appdb_tp?TNS_ADMIN=./config
-      - DB_USER=ADMIN
-      - DB_PASSWORD=Welcome123$$$$$$
-      - JAVA_OPTS=-Xms128m -Xmx128m -XX:+UseG1GC -Dlogging.level.aura.demo=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+      - OADB_USER=orders_user
+      - OADB_PW=Default_Password123#
+      - OADB_SERVICE=morders_tp
+      - JAVA_OPTS=-Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
   shipping:
     image: weaveworksdemos/shipping:0.4.8
     hostname: shipping
