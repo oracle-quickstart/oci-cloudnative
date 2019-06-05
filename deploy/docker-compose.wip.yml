@@ -29,7 +29,13 @@ services:
     restart: always
     environment:
       - reschedule:on-node-failure
+      - SESSION_REDIS=true
   
+  # Redis session DB
+  session-db:
+    image: redis:alpine
+    hostname: session-db
+
   # OCI Catalog service
   catalogue:
     image: phx.ocir.io/intvravipati/mushop/catalogue:0.0.1
@@ -85,13 +91,13 @@ services:
         - OADB_SERVICE=morders_tp
         - JAVA_OPTS=-Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
 
+  # Shipping service - OCI Stream
   shipping:
-    image: phx.ocir.io/intvravipati/mushop/shipping:0.0.3
+    image: phx.ocir.io/intvravipati/mushop/shipping:0.0.4
     hostname: shipping
     restart: always
     environment:
       - reschedule:on-node-failure
-      - PORT=80
       - OCI_TENANT_ID
       - OCI_COMPARTMENT_ID
       - OCI_REGION
@@ -104,7 +110,6 @@ services:
     restart: always
     environment:
       - reschedule:on-node-failure
-      - PORT=80
       - OCI_TENANT_ID
       - OCI_COMPARTMENT_ID
       - OCI_REGION
@@ -112,12 +117,6 @@ services:
       - OCI_FINGERPRINT
       - OCI_API_KEY
   
-  rabbitmq:
-    image: rabbitmq:3
-    hostname: rabbitmq
-    restart: always
-    environment:
-      - reschedule:on-node-failure
   payment:
     image: weaveworksdemos/payment
     hostname: payment
