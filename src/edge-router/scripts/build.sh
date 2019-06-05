@@ -14,8 +14,7 @@ if [[ -n "$CI" ]]; then
 fi
 
 if [[ -z "$TAG" ]] ; then
-  echo "Cannot determine TAG"
-  exit 1
+  TAG=latest
 fi
 
 if [[ "$(uname)" == "Darwin" ]]; then
