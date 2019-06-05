@@ -122,7 +122,7 @@ services:
       - DAC_OVERRIDE
     read_only: true
   payment:
-    image: weaveworksdemos/payment:0.4.3
+    image: phx.ocir.io/intvravipati/mushop/payment:0.0.1
     hostname: payment
     restart: always
     cap_drop:
@@ -131,7 +131,7 @@ services:
       - NET_BIND_SERVICE
     read_only: true
   user:
-    image: weaveworksdemos/user:0.4.4
+    image: phx.ocir.io/intvravipati/mushop/user:0.0.1
     hostname: user
     restart: always
     cap_drop:
@@ -142,7 +142,7 @@ services:
     environment:
       - MONGO_HOST=user-db:27017
   user-db:
-    image: weaveworksdemos/user-db:0.4.0
+    image: phx.ocir.io/intvravipati/mushop/user-db:0.0.1
     hostname: user-db
     restart: always
     cap_drop:
