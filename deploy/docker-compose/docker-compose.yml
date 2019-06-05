@@ -1,0 +1,163 @@
+version: '2'
+
+services:
+  api:
+    image: phx.ocir.io/intvravipati/mushop/api:latest
+    hostname: api
+    restart: always
+    cap_drop:
+      - all
+    read_only: true
+  storefront:
+    image: phx.ocir.io/intvravipati/mushop/storefront:latest
+    hostname: storefront
+    restart: always
+    cap_drop:
+      - all
+    read_only: true
+  edge-router:
+    image: phx.ocir.io/intvravipati/mushop/edge-router:latest
+    hostname: edge-router
+    restart: always
+    ports:
+      - '80:80'
+      - '8080:8080'
+    cap_drop:
+      - all
+    cap_add:
+      - NET_BIND_SERVICE
+      - CHOWN
+      - SETGID
+      - SETUID
+      - DAC_OVERRIDE
+    read_only: true
+    tmpfs:
+      - /var/run:rw,noexec,nosuid
+  catalogue:
+    image: phx.ocir.io/intvravipati/mushop/catalogue:0.0.1
+    hostname: catalogue
+    restart: always
+    cap_drop:
+        - all
+    cap_add:
+        - NET_BIND_SERVICE
+    read_only: true
+    environment:
+        - reschedule=on-node-failure
+        - OADB_USER=catalogue_user
+        - OADB_PW=default_Password1
+        - OADB_SERVICE=mcatalogue_tp
+  carts:
+    image: phx.ocir.io/intvravipati/mushop/carts:1.0.0
+    ports:
+     - 8086:80
+    hostname: carts
+    restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid
+    environment:
+      - OADB_USER=carts_user
+      - OADB_PW=Default_Password123#
+      - OADB_SERVICE=mcarts_tp
+      - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+  orders:
+    image: phx.ocir.io/intvravipati/mushop/orders:1.0.0
+    ports:
+     - 8085:80
+    hostname: orders
+    restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid
+    environment:
+      - OADB_USER=orders_user
+      - OADB_PW=Default_Password123#
+      - OADB_SERVICE=morders_tp
+      - JAVA_OPTS=-Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+  shipping:
+    image: weaveworksdemos/shipping:0.4.8
+    hostname: shipping
+    restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid
+    environment:
+      - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+  queue-master:
+    image: weaveworksdemos/queue-master:0.3.1
+    hostname: queue-master
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid
+  rabbitmq:
+    image: rabbitmq:3.6.8
+    hostname: rabbitmq
+    restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+      - DAC_OVERRIDE
+    read_only: true
+  payment:
+    image: phx.ocir.io/intvravipati/mushop/payment:0.0.1
+    hostname: payment
+    restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: true
+  user:
+    image: phx.ocir.io/intvravipati/mushop/user:0.0.1
+    hostname: user
+    restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: true
+    environment:
+      - MONGO_HOST=user-db:27017
+  user-db:
+    image: phx.ocir.io/intvravipati/mushop/user-db:0.0.1
+    hostname: user-db
+    restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid
+  user-sim:
+    image: aura/load-test:0.1.1
+    cap_drop:
+      - all
+    read_only: true
+    hostname: user-simulator
+    command: "-d 30 -r 120 -c 1 -h edge-router"

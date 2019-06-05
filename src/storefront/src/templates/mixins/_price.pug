@@ -1,0 +1,6 @@
+mixin price(bindProp, negative)
+  if negative
+    |-$
+  else
+    |$
+  span(mu-html= bindProp)&attributes(attributes)

@@ -1,0 +1,73 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    run: ship
+  name: ship
+  namespace: mushop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: ship
+  template:
+    metadata:
+      labels:
+        run: ship
+    spec:
+      imagePullSecrets:
+        - name: ocirsecret        
+      containers:
+      - image: phx.ocir.io/intvravipati/mushop/shipping:0.0.4
+        name: ship
+        env:
+         - name: OCI_TENANT_ID
+           valueFrom:
+             secretKeyRef:
+              name: streams-secret
+              key: oci_tenant_id
+         - name: OCI_USER_ID
+           valueFrom:
+             secretKeyRef:
+              name: streams-secret
+              key: oci_user_id
+         - name: OCI_FINGERPRINT
+           valueFrom:
+             secretKeyRef:
+              name: streams-secret
+              key: oci_fingerprint
+         - name: OCI_API_KEY
+           valueFrom:
+             secretKeyRef:
+              name: streams-secret
+              key: oci_api_key
+         - name: OCI_REGION
+           valueFrom:
+             secretKeyRef:
+              name: streams-secret
+              key: oci_region
+         - name: OCI_COMPARTMENT_ID
+           valueFrom:
+             secretKeyRef:
+              name: streams-secret
+              key: oci_compartment_id
+        ports:
+        - containerPort: 80
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: ship
+  name: ship
+  namespace: mushop
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+    #nodePort: 30123
+  selector:
+    run: ship
+  type: NodePort

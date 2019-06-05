@@ -1,0 +1,564 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: api
+  labels:
+    name: api
+  namespace: mushop
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: api
+    spec:
+      imagePullSecrets:
+        - name: ocirsecret    
+      containers:
+      - name: api
+        image: phx.ocir.io/intvravipati/mushop/api:0.0.2
+        ports:
+         - containerPort: 3000
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 10001
+          capabilities:
+            drop:
+              - all
+            add:
+              - NET_BIND_SERVICE
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp-volume
+      volumes:
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api
+  labels:
+    name: api
+  namespace: mushop
+spec:
+  ports:
+  - port: 3000
+    targetPort: 3000
+  selector:
+    name: api
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: carts
+  labels:
+    name: carts
+  namespace: mushop
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: carts
+    spec:
+      imagePullSecrets:
+        - name: ocirsecret    
+      containers:
+      - name: carts
+        image: phx.ocir.io/intvravipati/mushop/carts:0.0.3
+        ports:
+         - containerPort: 8080
+        env:
+         - name: ZIPKIN
+           value: zipkin.jaeger.svc.cluster.local
+         - name: JAVA_OPTS
+           value: -Xms64m -Xmx128m -XX:PermSize=32m -XX:MaxPermSize=64m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom
+         - name: JDBC_URL
+           value: "jdbc:oracle:thin:@db3_tp?TNS_ADMIN=./config"
+         - name: OADB_USER
+           valueFrom:
+             secretKeyRef:
+               name: atp-secret
+               key: carts_oadb_user
+         - name: OADB_PW
+           valueFrom:
+             secretKeyRef:
+               name: atp-secret
+               key: carts_oadb_pw
+         - name: OADB_SERVICE
+           valueFrom:
+             secretKeyRef:
+               name: atp-secret
+               key: carts_oadb_service   
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 10001
+          capabilities:
+            drop:
+              - all
+            add:
+              - NET_BIND_SERVICE
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp-volume
+      volumes:
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: carts
+  labels:
+    name: carts
+  namespace: mushop
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    name: carts
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: catalogue
+  labels:
+    name: catalogue
+  namespace: mushop
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: catalogue
+    spec:
+      imagePullSecrets:
+        - name: ocirsecret    
+      containers:
+      - name: catalogue
+        image: phx.ocir.io/intvravipati/mushop/catalogue:0.0.1
+        ports:
+        - containerPort: 80
+        env:
+         - name: ZIPKIN
+           value: zipkin.jaeger.svc.cluster.local
+         - name: JDBC_URL
+           value: "jdbc:oracle:thin:@mcatalogue_tp?TNS_ADMIN=./config"
+         - name: OADB_USER
+           valueFrom:
+             secretKeyRef:
+               name: atp-secret
+               key: catalogue_oadb_user
+         - name: OADB_PW
+           valueFrom:
+             secretKeyRef:
+               name: atp-secret
+               key: catalogue_oadb_pw
+         - name: OADB_SERVICE
+           valueFrom:
+             secretKeyRef:
+               name: atp-secret
+               key: catalogue_oadb_service 
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 10001
+          capabilities:
+            drop:
+              - all
+            add:
+              - NET_BIND_SERVICE
+          readOnlyRootFilesystem: true
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalogue
+  labels:
+    name: catalogue
+  namespace: mushop
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    name: catalogue
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: front-end
+  namespace: mushop
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: front-end
+    spec:
+      containers:
+      - name: front-end
+        image: phx.ocir.io/intvravipati/mushop/storefront:0.0.2
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+        - containerPort: 8079
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 10001
+          capabilities:
+            drop:
+              - all
+          readOnlyRootFilesystem: true
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: front-end
+  labels:
+    name: front-end
+  namespace: mushop
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 8079
+    nodePort: 30001
+  selector:
+    name: front-end
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: orders
+  labels:
+    name: orders
+  namespace: mushop
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: orders
+    spec:
+      imagePullSecrets:
+        - name: ocirsecret    
+      containers:
+      - name: orders
+        image: phx.ocir.io/intvravipati/mushop/orders:0.0.4
+        env:
+         - name: ZIPKIN
+           value: zipkin.jaeger.svc.cluster.local
+         - name: JAVA_OPTS
+           value: -Xms64m -Xmx128m -XX:PermSize=32m -XX:MaxPermSize=64m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom
+         - name: JDBC_URL
+           value: "jdbc:oracle:thin:@appdb_tp?TNS_ADMIN=./config"
+         
+         - name: OADB_USER
+           valueFrom:
+             secretKeyRef:
+               name: atp-secret
+               key: orders_oadb_user
+         - name: OADB_PW
+           valueFrom:
+             secretKeyRef:
+               name: atp-secret
+               key: orders_oadb_pw
+         - name: OADB_SERVICE
+           valueFrom:
+             secretKeyRef:
+               name: atp-secret
+               key: orders_oadb_service   
+        ports:
+        - containerPort: 80
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 10001
+          capabilities:
+            drop:
+              - all
+            add:
+              - NET_BIND_SERVICE
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp-volume
+      volumes:
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders
+  labels:
+    name: orders
+  namespace: mushop
+spec:
+  ports:
+    # the port that this service should serve on
+  - port: 80
+    targetPort: 80
+  selector:
+    name: orders
+---
+# payment = Sherwood
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: payment
+  labels:
+    name: payment
+  namespace: mushop
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: payment
+    spec:
+      containers:
+      - name: payment
+        image: weaveworksdemos/payment:0.4.3
+        ports:
+        - containerPort: 80
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 10001
+          capabilities:
+            drop:
+              - all
+            add:
+              - NET_BIND_SERVICE
+          readOnlyRootFilesystem: true
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment
+  labels:
+    name: payment
+  namespace: mushop
+spec:
+  ports:
+    # the port that this service should serve on
+  - port: 80
+    targetPort: 80
+  selector:
+    name: payment
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    run: stream
+  name: stream
+  namespace: mushop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: stream
+  template:
+    metadata:
+      labels:
+        run: stream
+    spec:
+      imagePullSecrets:
+        - name: ocirsecret    
+      containers:
+      - image: phx.ocir.io/intvravipati/mushop/stream:0.0.1
+        name: stream
+        env:
+         - name: OCI_TENANT_ID
+           valueFrom:
+             secretKeyRef:
+              name: streams-secret
+              key: oci_tenant_id
+         - name: OCI_USER_ID
+           valueFrom:
+             secretKeyRef:
+              name: streams-secret
+              key: oci_user_id
+         - name: OCI_FINGERPRINT
+           valueFrom:
+             secretKeyRef:
+              name: streams-secret
+              key: oci_fingerprint
+         - name: OCI_API_KEY
+           valueFrom:
+             secretKeyRef:
+              name: streams-secret
+              key: oci_api_key
+         - name: OCI_REGION
+           valueFrom:
+             secretKeyRef:
+              name: streams-secret
+              key: oci_region
+         - name: OCI_COMPARTMENT_ID
+           valueFrom:
+             secretKeyRef:
+              name: streams-secret
+              key: oci_compartment_id
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: stream
+  name: stream
+  annotations:
+    prometheus.io/path: "/prometheus"
+  namespace: mushop
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+    #nodePort: 30124
+  selector:
+    run: stream
+  type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    run: ship
+  name: ship
+  namespace: mushop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: ship
+  template:
+    metadata:
+      labels:
+        run: ship
+    spec:
+      imagePullSecrets:
+        - name: ocirsecret        
+      containers:
+      - image: phx.ocir.io/intvravipati/mushop/shipping:0.0.4
+        name: ship
+        env:
+         - name: OCI_TENANT_ID
+           valueFrom:
+             secretKeyRef:
+              name: streams-secret
+              key: oci_tenant_id
+         - name: OCI_USER_ID
+           valueFrom:
+             secretKeyRef:
+              name: streams-secret
+              key: oci_user_id
+         - name: OCI_FINGERPRINT
+           valueFrom:
+             secretKeyRef:
+              name: streams-secret
+              key: oci_fingerprint
+         - name: OCI_API_KEY
+           valueFrom:
+             secretKeyRef:
+              name: streams-secret
+              key: oci_api_key
+         - name: OCI_REGION
+           valueFrom:
+             secretKeyRef:
+              name: streams-secret
+              key: oci_region
+         - name: OCI_COMPARTMENT_ID
+           valueFrom:
+             secretKeyRef:
+              name: streams-secret
+              key: oci_compartment_id
+        ports:
+        - containerPort: 80
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: ship
+  name: ship
+  namespace: mushop
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+    #nodePort: 30123
+  selector:
+    run: ship
+  type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: user
+  labels:
+    name: user
+  namespace: mushop
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: user
+    spec:
+      containers:
+      - name: user
+        image: weaveworksdemos/user:0.4.7
+        ports:
+        - containerPort: 80
+        env:
+        - name: MONGO_HOST
+          value: user-db:27017
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 10001
+          capabilities:
+            drop:
+              - all
+            add:
+              - NET_BIND_SERVICE
+          readOnlyRootFilesystem: true
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user
+  labels:
+    name: user
+  namespace: mushop
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    name: user
