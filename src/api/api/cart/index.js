@@ -6,14 +6,14 @@
     , request   = require("request")
     , helpers   = require("../../helpers")
     , endpoints = require("../endpoints")
-    , app       = express()
+    , app       = express.Router()
 
   // List items in cart for current logged in user.
   app.get("/cart", function (req, res, next) {
-    console.log("Request received: " + req.url + ", " + req.query.custId);
-    var custId = helpers.getCustomerId(req, app.get("env"));
-    console.log("Customer ID: " + custId);
-    request(endpoints.cartsUrl + "/" + custId + "/items", function (error, response, body) {
+    var cartId = helpers.getCartId(req);
+
+    // console.log('GET Cart', cartId);
+    request(endpoints.cartsUrl + "/" + cartId + "/items", function (error, response, body) {
       if (error) {
         return next(error);
       }
@@ -23,10 +23,9 @@
 
   // Delete cart
   app.delete("/cart", function (req, res, next) {
-    var custId = helpers.getCustomerId(req, app.get("env"));
-    console.log('Attempting to delete cart for user: ' + custId);
+    var cartId = helpers.getCartId(req);
     var options = {
-      uri: endpoints.cartsUrl + "/" + custId,
+      uri: endpoints.cartsUrl + "/" + cartId,
       method: 'DELETE'
     };
     request(options, function (error, response, body) {
@@ -44,12 +43,12 @@
       return next(new Error("Must pass id of item to delete"), 400);
     }
 
-    console.log("Delete item from cart: " + req.url);
+    // console.log("Delete item from cart: " + req.url);
 
-    var custId = helpers.getCustomerId(req, app.get("env"));
+    var cartId = helpers.getCartId(req);
 
     var options = {
-      uri: endpoints.cartsUrl + "/" + custId + "/items/" + req.params.id.toString(),
+      uri: endpoints.cartsUrl + "/" + cartId + "/items/" + req.params.id.toString(),
       method: 'DELETE'
     };
     request(options, function (error, response, body) {
@@ -70,7 +69,8 @@
       return;
     }
 
-    var custId = helpers.getCustomerId(req, app.get("env"));
+    var cartId = helpers.getCartId(req);
+    // console.log('ATC', cartId);
 
     async.waterfall([
         function (callback) {
@@ -81,7 +81,7 @@
         },
         function (item, callback) {
           var options = {
-            uri: endpoints.cartsUrl + "/" + custId + "/items",
+            uri: endpoints.cartsUrl + "/" + cartId + "/items",
             method: 'POST',
             json: true,
             body: {itemId: item.id, unitPrice: item.price}
@@ -118,7 +118,7 @@
       next(new Error("Must pass quantity to update"), 400);
       return;
     }
-    var custId = helpers.getCustomerId(req, app.get("env"));
+    var cartId = helpers.getCartId(req);
 
     async.waterfall([
         function (callback) {
@@ -129,7 +129,7 @@
         },
         function (item, callback) {
           var options = {
-            uri: endpoints.cartsUrl + "/" + custId + "/items",
+            uri: endpoints.cartsUrl + "/" + cartId + "/items",
             method: 'PATCH',
             json: true,
             body: {itemId: item.id, quantity: parseInt(req.body.quantity), unitPrice: item.price}
