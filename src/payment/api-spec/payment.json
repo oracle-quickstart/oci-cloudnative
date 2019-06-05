@@ -1,0 +1,102 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "",
+        "title": "Payment",
+        "description": "Payment service spec",
+        "license": {
+            "name": "MIT",
+            "url": "http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT"
+        }
+    },
+    "host": "payment",
+    "basePath": "/",
+    "securityDefinitions": {},
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json; charset=utf-8"
+    ],
+    "produces": [
+        "application/json; charset=utf-8"
+    ],
+    "paths": {
+        "/health": {
+	    "get": {
+		"description": "",
+		"operationId": "/health > GET",
+		"produces": [
+		    "application/json; charset=utf-8"
+		],
+		"parameters": [],
+		"responses": {
+		    "200": {
+			"description": "",
+			"schema": {
+			    "$ref": "#/definitions/health"
+			}
+		    }
+		}
+	    }
+	},
+	"/paymentAuth": {
+	    "post": {
+		"description": "Payment authorisation",
+		"operationId": "/paymentAuth > POST",
+		"produces": [
+		    "application/json; charset=utf-8"
+		],
+		"responses": {
+		    "200": {
+			"description": "",
+			"schema": {
+			    "$ref": "#/definitions/paymentAuth"
+			}
+		    }
+		}
+                
+	    }
+	}
+    },
+    "definitions": {
+        "health": {
+            "title": "Health",
+            "type": "object",
+            "properties": {
+		"health": {
+		    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "service": {
+                                "type": "string"
+                            },
+                            "status": {
+                                "type": "string"
+                            },
+                            "time": {
+                                "type": "string"
+                            }
+                        }
+                    }
+		}
+            },
+            "required": [
+                "health"
+            ]
+        },
+	"paymentAuth": {
+            "title": "paymentAuth response",
+            "type": "object",
+            "properties": {
+		"authorised": {
+		    "type": "boolean"
+		}
+            },
+            "required": [
+		"authorised"
+            ]
+	}
+    }
+}

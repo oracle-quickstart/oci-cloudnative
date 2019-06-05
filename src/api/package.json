@@ -1,6 +1,6 @@
 {
   "name": "mushop-storefront-backend",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "Backend for microservices demo application.",
   "main": "server.js",
   "scripts": {
@@ -13,12 +13,12 @@
     "body-parser": "^1.15.1",
     "connect-redis": "^3.2.0",
     "cookie-parser": "^1.4.3",
-    "express": "^4.13.4",
-    "express-session": "^1.13.0",
-    "finalhandler": "^0.4.1",
+    "express": "^4.17.1",
+    "express-session": "^1.16.1",
     "morgan": "^1.7.0",
     "prom-client": "^6.3.0",
-    "request": "^2.72.0"
+    "request": "^2.72.0",
+    "ulid": "^2.3.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
