@@ -59,14 +59,6 @@ tag_and_push() {
         docker tag $SRC ${OCIR_REPO}:$tag
         push "$OCIR_REPO:$tag";
     done
-    # if [ -z "$CI" ]; then
-    #     echo "Creating OCIR Tag ${OCIR_REPO}:${TAG}"
-    #     docker tag ${DOCKER_REPO}:${TAG} ${OCIR_REPO}:${TAG}
-    # elif [[ "$WERCKER_GIT_COMMIT" != "$TAG" ]]; then
-    #     echo "Creating OCIR Tag"
-    #     docker tag ${DOCKER_REPO}:${WERCKER_GIT_COMMIT} ${OCIR_REPO}:${TAG}
-    # fi
-    # push "$OCIR_REPO:$TAG";
 }
 
 # when running in Wercker CI
