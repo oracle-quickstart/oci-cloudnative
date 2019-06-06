@@ -62,9 +62,12 @@ block pages
                   +filterbox("filter.options.brands", "brands")
 
               div.uk-card-body
-                button.uk-button.uk-button-default.uk-width-1-1
+                button.uk-button.uk-button-default.uk-width-1-1(
+                  mu-click="filterReset"
+                  mu-attr mu-attr-disabled="!filter.values"
+                  mu-class="{'uk-button-danger': 'filter.values'}")
                   +icon("close", ".75")(class="uk-margin-xsmall-right")
-                  | Reset filters
+                  | Clear filters
 
     //- Content
     div.uk-width-expand

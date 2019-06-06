@@ -46,7 +46,7 @@ gulp.task('styles', function() {
   return gulp.src(['src/styles/**/*.less', '!src/styles/**/_*.less'])
     .pipe(less({ relativeUrls: true }))
     // .pipe(concat('style.css'))
-    .pipe(postcss([autoprefixer({ browsers: 'last 2 versions' })]))
+    .pipe(postcss([autoprefixer()]))
     .pipe(csso())
     .pipe(gulp.dest('build/styles'))
     .pipe(sync.stream({

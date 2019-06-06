@@ -279,6 +279,7 @@ export class MuContext extends MuEmitter {
    */
   delete(key) {
     MuUtil.deleteProp(this.data, key);
+    return this.emit(key);
   }
 
   /**

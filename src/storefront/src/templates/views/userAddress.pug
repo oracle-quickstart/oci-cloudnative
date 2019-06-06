@@ -1,9 +1,10 @@
 include ../mixins/_icon
 
-div.uk-grid-medium.uk-flex-left(uk-grid hidden mu-hide="editing")
+div.uk-grid-medium.uk-flex-left(uk-grid mu-if="!editing")
   div.uk-width-1-1.uk-h4(mu-if="legend")
     div.uk-h4(mu-html="legend")
-  div.uk-width-expand
+
+  div.uk-width-expand(mu-class="{'uk-text-muted': 'loading'}")
     div(mu-if="address")
       div.uk-text-bolder
       |{{address.number}} {{address.street}}
@@ -11,9 +12,17 @@ div.uk-grid-medium.uk-flex-left(uk-grid hidden mu-hide="editing")
       |{{address.city}} {{address.country}}, {{address.postcode}}
     div.uk-text-danger(mu-if="!address") 
       p No {{addressType}} address found.
-  a.uk-icon-link(uk-icon="pencil" mu-click="edit" uk-tooltip="Change Address")
 
-div(hidden mu-hide="!editing")
+  div(uk-spinner mu-hide="!loading")
+  div(mu-hide="loading")
+    a.uk-icon-link(uk-icon="pencil" mu-click="actions.edit" uk-tooltip="Change Address")
+    //- Delete
+    a.uk-icon-link.uk-text-warning.uk-invisible-hover(uk-icon="close"
+      mu-if="address.id"
+      mu-click="actions.delete"
+      uk-tooltip="Delete")
+
+div(mu-if="editing")
   form.uk-form-stacked(mu-form="addressForm")
     div.uk-grid-medium.uk-child-width-1-1(uk-grid)
       fieldset.uk-fieldset
@@ -60,7 +69,7 @@ div(hidden mu-hide="!editing")
                 placeholder="Additional information: phone numbers or doorphone code")
 
     div.uk-margin.uk-text-right
-      span.uk-text-success.uk-margin-xsmall-right(mu-if="success")
+      span.uk-text-success.uk-margin-xsmall-right(mu-if="success" mu-class="{'uk-animation-fade uk-animation-reverse': '!success'}")
         +icon('check')
         span Success
       span.uk-text-danger.uk-margin-xsmall-right(mu-if="error")
@@ -69,4 +78,4 @@ div(hidden mu-hide="!editing")
       div(uk-spinner mu-hide="!loading")
       button.uk-button.uk-button-primary(type="submit" mu-attr mu-attr-disabled="loading") Save
 
-//- div(mu-debug="editing")
+//- div(mu-debug="success")

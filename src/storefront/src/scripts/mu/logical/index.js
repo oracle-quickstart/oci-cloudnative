@@ -53,7 +53,7 @@ export class MuIF extends MuMx.compose(null,
   onMount() {
     const { parentNode } = this.node;
     const virtual = this.view.virtual();
-    this.placeholder = virtual.createComment(`${LOGICAL_ATTR.IF} ${this._ctxKey()}`);
+    this.placeholder = virtual.createComment(`${LOGICAL_ATTR.IF} ${this._ctxAttrProp()}`);
     // create placeholder target and remove the source node
     parentNode.insertBefore(this.placeholder, this.node);
     parentNode.removeChild(this.node);
@@ -72,8 +72,7 @@ export class MuIF extends MuMx.compose(null,
     const { current, placeholder } = this;
     const { parentNode } = placeholder;
     if (current) {
-      // console.log('dispose if', current);
-      // this.view.dispose(ifNode, true);
+      // console.log('dispose if', this._ctxAttrProp(), current, parentNode);
       this.view.dispose(current);
       this.current = null;
       return parentNode && 

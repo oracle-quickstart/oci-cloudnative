@@ -82,6 +82,7 @@ export class MuCheckout extends MuMx.compose(null,
   }
 
   setCheck(check, value) {
+    console.log(check, value);
     this.context.set(`checks.${check}`, value);
     this.refresh();
   }

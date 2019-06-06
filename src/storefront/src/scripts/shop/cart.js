@@ -43,9 +43,9 @@ export class CartController {
     const { id, name } = item; 
     return http.post('/cart', { id, quantity })
       .then(this.load)
-      .then(() => ui.notification(`"${name}" added to cart!`, {
+      .then(() => ui.notification(`${name} added to cart!`, {
         status: 'success',
-        timeout: 1e3
+        timeout: 2e3
       }));
   }
 

@@ -118,6 +118,7 @@ export class CategoryPage extends MuMx.compose(null,
     // configure context binding
     return this.render({
       filterChange: this.filterChange.bind(this),
+      filterReset: this.filterReset.bind(this),
       search: {
         category: rules || category,
         term: search,
@@ -149,7 +150,16 @@ export class CategoryPage extends MuMx.compose(null,
    * @param {*} form 
    */
   filterChange(e, form) {
+    this.filters = form;
     this.context.set('filter.values', form.getData());
+  }
+
+  filterReset() {
+    const form = this.filters;
+    if (form) {
+      form.clear();
+    }
+    this.context.set('filter.values', null);
   }
 
   /**
@@ -415,8 +425,12 @@ export class SingleProduct extends MuMx.compose(null,
   }
 
   addToCart() {
-    const item = this.context.get('product');
-    return this.mu.cart.add(item, 1);
+    const ctx = this.context;
+    const item = ctx.get('product');
+    ctx.set('adding', true);
+    const done = () => ctx.set('adding', false);
+    return this.mu.cart.add(item, 1)
+      .then(done).catch(done);
   }
 }
 
