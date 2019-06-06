@@ -24,43 +24,58 @@ push() {
     done;
 }
 
-tag_and_push_all() {
+tag_and_push() {
+    SEMREG='[^0-9]*\([0-9]*\)[.]\([0-9]*\)[.]\([0-9]*\)\([0-9A-Za-z-]*\)'
     if [[ -z "$1" ]] ; then
         echo "Please pass the tag"
         exit 1
     else
-        TAG=$1
+        SEM=`echo $1 | sed -e "s#^v##"`
+        TAGS=$SEM
+        MAJOR=`echo $SEM | sed -e "s#$SEMREG#\1#"`
+        MINOR=`echo $SEM | sed -e "s#$SEMREG#\2#"`
+        PATCH=`echo $SEM | sed -e "s#$SEMREG#\3#"`
+        SPECIAL=`echo $SEM | sed -e "s#$SEMREG#\4#"`
+        # add semantic tags
+        if [ "$MAJOR" != "$SEM" ] && [ -z "$SPECIAL" ]; then
+            TAGS="$SEM $MAJOR.$MINOR $MAJOR latest"
+            if [ -n "$SPECIAL" ]; then
+                TAGS="$MAJOR.$MINOR.$PATCH $TAGS"
+            fi
+        fi
     fi
 
     DOCKER_REPO=${NAMESPACE}/${CONTAINER}
     OCIR_REPO=${OCIR}/${DOCKER_REPO}
 
-    if [ -z "$CI" ]; then
-        echo "Creating OCIR Tag ${OCIR_REPO}:${TAG}"
-        docker tag ${DOCKER_REPO}:${TAG} ${OCIR_REPO}:${TAG}
-    elif [[ "$WERCKER_GIT_COMMIT" != "$TAG" ]]; then
-        echo "Creating OCIR Tag"
-        docker tag ${DOCKER_REPO}:${WERCKER_GIT_COMMIT} ${OCIR_REPO}:${TAG}
+    # determine src tag
+    SRC="${DOCKER_REPO}:latest"
+    if [[ -n "$CI" ]]; then
+        SRC="${DOCKER_REPO}:${WERCKER_GIT_COMMIT}"
     fi
-    push "$OCIR_REPO:$TAG";
+
+    for tag in $TAGS; do
+        echo "Tagging ${OCIR_REPO}:$tag"
+        docker tag $SRC ${OCIR_REPO}:$tag
+        push "$OCIR_REPO:$tag";
+    done
 }
 
 # when running in Wercker CI
 if [ -n "$CI" ]; then 
     # Push snapshot when in master
     if [ "$WERCKER_GIT_BRANCH" == "master" ] && [ -z "$WERCKER_PULL_REQUEST" ]; then
-        tag_and_push_all master-${WERCKER_GIT_COMMIT:0:8}
+        tag_and_push master-${WERCKER_GIT_COMMIT:0:8}
     fi;
 
     # Push tag and latest when tagged
     if [ -n "$GIT_TAG" ]; then
-        tag_and_push_all ${GIT_TAG}
-        tag_and_push_all latest
+        tag_and_push ${GIT_TAG}
     fi;
 # Running manually
-elif [ -n "$1" ]; then 
+elif [ -n "$1" ]; then
     echo "Pushing tag $1"
-    tag_and_push_all $1
+    tag_and_push $1
 else
     echo "Error: Unknown context for push"
     exit 1

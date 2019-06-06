@@ -6,7 +6,7 @@
     , request   = require("request")
     , endpoints = require("../endpoints")
     , helpers   = require("../../helpers")
-    , app       = express()
+    , app       = express.Router()
 
   app.get("/orders", function (req, res, next) {
     // console.log("Request received with body: " + JSON.stringify(req.body));
@@ -16,7 +16,7 @@
       return
     }
 
-    var custId = req.session.customerId;
+    var custId = helpers.getCustomerId(req, app.get('env'));
     async.waterfall([
         function (callback) {
           request(endpoints.ordersUrl + "/orders/search/customer?sort=orderDate,desc&custId=" + custId, function (error, response, body) {
@@ -53,7 +53,8 @@
       return
     }
 
-    var custId = req.session.customerId;
+    var custId = helpers.getCustomerId(req, app.get('env'));
+    var cartId = helpers.getCartId(req);
 
     async.waterfall([
         function (callback) {
@@ -71,7 +72,7 @@
               "customer": customerlink,
               "address": null,
               "card": null,
-              "items": endpoints.cartsUrl + "/" + custId + "/items"
+              "items": endpoints.cartsUrl + "/" + cartId + "/items"
             };
             callback(null, order, addressLink, cardLink);
           });

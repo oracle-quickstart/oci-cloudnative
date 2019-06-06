@@ -3,7 +3,7 @@
   const apiRoutes = ['cart', 'catalogue', 'orders', 'user'];
   var express = require("express")
     , client  = require('prom-client')
-    , app     = express()
+    , app     = express.Router()
 
   const metric = {
     http: {

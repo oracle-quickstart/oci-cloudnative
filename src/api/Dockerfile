@@ -18,6 +18,7 @@ COPY . .
 
 # Prune
 RUN rm -rf test scripts
+RUN npm prune --production
 
 ###############################
 #      Runtime (node/npm)     #
