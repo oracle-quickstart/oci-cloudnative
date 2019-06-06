@@ -9,7 +9,7 @@ properly. These can be added as an `.env` file in the directory from which you'r
 executing commands.
 
 | Variable | Description  |
-|--|--|--|
+|---|---|
 | `OCI_TENANT_ID` | The _tenancy_ OCID |
 | `OCI_COMPARTMENT_ID` | The _compartment_ OCID |
 | `OCI_USER_ID` | The _user_ OCID with access to use resources in the compartment |
