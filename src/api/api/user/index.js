@@ -83,8 +83,11 @@
             }
             var data = JSON.parse(body);
             if (data.status_code !== 500 && data._embedded.card && data._embedded.card.length ) {
+                const card = data._embedded.card.pop(); // last
                 var resp = {
-                    "number": data._embedded.card.pop().longNum.slice(-4)
+                    id: card.id,
+                    expires: card.expires,
+                    number: card.longNum.slice(-4),
                 };
                 return helpers.respondSuccessBody(res, JSON.stringify(resp));
             }
