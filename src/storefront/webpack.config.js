@@ -4,8 +4,6 @@ const webpack = require('webpack');
 const pkg = require('./package.json');
 const buildDir = path.resolve(__dirname, 'build');
 
-//https://objectstorage.us-phoenix-1.oraclecloud.com/n/intvravipati/b/mushop-images/o/MU-US-001.png
-
 const { NODE_ENV, STATIC_ASSET_URL } = process.env;
 
 /**

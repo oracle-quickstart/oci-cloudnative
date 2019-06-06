@@ -40,5 +40,9 @@
     "imagemin-pngquant": "^6.0.0",
     "jest": "^24.8.0",
     "webpack-stream": "^5.2.1"
-  }
+  },
+  "browserslist": [
+    "last 2 versions",
+    "not ie <= 9"
+  ]
 }
