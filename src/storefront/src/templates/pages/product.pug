@@ -132,8 +132,10 @@ block pages
 
                         //- Add to cart button
                         div
+                          div(uk-spinner mu-hide="!adding")
                           button.uk-button.uk-button-primary.tm-product-add-button.tm-shine(
                             mu-attr mu-attr-disabled="!product.count"
+                            mu-hide="adding"
                             mu-click="atc"
                           ) add to cart
 

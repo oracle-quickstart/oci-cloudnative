@@ -95,13 +95,17 @@ export class UserController {
    * @param {*} address 
    */
   saveAddress(address) {
-    const { id } = this._address || {};
-    const { http } = this.mu;
     // the "backend" only supports one address
-    return Promise.resolve(id && http.delete(`/addresses/${id}`).catch())
-      .then(() => http.post('/addresses', address))
+    return Promise.resolve(this.deleteAddress(this._address).catch())
+      .then(() => this.mu.http.post('/addresses', address))
       .then(res => this._postRes(res))
       .then(() => this.address());
+  }
+
+  deleteAddress(address) {
+    const { id } = address || {};
+    return Promise.resolve(id && this.mu.http.delete(`/addresses/${id}`))
+      .then(() => this._setAddress(null));
   }
 
   /**
@@ -117,12 +121,17 @@ export class UserController {
    * store user card information
    */
   saveCard(card) {
-    const { id } = this._card || {};
-    const { http } = this.mu;
-    return Promise.resolve(id && http.delete(`/cards/${id}`).catch())
-      .then(() => http.post('/cards', card))
+    // the "backend" only supports one card
+    return Promise.resolve(this.deleteCard(this._card).catch())
+      .then(() => this.mu.http.post('/cards', card))
       .then(res => this._postRes(res))
       .then(() => this.card());
+  }
+
+  deleteCard(card) {
+    const { id } = card || {};
+    return Promise.resolve(id && this.mu.http.delete(`/cards/${id}`))
+      .then(() => this._setCard(null));
   }
 }
 
@@ -155,8 +164,15 @@ export const UserViewMixin = (ctor, attr, viewName) => class extends MuMx.compos
   _dataUpdate(prop, data) {
     // support callbacks as well: onProfile, onAddress, onCard
     const cbProp = 'on' + prop.charAt(0).toUpperCase() + prop.slice(1);
-    const cb = this._ctxAttrValue(cbProp) || (() => {});
-    return this.render({ [prop]: data }).then(cb);
+    const cb = this._ctxAttrValue(cbProp);
+    return this.render({ [prop]: data }).then(() => cb && cb(data));
+  }
+
+  loading(loading) {
+    return this.context.extend({ 
+      loading,
+      error: null,
+    });
   }
 }
 
@@ -201,13 +217,6 @@ export class UserToolbar extends MuMx.compose(null, [UserViewMixin, null, 'userT
     this.loading(false).extend('error', data);
   }
 
-  loading(loading) {
-    return this.context.extend({ 
-      loading,
-      error: null,
-    });
-  }
-
   submitAuth(form, e) {
     // console.log('SUBMIT AUTH', this.context._id);
     this.loading(true);
@@ -233,39 +242,40 @@ export class UserAddress extends MuMx.compose(null, [UserViewMixin, null, 'userA
   onInit() {
     this.subscribeOne(UserAddress, this.view, () => this.mu.user.address()) // fire GET address when attached
       .subscribe('user.address', this.mu.user, this._dataUpdate.bind(this, 'address')) // subscribe to address changes
-      .subscribe('addressForm', this.context, f => f && f // when form attaches
-        .on('submit', this.save.bind(this))
-        .on('change', this.change.bind(this)));
+      .subscribe('addressForm', this.context, f => f && // when form attaches
+        f.on('submit', this.save.bind(this))
+      );
   }
 
   onMount() {
+    this.editMode = this._ctxAttrBool('editing');
     this.context.extend({
       // state
       error: null,
       loading: false,
-      editing: this._ctxAttrBool('editing'),
+      editing: this.editMode,
       addressType: this._ctxProp('type') || 'home',
       legend: this._ctxProp('legend'),
       // actions
-      edit: this.edit.bind(this),
+      actions: {
+        edit: this.edit.bind(this),
+        delete: this.delete.bind(this),
+      }
     });
     
     super.onMount();
   }
 
   edit() {
-    this._toggleEdit = true;
-    this.render({ editing: true });
+    this.context.set('editing', true);
   }
 
-  loading(loading) {
-    this.context.set('loading', loading);
-  }
-
-  change(form) {
-    // keep form data in sync
-    // NOTE: address originally is set by subscriber('user.address')
-    this.context.set('address', form.getData());
+  delete() {
+    this.loading(true);
+    const address = this.context.get('address');
+    this.mu.user.deleteAddress(address)
+      .then(() => this.done())
+      .catch(() => this.loading(false));
   }
 
   save(form) {
@@ -277,13 +287,15 @@ export class UserAddress extends MuMx.compose(null, [UserViewMixin, null, 'userA
   }
 
   done(error, address) {
-    return this.render({
+    this.render({
       error,
       address,
       loading: false,
       success: !error,
-      editing: !!error || !this._toggleEdit,
+      editing: !!error || this.editMode,
     });
+
+    setTimeout(() => this.context.delete('success'), 1e3);
   }
 }
 
@@ -299,14 +311,18 @@ export class UserPayment extends MuMx.compose(null,
   }
 
   onMount() {
+    this.editMode = this._ctxAttrBool('editing');
     this.context.extend({
       // state
       error: null,
       loading: false,
-      editing: this._ctxAttrBool('editing'),
+      editing: this.editMode,
       legend: this._ctxProp('legend'),
       // actions
-      edit: this.edit.bind(this)
+      actions: {
+        edit: this.edit.bind(this),
+        delete: this.delete.bind(this),
+      }
     });
     
     super.onMount();
@@ -317,8 +333,12 @@ export class UserPayment extends MuMx.compose(null,
     this.render({ editing: true });
   }
 
-  loading(loading) {
-    this.context.set('loading', loading);
+  delete() {
+    this.loading(true);
+    const card = this.context.get('card');
+    this.mu.user.deleteCard(card)
+      .then(() => this.done())
+      .catch(() => this.loading(false));
   }
 
   save(form) {
@@ -330,13 +350,15 @@ export class UserPayment extends MuMx.compose(null,
   }
 
   done(error, card) {
-    return this.render({
+    this.render({
       error,
       card,
       loading: false,
       success: !error,
-      editing: !!error || !this._toggleEdit,
+      editing: !!error || this.editMode,
     });
+
+    setTimeout(() => this.context.delete('success'), 1e3);
   }
 }
 
