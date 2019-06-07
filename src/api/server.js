@@ -10,10 +10,12 @@ var express      = require("express")
   , orders       = require("./api/orders")
   , user         = require("./api/user")
   , metrics      = require("./api/metrics")
+  , health      = require("./api/health")
   , app          = express();
 
 app.use(helpers.rewriteSlash);
 app.use(metrics);
+app.use(health);
 app.use(session(config.session()));
 
 app.use(bodyParser.json());

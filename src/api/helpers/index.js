@@ -12,7 +12,6 @@
    * var app = express();
    * app.use(helpers.errorHandler);
    * */
-
   helpers.errorHandler = function(err, req, res, next) {
     var ret = {
       message: err.message,
@@ -21,6 +20,9 @@
     res.status(err.status || 500).send(ret);
   };
 
+  /**
+   * handle session logic
+   */
   helpers.sessionMiddleware = function(req, res, next) {
     if(!req.cookies.logged_in) {
       req.session.customerId = null;
@@ -79,11 +81,15 @@
     }.bind({res: res}));
   }
 
+  /**
+   * Get unique cart identifier for the session
+   * @param {object} req - express request
+   */
   helpers.getCartId = function(req) {
     var cartId = req.session.cartId || ulid.ulid();
     req.session.cartId = cartId;
     return cartId;
-  }
+  };
 
   /* TODO: Add documentation */
   helpers.getCustomerId = function(req, env) {
