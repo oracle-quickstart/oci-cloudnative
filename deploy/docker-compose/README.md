@@ -9,13 +9,13 @@ properly. These can be added as an `.env` file in the directory from which you'r
 executing commands.
 
 | Variable | Description  |
-|--|--|--|
+|---|---|
 | `OCI_TENANT_ID` | The _tenancy_ OCID |
 | `OCI_COMPARTMENT_ID` | The _compartment_ OCID |
 | `OCI_USER_ID` | The _user_ OCID with access to use resources in the compartment |
 | `OCI_REGION` | Region identifier |
 | `OCI_FINGERPRINT` | The fingerprint for `OCI_API_KEY` (See note) |
-| `OCI_API_KEY` | A `pem` formatted OCI API key associated with the user |
+| `OCI_API_KEY` | A `pem` formatted **string** OCI API key associated with the user |
 
 > Example `.env` file
 
