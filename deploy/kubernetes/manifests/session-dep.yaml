@@ -1,0 +1,34 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: session
+  labels:
+    name: session
+    layer: client
+  namespace: mushop
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: session
+        layer: client
+    spec:
+      containers:
+      - name: session
+        image: redis:alpine
+        ports:
+        - name: redis
+          containerPort: 6379
+        securityContext:
+          capabilities:
+            drop:
+              - all
+            add:
+              - CHOWN
+              - SETGID
+              - SETUID
+          readOnlyRootFilesystem: true
+      nodeSelector:
+        beta.kubernetes.io/os: linux

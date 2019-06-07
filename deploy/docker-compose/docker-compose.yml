@@ -62,8 +62,7 @@ services:
       - CHOWN
       - SETGID
       - SETUID
-      - DAC_OVERRIDE
-    read_only: false
+    read_only: true
     tmpfs:
       - /tmp:rw,noexec,nosuid
     environment:
