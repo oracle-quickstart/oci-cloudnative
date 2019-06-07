@@ -21,7 +21,7 @@ address = ":8080"
       [backends.web1.loadbalancer]
         method = "wrr"
       [backends.web1.servers.server1]
-        url = "http://storefront:80"
+        url = "http://storefront:8080"
 
   [frontends]
     [frontends.app1]

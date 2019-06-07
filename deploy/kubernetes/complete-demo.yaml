@@ -284,9 +284,9 @@ spec:
         imagePullPolicy: Always
         ports:
         - name: http
-          containerPort: 80
-        - name: status
           containerPort: 8080
+        - name: status
+          containerPort: 8888
         resources:
           limits:
             cpu: 300m
@@ -295,6 +295,8 @@ spec:
             cpu: 100m
             memory: 300Mi
         securityContext:
+          runAsNonRoot: true
+          runAsUser: 10001
           capabilities:
             drop:
               - all
@@ -303,8 +305,7 @@ spec:
               - CHOWN
               - SETGID
               - SETUID
-              - DAC_OVERRIDE
-          readOnlyRootFilesystem: false
+          readOnlyRootFilesystem: true
         livenessProbe:
           httpGet:
             path: /
@@ -313,6 +314,13 @@ spec:
           httpGet:
             path: /
             port: http
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp-volume
+      volumes:
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory
 ---
 apiVersion: v1
 kind: Service
@@ -328,7 +336,7 @@ spec:
     layer: client
   ports:
   - port: 80
-    targetPort: 80
+    targetPort: 8080
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
