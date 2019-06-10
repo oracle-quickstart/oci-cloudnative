@@ -7,10 +7,19 @@ export class MuUi {
   constructor() {
     this.kit = getGlobal(UI_GLOBAL);
     // this.view.on('attached', this.kit.update.bind(this.kit));
+    ['alert', 'dialog', 'confirm'].forEach(m => this[m] = msg => this.kit.modal[m](msg));
   }
 
   notification(msg, options) {
     return this.kit.notification(msg, options);
+  }
+
+  alert(msg) {
+    return this.kit.modal.alert(msg);
+  }
+
+  dialog(msg) {
+    return this.kit.modal.dialog(msg);
   }
 }
 

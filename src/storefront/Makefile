@@ -1,6 +1,7 @@
 IMAGE=mushop-dev-storefront
 
 API=http://api:3000
+PROJECT=mutest
 
 up: services test-image start
 
@@ -12,7 +13,7 @@ stop: kill-server
 
 # Brings the backend services up using Docker Compose
 services:
-	@docker-compose -p mutest -f test/docker-compose.yml up -d
+	@docker-compose -p $(PROJECT) -f test/docker-compose.yml up -d
 
 # Runs the application with browsersync in a Docker container
 start:
@@ -21,19 +22,21 @@ start:
 		--rm										\
 		--name $(IMAGE)     		\
 		-v $$PWD:/usr/src/app   \
-		-P                      \
 		-e NODE_ENV=development \
 		-e STATIC_ASSET_URL="https://objectstorage.us-phoenix-1.oraclecloud.com/n/intvravipati/b/mushop-images/o/" \
 		-e API_PROXY=$(API) 		\
 		-e PORT=3000            \
 		-p 3000:3000            \
-		--network mutest_default  \
+		--network ${PROJECT}_default  \
 		$(IMAGE) gulp
 
 # Removes the development container
 clean:
 	@if [ $$(docker ps -a -q -f name=$(IMAGE) | wc -l) -ge 1 ]; then docker rm -f $(IMAGE); fi
 	# @if [ $$(docker images -q $(IMAGE) | wc -l) -ge 1 ]; then docker rmi $(IMAGE); fi
+
+chaos:
+	@docker stop ${PROJECT}_carts_1
 
 # Builds the Docker image used for running tests
 test-image:
@@ -57,10 +60,10 @@ test-image:
 # 		$(IMAGE) /usr/src/app/test/e2e/runner.sh
 
 kill-services:
-	@docker-compose -p mutest -f test/docker-compose.yml down
+	@docker-compose -p $(PROJECT) -f test/docker-compose.yml down
 
 stop-services:
-	@docker-compose -p mutest -f test/docker-compose.yml stop
+	@docker-compose -p $(PROJECT) -f test/docker-compose.yml stop
 
 kill-server:
 	@if [ $$(docker ps -a -q -f name=$(IMAGE) | wc -l) -ge 1 ]; then docker rm -f $(IMAGE); fi

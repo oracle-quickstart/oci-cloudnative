@@ -430,7 +430,10 @@ export class SingleProduct extends MuMx.compose(null,
     ctx.set('adding', true);
     const done = () => ctx.set('adding', false);
     return this.mu.cart.add(item, 1)
-      .then(done).catch(done);
+      .then(done).catch(e => {
+        this.mu.ui.alert(`There was an error adding to cart. Please try again later.`);
+        done();
+      });
   }
 }
 
