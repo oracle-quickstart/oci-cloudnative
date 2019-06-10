@@ -20,7 +20,9 @@ main {
   position: relative;
   background: @global-background;
   z-index: @sticky-z-index - 1;
-  margin-bottom: @fixed-footer-reveal-height-sm; // allow for footer vis
+  @media (min-width: @breakpoint-tablet) {
+    margin-bottom: @fixed-footer-reveal-height-sm;
+  }
   @media (min-width: @breakpoint-medium) {
     margin-bottom: @fixed-footer-reveal-height;
   }
@@ -29,12 +31,13 @@ main {
   }
 
   + footer {
-    position: fixed;
-    // padding-top: @global-margin;
-    bottom: 0;
-    width: 100%;
     background: @global-secondary-background;
-    z-index: 0;
+    @media (min-width: @breakpoint-tablet) {
+      position: fixed;
+      z-index: 0;
+      bottom: 0;
+      width: 100%;
+    }
   }
 }
 
