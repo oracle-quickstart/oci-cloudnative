@@ -42,7 +42,8 @@ div.uk-navbar-container.tm-navbar-container(uk-sticky="cls-active: tm-navbar-con
                               a.uk-link-reset(href=(category.href + "?category=" + category.name) mu-route)
                                 if category.image
                                   img(class="uk-display-block uk-margin-auto uk-margin-bottom mu-category-image"
-                                      src= category.image
+                                      uk-img
+                                      data-src= category.image
                                       alt= category.name
                                       width="80"
                                       height="80")

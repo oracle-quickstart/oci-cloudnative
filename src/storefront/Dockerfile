@@ -25,7 +25,8 @@ RUN rm -rf /tmp/node_modules
 
 # copy source and build
 WORKDIR /usr/src/app
-COPY . .
+COPY src src
+COPY *.js* ./
 
 ARG STATIC_ASSET_URL
 ENV STATIC_ASSET_URL ${STATIC_ASSET_URL:-"https://objectstorage.us-phoenix-1.oraclecloud.com/n/intvravipati/b/mushop-images/o/"}

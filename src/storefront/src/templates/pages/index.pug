@@ -14,8 +14,9 @@ block default
       each item in promo
         li.mu-promo-container(style="background-color: " + item.background)
           figure.uk-height-1-1(uk-parallax="y: 0,250")
-            img.uk-animation-kenburns(src= item.image
-                alt= item.title)
+            img.uk-animation-kenburns(uk-img
+              data-src= item.image
+              alt= item.title)
             div.uk-container.uk-position-cover
               div.mu-promo-detail(class="uk-position-medium uk-position-" + item.position)
                 h2(class="uk-heading-medium uk-visible@m")= item.title
@@ -70,7 +71,7 @@ block default
   section.uk-section.uk-section-default.uk-section-small
     div.uk-container
       h2.uk-text-center Trending Now
-      div(mu-products template="productSlider.html" max="5")
+      div(mu-products template="productSlider.html" max="6")
       div.uk-margin.uk-text-center
         +link-to-all("shop all", "catalog.html")
 
