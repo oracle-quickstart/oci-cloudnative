@@ -58,24 +58,6 @@ public class ShippingController {
 	}
 	
 	/*
-	 * Handles GET request for "/shipping"
-	 */
-	@GetMapping("/shipping")
-	public String getShipping() {
-		//TODO: get shipments from streams
-		return "GET ALL Shipping Resource.";
-	}
-	
-	/*
-	 * Handles GET request for "/shipping/id"
-	 */
-	@GetMapping("/shipping/{id}")
-    public String getShippingById(@PathVariable String id) {
-		//TODO: get shipment from streams
-        return "GET Shipping Resource with id: " + id;
-    }
-	
-	/*
 	 * Handles POST request for "/shipping"
 	 * Expects the shipment data in JSON format:
 	 * {"id": <any string representing the id>, "name": <any string representing the product name> }
