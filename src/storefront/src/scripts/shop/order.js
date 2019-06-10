@@ -82,7 +82,6 @@ export class MuCheckout extends MuMx.compose(null,
   }
 
   setCheck(check, value) {
-    console.log(check, value);
     this.context.set(`checks.${check}`, value);
     this.refresh();
   }
@@ -104,7 +103,12 @@ export class MuCheckout extends MuMx.compose(null,
     return this.render({ submitting: true })
       .then(() => order.create())
       .then(o => router.go('orders', { id: o.id }))
-      .catch(error => this.render({ error, submitting: false }));
+      .catch(e => {
+        // console.log(error, JSON.stringify(error.response, null, 2));
+        const r = e.response || {};
+        const error = (r && r.data && r.data.message) || e;
+        this.render({ error, submitting: false });
+      });
   }
 }
 
