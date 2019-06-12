@@ -18,12 +18,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.oracle.bmc.streaming.model.PutMessagesDetailsEntry;
 
+import mushop.shipping.ShippingApplication;
 import mushop.shipping.entities.Shipment;
 import mushop.shipping.streams.StreamsPublisher;
 import shaded.com.oracle.oci.javasdk.org.apache.commons.lang3.StringUtils;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = ShippingApplication.class)
 public class ShippingApplicationTests {
 
 	@Autowired

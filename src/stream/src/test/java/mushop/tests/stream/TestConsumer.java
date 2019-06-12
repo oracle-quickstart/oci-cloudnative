@@ -15,10 +15,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.oracle.bmc.streaming.StreamClient;
 
 import mushop.stream.AppStartupRunner;
+import mushop.stream.StreamApplication;
 import mushop.stream.configuration.OciStreamsConfiguration;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(properties = {"job.autorun.enabled=false"})
+@SpringBootTest(properties = {"job.autorun.enabled=false"}, classes=StreamApplication.class)
 public class TestConsumer {
 
 	@Autowired
