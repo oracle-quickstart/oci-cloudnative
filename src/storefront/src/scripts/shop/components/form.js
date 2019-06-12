@@ -1,4 +1,4 @@
-import { Mu, MuMx } from '../../mu/mu';
+import { Mu, MuMx } from '../../mu';
 import { MuCtxSetterMixin } from '../../mu/bindings';
 
 export class MuForm extends MuMx.compose(null, [MuCtxSetterMixin, 'mu-form']) {

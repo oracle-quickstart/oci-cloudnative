@@ -155,11 +155,11 @@ main {
     margin-left: auto;
   }
 
-  :first-child {
+  > :first-child {
     margin-top: 0;
   }
 
-  :last-child {
+  > :last-child {
     margin-bottom: 0;
   }
 }
@@ -382,6 +382,45 @@ main {
     padding: 0 1rem;
     @media(min-width: @breakpoint-xlarge) {
       padding: 0;
+    }
+  }
+}
+
+// Services (Bounding boxes)
+// @mu-tech-grid: 50px;
+.mu-tech {
+  border: 2px dashed @global-color;
+  padding: @global-small-gutter;
+  box-sizing: border-box;
+  width: auto !important;
+
+  &.mu-tech-oci {
+    border-color: @color-red;
+    // left: 30%;
+    // height: 30%;
+    // @media (min-width: @breakpoint-medium) {
+    //   height: 24%;
+    // }
+  }
+  
+  &.mu-tech-oke {
+    border-color: @color-blue;
+    left: 0;
+    top: 32%;
+    margin: @global-small-margin;
+    height: auto;
+    @media (min-width: @breakpoint-medium) {
+      top: 24%;
+    }
+    img {
+      margin: @global-small-margin;
+    }
+  }
+
+  img {
+    max-height: 50px;
+    @media (min-width: @breakpoint-medium) {
+      max-height: 80px;
     }
   }
 }
@@ -1359,6 +1398,10 @@ li.mu-product-slider-item {
 
 .tm-ratio-16-9::before {
   padding-top: @ratio-16-9;
+}
+
+.tm-ratio-2-1::before {
+  padding-top: @ratio-2-1;
 }
 
 

@@ -1,5 +1,5 @@
 import { Mu, MuMx } from '../mu';
-import { MuCtxSingleAttrMixin, MuCtxAttrMixin, MuCtxInheritOnly } from '../bindings';
+import { MuCtxSingleAttrMixin, MuCtxAttrMixin, MuCtxInheritOnly, MxCtxAttrRefresh } from '../bindings';
 import { attrToSelector } from '../util';
 
 const LOGICAL_ATTR = {
@@ -14,33 +14,6 @@ const LOGICAL_ATTR = {
   // GLOBAL: 'mu-global',
 };
 
-
-/**
- * Mixin for single attribute context/refresh subscription
- * @param {*} ctor 
- * @param {*} attr 
- */
-const MxCtxAttrRefresh = (ctor, attr) => class extends MuCtxSingleAttrMixin(ctor, attr) {
-
-  onInit() {
-    this.refresh = this.refresh.bind(this);
-    return super.onInit && super.onInit();
-  }
-
-  onMount() {
-    this.context.always(this._ctxKey(), this.refresh);
-    return super.onMount && super.onMount();
-  }
-
-  onDispose() {
-    this.context.off(this._ctxKey(), this.refresh);
-    return super.onDispose && super.onDispose();
-  }
-
-  refresh() {
-
-  }
-}
 
 /**
  * MuIF micro - conditional display based on context property

@@ -11,8 +11,9 @@ const { NODE_ENV, STATIC_ASSET_URL } = process.env;
  */
 module.exports = {
   entry: {
-    uikit: ['./src/scripts/uikit.js'],
     app: ['./src/scripts/app.js'],
+    charts: ['./src/scripts/charts.js'],
+    uikit: ['./src/scripts/uikit.js'],
   },
   output: {
     path: buildDir,
