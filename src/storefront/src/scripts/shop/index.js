@@ -10,5 +10,7 @@ export * from './user';
 export * from './catalog';
 export * from './cart';
 export * from './order';
+export * from './about';
+export * from './components/chart';
 export * from './components/debug';
 export * from './components/form';

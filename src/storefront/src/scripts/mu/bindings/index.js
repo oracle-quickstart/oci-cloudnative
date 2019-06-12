@@ -78,6 +78,33 @@ export const MuCtxSingleAttrMixin = (ctor, attr) => class extends MuCtxAttrMixin
   }
 }
 
+/**
+ * Mixin for single attribute context/refresh subscription
+ * @param {*} ctor 
+ * @param {*} attr 
+ */
+export const MxCtxAttrRefresh = (ctor, attr) => class extends MuCtxSingleAttrMixin(ctor, attr) {
+
+  onInit() {
+    this.refresh = this.refresh.bind(this);
+    return super.onInit && super.onInit();
+  }
+
+  onMount() {
+    this.context.always(this._ctxKey(), this.refresh);
+    return super.onMount && super.onMount();
+  }
+
+  onDispose() {
+    this.context.off(this._ctxKey(), this.refresh);
+    return super.onDispose && super.onDispose();
+  }
+
+  refresh() {
+
+  }
+}
+
 
 /**
  * bind attributes to target props in the context
