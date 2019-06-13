@@ -18,6 +18,7 @@ const pages = {
   compare:    'compare.html',
   contact:    'contacts.html',
   delivery:   'delivery.html',
+  error:      'error.html',
   faq:        'faq.html',
   favorites:  'favorites.html',
   home:       'index.html',
@@ -30,13 +31,9 @@ const pages = {
 };
 
 const authPage = 'auth';
-const errPage = '50x';
+const errPage = 'error';
 const nfPage = '404';
 const restricted = ['personal', 'settings', 'orders', 'checkout'];
-
-function pageHref(page) {
-  return pages[page];
-}
 
 export class PageController {
   constructor(document) {
@@ -58,7 +55,7 @@ export class PageController {
   }
 
   _bindRouter() {
-    const { router } = this.mu;
+    const router = this.router();
 
     // register pages with the router
     Object.keys(pages).forEach(route => {
@@ -78,7 +75,7 @@ export class PageController {
 
   _aclGate(page, search, params) {
     const deny = this._isDeny(page);
-    console.log('ACL CHECK', page, { deny });
+    // console.log('ACL CHECK', page, { deny });
     if (deny) {
       this._authRedir = { page, search, params };
       this.mu.router.go(authPage, null, null, true);
@@ -88,10 +85,10 @@ export class PageController {
   }
 
   _aclUpdate(profile) {
-    const { router } = this.mu;
-    const auth = this._hasAuth = !!profile;
+    this._hasAuth = !!profile;
+    const router = this.router();
     const current = router.initial(nfPage);
-    console.log('ACL CHANGE', auth, current);
+    // console.log('ACL CHANGE', auth, current);
     const authRedir = this._authRedir; // case when auth was requried due to prior nav 
     if (authRedir) {
       this._authRedir = null; // clear 
@@ -104,6 +101,10 @@ export class PageController {
     }
   }
 
+  router() {
+    return this.mu.router;
+  }
+
   setPage(page) {
     this.document.title = `MuShop::${this.pageName(page)}`;
     this.emit('page', page);
@@ -114,15 +115,15 @@ export class PageController {
     return page.charAt(0).toUpperCase() + page.slice(1);
   }
   
-  update(page/*, search, params*/) {
-    return this.load(page).then(this.setPage.bind(this, page));
+  update(page, search, /*params*/) {
+    return this.load(page, search).then(this.setPage.bind(this, page));
   }
 
   /**
    * load a new page
    */
-  load(page) {
-    const url = pageHref(page);
+  load(page, search) {
+    const url = this.router().href(page, search);
     return this.view.load(url)
       .then(html => {
         const { root } = this.mu;
@@ -132,7 +133,7 @@ export class PageController {
         this.view.apply(root.element, (node ? node.innerHTML : html)); // swap root content
       }).catch(e => {
         console.error(page, e);
-        return page !== errPage ? this.load(errPage) : Promise.reject(e);
+        return page !== errPage ? this.router().go(errPage, { message: e.message }) : Promise.reject(e);
       });
   }
 

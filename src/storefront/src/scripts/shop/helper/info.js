@@ -9,19 +9,16 @@ export const TechType = {
     icon: 'oci.png',
     color: '#f80000',
   },
-  // DOCKER: {
-  //   name: 'Docker',
-  //   icon: 'docker.svg',
-  // },
+  EDGE: {
+    name: 'Oracle Edge Services',
+    icon: 'cdn.svg',
+    color: '#5F5F5F',
+  },
   OKE: {
     name: 'Oracle Container Engine',
     icon: 'k8s.png',
     color: '#00758f',
   },
-  // HELM: {
-  //   name: 'Helm',
-  //   icon: 'helm.svg',
-  // },
 };
 // add icon paths
 iconPrefix(TechType);
@@ -41,18 +38,23 @@ export const ServiceType = {
     name: 'Streaming',
     icon: 'streaming.svg',
   },
-  // LB: {
-  //   name: 'Load Balancer',
-  //   icon: 'lb.svg',
-  // },
-  // VCN: {
-  //   name: 'Virtual Cloud Network',
-  //   icon: 'vcn.svg',
-  // },
-  // WAF: {
-  //   name: 'Web Application Firewall',
-  //   icon: 'waf.svg',
-  // },
+  // edge/network
+  LB: {
+    name: 'Load Balancer',
+    icon: 'lb.svg',
+  },
+  VCN: {
+    name: 'Virtual Cloud Network',
+    icon: 'vcn.svg',
+  },
+  DNS: {
+    name: 'DNS',
+    icon: 'dns.svg',
+  },
+  WAF: {
+    name: 'Web Application Firewall',
+    icon: 'waf.svg',
+  },
   // container technology
   JAVA: {
     name: 'Java',
@@ -110,8 +112,18 @@ export const Services = {
     tech: TechType.OCI,
   },
   // Edge
+  DNS: {
+    name: 'DNS',
+    type: ServiceType.DNS,
+    tech: TechType.EDGE,
+  },
+  WAF: {
+    name: 'WAF',
+    type: ServiceType.WAF,
+    tech: TechType.EDGE,
+  },
   INGRESS: {
-    name: 'Ingress Controller',
+    name: 'Ingress',
     type: ServiceType.NGINX,
     tech: TechType.OKE,
   },
@@ -122,7 +134,7 @@ export const Services = {
     tech: TechType.OKE,
   },
   API: {
-    name: 'Client API',
+    name: 'REST API',
     type: ServiceType.NODE,
     tech: TechType.OKE,
   },
@@ -177,11 +189,15 @@ export const Services = {
  * Define service relationships
  */
 export const ServiceLinks = [
-  // ingress
+  // edge
+  { source: Services.DNS, target: Services.WAF },
+  { source: Services.DNS, target: Services.INGRESS, lineStyle: { type: 'dotted' } }, // insecure 
+  { source: Services.WAF, target: Services.INGRESS },
   { source: Services.INGRESS, target: Services.STORE },
   { source: Services.INGRESS, target: Services.API },
   // ui
-  { source: Services.STORE, target: Services.BUCKET },
+  // { source: Services.STORE, target: Services.BUCKET },
+  // { source: Services.STORE, target: Services.API },
   // api
   { source: Services.API, target: Services.SESSION },
   { source: Services.API, target: Services.CART },
