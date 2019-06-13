@@ -14,6 +14,7 @@ spec:
     hosts:
     - mushop.ateam.cloud
     - store.mushop.ateam.cloud
+    - secure.mushop.ateam.cloud
   rules:
   - host: mushop.ateam.cloud
     http:
@@ -26,7 +27,7 @@ spec:
         backend:
           serviceName: storefront
           servicePort: 80
-  - host: store.mushop.ateam.cloud
+  - host: secure.mushop.ateam.cloud
     http:
       paths:
       - path: /api
