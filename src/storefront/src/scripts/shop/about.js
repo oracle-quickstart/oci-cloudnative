@@ -152,7 +152,7 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
     // console.log('HERE', params, style);
     const orig = api.coord([ api.value(0), api.value(2) ]);
     const size = api.size([ api.value(1) - api.value(0), api.value(2)]);
-    console.log(orig, size);
+    // console.log(orig, size);
     return {
       style,
       type: 'rect',
@@ -202,7 +202,10 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
       .map(({source, target, ...rest}) => ({source: source.id, target: target.id, ...rest}));
 
     const options = this.chartOptions(data, links, categories);
-    this.context.set('services.chart', options);
+    this.context.set('services', {
+      list: data,
+      chart: options,
+    });
 
   }
 

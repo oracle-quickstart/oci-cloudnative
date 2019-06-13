@@ -386,8 +386,15 @@ main {
   }
 }
 
-// Services (Bounding boxes)
-// @mu-tech-grid: 50px;
+// Services
+// 
+.mu-service-table {
+  img {
+    height: 40px;
+    width: auto;
+  }
+}
+
 .mu-tech {
   border: 2px dashed @global-muted-color;
   padding: @global-small-gutter;
@@ -1506,6 +1513,9 @@ li.mu-product-slider-item {
   filter: grayscale(100%) opacity(50%);
 
   &:hover {
+    filter: none;
+  }
+  tr:hover & {
     filter: none;
   }
 }
