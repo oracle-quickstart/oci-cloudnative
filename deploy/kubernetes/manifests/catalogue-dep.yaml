@@ -1,10 +1,11 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: catalogue
   labels:
     name: catalogue
-  namespace: mushop-local
+  namespace: mushop
 spec:
   replicas: 1
   selector:
@@ -21,6 +22,7 @@ spec:
       containers:
         - name: catalogue
           image: phx.ocir.io/intvravipati/mushop/catalogue:0.0.1
+          imagePullPolicy: Always
           command: ["/app"]
           args:
           - -port=80
@@ -70,18 +72,3 @@ spec:
             limits:
               cpu: 200m
               memory: 128Mi
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: catalogue
-  labels:
-    name: catalogue
-  namespace: mushop-local
-spec:
-  ports:
-    # the port that this service should serve on
-  - port: 80
-    targetPort: 80
-  selector:
-    name: catalogue
