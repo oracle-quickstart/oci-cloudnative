@@ -97,7 +97,7 @@ export class UserController {
   saveAddress(address) {
     // the "backend" only supports one address
     return Promise.resolve(this.deleteAddress(this._address).catch())
-      .then(() => this.mu.http.post('/addresses', address))
+      .then(() => this.mu.http.post('/address', address))
       .then(res => this._postRes(res))
       .then(() => this.address());
   }
@@ -123,7 +123,7 @@ export class UserController {
   saveCard(card) {
     // the "backend" only supports one card
     return Promise.resolve(this.deleteCard(this._card).catch())
-      .then(() => this.mu.http.post('/cards', card))
+      .then(() => this.mu.http.post('/card', card))
       .then(res => this._postRes(res))
       .then(() => this.card());
   }
