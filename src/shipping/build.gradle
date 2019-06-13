@@ -31,10 +31,12 @@ dependencies {
 	implementation 'io.prometheus:simpleclient_spring_boot:0.0.21'
 	implementation 'io.prometheus:simpleclient_hotspot:0.0.21'
 	implementation 'io.prometheus:simpleclient_servlet:0.0.21'
-	implementation 'com.oracle.oci:oci-java-sdk:1.5.0'
+	implementation 'com.oracle.oci:oci-java-sdk:1.5.9'
 	implementation 'org.apache.commons:commons-lang3:3.8.1'
 	implementation 'org.bouncycastle:bcpkix-jdk15on:1.60'
 	implementation 'org.json:json:20180130'
+	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+	implementation 'io.springfox:springfox-swagger2:2.9.2'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
