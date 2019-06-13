@@ -64,7 +64,7 @@
 		<dependency>
 			<groupId>com.oracle.oci</groupId>
   			<artifactId>oci-java-sdk</artifactId>
-  			<version>1.5.0</version>
+  			<version>1.5.9</version>
  		 </dependency>
  		 <dependency>
 			<groupId>org.apache.commons</groupId>

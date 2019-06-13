@@ -21,11 +21,12 @@ ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 # Setup OCI libraries
 ARG GROUP_ID="com.oracle.oci"
 ARG ARTIFACT_ID="oci-java-sdk"
-ARG ARTIFACT_VERSION="1.5.0"
+ARG ARTIFACT_VERSION="1.5.9"
 
 ## Install dependencies to the local repo and cleanup
-COPY ./libs/oci-java-sdk-full-shaded-1.5.0.jar /root/oci-java-sdk-full-shaded-1.5.0.jar
-RUN mvn install:install-file -Dfile=/root/oci-java-sdk-full-shaded-1.5.0.jar -DgroupId=${GROUP_ID} -DartifactId=${ARTIFACT_ID} -Dversion=${ARTIFACT_VERSION} -Dpackaging=jar &&  rm /root/*.jar
+ADD https://github.com/oracle/oci-java-sdk/releases/download/v${ARTIFACT_VERSION}/${ARTIFACT_ID}.zip /root/
+RUN cd /root && unzip -j ${ARTIFACT_ID}.zip shaded/lib/${ARTIFACT_ID}-full-shaded-${ARTIFACT_VERSION}.jar
+RUN mvn install:install-file -Dfile=/root/${ARTIFACT_ID}-full-shaded-${ARTIFACT_VERSION}.jar -DgroupId=${GROUP_ID} -DartifactId=${ARTIFACT_ID} -Dversion=${ARTIFACT_VERSION} -Dpackaging=jar &&  rm /root/*.jar
 
 #
 # create source folder
