@@ -525,24 +525,24 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    run: ship
-  name: ship
+    run: shipping
+  name: shipping
   namespace: mushop
 spec:
   replicas: 1
   selector:
     matchLabels:
-      run: ship
+      run: shipping
   template:
     metadata:
       labels:
-        run: ship
+        run: shipping
     spec:
       imagePullSecrets:
         - name: ocirsecret        
       containers:
       - image: phx.ocir.io/intvravipati/mushop/shipping:0.0.4
-        name: ship
+        name: shipping
         env:
          - name: OCI_TENANT_ID
            valueFrom:
@@ -582,8 +582,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    run: ship
-  name: ship
+    run: shipping
+  name: shipping
   namespace: mushop
 spec:
   ports:
@@ -592,7 +592,7 @@ spec:
     targetPort: 80
     #nodePort: 30123
   selector:
-    run: ship
+    run: shipping
   type: NodePort
 ---
 apiVersion: extensions/v1beta1
