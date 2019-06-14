@@ -365,7 +365,6 @@ spec:
            value: -Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
          - name: JDBC_URL
            value: "jdbc:oracle:thin:@appdb_tp?TNS_ADMIN=./config"
-         
          - name: OADB_USER
            valueFrom:
              secretKeyRef:
@@ -462,7 +461,6 @@ metadata:
   name: payment
   labels:
     name: payment
-
 spec:
   ports:
   - port: 80
@@ -606,7 +604,6 @@ metadata:
   labels:
     run: shipping
   name: shipping
-
 spec:
   ports:
   - port: 80
@@ -616,7 +613,6 @@ spec:
     run: shipping
   type: NodePort
 ---
-
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -635,7 +631,6 @@ spec:
       containers:
       - name: user-db
         image: phx.ocir.io/intvravipati/mushop/user-db:0.0.1
-
         ports:
         - name: mongo
           containerPort: 27017
