@@ -184,7 +184,7 @@ spec:
   selector:
     name: carts
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: catalogue
@@ -193,49 +193,70 @@ metadata:
   namespace: mushop
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      name: catalogue
   template:
     metadata:
       labels:
         name: catalogue
     spec:
+      terminationGracePeriodSeconds: 5
       imagePullSecrets:
         - name: ocirsecret    
       containers:
-      - name: catalogue
-        image: phx.ocir.io/intvravipati/mushop/catalogue:0.0.1
-        ports:
-        - containerPort: 80
-        env:
-         - name: ZIPKIN
-           value: zipkin.jaeger.svc.cluster.local
-         - name: JDBC_URL
-           value: "jdbc:oracle:thin:@mcatalogue_tp?TNS_ADMIN=./config"
-         - name: OADB_USER
-           valueFrom:
-             secretKeyRef:
-               name: atp-secret
-               key: catalogue_oadb_user
-         - name: OADB_PW
-           valueFrom:
-             secretKeyRef:
-               name: atp-secret
-               key: catalogue_oadb_pw
-         - name: OADB_SERVICE
-           valueFrom:
-             secretKeyRef:
-               name: atp-secret
-               key: catalogue_oadb_service 
-        securityContext:
-          runAsNonRoot: true
-          runAsUser: 10001
-          capabilities:
-            drop:
-              - all
-            add:
-              - NET_BIND_SERVICE
-          readOnlyRootFilesystem: true
-      nodeSelector:
-        beta.kubernetes.io/os: linux
+        - name: catalogue
+          image: phx.ocir.io/intvravipati/mushop/catalogue:0.0.1
+          imagePullPolicy: Always
+          command: ["/app"]
+          args:
+          - -port=80
+          ports:
+          - containerPort: 80
+          env:
+          - name: ZIPKIN
+            value: zipkin.jaeger.svc.cluster.local
+          - name: OADB_USER
+            valueFrom:
+              secretKeyRef:
+                name: atp-secret
+                key: catalogue_oadb_user
+          - name: OADB_PW
+            valueFrom:
+              secretKeyRef:
+                name: atp-secret
+                key: catalogue_oadb_pw
+          - name: OADB_SERVICE
+            valueFrom:
+              secretKeyRef:
+                name: atp-secret
+                key: catalogue_oadb_service 
+          securityContext:
+            capabilities:
+              drop:
+                - all
+              add:
+                - NET_BIND_SERVICE
+            readOnlyRootFilesystem: true
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 300
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 180
+            periodSeconds: 3          
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
 ---
 apiVersion: v1
 kind: Service
@@ -398,7 +419,6 @@ spec:
   selector:
     name: orders
 ---
-# payment = Sherwood
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -413,20 +433,39 @@ spec:
       labels:
         name: payment
     spec:
+      imagePullSecrets:
+        - name: ocirsecret
       containers:
       - name: payment
-        image: weaveworksdemos/payment:0.4.3
+        image: phx.ocir.io/intvravipati/mushop/payment:0.0.1
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 99m
+            memory: 100Mi
         ports:
         - containerPort: 80
         securityContext:
-          runAsNonRoot: true
-          runAsUser: 10001
           capabilities:
             drop:
               - all
             add:
               - NET_BIND_SERVICE
           readOnlyRootFilesystem: true
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 300
+          periodSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 180
+          periodSeconds: 3
       nodeSelector:
         beta.kubernetes.io/os: linux
 ---
@@ -439,7 +478,6 @@ metadata:
   namespace: mushop
 spec:
   ports:
-    # the port that this service should serve on
   - port: 80
     targetPort: 80
   selector:
@@ -590,10 +628,66 @@ spec:
   - port: 80
     protocol: TCP
     targetPort: 80
-    #nodePort: 30123
   selector:
     run: shipping
   type: NodePort
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: user-db
+  labels:
+    name: user-db
+  namespace: mushop
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: user-db
+    spec:
+      imagePullSecrets:
+        - name: ocirsecret
+      containers:
+      - name: user-db
+        image: phx.ocir.io/intvravipati/mushop/user-db:0.0.1
+
+        ports:
+        - name: mongo
+          containerPort: 27017
+        securityContext:
+          capabilities:
+            drop:
+              - all
+            add:
+              - CHOWN
+              - SETGID
+              - SETUID
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp-volume
+      volumes:
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-db
+  labels:
+    name: user-db
+  namespace: mushop
+spec:
+  ports:
+  - port: 27017
+    targetPort: 27017
+  selector:
+    name: user-db
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -609,13 +703,22 @@ spec:
       labels:
         name: user
     spec:
+      imagePullSecrets:
+        - name: ocirsecret
       containers:
       - name: user
-        image: weaveworksdemos/user:0.4.7
+        image: phx.ocir.io/intvravipati/mushop/user:0.0.1
+        resources:
+          limits:
+            cpu: 300m
+            memory: 100Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
         ports:
         - containerPort: 80
         env:
-        - name: MONGO_HOST
+        - name: mongo
           value: user-db:27017
         securityContext:
           runAsNonRoot: true
@@ -626,6 +729,18 @@ spec:
             add:
               - NET_BIND_SERVICE
           readOnlyRootFilesystem: true
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 300
+          periodSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 180
+          periodSeconds: 3
       nodeSelector:
         beta.kubernetes.io/os: linux
 ---
@@ -642,3 +757,4 @@ spec:
     targetPort: 80
   selector:
     name: user
+
