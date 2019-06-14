@@ -51,11 +51,7 @@ kubectl create secret generic atp-secret \
 --from-literal=carts_oadb_service="mcarts_tp" \
 --from-literal=orders_oadb_user="orders_user" \
 --from-literal=orders_oadb_pw="xxxxxx" \
---from-literal=orders_oadb_service="morders_tp" \
---from-file=orders_keystore=Wallet_morders/keystore.jks \
---from-file=orders_truststore=Wallet_morders/truststore.jks \
---from-file=carts_keystore=Wallet_mcarts/keystore.jks \
---from-file=carts_truststore=Wallet_mcarts/truststore.jks
+--from-literal=orders_oadb_service="morders_tp"
 ```
 
 Secret for OSS access:
