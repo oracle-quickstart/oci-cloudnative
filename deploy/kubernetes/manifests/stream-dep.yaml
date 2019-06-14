@@ -14,8 +14,6 @@ spec:
       labels:
         run: stream
     spec:
-      imagePullSecrets:
-        - name: ocirsecret    
       containers:
       - image: phx.ocir.io/intvravipati/mushop/stream:0.0.1
         name: stream

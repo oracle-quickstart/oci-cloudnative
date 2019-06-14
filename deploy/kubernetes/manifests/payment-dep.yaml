@@ -12,8 +12,6 @@ spec:
       labels:
         name: payment
     spec:
-      imagePullSecrets:
-        - name: ocirsecret
       containers:
       - name: payment
         image: phx.ocir.io/intvravipati/mushop/payment:0.0.1

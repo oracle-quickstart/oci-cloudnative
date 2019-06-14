@@ -14,8 +14,6 @@ spec:
         name: api
         layer: client
     spec:
-      imagePullSecrets:
-        - name: ocirsecret
       containers:
       - name: api
         image: phx.ocir.io/intvravipati/mushop/api:1

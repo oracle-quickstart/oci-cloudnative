@@ -11,8 +11,6 @@ spec:
       labels:
         name: carts
     spec:
-      imagePullSecrets:
-        - name: ocirsecret    
       containers:
       - name: carts
         image: phx.ocir.io/intvravipati/mushop/carts:1.0.0

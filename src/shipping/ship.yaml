@@ -13,9 +13,7 @@ spec:
     metadata:
       labels:
         run: ship
-    spec:
-      imagePullSecrets:
-        - name: ocirsecret        
+    spec:   
       containers:
       - image: phx.ocir.io/intvravipati/mushop/shipping:0.0.4
         name: ship
