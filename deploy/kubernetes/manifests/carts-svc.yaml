@@ -4,7 +4,6 @@ metadata:
   name: carts
   labels:
     name: carts
-  namespace: mushop
 spec:
   ports:
   - port: 80

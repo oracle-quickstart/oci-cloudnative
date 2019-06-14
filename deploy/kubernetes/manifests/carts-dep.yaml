@@ -4,7 +4,6 @@ metadata:
   name: carts
   labels:
     name: carts
-  namespace: mushop
 spec:
   replicas: 1
   template:

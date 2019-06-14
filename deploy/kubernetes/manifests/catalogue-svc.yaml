@@ -5,7 +5,6 @@ metadata:
   name: catalogue
   labels:
     name: catalogue
-  namespace: mushop
 spec:
   ports:
   - port: 80

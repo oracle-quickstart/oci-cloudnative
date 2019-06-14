@@ -4,7 +4,6 @@ metadata:
   labels:
     run: stream
   name: stream
-  namespace: mushop
 spec:
   replicas: 1
   selector:

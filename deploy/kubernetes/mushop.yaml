@@ -6,7 +6,6 @@ metadata:
   labels:
     name: api
     layer: client
-  namespace: mushop
 spec:
   replicas: 1
   template:
@@ -59,7 +58,6 @@ metadata:
   labels:
     name: api
     layer: client
-  namespace: mushop
 spec:
   selector:
     name: api
@@ -75,7 +73,6 @@ metadata:
   labels:
     name: session
     layer: client
-  namespace: mushop
 spec:
   replicas: 1
   template:
@@ -109,7 +106,6 @@ metadata:
   labels:
     name: session
     layer: client
-  namespace: mushop
 spec:
   ports:
   - port: 6379
@@ -123,7 +119,6 @@ metadata:
   name: carts
   labels:
     name: carts
-  namespace: mushop
 spec:
   replicas: 1
   template:
@@ -176,7 +171,6 @@ metadata:
   name: carts
   labels:
     name: carts
-  namespace: mushop
 spec:
   ports:
   - port: 80
@@ -190,7 +184,6 @@ metadata:
   name: catalogue
   labels:
     name: catalogue
-  namespace: mushop
 spec:
   replicas: 1
   selector:
@@ -264,7 +257,6 @@ metadata:
   name: catalogue
   labels:
     name: catalogue
-  namespace: mushop
 spec:
   ports:
   - port: 80
@@ -279,7 +271,6 @@ metadata:
   labels:
     name: storefront
     layer: client
-  namespace: mushop
 spec:
   replicas: 1
   template:
@@ -341,7 +332,6 @@ metadata:
   labels:
     name: storefront
     layer: client
-  namespace: mushop
 spec:
   selector:
     name: storefront
@@ -356,7 +346,6 @@ metadata:
   name: orders
   labels:
     name: orders
-  namespace: mushop
 spec:
   replicas: 1
   template:
@@ -376,7 +365,6 @@ spec:
            value: -Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
          - name: JDBC_URL
            value: "jdbc:oracle:thin:@appdb_tp?TNS_ADMIN=./config"
-         
          - name: OADB_USER
            valueFrom:
              secretKeyRef:
@@ -410,7 +398,6 @@ metadata:
   name: orders
   labels:
     name: orders
-  namespace: mushop
 spec:
   ports:
     # the port that this service should serve on
@@ -425,7 +412,6 @@ metadata:
   name: payment
   labels:
     name: payment
-  namespace: mushop
 spec:
   replicas: 1
   template:
@@ -448,8 +434,6 @@ spec:
         ports:
         - containerPort: 80
         securityContext:
-          runAsNonRoot: true
-          runAsUser: 10001
           capabilities:
             drop:
               - all
@@ -477,7 +461,6 @@ metadata:
   name: payment
   labels:
     name: payment
-  namespace: mushop
 spec:
   ports:
   - port: 80
@@ -491,7 +474,6 @@ metadata:
   labels:
     run: stream
   name: stream
-  namespace: mushop
 spec:
   replicas: 1
   selector:
@@ -550,7 +532,6 @@ metadata:
   name: stream
   annotations:
     prometheus.io/path: "/prometheus"
-  namespace: mushop
 spec:
   ports:
   - port: 80
@@ -567,7 +548,6 @@ metadata:
   labels:
     run: shipping
   name: shipping
-  namespace: mushop
 spec:
   replicas: 1
   selector:
@@ -624,7 +604,6 @@ metadata:
   labels:
     run: shipping
   name: shipping
-  namespace: mushop
 spec:
   ports:
   - port: 80
@@ -634,14 +613,12 @@ spec:
     run: shipping
   type: NodePort
 ---
-
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: user-db
   labels:
     name: user-db
-  namespace: mushop
 spec:
   replicas: 1
   template:
@@ -654,7 +631,6 @@ spec:
       containers:
       - name: user-db
         image: phx.ocir.io/intvravipati/mushop/user-db:0.0.1
-
         ports:
         - name: mongo
           containerPort: 27017
@@ -683,7 +659,7 @@ metadata:
   name: user-db
   labels:
     name: user-db
-  namespace: mushop
+
 spec:
   ports:
   - port: 27017
@@ -697,7 +673,6 @@ metadata:
   name: user
   labels:
     name: user
-  namespace: mushop
 spec:
   replicas: 1
   template:
@@ -752,7 +727,6 @@ metadata:
   name: user
   labels:
     name: user
-  namespace: mushop
 spec:
   ports:
   - port: 80
