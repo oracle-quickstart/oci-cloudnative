@@ -51,7 +51,7 @@ spec:
               name: streams-secret
               key: oci_compartment_id
         ports:
-        - containerPort: 8080
+        - containerPort: 80
           protocol: TCP
 ---
 apiVersion: v1
