@@ -37,9 +37,9 @@ Detailed instructions are found in this [document](https://docs.cloud.oracle.com
 * Create the scripts below.
 
 ## Environment Setup
-In order to connect to external services such as Autonomous Transaction Processing (ATP) or Oracle Streaming Services (OSS), it's recommended that you create the following scripts to populate environment variables. 
+In order to connect to external services such as Autonomous Transaction Processing (ATP) or Oracle Streaming Services (OSS), you will need to create the following secrets. These can be in a script if you prefer.
 
-create-atp-secret.sh:
+Secret for ATP access:
 ```text
 kubectl create secret generic atp-secret \
 --from-literal=catalogue_oadb_user="catalogue_user" \
@@ -57,8 +57,7 @@ kubectl create secret generic atp-secret \
 --from-file=carts_truststore=Wallet_mcarts/truststore.jks
 ```
 
-
-create-streams-secret.sh:
+Secret for OSS access:
 ```text
 kubectl create secret generic streams-secret \
 --from-literal=oci_compartment_id="<your compartment id>" \
