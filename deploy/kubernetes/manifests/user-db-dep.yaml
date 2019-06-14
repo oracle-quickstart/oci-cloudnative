@@ -12,8 +12,6 @@ spec:
       labels:
         name: user-db
     spec:
-      imagePullSecrets:
-        - name: ocirsecret
       containers:
       - name: user-db
         image: phx.ocir.io/intvravipati/mushop/user-db:0.0.1

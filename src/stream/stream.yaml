@@ -4,7 +4,6 @@ metadata:
   labels:
     run: stream
   name: stream
-  namespace: mushop
 spec:
   replicas: 1
   selector:
@@ -14,9 +13,7 @@ spec:
     metadata:
       labels:
         run: stream
-    spec:
-      imagePullSecrets:
-        - name: ocirsecret     
+    spec: 
       containers:
       - image: phx.ocir.io/intvravipati/mushop/stream:0.0.1
         name: stream
@@ -61,7 +58,6 @@ metadata:
   labels:
     run: stream
   name: stream
-  namespace: mushop
 spec:
   ports:
   - port: 80

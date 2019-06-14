@@ -16,8 +16,6 @@ spec:
         name: catalogue
     spec:
       terminationGracePeriodSeconds: 5
-      imagePullSecrets:
-        - name: ocirsecret    
       containers:
         - name: catalogue
           image: phx.ocir.io/intvravipati/mushop/catalogue:0.0.1

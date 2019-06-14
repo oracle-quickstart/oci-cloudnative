@@ -4,7 +4,6 @@ metadata:
   name: catalogue
   labels:
     name: catalogue
-  namespace: mushop-local
 spec:
   replicas: 1
   selector:
@@ -16,8 +15,6 @@ spec:
         name: catalogue
     spec:
       terminationGracePeriodSeconds: 5
-      imagePullSecrets:
-        - name: ocirsecret    
       containers:
         - name: catalogue
           image: phx.ocir.io/intvravipati/mushop/catalogue:0.0.1
@@ -77,7 +74,6 @@ metadata:
   name: catalogue
   labels:
     name: catalogue
-  namespace: mushop-local
 spec:
   ports:
     # the port that this service should serve on

@@ -1,5 +1,24 @@
 ---
 apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: mushop-store
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /api
+        backend:
+          serviceName: api
+          servicePort: 80
+      - path: /
+        backend:
+          serviceName: storefront
+          servicePort: 80
+---
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: api
@@ -14,8 +33,6 @@ spec:
         name: api
         layer: client
     spec:
-      imagePullSecrets:
-        - name: ocirsecret
       containers:
       - name: api
         image: phx.ocir.io/intvravipati/mushop/api:1
@@ -126,8 +143,6 @@ spec:
       labels:
         name: carts
     spec:
-      imagePullSecrets:
-        - name: ocirsecret    
       containers:
       - name: carts
         image: phx.ocir.io/intvravipati/mushop/carts:1.0.0
@@ -195,8 +210,6 @@ spec:
         name: catalogue
     spec:
       terminationGracePeriodSeconds: 5
-      imagePullSecrets:
-        - name: ocirsecret    
       containers:
         - name: catalogue
           image: phx.ocir.io/intvravipati/mushop/catalogue:0.0.1
@@ -279,8 +292,6 @@ spec:
         name: storefront
         layer: client
     spec:
-      imagePullSecrets:
-        - name: ocirsecret
       containers:
       - name: storefront
         image: phx.ocir.io/intvravipati/mushop/storefront:1
@@ -352,9 +363,7 @@ spec:
     metadata:
       labels:
         name: orders
-    spec:
-      imagePullSecrets:
-        - name: ocirsecret    
+    spec: 
       containers:
       - name: orders
         image: phx.ocir.io/intvravipati/mushop/orders:1.0.0
@@ -419,8 +428,6 @@ spec:
       labels:
         name: payment
     spec:
-      imagePullSecrets:
-        - name: ocirsecret
       containers:
       - name: payment
         image: phx.ocir.io/intvravipati/mushop/payment:0.0.1
@@ -484,8 +491,6 @@ spec:
       labels:
         run: stream
     spec:
-      imagePullSecrets:
-        - name: ocirsecret    
       containers:
       - image: phx.ocir.io/intvravipati/mushop/stream:0.0.1
         name: stream
@@ -557,9 +562,7 @@ spec:
     metadata:
       labels:
         run: shipping
-    spec:
-      imagePullSecrets:
-        - name: ocirsecret        
+    spec:       
       containers:
       - image: phx.ocir.io/intvravipati/mushop/shipping:0.0.4
         name: shipping
@@ -626,8 +629,6 @@ spec:
       labels:
         name: user-db
     spec:
-      imagePullSecrets:
-        - name: ocirsecret
       containers:
       - name: user-db
         image: phx.ocir.io/intvravipati/mushop/user-db:0.0.1
@@ -659,7 +660,6 @@ metadata:
   name: user-db
   labels:
     name: user-db
-
 spec:
   ports:
   - port: 27017
@@ -680,8 +680,6 @@ spec:
       labels:
         name: user
     spec:
-      imagePullSecrets:
-        - name: ocirsecret
       containers:
       - name: user
         image: phx.ocir.io/intvravipati/mushop/user:0.0.1

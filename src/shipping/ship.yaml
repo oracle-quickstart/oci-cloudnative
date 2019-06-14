@@ -4,7 +4,6 @@ metadata:
   labels:
     run: ship
   name: ship
-  namespace: mushop
 spec:
   replicas: 1
   selector:
@@ -14,9 +13,7 @@ spec:
     metadata:
       labels:
         run: ship
-    spec:
-      imagePullSecrets:
-        - name: ocirsecret        
+    spec:   
       containers:
       - image: phx.ocir.io/intvravipati/mushop/shipping:0.0.4
         name: ship
@@ -61,7 +58,6 @@ metadata:
   labels:
     run: ship
   name: ship
-  namespace: mushop
 spec:
   ports:
   - port: 80

@@ -14,8 +14,6 @@ spec:
         name: storefront
         layer: client
     spec:
-      imagePullSecrets:
-        - name: ocirsecret
       containers:
       - name: storefront
         image: phx.ocir.io/intvravipati/mushop/storefront:1
