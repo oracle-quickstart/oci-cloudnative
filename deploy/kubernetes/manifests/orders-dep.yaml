@@ -1,0 +1,53 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: orders
+  labels:
+    name: orders
+  namespace: mushop
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: orders
+    spec:
+      imagePullSecrets:
+        - name: ocirsecret    
+      containers:
+      - name: orders
+        image: phx.ocir.io/intvravipati/mushop/orders:1.0.0
+        env:
+         - name: ZIPKIN
+           value: zipkin.jaeger.svc.cluster.local
+         - name: JAVA_OPTS
+           value: -Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+         - name: JDBC_URL
+           value: "jdbc:oracle:thin:@appdb_tp?TNS_ADMIN=./config"
+         
+         - name: OADB_USER
+           valueFrom:
+             secretKeyRef:
+               name: atp-secret
+               key: orders_oadb_user
+         - name: OADB_PW
+           valueFrom:
+             secretKeyRef:
+               name: atp-secret
+               key: orders_oadb_pw
+         - name: OADB_SERVICE
+           valueFrom:
+             secretKeyRef:
+               name: atp-secret
+               key: orders_oadb_service   
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp-volume
+      volumes:
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory
+      nodeSelector:
+        beta.kubernetes.io/os: linux
