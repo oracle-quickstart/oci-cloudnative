@@ -2,24 +2,23 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    run: queuemaster
-  name: queuemaster
-  namespace: mushop
+    run: stream
+  name: stream
 spec:
   replicas: 1
   selector:
     matchLabels:
-      run: queuemaster
+      run: stream
   template:
     metadata:
       labels:
-        run: queuemaster
+        run: stream
     spec:
       imagePullSecrets:
-        - name: ocirsecret     
+        - name: ocirsecret    
       containers:
-      - image: phx.ocir.io/intvravipati/mushop/queuemaster:0.0.4
-        name: queuemaster
+      - image: phx.ocir.io/intvravipati/mushop/stream:0.0.1
+        name: stream
         env:
          - name: OCI_TENANT_ID
            valueFrom:
@@ -52,7 +51,7 @@ spec:
               name: streams-secret
               key: oci_compartment_id
         ports:
-        - containerPort: 80
+        - containerPort: 8080
           protocol: TCP
 ---
 apiVersion: v1
@@ -61,7 +60,6 @@ metadata:
   labels:
     run: queuemaster
   name: queuemaster
-  namespace: mushop
 spec:
   ports:
   - port: 80

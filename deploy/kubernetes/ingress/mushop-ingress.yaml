@@ -2,7 +2,6 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: mushop-ingress
-  namespace: mushop
   annotations:
     ingress.kubernetes.io/ssl-redirect: "true"
     kubernetes.io/ingress.class: nginx

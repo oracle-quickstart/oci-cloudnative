@@ -659,7 +659,10 @@ metadata:
   name: user-db
   labels:
     name: user-db
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 spec:
   ports:
   - port: 27017
