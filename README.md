@@ -40,31 +40,33 @@ Detailed instructions are found in this [document](https://docs.cloud.oracle.com
 In order to connect to external services such as Autonomous Transaction Processing (ATP) or Oracle Streaming Services (OSS), it's recommended that you create the following scripts to populate environment variables. 
 
 create-atp-secret.sh:
-
-kubectl create secret generic atp-secret \\\
---from-literal=catalogue_oadb_user="catalogue_user" \\\
---from-literal=catalogue_oadb_pw="default_Password1" \\\
---from-literal=catalogue_oadb_service="mcatalogue_tp" \\\
---from-literal=carts_oadb_user="carts_user" \\\
---from-literal=carts_oadb_pw="Default_Password123#" \\\
---from-literal=carts_oadb_service="mcarts_tp" \\\
---from-literal=orders_oadb_user="orders_user" \\\
---from-literal=orders_oadb_pw="Default_Password123#" \\\
---from-literal=orders_oadb_service="morders_tp" \\\
---from-file=orders_keystore=Wallet_morders/keystore.jks \\\
---from-file=orders_truststore=Wallet_morders/truststore.jks \\\
---from-file=carts_keystore=Wallet_mcarts/keystore.jks \\\
+```text
+kubectl create secret generic atp-secret \
+--from-literal=catalogue_oadb_user="catalogue_user" \
+--from-literal=catalogue_oadb_pw="default_Password1" \
+--from-literal=catalogue_oadb_service="mcatalogue_tp" \
+--from-literal=carts_oadb_user="carts_user" \
+--from-literal=carts_oadb_pw="Default_Password123#" \
+--from-literal=carts_oadb_service="mcarts_tp" \
+--from-literal=orders_oadb_user="orders_user" \
+--from-literal=orders_oadb_pw="Default_Password123#" \
+--from-literal=orders_oadb_service="morders_tp" \
+--from-file=orders_keystore=Wallet_morders/keystore.jks \
+--from-file=orders_truststore=Wallet_morders/truststore.jks \
+--from-file=carts_keystore=Wallet_mcarts/keystore.jks \
 --from-file=carts_truststore=Wallet_mcarts/truststore.jks
+```
+
 
 create-streams-secret.sh:
-
-kubectl create secret generic streams-secret \\\
---from-literal=oci_compartment_id="\<your compartment id>" \\\
---from-literal=oci_tenant_id="\<your tenant id>" \\\
---from-literal=oci_user_id="\<your user id>" \\\
---from-literal=oci_fingerprint="\<your API key fingetprint>" \\\
---from-literal=oci_region="\<your region>" \\\
+```text
+kubectl create secret generic streams-secret \
+--from-literal=oci_compartment_id="<your compartment id>" \
+--from-literal=oci_tenant_id="<your tenant id>" \
+--from-literal=oci_user_id="<your user id>" \
+--from-literal=oci_fingerprint="<your API key fingetprint>" \
+--from-literal=oci_region="<your region>" \
 --from-file=oci_api_key=\<your home folder>/.oci/oci_api_key.pem
-
+```
 
 
