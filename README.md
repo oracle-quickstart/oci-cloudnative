@@ -38,18 +38,19 @@ Detailed instructions are found in this [document](https://docs.cloud.oracle.com
 
 ## Environment Setup
 In order to connect to external services such as Autonomous Transaction Processing (ATP) or Oracle Streaming Services (OSS), you will need to create the following secrets. These can be in a script if you prefer.
+Note that passwords have been masked and you need to substitute with your own passwords.
 
 Secret for ATP access:
 ```text
 kubectl create secret generic atp-secret \
 --from-literal=catalogue_oadb_user="catalogue_user" \
---from-literal=catalogue_oadb_pw="default_Password1" \
+--from-literal=catalogue_oadb_pw="xxxxxx" \
 --from-literal=catalogue_oadb_service="mcatalogue_tp" \
 --from-literal=carts_oadb_user="carts_user" \
---from-literal=carts_oadb_pw="Default_Password123#" \
+--from-literal=carts_oadb_pw="xxxxxx" \
 --from-literal=carts_oadb_service="mcarts_tp" \
 --from-literal=orders_oadb_user="orders_user" \
---from-literal=orders_oadb_pw="Default_Password123#" \
+--from-literal=orders_oadb_pw="xxxxxx" \
 --from-literal=orders_oadb_service="morders_tp" \
 --from-file=orders_keystore=Wallet_morders/keystore.jks \
 --from-file=orders_truststore=Wallet_morders/truststore.jks \
