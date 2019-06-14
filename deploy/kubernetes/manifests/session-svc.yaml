@@ -6,7 +6,6 @@ metadata:
   labels:
     name: session
     layer: client
-  namespace: mushop
 spec:
   ports:
   - port: 6379

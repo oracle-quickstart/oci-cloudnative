@@ -5,7 +5,6 @@ metadata:
   name: user-db
   labels:
     name: user-db
-  namespace: mushop
 spec:
   ports:
   - port: 27017

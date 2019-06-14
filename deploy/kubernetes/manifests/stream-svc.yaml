@@ -6,7 +6,6 @@ metadata:
   name: stream
   annotations:
     prometheus.io/path: "/prometheus"
-  namespace: mushop
 spec:
   ports:
   - port: 80

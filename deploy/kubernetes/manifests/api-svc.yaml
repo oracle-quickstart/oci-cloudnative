@@ -6,7 +6,6 @@ metadata:
   labels:
     name: api
     layer: client
-  namespace: mushop
 spec:
   selector:
     name: api

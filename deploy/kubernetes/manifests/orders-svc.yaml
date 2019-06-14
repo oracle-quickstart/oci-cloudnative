@@ -4,7 +4,6 @@ metadata:
   name: orders
   labels:
     name: orders
-  namespace: mushop
 spec:
   ports:
     # the port that this service should serve on
