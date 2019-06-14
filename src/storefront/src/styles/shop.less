@@ -386,28 +386,37 @@ main {
   }
 }
 
-// Services (Bounding boxes)
-// @mu-tech-grid: 50px;
+// Services
+// 
+.mu-service-table {
+  img {
+    height: 40px;
+    width: auto;
+  }
+}
+
 .mu-tech {
-  border: 2px dashed @global-color;
+  border: 2px dashed @global-muted-color;
   padding: @global-small-gutter;
   box-sizing: border-box;
   width: auto !important;
+  margin: @global-small-margin;
+
+  &.mu-tech-edge {
+    bottom: auto;
+    height: 15%;
+    top: 33px;
+    right: 68%;
+  }
 
   &.mu-tech-oci {
     border-color: @color-red;
-    // left: 30%;
-    // height: 30%;
-    // @media (min-width: @breakpoint-medium) {
-    //   height: 24%;
-    // }
+    margin: 0;
   }
   
   &.mu-tech-oke {
     border-color: @color-blue;
-    left: 0;
     top: 32%;
-    margin: @global-small-margin;
     height: auto;
     @media (min-width: @breakpoint-medium) {
       top: 24%;
@@ -420,7 +429,7 @@ main {
   img {
     max-height: 50px;
     @media (min-width: @breakpoint-medium) {
-      max-height: 80px;
+      max-height: 70px;
     }
   }
 }
@@ -1504,6 +1513,9 @@ li.mu-product-slider-item {
   filter: grayscale(100%) opacity(50%);
 
   &:hover {
+    filter: none;
+  }
+  tr:hover & {
     filter: none;
   }
 }

@@ -9,7 +9,7 @@ const nodeMax = (list, prop) => list.reduce((last, item) => Math.max(last, item[
 const toSymbol = icon => icon ? `image://${icon}` : 'circle';
 
 const [SYMBOL_SVC, SYMBOL_TECH] = [40, 80];
-const [AXIS_TOP] = [40];
+const [AXIS_TOP] = [50];
 
 // create ids
 createIds(toArray(ServiceType));
@@ -33,20 +33,22 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
     const row = n => n * gridDim;
 
     const data = { ...Services };
+    Object.assign(data.DNS, { x: col(1), y: row(0.05) });
+    Object.assign(data.WAF, { x: col(2), y: row(0.05) });
     Object.assign(data.BUCKET, { x: col(4), y: row(0) });
     Object.assign(data.ATP, { x: col(5), y: row(0), label: { offset: [0, -20] }});
     Object.assign(data.STREAMING, { x: col(6), y: row(0), label: { offset: [0, 5] }});
 
-    Object.assign(data.INGRESS, { x: col(1), y: row(2) });
-    Object.assign(data.STORE, { x: col(3), y: row(1) });
+    Object.assign(data.INGRESS, { x: col(2), y: row(1) });
+    Object.assign(data.STORE, { x: col(1), y: row(2) });
     Object.assign(data.API, { x: col(3), y: row(2) });
     Object.assign(data.SESSION, { x: col(4), y: row(3) });
 
     Object.assign(data.CATALOG, { x: col(6), y: row(1) });
     Object.assign(data.ORDERS, { x: col(6), y: row(2) });
-    Object.assign(data.CART, { x: col(6), y: row(3) });
+    Object.assign(data.CART, { x: col(7), y: row(2) });
 
-    Object.assign(data.SHIPPING, { x: col(8), y: row(3) });
+    Object.assign(data.SHIPPING, { x: col(7), y: row(1) });
     Object.assign(data.STREAM, { x: col(8), y: row(2) });
     Object.assign(data.PAYMENT, { x: col(8), y: row(1) });
 
@@ -84,10 +86,11 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
       },
       symbolKeepAspect: true,
       edgeSymbol: ['none', 'arrow'],
+      edgeSymbolSize: [5, 8],
       label: {
         show: true,
         fontSize: 16,
-        fontFamily: 'Roboto, sans-serif',
+        color: '#333',
         backgroundColor: '#fff',
         position: 'bottom',
         formatter: '{b}',
@@ -100,7 +103,7 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
       emphasis: {
         lineStyle: {
           opacity: 1,
-          width: 5,
+          width: 4,
         }
       }
     };
@@ -149,7 +152,7 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
     // console.log('HERE', params, style);
     const orig = api.coord([ api.value(0), api.value(2) ]);
     const size = api.size([ api.value(1) - api.value(0), api.value(2)]);
-    console.log(orig, size);
+    // console.log(orig, size);
     return {
       style,
       type: 'rect',
@@ -168,15 +171,16 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
         formatter: p => p.dataType === 'node' ? `${p.data.tech.name}: ${p.name} (${p.data.type.name})` : '',
       },
       legend: [{
+        top: 0,
         left: 15,
-        orient: 'vertical',
+        // orient: 'ho',
         data: categories.map(c => c.name),
-        textStyle: {
-          fontFamily: 'Roboto, sans-serif',
-        }
       }],
       animationDuration: 1500,
       animationEasingUpdate: 'quinticInOut',
+      textStyle: {
+        fontFamily: 'Roboto, sans-serif',
+      },
       series: [
         this.serviceSeries(data, links, categories),
         // this.techSeries(data),
@@ -195,10 +199,13 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
     }));
     const links = ServiceLinks
       .filter(l => l.source && l.target)
-      .map(({source, target}) => ({source: source.id, target: target.id}));
+      .map(({source, target, ...rest}) => ({source: source.id, target: target.id, ...rest}));
 
     const options = this.chartOptions(data, links, categories);
-    this.context.set('services.chart', options);
+    this.context.set('services', {
+      list: data,
+      chart: options,
+    });
 
   }
 
@@ -208,6 +215,7 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
       this.context.set('hide', {
         oci: !selected[TechType.OCI.name],
         oke: !selected[TechType.OKE.name],
+        edge: !selected[TechType.EDGE.name],
       });
     });
   }

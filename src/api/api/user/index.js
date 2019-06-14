@@ -20,6 +20,7 @@
         helpers.simpleHttpRequest(endpoints.cardsUrl + "/" + req.params.id, res, next);
     });
 
+    // Designed to be blocked by WAF
     app.get("/customers", function(req, res, next) {
         helpers.simpleHttpRequest(endpoints.customersUrl, res, next);
     });
@@ -51,7 +52,7 @@
         }));
     });
 
-    app.post("/addresses", function(req, res, next) {
+    app.post("/address", function(req, res, next) {
         req.body.userID = helpers.getCustomerId(req, app.get("env"));
 
         var options = {
@@ -118,7 +119,7 @@
         }));
     });
 
-    app.post("/cards", function(req, res, next) {
+    app.post("/card", function(req, res, next) {
         req.body.userID = helpers.getCustomerId(req, app.get("env"));
 
         var options = {

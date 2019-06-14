@@ -10,7 +10,7 @@ var express      = require("express")
   , orders       = require("./api/orders")
   , user         = require("./api/user")
   , metrics      = require("./api/metrics")
-  , health      = require("./api/health")
+  , health       = require("./api/health")
   , app          = express();
 
 app.use(helpers.rewriteSlash);
@@ -35,6 +35,7 @@ process.argv.forEach(function (val, index, array) {
 
 /* Mount API endpoints */
 const api = express.Router();
+api.use(health);
 api.use(helpers.sessionMiddleware);
 api.use(cart);
 api.use(catalogue);

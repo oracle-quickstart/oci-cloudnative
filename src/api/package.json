@@ -1,7 +1,7 @@
 {
-  "name": "mushop-storefront-backend",
+  "name": "mushop-storefront-api",
   "version": "1.0.3",
-  "description": "Backend for microservices demo application.",
+  "description": "API layer for microservices demo application",
   "main": "server.js",
   "scripts": {
     "test": "istanbul cover node_modules/.bin/_mocha -- test/*_test.js test/api/*_test.js",
