@@ -23,7 +23,7 @@ spec:
           containerPort: 3000
         env:
         - name: SESSION_REDIS
-          value: session.mushop.svc.cluster.local
+          value: session
         resources:
           limits:
             cpu: 300m
