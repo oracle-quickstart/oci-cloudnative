@@ -1,5 +1,5 @@
 import { Mu, MuMx } from '../mu';
-import { MuCtxSingleAttrMixin, MuCtxAttrMixin, MuCtxInheritOnly } from '../bindings';
+import { MuCtxSingleAttrMixin, MuCtxAttrMixin, MuCtxInheritOnly, MxCtxAttrRefresh } from '../bindings';
 import { attrToSelector } from '../util';
 
 const LOGICAL_ATTR = {
@@ -16,33 +16,6 @@ const LOGICAL_ATTR = {
 
 
 /**
- * Mixin for single attribute context/refresh subscription
- * @param {*} ctor 
- * @param {*} attr 
- */
-const MxCtxAttrRefresh = (ctor, attr) => class extends MuCtxSingleAttrMixin(ctor, attr) {
-
-  onInit() {
-    this.refresh = this.refresh.bind(this);
-    return super.onInit && super.onInit();
-  }
-
-  onMount() {
-    this.context.always(this._ctxKey(), this.refresh);
-    return super.onMount && super.onMount();
-  }
-
-  onDispose() {
-    this.context.off(this._ctxKey(), this.refresh);
-    return super.onDispose && super.onDispose();
-  }
-
-  refresh() {
-
-  }
-}
-
-/**
  * MuIF micro - conditional display based on context property
  */
 export class MuIF extends MuMx.compose(null,
@@ -53,7 +26,7 @@ export class MuIF extends MuMx.compose(null,
   onMount() {
     const { parentNode } = this.node;
     const virtual = this.view.virtual();
-    this.placeholder = virtual.createComment(`${LOGICAL_ATTR.IF} ${this._ctxKey()}`);
+    this.placeholder = virtual.createComment(`${LOGICAL_ATTR.IF} ${this._ctxAttrProp()}`);
     // create placeholder target and remove the source node
     parentNode.insertBefore(this.placeholder, this.node);
     parentNode.removeChild(this.node);
@@ -72,8 +45,7 @@ export class MuIF extends MuMx.compose(null,
     const { current, placeholder } = this;
     const { parentNode } = placeholder;
     if (current) {
-      // console.log('dispose if', current);
-      // this.view.dispose(ifNode, true);
+      // console.log('dispose if', this._ctxAttrProp(), current, parentNode);
       this.view.dispose(current);
       this.current = null;
       return parentNode && 

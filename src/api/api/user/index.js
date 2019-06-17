@@ -1,8 +1,13 @@
 (function() {
     'use strict';
 
-    var async = require("async"), express = require("express"), request = require("request"), endpoints = require("../endpoints"), helpers = require("../../helpers"), app = express(), cookie_name = "logged_in"
-
+    var async = require("async")
+      , express = require("express")
+      , request = require("request")
+      , endpoints = require("../endpoints")
+      , helpers = require("../../helpers")
+      , app = express.Router()
+      , cookie_name = "logged_in";
 
     app.get("/profile", function(req, res, next) {
         const custId = helpers.getCustomerId(req, app.get("env"));
@@ -15,6 +20,7 @@
         helpers.simpleHttpRequest(endpoints.cardsUrl + "/" + req.params.id, res, next);
     });
 
+    // Designed to be blocked by WAF
     app.get("/customers", function(req, res, next) {
         helpers.simpleHttpRequest(endpoints.customersUrl, res, next);
     });
@@ -46,7 +52,7 @@
         }));
     });
 
-    app.post("/addresses", function(req, res, next) {
+    app.post("/address", function(req, res, next) {
         req.body.userID = helpers.getCustomerId(req, app.get("env"));
 
         var options = {
@@ -78,8 +84,11 @@
             }
             var data = JSON.parse(body);
             if (data.status_code !== 500 && data._embedded.card && data._embedded.card.length ) {
+                const card = data._embedded.card.pop(); // last
                 var resp = {
-                    "number": data._embedded.card.pop().longNum.slice(-4)
+                    id: card.id,
+                    expires: card.expires,
+                    number: card.longNum.slice(-4),
                 };
                 return helpers.respondSuccessBody(res, JSON.stringify(resp));
             }
@@ -110,7 +119,7 @@
         }));
     });
 
-    app.post("/cards", function(req, res, next) {
+    app.post("/card", function(req, res, next) {
         req.body.userID = helpers.getCustomerId(req, app.get("env"));
 
         var options = {
@@ -214,8 +223,10 @@
                         callback(true);
                     });
                 },
+                /**
                 function(custId, callback) {
                     var sessionId = req.session.id;
+                    var cartId = helpers.getCartId(req);
                     console.log("Merging carts for customer id: " + custId + " and session id: " + sessionId);
 
                     var options = {
@@ -230,7 +241,7 @@
                         console.log('Carts merged.');
                         if(callback) callback(null, custId);
                     });
-                }
+                }*/
             ],
             function(err, custId) {
                 if (err) {
@@ -244,8 +255,6 @@
                 res.cookie(cookie_name, req.session.id, {
                     maxAge: 3600000
                 }).send({id: custId});
-                console.log("Sent cookies.");
-                res.end();
                 return;
             }
         );
@@ -268,19 +277,21 @@
                             return;
                         }
                         if (response.statusCode == 200 && body != null && body != "") {
-                            console.log(body);
+                            // console.log(body);
                             var customerId = JSON.parse(body).user.id;
                             console.log(customerId);
                             req.session.customerId = customerId;
                             callback(null, customerId);
                             return;
                         }
-                        console.log(response.statusCode);
                         callback(true);
                     });
                 },
+                /**
                 function(custId, callback) {
                     var sessionId = req.session.id;
+                    var cartId = helpers.getCartId(req);
+                    
                     console.log("Merging carts for customer id: " + custId + " and session id: " + sessionId);
 
                     var options = {
@@ -297,6 +308,7 @@
                         callback(null, custId);
                     });
                 }
+                */
             ],
             function(err, custId) {
                 if (err) {
@@ -308,9 +320,7 @@
                 res.status(200);
                 res.cookie(cookie_name, req.session.id, {
                     maxAge: 3600000
-                }).send('Cookie is set');
-                console.log("Sent cookies.");
-                res.end();
+                }).send('OK');
                 return;
             });
     });
@@ -319,8 +329,7 @@
         console.log('Received logout request');
         req.session.customerId = null;
         res.cookie(cookie_name, '', {expires: new Date(0)});
-        res.status(200);
-        res.end();
+        helpers.respondStatus(res, 200);
     });
 
     module.exports = app;

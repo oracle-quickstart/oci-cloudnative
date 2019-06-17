@@ -20,7 +20,9 @@ main {
   position: relative;
   background: @global-background;
   z-index: @sticky-z-index - 1;
-  margin-bottom: @fixed-footer-reveal-height-sm; // allow for footer vis
+  @media (min-width: @breakpoint-tablet) {
+    margin-bottom: @fixed-footer-reveal-height-sm;
+  }
   @media (min-width: @breakpoint-medium) {
     margin-bottom: @fixed-footer-reveal-height;
   }
@@ -29,12 +31,13 @@ main {
   }
 
   + footer {
-    position: fixed;
-    // padding-top: @global-margin;
-    bottom: 0;
-    width: 100%;
     background: @global-secondary-background;
-    z-index: 0;
+    @media (min-width: @breakpoint-tablet) {
+      position: fixed;
+      z-index: 0;
+      bottom: 0;
+      width: 100%;
+    }
   }
 }
 
@@ -152,11 +155,11 @@ main {
     margin-left: auto;
   }
 
-  :first-child {
+  > :first-child {
     margin-top: 0;
   }
 
-  :last-child {
+  > :last-child {
     margin-bottom: 0;
   }
 }
@@ -383,6 +386,54 @@ main {
   }
 }
 
+// Services
+// 
+.mu-service-table {
+  img {
+    height: 40px;
+    width: auto;
+  }
+}
+
+.mu-tech {
+  border: 2px dashed @global-muted-color;
+  padding: @global-small-gutter;
+  box-sizing: border-box;
+  width: auto !important;
+  margin: @global-small-margin;
+
+  &.mu-tech-edge {
+    bottom: auto;
+    height: 15%;
+    top: 33px;
+    right: 68%;
+  }
+
+  &.mu-tech-oci {
+    border-color: @color-red;
+    margin: 0;
+  }
+  
+  &.mu-tech-oke {
+    border-color: @color-blue;
+    top: 32%;
+    height: auto;
+    @media (min-width: @breakpoint-medium) {
+      top: 24%;
+    }
+    img {
+      margin: @global-small-margin;
+    }
+  }
+
+  img {
+    max-height: 50px;
+    @media (min-width: @breakpoint-medium) {
+      max-height: 70px;
+    }
+  }
+}
+
 
 // Change view
 // ========================================================================
@@ -472,11 +523,11 @@ li.mu-product-slider-item {
     height: 100%;
   }
 
-  & > .tm-ratio > .tm-media-box {
-    // padding: 15px;
-    // padding: 0;
-    padding: 5px;
-  }
+  // & > .tm-ratio > .tm-media-box {
+  //   // padding: 15px;
+  //   // padding: 0;
+  //   padding: 5px;
+  // }
 
   &:hover {
     transform: scale(1.02);
@@ -1358,6 +1409,10 @@ li.mu-product-slider-item {
   padding-top: @ratio-16-9;
 }
 
+.tm-ratio-2-1::before {
+  padding-top: @ratio-2-1;
+}
+
 
 // Media box
 // ========================================================================
@@ -1458,6 +1513,9 @@ li.mu-product-slider-item {
   filter: grayscale(100%) opacity(50%);
 
   &:hover {
+    filter: none;
+  }
+  tr:hover & {
     filter: none;
   }
 }

@@ -25,9 +25,12 @@ RUN rm -rf /tmp/node_modules
 
 # copy source and build
 WORKDIR /usr/src/app
-COPY . .
+COPY src src
+COPY *.js* ./
+
+ARG STATIC_ASSET_URL
+ENV STATIC_ASSET_URL ${STATIC_ASSET_URL:-"https://objectstorage.us-phoenix-1.oraclecloud.com/n/intvravipati/b/mushop-images/o/"}
 ENV NODE_ENV "production"
-ENV STATIC_ASSET_URL "https://objectstorage.us-phoenix-1.oraclecloud.com/n/intvravipati/b/mushop-images/o/"
 RUN npm run build
 
 ###############################
@@ -35,5 +38,9 @@ RUN npm run build
 ###############################
 FROM nginx:alpine as web
 
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /usr/src/app/build /usr/share/nginx/html
+
+EXPOSE 8080
+EXPOSE 8888

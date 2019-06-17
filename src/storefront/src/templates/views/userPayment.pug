@@ -3,7 +3,8 @@ include ../mixins/_icon
 div.uk-grid-medium.uk-flex-left(uk-grid mu-if="!editing")
   div.uk-width-1-1
     div.uk-h4(mu-if="legend" mu-html="legend")
-  div.uk-width-expand
+
+  div.uk-width-expand(mu-class="{'uk-text-muted': 'loading'}")
     div(mu-if="card")
       +icon('credit-card', '1.1')(class="uk-margin-small-right")
       span.uk-text-bolder card ending *
@@ -11,7 +12,15 @@ div.uk-grid-medium.uk-flex-left(uk-grid mu-if="!editing")
           
     div.uk-text-danger(mu-if="!card") 
       p No stored payment accounts
-  a.uk-icon-link(uk-icon="pencil" mu-click="edit" uk-tooltip="Change Card")
+
+  div(uk-spinner mu-hide="!loading")
+  div(mu-hide="loading")
+    a.uk-icon-link(uk-icon="pencil" mu-click="actions.edit" uk-tooltip="Change Card")
+    //- Delete
+    a.uk-icon-link.uk-text-warning.uk-invisible-hover(uk-icon="close"
+      mu-if="card.id"
+      mu-click="actions.delete"
+      uk-tooltip="Delete")
 
 div(mu-if="editing")
   form.uk-form-stacked(mu-form="paymentForm")
@@ -38,7 +47,7 @@ div(mu-if="editing")
             input.uk-input(type="password" name="ccv" placeholder="***" required mu-attr mu-attr-disabled="loading")
 
     div.uk-margin.uk-text-right
-      span.uk-text-success.uk-margin-xsmall-right(mu-if="success")
+      span.uk-text-success.uk-margin-xsmall-right(mu-if="success" mu-class="{'uk-animation-fade uk-animation-reverse': '!success'}")
         +icon('check')
         span Saved
       span.uk-text-danger.uk-margin-xsmall-right(mu-if="error")

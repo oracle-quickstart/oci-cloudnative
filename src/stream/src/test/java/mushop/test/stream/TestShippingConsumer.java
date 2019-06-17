@@ -31,11 +31,12 @@ import com.oracle.bmc.streaming.responses.CreateCursorResponse;
 import com.oracle.bmc.streaming.responses.GetMessagesResponse;
 import com.oracle.bmc.streaming.responses.PutMessagesResponse;
 
+import mushop.stream.StreamApplication;
 import mushop.stream.configuration.OciStreamsConfiguration;
 import shaded.com.oracle.oci.javasdk.com.google.common.util.concurrent.Uninterruptibles;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes=StreamApplication.class)
 public class TestShippingConsumer {
 
 	@Autowired

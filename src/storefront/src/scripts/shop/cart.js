@@ -36,6 +36,7 @@ export class CartController {
   load() {
     this.mu.http.get('/cart')
       .then(res => this._setCart(res.data))
+      .catch(e => this.emit('error', e));
   }
 
   add(item, quantity) {
@@ -43,9 +44,9 @@ export class CartController {
     const { id, name } = item; 
     return http.post('/cart', { id, quantity })
       .then(this.load)
-      .then(() => ui.notification(`"${name}" added to cart!`, {
+      .then(() => ui.notification(`${name} added to cart!`, {
         status: 'success',
-        timeout: 1e3
+        timeout: 2e3
       }));
   }
 
@@ -77,6 +78,9 @@ export class CartController {
       .reduce((total, qty) => total + qty, 0);
   }
 
+  /**
+   * compute cart total
+   */
   totals() {
     const subtotal = this.contents()
       .map(item => (item.quantity || 1) * item.unitPrice)
@@ -94,12 +98,18 @@ export class CartController {
     return { subtotal, shipRate, shipping, discounts, tax, total };
   }
 
+  /**
+   * Get cart totals as formatted currency decimal
+   */
   totalsToFixed() {
     const totals = this.totals();
     Object.keys(totals).forEach(k => totals[k] = totals[k].toFixed(2));
     return totals;
   }
 
+  /**
+   * get cart contents combined with catalog product information
+   */
   combined() {
     // resolve with corresponding sku records from catalog svc
     const { catalog } = this.mu;
@@ -129,7 +139,8 @@ class CartSubscriber extends MuMx.compose(null, ShopMxSubscriber) {
   constructor() {
     super();
     this.listener = this.listener.bind(this);
-    this.subscribeAlways('contents', this.mu.cart, this.listener);
+    this.subscribeAlways('contents', this.mu.cart, this.listener)
+      .subscribeAlways('error', this.mu.cart, this.listener);
   }
 
   listener(cart) {
@@ -150,17 +161,16 @@ export class MuCart extends MuMx.compose(CartSubscriber,
     return this._ctxProp('template') || null;
   }
 
-  listener(rows) {
+  listener() {
     // const cartCtl = this.mu.cart;
     const { cart } = this.mu;
     const size = cart.size();
     const rawTotals = cart.totals();
     const totals = cart.totalsToFixed();
 
-    const cb = this._ctxAttrValue('onItems') || (() => {});
+    const cb = this._ctxAttrValue('onItems');
 
     // load corresponding sku records
-
     return this.render({ loading: true }, true)
       .then(() => cart.combined())
       .then(items => items.map(row => ({
@@ -179,7 +189,7 @@ export class MuCart extends MuMx.compose(CartSubscriber,
         isEmpty: !size,
         totals,
         rawTotals,
-      }).then(() => cb(items)));
+      }).then(() => cb && cb(items)));
   }
 
   increment(row, amnt) {

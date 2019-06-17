@@ -4,6 +4,7 @@
 credentials.txt
 credentials.env
 Wallet_*
+**/.env
 
 ## Folders
 bin/

@@ -1,9 +1,10 @@
 import 'core-js/features/url';
 import 'core-js/features/url-search-params';
 
-import { Mu } from '../mu';
+import { Mu, MuMx } from '../mu';
 import { getWindow } from '../util/window';
 import { MUSHOP } from './constants';
+import { ViewTemplateMixin } from './helper/viewmx';
 
 /**
  * Router macro
@@ -187,5 +188,17 @@ export class MuRouteLink {
   }
 }
 
+export class MuRouteProps extends MuMx.compose(null, ViewTemplateMixin) {
+  onMount() {
+    const { router } = this.mu;
+    super.onMount();
+    this.render({
+      query: router.queryparams(),
+      state: router.state(),
+    });
+  }
+}
+
 export default Mu.macro(MUSHOP.MACRO.ROUTER, MuRouterMacro, getWindow())
-  .micro(MuRouteLink, '[mu-route],.mu-route');
+  .micro(MuRouteLink, '[mu-route],.mu-route')
+  .micro(MuRouteProps, '[mu-route-props]');

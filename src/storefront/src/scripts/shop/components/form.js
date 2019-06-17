@@ -1,4 +1,4 @@
-import { Mu, MuMx } from '../../mu/mu';
+import { Mu, MuMx } from '../../mu';
 import { MuCtxSetterMixin } from '../../mu/bindings';
 
 export class MuForm extends MuMx.compose(null, [MuCtxSetterMixin, 'mu-form']) {
@@ -36,6 +36,24 @@ export class MuForm extends MuMx.compose(null, [MuCtxSetterMixin, 'mu-form']) {
   change(e) {
     this.emitOnce('change', this, e);
     this._change(e, this);
+  }
+
+  clear() {
+
+    // Loop through each field in the form
+    for (let i = 0; i < this.node.elements.length; i++) {
+      const field = this.node.elements[i];
+      const omitType = ['file', 'reset', 'submit', 'button'];
+      if (!field.name || field.disabled || omitType.indexOf(field.type) > -1) {
+        continue;
+      }
+      if (field.type === 'checkbox' || field.type === 'radio') {
+        field.checked = false;
+      } else {
+        field.value = '';
+      }
+    }
+
   }
 
   getData() {

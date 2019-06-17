@@ -59,7 +59,7 @@
 		<dependency>
 			<groupId>com.oracle.oci</groupId>
   			<artifactId>oci-java-sdk</artifactId>
-  			<version>1.5.0</version>
+  			<version>1.5.9</version>
  		 </dependency>
  		 <dependency>
 			<groupId>org.apache.commons</groupId>
@@ -75,6 +75,16 @@
 		    <groupId>org.json</groupId>
 		    <artifactId>json</artifactId>
 		    <version>20180130</version>
+		</dependency>
+		<dependency>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-swagger2</artifactId>
+		    <version>2.9.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.9.2</version>
 		</dependency>
 	</dependencies>
 

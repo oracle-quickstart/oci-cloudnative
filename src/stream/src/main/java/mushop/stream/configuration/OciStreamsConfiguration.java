@@ -50,17 +50,30 @@ public class OciStreamsConfiguration {
         final String userId = env.getProperty("OCI_USER_ID");
         final String fingerprint = env.getProperty("OCI_FINGERPRINT");
         final String privateKey = env.getProperty("OCI_API_KEY");
-        //final String passPhrase = env.getProperty("OCI_PASS_PHRASE");
+        final String passPhrase = env.getProperty("OCI_PASS_PHRASE");
         final String region = env.getProperty("OCI_REGION");
         
 		
-        AuthenticationDetailsProvider provider = SimpleAuthenticationDetailsProvider.builder()
-            .tenantId(tenantId)
-            .userId(userId)
-            .fingerprint(fingerprint)
-            .privateKeySupplier(new StringPrivateKeySupplier(privateKey))
-            .region(Region.fromRegionId(region))
-            .build();
+        AuthenticationDetailsProvider provider = null;
+        
+        if (privateKey.contains("Proc-Type: 4,ENCRYPTED")) {
+        	provider = SimpleAuthenticationDetailsProvider.builder()
+                .tenantId(tenantId)
+                .userId(userId)
+                .fingerprint(fingerprint)
+                .privateKeySupplier(new StringPrivateKeySupplier(privateKey))
+                .region(Region.fromRegionId(region))
+                .passPhrase(passPhrase)
+                .build();
+        } else {
+        	provider = SimpleAuthenticationDetailsProvider.builder()
+	            .tenantId(tenantId)
+	            .userId(userId)
+	            .fingerprint(fingerprint)
+	            .privateKeySupplier(new StringPrivateKeySupplier(privateKey))
+	            .region(Region.fromRegionId(region))
+	            .build();
+        }
         
         // Create an admin-client
         final StreamAdminClient adminClient = new StreamAdminClient(provider);

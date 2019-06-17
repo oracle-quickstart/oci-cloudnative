@@ -1,7 +1,7 @@
 {
-  "name": "mushop-storefront-backend",
-  "version": "0.0.1",
-  "description": "Backend for microservices demo application.",
+  "name": "mushop-storefront-api",
+  "version": "1.0.3",
+  "description": "API layer for microservices demo application",
   "main": "server.js",
   "scripts": {
     "test": "istanbul cover node_modules/.bin/_mocha -- test/*_test.js test/api/*_test.js",
@@ -13,20 +13,20 @@
     "body-parser": "^1.15.1",
     "connect-redis": "^3.2.0",
     "cookie-parser": "^1.4.3",
-    "express": "^4.13.4",
-    "express-session": "^1.13.0",
-    "finalhandler": "^0.4.1",
+    "express": "^4.17.1",
+    "express-session": "^1.16.1",
     "morgan": "^1.7.0",
     "prom-client": "^6.3.0",
-    "request": "^2.72.0"
+    "request": "^2.72.0",
+    "ulid": "^2.3.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "chai-http": "^3.0.0",
-    "sinon": "^1.17.5",
-    "mocha": "^3.0.0",
-    "mocha-junit-reporter": "^1.12.1",
+    "chai-http": "^4.3.0",
     "istanbul": "^0.4.4",
-    "mongodb": "^2.2.5"
+    "mocha": "^6.1.4",
+    "mocha-junit-reporter": "^1.12.1",
+    "mongodb": "^2.2.5",
+    "sinon": "^1.17.5"
   }
 }

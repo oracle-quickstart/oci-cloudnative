@@ -1,27 +1,41 @@
 version: '2'
 
 services:
-  api:
-    image: phx.ocir.io/intvravipati/mushop/api:latest
-    hostname: api
-    restart: always
-    cap_drop:
-      - all
-    read_only: true
-  storefront:
-    image: phx.ocir.io/intvravipati/mushop/storefront:latest
-    hostname: storefront
-    restart: always
-    cap_drop:
-      - all
-    read_only: true
+
+  # Edge router (docker only) application entrypoint
   edge-router:
-    image: phx.ocir.io/intvravipati/mushop/edge-router:latest
+    image: phx.ocir.io/intvravipati/mushop/edge-router:1
     hostname: edge-router
     restart: always
     ports:
       - '80:80'
-      - '8080:8080'
+    cap_drop:
+      - all
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: true
+    environment:
+      - reschedule=on-node-failure
+
+  # Storefront application middleware
+  api:
+    image: phx.ocir.io/intvravipati/mushop/api:1
+    hostname: api
+    restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: true
+    environment:
+      - reschedule=on-node-failure
+      - SESSION_REDIS=session-db
+
+  # Redis session DB
+  session-db:
+    image: redis:alpine
+    hostname: session-db
+    restart: always
     cap_drop:
       - all
     cap_add:
@@ -32,7 +46,29 @@ services:
       - DAC_OVERRIDE
     read_only: true
     tmpfs:
-      - /var/run:rw,noexec,nosuid
+      - /tmp:rw,noexec,nosuid
+    environment:
+      - reschedule=on-node-failure
+
+  # Storefront backend API service
+  storefront:
+    image: phx.ocir.io/intvravipati/mushop/storefront:1
+    hostname: storefront
+    restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - NET_BIND_SERVICE
+      - CHOWN
+      - SETGID
+      - SETUID
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid
+    environment:
+      - reschedule=on-node-failure
+
+  # OCI Catalog service
   catalogue:
     image: phx.ocir.io/intvravipati/mushop/catalogue:0.0.1
     hostname: catalogue
@@ -47,6 +83,8 @@ services:
         - OADB_USER=catalogue_user
         - OADB_PW=default_Password1
         - OADB_SERVICE=mcatalogue_tp
+  
+  # OCI Carts service        
   carts:
     image: phx.ocir.io/intvravipati/mushop/carts:1.0.0
     ports:
@@ -65,6 +103,8 @@ services:
       - OADB_PW=Default_Password123#
       - OADB_SERVICE=mcarts_tp
       - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+  
+  # OCI Orders service
   orders:
     image: phx.ocir.io/intvravipati/mushop/orders:1.0.0
     ports:
@@ -83,8 +123,10 @@ services:
       - OADB_PW=Default_Password123#
       - OADB_SERVICE=morders_tp
       - JAVA_OPTS=-Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+
+  # Shipping service
   shipping:
-    image: weaveworksdemos/shipping:0.4.8
+    image: phx.ocir.io/intvravipati/mushop/shipping:0.0.4
     hostname: shipping
     restart: always
     cap_drop:
@@ -95,32 +137,33 @@ services:
     tmpfs:
       - /tmp:rw,noexec,nosuid
     environment:
-      - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
-  queue-master:
-    image: weaveworksdemos/queue-master:0.3.1
-    hostname: queue-master
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - reschedule:on-node-failure
+      - OCI_TENANT_ID
+      - OCI_COMPARTMENT_ID
+      - OCI_REGION
+      - OCI_USER_ID
+      - OCI_FINGERPRINT
+      - OCI_API_KEY
+  
+  # OCI Stream
+  stream:
+    image: phx.ocir.io/intvravipati/mushop/stream:0.0.1
+    hostname: stream
     restart: always
     cap_drop:
       - all
     cap_add:
       - NET_BIND_SERVICE
     read_only: true
-    tmpfs:
-      - /tmp:rw,noexec,nosuid
-  rabbitmq:
-    image: rabbitmq:3.6.8
-    hostname: rabbitmq
-    restart: always
-    cap_drop:
-      - all
-    cap_add:
-      - CHOWN
-      - SETGID
-      - SETUID
-      - DAC_OVERRIDE
-    read_only: true
+    environment:
+      - reschedule:on-node-failure
+      - OCI_TENANT_ID
+      - OCI_COMPARTMENT_ID
+      - OCI_REGION
+      - OCI_USER_ID
+      - OCI_FINGERPRINT
+      - OCI_API_KEY
+      
   payment:
     image: phx.ocir.io/intvravipati/mushop/payment:0.0.1
     hostname: payment
@@ -130,6 +173,7 @@ services:
     cap_add:
       - NET_BIND_SERVICE
     read_only: true
+
   user:
     image: phx.ocir.io/intvravipati/mushop/user:0.0.1
     hostname: user
@@ -141,6 +185,7 @@ services:
     read_only: true
     environment:
       - MONGO_HOST=user-db:27017
+
   user-db:
     image: phx.ocir.io/intvravipati/mushop/user-db:0.0.1
     hostname: user-db
@@ -154,10 +199,11 @@ services:
     read_only: true
     tmpfs:
       - /tmp:rw,noexec,nosuid
-  user-sim:
-    image: aura/load-test:0.1.1
-    cap_drop:
-      - all
-    read_only: true
-    hostname: user-simulator
-    command: "-d 30 -r 120 -c 1 -h edge-router"
+
+  # user-sim:
+  #   image: aura/load-test:0.1.1
+  #   cap_drop:
+  #     - all
+  #   read_only: true
+  #   hostname: user-simulator
+  #   command: "-d 30 -r 120 -c 1 -h edge-router"

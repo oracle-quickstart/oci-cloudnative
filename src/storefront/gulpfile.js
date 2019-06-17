@@ -2,7 +2,6 @@ const gulp         = require('gulp'),
   util         = require('gulp-util'),
   less         = require('gulp-less'),
   sync         = require('browser-sync'),
-  // concat       = require('gulp-concat'),
   webpack      = require('webpack-stream'),
   del          = require('del'),
   imagemin     = require('gulp-imagemin'),
@@ -12,7 +11,8 @@ const gulp         = require('gulp'),
   postcss      = require('gulp-postcss'),
   csso         = require('gulp-csso'),
   pug          = require('gulp-pug'),
-  proxy        = require('http-proxy-middleware');
+  proxy        = require('http-proxy-middleware'),
+  pkg          = require('./package.json');
 
 // load .env configurations
 require('dotenv').config();
@@ -22,6 +22,9 @@ const pugOpt = {
   basedir: 'src/templates',
   doctype: 'html',
   pretty: true,
+  locals: {
+    version: pkg.version,
+  }
 };
 
 gulp.task('html:pages', function() {
@@ -46,7 +49,7 @@ gulp.task('styles', function() {
   return gulp.src(['src/styles/**/*.less', '!src/styles/**/_*.less'])
     .pipe(less({ relativeUrls: true }))
     // .pipe(concat('style.css'))
-    .pipe(postcss([autoprefixer({ browsers: 'last 2 versions' })]))
+    .pipe(postcss([autoprefixer()]))
     .pipe(csso())
     .pipe(gulp.dest('build/styles'))
     .pipe(sync.stream({
@@ -89,7 +92,6 @@ gulp.task('images', function() {
 gulp.task('copy', function() {
   return gulp.src([
     'src/*',
-    'src/fonts/*',
     '!src/images/*',
     '!src/styles/*',
     '!src/scripts/*'
@@ -152,7 +154,6 @@ gulp.task('watch:scripts', function() {
 gulp.task('watch:copy', function() {
   return gulp.watch([
     'src/*',
-    'src/fonts/*',
     '!src/images/*',
     '!src/styles/*',
     '!src/scripts/*'

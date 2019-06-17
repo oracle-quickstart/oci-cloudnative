@@ -2,6 +2,7 @@
   'use strict';
 
   var request = require("request");
+  var ulid = require("ulid");
   var helpers = {};
 
   /* Public: errorHandler is a middleware that handles your errors
@@ -11,21 +12,22 @@
    * var app = express();
    * app.use(helpers.errorHandler);
    * */
-
   helpers.errorHandler = function(err, req, res, next) {
     var ret = {
       message: err.message,
       error:   err
     };
-    res.
-      status(err.status || 500).
-      send(ret);
+    res.status(err.status || 500).send(ret);
   };
 
-  helpers.sessionMiddleware = function(err, req, res, next) {
+  /**
+   * handle session logic
+   */
+  helpers.sessionMiddleware = function(req, res, next) {
     if(!req.cookies.logged_in) {
-      res.session.customerId = null;
+      req.session.customerId = null;
     }
+    next();
   };
 
   /* Responds with the given body and status 200 OK  */
@@ -40,15 +42,12 @@
    * body       - (string) the body to yield to the response
    */
   helpers.respondStatusBody = function(res, statusCode, body) {
-    res.writeHeader(statusCode);
-    res.write(body);
-    res.end();
+    res.status(statusCode).send(body);
   }
 
   /* Responds with the given statusCode */
   helpers.respondStatus = function(res, statusCode) {
-    res.writeHeader(statusCode);
-    res.end();
+    res.status(statusCode).send();
   }
 
   /* Rewrites and redirects any url that doesn't end with a slash. */
@@ -81,6 +80,16 @@
       helpers.respondSuccessBody(res, body);
     }.bind({res: res}));
   }
+
+  /**
+   * Get unique cart identifier for the session
+   * @param {object} req - express request
+   */
+  helpers.getCartId = function(req) {
+    var cartId = req.session.cartId || ulid.ulid();
+    req.session.cartId = cartId;
+    return cartId;
+  };
 
   /* TODO: Add documentation */
   helpers.getCustomerId = function(req, env) {

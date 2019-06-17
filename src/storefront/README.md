@@ -50,7 +50,7 @@ The project leverages:
 
 ```shell
 # start dependent microservices
-make compose
+make services
 
 # start storefront
 npm install
@@ -60,7 +60,7 @@ npm start
 ### Docker
 
 ```shell
-# start storefront and backend
+# start storefront and all service layers
 make up
 ```
 
