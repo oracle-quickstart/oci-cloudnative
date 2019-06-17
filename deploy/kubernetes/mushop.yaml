@@ -492,7 +492,8 @@ spec:
         run: stream
     spec:
       containers:
-      - image: phx.ocir.io/intvravipati/mushop/stream:0.0.1
+      - image: phx.ocir.io/intvravipati/mushop/stream:1.0.0
+        imagePullPolicy: Always
         name: stream
         env:
          - name: OCI_TENANT_ID
@@ -510,6 +511,11 @@ spec:
              secretKeyRef:
               name: streams-secret
               key: oci_fingerprint
+         - name: OCI_PASS_PHRASE
+           valueFrom:
+             secretKeyRef:
+              name: streams-secret
+              key: oci_pass_phrase                   
          - name: OCI_API_KEY
            valueFrom:
              secretKeyRef:
@@ -562,9 +568,10 @@ spec:
     metadata:
       labels:
         run: shipping
-    spec:       
+    spec:
       containers:
-      - image: phx.ocir.io/intvravipati/mushop/shipping:0.0.4
+      - image: phx.ocir.io/intvravipati/mushop/shipping:1.0.0
+        imagePullPolicy: Always
         name: shipping
         env:
          - name: OCI_TENANT_ID
@@ -582,6 +589,11 @@ spec:
              secretKeyRef:
               name: streams-secret
               key: oci_fingerprint
+         - name: OCI_PASS_PHRASE
+           valueFrom:
+             secretKeyRef:
+              name: streams-secret
+              key: oci_pass_phrase     
          - name: OCI_API_KEY
            valueFrom:
              secretKeyRef:
