@@ -515,7 +515,8 @@ spec:
            valueFrom:
              secretKeyRef:
               name: streams-secret
-              key: oci_pass_phrase                   
+              key: oci_pass_phrase
+              optional: true
          - name: OCI_API_KEY
            valueFrom:
              secretKeyRef:
@@ -593,7 +594,8 @@ spec:
            valueFrom:
              secretKeyRef:
               name: streams-secret
-              key: oci_pass_phrase     
+              key: oci_pass_phrase
+              optional: true
          - name: OCI_API_KEY
            valueFrom:
              secretKeyRef:

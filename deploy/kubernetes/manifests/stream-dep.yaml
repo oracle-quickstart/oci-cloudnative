@@ -33,6 +33,12 @@ spec:
              secretKeyRef:
               name: streams-secret
               key: oci_fingerprint
+         - name: OCI_PASS_PHRASE
+           valueFrom:
+             secretKeyRef:
+              name: streams-secret
+              key: oci_pass_phrase
+              optional: true
          - name: OCI_API_KEY
            valueFrom:
              secretKeyRef:
