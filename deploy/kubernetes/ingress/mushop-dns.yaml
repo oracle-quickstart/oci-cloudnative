@@ -12,7 +12,6 @@ spec:
   - secretName: mushop-tls-prod-secret 
     hosts:
     - mushop.ateam.cloud
-    - store.mushop.ateam.cloud
     - secure.mushop.ateam.cloud
   rules:
   - host: mushop.ateam.cloud
