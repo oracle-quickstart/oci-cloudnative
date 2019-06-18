@@ -37,7 +37,8 @@ kubectl create secret generic streams-secret \
 --from-literal=oci_user_id="<your user id>" \
 --from-literal=oci_fingerprint="<your API key fingetprint>" \
 --from-literal=oci_region="<your region>" \
---from-file=oci_api_key=\<your home folder>/.oci/oci_api_key.pem
+--from-file=oci_api_key=\<your home folder>/.oci/oci_api_key.pem \
+--from-literal=oci_pass_phrase="[your key passphrase]"
 ```
 
 ## Deploy
