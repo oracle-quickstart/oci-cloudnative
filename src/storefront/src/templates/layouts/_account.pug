@@ -34,9 +34,10 @@ block default
                 //-         +icon("camera", "1.25")
 
                 div.uk-text-center
-                  div.uk-h4.uk-margin-remove
-                    //- +icon('user')
-                    span(mu-user-view)
+                  div.uk-h4.uk-margin-remove(mu-user-view)
+                    div
+                      +icon('user', '5')
+                    a(mu-attr mu-attr-href="href.account" mu-route)
                       span(mu-html="profile.firstName")
                       | 
                       span(mu-html="profile.lastName")
