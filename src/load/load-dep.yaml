@@ -1,0 +1,20 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: load
+  labels:
+    name: load
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        name: load
+    spec:
+      containers:
+      - name: load
+        image: phx.ocir.io/intvravipati/mushop/load:1
+        args: ["-h", "api", "-c", "5", "-r", "120"]
+      nodeSelector:
+        beta.kubernetes.io/os: linux
