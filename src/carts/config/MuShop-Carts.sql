@@ -1,0 +1,26 @@
+CREATE USER carts_user IDENTIFIED BY Default_Password123#;
+
+CREATE ROLE carts_role;
+
+GRANT dwrole TO carts_user;
+
+GRANT
+    CREATE SESSION
+TO carts_user;
+-- Do not use in production, can be exploited for SQL injection attacks.
+
+GRANT
+    CREATE TABLE,
+    CREATE VIEW,
+    CREATE PROCEDURE,
+    CREATE SEQUENCE
+TO carts_role;
+
+GRANT
+    UNLIMITED TABLESPACE
+TO carts_role;
+
+GRANT carts_role TO carts_user;
+
+ALTER USER carts_user
+    ACCOUNT UNLOCK;
