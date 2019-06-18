@@ -37,7 +37,7 @@ spec:
            valueFrom:
              secretKeyRef:
                name: atp-secret
-               key: carts_oadb_service   
+               key: carts_oadb_service
         volumeMounts:
         - mountPath: /tmp
           name: tmp-volume
