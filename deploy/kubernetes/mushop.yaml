@@ -147,7 +147,7 @@ spec:
       - name: carts
         image: phx.ocir.io/intvravipati/mushop/carts:1.0.0
         ports:
-         - containerPort: 8080
+         - containerPort: 80
         env:
          - name: ZIPKIN
            value: zipkin.jaeger.svc.cluster.local
@@ -298,7 +298,7 @@ spec:
         imagePullPolicy: Always
         ports:
         - name: http
-          containerPort: 8080
+          containerPort: 80
         - name: status
           containerPort: 8888
         resources:
@@ -349,7 +349,7 @@ spec:
     layer: client
   ports:
   - port: 80
-    targetPort: 8080
+    targetPort: 80
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
