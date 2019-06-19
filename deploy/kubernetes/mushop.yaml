@@ -298,7 +298,7 @@ spec:
         imagePullPolicy: Always
         ports:
         - name: http
-          containerPort: 80
+          containerPort: 8080
         - name: status
           containerPort: 8888
         resources:
@@ -349,7 +349,7 @@ spec:
     layer: client
   ports:
   - port: 80
-    targetPort: 80
+    targetPort: 8080
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
