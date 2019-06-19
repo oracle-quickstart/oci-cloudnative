@@ -147,7 +147,7 @@ spec:
       - name: carts
         image: phx.ocir.io/intvravipati/mushop/carts:1.0.0
         ports:
-         - containerPort: 8080
+         - containerPort: 80
         env:
          - name: ZIPKIN
            value: zipkin.jaeger.svc.cluster.local
