@@ -28,6 +28,7 @@ const pages = {
   personal:   'personal.html',
   product:    'product.html',
   settings:   'settings.html',
+  services:   'services.html',
   subcategory:'subcategory.html'
 };
 
