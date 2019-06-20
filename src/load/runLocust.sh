@@ -39,7 +39,7 @@ do_exec() {
   sleep $INITIAL_DELAY
 
   # check if host is running
-  STATUS=$(curl -s -o /dev/null -w "%{http_code}" ${TARGET_HOST}/health) 
+  STATUS=$(curl -s -o /dev/null -w "%{http_code}" ${TARGET_HOST}/ping) 
   if [ $STATUS -ne 200 ]; then
       echo "${TARGET_HOST} is not accessible"
       exit 1
