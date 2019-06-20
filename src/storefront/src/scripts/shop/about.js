@@ -35,11 +35,14 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
     const data = { ...Services };
     Object.assign(data.DNS, { x: col(1), y: row(0.05) });
     Object.assign(data.WAF, { x: col(2), y: row(0.05) });
-    Object.assign(data.BUCKET, { x: col(4), y: row(0) });
-    Object.assign(data.ATP, { x: col(5), y: row(0), label: { offset: [0, -20] }});
+    Object.assign(data.LB, { x: col(3.1), y: row(0.05) });
+
+    Object.assign(data.BUCKET, { x: col(7), y: row(0) });
+    Object.assign(data.ATP, { x: col(5), y: row(0), label: { offset: [0, 0] }});
     Object.assign(data.STREAMING, { x: col(6), y: row(0), label: { offset: [0, 5] }});
 
-    Object.assign(data.INGRESS, { x: col(2), y: row(1) });
+    Object.assign(data.INGRESS, { x: col(3.1), y: row(1) });
+    Object.assign(data.EDGE_ROUTER, { x: col(2), y: row(1) });
     Object.assign(data.STORE, { x: col(1), y: row(2) });
     Object.assign(data.API, { x: col(3), y: row(2) });
     Object.assign(data.SESSION, { x: col(4), y: row(3) });

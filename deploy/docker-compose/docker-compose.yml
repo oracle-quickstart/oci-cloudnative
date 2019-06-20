@@ -2,7 +2,7 @@ version: '2'
 
 services:
 
-  # Edge router (docker only) application entrypoint
+  # Edge router application entrypoint
   edge-router:
     image: phx.ocir.io/intvravipati/mushop/edge-router:1
     hostname: edge-router
@@ -29,6 +29,7 @@ services:
     read_only: true
     environment:
       - reschedule=on-node-failure
+      - PORT=3000
       - SESSION_REDIS=session-db
 
   # Redis session DB
@@ -199,11 +200,3 @@ services:
     read_only: true
     tmpfs:
       - /tmp:rw,noexec,nosuid
-
-  # user-sim:
-  #   image: aura/load-test:0.1.1
-  #   cap_drop:
-  #     - all
-  #   read_only: true
-  #   hostname: user-simulator
-  #   command: "-d 30 -r 120 -c 1 -h edge-router"
