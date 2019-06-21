@@ -28,6 +28,7 @@ const pages = {
   personal:   'personal.html',
   product:    'product.html',
   settings:   'settings.html',
+  services:   'services.html',
   subcategory:'subcategory.html'
 };
 
@@ -134,7 +135,9 @@ export class PageController {
         this.view.apply(root.element, (node ? node.innerHTML : html)); // swap root content
       }).catch(e => {
         console.error(page, e);
-        return page !== errPage ? this.router().go(errPage, { message: e.message }) : Promise.reject(e);
+        return page !== errPage ?
+          this.router().go(errPage, { message: e.message }, null, true) :
+          Promise.reject(e);
       });
   }
 
