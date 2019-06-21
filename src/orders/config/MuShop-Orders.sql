@@ -18,7 +18,7 @@ TO orders_role;
 
 GRANT
     UNLIMITED TABLESPACE
-TO orders_role;
+TO orders_user;
 
 GRANT orders_role TO orders_user;
 
