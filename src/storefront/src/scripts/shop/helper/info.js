@@ -27,8 +27,8 @@ export const ServiceType = {
   // OCI Stuff
   ATP: {
     name: 'Oracle ATP',
-    icon: 'atp.svg',
-    scale: 2,
+    icon: 'atp.png',
+    scale: 1.2,
   },
   BUCKET: {
     name: 'Object Storage',
@@ -72,6 +72,10 @@ export const ServiceType = {
   GO: {
     name: 'Go',
     icon: 'go.svg',
+  },
+  TRAEFIK: {
+    name: 'Traefik',
+    icon: 'traefik.svg',
   },
   PYTHON: {
     name: 'Python',
@@ -122,12 +126,22 @@ export const Services = {
     type: ServiceType.WAF,
     tech: TechType.EDGE,
   },
+  LB: {
+    name: 'LB',
+    type: ServiceType.LB,
+    tech: TechType.OCI,
+  },
+  // OKE Services
   INGRESS: {
     name: 'Ingress',
     type: ServiceType.NGINX,
     tech: TechType.OKE,
   },
-  // OKE Services
+  EDGE_ROUTER: {
+    name: 'Router',
+    type: ServiceType.TRAEFIK,
+    tech: TechType.OKE,
+  },
   STORE: {
     name: 'Storefront UI',
     type: ServiceType.NGINX,
@@ -191,10 +205,12 @@ export const Services = {
 export const ServiceLinks = [
   // edge
   { source: Services.DNS, target: Services.WAF },
-  { source: Services.DNS, target: Services.INGRESS, lineStyle: { type: 'dotted' } }, // insecure 
-  { source: Services.WAF, target: Services.INGRESS },
-  { source: Services.INGRESS, target: Services.STORE },
-  { source: Services.INGRESS, target: Services.API },
+  { source: Services.DNS, target: Services.LB, lineStyle: { type: 'dotted' } }, // insecure
+  { source: Services.WAF, target: Services.LB },
+  { source: Services.LB, target: Services.INGRESS },
+  { source: Services.INGRESS, target: Services.EDGE_ROUTER },
+  { source: Services.EDGE_ROUTER, target: Services.STORE },
+  { source: Services.EDGE_ROUTER, target: Services.API },
   // ui
   // { source: Services.STORE, target: Services.BUCKET },
   // { source: Services.STORE, target: Services.API },

@@ -12,27 +12,19 @@ spec:
   - secretName: mushop-tls-prod-secret 
     hosts:
     - mushop.ateam.cloud
-    - secure.mushop.ateam.cloud
+    - insecure.mushop.ateam.cloud
   rules:
   - host: mushop.ateam.cloud
     http:
       paths:
-      - path: /api
-        backend:
-          serviceName: api
-          servicePort: 80
       - path: /
         backend:
-          serviceName: storefront
+          serviceName: edge
           servicePort: 80
-  - host: secure.mushop.ateam.cloud
+  - host: insecure.mushop.ateam.cloud
     http:
       paths:
-      - path: /api
-        backend:
-          serviceName: api
-          servicePort: 80
       - path: /
         backend:
-          serviceName: storefront
+          serviceName: edge
           servicePort: 80

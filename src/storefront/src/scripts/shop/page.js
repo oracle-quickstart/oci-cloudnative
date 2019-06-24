@@ -17,6 +17,7 @@ const pages = {
   checkout:   'checkout.html',
   compare:    'compare.html',
   contact:    'contacts.html',
+  customer:   'customer.html',
   delivery:   'delivery.html',
   error:      'error.html',
   faq:        'faq.html',
@@ -27,13 +28,14 @@ const pages = {
   personal:   'personal.html',
   product:    'product.html',
   settings:   'settings.html',
+  services:   'services.html',
   subcategory:'subcategory.html'
 };
 
 const authPage = 'auth';
 const errPage = 'error';
 const nfPage = '404';
-const restricted = ['personal', 'settings', 'orders', 'checkout'];
+const restricted = ['customer', 'personal', 'settings', 'orders', 'checkout'];
 
 export class PageController {
   constructor(document) {
@@ -133,7 +135,9 @@ export class PageController {
         this.view.apply(root.element, (node ? node.innerHTML : html)); // swap root content
       }).catch(e => {
         console.error(page, e);
-        return page !== errPage ? this.router().go(errPage, { message: e.message }) : Promise.reject(e);
+        return page !== errPage ?
+          this.router().go(errPage, { message: e.message }, null, true) :
+          Promise.reject(e);
       });
   }
 
