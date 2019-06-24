@@ -141,6 +141,7 @@ export const USER_MU = {
   TOOLBAR: 'mu-user-toolbar',
   ADDRESS: 'mu-user-address',
   PAYMENT: 'mu-user-payment',
+  CUSTOMER: 'mu-customer',
 };
 
 
@@ -162,6 +163,10 @@ export const UserViewMixin = (ctor, attr, viewName) => class extends MuMx.compos
   }
 
   _dataUpdate(prop, data) {
+    if (prop === 'profile') {
+      const { router } = this.mu;
+      this.context.set('href.account', router.href('customer', { id: data && data.id }));
+    }
     // support callbacks as well: onProfile, onAddress, onCard
     const cbProp = 'on' + prop.charAt(0).toUpperCase() + prop.slice(1);
     const cb = this._ctxAttrValue(cbProp);
@@ -362,8 +367,31 @@ export class UserPayment extends MuMx.compose(null,
   }
 }
 
+export class CustomerAccount extends MuMx.compose(null, UserViewMixin) {
+
+  onInit() {
+    this.pageLoad = this.pageLoad.bind(this);
+    this.subscribeOne('customer', this.mu.page, this.pageLoad)
+  }
+  onMount() {
+    super.onMount();
+  }
+
+  pageLoad() {
+    const { router, http } = this.mu;
+    const { id } = router.queryparams() || { };
+    this.render({ loading: true })
+      .then(() => http.get(`/customers${id ? `/${id}` : ''}`))
+      .then(res => [].concat(res.data._embedded ? res.data._embedded.customer : res.data))
+      .then(result => this.render({ result, loading: false }))
+      .catch(error => this.render({ error, loading: false }));
+  }
+
+}
+
 export default Mu.macro(MUSHOP.MACRO.USER, UserController)
   .micro(UserView, attrToSelector(USER_MU.VIEW))
   .micro(UserAddress, attrToSelector(USER_MU.ADDRESS))
   .micro(UserPayment, attrToSelector(USER_MU.PAYMENT))
-  .micro(UserToolbar, attrToSelector(USER_MU.TOOLBAR));
+  .micro(UserToolbar, attrToSelector(USER_MU.TOOLBAR))
+  .micro(CustomerAccount, attrToSelector(USER_MU.CUSTOMER));

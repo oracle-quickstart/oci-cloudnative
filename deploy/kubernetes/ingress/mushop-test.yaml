@@ -16,11 +16,7 @@ spec:
   - host: test.mushop.ateam.cloud
     http:
       paths:
-      - path: /api
-        backend:
-          serviceName: api
-          servicePort: 80
       - path: /
         backend:
-          serviceName: storefront
+          serviceName: edge
           servicePort: 80

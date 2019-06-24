@@ -1,20 +1,22 @@
 logLevel = "INFO"
 
 [web]
-address = ":8080"
+address = ":8888"
 
 [entryPoints]
   [entryPoints.http]
-    address = ":80"
+    address = ":8080"
+
+[ping]
+entryPoint = "http"
 
 [file]
   [backends]
     # api
-    [backends.app1]
-      [backends.app1.loadbalancer]
+    [backends.api]
+      [backends.api.loadbalancer]
         method = "wrr"
-        sticky = true
-      [backends.app1.servers.server1]
+      [backends.api.servers.server1]
         url = "http://api:3000"
     # web
     [backends.web1]
@@ -24,11 +26,11 @@ address = ":8080"
         url = "http://storefront:8080"
 
   [frontends]
-    [frontends.app1]
-      backend = "app1"
+    [frontends.api]
+      backend = "api"
       entrypoints = ["http"]
-      [frontends.app1.routes.test_1]
-        rule = "PathPrefixStrip:/api"
+      [frontends.api.routes.test1]
+        rule = "PathPrefix:/api/"
     [frontends.web1]
       backend = "web1"
       entrypoints = ["http"]
