@@ -382,8 +382,16 @@ export class CustomerAccount extends MuMx.compose(null, UserViewMixin) {
     const { id } = router.queryparams() || { };
     this.render({ loading: true })
       .then(() => http.get(`/customers${id ? `/${id}` : ''}`))
-      .then(res => [].concat(res.data._embedded ? res.data._embedded.customer : res.data))
-      .then(result => this.render({ result, loading: false }))
+      .then(res => {
+        const data = res.data;
+        const result = [].concat(res.data._embedded ? res.data._embedded.customer : res.data);
+        return this.render({
+          data,
+          mock: data.mock,
+          result,
+          loading: false,
+        });
+      })
       .catch(error => this.render({ error, loading: false }));
   }
 
