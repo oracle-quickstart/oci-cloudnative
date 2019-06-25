@@ -70,6 +70,7 @@
 @base-h2-font-size:                             @base-h2-font-size-m * 0.7;
 @base-h3-font-size-m:                           @global-large-font-size;
 @base-h3-font-size:                             @base-h3-font-size-m * 0.8;
+@base-heading-font-weight:                      500;
 
 .hook-base-body() {
   -webkit-font-smoothing: antialiased;
@@ -87,6 +88,9 @@
 // ========================================================================
 
 @button-border-radius:                          @global-border-radius;
+.hook-button() {
+  font-weight: 500;
+}
 
 // Section
 // ========================================================================
