@@ -18,7 +18,7 @@ TO carts_role;
 
 GRANT
     UNLIMITED TABLESPACE
-TO carts_role;
+TO carts_user;
 
 GRANT carts_role TO carts_user;
 
