@@ -182,7 +182,7 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
       animationDuration: 1500,
       animationEasingUpdate: 'quinticInOut',
       textStyle: {
-        fontFamily: 'Roboto, sans-serif',
+        fontFamily: 'Quicksand, sans-serif',
       },
       series: [
         this.serviceSeries(data, links, categories),
