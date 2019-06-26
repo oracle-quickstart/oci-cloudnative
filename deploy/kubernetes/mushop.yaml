@@ -188,14 +188,14 @@ spec:
     spec:
       containers:
       - name: carts
-        image: phx.ocir.io/intvravipati/mushop/carts:1.0.0
+        image: phx.ocir.io/intvravipati/mushop/carts:1.0.1
         ports:
          - containerPort: 80
         env:
          - name: ZIPKIN
            value: zipkin.jaeger.svc.cluster.local
          - name: JAVA_OPTS
-           value: -Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+           value: -Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
          - name: JDBC_URL
            value: "jdbc:oracle:thin:@db3_tp?TNS_ADMIN=./config"
          - name: OADB_USER
@@ -213,6 +213,16 @@ spec:
              secretKeyRef:
                name: atp-secret
                key: carts_oadb_service   
+         - name: ATP_TRUST_PASS
+           valueFrom:
+            secretKeyRef:
+               name: atp-secret
+               key: carts_trust_pass 
+         - name: ATP_KEY_PASS
+           valueFrom:
+            secretKeyRef:
+               name: atp-secret
+               key: carts_key_pass 
         volumeMounts:
         - mountPath: /tmp
           name: tmp-volume
@@ -409,12 +419,12 @@ spec:
     spec: 
       containers:
       - name: orders
-        image: phx.ocir.io/intvravipati/mushop/orders:1.0.0
+        image: phx.ocir.io/intvravipati/mushop/orders:1.0.1
         env:
          - name: ZIPKIN
            value: zipkin.jaeger.svc.cluster.local
          - name: JAVA_OPTS
-           value: -Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+           value: -Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
          - name: JDBC_URL
            value: "jdbc:oracle:thin:@appdb_tp?TNS_ADMIN=./config"
          - name: OADB_USER
@@ -431,7 +441,17 @@ spec:
            valueFrom:
              secretKeyRef:
                name: atp-secret
-               key: orders_oadb_service   
+               key: orders_oadb_service
+         - name: ATP_TRUST_PASS
+           valueFrom:
+            secretKeyRef:
+               name: atp-secret
+               key: orders_trust_pass 
+         - name: ATP_KEY_PASS
+           valueFrom:
+            secretKeyRef:
+               name: atp-secret
+               key: orders_key_pass   
         ports:
         - containerPort: 80
         volumeMounts:
