@@ -332,6 +332,7 @@
     app.get('/logout', (req, res) => {
         console.log('Received logout request');
         req.session.customerId = null;
+        req.session.cartId = null;
         res.cookie(cookie_name, '', {expires: new Date(0)});
         helpers.respondStatus(res, 200);
     });
