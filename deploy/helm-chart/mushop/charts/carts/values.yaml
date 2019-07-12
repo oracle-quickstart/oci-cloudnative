@@ -1,0 +1,19 @@
+replicaCount: 1
+
+image:
+  repository: phx.ocir.io/intvravipati/mushop/carts
+  tag: 1.0.0
+  pullPolicy: Always
+
+secrets:
+  oadbService: mcarts_tp
+  oadbUser: carts_user
+  oadbPassword:
+
+env:
+  zipkin: zipkin.jaeger.svc.cluster.local
+  javaOpts: -Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+  jdbcUrl: "jdbc:oracle:thin:@db3_tp?TNS_ADMIN=./config"
+
+service:
+  port: 80

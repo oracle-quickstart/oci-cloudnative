@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "storefront.fullname" . }}
+  labels:
+{{ include "storefront.labels" . | indent 4 }}
+spec:
+  selector:
+    app.kubernetes.io/name: {{ include "storefront.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    layer: "client"
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 8080

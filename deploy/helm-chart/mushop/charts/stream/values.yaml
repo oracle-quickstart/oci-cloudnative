@@ -1,0 +1,9 @@
+replicaCount: 1
+
+image:
+  repository: phx.ocir.io/intvravipati/mushop/stream
+  tag: 0.0.1
+  pullPolicy: Always
+
+service:
+  port: 80

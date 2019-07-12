@@ -1,0 +1,22 @@
+{{- if .Values.ingressDev.enabled }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name:
+  labels:
+{{ include "mushop.labels" . | indent 4 }}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /api
+        backend:
+          serviceName: {{ .Release.Name }}-api
+          servicePort: {{ .Values.api.service.port }}
+      - path: /
+        backend:
+          serviceName: {{ .Release.Name }}-storefront
+          servicePort: {{ .Values.storefront.service.port }}
+{{- end -}}

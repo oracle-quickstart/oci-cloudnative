@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "orders.fullname" . }}
+  labels:
+{{ include "orders.labels" . | indent 4 }}
+spec:
+  selector:
+    app.kubernetes.io/name: {{ include "orders.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 80

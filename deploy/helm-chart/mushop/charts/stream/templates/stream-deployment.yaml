@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "stream.fullname" . }}
+  labels:
+{{ include "stream.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "stream.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      run: {{ include "stream.name" . }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "api.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        run: {{ include "stream.name" . }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          env:
+          - name: OCI_TENANT_ID
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-streams-secret
+                key: oci_tenant_id
+          - name: OCI_USER_ID
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-streams-secret
+                key: oci_user_id
+          - name: OCI_FINGERPRINT
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-streams-secret
+                key: oci_fingerprint
+          - name: OCI_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-streams-secret
+                key: oci_api_key
+          - name: OCI_REGION
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-streams-secret
+                key: oci_region
+          - name: OCI_COMPARTMENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-streams-secret
+                key: oci_compartment_id

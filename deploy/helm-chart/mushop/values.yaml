@@ -1,0 +1,58 @@
+ingressDev:
+  enabled: true
+
+ingressDns:
+  enabled: false
+  # Name of the TLS secret (not deployed/controlled by the Helm chart)
+  tlsSecretName: mushop-tls-prod-secret
+
+# This is the API service port as well as the Ingress port for '/api'
+api:
+  enabled: true
+  service:
+    port: 80
+
+carts:
+  enabled: true
+
+catalogue:
+  enabled: true
+
+edge-router:
+  enabled: true
+
+orders:
+  enabled: true
+
+payment:
+  enabled: true
+
+session:
+  enabled: true
+
+shipping:
+  enabled: true
+
+# This is the storefront service port as well as the Ingress port for '/'
+storefront:
+  enabled: true
+  service:
+    port: 80
+
+stream:
+  enabled: true
+
+user:
+  enabled: true
+
+user-db:
+  enabled: true
+
+secrets:
+  oci:
+    compartmentId:
+    tenantId:
+    userId:
+    fingerprint:
+    region:
+    apiKey:

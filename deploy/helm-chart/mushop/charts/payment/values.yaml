@@ -1,0 +1,27 @@
+replicaCount: 1
+
+image:
+  repository: phx.ocir.io/intvravipati/mushop/payment
+  tag: 0.0.1
+  pullPolicy: Always
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 100Mi
+  requests:
+    cpu: 99m
+    memory: 100Mi
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 10001
+  capabilities:
+    drop:
+      - all
+    add:
+      - NET_BIND_SERVICE
+  readOnlyRootFilesystem: true
+
+service:
+  port: 80
