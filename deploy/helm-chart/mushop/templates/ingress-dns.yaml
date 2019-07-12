@@ -1,4 +1,4 @@
-{{- if eq .Values.ingressDns.enabled false }}
+{{- if .Values.ingressDns.enabled }}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:

@@ -5,6 +5,7 @@ ingressDns:
   enabled: false
   # Name of the TLS secret (not deployed/controlled by the Helm chart)
   tlsSecretName: mushop-tls-prod-secret
+  email: "no-reply@ateam-oracle.com"
 
 # This is the API service port as well as the Ingress port for '/api'
 api:
