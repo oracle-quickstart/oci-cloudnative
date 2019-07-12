@@ -1,8 +1,19 @@
 certManager:
-  enabled: false
+  enabled: true
+  email: "no-reply@ateam-oracle.com"
 
 ingress:
   enabled: true
+
+  hosts:
+    - mushop.ateam.cloud
+    - insecure.mushop.ateam.cloud
+
+  tls:
+    - secretName: mushop-tls-prod-secret
+      hosts:
+        - mushop.ateam.cloud
+        - insecure.mushop.ateam.cloud
 
 api:
   enabled: true

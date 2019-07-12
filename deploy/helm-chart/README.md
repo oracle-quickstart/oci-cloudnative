@@ -45,9 +45,9 @@ helm install mushop --dry-run --debug --name mymushop \
     --set secrets.oci.apiKey="$OCI_KEY"
 ```
 
-### Installing HPA for API and Storefront
+### Installing HPA for components
 
-Optionally, you can enable HPA for API and Storefront components by setting the `api.hpa.enabled=true` and/or `storefront.hpa.enabled=true` and passing them to the helm install command like this:
+Optionally, you can enable HPA for components by setting the `hpa.enabled` property to `true`. For example: `api.hpa.enabled=true`, and then pass it to the install command:
 
 ```bash
 helm install --dry-run --debug mushop --name mymushop \
@@ -60,14 +60,27 @@ helm install --dry-run --debug mushop --name mymushop \
     --set secrets.oci.region=<your region> \
     --set secrets.oci.apiKey="$OCI_KEY" \
     --set api.hpa.enabled=true \
-    --set storefront.hpa.enabled=true
 ```
 
-## Prod/Staging installation
+## Prod/Test installation
 
-For prod/staging installation, you need to deploy the following secrets, before running the Helm install command:
+For prod/test installation, you can use the `values-prod.yaml` or `values-test.yaml` file. You will also have to deploy the following secrets, before running the Helm install command:
 
 ```
 letsencrypt-prod
 mushop-tls-prod-secret
+```
+
+Once you've deployed the secrets, you can call Helm install and pass in the values file:
+
+```bash
+helm install --dry-run --debug mushop -f /mushop/values-prod.yaml --name mymushop \
+    --set catalogue.secrets.oadbPassword=xxxxxx \
+    --set carts.secrets.oadbPassword=xxxxxx \
+    --set orders.secrets.oadbPassword=xxxxxx \
+    --set secrets.oci.compartmentId=<your compartment id> \
+    --set secrets.oci.tenantId=<your tenant id> \
+    --set secrets.oci.userId=<your user id> \
+    --set secrets.oci.region=<your region> \
+    --set secrets.oci.apiKey="$OCI_KEY"
 ```

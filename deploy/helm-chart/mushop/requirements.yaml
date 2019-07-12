@@ -8,9 +8,9 @@ dependencies:
   - name: catalogue
     version: 0.1.0
     condition: catalogue.enabled
-  - name: edge-router
+  - name: edge
     version: 0.1.0
-    condition: edge-router.enabled
+    condition: edge.enabled
   - name: orders
     version: 0.1.0
     condition: orders.enabled
@@ -37,8 +37,9 @@ dependencies:
     condition: user-db.enabled
   - name: nginx-ingress
     version: 1.2.1
+    condition: ingress.enabled
     repository: https://kubernetes-charts.storage.googleapis.com
   - name: cert-manager
     version: 0.8.0
-    condition: ingressDns.enabled
+    condition: certManager.enabled
     repository: https://charts.jetstack.io

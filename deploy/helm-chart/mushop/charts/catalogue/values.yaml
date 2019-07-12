@@ -21,6 +21,18 @@ resources:
 env:
   zipkin: zipkin.jaeger.svc.cluster.local
 
+hpa:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+
 securityContext:
   capabilities:
     drop:

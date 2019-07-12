@@ -16,6 +16,18 @@ resources:
 env:
   mongo: user-db:27017 # TODO: This should be in the global chart probably
 
+hpa:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+
 securityContext:
   runAsNonRoot: true
   runAsUser: 10001

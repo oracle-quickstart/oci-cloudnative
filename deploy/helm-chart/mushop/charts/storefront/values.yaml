@@ -34,7 +34,9 @@ hpa:
   - type: Resource
     resource:
       name: cpu
-      targetAverageUtilization: 70
+      target:
+        type: Utilization
+        averageUtilization: 70
 
 service:
   port: 80
