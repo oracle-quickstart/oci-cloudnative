@@ -27,11 +27,11 @@ spec:
               containerPort: 8888
           livenessProbe:
             httpGet:
-              path: /health
+              path: /
               port: http
           readinessProbe:
             httpGet:
-              path: /health
+              path: /
               port: http
           volumeMounts:
           - mountPath: /tmp

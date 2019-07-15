@@ -14,8 +14,6 @@ resources:
     memory: 100Mi
 
 securityContext:
-  runAsNonRoot: true
-  runAsUser: 10001
   capabilities:
     drop:
       - all

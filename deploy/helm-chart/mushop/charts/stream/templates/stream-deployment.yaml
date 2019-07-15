@@ -23,7 +23,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: 3000
+            - containerPort: 80
               protocol: TCP
           env:
           - name: OCI_TENANT_ID
@@ -56,3 +56,8 @@ spec:
               secretKeyRef:
                 name: {{ .Release.Name }}-streams-secret
                 key: oci_compartment_id
+          - name: OCI_PASS_PHRASE
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-streams-secret
+                key: oci_pass_phrase

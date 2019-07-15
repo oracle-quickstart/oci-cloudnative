@@ -45,6 +45,16 @@ spec:
                 secretKeyRef:
                   name: {{ include "carts.fullname" . }}
                   key: oadb_service
+            - name: ATP_TRUST_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "carts.fullname" . }}
+                  key: trust_pass
+            - name: ATP_KEY_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "carts.fullname" . }}
+                  key: key_pass
           volumeMounts:
             - mountPath: /tmp
               name: tmp-volume

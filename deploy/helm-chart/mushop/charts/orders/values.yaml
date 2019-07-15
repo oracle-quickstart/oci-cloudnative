@@ -9,11 +9,12 @@ secrets:
   oadbService: morders_tp
   oadbUser: orders_user
   oadbPassword:
-
+  trustPass:
+  keyPass:
 
 env:
   zipkin: zipkin.jaeger.svc.cluster.local
-  javaOpts: -Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+  javaOpts: -Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
   jdbcUrl: "jdbc:oracle:thin:@appdb_tp?TNS_ADMIN=./config"
 
 service:

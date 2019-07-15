@@ -65,3 +65,4 @@ secrets:
     fingerprint:
     region:
     apiKey:
+    passphrase:
