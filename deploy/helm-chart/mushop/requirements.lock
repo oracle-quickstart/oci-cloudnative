@@ -5,5 +5,8 @@ dependencies:
 - name: cert-manager
   repository: https://charts.jetstack.io
   version: v0.8.0
-digest: sha256:64c8795ef6f28e6196f719f465054f85036efe7ec3f7767191306ca878a7d5b4
-generated: "2019-07-12T10:46:41.915376-07:00"
+- name: catalog
+  repository: https://svc-catalog-charts.storage.googleapis.com
+  version: 0.2.1
+digest: sha256:7db631844a90a07fd51510f3e4107fec3862b1d892ccfad6eb49f8d15e0bc78a
+generated: "2019-07-15T14:18:19.088221-07:00"

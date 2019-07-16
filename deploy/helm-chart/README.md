@@ -75,14 +75,7 @@ helm install --dry-run --debug mushop --name mymushop \
 
 ## Prod/Test installation
 
-For prod/test installation, you can use the `values-prod.yaml` or `values-test.yaml` file. You will also have to deploy the following secrets, before running the Helm install command:
-
-```
-letsencrypt-prod
-mushop-tls-prod-secret
-```
-
-Once you've deployed the secrets, you can call Helm install and pass in the values file:
+For prod/test installation, you can use the `values-prod.yaml` or `values-test.yaml` and call Helm install and pass in the values file:
 
 ```bash
 helm install --dry-run --debug mushop -f /mushop/values-prod.yaml --name mymushop \

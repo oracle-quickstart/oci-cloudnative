@@ -6,7 +6,7 @@ ingress:
   enabled: true
 
   tls:
-    - secretName: mushop-test-tls
+    - secretName: letsencrypt-staging
       hosts:
         - test.mushop.ateam.cloud
 

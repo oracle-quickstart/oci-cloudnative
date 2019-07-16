@@ -10,7 +10,7 @@ ingress:
     - insecure.mushop.ateam.cloud
 
   tls:
-    - secretName: mushop-tls-prod-secret
+    - secretName: letsencrypt-prod
       hosts:
         - mushop.ateam.cloud
         - insecure.mushop.ateam.cloud

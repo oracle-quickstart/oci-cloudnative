@@ -1,6 +1,9 @@
 certManager:
   enabled: false
 
+catalog:
+  enabled: false
+
 ingress:
   enabled: true
 
