@@ -21,9 +21,14 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+          - --configfile=/config/traefik.toml
           ports:
             - name: http
               containerPort: 8080
+          volumeMounts:
+            - mountPath: /config
+              name: config
           livenessProbe:
             httpGet:
               path: /ping
@@ -36,3 +41,8 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "edge-router.fullname" .}}
+
