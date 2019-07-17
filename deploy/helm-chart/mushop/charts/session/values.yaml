@@ -1,0 +1,19 @@
+replicaCount: 1
+
+image:
+  repository: redis
+  tag: alpine
+  pullPolicy: Always
+
+securityContext:
+  capabilities:
+    drop:
+      - all
+    add:
+      - CHOWN
+      - SETGID
+      - SETUID
+  readOnlyRootFilesystem: true
+
+service:
+  port: 6379

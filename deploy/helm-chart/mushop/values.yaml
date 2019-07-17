@@ -1,0 +1,54 @@
+certManager:
+  enabled: false
+
+catalog:
+  enabled: false
+
+ingress:
+  enabled: true
+
+api:
+  enabled: true
+
+carts:
+  enabled: true
+
+catalogue:
+  enabled: true
+
+edge:
+  enabled: true
+
+orders:
+  enabled: true
+
+payment:
+  enabled: true
+
+session:
+  enabled: true
+
+shipping:
+  enabled: true
+
+storefront:
+  enabled: true
+
+stream:
+  enabled: true
+
+user:
+  enabled: true
+
+user-db:
+  enabled: true
+
+secrets:
+  oci:
+    compartmentId:
+    tenantId:
+    userId:
+    fingerprint:
+    region:
+    apiKey:
+    passphrase:

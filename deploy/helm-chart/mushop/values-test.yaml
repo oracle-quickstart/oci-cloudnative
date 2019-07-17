@@ -1,0 +1,60 @@
+certManager:
+  enabled: true
+  email: "no-reply@ateam-oracle.com"
+
+ingress:
+  enabled: true
+
+  tls:
+    - secretName: letsencrypt-staging
+      hosts:
+        - test.mushop.ateam.cloud
+
+  hosts:
+    - test.mushop.ateam.cloud
+
+api:
+  enabled: true
+
+carts:
+  enabled: true
+
+catalogue:
+  enabled: true
+
+edge:
+  enabled: true
+
+orders:
+  enabled: true
+
+payment:
+  enabled: true
+
+session:
+  enabled: true
+
+shipping:
+  enabled: true
+
+storefront:
+  enabled: true
+
+stream:
+  enabled: true
+
+user:
+  enabled: true
+
+user-db:
+  enabled: true
+
+secrets:
+  oci:
+    compartmentId:
+    tenantId:
+    userId:
+    fingerprint:
+    region:
+    apiKey:
+    passphrase:

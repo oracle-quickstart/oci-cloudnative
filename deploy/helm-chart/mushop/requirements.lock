@@ -1,0 +1,12 @@
+dependencies:
+- name: nginx-ingress
+  repository: https://kubernetes-charts.storage.googleapis.com
+  version: 1.2.1
+- name: cert-manager
+  repository: https://charts.jetstack.io
+  version: v0.8.0
+- name: catalog
+  repository: https://svc-catalog-charts.storage.googleapis.com
+  version: 0.2.1
+digest: sha256:7db631844a90a07fd51510f3e4107fec3862b1d892ccfad6eb49f8d15e0bc78a
+generated: "2019-07-15T14:18:19.088221-07:00"

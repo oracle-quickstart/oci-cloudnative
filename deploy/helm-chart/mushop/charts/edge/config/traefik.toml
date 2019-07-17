@@ -1,0 +1,37 @@
+logLevel = "INFO"
+
+[web]
+address = ":8888"
+
+[entryPoints]
+  [entryPoints.http]
+    address = ":8080"
+
+[ping]
+entryPoint = "http"
+
+[file]
+  [backends]
+    # api
+    [backends.api]
+      [backends.api.loadbalancer]
+        method = "wrr"
+      [backends.api.servers.server1]
+        url = "http://{{ .Release.Name }}-api:3000"
+    # web
+    [backends.web1]
+      [backends.web1.loadbalancer]
+        method = "wrr"
+      [backends.web1.servers.server1]
+        url = "http://{{ .Release.Name }}-storefront:8080"
+
+  [frontends]
+    [frontends.api]
+      backend = "api"
+      entrypoints = ["http"]
+      [frontends.api.routes.test1]
+        rule = "PathPrefix:/api/"
+    [frontends.web1]
+      backend = "web1"
+      entrypoints = ["http"]
+

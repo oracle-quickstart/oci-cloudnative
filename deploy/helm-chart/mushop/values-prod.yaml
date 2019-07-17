@@ -1,0 +1,68 @@
+certManager:
+  enabled: true
+  email: "no-reply@ateam-oracle.com"
+
+ingress:
+  enabled: true
+
+  hosts:
+    - mushop.ateam.cloud
+    - insecure.mushop.ateam.cloud
+
+  tls:
+    - secretName: letsencrypt-prod
+      hosts:
+        - mushop.ateam.cloud
+        - insecure.mushop.ateam.cloud
+
+api:
+  enabled: true
+  service:
+    port: 80
+
+carts:
+  enabled: true
+
+catalogue:
+  enabled: true
+
+edge:
+  enabled: true
+  service:
+    port: 80
+
+orders:
+  enabled: true
+
+payment:
+  enabled: true
+
+session:
+  enabled: true
+
+shipping:
+  enabled: true
+
+storefront:
+  enabled: true
+  service:
+    port: 80
+
+stream:
+  enabled: true
+
+user:
+  enabled: true
+
+user-db:
+  enabled: true
+
+secrets:
+  oci:
+    compartmentId:
+    tenantId:
+    userId:
+    fingerprint:
+    region:
+    apiKey:
+    passphrase:

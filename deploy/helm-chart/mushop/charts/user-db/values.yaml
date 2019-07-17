@@ -1,0 +1,19 @@
+replicaCount: 1
+
+image:
+  repository: phx.ocir.io/intvravipati/mushop/user-db
+  tag: 0.0.1
+  pullPolicy: Always
+
+securityContext:
+  capabilities:
+    drop:
+      - all
+    add:
+      - CHOWN
+      - SETGID
+      - SETUID
+  readOnlyRootFilesystem: true
+
+service:
+  port: 27017
