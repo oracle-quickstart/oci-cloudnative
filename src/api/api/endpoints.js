@@ -1,29 +1,31 @@
-(function (){
+(function () {
   'use strict';
+
+  // getEnvVar returns the environment variable value or fails if the variable is not set
+  function getEnvVar(name) {
+    const value = process.env[name];
+    if (!value) {
+      throw new Error(`Environment variable ${name} is not set.`);
+    }
+    return value;
+  }
+
+  const catalogueBase = getEnvVar("CATALOGUE_URL");
+  const cartsBase = getEnvVar("CARTS_URL");
+  const ordersBase = getEnvVar("ORDERS_URL");
+  const usersBase = getEnvVar("USERS_URL");
 
   var util = require('util');
 
-  var domain = "";
-  process.argv.forEach(function (val, index, array) {
-    var arg = val.split("=");
-    if (arg.length > 1) {
-      if (arg[0] == "--domain") {
-        domain = "." + arg[1];
-        console.log("Setting domain to:", domain);
-      }
-    }
-  });
-
   module.exports = {
-    catalogueUrl:  util.format("http://catalogue%s", domain),
-    categoryUrl:   util.format("http://catalogue%s", domain),
-    tagsUrl:       util.format("http://catalogue%s/tags", domain),
-    cartsUrl:      util.format("http://carts%s/carts", domain),
-    ordersUrl:     util.format("http://orders%s", domain),
-    customersUrl:  util.format("http://user%s/customers", domain),
-    addressUrl:    util.format("http://user%s/addresses", domain),
-    cardsUrl:      util.format("http://user%s/cards", domain),
-    loginUrl:      util.format("http://user%s/login", domain),
-    registerUrl:   util.format("http://user%s/register", domain),
+    catalogueUrl: catalogueBase,
+    tagsUrl: util.format("%s/tags", catalogueBase),
+    cartsUrl: util.format("%s/carts", cartsBase),
+    ordersUrl: ordersBase,
+    customersUrl: util.format("%s/customers", usersBase),
+    addressUrl: util.format("%s/addresses", usersBase),
+    cardsUrl: util.format("%s/cards", usersBase),
+    loginUrl: util.format("%s/login", usersBase),
+    registerUrl: util.format("%s/register", usersBase),
   };
 }());
