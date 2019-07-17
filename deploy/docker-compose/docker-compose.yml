@@ -31,6 +31,10 @@ services:
       - reschedule=on-node-failure
       - PORT=3000
       - SESSION_REDIS=session-db
+      - CATALOGUE_URL=http://catalogue
+      - CARTS_URL=http://carts
+      - ORDERS_URL=http://orders
+      - USERS_URL=http://user
 
   # Redis session DB
   session-db:

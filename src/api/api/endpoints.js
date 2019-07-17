@@ -19,7 +19,6 @@
 
   module.exports = {
     catalogueUrl: catalogueBase,
-    categoryUrl: util.format("%s/categories", catalogueBase),
     tagsUrl: util.format("%s/tags", catalogueBase),
     cartsUrl: util.format("%s/carts", cartsBase),
     ordersUrl: ordersBase,
