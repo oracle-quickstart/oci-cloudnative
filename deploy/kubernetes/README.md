@@ -37,11 +37,41 @@ kubectl create secret generic streams-secret \
 --from-literal=oci_user_id="<your user id>" \
 --from-literal=oci_fingerprint="<your API key fingetprint>" \
 --from-literal=oci_region="<your region>" \
---from-file=oci_api_key=\<your home folder>/.oci/oci_api_key.pem
+--from-file=oci_api_key=\<your home folder>/.oci/oci_api_key.pem \
+--from-literal=oci_pass_phrase="[your key passphrase]"
 ```
 
 ## Deploy
 
+### Create Runtime in K8S
+
 ```text
 kubectl apply -f mushop.yaml
 ```
+
+> Verify with `kubectl get po`
+
+## Expose
+
+### Option A: kubectl port-forward
+
+Best for testing deployments on a single cluster without host-specific ingress
+rules. This exposes the edge service on `localhost` where `kubectl` is executed.
+
+```text
+kubectl port-forward svc/edge 8000:80
+```
+
+Open browser [http://localhost:8000](http://localhost:8000);
+
+### Option B: K8S Ingress
+
+Better for development environments with nginx ingress controller installed.
+This involves creating the Ingress defined within `ingress/mushop-dev.yaml`
+
+```text
+kubectl apply -f ingress/mushop-dev.yaml
+```
+
+The application will become available on [https://localhost](https://localhost)
+_(with self-signed SSL)_

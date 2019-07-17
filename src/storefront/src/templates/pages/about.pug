@@ -21,9 +21,13 @@ block article
 
       div.uk-article-body(mu-service-chart)
         div
-          p.uk-text-lead Welcome to MuShop!
+          p.uk-text-lead
+            | Welcome to MuShop! This application was developed in order to 
+            | demonstrate a cloud native approach of microservices delivered
+            | with <b>Oracle Cloud Infrastructure</b>. Below is a view of the holistic 
+            | application architecture and services.
 
-        h2.uk-text-center Service Diagram
+        //- h2.uk-text-center Service Diagram
         div.tm-ratio.tm-ratio-2-1
           div.mu-tech.mu-tech-oci.uk-animation-fade(mu-tech-box="OCI" mu-hide="hide.oci")
             img.mu-tech-img.uk-position-top-right(uk-img data-src="images/tech/oci.png")

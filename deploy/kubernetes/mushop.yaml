@@ -1,22 +1,65 @@
 ---
 apiVersion: extensions/v1beta1
-kind: Ingress
+kind: Deployment
 metadata:
-  name: mushop-store
-  annotations:
-    kubernetes.io/ingress.class: nginx
+  name: edge
+  labels:
+    name: edge
+    layer: client
 spec:
-  rules:
-  - http:
-      paths:
-      - path: /api
-        backend:
-          serviceName: api
-          servicePort: 80
-      - path: /
-        backend:
-          serviceName: storefront
-          servicePort: 80
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: edge
+        layer: client
+    spec:
+      containers:
+      - name: edge
+        image: phx.ocir.io/intvravipati/mushop/edge-router:1
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 8080
+        resources:
+          limits:
+            cpu: 100m
+            memory: 1000Mi
+          requests:
+            cpu: 50m
+            memory: 256Mi
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 10001
+          capabilities:
+            drop:
+              - all
+            add:
+              - NET_BIND_SERVICE
+          readOnlyRootFilesystem: true
+        livenessProbe:
+          httpGet:
+            path: /ping
+            port: http
+        readinessProbe:
+          httpGet:
+            path: /ping
+            port: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge
+  labels:
+    name: edge
+    layer: client
+spec:
+  selector:
+    name: edge
+    layer: client
+  ports:
+  - port: 80
+    targetPort: 8080
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -80,7 +123,7 @@ spec:
     name: api
     layer: client
   ports:
-  - port: 80
+  - port: 3000
     targetPort: 3000
 ---
 apiVersion: extensions/v1beta1
@@ -145,14 +188,14 @@ spec:
     spec:
       containers:
       - name: carts
-        image: phx.ocir.io/intvravipati/mushop/carts:1.0.0
+        image: phx.ocir.io/intvravipati/mushop/carts:1.0.1
         ports:
-         - containerPort: 8080
+         - containerPort: 80
         env:
          - name: ZIPKIN
            value: zipkin.jaeger.svc.cluster.local
          - name: JAVA_OPTS
-           value: -Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+           value: -Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
          - name: JDBC_URL
            value: "jdbc:oracle:thin:@db3_tp?TNS_ADMIN=./config"
          - name: OADB_USER
@@ -170,6 +213,16 @@ spec:
              secretKeyRef:
                name: atp-secret
                key: carts_oadb_service   
+         - name: ATP_TRUST_PASS
+           valueFrom:
+            secretKeyRef:
+               name: atp-secret
+               key: carts_trust_pass 
+         - name: ATP_KEY_PASS
+           valueFrom:
+            secretKeyRef:
+               name: atp-secret
+               key: carts_key_pass 
         volumeMounts:
         - mountPath: /tmp
           name: tmp-volume
@@ -348,7 +401,7 @@ spec:
     name: storefront
     layer: client
   ports:
-  - port: 80
+  - port: 8080
     targetPort: 8080
 ---
 apiVersion: extensions/v1beta1
@@ -366,12 +419,12 @@ spec:
     spec: 
       containers:
       - name: orders
-        image: phx.ocir.io/intvravipati/mushop/orders:1.0.0
+        image: phx.ocir.io/intvravipati/mushop/orders:1.0.1
         env:
          - name: ZIPKIN
            value: zipkin.jaeger.svc.cluster.local
          - name: JAVA_OPTS
-           value: -Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+           value: -Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
          - name: JDBC_URL
            value: "jdbc:oracle:thin:@appdb_tp?TNS_ADMIN=./config"
          - name: OADB_USER
@@ -388,7 +441,17 @@ spec:
            valueFrom:
              secretKeyRef:
                name: atp-secret
-               key: orders_oadb_service   
+               key: orders_oadb_service
+         - name: ATP_TRUST_PASS
+           valueFrom:
+            secretKeyRef:
+               name: atp-secret
+               key: orders_trust_pass 
+         - name: ATP_KEY_PASS
+           valueFrom:
+            secretKeyRef:
+               name: atp-secret
+               key: orders_key_pass   
         ports:
         - containerPort: 80
         volumeMounts:
@@ -515,7 +578,8 @@ spec:
            valueFrom:
              secretKeyRef:
               name: streams-secret
-              key: oci_pass_phrase                   
+              key: oci_pass_phrase
+              optional: true
          - name: OCI_API_KEY
            valueFrom:
              secretKeyRef:
@@ -593,7 +657,8 @@ spec:
            valueFrom:
              secretKeyRef:
               name: streams-secret
-              key: oci_pass_phrase     
+              key: oci_pass_phrase
+              optional: true
          - name: OCI_API_KEY
            valueFrom:
              secretKeyRef:

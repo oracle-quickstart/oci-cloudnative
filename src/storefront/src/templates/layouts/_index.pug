@@ -11,7 +11,8 @@ block vars
 html(lang="en")
   head
     include /partials/_head
-    link(rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500")
+    //- link(rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500")
+    link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand:400,500")
     link(rel="stylesheet" href="styles/uikit.css")
     link(rel="stylesheet" href="styles/shop.css")
     //- uikit scripts
@@ -20,9 +21,6 @@ html(lang="en")
   body
     div#app.uk-offcanvas-content
       block index
+    //- shop scripts
     script(src="scripts/app.js" defer)
     script(src="scripts/charts.js" defer async)
-    //- script(src="scripts/script.js" defer)
-    //- script(src="//maps.googleapis.com/maps/api/js?key=&callback=initMap"
-    //-        async
-    //-        defer)

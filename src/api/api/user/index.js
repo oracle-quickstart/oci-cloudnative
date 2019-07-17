@@ -6,6 +6,7 @@
       , request = require("request")
       , endpoints = require("../endpoints")
       , helpers = require("../../helpers")
+      , mock = require("../../helpers/mock")
       , app = express.Router()
       , cookie_name = "logged_in";
 
@@ -22,13 +23,16 @@
 
     // Designed to be blocked by WAF
     app.get("/customers", function(req, res, next) {
-        helpers.simpleHttpRequest(endpoints.customersUrl, res, next);
+        // helpers.simpleHttpRequest(endpoints.customersUrl, res, next);
+        res.json(mock.response('customer', mock.Customers));
     });
     app.get("/addresses", function(req, res, next) {
-        helpers.simpleHttpRequest(endpoints.addressUrl, res, next);
+        // helpers.simpleHttpRequest(endpoints.addressUrl, res, next);
+        res.json(mock.response('address', mock.Addresses));
     });
     app.get("/cards", function(req, res, next) {
-        helpers.simpleHttpRequest(endpoints.cardsUrl, res, next);
+        // helpers.simpleHttpRequest(endpoints.cardsUrl, res, next);
+        res.json(mock.response('card', mock.Cards));
     });
 
     // Create Customer - TO BE USED FOR TESTING ONLY (for now)
@@ -328,6 +332,7 @@
     app.get('/logout', (req, res) => {
         console.log('Received logout request');
         req.session.customerId = null;
+        req.session.cartId = null;
         res.cookie(cookie_name, '', {expires: new Date(0)});
         helpers.respondStatus(res, 200);
     });

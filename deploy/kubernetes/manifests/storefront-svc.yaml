@@ -11,5 +11,5 @@ spec:
     name: storefront
     layer: client
   ports:
-  - port: 80
+  - port: 8080
     targetPort: 8080

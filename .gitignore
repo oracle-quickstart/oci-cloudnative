@@ -69,3 +69,6 @@ override.tf.json
 *_override.tf
 *_override.tf.json
 
+tnsnames.ora
+keystore.jks
+truststore.jks
