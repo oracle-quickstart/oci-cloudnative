@@ -24,7 +24,7 @@ spec:
             - name: http
               containerPort: 80
           env:
-            - name: mongo
+            - name: MONGO_HOST
               value: {{ .Release.Name }}-user-db:27017 # TODO: get the port and name using a template
           livenessProbe:
             httpGet:

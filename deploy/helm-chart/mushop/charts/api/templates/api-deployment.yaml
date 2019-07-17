@@ -27,7 +27,15 @@ spec:
               containerPort: 3000
           env:
           - name: SESSION_REDIS
-            value: {{ .Release.name }}-session
+            value: {{ .Release.Name }}-session
+          - name: CATALOGUE_URL
+            value: http://{{ .Release.Name }}-catalogue
+          - name: ORDERS_URL
+            value: http://{{ .Release.Name }}-orders
+          - name: CARTS_URL
+            value: http://{{ .Release.Name }}-carts
+          - name: USERS_URL
+            value: http://{{ .Release.Name }}-user
           livenessProbe:
             httpGet:
               path: /health
