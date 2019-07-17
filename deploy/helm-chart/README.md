@@ -6,12 +6,13 @@ The `mushop` Helm chart can be used to install all components of the MuShop to t
 
 - Kubernetes cluster
 - Helm
+- Secrets (Wallet/OCI) in the `/secrets` folders under root, `carts` and `orders` charts
 
 ## Dev installation
 
-The default chart installation creates an Ingress resource for development (i.e. simple Ingress, without the DNS and need for Prod/Staging secrets). This can be changed by setting the `ingressDev.enabled=false`. Similarly, if you want to deploy Ingress with the hosts and certificates set up, you need to set the `ingressDns.enabled=true` (don't forget to set `ingressDev.enabled=false` as well). In the future, we will provide a separate set of values file for Dev and Prod deployments.
+The default chart installation creates an Ingress resource for development (i.e. simple Ingress, without the DNS and need for Prod/Staging secrets).
 
-Before installing the chart, copy your OCI API key to `secrets/oci_api_key.pem` file - this file is read when Helm chart is being installed.
+Before installing the chart, you need to copy the secrets (wallet files and OCI key) to a couple of places in the chart. Check the README.md in `secrets` folder under `carts` and `orders` as well as root chart.
 
 To install the chart, run the command below. Make sure to replace the release name and provide the passwords and OCI settings:
 
@@ -113,5 +114,4 @@ helm template mushop --output-dir [SOME_DIR] --name mymushop \
     --set secrets.oci.userId=<your user id> \
     --set secrets.oci.region=<your region> \
     --set secrets.oci.passphrase=<api_key passphrase>
-
 ```

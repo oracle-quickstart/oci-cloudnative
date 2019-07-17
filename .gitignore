@@ -6,6 +6,7 @@ credentials.env
 Wallet_*
 **/.env
 deploy/helm-chart/**/secrets/*
+!deploy/helm-chart/**/secrets/*.md
 
 ## Folders
 bin/
