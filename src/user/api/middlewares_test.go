@@ -18,7 +18,7 @@ func newBogusLogger() bogusLogger {
 }
 
 func (bl bogusLogger) Log(v ...interface{}) error {
-	_, err := fmt.Println(v)
+	_, err := fmt.Println(v...)
 	return err
 }
 

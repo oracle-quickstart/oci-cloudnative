@@ -1,12 +1,12 @@
-FROM golang:1.7-alpine
+FROM golang:1.12-alpine
 
-COPY . /go/src/github.com/junior/mushop/src/user/
-WORKDIR /go/src/github.com/junior/mushop/src/user/
+RUN apk add --no-cache ca-certificates git
+WORKDIR /src
 
-RUN apk update
-RUN apk add git
-RUN go get -v github.com/Masterminds/glide 
-RUN glide install && CGO_ENABLED=0 go build -a -installsuffix cgo -o /user main.go
+COPY . .
+RUN CGO_ENABLED=0 go build -a \
+	-installsuffix cgo \
+	-o /user main.go
 
 FROM alpine:3.4
 
