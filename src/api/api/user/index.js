@@ -202,8 +202,6 @@
             body: req.body
         };
 
-        console.log("Posting Customer: " + JSON.stringify(req.body));
-
         async.waterfall([
                 function(callback) {
                     request(options, function(error, response, body) {

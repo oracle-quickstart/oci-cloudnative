@@ -1,9 +1,11 @@
 (function () {
   'use strict';
 
+  const { env } = require('../config');
+
   // getEnvVar returns the environment variable value or throws if the variable is not set
   function getEnvVar(name) {
-    const value = process.env[name];
+    const value = env(name);
     if (null == value) {
       throw new Error(`Environment variable ${name} is not set.`);
     }
