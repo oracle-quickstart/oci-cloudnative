@@ -13,7 +13,7 @@ Checkout the API Spec [here](https://mushop.docs.apiary.io)
 ### Using Go natively
 
 ```bash
-make build
+go build -mod=vendor
 ```
 
 ### Using Docker Compose
@@ -25,7 +25,7 @@ docker-compose build
 >## Test
 
 ```bash
-make test
+go test -v ./...
 ```
 
 >## Run
