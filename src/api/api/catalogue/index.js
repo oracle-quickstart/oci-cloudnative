@@ -22,9 +22,5 @@
     helpers.simpleHttpRequest(endpoints.catalogueUrl + req.url.toString(), res, next);
   });
 
-  app.get("/tags", function (req, res, next) {
-    helpers.simpleHttpRequest(endpoints.tagsUrl, res, next);
-  });
-
   module.exports = app;
 }());
