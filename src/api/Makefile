@@ -30,6 +30,10 @@ server:
 		-v $$PWD:/usr/src/app   \
 		-P                      \
 		-e NODE_ENV=development \
+		-e CATALOGUE_URL=http://catalogue \
+		-e CARTS_URL=http://carts \
+		-e ORDERS_URL=http://orders \
+		-e USERS_URL=http://user \
 		-e PORT=3000            \
 		-p 8080:3000            \
 		--network mutest_default  \
