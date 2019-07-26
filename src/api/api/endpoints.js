@@ -1,31 +1,33 @@
 (function () {
   'use strict';
 
-  // getEnvVar returns the environment variable value or fails if the variable is not set
+  const { env, keyMap } = require('../config');
+
+  // getEnvVar returns the environment variable value or throws if the variable is not set
   function getEnvVar(name) {
-    const value = process.env[name];
-    if (!value) {
+    const value = env(name);
+    if (null == value) {
       throw new Error(`Environment variable ${name} is not set.`);
     }
     return value;
   }
 
-  const catalogueBase = getEnvVar("CATALOGUE_URL");
-  const cartsBase = getEnvVar("CARTS_URL");
-  const ordersBase = getEnvVar("ORDERS_URL");
-  const usersBase = getEnvVar("USERS_URL");
+  const { services } = keyMap();
 
-  var util = require('util');
+  const catalogueUrl = getEnvVar(services.CATALOG);
+  const cartsUrl = getEnvVar(services.CARTS);
+  const ordersUrl = getEnvVar(services.ORDERS);
+  const usersUrl = getEnvVar(services.USERS);
 
   module.exports = {
-    catalogueUrl: catalogueBase,
-    tagsUrl: util.format("%s/tags", catalogueBase),
-    cartsUrl: util.format("%s/carts", cartsBase),
-    ordersUrl: ordersBase,
-    customersUrl: util.format("%s/customers", usersBase),
-    addressUrl: util.format("%s/addresses", usersBase),
-    cardsUrl: util.format("%s/cards", usersBase),
-    loginUrl: util.format("%s/login", usersBase),
-    registerUrl: util.format("%s/register", usersBase),
+    getEnvVar, // for testing
+    catalogueUrl,
+    ordersUrl,
+    cartsUrl: `${cartsUrl}/carts`,
+    customersUrl: `${usersUrl}/customers`,
+    addressUrl: `${usersUrl}/addresses`,
+    cardsUrl: `${usersUrl}/cards`,
+    loginUrl:  `${usersUrl}/login`,
+    registerUrl:  `${usersUrl}/register`,
   };
 }());

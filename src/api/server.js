@@ -20,7 +20,7 @@ app.use(session(config.session()));
 
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(morgan("dev", {}));
+app.use(morgan(config.prod() ? "combined" : "dev", {}));
 
 /* Mount API endpoints */
 const api = express.Router();
@@ -32,12 +32,14 @@ api.use(orders);
 api.use(user);
 // mount to app
 app.use(api); // back-compat with weave
-app.use('/api', api);
+app.use('/api', api); // expose services as `/api/{service}`
 
 app.disable('x-powered-by');
 app.use(helpers.errorHandler);
 
-var server = app.listen(process.env.PORT || 3000, function () {
+const server = app.listen(config.env('PORT') || 3000, function () {
   var port = server.address().port;
   console.log("App now running in %s mode on port %d", app.get("env"), port);
 });
+
+module.exports = server;
