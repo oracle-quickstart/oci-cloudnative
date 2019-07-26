@@ -44,8 +44,6 @@
             body: req.body
         };
 
-        console.log("Posting Customer: " + JSON.stringify(req.body));
-
         request(options, function(error, response, body) {
             if (error) {
                 return next(error);
@@ -65,7 +63,6 @@
             json: true,
             body: req.body
         };
-        // console.log("Posting Address: " + JSON.stringify(req.body));
         request(options, function(error, response, body) {
             if (error) {
                 return next(error);
@@ -132,7 +129,6 @@
             json: true,
             body: req.body
         };
-        console.log("Posting Card: " + JSON.stringify(req.body));
         request(options, function(error, response, body) {
             if (error) {
                 return next(error);
@@ -145,7 +141,6 @@
 
     // Delete Customer - TO BE USED FOR TESTING ONLY (for now)
     app.delete("/customers/:id", function(req, res, next) {
-        console.log("Deleting Customer " + req.params.id);
         var options = {
             uri: endpoints.customersUrl + "/" + req.params.id,
             method: 'DELETE'
@@ -162,7 +157,6 @@
 
     // Delete Address - TO BE USED FOR TESTING ONLY (for now)
     app.delete("/addresses/:id", function(req, res, next) {
-        console.log("Deleting Address " + req.params.id);
         var options = {
             uri: endpoints.addressUrl + "/" + req.params.id,
             method: 'DELETE'
@@ -179,7 +173,6 @@
 
     // Delete Card - TO BE USED FOR TESTING ONLY (for now)
     app.delete("/cards/:id", function(req, res, next) {
-        console.log("Deleting Card " + req.params.id);
         var options = {
             uri: endpoints.cardsUrl + "/" + req.params.id,
             method: 'DELETE'
@@ -244,12 +237,11 @@
             ],
             function(err, custId) {
                 if (err) {
-                    console.log("Error with log in: " + err);
+                    console.log("Error with registration: " + err);
                     res.status(500);
                     res.end();
                     return;
                 }
-                // console.log("set cookie" + custId);
                 res.status(200);
                 res.cookie(cookie_name, req.session.id, {
                     maxAge: 3600000
@@ -321,7 +313,6 @@
     });
 
     app.get('/logout', (req, res) => {
-        console.log('Received logout request');
         req.session.customerId = null;
         req.session.cartId = null;
         res.cookie(cookie_name, '', {expires: new Date(0)});
