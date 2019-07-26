@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const { env } = require('../config');
+  const { env, keyMap } = require('../config');
 
   // getEnvVar returns the environment variable value or throws if the variable is not set
   function getEnvVar(name) {
@@ -12,12 +12,15 @@
     return value;
   }
 
-  const catalogueUrl = getEnvVar("CATALOGUE_URL");
-  const cartsUrl = getEnvVar("CARTS_URL");
-  const ordersUrl = getEnvVar("ORDERS_URL");
-  const usersUrl = getEnvVar("USERS_URL");
+  const { services } = keyMap();
+
+  const catalogueUrl = getEnvVar(services.CATALOG);
+  const cartsUrl = getEnvVar(services.CARTS);
+  const ordersUrl = getEnvVar(services.ORDERS);
+  const usersUrl = getEnvVar(services.USERS);
 
   module.exports = {
+    getEnvVar, // for testing
     catalogueUrl,
     ordersUrl,
     cartsUrl: `${cartsUrl}/carts`,

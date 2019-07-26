@@ -22,15 +22,15 @@
     });
 
     // Designed to be blocked by WAF
-    app.get("/customers", function(req, res, next) {
+    app.get("/customers", function(req, res) {
         // helpers.simpleHttpRequest(endpoints.customersUrl, res, next);
         res.json(mock.response('customer', mock.Customers));
     });
-    app.get("/addresses", function(req, res, next) {
+    app.get("/addresses", function(req, res) {
         // helpers.simpleHttpRequest(endpoints.addressUrl, res, next);
         res.json(mock.response('address', mock.Addresses));
     });
-    app.get("/cards", function(req, res, next) {
+    app.get("/cards", function(req, res) {
         // helpers.simpleHttpRequest(endpoints.cardsUrl, res, next);
         res.json(mock.response('card', mock.Cards));
     });
@@ -65,7 +65,7 @@
             json: true,
             body: req.body
         };
-        console.log("Posting Address: " + JSON.stringify(req.body));
+        // console.log("Posting Address: " + JSON.stringify(req.body));
         request(options, function(error, response, body) {
             if (error) {
                 return next(error);
@@ -214,14 +214,11 @@
                                 callback(body.error);
                                 return;
                             }
-                            // console.log(body); 
                             var customerId = body.id;
-                            console.log(customerId);
                             req.session.customerId = customerId;
                             callback(null, customerId);
                             return;
                         }
-                        console.log(response.statusCode);
                         callback(true);
                     });
                 },
@@ -252,7 +249,7 @@
                     res.end();
                     return;
                 }
-                console.log("set cookie" + custId);
+                // console.log("set cookie" + custId);
                 res.status(200);
                 res.cookie(cookie_name, req.session.id, {
                     maxAge: 3600000
@@ -263,7 +260,6 @@
     });
 
     app.get("/login", function(req, res, next) {
-        console.log("Received login request");
 
         async.waterfall([
                 function(callback) {
@@ -279,9 +275,7 @@
                             return;
                         }
                         if (response.statusCode == 200 && body != null && body != "") {
-                            // console.log(body);
                             var customerId = JSON.parse(body).user.id;
-                            console.log(customerId);
                             req.session.customerId = customerId;
                             callback(null, customerId);
                             return;
@@ -314,7 +308,6 @@
             ],
             function(err, custId) {
                 if (err) {
-                    console.log("Error with log in: " + err);
                     res.status(401);
                     res.end();
                     return;

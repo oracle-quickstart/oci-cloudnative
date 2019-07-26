@@ -2,8 +2,8 @@
   'use strict';
   const apiRoutes = ['cart', 'catalogue', 'orders', 'user'];
   const express = require("express")
-    , client  = require('prom-client')
-    , app     = express.Router()
+      , client  = require('prom-client')
+      , app     = express.Router()
 
   const metric = {
     http: {
