@@ -1,9 +1,9 @@
 (function (){
   'use strict';
 
-  var request = require("request");
-  var ulid = require("ulid");
-  var helpers = {};
+  const axios = require('axios');
+  const ulid = require("ulid");
+  const helpers = {};
 
   /* Public: errorHandler is a middleware that handles your errors
    *
@@ -13,11 +13,11 @@
    * app.use(helpers.errorHandler);
    * */
   helpers.errorHandler = function(err, req, res, next) {
-    var ret = {
+    const ret = {
       message: err.message,
       error:   err
     };
-    res.status(err.status || 500).send(ret);
+    res.status(err.status || 500).json(ret);
   };
 
   /**
@@ -33,7 +33,7 @@
   /* Responds with the given body and status 200 OK  */
   helpers.respondSuccessBody = function(res, body) {
     helpers.respondStatusBody(res, 200, body);
-  }
+  };
 
   /* Public: responds with the given body and status
    *
@@ -43,12 +43,12 @@
    */
   helpers.respondStatusBody = function(res, statusCode, body) {
     res.status(statusCode).send(body);
-  }
+  };
 
   /* Responds with the given statusCode */
   helpers.respondStatus = function(res, statusCode) {
     res.status(statusCode).send();
-  }
+  };
 
   /* Rewrites and redirects any url that doesn't end with a slash. */
   helpers.rewriteSlash = function(req, res, next) {
@@ -56,7 +56,7 @@
        res.redirect(301, req.url.slice(0, -1));
    else
        next();
-  }
+  };
 
   /* Public: performs an HTTP GET request to the given URL
    *
@@ -75,11 +75,10 @@
    * });
    */
   helpers.simpleHttpRequest = function(url, res, next) {
-    request.get(url, function(error, response, body) {
-      if (error) return next(error);
-      helpers.respondSuccessBody(res, body);
-    }.bind({res: res}));
-  }
+    axios.get(url)
+      .then(response => res.json(response.data))
+      .catch(next);
+  };
 
   /**
    * Get unique cart identifier for the session
@@ -94,22 +93,18 @@
   /* TODO: Add documentation */
   helpers.getCustomerId = function(req, env) {
     // Check if logged in. Get customer Id
-    var logged_in = req.cookies.logged_in;
-
-    // TODO REMOVE THIS, SECURITY RISK
-    if (env == "development" && req.query.custId != null) {
-      return req.query.custId;
-    }
+    const { logged_in } = req.cookies;
+    const { id, customerId } = req.session;
 
     if (!logged_in) {
-      if (!req.session.id) {
+      if (!id) {
         throw new Error("User not logged in.");
       }
       // Use Session ID instead
-      return req.session.id;
+      return id;
     }
 
-    return req.session.customerId;
-  }
+    return customerId;
+  };
   module.exports = helpers;
 }());

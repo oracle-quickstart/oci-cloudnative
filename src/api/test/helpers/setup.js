@@ -9,6 +9,6 @@ module.exports = async () => {
     [key]: SERVICE_URL,
   })));
 
-  // Assign port for services
+  // Assign port for server in test
   env().PORT = PORT;
 };

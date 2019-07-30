@@ -25,6 +25,9 @@
     prod: function() {
       return /^prod/i.test(this.env('NODE_ENV') || '');
     },
+    test: function() {
+      return /^test/i.test(this.env('NODE_ENV') || '');
+    },
     keyMap: function() {
       return {
         session: sessionKeyMap,
