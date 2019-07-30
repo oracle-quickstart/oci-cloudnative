@@ -3,7 +3,8 @@ RUN apk add --no-cache ca-certificates git
 WORKDIR /src
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a \
+RUN GO111MODULE=on GOARCH=amd64 CGO_ENABLED=0 GOOS=linux \
+    go build -a \
     -installsuffix cgo \
     -o /payment cmd/main.go
 
