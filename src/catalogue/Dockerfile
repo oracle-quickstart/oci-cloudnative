@@ -27,7 +27,6 @@ RUN GO111MODULE=on GOARCH=amd64 GOOS=linux \
 ##### Base image with Oracle Instant Client Basic Lite
 FROM oraclelinux:7-slim AS base
 ARG clientVersion
-COPY docker/Wallet_Creds/. /usr/lib/oracle/${clientVersion}/client64/lib/network/admin/.
 RUN yum update -y && \
   yum -y install oracle-release-el7 && \
   yum-config-manager --enable ol7_oracle_instantclient && \
