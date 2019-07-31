@@ -17,7 +17,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: catalogue
-          image: phx.ocir.io/intvravipati/mushop/catalogue:0.0.1
+          image: phx.ocir.io/intvravipati/mushop/catalogue:1.1
           command: ["/app"]
           args:
           - -port=80
