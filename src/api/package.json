@@ -18,7 +18,6 @@
     "express-session": "^1.16.2",
     "morgan": "^1.9.1",
     "prom-client": "^11.5.3",
-    "request": "^2.88.0",
     "ulid": "^2.3.0"
   },
   "devDependencies": {
