@@ -4,7 +4,7 @@ services:
     user:
         build:
             context: .
-            dockerfile: ./docker/user/Dockerfile
+            dockerfile: Dockerfile
         image: mushop/user
         hostname: user
         restart: always
