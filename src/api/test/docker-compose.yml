@@ -4,7 +4,7 @@ services:
 
   # OCI Catalog service
   catalogue:
-    image: phx.ocir.io/intvravipati/mushop/catalogue:0.0.1
+    image: phx.ocir.io/intvravipati/mushop/catalogue:1.1
     hostname: catalogue
     restart: always
     environment:
