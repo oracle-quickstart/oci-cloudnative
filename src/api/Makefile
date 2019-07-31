@@ -3,7 +3,7 @@ CONTAINER=api
 
 .PHONY: test coverage
 
-up: compose test-image deps server
+up: compose test-image server
 
 down: kill-server kill-compose
 
@@ -36,8 +36,9 @@ server:
 		-e USERS_URL=http://user \
 		-e PORT=3000            \
 		-p 8080:3000            \
+		-p 9229:9229            \
 		--network mutest_default  \
-		$(IMAGE) supper -i node_modules server.js
+		$(IMAGE) supper --inspect -i node_modules server.js
 
 # Removes the development container & image
 clean:

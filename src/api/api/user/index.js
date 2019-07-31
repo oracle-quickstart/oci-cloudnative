@@ -9,6 +9,7 @@
       , helpers = require("../../helpers")
       , mock = require("../../helpers/mock")
 
+    // TODO: move to config
     const [ COOKIE_NAME, COOKIE_TTL ] = [ 'logged_in', 3.6e6 ];
 
     app.get("/profile", function(req, res, next) {
@@ -47,7 +48,7 @@
         req.body.userID = helpers.getCustomerId(req, app.get("env"));
 
         axios.post(endpoints.addressUrl, req.body)
-            .then(({ data }) => res.json(data))
+            .then(({ status, data }) => res.status(status).json(data))
             .catch(next);
     });
 
@@ -86,34 +87,34 @@
     app.post("/card", function(req, res, next) {
         req.body.userID = helpers.getCustomerId(req, app.get("env"));
         axios.post(endpoints.cardsUrl, req.body)
-            .then(({data}) => res.json(data))
+            .then(({ status, data }) => res.status(status).json(data))
             .catch(next);
     });
 
     // Delete Customer - TO BE USED FOR TESTING ONLY (for now)
     app.delete("/customers/:id", function(req, res, next) {
         axios.delete(endpoints.customersUrl + "/" + req.params.id)
-            .then(({data}) => res.json(data))
+            .then(({ status, data }) => res.status(status).json(data))
             .catch(next);
     });
 
     // Delete Address
     app.delete("/addresses/:id", function(req, res, next) {
         axios.delete(endpoints.addressUrl + "/" + req.params.id)
-            .then(({data}) => res.json(data))
+            .then(({ status, data }) => res.status(status).json(data))
             .catch(next);
     });
 
     // Delete Card - TO BE USED FOR TESTING ONLY (for now)
     app.delete("/cards/:id", function(req, res, next) {
         axios.delete(endpoints.cardsUrl + "/" + req.params.id)
-            .then(({data}) => res.json(data))
+            .then(({ status, data }) => res.status(status).json(data))
             .catch(next);
     });
 
     app.post("/register", async (req, res, next) => {
         try {
-            const { data: user } = await axios.post(endpoints.registerUrl, req.body);
+            const { status, data: user } = await axios.post(endpoints.registerUrl, req.body);
 
             const sessionId = req.session.id;
             req.session.customerId = user.id;
@@ -122,7 +123,7 @@
             // const cartId = helpers.getCartId(req);
             // await axios.get(`${endpoints.cartsUrl}/${user.id}/merge?sessionId=${sessionId}`).catch(() => {/* noop */});
 
-            res.status(200)
+            res.status(status)
                 .cookie(COOKIE_NAME, sessionId, { maxAge: COOKIE_TTL})
                 .json({ id: user.id });
 

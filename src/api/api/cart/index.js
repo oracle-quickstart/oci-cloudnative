@@ -41,7 +41,7 @@
     const item = req.body;
 
     if (!item.id) {
-      return next(new Error("Must pass id of item to add"), 400);
+      return next(helpers.createError("Must pass id of item to add", 400));
     }
     
     try {
@@ -54,7 +54,7 @@
       });
       // verify created
       if (status !== 201) {
-        return next(new Error("Unable to add to cart. Status code: " + status));
+        return next(helpers.createError("Unable to add to cart. Status code: " + status, status));
       }
       helpers.respondStatus(res, status);
     } catch (e) {
@@ -68,11 +68,11 @@
     const item = req.body;
 
     if (!item.id) {
-      return next(new Error("Must pass id of item to update"), 400);
+      return next(helpers.createError("Must pass id of item to update", 400));
     }
 
     if (!item.quantity) {
-      return next(new Error("Must pass quantity to update"), 400);
+      return next(helpers.createError("Must pass quantity to update", 400));
     }
 
     try {
@@ -87,7 +87,7 @@
 
       // verify accepted
       if (status !== 202) {
-        return next(new Error("Unable to update cart. Status code: " + status));
+        return next(helpers.createError("Unable to update cart. Status code: " + status, status));
       }
       helpers.respondStatus(res, status);
     } catch (e) {

@@ -21,10 +21,19 @@
   };
 
   /**
+   * Error with status code
+   */
+  helpers.createError = function(err, status) {
+    const e = err instanceof Error ? err : new Error(err);
+    e.status = status;
+    return e;
+  };
+
+  /**
    * handle session logic
    */
   helpers.sessionMiddleware = function(req, res, next) {
-    if(!req.cookies.logged_in) {
+    if (!helpers.isLoggedIn(req)) {
       req.session.customerId = null;
     }
     next();
@@ -75,8 +84,8 @@
    * });
    */
   helpers.simpleHttpRequest = function(url, res, next) {
-    axios.get(url)
-      .then(response => res.json(response.data))
+    return axios.get(url)
+      .then(({status, data}) => res.status(status).json(data))
       .catch(next);
   };
 
@@ -90,13 +99,20 @@
     return cartId;
   };
 
+  /**
+   * Check for authenticated user
+   */
+  helpers.isLoggedIn = function(req) {
+    const { logged_in } = req.cookies;
+    return !!logged_in;
+  };
+
   /* TODO: Add documentation */
   helpers.getCustomerId = function(req, env) {
     // Check if logged in. Get customer Id
-    const { logged_in } = req.cookies;
     const { id, customerId } = req.session;
 
-    if (!logged_in) {
+    if (!helpers.isLoggedIn(req)) {
       if (!id) {
         throw new Error("User not logged in.");
       }

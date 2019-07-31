@@ -5,7 +5,7 @@
     , express = require("express")
     , endpoints = require("../endpoints")
     , helpers = require("../../helpers")
-    , app = express.Router()
+    , app = express.Router();
 
   app.get("/catalogue/images*", function (req, res, next) {
     const url = endpoints.catalogueUrl + req.url.toString();
