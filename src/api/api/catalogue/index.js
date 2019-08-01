@@ -1,17 +1,17 @@
 (function () {
   'use strict';
 
-  var express = require("express")
-    , request = require("request")
+  const axios = require("axios")
+    , express = require("express")
     , endpoints = require("../endpoints")
     , helpers = require("../../helpers")
-    , app = express.Router()
+    , app = express.Router();
 
   app.get("/catalogue/images*", function (req, res, next) {
-    var url = endpoints.catalogueUrl + req.url.toString();
-    request.get(url)
-      .on('error', function (e) { next(e); })
-      .pipe(res);
+    const url = endpoints.catalogueUrl + req.url.toString();
+    axios.get(url, { responseType: 'stream' })
+      .then(response => response.data.pipe(res))
+      .catch(next);
   });
 
   app.get("/catalogue*", function (req, res, next) {
