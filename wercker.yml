@@ -4,52 +4,44 @@ box:
 
 build:
   steps:
-    - script:
-      name: echo environment
-      code: env
-
-# Defining the dev pipeline
-dev:
-  steps:
-    - internal/watch:
-        code: |
-          go build ./...
-          ./source
-        reload: true
-
-go-lint:
-  box:
-    id: golang:1.12
-    ports:
-      - "5000"
-  steps:
-    - wercker/golint
-    - script:
-        name: Go Lint Results
-        code: cat lint_results.txt
 
 build-catalogue:
-  box:
-    id: golang:1.12
-    ports:
-      - "5000"
   steps:
-    - script:
-        name: go build
-        code: |
-          cd src/catalogue
-          GO111MODULE=on GOARCH=amd64 GOOS=linux go build -a -installsuffix cgo -o /app ./cmd/cataloguesvc
+    - internal/docker-build:
+        context: src/catalogue
+        image-name: $REPOSITORY/catalogue
+
+push-catalogue:
+  box:
+        id: alpine
+        cmd: /bin/sh
+  steps:
+    - internal/docker-push:
+        image-name: $REPOSITORY/catalogue
+        tag: $WERCKER_GIT_COMMIT
+        username: $USERNAME
+        password: $PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $REPOSITORY/catalogue
 
 build-user:
-  box:
-    id: golang:1.12
-    ports:
-      - "5000"
   steps:
-    - script:
-        name: go build
-        code: |
-          pwd
+    - internal/docker-build:
+        context: src/user
+        image-name: $REPOSITORY/user
+
+push-user:
+  box:
+        id: alpine
+        cmd: /bin/sh
+  steps:
+    - internal/docker-push:
+        image-name: $REPOSITORY/user
+        tag: $WERCKER_GIT_COMMIT
+        username: $USERNAME
+        password: $PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $REPOSITORY/user
 
 build-payment:
   box:
@@ -62,40 +54,65 @@ build-payment:
         code: |
           pwd
 
-coverage-catalogue:
+push-payment:
   box:
-    id: golang:1.12
-    ports:
-      - "5000"
+        id: alpine
+        cmd: /bin/sh
   steps:
-    - script:
-        name: go test coverage
-        code: |
-          cd src/catalogue
-          go test -race -coverprofile=coverage.txt -covermode=atomic
-    - script:
-        name: Code Coverage Results
-        code: cat coverage.txt
-    - script:
-        name: Code Coverage report
-        code: |
-          bash <(curl -s https://codecov.io/bash)
+    - internal/docker-push:
+        image-name: $REPOSITORY/payment
+        tag: $WERCKER_GIT_COMMIT
+        username: $USERNAME
+        password: $PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $REPOSITORY/payment
 
 build-storefront:
+  steps:
+    - internal/docker-build:
+        context: src/storefront
+        image-name: $REPOSITORY/storefront
+
+push-storefront:
+  steps:
+    - internal/docker-push:
+        image-name: $REPOSITORY/storefront
+        tag: $WERCKER_GIT_COMMIT
+        username: $USERNAME
+        password: $PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $REPOSITORY/storefront
+
+test-catalogue:
   box:
-    id: node:10-alpine
+    id: golang:1.12
   steps:
     - script:
-        name: Change to storefront
+        name: Run tests
         code: |
-          cd src/storefront
-    # install dependencies with `npm ci`
-    - mvandervliet/npm-ci
-    # build
+          cd src/catalogue
+          go test -v ./...
+
+test-user:
+  box:
+    id: golang:1.12
+  steps:
     - script:
-        name: Build
+        name: Run tests
         code: |
-          npm run build
+          cd src/user
+          # enable once MongoDB is mocked (or replaced with ATP)
+          # go test -v ./...
+
+test-payment:
+  box:
+    id: golang:1.12
+  steps:
+    - script:
+        name: Run tests
+        code: |
+          cd src/payment
+          go test -v ./...
 
 test-storefront:
   box:
@@ -104,60 +121,17 @@ test-storefront:
     - script:
         name: Change to storefront
         code: |
-          cd src/storefront    
-    # test
-    - npm-test
+          cd src/storefront
+          npm install
+          npm test
 
-deploy-to-oke:
+# TODO: Update the existing production deployment of Mushop
+update-deployment:
   box:
-        id: alpine
-        cmd: /bin/sh
+    id: alpine
+    cmd: /bin/sh
   steps:
-    - bash-template
-    
     - script:
-        name: "Visualise Kubernetes config"
-        code: cat kubernetes-deployment.yml
-    
-    - kubectl:
-        name: delete namespace
-        server: $KUBERNETES_MASTER
-        token: $KUBERNETES_TOKEN
-        insecure-skip-tls-verify: true
-        command: delete namespace $WERCKER_APPLICATION_OWNER_NAME --ignore-not-found=true
-        
-    - script:
-        name: wait to delete namespace
-        code: sleep 30
-        
-    - kubectl:
-        name: create namespace    
-        server: $KUBERNETES_MASTER
-        token: $KUBERNETES_TOKEN
-        insecure-skip-tls-verify: true
-        command: create namespace $WERCKER_APPLICATION_OWNER_NAME
-        
-    - kubectl:
-        name: create OCR secret
-        server: $KUBERNETES_MASTER
-        token: $KUBERNETES_TOKEN
-        insecure-skip-tls-verify: true
-        command: create secret docker-registry wrelease --docker-server=phx.ocir.io --docker-username=$WERCKER_APPLICATION_OWNER_NAME --docker-password=$KUBERNETES_TOKEN --docker-email=${WERCKER_APPLICATION_OWNER_NAME}@mail.com --namespace=$WERCKER_APPLICATION_OWNER_NAME
-
-    - kubectl:
-        name: create TLS secret
-        server: $KUBERNETES_MASTER
-        token: $KUBERNETES_TOKEN
-        insecure-skip-tls-verify: true
-        command: create secret tls tls-secret --key $WERCKER_ROOT/tls.key --cert $WERCKER_ROOT/tls.crt --namespace=$WERCKER_APPLICATION_OWNER_NAME
-        
-    - kubectl:
-        name: create deplyoment
-        server: $KUBERNETES_MASTER
-        token: $KUBERNETES_TOKEN
-        insecure-skip-tls-verify: true
-        command: create -f $WERCKER_ROOT/kubernetes-deployment.yml --namespace=$WERCKER_APPLICATION_OWNER_NAME
-
-    - script:
-        name: "Visualise Ingress config"
-        code: cat ingress.yml
+        name: Step one
+        code: |
+          echo "hello"
