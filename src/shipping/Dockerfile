@@ -4,24 +4,13 @@ ARG VERSION="0.0.1-SNAPSHOT"
 # ------------
 # Stage 1 : Setting up the build environment
 # 
-FROM openjdk:8-jdk-alpine as buildenv
+FROM phx.ocir.io/intvravipati/jeevan/mvn-jdbc:latest as buildenv
 # ----
-# Install some basic tools
-RUN apk add --no-cache curl tar bash
-
-# Install Maven
-ARG USER_HOME_DIR="/root"
-ARG MAVEN_VERSION=3.6.0
-RUN mkdir -p /usr/share/maven && \
-curl -fsSL http://apache.osuosl.org/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar -xzC /usr/share/maven --strip-components=1 && \
-ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
-ENV MAVEN_HOME /usr/share/maven
-ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 
 # Setup OCI libraries
 ARG GROUP_ID="com.oracle.oci"
 ARG ARTIFACT_ID="oci-java-sdk"
-ARG ARTIFACT_VERSION="1.5.9"
+ARG ARTIFACT_VERSION="1.5.16"
 
 ## Install dependencies to the local repo and cleanup
 ADD https://github.com/oracle/oci-java-sdk/releases/download/v${ARTIFACT_VERSION}/${ARTIFACT_ID}.zip /root/
@@ -37,9 +26,9 @@ WORKDIR /usr/src/app
 #
 # Get Gradle.
 #
-COPY ./settings.gradle /usr/src/app
-COPY ./gradle /usr/src/app/gradle
-COPY ./gradlew /usr/src/app
+COPY settings.gradle /usr/src/app
+COPY gradle /usr/src/app/gradle
+COPY gradlew /usr/src/app
 RUN ./gradlew --refresh-dependencies
 #
 # copy buildscript and cache all dependencies
@@ -78,11 +67,6 @@ RUN ls -ltr /usr/src/app/build/libs
 FROM openjdk:8-jdk-alpine as application
 ARG APPLICATION_NAME
 ARG VERSION
-
-#
-# bake this in to a build container layer ?
-#
-#COPY ./config /app/config
 
 #
 # copy the generated application distribution
