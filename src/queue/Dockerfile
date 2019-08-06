@@ -1,4 +1,4 @@
-ARG APPLICATION_NAME="stream"
+ARG APPLICATION_NAME="queuemaster"
 ARG VERSION="0.0.1-SNAPSHOT"
 
 # ------------
@@ -32,11 +32,9 @@ COPY gradlew /usr/src/app
 RUN ./gradlew --refresh-dependencies
 #
 # copy buildscript and cache all dependencies
-#
-COPY ./build.gradle /usr/src/app
+# 
+COPY build.gradle /usr/src/app
 RUN ./gradlew --refresh-dependencies
-#
-# ------------
 
 # ------------
 # Stage 2 : Build the application
@@ -67,11 +65,6 @@ RUN ls -ltr /usr/src/app/build/libs
 FROM openjdk:8-jdk-alpine as application
 ARG APPLICATION_NAME
 ARG VERSION
-
-#
-# bake this in to a build container layer ?
-#
-#COPY ./config /app/config
 
 #
 # copy the generated application distribution

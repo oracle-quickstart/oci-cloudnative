@@ -11,6 +11,36 @@ build-catalogue:
         context: src/catalogue
         image-name: $REPOSITORY/catalogue
 
+build-api:
+  steps:
+    - internal/docker-build:
+        context: src/api
+        image-name: $REPOSITORY/api
+
+build-carts:
+  steps:
+    - internal/docker-build:
+        context: src/carts
+        image-name: $REPOSITORY/carts
+
+build-queue:
+  steps:
+    - internal/docker-build:
+        context: src/queue
+        image-name: $REPOSITORY/queue
+
+build-shipping:
+  steps:
+    - internal/docker-build:
+        context: src/shipping
+        image-name: $REPOSITORY/shipping
+
+build-stream:
+  steps:
+    - internal/docker-build:
+        context: src/stream
+        image-name: $REPOSITORY/stream
+
 push-catalogue:
   box:
         id: alpine
@@ -93,6 +123,57 @@ test-catalogue:
           cd src/catalogue
           go test -v ./...
 
+test-carts:
+  box:
+    id: alpine
+  steps:
+    - script:
+        name: Run tests
+        code: |
+          cd src/carts
+          ./test/test.sh unit.py
+
+
+test-orders:
+  box:
+    id: alpine
+  steps:
+    - script:
+        name: Run tests
+        code: |
+          cd src/orders
+          # TODO: How to run unit tests here
+
+test-queue:
+  box:
+    id: alpine
+  steps:
+    - script:
+        name: Run tests
+        code: |
+          cd src/queue
+          # TODO: How to run unit tests here
+
+test-shipping:
+  box:
+    id: alpine
+  steps:
+    - script:
+        name: Run tests
+        code: |
+          cd src/shipping
+          # TODO: How to run unit tests here
+
+test-stream:
+  box:
+    id: alpine
+  steps:
+    - script:
+        name: Run tests
+        code: |
+          cd src/stream
+          # TODO: How to run unit tests here
+
 test-user:
   box:
     id: golang:1.12
@@ -113,6 +194,17 @@ test-payment:
         code: |
           cd src/payment
           go test -v ./...
+
+test-api:
+  box:
+    id: node:10-alpine
+  steps:
+    - script:
+        name: Change to api
+        code: |
+          cd src/api
+          npm install
+          npm test
 
 test-storefront:
   box:
