@@ -15,7 +15,7 @@ secrets:
 env:
   zipkin: zipkin.jaeger.svc.cluster.local
   javaOpts: -Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
-  jdbcUrl: "jdbc:oracle:thin:@db3_tp?TNS_ADMIN=./config"
+  jdbcUrl: "jdbc:oracle:thin:@mcarts_tp?TNS_ADMIN=./config"
 
 service:
   port: 80
