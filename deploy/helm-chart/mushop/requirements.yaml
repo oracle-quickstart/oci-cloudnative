@@ -39,10 +39,6 @@ dependencies:
     version: 1.2.1
     condition: ingress.enabled
     repository: https://kubernetes-charts.storage.googleapis.com
-  - name: cert-manager
-    version: 0.8.0
-    condition: certManager.enabled
-    repository: https://charts.jetstack.io
   - name: catalog
     version: 0.2.1
     condition: catalog.enabled
