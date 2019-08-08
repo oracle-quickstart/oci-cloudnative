@@ -58,9 +58,15 @@ spec:
           volumeMounts:
             - mountPath: /tmp
               name: tmp-volume
+            - mountPath: /config
+              name: wallet
+              readOnly: true
       volumes:
           - name: tmp-volume
             emptyDir:
               medium: Memory
+          - name: wallet
+            secret:
+              secretName: {{ include "carts.fullname" . }}
       nodeSelector:
           beta.kubernetes.io/os: linux

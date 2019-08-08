@@ -1,10 +1,14 @@
-Before installing the chart, copy the following files to this folder:
+Before installing the chart, copy the files that are part of the ATPs wallet to this folder:
 
 ```
+cwallet.sso
+ewallet.p12
 keystore.jks
+ojdbc.properties
+sqlnet.ora
 tnsnames.ora
 truststore.jks
 oci_api_key.pem
 ```
 
-The first three files are in your ATP wallet file you can download from the OCI console. The `oci_api_key.pem` is the key to access your OCI account.
+The `oci_api_key.pem` is the key to access your OCI account.
