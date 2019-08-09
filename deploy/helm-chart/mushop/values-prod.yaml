@@ -21,8 +21,6 @@ ingress:
 
 api:
   enabled: true
-  service:
-    port: 80
 
 carts:
   enabled: true
@@ -49,8 +47,6 @@ shipping:
 
 storefront:
   enabled: true
-  service:
-    port: 80
 
 stream:
   enabled: true
