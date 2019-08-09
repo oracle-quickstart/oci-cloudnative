@@ -8,6 +8,9 @@ services:
         image: mushop/carts
         hostname: carts
         restart: always
+        read_only: true
+        tmpfs:
+        - /tmp:rw,noexec,nosuid
         environment:
             - reschedule=on-node-failure
             - OADB_USER=carts_user
