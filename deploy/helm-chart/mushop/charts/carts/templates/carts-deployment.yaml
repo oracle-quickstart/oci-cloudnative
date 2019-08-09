@@ -28,8 +28,8 @@ spec:
               value: {{ .Values.env.zipkin }}
             - name: JAVA_OPTS
               value: {{ .Values.env.javaOpts }}
-            - name: JDBC_URL
-              value: {{ .Values.env.jdbcUrl }}
+            - name: TNS_ADMIN
+              value: {{ .Values.env.tnsAdmin }}
             - name: OADB_USER
               valueFrom:
                 secretKeyRef:
