@@ -3,7 +3,7 @@ version: '2'
 services:
     carts:
         build:
-            context: .
+            context: ..
             dockerfile: ./Dockerfile
         image: mushop/carts
         hostname: carts
