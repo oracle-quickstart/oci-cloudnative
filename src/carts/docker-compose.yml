@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+    carts:
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        image: mushop/carts
+        hostname: carts
+        restart: always
+        environment:
+            - reschedule=on-node-failure
+            - OADB_USER=carts_user
+            - OADB_PW=Default_Password123#
+            - OADB_SERVICE=mcarts_tp
+            - TNS_ADMIN=/app/config
+            - ATP_TRUST_PASS=Welcome_123
+            - ATP_KEY_PASS=Welcome_123
+        ports:
+            - "8081:80"
+
