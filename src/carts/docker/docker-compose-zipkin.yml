@@ -2,7 +2,7 @@ version: '2'
 
 services:
   carts:
-    image: aurademos/durhamdenim/carts
+    image: mushop/carts
     hostname: carts
     restart: always
     cap_drop:
