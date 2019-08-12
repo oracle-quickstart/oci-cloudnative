@@ -12,10 +12,14 @@ ARG JDBC_GROUP_ID="com.oracle.jdbc"
 ARG JDBC_DRIVER_ARTIFACT_ID="ojdbc8"
 ##### Oracle Instant Client version
 ARG JDBC_DRIVER_VERSION="19.3"
+##### Gradle version
+ARG GRADLE_VERSION=5.5.1
 
 ENV JAVA_HOME /usr/lib/jvm/java-openjdk
+ENV GRADLE_HOME /opt/gradle
 
 RUN yum update -y && \
+  yum -y install unzip && \
   yum -y install java-1.8.0-openjdk-devel && \
   yum -y install oracle-release-el7 && \
   yum-config-manager --add-repo http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo && \
@@ -37,9 +41,17 @@ WORKDIR /usr/src/app
 # 
 # Get Gradle.
 #
+ADD https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip /tmp/gradle.zip
+RUN echo "Installing Gradle" && \
+    unzip /tmp/gradle.zip && \
+    rm /tmp/gradle.zip && \
+    mv "gradle-${GRADLE_VERSION}" "${GRADLE_HOME}/" && \
+    ln --symbolic "${GRADLE_HOME}/bin/gradle" /usr/bin/gradle && \
+    echo "Testing Gradle installation" && \
+    gradle --version
+
 COPY settings.gradle /usr/src/app
-COPY gradle /usr/src/app/gradle
-COPY gradlew /usr/src/app
+RUN gradle wrapper --gradle-version 5.5.1 --distribution-type all
 RUN ./gradlew --refresh-dependencies
 #
 # copy buildscript and cache all dependencies
