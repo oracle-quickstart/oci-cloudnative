@@ -17,13 +17,13 @@ entryPoint = "http"
       [backends.api.loadbalancer]
         method = "wrr"
       [backends.api.servers.server1]
-        url = "http://{{ .Release.Name }}-api:3000"
+        url = "http://{{ .Release.Name }}-api"
     # web
     [backends.web1]
       [backends.web1.loadbalancer]
         method = "wrr"
       [backends.web1.servers.server1]
-        url = "http://{{ .Release.Name }}-storefront:8080"
+        url = "http://{{ .Release.Name }}-storefront"
 
   [frontends]
     [frontends.api]

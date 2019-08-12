@@ -1,24 +1,26 @@
-certManager:
-  enabled: true
-  email: "no-reply@ateam-oracle.com"
-
 ingress:
   enabled: true
 
   hosts:
     - mushop.ateam.cloud
     - insecure.mushop.ateam.cloud
+  
+  # Value can be either prod or staging
+  # This controls the cluster issuer what's used in Ingress
+  clusterIssuer: prod
+
+  # Used for ACME registration (if TLS is set)
+  email: "no-reply@ateam-oracle.com"
 
   tls:
-    - secretName: letsencrypt-prod
+    # Name of the secret where the cert will be stored for the host
+    - secretName: mushop-ateam-cloud
       hosts:
         - mushop.ateam.cloud
         - insecure.mushop.ateam.cloud
 
 api:
   enabled: true
-  service:
-    port: 80
 
 carts:
   enabled: true
@@ -45,8 +47,6 @@ shipping:
 
 storefront:
   enabled: true
-  service:
-    port: 80
 
 stream:
   enabled: true

@@ -76,6 +76,36 @@ helm install --dry-run --debug mushop --name mymushop \
 
 ## Prod/Test installation
 
+### Installing cert-manager
+
+You only need to run this if you are installing Mushop on a new cluster *and* you want to use SSL. You need to install the CRDs first, before running Helm for cert-manager:
+
+```
+kubectl apply \
+    -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.9/deploy/manifests/00-crds.yaml
+```
+
+Create the `cert-manager` namespace and label it to disable validation:
+
+```
+kubectl create ns cert-manager
+kubectl label namespace cert-manager certmanager.k8s.io/disable-validation="true"
+```
+
+Add the JetStack Helm repo:
+
+```
+helm repo add jetstack https://charts.jetstack.io
+```
+
+Install the `cert-manager` Helm chart:
+
+```
+helm install --name cert-manager --namespace cert-manager jetstack/cert-manager
+```
+
+### Installing Mushop
+
 For prod/test installation, you can use the `values-prod.yaml` or `values-test.yaml` and call Helm install and pass in the values file:
 
 ```bash

@@ -39,4 +39,4 @@ hpa:
         averageUtilization: 70
 
 service:
-  port: 3000
+  port: 80
