@@ -51,7 +51,7 @@ RUN echo "Installing Gradle" && \
     gradle --version
 
 COPY settings.gradle /usr/src/app
-RUN gradle wrapper --gradle-version 5.5.1 --distribution-type all
+RUN gradle wrapper --gradle-version ${GRADLE_VERSION} --distribution-type all
 RUN ./gradlew --refresh-dependencies
 #
 # copy buildscript and cache all dependencies
