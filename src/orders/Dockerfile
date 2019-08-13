@@ -1,12 +1,43 @@
+##### Application Metadata
 ARG APPLICATION_NAME="orders"
 ARG VERSION="0.0.1-SNAPSHOT"
+##### Oracle Instant Client version
+ARG JDBC_DRIVER_VERSION="19.3"
 
 # ------------
-# Stage 1 : Setting up the build environment
-# the base image used is a maven repo image with JDBC drivers pre-populated. 
+# Stage 1 : Download Oracle JDBC drivers. 
 # 
 # 
-FROM phx.ocir.io/intvravipati/jeevan/mvn-jdbc:latest as buildenv
+FROM oraclelinux:7-slim as oracleinstantclientjdbc
+
+ARG JDBC_DRIVER_VERSION
+
+RUN yum update -y && \
+    yum -y install oracle-release-el7 && \
+    yum-config-manager --enable ol7_oracle_instantclient && \
+    yum -y install oracle-instantclient${JDBC_DRIVER_VERSION}-jdbc && \
+    yum clean all && \
+    rm -rf /var/cache/yum
+
+#
+# ------------
+
+# ------------
+# Stage 2 : Setting up the build environment with maven and gradle
+# 
+# 
+FROM maven:3.6-jdk-8 as buildenv
+
+ARG JDBC_DRIVER_VERSION
+ARG JDBC_GROUP_ID="com.oracle.jdbc"
+ARG JDBC_DRIVER_ARTIFACT_ID="ojdbc8"
+ARG GRADLE_VERSION=5.5.1
+
+ENV GRADLE_HOME /opt/gradle
+
+COPY --from=oracleinstantclientjdbc /usr/lib/oracle/${JDBC_DRIVER_VERSION}/client64/lib/ojdbc8.jar /usr/lib/oracle/${JDBC_DRIVER_VERSION}/client64/lib/ojdbc8.jar
+
+RUN mvn install:install-file -Dfile=/usr/lib/oracle/${JDBC_DRIVER_VERSION}/client64/lib/ojdbc8.jar -DgroupId=${JDBC_GROUP_ID} -DartifactId=${JDBC_DRIVER_ARTIFACT_ID} -Dversion=${JDBC_DRIVER_VERSION} -Dpackaging=jar
 
 # 
 # create source folder
@@ -17,20 +48,27 @@ WORKDIR /usr/src/app
 # 
 # Get Gradle.
 #
+ADD https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip /tmp/gradle.zip
+RUN echo "Installing Gradle" && \
+    unzip /tmp/gradle.zip && \
+    rm /tmp/gradle.zip && \
+    mv "gradle-${GRADLE_VERSION}" "${GRADLE_HOME}/" && \
+    ln --symbolic "${GRADLE_HOME}/bin/gradle" /usr/bin/gradle && \
+    echo "Testing Gradle installation" && \
+    gradle --version
+
 COPY settings.gradle /usr/src/app
-COPY gradle /usr/src/app/gradle
-COPY gradlew /usr/src/app
-RUN ./gradlew --refresh-dependencies
+RUN gradle --refresh-dependencies
 #
 # copy buildscript and cache all dependencies
 # 
 COPY build.gradle /usr/src/app
-RUN ./gradlew --refresh-dependencies
+RUN gradle --refresh-dependencies
 #
 # ------------
 
 # ------------
-# Stage 2 : Build the application
+# Stage 3 : Build the application
 #
 #
 FROM buildenv as appbuild
@@ -46,19 +84,18 @@ COPY src /usr/src/app/src
 #
 # Install the application
 #
-RUN ./gradlew clean bootJar 
+RUN gradle clean bootJar 
 RUN ls -ltr /usr/src/app/build/libs
 
 #
 # ------------
 
 # ------------
-# Stage 3 : Application container
+# Stage 4 : Application container
 #
-FROM openjdk:8-jdk-alpine as application
+FROM openjdk:8-jre-slim
 ARG APPLICATION_NAME
 ARG VERSION
-
 #
 # bake this in to a build container layer ?
 # 
