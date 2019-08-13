@@ -4,7 +4,6 @@ Before installing the chart, copy the files that are part of the ATPs wallet to 
 cwallet.sso
 ewallet.p12
 keystore.jks
-ojdbc.properties
 sqlnet.ora
 tnsnames.ora
 truststore.jks
