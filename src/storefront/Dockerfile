@@ -8,6 +8,7 @@ RUN apk update && apk add --no-cache \
     automake \
     bash \
     g++ \
+    libtool \
     libc6-compat \
     libjpeg-turbo-dev \
     libpng-dev \

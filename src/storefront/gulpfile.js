@@ -1,11 +1,14 @@
 const gulp         = require('gulp'),
   util         = require('gulp-util'),
   less         = require('gulp-less'),
+  rev          = require('gulp-rev'),
+  revReplace   = require('gulp-rev-replace'),
   sync         = require('browser-sync'),
   webpack      = require('webpack-stream'),
   del          = require('del'),
   imagemin     = require('gulp-imagemin'),
   pngquant     = require('imagemin-pngquant'),
+  mozjpeg     = require('imagemin-mozjpeg'),
   cache        = require('gulp-cache'),
   autoprefixer = require('autoprefixer'),
   postcss      = require('gulp-postcss'),
@@ -16,6 +19,10 @@ const gulp         = require('gulp'),
 
 // load .env configurations
 require('dotenv').config();
+
+const opt = {
+  buildDir: 'build'
+};
 
 // HTML
 const pugOpt = {
@@ -30,14 +37,14 @@ const pugOpt = {
 gulp.task('html:pages', function() {
   return gulp.src('src/templates/pages/**/*.pug')
     .pipe(pug(pugOpt))
-    .pipe(gulp.dest('build'))
+    .pipe(gulp.dest(opt.buildDir))
     .pipe(sync.stream())
 });
 
 gulp.task('html:views', function() {
   return gulp.src('src/templates/views/**/*.pug')
     .pipe(pug(pugOpt))
-    .pipe(gulp.dest('build/views'))
+    .pipe(gulp.dest(`${opt.buildDir}/views`))
     .pipe(sync.stream())
 });
 
@@ -51,7 +58,7 @@ gulp.task('styles', function() {
     // .pipe(concat('style.css'))
     .pipe(postcss([autoprefixer()]))
     .pipe(csso())
-    .pipe(gulp.dest('build/styles'))
+    .pipe(gulp.dest(`${opt.buildDir}/styles`))
     .pipe(sync.stream({
       once: true
     }));
@@ -68,7 +75,7 @@ gulp.task('scripts', function() {
       mode: production ? 'production' : 'development',
       devtool: production ? false : 'eval',
     }))
-    .pipe(gulp.dest('build'))
+    .pipe(gulp.dest(opt.buildDir))
     .pipe(sync.stream({
       once: true
     }));
@@ -77,14 +84,19 @@ gulp.task('scripts', function() {
 // Images
 
 gulp.task('images', function() {
-  return gulp.src(['src/images/**/*'])
-    .pipe(cache(imagemin({
-      interlaced: true,
-      progressive: true,
-      svgoPlugins: [{ removeViewBox: false }],
-      use: [pngquant()]
-    })))
-    .pipe(gulp.dest('build/images'));
+  return gulp.src('src/images/**/*')
+    .pipe(cache(imagemin([
+      pngquant(),
+      imagemin.gifsicle({interlaced: true}),
+      imagemin.jpegtran({progressive: true}),
+      mozjpeg({quality: 85}),
+      imagemin.svgo({
+        plugins: [
+          { removeViewBox: true },
+        ]
+      })
+    ])))
+    .pipe(gulp.dest(`${opt.buildDir}/images`));
 });
 
 // Copy
@@ -98,11 +110,28 @@ gulp.task('copy', function() {
   ], {
     base: 'src'
   })
-    .pipe(gulp.dest('build'))
+    .pipe(gulp.dest(opt.buildDir))
     .pipe(sync.stream({
       once: true
     }));
 });
+
+// Revision
+
+gulp.task('rev', function() {
+  return gulp.src([`${opt.buildDir}/scripts/**/*.js`, `${opt.buildDir}/styles/**/*.css`], {base: opt.buildDir})
+    .pipe(rev())
+    .pipe(gulp.dest(opt.buildDir))
+    .pipe(rev.manifest())
+    .pipe(gulp.dest(opt.buildDir))
+});
+
+gulp.task('rev:replace', gulp.series('rev', function() {
+  const manifest = gulp.src(`${opt.buildDir}/rev-manifest.json`);
+  return gulp.src([`${opt.buildDir}/*.html`])
+    .pipe(revReplace({ manifest }))
+    .pipe(gulp.dest(opt.buildDir));
+}));
 
 // Server
 
@@ -120,7 +149,7 @@ gulp.task('server', function() {
       pathRewrite: { '^/api': '' },
     }) ],
     server: {
-      baseDir: 'build'
+      baseDir: opt.buildDir
     }
   });
 });
@@ -128,7 +157,7 @@ gulp.task('server', function() {
 // Clean
 
 gulp.task('clean', function() {
-  return del('build');
+  return del(opt.buildDir);
 });
 
 // Clear
@@ -179,6 +208,8 @@ gulp.task('build', gulp.series(
     'images',
   )
 ));
+
+gulp.task('build:prod', gulp.series('clear', 'build', 'rev:replace'));
 
 // Default
 
