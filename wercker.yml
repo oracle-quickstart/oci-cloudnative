@@ -40,7 +40,9 @@ push-to-registry:
     - script:
         name: Setup image tag
         code: |
-          export IMAGE_TAG=$(echo $WERCKER_GIT_COMMIT | head -c 7)-$WERCKER_GIT_BRANCH
+          export tmptag=$(echo $WERCKER_GIT_COMMIT | head -c 7)-$WERCKER_GIT_BRANCH
+          # Replace all / with -
+          export IMAGE_TAG=${IMAGE_TAG////-}
           echo Using tag $IMAGE_TAG
     - internal/docker-push:
         tag: $IMAGE_TAG
