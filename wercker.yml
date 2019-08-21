@@ -41,6 +41,7 @@ push-to-registry:
         name: Setup image tag
         code: |
           export IMAGE_TAG=$(echo $WERCKER_GIT_COMMIT | head -c 7)-$WERCKER_GIT_BRANCH
+          echo Using tag $IMAGE_TAG
     - internal/docker-push:
         tag: $IMAGE_TAG
         username: $DOCKER_USERNAME
