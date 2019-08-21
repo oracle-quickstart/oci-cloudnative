@@ -65,10 +65,6 @@ kubectl create secret generic streams-secret \
 --from-file=oci_api_key=\<your home folder>/.oci/oci_api_key.pem
 ```
 
-
-
-
-
 ## Wercker Setup
 
 When setting up a new Wercker workflow, keep in mind the following environment variables and pipelines that need to be configured beforehand. 
@@ -92,7 +88,6 @@ This pipeline pushes the build Docker images to the registry. The following envi
 | DOCKER_USERNAME | Docker registry username | `intvravipati/first.last@oracle.com` |
 | DOCKER_PASSWORD | Docker registry password | `iLovePizza` |
 
-
 ### Testing
 
 Because we have services in multiple languages, we had to separate the pipelines per-language (each pipeline uses a language specific box (e.g. `node`, `golang`)). Another reason we had to do this is because Wercker isn't really set up for a multi-repo - it would work better if we had a separate repo for each component.
@@ -107,17 +102,17 @@ The test pipelines don't require any additional environment variables.
 
 ### Deployments
 
-There are two deployment (upgrade) pipelines:
+There are two deployment (upgrade) pipelines defined in Wercker 
 
 - Test Deployment (`upgrade-test-deployment`)
 - Production Deployment (`upgrade-production-deployment`)
 
 Both deployment pipelines are equivalent, the difference is in the environment variables that are set on the pipelines. The variables define which cluster is used for deployment as well as the Helm release name.
 
-
 | Environment variable name | Description | Example |
 | --- | --- | --- |
 | HELM_RELEASE_NAME | Helm release name to be upgraded | `mymushop` |
+| HELM_TIMEOUT | Helm timeout value | `600` |
 | KUBERNETES_SERVER | URL of the Kubernetes server | `https://mykubernetescluster.com:6443` |
-| KUBERNETES_TOKEN | User token for the Kubernetes cluster (from `kube.config` | `eyJoZWFkZXIiOnsiQXV0a...` |
+| KUBERNETES_TOKEN | User token for the Kubernetes cluster (from `.kube/config`) | `eyJoZWFkZXIiOnsiQXV0a...` |
 

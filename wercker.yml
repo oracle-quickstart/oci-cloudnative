@@ -37,82 +37,87 @@ build:
 # This pipeline needs DOCKER_USERNAME and DOCKER_PASSWORD variables set.
 push-to-registry:
   steps:
+    - script:
+        name: Setup image tag
+        code: |
+          export IMAGE_TAG=$(echo $WERCKER_GIT_COMMIT | head -c 7)-$WERCKER_GIT_BRANCH
     - internal/docker-push:
-        tag: $WERCKER_GIT_COMMIT
+        tag: $IMAGE_TAG
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
         registry: https://phx.ocir.io/v2
         repository: $DOCKER_REPOSITORY/api
     - internal/docker-push:
-        tag: $WERCKER_GIT_COMMIT
+        tag: $IMAGE_TAG
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
         registry: https://phx.ocir.io/v2
         repository: $DOCKER_REPOSITORY/carts
     - internal/docker-push:
-        tag: $WERCKER_GIT_COMMIT
+        tag: $IMAGE_TAG
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
         registry: https://phx.ocir.io/v2
         repository: $DOCKER_REPOSITORY/catalogue
     - internal/docker-push:
-        tag: $WERCKER_GIT_COMMIT
+        tag: $IMAGE_TAG
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
         registry: https://phx.ocir.io/v2
         repository: $DOCKER_REPOSITORY/orders
     - internal/docker-push:
-        tag: $WERCKER_GIT_COMMIT
+        tag: $IMAGE_TAG
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
         registry: https://phx.ocir.io/v2
         repository: $DOCKER_REPOSITORY/payment
     - internal/docker-push:
-        tag: $WERCKER_GIT_COMMIT
+        tag: $IMAGE_TAG
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
         registry: https://phx.ocir.io/v2
         repository: $DOCKER_REPOSITORY/shipping
     - internal/docker-push:
-        tag: $WERCKER_GIT_COMMIT
+        tag: $IMAGE_TAG
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
         registry: https://phx.ocir.io/v2
         repository: $DOCKER_REPOSITORY/storefront
     - internal/docker-push:
-        tag: $WERCKER_GIT_COMMIT
+        tag: $IMAGE_TAG
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
         registry: https://phx.ocir.io/v2
         repository: $DOCKER_REPOSITORY/stream
     - internal/docker-push:
-        tag: $WERCKER_GIT_COMMIT
+        tag: $IMAGE_TAG
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
         registry: https://phx.ocir.io/v2
-        repository: $DOCKER_REPOSITORY/user 
+        repository: $DOCKER_REPOSITORY/user
     - script:
         name: Store image names
-        code: | 
+        code: |
           IMAGE_NAMES_FILE=images.txt
           echo API_IMAGE_NAME=${DOCKER_REPOSITORY}/api >> ${IMAGE_NAMES_FILE}
-          echo API_IMAGE_TAG=${WERCKER_GIT_COMMIT} >> ${IMAGE_NAMES_FILE}
+          echo API_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
           echo CARTS_IMAGE_NAME=${DOCKER_REPOSITORY}/carts >> ${IMAGE_NAMES_FILE}
-          echo CARTS_IMAGE_TAG=${WERCKER_GIT_COMMIT} >> ${IMAGE_NAMES_FILE}
+          echo CARTS_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
           echo CATALOGUE_IMAGE_NAME=${DOCKER_REPOSITORY}/catalogue >> ${IMAGE_NAMES_FILE}
-          echo CATALOGUE_IMAGE_TAG=${WERCKER_GIT_COMMIT} >> ${IMAGE_NAMES_FILE}
+          echo CATALOGUE_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
           echo ORDERS_IMAGE_NAME=${DOCKER_REPOSITORY}/orders >> ${IMAGE_NAMES_FILE}
-          echo ORDERS_IMAGE_TAG=${WERCKER_GIT_COMMIT} >> ${IMAGE_NAMES_FILE}
+          echo ORDERS_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
           echo PAYMENT_IMAGE_NAME=${DOCKER_REPOSITORY}/payment >> ${IMAGE_NAMES_FILE}
-          echo PAYMENT_IMAGE_TAG=${WERCKER_GIT_COMMIT} >> ${IMAGE_NAMES_FILE}
+          echo PAYMENT_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
           echo SHIPPING_IMAGE_NAME=${DOCKER_REPOSITORY}/shipping >> ${IMAGE_NAMES_FILE}
-          echo SHIPPING_IMAGE_TAG=${WERCKER_GIT_COMMIT} >> ${IMAGE_NAMES_FILE}
+          echo SHIPPING_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
           echo STOREFRONT_IMAGE_NAME=${REPOSITORY}/storefront >> ${IMAGE_NAMES_FILE}
-          echo STOREFRONT_IMAGE_TAG=${WERCKER_GIT_COMMIT} >> ${IMAGE_NAMES_FILE}
+          echo STOREFRONT_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
           echo STREAM_IMAGE_NAME=${DOCKER_REPOSITORY}/stream >> ${IMAGE_NAMES_FILE}
-          echo STREAM_IMAGE_TAG=${WERCKER_GIT_COMMIT} >> ${IMAGE_NAMES_FILE}
+          echo STREAM_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
           echo USER_IMAGE_NAME=${DOCKER_REPOSITORY}/user >> ${IMAGE_NAMES_FILE}
-          echo USER_IMAGE_TAG=${WERCKER_GIT_COMMIT} >> ${IMAGE_NAMES_FILE}
+          echo USER_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
+          cat $IMAGE_NAMES_FILE
 
 test-go-services:
   box: golang:1.12
@@ -177,7 +182,7 @@ test-java-services:
         # TODO: Run the stream tests
         cd ..
 
-upgrade-test-deployment:
+upgrade-deployment:
   box:
     id: alpine
     cmd: /bin/sh
@@ -268,6 +273,6 @@ upgrade-test-deployment:
           PREVIOUS_VALUES="original-$WERCKER_GIT_COMMIT.yaml"
           UPGRADE_VALUES="upgrade-$WERCKER_GIT_COMMIT.yaml"
 
-          cmd="./linux-amd64/helm --debug --timeout 600 --kubeconfig kube.config upgrade $HELM_RELEASE_NAME deploy/helm-chart/mushop -f $PREVIOUS_VALUES -f $UPGRADE_VALUES --atomic"
+          cmd="./linux-amd64/helm --debug --timeout $HELM_TIMEOUT --kubeconfig kube.config upgrade $HELM_RELEASE_NAME deploy/helm-chart/mushop -f $PREVIOUS_VALUES -f $UPGRADE_VALUES --atomic"
           echo "Running Helm command $cmd"
           eval $cmd
