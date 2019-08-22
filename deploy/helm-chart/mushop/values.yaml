@@ -50,5 +50,4 @@ secrets:
     userId:
     fingerprint:
     region:
-    apiKey:
     passphrase:
