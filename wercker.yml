@@ -60,6 +60,12 @@ build-user:
         context: src/user
         image-name: $REPOSITORY/user
 
+build-orders:
+  steps:
+    - internal/docker-build:
+        context: src/orders
+        image-name: $REPOSITORY/orders
+
 push-user:
   box:
         id: alpine
