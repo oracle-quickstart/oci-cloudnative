@@ -1,0 +1,23 @@
+{
+  "name": "mushop-assets",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "Oracle",
+  "license": "UPL-1.0",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "node optimize.js && node deploy.js"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "dotenv": "^8.1.0",
+    "imagemin": "^7.0.0",
+    "imagemin-jpegtran": "^6.0.0",
+    "imagemin-mozjpeg": "^8.0.0",
+    "imagemin-pngquant": "^8.0.0",
+    "mime": "^2.4.4",
+    "rimraf": "^3.0.0"
+  }
+}
