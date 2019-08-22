@@ -1,0 +1,64 @@
+ingress:
+  enabled: true
+
+  # Value can be either prod or staging
+  # This controls the cluster issuer what's used in Ingress
+  clusterIssuer: staging
+  tls:
+    # Name of the secret where the cert will be stored for the host
+    - secretName: test-mushop-ateam-cloud
+      hosts:
+        - test.mushop.ateam.cloud
+
+  # Used for ACME registration (if TLS is set)
+  email: "no-reply@ateam-oracle.com"
+
+  # If TLS is provided, cert-manager needs to be installed.
+  hosts:
+    - test.mushop.ateam.cloud
+
+api:
+  enabled: true
+
+carts:
+  enabled: true
+
+catalogue:
+  enabled: true
+
+edge:
+  enabled: true
+
+orders:
+  enabled: true
+
+payment:
+  enabled: true
+
+session:
+  enabled: true
+
+shipping:
+  enabled: true
+
+storefront:
+  enabled: true
+
+stream:
+  enabled: true
+
+user:
+  enabled: true
+
+user-db:
+  enabled: true
+
+secrets:
+  oci:
+    compartmentId:
+    tenantId:
+    userId:
+    fingerprint:
+    region:
+    apiKey:
+    passphrase:

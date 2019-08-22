@@ -1,0 +1,47 @@
+dependencies:
+  - name: api
+    version: 0.1.0
+    condition: api.enabled
+  - name: carts
+    version: 0.1.0
+    condition: carts.enabled
+  - name: catalogue
+    version: 0.1.0
+    condition: catalogue.enabled
+  - name: edge
+    version: 0.1.0
+    condition: edge.enabled
+  - name: orders
+    version: 0.1.0
+    condition: orders.enabled
+  - name: payment
+    version: 0.1.0
+    condition: payment.enabled
+  - name: session
+    version: 0.1.0
+    condition: session.enabled
+  - name: shipping
+    version: 0.1.0
+    condition: shipping.enabled
+  - name: storefront
+    version: 0.1.0
+    condition: storefront.enabled
+  - name: stream
+    version: 0.1.0
+    condition: stream.enabled
+  - name: user
+    version: 0.1.0
+    condition: user.enabled
+  - name: user-db
+    version: 0.1.0
+    condition: user-db.enabled
+  - name: nginx-ingress
+    version: 1.2.1
+    condition: ingress.enabled
+    repository: https://kubernetes-charts.storage.googleapis.com
+  - name: catalog
+    version: 0.2.1
+    condition: catalog.enabled
+    repository: https://svc-catalog-charts.storage.googleapis.com 
+
+    ## TODO (peterj, 07/15/2019): OCI service broken should be here once they have a repo where the chart can be downloaded from

@@ -86,6 +86,14 @@ spec:
         env:
         - name: SESSION_REDIS
           value: session
+        - name: CATALOGUE_URL
+          value: http://catalogue
+        - name: ORDERS_URL
+          value: http://orders
+        - name: CARTS_URL
+          value: http://carts
+        - name: USERS_URL
+          value: http://user
         resources:
           limits:
             cpu: 300m
@@ -265,7 +273,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: catalogue
-          image: phx.ocir.io/intvravipati/mushop/catalogue:0.0.1
+          image: phx.ocir.io/intvravipati/mushop/catalogue:1.1
           imagePullPolicy: Always
           command: ["/app"]
           args:

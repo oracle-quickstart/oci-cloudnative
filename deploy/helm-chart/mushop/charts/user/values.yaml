@@ -1,0 +1,42 @@
+replicaCount: 1
+
+image:
+  repository: phx.ocir.io/intvravipati/mushop/user
+  tag: 0.0.1
+  pullPolicy: Always
+
+resources:
+  limits:
+    cpu: 300m
+    memory: 100Mi
+  requests:
+    cpu: 100m
+    memory: 100Mi
+
+env:
+  mongo: user-db:27017 # TODO: This should be in the global chart probably
+
+hpa:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 10001
+  capabilities:
+    drop:
+      - all
+    add:
+      - NET_BIND_SERVICE
+  readOnlyRootFilesystem: true
+
+service:
+  port: 80

@@ -2,8 +2,7 @@ version: '2'
 
 services:
   orders:
-#    image: aurademos/durhamdenim/orders
-    image: oracleateam/orders
+    image: mushop/orders
     hostname: orders
     restart: always
     cap_drop:

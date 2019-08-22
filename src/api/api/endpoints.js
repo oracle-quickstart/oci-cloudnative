@@ -1,29 +1,33 @@
-(function (){
+(function () {
   'use strict';
 
-  var util = require('util');
+  const { env, keyMap } = require('../config');
 
-  var domain = "";
-  process.argv.forEach(function (val, index, array) {
-    var arg = val.split("=");
-    if (arg.length > 1) {
-      if (arg[0] == "--domain") {
-        domain = "." + arg[1];
-        console.log("Setting domain to:", domain);
-      }
+  // getEnvVar returns the environment variable value or throws if the variable is not set
+  function getEnvVar(name) {
+    const value = env(name);
+    if (null == value) {
+      throw new Error(`Environment variable ${name} is not set.`);
     }
-  });
+    return value;
+  }
+
+  const { services } = keyMap();
+
+  const catalogueUrl = getEnvVar(services.CATALOG);
+  const cartsUrl = getEnvVar(services.CARTS);
+  const ordersUrl = getEnvVar(services.ORDERS);
+  const usersUrl = getEnvVar(services.USERS);
 
   module.exports = {
-    catalogueUrl:  util.format("http://catalogue%s", domain),
-    categoryUrl:   util.format("http://catalogue%s", domain),
-    tagsUrl:       util.format("http://catalogue%s/tags", domain),
-    cartsUrl:      util.format("http://carts%s/carts", domain),
-    ordersUrl:     util.format("http://orders%s", domain),
-    customersUrl:  util.format("http://user%s/customers", domain),
-    addressUrl:    util.format("http://user%s/addresses", domain),
-    cardsUrl:      util.format("http://user%s/cards", domain),
-    loginUrl:      util.format("http://user%s/login", domain),
-    registerUrl:   util.format("http://user%s/register", domain),
+    getEnvVar, // for testing
+    catalogueUrl,
+    ordersUrl,
+    cartsUrl: `${cartsUrl}/carts`,
+    customersUrl: `${usersUrl}/customers`,
+    addressUrl: `${usersUrl}/addresses`,
+    cardsUrl: `${usersUrl}/cards`,
+    loginUrl:  `${usersUrl}/login`,
+    registerUrl:  `${usersUrl}/register`,
   };
 }());

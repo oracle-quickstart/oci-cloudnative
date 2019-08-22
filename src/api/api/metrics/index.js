@@ -1,17 +1,21 @@
 (function (){
   'use strict';
   const apiRoutes = ['cart', 'catalogue', 'orders', 'user'];
-  var express = require("express")
-    , client  = require('prom-client')
-    , app     = express.Router()
+  const express = require("express")
+      , client  = require('prom-client')
+      , app     = express.Router()
 
   const metric = {
     http: {
       requests: {
-        duration: new client.Histogram('http_request_duration_seconds', 'request duration in seconds', ['service', 'method', 'path', 'status_code']),
+        duration: new client.Histogram({
+          name: 'http_request_duration_seconds',
+          help: 'request duration in seconds',
+          labelNames: ['service', 'method', 'path', 'status_code'],
+        }),
       }
     }
-  }
+  };
 
   function s(start) {
     var diff = process.hrtime(start);
@@ -20,33 +24,44 @@
 
   function observe(method, path, statusCode, start) {
     var route = path.toLowerCase();
-    if (route !== '/metrics' && route !== '/metrics/') {
-        var duration = s(start);
-        var method = method.toLowerCase();
-        metric.http.requests.duration.labels('front-end', method, route, statusCode).observe(duration);
-    }
+    var duration = s(start);
+    var method = method.toLowerCase();
+    metric.http.requests.duration.labels('api', method, route, statusCode).observe(duration);
   };
 
-  function middleware(request, response, done) {
+  /**
+   * metrics middleware
+   * @param {express.Request} req 
+   * @param {express.Response} res 
+   * @param {NextFunction} next 
+   */
+  function middleware(req, res, next) {
     var start = process.hrtime();
 
-    response.on('finish', function() {
+    res.on('finish', function() {
       // Only log API routes, and only record the backend service name (no unique identifiers)
-      var model = request.path.split('/')[1];
+      var model = req.path
+        .replace('/api/', '/')
+        .split('/')[1];
       if (apiRoutes.indexOf(model) !== -1) {
-        observe(request.method, model, response.statusCode, start);
+        observe(req.method, model, res.statusCode, start);
       }
 
     });
 
-    return done();
+    return next();
   };
 
-
   app.use(middleware);
+
+
+  /**
+   * metrics collection endpoint
+   */
   app.get("/metrics", function(req, res) {
-      res.header("content-type", "text/plain");
-      return res.end(client.register.metrics())
+    const { register } = client;
+    const data = register.metrics();
+    res.set('Content-Type', register.contentType).send(data);
   });
 
   module.exports = app;

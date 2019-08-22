@@ -2,162 +2,278 @@
 box:
   id: busybox
 
+command-timeout: 30
 build:
   steps:
-    - script:
-      name: echo environment
-      code: env
+    - internal/docker-build:
+        context: src/api
+        image-name: $DOCKER_REPOSITORY/api
+    - internal/docker-build:
+        context: src/carts
+        image-name: $DOCKER_REPOSITORY/carts
+    - internal/docker-build:
+        context: src/catalogue
+        image-name: $DOCKER_REPOSITORY/catalogue
+    - internal/docker-build:
+        context: src/orders
+        image-name: $DOCKER_REPOSITORY/orders
+    - internal/docker-build:
+        context: src/payment
+        image-name: $DOCKER_REPOSITORY/payment
+    - internal/docker-build:
+        context: src/shipping
+        image-name: $DOCKER_REPOSITORY/shipping
+    - internal/docker-build:
+        context: src/storefront
+        image-name: $DOCKER_REPOSITORY/storefront
+    - internal/docker-build:
+        context: src/stream
+        image-name: $DOCKER_REPOSITORY/stream
+    - internal/docker-build:
+        context: src/user
+        image-name: $DOCKER_REPOSITORY/user
 
-# Defining the dev pipeline
-dev:
+# Pushes the built Docker images to registry.
+# This pipeline needs DOCKER_USERNAME and DOCKER_PASSWORD variables set.
+push-to-registry:
   steps:
-    - internal/watch:
+    - script:
+        name: Setup image tag
         code: |
-          go build ./...
-          ./source
-        reload: true
+          export IMAGE_TAG=$(echo $WERCKER_GIT_COMMIT | head -c 7)-$WERCKER_GIT_BRANCH
+          echo Using tag $IMAGE_TAG
+    - internal/docker-push:
+        tag: $IMAGE_TAG
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/api
+    - internal/docker-push:
+        tag: $IMAGE_TAG
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/carts
+    - internal/docker-push:
+        tag: $IMAGE_TAG
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/catalogue
+    - internal/docker-push:
+        tag: $IMAGE_TAG
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/orders
+    - internal/docker-push:
+        tag: $IMAGE_TAG
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/payment
+    - internal/docker-push:
+        tag: $IMAGE_TAG
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/shipping
+    - internal/docker-push:
+        tag: $IMAGE_TAG
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/storefront
+    - internal/docker-push:
+        tag: $IMAGE_TAG
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/stream
+    - internal/docker-push:
+        tag: $IMAGE_TAG
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/user
+    - script:
+        name: Store image names
+        code: |
+          IMAGE_NAMES_FILE=images.txt
+          echo API_IMAGE_NAME=${DOCKER_REPOSITORY}/api >> ${IMAGE_NAMES_FILE}
+          echo API_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
+          echo CARTS_IMAGE_NAME=${DOCKER_REPOSITORY}/carts >> ${IMAGE_NAMES_FILE}
+          echo CARTS_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
+          echo CATALOGUE_IMAGE_NAME=${DOCKER_REPOSITORY}/catalogue >> ${IMAGE_NAMES_FILE}
+          echo CATALOGUE_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
+          echo ORDERS_IMAGE_NAME=${DOCKER_REPOSITORY}/orders >> ${IMAGE_NAMES_FILE}
+          echo ORDERS_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
+          echo PAYMENT_IMAGE_NAME=${DOCKER_REPOSITORY}/payment >> ${IMAGE_NAMES_FILE}
+          echo PAYMENT_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
+          echo SHIPPING_IMAGE_NAME=${DOCKER_REPOSITORY}/shipping >> ${IMAGE_NAMES_FILE}
+          echo SHIPPING_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
+          echo STOREFRONT_IMAGE_NAME=${REPOSITORY}/storefront >> ${IMAGE_NAMES_FILE}
+          echo STOREFRONT_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
+          echo STREAM_IMAGE_NAME=${DOCKER_REPOSITORY}/stream >> ${IMAGE_NAMES_FILE}
+          echo STREAM_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
+          echo USER_IMAGE_NAME=${DOCKER_REPOSITORY}/user >> ${IMAGE_NAMES_FILE}
+          echo USER_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
+          cat $IMAGE_NAMES_FILE
 
-go-lint:
+test-go-services:
+  box: golang:1.12
+  steps:
+    - script:
+      name: Run tests for Go services
+      code: |
+        cd src
+
+        cd catalogue
+        go test -v ./...
+        cd ..
+
+        cd user 
+        # TODO: Enable once MongoDB is mocked/replaced with ATP
+        # go test -v ./...
+        cd ..
+
+        cd payment
+        go test -v ./...
+        cd ..
+
+test-node-services:
+  box: node:10-alpine
+  steps:
+    - script:
+      name: Run tests for NodeJS services
+      code: |
+        cd src
+
+        cd api
+        npm install
+        npm test
+        cd ..
+
+        cd storefront
+        npm install
+        npm test
+        cd ..
+
+test-java-services:
+  box: alpine
+  steps:
+    - script:
+      name: Run tests for Java services
+      code: |
+        cd src
+
+        cd carts
+        # TODO: Run the carts tests
+        cd ..
+
+        cd orders
+        # TODO: Run the orders tests
+        cd ..
+
+        cd shipping
+        # TODO: Run the shipping tests
+        cd ..
+
+        cd stream
+        # TODO: Run the stream tests
+        cd ..
+
+upgrade-deployment:
   box:
-    id: golang:1.12
-    ports:
-      - "5000"
-  steps:
-    - wercker/golint
-    - script:
-        name: Go Lint Results
-        code: cat lint_results.txt
-
-build-catalogue:
-  box:
-    id: golang:1.12
-    ports:
-      - "5000"
+    id: alpine
+    cmd: /bin/sh
   steps:
     - script:
-        name: go build
+        name: Download Helm
         code: |
-          cd src/catalogue
-          GO111MODULE=on GOARCH=amd64 GOOS=linux go build -a -installsuffix cgo -o /app ./cmd/cataloguesvc
-
-build-user:
-  box:
-    id: golang:1.12
-    ports:
-      - "5000"
-  steps:
+          wget https://get.helm.sh/helm-v2.14.3-linux-amd64.tar.gz
+          tar xvzf helm-v2.14.3-linux-amd64.tar.gz
+          ./linux-amd64/helm version --client
     - script:
-        name: go build
+        name: Setup image names
         code: |
-          pwd
-
-build-payment:
-  box:
-    id: golang:1.12
-    ports:
-      - "5000"
-  steps:
+          cat images.txt
+          export $(cat images.txt | xargs)
     - script:
-        name: go build
+        name: Create kube.config file
         code: |
-          pwd
-
-coverage-catalogue:
-  box:
-    id: golang:1.12
-    ports:
-      - "5000"
-  steps:
+          cat <<EOF > kube.config
+          apiVersion: v1
+          clusters:
+          - cluster:
+              insecure-skip-tls-verify: true
+              server: $KUBERNETES_SERVER
+            name: cluster
+          contexts:
+          - context:
+              cluster: cluster
+              user: user
+            name: cluster
+          current-context: cluster
+          kind: Config
+          preferences: {}
+          users:
+          - name: user
+            user:
+              token: $KUBERNETES_TOKEN
+          EOF
     - script:
-        name: go test coverage
+        name: Get previous deployment values for release $HELM_RELEASE_NAME
         code: |
-          cd src/catalogue
-          go test -race -coverprofile=coverage.txt -covermode=atomic
+          ./linux-amd64/helm --kubeconfig kube.config get values $HELM_RELEASE_NAME > original-$WERCKER_GIT_COMMIT.yaml
     - script:
-        name: Code Coverage Results
-        code: cat coverage.txt
-    - script:
-        name: Code Coverage report
+        name: Create new deployment values
         code: |
-          bash <(curl -s https://codecov.io/bash)
-
-build-storefront:
-  box:
-    id: node:10-alpine
-  steps:
+          cat <<EOF > upgrade-$WERCKER_GIT_COMMIT.yaml
+          api:
+            image:
+              repository: $API_IMAGE_NAME
+              tag: $API_IMAGE_TAG
+          carts:
+            image:
+              repository: $CARTS_IMAGE_NAME
+              tag: $CARTS_IMAGE_TAG
+          catalogue:
+            image:
+              repository: $CATALOGUE_IMAGE_NAME
+              tag: $CATALOGUE_IMAGE_TAG
+          orders:
+            image:
+              repository: $ORDERS_IMAGE_NAME
+              tag: $ORDERS_IMAGE_TAG
+          payment:
+            image:
+              repository: $PAYMENT_IMAGE_NAME
+              tag: $PAYMENT_IMAGE_TAG
+          shipping:
+            image:
+              repository: $SHIPPING_IMAGE_NAME
+              tag: $SHIPPING_IMAGE_TAG
+          storefront:
+            image:
+              repository: $STOREFRONT_IMAGE_NAME
+              tag: $STOREFRONT_IMAGE_TAG
+          stream:
+            image:
+              repository: $STREAM_IMAGE_NAME
+              tag: $STREAM_IMAGE_TAG
+          user:
+            image:
+              repository: $USER_IMAGE_NAME
+              tag: $USER_IMAGE_TAG
+          EOF
+          cat upgrade-$WERCKER_GIT_COMMIT.yaml
     - script:
-        name: Change to storefront
+        name: Upgrade deployment '$HELM_RELEASE_NAME'
         code: |
-          cd src/storefront
-    # install dependencies with `npm ci`
-    - mvandervliet/npm-ci
-    # build
-    - script:
-        name: Build
-        code: |
-          npm run build
+          PREVIOUS_VALUES="original-$WERCKER_GIT_COMMIT.yaml"
+          UPGRADE_VALUES="upgrade-$WERCKER_GIT_COMMIT.yaml"
 
-test-storefront:
-  box:
-    id: node:10-alpine
-  steps:
-    - script:
-        name: Change to storefront
-        code: |
-          cd src/storefront    
-    # test
-    - npm-test
-
-deploy-to-oke:
-  box:
-        id: alpine
-        cmd: /bin/sh
-  steps:
-    - bash-template
-    
-    - script:
-        name: "Visualise Kubernetes config"
-        code: cat kubernetes-deployment.yml
-    
-    - kubectl:
-        name: delete namespace
-        server: $KUBERNETES_MASTER
-        token: $KUBERNETES_TOKEN
-        insecure-skip-tls-verify: true
-        command: delete namespace $WERCKER_APPLICATION_OWNER_NAME --ignore-not-found=true
-        
-    - script:
-        name: wait to delete namespace
-        code: sleep 30
-        
-    - kubectl:
-        name: create namespace    
-        server: $KUBERNETES_MASTER
-        token: $KUBERNETES_TOKEN
-        insecure-skip-tls-verify: true
-        command: create namespace $WERCKER_APPLICATION_OWNER_NAME
-        
-    - kubectl:
-        name: create OCR secret
-        server: $KUBERNETES_MASTER
-        token: $KUBERNETES_TOKEN
-        insecure-skip-tls-verify: true
-        command: create secret docker-registry wrelease --docker-server=phx.ocir.io --docker-username=$WERCKER_APPLICATION_OWNER_NAME --docker-password=$KUBERNETES_TOKEN --docker-email=${WERCKER_APPLICATION_OWNER_NAME}@mail.com --namespace=$WERCKER_APPLICATION_OWNER_NAME
-
-    - kubectl:
-        name: create TLS secret
-        server: $KUBERNETES_MASTER
-        token: $KUBERNETES_TOKEN
-        insecure-skip-tls-verify: true
-        command: create secret tls tls-secret --key $WERCKER_ROOT/tls.key --cert $WERCKER_ROOT/tls.crt --namespace=$WERCKER_APPLICATION_OWNER_NAME
-        
-    - kubectl:
-        name: create deplyoment
-        server: $KUBERNETES_MASTER
-        token: $KUBERNETES_TOKEN
-        insecure-skip-tls-verify: true
-        command: create -f $WERCKER_ROOT/kubernetes-deployment.yml --namespace=$WERCKER_APPLICATION_OWNER_NAME
-
-    - script:
-        name: "Visualise Ingress config"
-        code: cat ingress.yml
+          cmd="./linux-amd64/helm --debug --timeout $HELM_TIMEOUT --kubeconfig kube.config upgrade $HELM_RELEASE_NAME deploy/helm-chart/mushop -f $PREVIOUS_VALUES -f $UPGRADE_VALUES --atomic"
+          echo "Running Helm command $cmd"
+          eval $cmd

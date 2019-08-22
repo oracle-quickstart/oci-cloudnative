@@ -1,0 +1,83 @@
+version: '3'
+
+services:
+
+  # OCI Catalog service
+  catalogue:
+    image: phx.ocir.io/intvravipati/mushop/catalogue:1.1
+    hostname: catalogue
+    restart: always
+    environment:
+      - reschedule=on-node-failure
+      - OADB_USER=catalogue_user
+      - OADB_PW=${CATALOGUE_OADB_PW}
+      - OADB_SERVICE=mcatalogue_tp
+
+  carts:
+    image: phx.ocir.io/intvravipati/mushop/carts:1.0.1
+    hostname: carts
+    restart: always
+    environment:
+      - reschedule:on-node-failure
+      - ATP_TRUST_PASS
+      - ATP_KEY_PASS
+      - OADB_USER=carts_user
+      - OADB_PW=${CARTS_OADB_PW}
+      - OADB_SERVICE=mcarts_tp
+      - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+  
+  orders:
+    image: phx.ocir.io/intvravipati/mushop/orders:1.0.1
+    hostname: orders
+    restart: always
+    environment:
+      - reschedule:on-node-failure
+      - ATP_TRUST_PASS
+      - ATP_KEY_PASS
+      - OADB_USER=orders_user
+      - OADB_PW=${ORDERS_OADB_PW}
+      - OADB_SERVICE=morders_tp
+      - JAVA_OPTS=-Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+
+  shipping:
+    image: weaveworksdemos/shipping
+    hostname: shipping
+    restart: always
+    environment:
+      - reschedule:on-node-failure
+  queue-master:
+    image: weaveworksdemos/queue-master
+    hostname: queue-master
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    environment:
+      - reschedule:on-node-failure
+  rabbitmq:
+    image: rabbitmq:3
+    hostname: rabbitmq
+    restart: always
+    environment:
+      - reschedule:on-node-failure
+
+  payment:
+    image: phx.ocir.io/intvravipati/mushop/payment:0.0.1
+    hostname: payment
+    restart: always
+    environment:
+      - reschedule:on-node-failure
+
+  user:
+    image: phx.ocir.io/intvravipati/mushop/user:0.0.1
+    hostname: user
+    restart: always
+    environment:
+      - reschedule:on-node-failure
+      - MONGO_HOST=user-db:27017
+
+  user-db:
+    image: phx.ocir.io/intvravipati/mushop/user-db:0.0.1
+    hostname: user-db
+    restart: always
+    environment:
+      - reschedule:on-node-failure

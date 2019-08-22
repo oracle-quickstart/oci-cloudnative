@@ -12,10 +12,14 @@ services:
     environment:
       - reschedule:on-node-failure
       - PORT=3000
-  
+      - CATALOGUE_URL=http://catalogue
+      - CARTS_URL=http://carts
+      - ORDERS_URL=http://orders
+      - USERS_URL=http://user
+
   # OCI Catalog service
   catalogue:
-    image: phx.ocir.io/intvravipati/mushop/catalogue:0.0.1
+    image: phx.ocir.io/intvravipati/mushop/catalogue:1.1
     hostname: catalogue
     restart: always
     environment:
