@@ -13,7 +13,7 @@
     const cartId = helpers.getCartId(req);
 
     common.getCartItems(cartId)
-      .then(({ data }) => res.json(data))
+      .then(data => res.json(data))
       .catch(next);
   });
 

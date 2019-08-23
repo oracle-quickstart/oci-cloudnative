@@ -8,7 +8,7 @@ const helpers = require("../../helpers");
 module.exports = {
   getCustomer: async (req) => {
     const custId = helpers.getCustomerId(req);
-    return await axios.get(endpoints.customersUrl + "/" + custId)
+    return await axios.get(`${endpoints.customersUrl}/${custId}`)
       .then(({ data }) => data);
   },
 
@@ -18,7 +18,7 @@ module.exports = {
   },
 
   getCartItems: async (id) => {
-    return await axios.get(endpoints.cartsUrl + "/" + id + "/items")
+    return await axios.get(`${endpoints.cartsUrl}/${id}/items`)
       .then(({ data }) => data)
   },
 };
