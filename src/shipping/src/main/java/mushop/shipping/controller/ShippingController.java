@@ -68,10 +68,8 @@ public class ShippingController {
 	@PostMapping(path = "/shipping", consumes = "application/json", produces = "application/json")
 	@ResponseBody 
 	public Shipment postShipping(@RequestBody Shipment shipment) {
-		
 		System.out.println(shipment.toString());
 		streamsPublisher.publishMessage(shipment);
-		
 		return shipment;
 	}
 	

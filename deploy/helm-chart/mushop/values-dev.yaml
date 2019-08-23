@@ -65,5 +65,4 @@ secrets:
     userId: <OCI_USER_ID>
     fingerprint: <OCI_FINGERPRINT>
     region: <OCI_REGION>
-    apiKey: <OCI_APIKEY>
     passphrase: <OCI_PASSPHRASE>
