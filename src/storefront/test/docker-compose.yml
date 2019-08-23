@@ -25,30 +25,34 @@ services:
     environment:
       - reschedule=on-node-failure
       - OADB_USER=catalogue_user
-      - OADB_PW=default_Password1
+      - OADB_PW=${CATALOGUE_OADB_PW}
       - OADB_SERVICE=mcatalogue_tp
 
   carts:
-    image: phx.ocir.io/intvravipati/mushop/carts:1.0.0
+    image: phx.ocir.io/intvravipati/mushop/carts:1.0.1
     hostname: carts
     restart: always
     environment:
       - reschedule:on-node-failure
+      - ATP_TRUST_PASS
+      - ATP_KEY_PASS
       - OADB_USER=carts_user
-      - OADB_PW=Default_Password123#
+      - OADB_PW=${CARTS_OADB_PW}
       - OADB_SERVICE=mcarts_tp
-      - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+      - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
   
   orders:
-    image: phx.ocir.io/intvravipati/mushop/orders:1.0.0
+    image: phx.ocir.io/intvravipati/mushop/orders:1.0.1
     hostname: orders
     restart: always
     environment:
       - reschedule:on-node-failure
+      - ATP_TRUST_PASS
+      - ATP_KEY_PASS
       - OADB_USER=orders_user
-      - OADB_PW=Default_Password123#
+      - OADB_PW=${ORDERS_OADB_PW}
       - OADB_SERVICE=morders_tp
-      - JAVA_OPTS=-Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+      - JAVA_OPTS=-Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
 
   shipping:
     image: weaveworksdemos/shipping

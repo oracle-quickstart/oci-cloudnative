@@ -8,6 +8,15 @@ The `mushop` Helm chart can be used to install all components of the MuShop to t
 - Helm
 - Secrets (Wallet/OCI) in the `/secrets` folders under root, `carts` and `orders` charts
 
+## Mock Installation
+
+For local installation without OCI, use the following:
+
+```text
+helm install mushop --name mymushop \
+    --set api.mock.service=all
+```
+
 ## Dev installation
 
 The default chart installation creates an Ingress resource for development (i.e. simple Ingress, without the DNS and need for Prod/Staging secrets).
@@ -71,7 +80,7 @@ helm install --dry-run --debug mushop --name mymushop \
     --set secrets.oci.userId=<your user id> \
     --set secrets.oci.region=<your region> \
     --set secrets.oci.passphrase=<api_key passphrase> \
-    --set api.hpa.enabled=true \
+    --set api.hpa.enabled=true
 ```
 
 ## Prod/Test installation
