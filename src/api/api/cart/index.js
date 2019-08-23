@@ -5,13 +5,14 @@
     , express   = require("express")
     , helpers   = require("../../helpers")
     , endpoints = require("../endpoints")
+    , common = require("../common")
     , app       = express.Router()
 
   // List items in cart for current logged in user.
   app.get("/cart", function (req, res, next) {
     const cartId = helpers.getCartId(req);
 
-    axios.get(endpoints.cartsUrl + "/" + cartId + "/items")
+    common.getCartItems(cartId)
       .then(({ data }) => res.json(data))
       .catch(next);
   });
@@ -46,7 +47,7 @@
     
     try {
       // lookup product information
-      const { data: product } = await axios.get(endpoints.catalogueUrl + "/catalogue/" + item.id);
+      const product = await common.getProduct(item.id);
       // post to cart items with default quantity
       const { status } = await axios.post(endpoints.cartsUrl + "/" + cartId + "/items", {
         itemId: product.id,
@@ -77,7 +78,7 @@
 
     try {
       // lookup product information
-      const { data: product } = await axios.get(endpoints.catalogueUrl + "/catalogue/" + item.id);
+      const product = await common.getProduct(item.id);
       // patch cart
       const { status } = await axios.patch(endpoints.cartsUrl + "/" + cartId + "/items", {
         itemId: product.id,

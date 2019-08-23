@@ -108,7 +108,7 @@
   };
 
   /* TODO: Add documentation */
-  helpers.getCustomerId = function(req, env) {
+  helpers.getCustomerId = function(req) {
     // Check if logged in. Get customer Id
     const { id, customerId } = req.session;
 

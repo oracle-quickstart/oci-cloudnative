@@ -13,7 +13,7 @@
     const [ COOKIE_NAME, COOKIE_TTL ] = [ 'logged_in', 3.6e6 ];
 
     app.get("/profile", function(req, res, next) {
-        const userId = helpers.getCustomerId(req, app.get("env"));
+        const userId = helpers.getCustomerId(req);
         helpers.simpleHttpRequest(endpoints.customersUrl + "/" + userId, res, err => {
             // error in profile is a 401
             helpers.respondStatus(res, 401);
@@ -21,7 +21,7 @@
     });
     app.get("/customers/:id", function(req, res, next) {
         const { id } = req.params;
-        const userId = helpers.getCustomerId(req, app.get("env"));
+        const userId = helpers.getCustomerId(req);
         if (~~id === ~~userId) {
             helpers.simpleHttpRequest(endpoints.customersUrl + "/" + userId, res, next);
         } else {
@@ -48,7 +48,7 @@
 
     // Create an address
     app.post("/address", function(req, res, next) {
-        req.body.userID = helpers.getCustomerId(req, app.get("env"));
+        req.body.userID = helpers.getCustomerId(req);
 
         axios.post(endpoints.addressUrl, req.body)
             .then(({ status, data }) => res.status(status).json(data))
@@ -57,7 +57,7 @@
 
     // get a single address
     app.get("/address", function(req, res, next) {
-        var custId = helpers.getCustomerId(req, app.get("env"));
+        var custId = helpers.getCustomerId(req);
         axios.get(endpoints.customersUrl + '/' + custId + '/addresses')
             .then(({ data }) => {
                 if (data.status_code !== 500 && data._embedded.address && data._embedded.address.length ) {
@@ -70,7 +70,7 @@
 
     // Fetch a single card
     app.get("/card", function(req, res, next) {
-        var custId = helpers.getCustomerId(req, app.get("env"));
+        var custId = helpers.getCustomerId(req);
         axios.get(endpoints.customersUrl + '/' + custId + '/cards')
             .then(({ data }) => {
                 if (data.status_code !== 500 && data._embedded.card && data._embedded.card.length ) {
@@ -88,7 +88,7 @@
 
     // create a stored card
     app.post("/card", function(req, res, next) {
-        req.body.userID = helpers.getCustomerId(req, app.get("env"));
+        req.body.userID = helpers.getCustomerId(req);
         axios.post(endpoints.cardsUrl, req.body)
             .then(({ status, data }) => res.status(status).json(data))
             .catch(next);

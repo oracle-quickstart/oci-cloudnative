@@ -28,8 +28,11 @@
     test: function() {
       return /^test/i.test(this.env('NODE_ENV') || '');
     },
-    mockMode: function() {
-      return /^(true|1)/i.test(this.env('MOCK_MODE') || '');
+    mockMode: function(service) {
+      const mocks = (this.env('MOCK_MODE') || '').split(',').map(m => m.trim().toLowerCase());
+      return ['true', 'all', '1'] // match all
+        .concat(service || []) // match specific service
+        .some(val => mocks.indexOf(val) > -1);
     },
     keyMap: function() {
       return {
