@@ -30,8 +30,8 @@ class MockMiddleware {
    */
   _mockCatalog() {
     const app = this.layer();
-    const products = this.products = new MockDb(require('./data/products.json'));
-    const cats = this.categories = new MockDb(require('./data/categories.json'));
+    const products = this.products = new MockDb(require('./data/mock_products.json'));
+    const cats = this.categories = new MockDb(require('./data/mock_categories.json'));
     // categories
     app.get('/categories', (req, res) => res.json(cats.all()));
 
