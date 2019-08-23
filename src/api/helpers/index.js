@@ -15,7 +15,7 @@
   helpers.errorHandler = function(err, req, res, next) {
     const ret = {
       message: err.message,
-      error:   err
+      error:   err.toString(),
     };
     res.status(err.status || 500).json(ret);
   };
@@ -108,7 +108,7 @@
   };
 
   /* TODO: Add documentation */
-  helpers.getCustomerId = function(req, env) {
+  helpers.getCustomerId = function(req) {
     // Check if logged in. Get customer Id
     const { id, customerId } = req.session;
 

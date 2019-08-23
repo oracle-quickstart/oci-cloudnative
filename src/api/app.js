@@ -5,6 +5,7 @@ var express = require("express")
   , session = require("express-session")
   , config = require("./config")
   , helpers = require("./helpers")
+  , mock = require("./api/mock")
   , cart = require("./api/cart")
   , catalogue = require("./api/catalogue")
   , orders = require("./api/orders")
@@ -28,6 +29,7 @@ app.use(morgan(config.prod() ? "combined" : "dev", {
 const api = express.Router();
 api.use(health);
 api.use(helpers.sessionMiddleware);
+api.use(mock.layer());
 api.use(cart);
 api.use(catalogue);
 api.use(orders);

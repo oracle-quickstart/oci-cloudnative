@@ -26,6 +26,9 @@ securityContext:
       - NET_BIND_SERVICE
   readOnlyRootFilesystem: true
 
+mock:
+  service: false
+
 hpa:
   enabled: false
   minReplicas: 1

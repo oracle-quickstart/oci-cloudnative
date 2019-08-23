@@ -1,0 +1,488 @@
+[
+  {
+    "id": "MU-US-001",
+    "brand": "Original",
+    "title": "Original Unscented Litter Trapper",
+    "description": "Provide effective cat litter odor control in your cat's litter box area with Original Texture cat litter. This formula absorbs three times the moisture by volume when compared to clay-based litter, keeping her litter box fresh and welcoming.",
+    "weight": "151lbs",
+    "product_size": "0",
+    "colors": "0",
+    "qty": 99,
+    "price": 18.5,
+    "imageUrl": [
+      "MU-US-001.png",
+      "MU-US-001_1.png"
+    ],
+    "category": [
+      "Litter Accessories"
+    ]
+  },
+  {
+    "id": "MU-US-002",
+    "brand": "Tidy Cats",
+    "title": "Instant Action Mu BroomKit",
+    "description": "Put an end to overpowering odors in your home with Purina Tidy Cats Instant Action clumping litter for multiple cats. We know you have no time to waste, and that is no problem with this unique formula. This clumping cat litter is designed to trap odors from the start.",
+    "weight": "20lbs",
+    "product_size": "0",
+    "colors": "0",
+    "qty": 99,
+    "price": 28.99,
+    "imageUrl": [
+      "MU-US-002.png",
+      "MU-US-002_1.png"
+    ],
+    "category": [
+      "Litter Accessories"
+    ]
+  },
+  {
+    "id": "MU-US-003",
+    "brand": "Choco Spring",
+    "title": "Mu DeoSpray Deodorizer",
+    "description": "With Choco Spring scents lingering in the air, your cat's time in the bathroom doesn't have to be so smelly anymore! This deodorizer perfumes the air and helps make the litter last longer so you and your cat can enjoy a breath of sweetly-scented air.",
+    "weight": "26Oz",
+    "product_size": "0",
+    "colors": "0",
+    "qty": 99,
+    "price": 7.99,
+    "imageUrl": [
+      "MU-US-003.png",
+      "MU-US-003_1.png"
+    ],
+    "category": [
+      "Deodorizers"
+    ]
+  },
+  {
+    "id": "MU-US-004",
+    "brand": "Arm \u0026 Hammer",
+    "title": "Mu O-DeoSpray Deodorizer",
+    "description": "Add an extra boost of freshness to your litter box. ARM \u0026 HAMMER™ baking soda destroys odors instantly in all types of litter – so your box stays first-day fresh longer. ",
+    "weight": "20Oz",
+    "product_size": "0",
+    "colors": "0",
+    "qty": 99,
+    "price": 4.99,
+    "imageUrl": [
+      "MU-US-004.png",
+      "MU-US-004_1.png"
+    ],
+    "category": [
+      "Deodorizers"
+    ]
+  },
+  {
+    "id": "MU-US-005",
+    "brand": "Petmate",
+    "title": "Cat Litter Mu LitterBox",
+    "description": "Stay Fresh litter pans are created with Microban antimicrobial product, which inhibits the growth of stain- and odor-causing bacteria. Made in the USA.",
+    "weight": "0",
+    "product_size": "18.7\" x 15.5\" x 10.6\"",
+    "colors": "0",
+    "qty": 99,
+    "price": 9.5,
+    "imageUrl": [
+      "MU-US-005.png",
+      "MU-US-005_1.png"
+    ],
+    "category": [
+      "Litter Boxes"
+    ]
+  },
+  {
+    "id": "MU-US-006",
+    "brand": "Tidy Cats",
+    "title": "Mu X-DeoSpray Deodorizer",
+    "description": "Change the way you think about cleaning your cat's litter box with the Purina Tidy Cats BREEZE With Ammonia Blocker Litter System starter kit. This system features powerful odor control to keep your house smelling fresh and clean, and the specially designed, cat-friendly litter pellets minimize your pets from tracking litter throughout your home.",
+    "weight": "0",
+    "product_size": "18.7\" x 15.5\" x 10.6\"",
+    "colors": "0",
+    "qty": 99,
+    "price": 39.25,
+    "imageUrl": [
+      "MU-US-006.png",
+      "MU-US-006_1.png"
+    ],
+    "category": [
+      "Litter Boxes"
+    ]
+  },
+  {
+    "id": "MU-US-007",
+    "brand": "Petsafe",
+    "title": "Original MuMate Bowl",
+    "description": "Original Pet Fountain with Bonus Reservoir provides 50 oz of fresh, filtered water to your pet, with an additional Bonus 50 Ounce Reservoir. A patented free-falling stream of water entices your pet to drink more and continually aerates the water with healthful oxygen.",
+    "weight": "0",
+    "product_size": "0",
+    "colors": "0",
+    "qty": 99,
+    "price": 43.95,
+    "imageUrl": [
+      "MU-US-007.png",
+      "MU-US-007_1.png"
+    ],
+    "category": [
+      "Auto Feeders"
+    ]
+  },
+  {
+    "id": "MU-US-008",
+    "brand": "Petsafe",
+    "title": "Drinkwell BrandX Feeder",
+    "description": "The Pagoda fountain continuously recirculates 70 ounces of fresh, filtered water. Best of all, the stylish ceramic design is easy to clean and looks great in your home. The upper and lower dishes provide two drinking areas for pets, and the patented dual free-falling streams aerate the water for freshness, which encourages your pet to drink more.",
+    "weight": "0",
+    "product_size": "0",
+    "colors": "red, white",
+    "qty": 99,
+    "price": 79.95,
+    "imageUrl": [
+      "MU-US-008.png",
+      "MU-US-008_1.png"
+    ],
+    "category": [
+      "Auto Feeders"
+    ]
+  },
+  {
+    "id": "MU-US-009",
+    "brand": "Petmate",
+    "title": "Crock Small Coastal FishBowl",
+    "description": "Standard crock small animal dish is uses a heavy weight design that eliminates movement and spillage.",
+    "weight": "0",
+    "product_size": "3\"",
+    "colors": "0",
+    "qty": 99,
+    "price": 4.75,
+    "imageUrl": [
+      "MU-US-009.png",
+      "MU-US-009_1.png"
+    ],
+    "category": [
+      "Bowls"
+    ]
+  },
+  {
+    "id": "MU-US-010",
+    "brand": "Loving Pet",
+    "title": "Mu Fusion Bowl",
+    "description": "Functional and beautiful, Bella Bowls are truly the perfect pet dish. Loving Pets brings new life to veterinarian-recommended stainless steel dog bowls and pet feeding dishes by combining a stainless interior with an attractive poly-resin exterior. A removable rubber base prevents spills, eliminates noise, and makes Bella Bowls fully dishwasher safe.",
+    "weight": "0",
+    "product_size": "S,M,L,XL",
+    "colors": "0",
+    "qty": 99,
+    "price": 5.99,
+    "imageUrl": [
+      "MU-US-010.png",
+      "MU-US-010_1.png"
+    ],
+    "category": [
+      "Bowls"
+    ]
+  },
+  {
+    "id": "MU-US-011",
+    "brand": "Petsafe",
+    "title": "Mu Mat Green Placemat",
+    "description": "Petrageous Designs pet placemats are the perfect way to keep your pets' feeding area clean and classy! This ultra-durable Food/Water Placemat keeps nasty spills and stray kibble off your clean floors, while adding playful character to your home's decor. Easy to clean.",
+    "weight": "0",
+    "product_size": "0",
+    "colors": "0",
+    "qty": 99,
+    "price": 4.99,
+    "imageUrl": [
+      "MU-US-011.png",
+      "MU-US-011_1.png"
+    ],
+    "category": [
+      "Placemats"
+    ]
+  },
+  {
+    "id": "MU-US-012",
+    "brand": "Loving Pet",
+    "title": "Mu Mat Blue Placemat",
+    "description": "Clean, clean, clean! Your little feline can be a messy eater too, and when they're done you have to clean their dining area. Keep the feeding area around your pet mess free with the Meow Meow Bowl Mat. This fun mat with fish bones and cat sayings is a design you and your pet are sure to love.",
+    "weight": "0",
+    "product_size": "0",
+    "colors": "0",
+    "qty": 99,
+    "price": 11.95,
+    "imageUrl": [
+      "MU-US-012.png",
+      "MU-US-012_1.png"
+    ],
+    "category": [
+      "Placemats"
+    ]
+  },
+  {
+    "id": "MU-US-013",
+    "brand": "Petsafe",
+    "title": "Mu Storage Container",
+    "description": "Pet Food Storage Container features a tight seal to ensure your pet's food will stay fresh longer, reducing spoilage due to pests and moisture. Made from FDS food contact approved plastic.",
+    "weight": "15lbs",
+    "product_size": "0",
+    "colors": "0",
+    "qty": 99,
+    "price": 9.99,
+    "imageUrl": [
+      "MU-US-013.png",
+      "MU-US-013_1.png"
+    ],
+    "category": [
+      "Storage"
+    ]
+  },
+  {
+    "id": "MU-US-014",
+    "brand": "Pet Food",
+    "title": "Chicken \u0026 Pomegranate Mu Cat Food",
+    "description": "Your cats deserve the best scientifically proven food to maintain a healthy weight. Natural and Delicious Grain Free Chicken \u0026 Pomegranate Recipe Dry Cat Food does not contain any cereal or grains of any kind and is completely replaced with the highest quality protein. ",
+    "weight": "10lbs",
+    "product_size": "0",
+    "colors": "0",
+    "qty": 99,
+    "price": 38.95,
+    "imageUrl": [
+      "MU-US-014.png",
+      "MU-US-014_1.png"
+    ],
+    "category": [
+      "Dry Food"
+    ]
+  },
+  {
+    "id": "MU-US-015",
+    "brand": "Pet Food",
+    "title": "Cat and Kitten BlueHill MagiK",
+    "description": "Cat and Kitten recipe is a grain-free, region-inspired formula that your cat will thrive on. An excellent choice for cats of all breed and ages, this biologically appropriate recipe contains an unmatched variety of fresh regional ingredients delivered daily from local Kentucky farms. Packed with over 75% meat, the recipe features free-fun Cobb chicken, nest-laid eggs, Tom turkey, Blue catfish and Rainbow trout in wholeprey ratios in order to mimic the diet mother nature intended.",
+    "weight": "12lbs",
+    "product_size": "0",
+    "colors": "0",
+    "qty": 99,
+    "price": 49.95,
+    "imageUrl": [
+      "MU-US-015.png",
+      "MU-US-015_1.png"
+    ],
+    "category": [
+      "Dry Food"
+    ]
+  },
+  {
+    "id": "MU-US-016",
+    "brand": "Weruva",
+    "title": "Go Cat Variety Pouches Pack",
+    "description": "Let's show our cats that they are truly our best friends, with the new Weruva Grain-Free BFF OMG Pouches Variety Pack. Made with white breast chicken, real, sustainably caught tuna, fresh wild caught salmon, and other real, deboned meats, Weruva has created the perfect meal for our furry, purring best friends. ",
+    "weight": "3Oz",
+    "product_size": "0",
+    "colors": "0",
+    "qty": 99,
+    "price": 12.99,
+    "imageUrl": [
+      "MU-US-016.png",
+      "MU-US-016_1.png"
+    ],
+    "category": [
+      "Food Pouches"
+    ]
+  },
+  {
+    "id": "MU-US-017",
+    "brand": "Weruva",
+    "title": "Love Me Variety Pack Green",
+    "description": "Full of duck, tuna, and white breast, skinless, and boneless chicken, this wholesome food is full of protein and free of any grains, GMOs, MSG, and carrageenan for a balanced meal in each can. Weruva Cats In the Kitchen Love Me Tender Pouches Wet Cat Food will fill your cat with love, tenderly with every meal.",
+    "weight": "3Oz",
+    "product_size": "0",
+    "colors": "0",
+    "qty": 99,
+    "price": 15.99,
+    "imageUrl": [
+      "MU-US-017.png",
+      "MU-US-017_1.png"
+    ],
+    "category": [
+      "Food Pouches"
+    ]
+  },
+  {
+    "id": "MU-US-018",
+    "brand": "Royal Canin",
+    "title": "SO Dry Cat Food",
+    "description": "Whether this is your cat’s first urinary issue or they need ongoing urinary care, your vet recommended Royal Canin Urinary SO for a reason. This veterinary-exclusive dry cat food was developed to nutritionally support your adult cat’s urinary tract and bladder health. It increases the amount of urine your cat produces to help dilute excess minerals that can cause crystals and stones.",
+    "weight": "15lbs",
+    "product_size": "0",
+    "colors": "0",
+    "qty": 99,
+    "price": 68.74,
+    "imageUrl": [
+      "MU-US-018.png",
+      "MU-US-018_1.png"
+    ],
+    "category": [
+      "Limited Diet"
+    ]
+  },
+  {
+    "id": "MU-US-019",
+    "brand": "Royal Canin",
+    "title": "Care with Chicken BlueHill MagiK",
+    "description": "A healthy bladder starts with the right balance of vital nutrients. Excess minerals can encourage the formation of crystals in the urine, which may lead to the creation of bladder stones. They can cause discomfort and lead to more serious problems that require the care of a veterinarian. ",
+    "weight": "15lbs",
+    "product_size": "0",
+    "colors": "0",
+    "qty": 99,
+    "price": 72.75,
+    "imageUrl": [
+      "MU-US-019.png",
+      "MU-US-019_1.png"
+    ],
+    "category": [
+      "Limited Diet"
+    ]
+  },
+  {
+    "id": "MU-US-020",
+    "brand": "Wellness",
+    "title": "Wet Canned Mu Dry Food",
+    "description": "Wellness Complete Health Natural Grain Free Chicken Recipe Canned Cat Food is made with 100% Human Grade Ingredients and uses delicious fruits and vegetables which contain vitamins and antioxidants to help maintain your cats healthy immune system. ",
+    "weight": "12Oz",
+    "product_size": "0",
+    "colors": "0",
+    "qty": 99,
+    "price": 49.75,
+    "imageUrl": [
+      "MU-US-020.png",
+      "MU-US-020_1.png"
+    ],
+    "category": [
+      "Wet Food"
+    ]
+  },
+  {
+    "id": "MU-US-021",
+    "brand": "Wellness",
+    "title": "Green Pea Formula Mu Cat Food",
+    "description": "Designed with a limited number of premium protein and carbohydrate sources, this Grain-free cat food is an excellent choice when seeking alternative ingredients for your cat. Natural Balance L.I.D. Limited Ingredient Diets Duck and Green Pea Formula Canned Cat Food is designed to support healthy digestion and to maintain skin and coat health—all while providing complete, balanced nutrition for all life stages!",
+    "weight": "12Oz",
+    "product_size": "0",
+    "colors": "0",
+    "qty": 99,
+    "price": 39.99,
+    "imageUrl": [
+      "MU-US-021.png",
+      "MU-US-021_1.png"
+    ],
+    "category": [
+      "Wet Food"
+    ]
+  },
+  {
+    "id": "MU-US-022",
+    "brand": "Amazing Paw",
+    "title": "Wire Cat KittyBrush",
+    "description": "For a well groomed appearance, cats and kittens need to be brushed regularly. The Magic Coat® Slicker Wire Brushes are designed to easily remove mats while pulling out dead hair. Brushing helps stimulate the skin to promote healthy circulation and increase shine.",
+    "weight": "0",
+    "product_size": "0",
+    "colors": "0",
+    "qty": 99,
+    "price": 6.99,
+    "imageUrl": [
+      "MU-US-022.png",
+      "MU-US-022_1.png"
+    ],
+    "category": [
+      "Brushes"
+    ]
+  },
+  {
+    "id": "MU-US-023",
+    "brand": "Amazing Paw",
+    "title": "Groom Genie KittyBrush",
+    "description": "The Groom Genie evolved from a brush designed for humans – the Knot Genie. Rikki Mor, a mom of three, was frustrated with the huge cost and lack of effectiveness of other detangling brushes on the market. So she took matters into her own hands and invented what is now known as The World's Best Detangling Brush.",
+    "weight": "0",
+    "product_size": "0",
+    "colors": "0",
+    "qty": 99,
+    "price": 4.75,
+    "imageUrl": [
+      "MU-US-023.png",
+      "MU-US-023_1.png"
+    ],
+    "category": [
+      "Brushes"
+    ]
+  },
+  {
+    "id": "MU-US-024",
+    "brand": "Amazing Paw",
+    "title": "Oatmeal and Aloe 2-in-1 Shampoo",
+    "description": "Earthbath specially formulated this Oatmeal \u0026 Aloe itch relief shampoo to address the needs of beloved pets with dry, itchy skin. Oatmeal and aloe vera are recommended by veterinarians to effectively combat skin irritation, promote healing, and re-moisturize sensitive, dry skin.",
+    "weight": "15Oz",
+    "product_size": "0",
+    "colors": "0",
+    "qty": 99,
+    "price": 12.49,
+    "imageUrl": [
+      "MU-US-024.png",
+      "MU-US-024_1.png"
+    ],
+    "category": [
+      "Shampoos and Conditioners"
+    ]
+  },
+  {
+    "id": "MU-US-025",
+    "brand": "Amazing Paw",
+    "title": "Oatmeal and Aloe Protein Shampoo",
+    "description": "The addition of 3% colloidal oatmeal and aloe vera helps re-moisturize and soothe skin, too. Our sumptuous Shampoo will leave your best friend’s coat soft and plush while bringing out its natural luster and brilliance.",
+    "weight": "15Oz",
+    "product_size": "0",
+    "colors": "0",
+    "qty": 99,
+    "price": 13.49,
+    "imageUrl": [
+      "MU-US-025.png",
+      "MU-US-025_1.png"
+    ],
+    "category": [
+      "Shampoos and Conditioners"
+    ]
+  },
+  {
+    "id": "MU-US-026",
+    "brand": "Amazing Paw",
+    "title": "Grooming Mitt for Cats",
+    "description": "Cleans and softens cat’s coat, removes loose hair and gently massages. Made with lightweight neoprene material with adjustable closer and soft rubber nubs, the Love Glove® mitt is also great for removing loose cat hair from furniture and clothing.",
+    "weight": "0",
+    "product_size": "0",
+    "colors": "0",
+    "qty": 99,
+    "price": 6.99,
+    "imageUrl": [
+      "MU-US-026.png",
+      "MU-US-026_1.png"
+    ],
+    "category": [
+      "Grooming Tools"
+    ]
+  },
+  {
+    "id": "MU-US-027",
+    "brand": "Amazing Paw",
+    "title": "Motion Lithium Ion Clipper",
+    "description": "Powerful motor up to 5,500 SPM's with integrated rapid power. The '5 in 1' Pro Blade for less breakage and optimal usage. Blade and clipper are ALWAYS cool running. Lithium Ion battery technology gives optimal performance. 90 minutes of cordless runtime with 45 minute quick full charge. Higher performance, longer usage times and consistent reliability. ",
+    "weight": "0",
+    "product_size": "0",
+    "colors": "0",
+    "qty": 99,
+    "price": 199.99,
+    "imageUrl": [
+      "MU-US-027.png",
+      "MU-US-027_1.png"
+    ],
+    "category": [
+      "Grooming Tools"
+    ]
+  }
+]

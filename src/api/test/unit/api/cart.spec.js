@@ -1,5 +1,5 @@
 const mock = require('../../helpers/mock');
-const helpers  =require('../../../helpers/index');
+const helpers = require('../../../helpers/index');
 
 describe('Carts', () => {
   it('should return cart items', done => {

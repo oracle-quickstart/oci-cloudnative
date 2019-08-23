@@ -185,7 +185,7 @@ const Customers = [
       }
     }
   }
-]
+];
 
 module.exports = {
   Addresses,
