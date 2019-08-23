@@ -15,7 +15,7 @@
   helpers.errorHandler = function(err, req, res, next) {
     const ret = {
       message: err.message,
-      error:   err
+      error:   err.toString(),
     };
     res.status(err.status || 500).json(ret);
   };

@@ -14,7 +14,10 @@
 
     app.get("/profile", function(req, res, next) {
         const userId = helpers.getCustomerId(req, app.get("env"));
-        helpers.simpleHttpRequest(endpoints.customersUrl + "/" + userId, res, next);
+        helpers.simpleHttpRequest(endpoints.customersUrl + "/" + userId, res, err => {
+            // error in profile is a 401
+            helpers.respondStatus(res, 401);
+        });
     });
     app.get("/customers/:id", function(req, res, next) {
         const { id } = req.params;

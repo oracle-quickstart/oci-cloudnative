@@ -28,6 +28,9 @@
     test: function() {
       return /^test/i.test(this.env('NODE_ENV') || '');
     },
+    mockMode: function() {
+      return /^(true|1)/i.test(this.env('MOCK_MODE') || '');
+    },
     keyMap: function() {
       return {
         session: sessionKeyMap,

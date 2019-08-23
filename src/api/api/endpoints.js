@@ -1,18 +1,18 @@
 (function () {
   'use strict';
 
-  const { env, keyMap } = require('../config');
+  const config = require('../config');
 
   // getEnvVar returns the environment variable value or throws if the variable is not set
   function getEnvVar(name) {
-    const value = env(name);
-    if (null == value) {
+    const value = config.env(name);
+    if (null == value && !config.mockMode()) {
       throw new Error(`Environment variable ${name} is not set.`);
     }
     return value;
   }
 
-  const { services } = keyMap();
+  const { services } = config.keyMap();
 
   const catalogueUrl = getEnvVar(services.CATALOG);
   const cartsUrl = getEnvVar(services.CARTS);
