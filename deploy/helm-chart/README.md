@@ -14,7 +14,7 @@ For local installation without OCI, use the following:
 
 ```text
 helm install mushop --name mymushop \
-    --set api.mock.service=all
+    --set global.mock.service=all
 ```
 
 ## Dev installation

@@ -1,10 +1,14 @@
+global:
+  mock:
+    service: "false"
+
 ingress:
   enabled: true
 
   hosts:
     - mushop.ateam.cloud
     - insecure.mushop.ateam.cloud
-  
+
   # Value can be either prod or staging
   # This controls the cluster issuer what's used in Ingress
   clusterIssuer: prod
@@ -64,5 +68,4 @@ secrets:
     userId:
     fingerprint:
     region:
-    apiKey:
     passphrase:
