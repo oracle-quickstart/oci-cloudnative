@@ -41,7 +41,7 @@ public class OciStreamsConfiguration {
     
     public boolean mockMode() {
         String tenantId = env.getProperty("OCI_TENANT_ID");
-        return tenantId.equals("mock");
+        return tenantId.equalsIgnoreCase("mock");
     }
 	
 	/* Constructor that initializes a connection to be used throughout the application.
