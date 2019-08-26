@@ -37,7 +37,12 @@ public class OciStreamsConfiguration {
 	
 	public String getStreamId() {
 		return streamId;
-	}
+    }
+    
+    public boolean mockMode() {
+        String tenantId = env.getProperty("OCI_TENANT_ID");
+        return tenantId.equalsIgnoreCase("mock");
+    }
 	
 	/* Constructor that initializes a connection to be used throughout the application.
 	 * The connection requires these attributes which are available via environment variables:
@@ -45,15 +50,25 @@ public class OciStreamsConfiguration {
 	 * If the api key was created with a pass_phrase then the PASS_PHRASE variable is also required.
 	 */
 	public void initConnection() throws Exception {
-		
-		final String tenantId = env.getProperty("OCI_TENANT_ID");
+        final String tenantId = env.getProperty("OCI_TENANT_ID");
         final String userId = env.getProperty("OCI_USER_ID");
         final String fingerprint = env.getProperty("OCI_FINGERPRINT");
         final String privateKey = env.getProperty("OCI_API_KEY");
         final String passPhrase = env.getProperty("OCI_PASS_PHRASE");
         final String region = env.getProperty("OCI_REGION");
-        
-		
+        final String compartmentId = env.getProperty("OCI_COMPARTMENT_ID");
+        String streamName = env.getProperty("STREAM_NAME");
+
+        if (streamName == null || streamName.isEmpty()) {
+                streamName = "shipping-stream";
+        }
+
+        // No need to create the connection if in mock mode
+        if (mockMode()) {
+            System.out.println("Running in mock mode");
+            return;
+        }
+
         AuthenticationDetailsProvider provider = null;
         
         if (privateKey.contains("Proc-Type: 4,ENCRYPTED")) {
@@ -77,13 +92,10 @@ public class OciStreamsConfiguration {
         
         // Create an admin-client
         final StreamAdminClient adminClient = new StreamAdminClient(provider);
-
-        final String streamName = "shipping-stream";
         final int partitions = 1;
 
-        Stream stream = getStream(adminClient, env.getProperty("OCI_COMPARTMENT_ID"), streamName, partitions);
-        
-     // Streams are assigned a specific endpoint url based on where they are provisioned.
+        Stream stream = getStream(adminClient, compartmentId, streamName, partitions);
+        // Streams are assigned a specific endpoint url based on where they are provisioned.
         // Create a stream client using the provided message endpoint.
         streamClient = new StreamClient(provider);
         streamClient.setEndpoint(stream.getMessagesEndpoint());
@@ -119,26 +131,6 @@ public class OciStreamsConfiguration {
 	                adminClient.getStream(GetStreamRequest.builder().streamId(streamId).build());
 	        return getResponse.getStream();
         }
-
-        //TODO: should we allow it to create a stream? 
-//        System.out.println(
-//                String.format("No active stream named %s was found; creating it now.", streamName));
-//        Stream createdStream = createStream(adminClient, compartmentId, streamName, partitions);
-
-        // GetStream provides details about a specific stream.
-        // Since stream creation is asynchronous; we need to wait for the stream to become active.
-//        GetStreamRequest streamRequest =
-//                GetStreamRequest.builder().streamId(createdStream.getId()).build();
-//        Stream activeStream =
-//                adminClient
-//                        .getWaiters()
-//                        .forStream(streamRequest, LifecycleState.Active)
-//                        .execute()
-//                        .getStream();
-
-        // Give a little time for the stream to be ready.
-//        Uninterruptibles.sleepUninterruptibly(1, TimeUnit.SECONDS);
-//        return activeStream;
         return null;
     }
 }

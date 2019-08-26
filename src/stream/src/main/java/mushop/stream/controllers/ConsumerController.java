@@ -13,14 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class ConsumerController {
-
-	
 	@GetMapping("/hello")
 	public String sayHello() {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Date date = new Date();
 		return "Hello " + dateFormat.format(date);
 	}
-	
-
 }
