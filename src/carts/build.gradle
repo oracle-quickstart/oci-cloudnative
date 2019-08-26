@@ -38,7 +38,7 @@ dependencies {
 	runtimeOnly 'com.oracle.jdbc:ojdbc8:19.3'
 	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'com.h2database:h2'
+	implementation 'com.h2database:h2'
 	testImplementation 'com.openpojo:openpojo:0.8.12'
 	
 }
