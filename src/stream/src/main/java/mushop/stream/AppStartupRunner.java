@@ -56,9 +56,16 @@ public class AppStartupRunner implements ApplicationRunner {
     }
     
     private void consumeShippingStream() {
-		
-		if (streamConfig == null) 
+		if (streamConfig == null) {
 			System.out.println("streamConfig is null");
+			return;
+		}
+
+		if (streamConfig.mockMode()) {
+			// Nothing to do if in mock mode.
+			return;
+		}
+
         StreamClient streamClient = streamConfig.getStreamClient();
         String streamId = streamConfig.getStreamId();
         
@@ -95,13 +102,8 @@ public class AppStartupRunner implements ApplicationRunner {
             		shipment = new Shipment(null, name);
             	}
             	System.out.println(shipment.toString());
-            	shippingTaskHandler.handleMessage(shipment);
-//                System.out.println(
-//                        String.format(
-//                                "%s: %s",
-//                                new String(message.getKey(), UTF_8),
-//                                new String(message.getValue(), UTF_8)));
-            }
+				shippingTaskHandler.handleMessage(shipment);
+			}
 
             // getMessages is a throttled method; clients should retrieve sufficiently large message
             // batches, as to avoid too many http requests.

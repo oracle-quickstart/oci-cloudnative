@@ -43,38 +43,42 @@ public class HealthCheckController {
         HealthCheck app = new HealthCheck("stream-app", "OK", dateNow);
         HealthCheck streams = new HealthCheck("oci-streams", "OK", dateNow);
 
-        try {
-        	StreamClient streamClient = streamsConfig.getStreamClient();
-    		String streamId = streamsConfig.getStreamId();
-    		
-        	CreateCursorDetails cursorDetails =
-    				CreateCursorDetails
-    				.builder()
-    				.partition("0")
-    				.type(Type.Latest)
-    				.build();
-    		
-    		CreateCursorRequest createCursorRequest =
-    				CreateCursorRequest.builder()
-    				.streamId(streamId)
-    				.createCursorDetails(cursorDetails)
-    				.build();
+        if (streamsConfig.mockMode()) {
+            streams.setStatus("OK-MOCK");
+        } else {
+            try {
+                StreamClient streamClient = streamsConfig.getStreamClient();
+                String streamId = streamsConfig.getStreamId();
+                
+                CreateCursorDetails cursorDetails =
+                        CreateCursorDetails
+                        .builder()
+                        .partition("0")
+                        .type(Type.Latest)
+                        .build();
+                
+                CreateCursorRequest createCursorRequest =
+                        CreateCursorRequest.builder()
+                        .streamId(streamId)
+                        .createCursorDetails(cursorDetails)
+                        .build();
 
-    		CreateCursorResponse cursorResponse = streamClient.createCursor(createCursorRequest);
-    		String cursor = cursorResponse.getCursor().getValue();
-    		
-    		GetMessagesRequest getRequest =
-                    GetMessagesRequest.builder()
-                            .streamId(streamId)
-                            .cursor(cursor)
-                            .limit(1)
-                            .build();
-    		
-    		@SuppressWarnings("unused")
-			GetMessagesResponse getResponse = streamClient.getMessages(getRequest);
-        } catch ( BmcException e ) {
-        	System.out.println("OCI Streams HealthCheck failed: " + e.getCause());
-        	streams.setStatus("ERROR");
+                CreateCursorResponse cursorResponse = streamClient.createCursor(createCursorRequest);
+                String cursor = cursorResponse.getCursor().getValue();
+                
+                GetMessagesRequest getRequest =
+                        GetMessagesRequest.builder()
+                                .streamId(streamId)
+                                .cursor(cursor)
+                                .limit(1)
+                                .build();
+                
+                @SuppressWarnings("unused")
+                GetMessagesResponse getResponse = streamClient.getMessages(getRequest);
+            } catch ( BmcException e ) {
+                System.out.println("OCI Streams HealthCheck failed: " + e.getCause());
+                streams.setStatus("ERROR");
+            }
         }
 
         healthChecks.add(app);
