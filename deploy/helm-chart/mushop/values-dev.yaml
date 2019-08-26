@@ -1,3 +1,7 @@
+global:
+  mock:
+    service: "false"
+
 ingress:
   enabled: false
 

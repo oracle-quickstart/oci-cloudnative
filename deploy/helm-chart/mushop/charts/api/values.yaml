@@ -26,20 +26,17 @@ securityContext:
       - NET_BIND_SERVICE
   readOnlyRootFilesystem: true
 
-mock:
-  service: false
-
 hpa:
   enabled: false
   minReplicas: 1
   maxReplicas: 10
   metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 70
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
 
 service:
   port: 80

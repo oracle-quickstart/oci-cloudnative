@@ -1,3 +1,7 @@
+global:
+  mock:
+    service: "false"
+
 ingress:
   enabled: true
 
@@ -60,5 +64,4 @@ secrets:
     userId:
     fingerprint:
     region:
-    apiKey:
     passphrase:

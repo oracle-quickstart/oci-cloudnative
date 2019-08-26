@@ -27,7 +27,7 @@ spec:
               containerPort: 3000
           env:
           - name: MOCK_MODE
-            value: {{ .Values.mock.service }}
+            value: {{ .Values.global.mock.service }}
           - name: SESSION_REDIS
             value: {{ .Release.Name }}-session
           - name: CATALOGUE_URL
