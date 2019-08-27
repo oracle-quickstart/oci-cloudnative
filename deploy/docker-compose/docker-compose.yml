@@ -91,7 +91,7 @@ services:
   
   # OCI Carts service        
   carts:
-    image: phx.ocir.io/intvravipati/mushop/carts:1.0.0
+    image: phx.ocir.io/intvravipati/mushop/carts:1.0
     ports:
      - 8086:80
     hostname: carts
@@ -111,7 +111,7 @@ services:
   
   # OCI Orders service
   orders:
-    image: phx.ocir.io/intvravipati/mushop/orders:1.0.0
+    image: phx.ocir.io/intvravipati/mushop/orders:1.0
     ports:
      - 8085:80
     hostname: orders
