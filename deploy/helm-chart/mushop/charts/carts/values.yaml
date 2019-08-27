@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: phx.ocir.io/intvravipati/mushop/carts
-  tag: latest
+  tag: 1.0
   pullPolicy: Always
 
 secrets:
