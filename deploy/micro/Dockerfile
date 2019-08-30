@@ -127,13 +127,17 @@ FROM base
 ARG oracleClientVersion
 ARG nodeVersion
 WORKDIR /
+# # # Support for Offline local image. Online image on OCI Object Storage
+COPY src/catalogue/images/ images/
+
+# # # Copy Services apps
 COPY --from=storefront-builder /app/storefront/build /app/storefront
 COPY --from=api-builder /app/api /app/api
 COPY --from=catalogue-builder /catalogue /app/catalogue/catalogue
-RUN zip -r /app/microMuShop.zip /app
 
-# # # Support for Offline local image. Online image on OCI Object Storage
-COPY src/catalogue/images/ images/
+# # # Create zip package of the Apps and local images
+RUN zip -r /app/microMuShop.zip /app /images
+
 
 VOLUME ["/usr/lib/oracle/${oracleClientVersion}/client64/lib/network/admin/"]
 VOLUME ["/transfer/"]
