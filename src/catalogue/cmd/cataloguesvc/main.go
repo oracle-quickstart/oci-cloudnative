@@ -43,7 +43,7 @@ func init() {
 
 func main() {
 	var (
-		port          = flag.String("port", "80", "Port to bind HTTP listener") // TODO(pb): should be -addr, default ":80"
+		port          = flag.String("port", getEnv("CATALOGUE_PORT", "80"), "Port to bind HTTP listener") // TODO(pb): should be -addr, default ":80"
 		images        = flag.String("images", "./images/", "Image path")
 		connectString = flag.String("CONNECTSTRING", os.Getenv("OADB_USER")+"/"+os.Getenv("OADB_PW")+"@"+os.Getenv("OADB_SERVICE"), "Connection String: [username[/password]@][tnsname]]")
 		zip           = flag.String("zipkin", os.Getenv("ZIPKIN"), "Zipkin address")
@@ -154,4 +154,12 @@ func main() {
 	}()
 
 	logger.Log("exit", <-errc)
+}
+
+// Reads an environment variable value and returns a default value if environment variable does not exist
+func getEnv(key string, defaultVal string) string {
+    if value, exists := os.LookupEnv(key); exists {
+		return value
+    }
+    return defaultVal
 }
