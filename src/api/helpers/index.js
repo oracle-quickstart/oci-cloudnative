@@ -5,6 +5,8 @@
   const ulid = require("ulid");
   const helpers = {};
 
+  const [ COOKIE_NAME, COOKIE_TTL ] = [ 'logged_in', 3.6e6 ];
+
   /* Public: errorHandler is a middleware that handles your errors
    *
    * Example:
@@ -103,8 +105,22 @@
    * Check for authenticated user
    */
   helpers.isLoggedIn = function(req) {
-    const { logged_in } = req.cookies;
+    const { [COOKIE_NAME]: logged_in } = req.cookies;
     return !!logged_in;
+  };
+
+  helpers.setAuthenticated = function(req, res, userId) {
+    if (userId) {
+      const sessionId = req.session.id;
+      req.session.customerId = userId;
+      res.cookie(COOKIE_NAME, sessionId, { maxAge: COOKIE_TTL });
+    } else {
+      // logout
+      req.session.customerId = null;
+      req.session.cartId = null;
+      res.cookie(COOKIE_NAME, '', { expires: new Date(0) });
+    }
+    return res;
   };
 
   /* TODO: Add documentation */

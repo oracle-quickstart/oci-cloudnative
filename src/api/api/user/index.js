@@ -5,20 +5,17 @@
     const axios = require("axios")
       , express = require("express")
       , app = express.Router()
+      , common    = require("../common")
       , endpoints = require("../endpoints")
       , helpers = require("../../helpers")
-      , mock = require("../../helpers/mock")
+      , mock = require("../../helpers/mock");
 
-    // TODO: move to config
-    const [ COOKIE_NAME, COOKIE_TTL ] = [ 'logged_in', 3.6e6 ];
-
-    app.get("/profile", function(req, res, next) {
-        const userId = helpers.getCustomerId(req);
-        helpers.simpleHttpRequest(endpoints.customersUrl + "/" + userId, res, err => {
-            // error in profile is a 401
-            helpers.respondStatus(res, 401);
-        });
+    app.get("/profile", function(req, res) {
+        common.getCustomer(req)
+            .then(u => (u ? res.json(u) : Promise.reject('not authorized')))
+            .catch(() => helpers.respondStatus(res, 401));
     });
+    
     app.get("/customers/:id", function(req, res, next) {
         const { id } = req.params;
         const userId = helpers.getCustomerId(req);
@@ -119,15 +116,12 @@
         try {
             const { status, data: user } = await axios.post(endpoints.registerUrl, req.body);
 
-            const sessionId = req.session.id;
-            req.session.customerId = user.id;
-
             // TODO: fix merge cart
             // const cartId = helpers.getCartId(req);
             // await axios.get(`${endpoints.cartsUrl}/${user.id}/merge?sessionId=${sessionId}`).catch(() => {/* noop */});
 
-            res.status(status)
-                .cookie(COOKIE_NAME, sessionId, { maxAge: COOKIE_TTL})
+            helpers.setAuthenticated(req, res, user.id)
+                .status(status)
                 .json({ id: user.id });
 
         } catch (e) {
@@ -144,16 +138,12 @@
                 }
             });
 
-            const sessionId = req.session.id;
-            req.session.customerId = user.id;
-
             // TODO: fix merge cart
             // const cartId = helpers.getCartId(req);
             // await axios.get(`${endpoints.cartsUrl}/${user.id}/merge?sessionId=${sessionId}`).catch(() => {/* noop */});
 
-            res.status(200)
-                .cookie(COOKIE_NAME, sessionId, { maxAge: COOKIE_TTL})
-                .send('OK');
+            helpers.setAuthenticated(req, res, user.id)
+                .status(200).send('OK');
         } catch (e) {
             res.status(401).end();
         }
