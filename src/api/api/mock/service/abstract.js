@@ -6,6 +6,11 @@ const common = require('../../common');
  * abstraction for mock services
  */
 class MockServiceAbstract {
+
+  static link(uri) {
+    return `http://localhost:${config.env('PORT') || 3000}${uri}`;
+  }
+
   /**
    * create mock service instance
    * @param {*} router - the mock router

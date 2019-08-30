@@ -29,6 +29,10 @@ class MockDb {
     return this._col.find(filter || (() => true));
   }
 
+  last(filter) {
+    return [].concat(this._col).reverse().find(filter || (() => true));
+  }
+
   find(filter, limit, offset) {
     return this._col
       .filter(filter || (() => true))

@@ -17,7 +17,7 @@
   const catalogueUrl = getEnvVar(services.CATALOG, !config.mockMode('catalogue'));
   const cartsUrl = getEnvVar(services.CARTS, !config.mockMode('carts'));
   const ordersUrl = getEnvVar(services.ORDERS, !config.mockMode('orders'));
-  const usersUrl = getEnvVar(services.USERS, true);
+  const usersUrl = getEnvVar(services.USERS, !config.mockMode('users'));
 
   module.exports = {
     getEnvVar, // for testing

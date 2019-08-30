@@ -10,23 +10,22 @@
       , helpers = require("../../helpers")
       , mock = require("../../helpers/mock");
 
-    app.get("/profile", function(req, res) {
+    function profile(req, res) {
         common.getCustomer(req)
             .then(u => (u ? res.json(u) : Promise.reject('not authorized')))
             .catch(() => helpers.respondStatus(res, 401));
-    });
+    }
+
+    app.get("/profile", profile);
     
     app.get("/customers/:id", function(req, res, next) {
         const { id } = req.params;
         const userId = helpers.getCustomerId(req);
         if (~~id === ~~userId) {
-            helpers.simpleHttpRequest(endpoints.customersUrl + "/" + userId, res, next);
+            profile(req, res);
         } else {
             res.status(401).end();
         }
-    });
-    app.get("/cards/:id", function(req, res, next) {
-        helpers.simpleHttpRequest(endpoints.cardsUrl + "/" + req.params.id, res, next);
     });
 
     // Designed to be blocked by WAF
@@ -54,20 +53,21 @@
 
     // get a single address
     app.get("/address", function(req, res, next) {
-        var custId = helpers.getCustomerId(req);
+        const custId = helpers.getCustomerId(req);
         axios.get(endpoints.customersUrl + '/' + custId + '/addresses')
             .then(({ data }) => {
                 if (data.status_code !== 500 && data._embedded.address && data._embedded.address.length ) {
                     const addr = data._embedded.address.pop();
                     return res.json(addr);
                 }
+                // TODO: deprecate 200 => 500 in client
                 return res.json({ status_code: 500 });
             }).catch(next);
     });
 
-    // Fetch a single card
+    // Fetch a single card for the user
     app.get("/card", function(req, res, next) {
-        var custId = helpers.getCustomerId(req);
+        const custId = helpers.getCustomerId(req);
         axios.get(endpoints.customersUrl + '/' + custId + '/cards')
             .then(({ data }) => {
                 if (data.status_code !== 500 && data._embedded.card && data._embedded.card.length ) {
@@ -91,7 +91,7 @@
             .catch(next);
     });
 
-    // Delete Customer - TO BE USED FOR TESTING ONLY (for now)
+    // Delete Customer
     app.delete("/customers/:id", function(req, res, next) {
         axios.delete(endpoints.customersUrl + "/" + req.params.id)
             .then(({ status, data }) => res.status(status).json(data))
@@ -105,7 +105,7 @@
             .catch(next);
     });
 
-    // Delete Card - TO BE USED FOR TESTING ONLY (for now)
+    // Delete Card
     app.delete("/cards/:id", function(req, res, next) {
         axios.delete(endpoints.cardsUrl + "/" + req.params.id)
             .then(({ status, data }) => res.status(status).json(data))
@@ -143,7 +143,8 @@
             // await axios.get(`${endpoints.cartsUrl}/${user.id}/merge?sessionId=${sessionId}`).catch(() => {/* noop */});
 
             helpers.setAuthenticated(req, res, user.id)
-                .status(200).send('OK');
+                .status(200)
+                .send('OK');
         } catch (e) {
             res.status(401).end();
         }
