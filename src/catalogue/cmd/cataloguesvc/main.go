@@ -156,7 +156,7 @@ func main() {
 	logger.Log("exit", <-errc)
 }
 
-// Simple helper function to read an environment or return a default value
+// Reads an environment variable value and returns a default value if environment variable does not exist
 func getEnv(key string, defaultVal string) string {
     if value, exists := os.LookupEnv(key); exists {
 		return value
