@@ -9,27 +9,22 @@
 # Return codes: 0 = 
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 # 
-# export MOCK_MODE=true
+
+# To mock all services, change to MOCK_MODE=all
 export MOCK_MODE=carts,orders,users
 export CATALOGUE_PORT=3005
 export CATALOGUE_URL=http://localhost:3005
-# export CARTS_URL=http://carts
-# export ORDERS_URL=http://orders
 export USERS_URL=http://user
-
-# export OADB_USER=catalogue_user
-# export OADB_PW=strong_password
-# export OADB_SERVICE=mcatalogue_tp
 
 echo "Environment: $(uname -a)";
 
-echo "Storefront...";
+echo "Launching Storefront...";
 /usr/sbin/httpd -D FOREGROUND &
 
-echo "API...";
+echo "Launching API...";
 node /app/api/server.js &
 
-echo "Catalogue...";
+echo "Launching Catalogue...";
 /app/catalogue/catalogue
 
 # exec "$@"
