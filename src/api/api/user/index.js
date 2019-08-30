@@ -151,10 +151,8 @@
     });
 
     app.get('/logout', (req, res) => {
-        req.session.customerId = null;
-        req.session.cartId = null;
-        res.cookie(COOKIE_NAME, '', {expires: new Date(0)});
-        helpers.respondStatus(res, 200);
+        helpers.setAuthenticated(req, res, false)
+            .send(200);
     });
 
     module.exports = app;

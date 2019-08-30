@@ -70,19 +70,18 @@ module.exports = class MockUserService extends MockServiceAbstract {
       helpers.setAuthenticated(req, res, u.id)
         .json(userPayload(u));
     })
+    // authenticate
     .get('/login', (req, res, next) => {
       const auth = req.get('authorization');
       const [username, password] = Buffer.from(auth.replace(/^\w+\s/, ''), 'base64').toString('utf8').split(':');
-      
-      // find by username
+
+      // validate username/password match
       const u = this.users.first(u => username === u.username);
-      if (u) {
-        if (u.password === createHash(password, u.salt)) {
-          return res.status(200).send('OK');
-        }
+      if (u && u.password === createHash(password, u.salt)) {
+        return helpers.setAuthenticated(req, res, u.id)
+            .status(200).send('OK');
       }
       return helpers.respondStatus(res, 401);
-      
     })
     .get('/customers', (req, res, next) => {
       return res.json(this.users.all());
