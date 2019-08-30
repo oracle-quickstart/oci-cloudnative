@@ -4,7 +4,6 @@ ARG oracleClientVersion=19.3
 ##### Node version
 ARG nodeVersion=10
 
-
 ###############################
 #    ----- STOREFRONT -----   #
 #    Build stage (node/npm)   #
@@ -39,12 +38,10 @@ COPY src/storefront/src src
 COPY src/storefront/*.js* ./
 
 ARG STATIC_ASSET_URL
-# ENV STATIC_ASSET_URL ${STATIC_ASSET_URL:-"https://objectstorage.us-phoenix-1.oraclecloud.com/n/oracleateam/b/mushop-images/o/"}
-ENV STATIC_ASSET_URL ${STATIC_ASSET_URL:-"http://localhost:3005/catalogue/images/"}
+ENV STATIC_ASSET_URL ${STATIC_ASSET_URL:-""}
 ENV NODE_ENV "production"
 RUN npm run build
 #    ----- STOREFRONT -----   #
-
 
 ###############################
 #    ----- API Gateway -----  #
@@ -70,7 +67,6 @@ RUN rm -rf test scripts
 RUN npm prune --production
 #    ----- API Gateway -----  #
 
-
 ###############################
 #    ------ Catalogue ------  #
 #    Build stage (Go Build)   #
@@ -92,7 +88,6 @@ RUN GO111MODULE=on GOARCH=amd64 GOOS=linux \
   -o /catalogue mushop/catalogue/cmd/cataloguesvc
 
 #    ------ Catalogue ------  #
-
 
 ###############################
 #    ----- Base Image ------  #
@@ -120,24 +115,21 @@ RUN chmod +x /entrypoint.sh
 
 #    ----- Base Image ------  #
 
-
-
 ##### Runtime Image
 FROM base
 ARG oracleClientVersion
 ARG nodeVersion
 WORKDIR /
-# # # Support for Offline local image. Online image on OCI Object Storage
+# Support for Offline local image. Online image on OCI Object Storage
 COPY src/catalogue/images/ images/
 
-# # # Copy Services apps
+# Copy Services apps
 COPY --from=storefront-builder /app/storefront/build /app/storefront
 COPY --from=api-builder /app/api /app/api
 COPY --from=catalogue-builder /catalogue /app/catalogue/catalogue
 
-# # # Create zip package of the Apps and local images
+# Create zip package of the Apps and local images
 RUN zip -r /app/microMuShop.zip /app /images
-
 
 VOLUME ["/usr/lib/oracle/${oracleClientVersion}/client64/lib/network/admin/"]
 VOLUME ["/transfer/"]
