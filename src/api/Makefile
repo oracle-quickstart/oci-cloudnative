@@ -27,6 +27,7 @@ server: kill-server
 		-d                      \
 		--rm										\
 		--name $(CONTAINER)     \
+		--network-alias $(CONTAINER) \
 		-v $$PWD:/usr/src/app   \
 		-P                      \
 		-e NODE_ENV=development \
@@ -45,14 +46,11 @@ mock: kill-server
 		-d                      \
 		--rm										\
 		--name $(CONTAINER)     \
+		--network-alias $(CONTAINER) \
 		-v $$PWD:/usr/src/app   \
 		-P                      \
-		-e MOCK_MODE=true				\
+		-e MOCK_MODE=all				\
 		-e NODE_ENV=development \
-		-e CATALOGUE_URL=http://catalogue \
-		-e CARTS_URL=http://carts \
-		-e ORDERS_URL=http://orders \
-		-e USERS_URL=http://user \
 		-e PORT=3000            \
 		-p 8080:3000            \
 		-p 9229:9229            \

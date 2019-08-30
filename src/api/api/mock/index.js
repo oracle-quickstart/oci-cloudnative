@@ -14,6 +14,7 @@ class MockMiddleware {
         Service.MockCartsService,
         Service.MockCatalogueService,
         Service.MockOrdersService,
+        Service.MockUsersService,
       ].map(ctor => new ctor(this._router))
       .map(impl => ({[impl.service]: impl}))
     );
