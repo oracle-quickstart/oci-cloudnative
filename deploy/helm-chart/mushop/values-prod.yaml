@@ -62,8 +62,14 @@ user-db:
   enabled: true
 
 secrets:
-  oci:
+  streams:
     compartmentId:
+    tenantId:
+    userId:
+    fingerprint:
+    region:
+    passphrase:
+  serviceBroker:
     tenantId:
     userId:
     fingerprint:

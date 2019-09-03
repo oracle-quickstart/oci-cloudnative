@@ -3,13 +3,13 @@ shipping:
   image:
     repository: IMAGE NAME HERE
     tag: IMAGE TAG HERE
-    imagePullPolicy: Never
+    pullPolicy: Never
 
 stream:
   enabled: true
 
 secrets:
-  oci:
+  streams:
     compartmentId: OCI_COMPARTMENT_ID
     tenantId: OCI_TENANT_ID
     userId: OCI_USER_ID
