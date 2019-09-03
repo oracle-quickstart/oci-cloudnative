@@ -21,44 +21,18 @@ helm install mushop --name mymushop \
 
 The default chart installation creates an Ingress resource for development (i.e. simple Ingress, without the DNS and need for Prod/Staging secrets).
 
-Before installing the chart, you need to copy the secrets (wallet files and OCI key) to a couple of places in the chart. Check the README.md in `secrets` folder under `carts` and `orders` as well as root chart.
+Before installing the chart, you need to copy the secrets (wallet files and OCI key for streams and the service broker) to a couple of places in the chart. Check the README.md in `secrets` folder under `carts` and `orders` as well as root chart.
 
-To install the chart, run the command below. Make sure to replace the release name and provide the passwords and OCI settings:
+To install the chart, make a copy of the `values.yaml` file, fill in the missing values (e.g. secrets) and then run:
 
 ```bash
-helm install mushop --name mymushop \
-    --set carts.secrets.oadbPassword=xxxxxx \
-    --set carts.secrets.trustPass=xxxxxx \
-    --set carts.secrets.keyPass=xxxxxx \
-    --set catalogue.secrets.oadbPassword=xxxxxx \
-    --set orders.secrets.oadbPassword=xxxxxx \
-    --set orders.secrets.trustPass=xxxxxx \
-    --set orders.secrets.keyPass=xxxxxx \
-    --set secrets.oci.compartmentId=<your compartment id> \
-    --set secrets.oci.tenantId=<your tenant id> \
-    --set secrets.oci.fingerprint=<api_key fingerprint> \
-    --set secrets.oci.userId=<your user id> \
-    --set secrets.oci.region=<your region> \
-    --set secrets.oci.passphrase=<api_key passphrase>
+helm install mushop --name mymushop -f myvalues.yaml
 ```
 
 If you want to troubleshoot the chart, add the `--dry-run` and `--debug` flags and re-run the command again. For example:
 
 ```bash
-helm install mushop --dry-run --debug --name mymushop \
-    --set carts.secrets.oadbPassword=xxxxxx \
-    --set carts.secrets.trustPass=xxxxxx \
-    --set carts.secrets.keyPass=xxxxxx \
-    --set catalogue.secrets.oadbPassword=xxxxxx \
-    --set orders.secrets.oadbPassword=xxxxxx \
-    --set orders.secrets.trustPass=xxxxxx \
-    --set orders.secrets.keyPass=xxxxxx \
-    --set secrets.oci.compartmentId=<your compartment id> \
-    --set secrets.oci.tenantId=<your tenant id> \
-    --set secrets.oci.fingerprint=<api_key fingerprint> \
-    --set secrets.oci.userId=<your user id> \
-    --set secrets.oci.region=<your region> \
-    --set secrets.oci.passphrase=<api_key passphrase>
+helm install mushop --dry-run --debug --name mymushop -f myvalues.yaml
 ```
 
 ### Installing HPA for components
@@ -66,20 +40,7 @@ helm install mushop --dry-run --debug --name mymushop \
 Optionally, you can enable HPA for components by setting the `hpa.enabled` property to `true`. For example: `api.hpa.enabled=true`, and then pass it to the install command:
 
 ```bash
-helm install --dry-run --debug mushop --name mymushop \
-    --set carts.secrets.oadbPassword=xxxxxx \
-    --set carts.secrets.trustPass=xxxxxx \
-    --set carts.secrets.keyPass=xxxxxx \
-    --set catalogue.secrets.oadbPassword=xxxxxx \
-    --set orders.secrets.oadbPassword=xxxxxx \
-    --set orders.secrets.trustPass=xxxxxx \
-    --set orders.secrets.keyPass=xxxxxx \
-    --set secrets.oci.compartmentId=<your compartment id> \
-    --set secrets.oci.tenantId=<your tenant id> \
-    --set secrets.oci.fingerprint=<api_key fingerprint> \
-    --set secrets.oci.userId=<your user id> \
-    --set secrets.oci.region=<your region> \
-    --set secrets.oci.passphrase=<api_key passphrase> \
+helm install --dry-run --debug mushop --name mymushop -f myvalues.yaml \
     --set api.hpa.enabled=true
 ```
 

@@ -28,8 +28,8 @@ spec:
               value: {{ .Values.env.zipkin }}
             - name: JAVA_OPTS
               value: {{ .Values.env.javaOpts }}
-            - name: JDBC_URL
-              value: {{ .Values.env.jdbcUrl }}
+            - name: TNS_ADMIN
+              value: {{ .Values.env.tnsAdmin }}
             - name: OADB_USER
               valueFrom:
                 secretKeyRef:
@@ -58,7 +58,16 @@ spec:
           volumeMounts:
             - mountPath: /tmp
               name: tmp-volume
-            - mountPath: /config
+            - mountPath: /app/config/keystore.jks
+              subPath: keystore.jks
+              name: wallet
+              readOnly: true
+            - mountPath: /app/config/truststore.jks
+              subPath: truststore.jks
+              name: wallet
+              readOnly: true
+            - mountPath: /app/config/tnsnames.ora
+              subPath: tnsnames.ora
               name: wallet
               readOnly: true
       volumes:
