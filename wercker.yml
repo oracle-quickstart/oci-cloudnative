@@ -52,7 +52,7 @@ push-to-registry:
           # Create the commit tag (e.g. master-af9811c)
           COMMIT_TAG=$WERCKER_GIT_BRANCH-$(echo $WERCKER_GIT_COMMIT | head -c 7)
 
-          export IMAGE_TAGS="latest $SEM $MAJOR.$MINOR $MAJOR"
+          export IMAGE_TAGS="$COMMIT_TAG $SEM $MAJOR.$MINOR $MAJOR"
           echo Tagging images with $IMAGE_TAGS
     - internal/docker-push:
         tag: $IMAGE_TAGS
