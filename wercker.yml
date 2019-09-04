@@ -38,24 +38,36 @@ build:
 push-to-registry:
   steps:
     - script:
-        name: Setup image tag
+        name: Setup image tags
         code: |
-          export IMAGE_TAG=$(echo $WERCKER_GIT_COMMIT | head -c 7)-$WERCKER_GIT_BRANCH
-          echo Using tag $IMAGE_TAG
+          SEMREG='[^0-9]*\([0-9]*\)[.]\([0-9]*\)[.]\([0-9]*\)\([0-9A-Za-z-]*\)'
+
+          # Get the git tag (assumtion here is that there is only one and it's valid)
+          # and separate it into major, minor and patch
+          SEM=$(git tags -l)
+          MAJOR=`echo $SEM | sed -e "s#$SEMREG#\1#"`
+          MINOR=`echo $SEM | sed -e "s#$SEMREG#\2#"`
+          PATCH=`echo $SEM | sed -e "s#$SEMREG#\3#"`
+
+          # Create the commit tag (e.g. master-af9811c)
+          COMMIT_TAG=$WERCKER_GIT_BRANCH-$(echo $WERCKER_GIT_COMMIT | head -c 7)
+
+          export IMAGE_TAGS="$SEM $MAJOR.$MINOR $MAJOR latest"
+          echo Tagging images with $IMAGE_TAGS
     - internal/docker-push:
-        tag: $IMAGE_TAG
+        tag: $IMAGE_TAGS
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
         registry: https://phx.ocir.io/v2
         repository: $DOCKER_REPOSITORY/api
     - internal/docker-push:
-        tag: $IMAGE_TAG
+        tag: $IMAGE_TAGS
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
         registry: https://phx.ocir.io/v2
         repository: $DOCKER_REPOSITORY/carts
     - internal/docker-push:
-        tag: $IMAGE_TAG
+        tag: $IMAGE_TAGS
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
         registry: https://phx.ocir.io/v2
@@ -67,13 +79,13 @@ push-to-registry:
         registry: https://phx.ocir.io/v2
         repository: $DOCKER_REPOSITORY/orders
     - internal/docker-push:
-        tag: $IMAGE_TAG
+        tag: $IMAGE_TAGS
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
         registry: https://phx.ocir.io/v2
         repository: $DOCKER_REPOSITORY/payment
     - internal/docker-push:
-        tag: $IMAGE_TAG
+        tag: $IMAGE_TAGS
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
         registry: https://phx.ocir.io/v2
@@ -85,13 +97,13 @@ push-to-registry:
         registry: https://phx.ocir.io/v2
         repository: $DOCKER_REPOSITORY/storefront
     - internal/docker-push:
-        tag: $IMAGE_TAG
+        tag: $IMAGE_TAGS
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
         registry: https://phx.ocir.io/v2
         repository: $DOCKER_REPOSITORY/stream
     - internal/docker-push:
-        tag: $IMAGE_TAG
+        tag: $IMAGE_TAGS
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
         registry: https://phx.ocir.io/v2
