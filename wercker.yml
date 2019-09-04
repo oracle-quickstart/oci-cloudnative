@@ -44,7 +44,7 @@ push-to-registry:
 
           # Get the git tag (assumtion here is that there is only one and it's valid)
           # and separate it into major, minor and patch
-          SEM=$(git tags -l)
+          SEM=$WERCKER_GIT_TAG
           MAJOR=`echo $SEM | sed -e "s#$SEMREG#\1#"`
           MINOR=`echo $SEM | sed -e "s#$SEMREG#\2#"`
           PATCH=`echo $SEM | sed -e "s#$SEMREG#\3#"`
@@ -52,7 +52,7 @@ push-to-registry:
           # Create the commit tag (e.g. master-af9811c)
           COMMIT_TAG=$WERCKER_GIT_BRANCH-$(echo $WERCKER_GIT_COMMIT | head -c 7)
 
-          export IMAGE_TAGS="$SEM $MAJOR.$MINOR $MAJOR latest"
+          export IMAGE_TAGS="latest $SEM $MAJOR.$MINOR $MAJOR"
           echo Tagging images with $IMAGE_TAGS
     - internal/docker-push:
         tag: $IMAGE_TAGS
