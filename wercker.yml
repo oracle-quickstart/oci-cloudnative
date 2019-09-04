@@ -40,97 +40,55 @@ push-to-registry:
     - script:
         name: Setup image tags
         code: |
-          SEMREG='[^0-9]*\([0-9]*\)[.]\([0-9]*\)[.]\([0-9]*\)\([0-9A-Za-z-]*\)'
+          API_VERSION=$(cat src/api/VERSION)
+          ./ci/push.sh $DOCKER_REPOSITORY/api $API_VERSION
 
-          # Get the git tag (assumtion here is that there is only one and it's valid)
-          # and separate it into major, minor and patch
-          SEM=$WERCKER_GIT_TAG
-          MAJOR=`echo $SEM | sed -e "s#$SEMREG#\1#"`
-          MINOR=`echo $SEM | sed -e "s#$SEMREG#\2#"`
-          PATCH=`echo $SEM | sed -e "s#$SEMREG#\3#"`
+          CARTS_VERSION=$(cat src/carts/VERSION)
+          ./ci/push.sh $DOCKER_REPOSITORY/carts $CARTS_VERSION
 
-          # Create the commit tag (e.g. master-af9811c)
-          COMMIT_TAG=$WERCKER_GIT_BRANCH-$(echo $WERCKER_GIT_COMMIT | head -c 7)
+          CATALOGUE_VERSION=$(cat src/catalogue/VERSION)
+          ./ci/push.sh $DOCKER_REPOSITORY/catalogue $CATALOGUE_VERSION
 
-          TMP_TAGS="$COMMIT_TAG $SEM $MAJOR.$MINOR $MAJOR"
-          export IMAGE_TAGS=$(echo -e "${TMP_TAGS}" | sed -e 's/[[:space:]]*$//')
-          echo Tagging images with $IMAGE_TAGS
-    - internal/docker-push:
-        tag: $IMAGE_TAGS
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
-        registry: https://phx.ocir.io/v2
-        repository: $DOCKER_REPOSITORY/api
-    - internal/docker-push:
-        tag: $IMAGE_TAGS
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
-        registry: https://phx.ocir.io/v2
-        repository: $DOCKER_REPOSITORY/carts
-    - internal/docker-push:
-        tag: $IMAGE_TAGS
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
-        registry: https://phx.ocir.io/v2
-        repository: $DOCKER_REPOSITORY/catalogue
-    - internal/docker-push:
-        tag: $IMAGE_TAG
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
-        registry: https://phx.ocir.io/v2
-        repository: $DOCKER_REPOSITORY/orders
-    - internal/docker-push:
-        tag: $IMAGE_TAGS
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
-        registry: https://phx.ocir.io/v2
-        repository: $DOCKER_REPOSITORY/payment
-    - internal/docker-push:
-        tag: $IMAGE_TAGS
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
-        registry: https://phx.ocir.io/v2
-        repository: $DOCKER_REPOSITORY/shipping
-    - internal/docker-push:
-        tag: $IMAGE_TAG
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
-        registry: https://phx.ocir.io/v2
-        repository: $DOCKER_REPOSITORY/storefront
-    - internal/docker-push:
-        tag: $IMAGE_TAGS
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
-        registry: https://phx.ocir.io/v2
-        repository: $DOCKER_REPOSITORY/stream
-    - internal/docker-push:
-        tag: $IMAGE_TAGS
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
-        registry: https://phx.ocir.io/v2
-        repository: $DOCKER_REPOSITORY/user
+          ORDERS_VERSION=$(cat src/orders/VERSION)
+          ./ci/push.sh $DOCKER_REPOSITORY/orders $ORDERS_VERSION
+
+          PAYMENT_VERSION=$(cat src/payment/VERSION)
+          ./ci/push.sh $DOCKER_REPOSITORY/payment $PAYMENT_VERSION
+
+          SHIPPING_VERSION=$(cat src/shipping/VERSION)
+          ./ci/push.sh $DOCKER_REPOSITORY/shipping $SHIPPING_VERSION
+
+          STOREFRONT_VERSION=$(cat src/storefront/VERSION)
+          ./ci/push.sh $DOCKER_REPOSITORY/storefront $STOREFRONT_VERSION
+
+          STREAM_VERSION=$(cat src/stream/VERSION)
+          ./ci/push.sh $DOCKER_REPOSITORY/stream $STREAM_VERSION
+
+          USER_VERSION=$(cat src/user/VERSION)
+          ./ci/push.sh $DOCKER_REPOSITORY/user $USER_VERSION
+
     - script:
         name: Store image names
         code: |
           IMAGE_NAMES_FILE=images.txt
-          echo API_IMAGE_NAME=${DOCKER_REPOSITORY}/api >> ${IMAGE_NAMES_FILE}
-          echo API_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
-          echo CARTS_IMAGE_NAME=${DOCKER_REPOSITORY}/carts >> ${IMAGE_NAMES_FILE}
-          echo CARTS_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
-          echo CATALOGUE_IMAGE_NAME=${DOCKER_REPOSITORY}/catalogue >> ${IMAGE_NAMES_FILE}
-          echo CATALOGUE_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
-          echo ORDERS_IMAGE_NAME=${DOCKER_REPOSITORY}/orders >> ${IMAGE_NAMES_FILE}
-          echo ORDERS_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
-          echo PAYMENT_IMAGE_NAME=${DOCKER_REPOSITORY}/payment >> ${IMAGE_NAMES_FILE}
-          echo PAYMENT_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
-          echo SHIPPING_IMAGE_NAME=${DOCKER_REPOSITORY}/shipping >> ${IMAGE_NAMES_FILE}
-          echo SHIPPING_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
-          echo STOREFRONT_IMAGE_NAME=${REPOSITORY}/storefront >> ${IMAGE_NAMES_FILE}
-          echo STOREFRONT_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
-          echo STREAM_IMAGE_NAME=${DOCKER_REPOSITORY}/stream >> ${IMAGE_NAMES_FILE}
-          echo STREAM_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
-          echo USER_IMAGE_NAME=${DOCKER_REPOSITORY}/user >> ${IMAGE_NAMES_FILE}
-          echo USER_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
+          echo API_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/api >> ${IMAGE_NAMES_FILE}
+          echo API_IMAGE_TAG=$(cat src/api/VERSION) >> ${IMAGE_NAMES_FILE}
+          echo CARTS_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/carts >> ${IMAGE_NAMES_FILE}
+          echo CARTS_IMAGE_TAG=$(cat src/carts/VERSION) >> ${IMAGE_NAMES_FILE}
+          echo CATALOGUE_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/catalogue >> ${IMAGE_NAMES_FILE}
+          echo CATALOGUE_IMAGE_TAG=$(cat src/catalogue/VERSION) >> ${IMAGE_NAMES_FILE}
+          echo ORDERS_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/orders >> ${IMAGE_NAMES_FILE}
+          echo ORDERS_IMAGE_TAG=$(cat src/orders/VERSION) >> ${IMAGE_NAMES_FILE}
+          echo PAYMENT_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/payment >> ${IMAGE_NAMES_FILE}
+          echo PAYMENT_IMAGE_TAG=$(cat src/payment/VERSION) >> ${IMAGE_NAMES_FILE}
+          echo SHIPPING_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/shipping >> ${IMAGE_NAMES_FILE}
+          echo SHIPPING_IMAGE_TAG=$(cat src/shipping/VERSION) >> ${IMAGE_NAMES_FILE}
+          echo STOREFRONT_IMAGE_NAME=${DOCKER_REGISTRY}/${REPOSITORY}/storefront >> ${IMAGE_NAMES_FILE}
+          echo STOREFRONT_IMAGE_TAG=$(cat src/storefront/VERSION) >> ${IMAGE_NAMES_FILE}
+          echo STREAM_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/stream >> ${IMAGE_NAMES_FILE}
+          echo STREAM_IMAGE_TAG=$(cat src/stream/VERSION) >> ${IMAGE_NAMES_FILE}
+          echo USER_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/user >> ${IMAGE_NAMES_FILE}
+          echo USER_IMAGE_TAG=$(cat src/user/VERSION) >> ${IMAGE_NAMES_FILE}
           cat $IMAGE_NAMES_FILE
 
 test-go-services:
