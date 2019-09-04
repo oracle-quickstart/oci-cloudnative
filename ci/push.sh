@@ -36,13 +36,15 @@ login() {
 
 push() {
     DOCKER_PUSH=1;
-    while [ $DOCKER_PUSH -gt 0 ] ; do
-        echo "Pushing $1";
+    COUNTER=0
+    while [ $DOCKER_PUSH -gt 0 ] || [ $COUNTER < 3 ] ; do
+        echo "Pushing $1 - retry $COUNTER";
         docker push $1;
         DOCKER_PUSH=$(echo $?);
         if [[ "$DOCKER_PUSH" -gt 0 ]] ; then
             echo "Docker push failed with exit code $DOCKER_PUSH";
         fi;
+        COUNTER=$((COUNTER + 1))
     done;
 }
 

@@ -2,6 +2,7 @@
 box:
   id: busybox
 
+docker: true
 command-timeout: 30
 build:
   steps:
