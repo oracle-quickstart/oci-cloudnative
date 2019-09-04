@@ -36,6 +36,7 @@ build:
 # Pushes the built Docker images to registry.
 # This pipeline needs DOCKER_USERNAME and DOCKER_PASSWORD variables set.
 push-to-registry:
+  docker: true
   steps:
     - script:
         name: Setup image tags
