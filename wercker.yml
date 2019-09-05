@@ -148,7 +148,7 @@ push-to-registry:
         name: Store image information
         code: |
           option2=$(echo $SERVICE_NAME | tr '[a-z]' '[A-Z]')
-          echo option2
+          echo $option2
           IMAGE_NAMES_FILE=images.txt
           echo ${SERVICE_NAME}_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/$SERVICE_NAME >> ${IMAGE_NAMES_FILE}
           echo ${SERVICE_NAME}_IMAGE_TAG=$(cat src/${SERVICE_NAME}/VERSION) >> ${IMAGE_NAMES_FILE}
