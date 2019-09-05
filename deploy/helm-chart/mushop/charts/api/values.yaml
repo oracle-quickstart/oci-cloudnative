@@ -7,6 +7,7 @@ image:
 
 env:
   sessionRedis: session
+  mediaUrl:
 
 resources:
   limits:
