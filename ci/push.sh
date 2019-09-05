@@ -65,15 +65,16 @@ tag_and_push() {
         fi
     fi
 
+
     OCIR_REPO=${DOCKER_REGISTRY}/${DOCKER_REPO}
     # determine src tag
-    SRC="${WERCKER_BUILD_ID}${DOCKER_REGISTRY}/${DOCKER_REPO}"
+    SRC="$WERCKER_BUILD_ID${DOCKER_REGISTRY}/${DOCKER_REPO}"
     # if [[ -n "$CI" ]]; then
     #     SRC="${DOCKER_REPO}:${WERCKER_GIT_COMMIT}"
     # fi
 
     for tag in $TAGS; do
-        echo "Tagging ${OCIR_REPO}:$tag"
+        echo "Tagging ${SRC} as ${OCIR_REPO}:$tag"
         docker tag $SRC ${OCIR_REPO}:$tag
         push "$OCIR_REPO:$tag";
     done
