@@ -87,10 +87,10 @@ tag_and_push() {
 }
 
 
-# # Push the image tagged with the branch name
-# if [ "$WERCKER_GIT_BRANCH" == "master" ] ; then
-#     tag_and_push ${WERCKER_GIT_BRANCH}-${WERCKER_GIT_COMMIT:0:8}
-# fi;
+# Push the image tagged with the branch name
+if [ "$WERCKER_GIT_BRANCH" == "master" ] ; then
+    tag_and_push ${WERCKER_GIT_BRANCH}-${WERCKER_GIT_COMMIT:0:8}
+fi;
 
 
 tag_and_push $VERSION
