@@ -68,7 +68,7 @@ tag_and_push() {
 
     OCIR_REPO=${DOCKER_REGISTRY}/${DOCKER_REPO}
     # determine src tag
-    SRC="$WERCKER_BUILD_ID${DOCKER_REGISTRY}/${DOCKER_REPO}"
+    SRC="$WERCKER_RUN_ID${DOCKER_REGISTRY}/${DOCKER_REPO}"
     # if [[ -n "$CI" ]]; then
     #     SRC="${DOCKER_REPO}:${WERCKER_GIT_COMMIT}"
     # fi
