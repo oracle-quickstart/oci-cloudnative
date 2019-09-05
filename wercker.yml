@@ -80,7 +80,7 @@ push-to-registry:
         code: |
           ls -a
           API_VERSION=$(cat src/api/VERSION)
-          IMAGE_TAGS=$(./ci/push.sh $DOCKER_REPOSITORY/api $API_VERSION)
+          export IMAGE_TAGS=$(./ci/push.sh $DOCKER_REPOSITORY/api $API_VERSION)
           echo $IMAGE_TAGS
     - internal/docker-push:
         tag: $IMAGE_TAGS
