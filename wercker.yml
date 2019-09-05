@@ -9,30 +9,30 @@ build:
     - internal/docker-build:
         context: src/api
         image-name: $DOCKER_REPOSITORY/api
-    - internal/docker-build:
-        context: src/carts
-        image-name: $DOCKER_REPOSITORY/carts
-    - internal/docker-build:
-        context: src/catalogue
-        image-name: $DOCKER_REPOSITORY/catalogue
-    - internal/docker-build:
-        context: src/orders
-        image-name: $DOCKER_REPOSITORY/orders
-    - internal/docker-build:
-        context: src/payment
-        image-name: $DOCKER_REPOSITORY/payment
-    - internal/docker-build:
-        context: src/shipping
-        image-name: $DOCKER_REPOSITORY/shipping
-    - internal/docker-build:
-        context: src/storefront
-        image-name: $DOCKER_REPOSITORY/storefront
-    - internal/docker-build:
-        context: src/stream
-        image-name: $DOCKER_REPOSITORY/stream
-    - internal/docker-build:
-        context: src/user
-        image-name: $DOCKER_REPOSITORY/user
+    # - internal/docker-build:
+    #     context: src/carts
+    #     image-name: $DOCKER_REPOSITORY/carts
+    # - internal/docker-build:
+    #     context: src/catalogue
+    #     image-name: $DOCKER_REPOSITORY/catalogue
+    # - internal/docker-build:
+    #     context: src/orders
+    #     image-name: $DOCKER_REPOSITORY/orders
+    # - internal/docker-build:
+    #     context: src/payment
+    #     image-name: $DOCKER_REPOSITORY/payment
+    # - internal/docker-build:
+    #     context: src/shipping
+    #     image-name: $DOCKER_REPOSITORY/shipping
+    # - internal/docker-build:
+    #     context: src/storefront
+    #     image-name: $DOCKER_REPOSITORY/storefront
+    # - internal/docker-build:
+    #     context: src/stream
+    #     image-name: $DOCKER_REPOSITORY/stream
+    # - internal/docker-build:
+    #     context: src/user
+    #     image-name: $DOCKER_REPOSITORY/user
 
 # Pushes the built Docker images to registry.
 # This pipeline needs DOCKER_USERNAME and DOCKER_PASSWORD variables set.
@@ -49,29 +49,29 @@ push-to-registry:
           API_VERSION=$(cat src/api/VERSION)
           ./ci/push.sh $DOCKER_REPOSITORY/api $API_VERSION
 
-          CARTS_VERSION=$(cat src/carts/VERSION)
-          ./ci/push.sh $DOCKER_REPOSITORY/carts $CARTS_VERSION
+          # CARTS_VERSION=$(cat src/carts/VERSION)
+          # ./ci/push.sh $DOCKER_REPOSITORY/carts $CARTS_VERSION
 
-          CATALOGUE_VERSION=$(cat src/catalogue/VERSION)
-          ./ci/push.sh $DOCKER_REPOSITORY/catalogue $CATALOGUE_VERSION
+          # CATALOGUE_VERSION=$(cat src/catalogue/VERSION)
+          # ./ci/push.sh $DOCKER_REPOSITORY/catalogue $CATALOGUE_VERSION
 
-          ORDERS_VERSION=$(cat src/orders/VERSION)
-          ./ci/push.sh $DOCKER_REPOSITORY/orders $ORDERS_VERSION
+          # ORDERS_VERSION=$(cat src/orders/VERSION)
+          # ./ci/push.sh $DOCKER_REPOSITORY/orders $ORDERS_VERSION
 
-          PAYMENT_VERSION=$(cat src/payment/VERSION)
-          ./ci/push.sh $DOCKER_REPOSITORY/payment $PAYMENT_VERSION
+          # PAYMENT_VERSION=$(cat src/payment/VERSION)
+          # ./ci/push.sh $DOCKER_REPOSITORY/payment $PAYMENT_VERSION
 
-          SHIPPING_VERSION=$(cat src/shipping/VERSION)
-          ./ci/push.sh $DOCKER_REPOSITORY/shipping $SHIPPING_VERSION
+          # SHIPPING_VERSION=$(cat src/shipping/VERSION)
+          # ./ci/push.sh $DOCKER_REPOSITORY/shipping $SHIPPING_VERSION
 
-          STOREFRONT_VERSION=$(cat src/storefront/VERSION)
-          ./ci/push.sh $DOCKER_REPOSITORY/storefront $STOREFRONT_VERSION
+          # STOREFRONT_VERSION=$(cat src/storefront/VERSION)
+          # ./ci/push.sh $DOCKER_REPOSITORY/storefront $STOREFRONT_VERSION
 
-          STREAM_VERSION=$(cat src/stream/VERSION)
-          ./ci/push.sh $DOCKER_REPOSITORY/stream $STREAM_VERSION
+          # STREAM_VERSION=$(cat src/stream/VERSION)
+          # ./ci/push.sh $DOCKER_REPOSITORY/stream $STREAM_VERSION
 
-          USER_VERSION=$(cat src/user/VERSION)
-          ./ci/push.sh $DOCKER_REPOSITORY/user $USER_VERSION
+          # USER_VERSION=$(cat src/user/VERSION)
+          # ./ci/push.sh $DOCKER_REPOSITORY/user $USER_VERSION
 
     - script:
         name: Store image names
@@ -103,20 +103,20 @@ test-go-services:
     - script:
       name: Run tests for Go services
       code: |
-        cd src
+        # cd src
 
-        cd catalogue
-        go test -v ./...
-        cd ..
-
-        cd user 
-        # TODO: Enable once MongoDB is mocked/replaced with ATP
+        # cd catalogue
         # go test -v ./...
-        cd ..
+        # cd ..
 
-        cd payment
-        go test -v ./...
-        cd ..
+        # cd user 
+        # # TODO: Enable once MongoDB is mocked/replaced with ATP
+        # # go test -v ./...
+        # cd ..
+
+        # cd payment
+        # go test -v ./...
+        # cd ..
 
 test-node-services:
   box: node:10-alpine
@@ -124,17 +124,17 @@ test-node-services:
     - script:
       name: Run tests for NodeJS services
       code: |
-        cd src
+        # cd src
 
-        cd api
-        npm install
-        npm test
-        cd ..
+        # cd api
+        # npm install
+        # npm test
+        # cd ..
 
-        cd storefront
-        npm install
-        npm test
-        cd ..
+        # cd storefront
+        # npm install
+        # npm test
+        # cd ..
 
 test-java-services:
   box: alpine
