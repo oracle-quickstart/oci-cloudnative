@@ -35,17 +35,13 @@ login() {
 }
 
 push() {
-    DOCKER_PUSH=1;
-    COUNTER=0
-    while [ $DOCKER_PUSH -gt 0 ] || [ $COUNTER < 3 ] ; do
-        echo "Pushing $1 - retry $COUNTER";
-        docker push $1;
-        DOCKER_PUSH=$(echo $?);
-        if [[ "$DOCKER_PUSH" -gt 0 ]] ; then
-            echo "Docker push failed with exit code $DOCKER_PUSH";
-        fi;
-        COUNTER=$((COUNTER + 1))
-    done;
+    echo "Pushing $1";
+    docker push $1;
+    DOCKER_PUSH=$(echo $?);
+    if [[ "$DOCKER_PUSH" -gt 0 ]] ; then
+        echo "Docker push failed with exit code $DOCKER_PUSH";
+        exit 1
+    fi;
 }
 
 tag_and_push() {
@@ -71,7 +67,7 @@ tag_and_push() {
 
     OCIR_REPO=${DOCKER_REGISTRY}/${DOCKER_REPO}
     # determine src tag
-    SRC="${DOCKER_REPO}"
+    SRC="${WERCKER_BUILD_ID}${DOCKER_REGISTRY}/${DOCKER_REPO}"
     # if [[ -n "$CI" ]]; then
     #     SRC="${DOCKER_REPO}:${WERCKER_GIT_COMMIT}"
     # fi
