@@ -1,13 +1,16 @@
+#!make
 IMAGE=mushop-dev-api
 CONTAINER=api
 
+include $(wildcard .env)
+
 .PHONY: test coverage
 
-up: compose test-image server
+up: compose image server
 
 down: kill-server kill-compose
 
-dev: clean test-image server
+dev: clean image server
 
 # Brings the backend services up using Docker Compose
 compose:
@@ -35,6 +38,7 @@ server: kill-server
 		-e CARTS_URL=http://carts \
 		-e ORDERS_URL=http://orders \
 		-e USERS_URL=http://user \
+		-e STATIC_MEDIA_URL=$(STATIC_MEDIA_URL) \
 		-e PORT=3000            \
 		-p 8080:3000            \
 		-p 9229:9229            \
@@ -50,6 +54,7 @@ mock: kill-server
 		-v $$PWD:/usr/src/app   \
 		-P                      \
 		-e MOCK_MODE=all				\
+		-e STATIC_MEDIA_URL=$(STATIC_MEDIA_URL) \
 		-e NODE_ENV=development \
 		-e PORT=3000            \
 		-p 8080:3000            \
@@ -63,11 +68,11 @@ clean:
 	@if [ $$(docker images -q $(IMAGE) | wc -l) -ge 1 ]; then docker rmi $(IMAGE); fi
 
 # Builds the Docker image used for running tests
-test-image:
+image:
 	@docker build -t $(IMAGE) -f test/Dockerfile .
 
 # Runs unit tests in Docker
-test: test-image
+test: image
 	@docker run              \
 		--rm                   \
 		-it                    \
@@ -75,7 +80,7 @@ test: test-image
 		$(IMAGE) /usr/local/bin/npm test
 
 # Runs integration tests in Docker
-e2e: test-image
+e2e: image
 	@docker run              \
 		--rm                   \
 		-it                    \

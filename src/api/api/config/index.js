@@ -11,7 +11,7 @@ const mockMode = Object.assign({}, ...Object.keys(mock.mocks).map(name => ({
 const { setting } = config.keyMap();
 const settings = {
   // config for object storage bucket
-  staticAssetPrefix: config.env(setting.STATIC_MEDIA) || '',
+  staticAssetPrefix: config.env(setting.CDN) || '',
 };
 
 const client = {

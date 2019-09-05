@@ -19,7 +19,7 @@
   };
 
   const settingKeyMap = {
-    STATIC_MEDIA: 'STATIC_MEDIA_URL',
+    CDN: 'STATIC_MEDIA_URL',
   };
 
   module.exports = {
