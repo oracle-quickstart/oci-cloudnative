@@ -6,6 +6,7 @@ export * from './api'; // axios adapter
 export * from './router'; 
 export * from './page';
 // shop specific functionality
+export * from './config';
 export * from './user';
 export * from './catalog';
 export * from './cart';

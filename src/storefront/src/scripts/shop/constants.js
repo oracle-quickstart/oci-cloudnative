@@ -7,6 +7,7 @@ export const MUSHOP = {
     USER:     'user',
     CART:     'cart',
     CATALOG:  'catalog',
+    CONFIG:   'config',
     ORDER:    'order',
   }
 };
