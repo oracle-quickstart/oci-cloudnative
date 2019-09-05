@@ -147,13 +147,11 @@ push-to-registry:
     - script:
         name: Store image information
         code: |
-          option1=${SERVICE_NAME^^}
           option2=$(echo $SERVICE_NAME | tr '[a-z]' '[A-Z]')
-          echo option1
           echo option2
           IMAGE_NAMES_FILE=images.txt
-          echo ${SERVICE_NAME^^}_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/$SERVICE_NAME >> ${IMAGE_NAMES_FILE}
-          echo ${SERVICE_NAME^^}_IMAGE_TAG=$(cat src/${SERVICE_NAME}/VERSION) >> ${IMAGE_NAMES_FILE}
+          echo ${SERVICE_NAME}_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/$SERVICE_NAME >> ${IMAGE_NAMES_FILE}
+          echo ${SERVICE_NAME}_IMAGE_TAG=$(cat src/${SERVICE_NAME}/VERSION) >> ${IMAGE_NAMES_FILE}
 
       # CARTS_VERSION=$(cat src/carts/VERSION)
       # ./ci/push.sh $DOCKER_REPOSITORY/carts $CARTS_VERSION
