@@ -18,6 +18,10 @@
     USERS: 'USERS_URL',
   };
 
+  const settingKeyMap = {
+    STATIC_MEDIA: 'STATIC_MEDIA_URL',
+  };
+
   module.exports = {
     env: function(key) {
       return key ? process.env[key] : process.env;
@@ -38,6 +42,7 @@
       return {
         session: sessionKeyMap,
         services: serviceUrlKeyMap,
+        setting: settingKeyMap,
       };
     },
     session: function() {
