@@ -68,7 +68,7 @@ push-to-registry:
         name: Setup image tags
         code: |
           ls -a
-          API_VERSION=$(cat build-api/src/api/VERSION)
+          API_VERSION=$(cat src/api/VERSION)
           IMAGE_TAGS=$(./ci/push.sh $DOCKER_REPOSITORY/api $API_VERSION)
           echo $IMAGE_TAGS
     - internal/docker-push:
