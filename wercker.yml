@@ -28,66 +28,127 @@ build-carts:
     - internal/docker-build:
         context: src/carts
         image-name: $DOCKER_REPOSITORY/carts
+    - script:
+      name: Test Carts
+      code: |
+        cd src
+
+        # TODO: Run the carts tests
+        cd carts
 
 build-catalogue:
+  box: golang:1.12
   steps:
     - internal/docker-build:
         context: src/catalogue
         image-name: $DOCKER_REPOSITORY/catalogue
+    - script:
+      name: Test Catalogue
+      code: |
+        cd src
+        # TODO: Run Catalogue tests
 
 build-orders:
   steps:
     - internal/docker-build:
         context: src/orders
         image-name: $DOCKER_REPOSITORY/orders
+    - script:
+      name: Test Orders
+      code: |
+        cd src
+
+        # TODO: Run the orders tests
+        cd orders
 
 build-payment:
   steps:
     - internal/docker-build:
         context: src/payment
         image-name: $DOCKER_REPOSITORY/payment
+    - script:
+      name: Test Payment
+      code: |
+        cd src
+        # TODO: Run payment tests
+
 build-shipping:
   steps:
     - internal/docker-build:
         context: src/shipping
         image-name: $DOCKER_REPOSITORY/shipping
+    - script:
+      name: Test Shipping
+      code: |
+        cd src
+
+        # TODO: Run the shipping tests
+        cd shipping
 
 build-storefront:
+  box: node:10-alpine
   steps:
     - internal/docker-build:
         context: src/storefront
         image-name: $DOCKER_REPOSITORY/storefront
+    - script:
+      name: Test Storefront
+      code: |
+        cd src
+
+        cd storefront
+        npm install
+        npm test
 
 build-stream:
   steps:
     - internal/docker-build:
         context: src/stream
         image-name: $DOCKER_REPOSITORY/stream
+    - script:
+      name: Test Stream
+      code: |
+        cd src
+
+        # TODO: Run the stream tests
+        cd stream
 
 build-user:
   steps:
     - internal/docker-build:
         context: src/user
         image-name: $DOCKER_REPOSITORY/user
+    - script:
+      name: Test User
+      code: |
+        cd src
+        # TODO: Run User tests
 
 # Pushes the built Docker images to registry.
-# This pipeline needs DOCKER_USERNAME and DOCKER_PASSWORD variables set.
+# This pipeline needs DOCKER_USERNAME, DOCKER_PASSWORD, DOCKER_REPOSITORY and SERVICE_NAME (service folder name) variables set.
 push-to-registry:
   box: alpine
   steps:
     - script:
         name: Setup image tags
         code: |
-          ls -a
-          API_VERSION=$(cat src/api/VERSION)
-          export IMAGE_TAGS=$(./ci/push.sh $DOCKER_REPOSITORY/api $API_VERSION)
-          echo $IMAGE_TAGS
+          echo $SERVICE_NAME
+          SERVICE_VERSION=$(cat src/$SERVICE_NAME/VERSION)
+          export SERVICE_IMAGE_TAGS=$(./ci/push.sh $DOCKER_REPOSITORY/$SERVICE_NAME $SERVICE_VERSION)
+          echo $SERVICE_IMAGE_TAGS
     - internal/docker-push:
-        tag: $IMAGE_TAGS
+        tag: $SERVICE_IMAGE_TAGS
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
         registry: https://phx.ocir.io/v2
-        repository: $DOCKER_REPOSITORY/api
+        repository: $DOCKER_REPOSITORY/$SERVICE_NAME
+    - script:
+        name: Store image information
+        code: |
+          IMAGE_NAMES_FILE=images.txt
+          echo ${SERVICE_NAME}_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/$SERVICE_NAME >> ${IMAGE_NAMES_FILE}
+          echo ${SERVICE_NAME}_IMAGE_TAG=$(cat src/${SERVICE_NAME}/VERSION) >> ${IMAGE_NAMES_FILE}
+
       # CARTS_VERSION=$(cat src/carts/VERSION)
       # ./ci/push.sh $DOCKER_REPOSITORY/carts $CARTS_VERSION
 
@@ -155,48 +216,6 @@ test-go-services:
         # cd payment
         # go test -v ./...
         # cd ..
-
-test-node-services:
-  box: node:10-alpine
-  steps:
-    - script:
-      name: Run tests for NodeJS services
-      code: |
-        # cd src
-
-        # cd api
-        # npm install
-        # npm test
-        # cd ..
-
-        # cd storefront
-        # npm install
-        # npm test
-        # cd ..
-
-test-java-services:
-  box: alpine
-  steps:
-    - script:
-      name: Run tests for Java services
-      code: |
-        cd src
-
-        cd carts
-        # TODO: Run the carts tests
-        cd ..
-
-        cd orders
-        # TODO: Run the orders tests
-        cd ..
-
-        cd shipping
-        # TODO: Run the shipping tests
-        cd ..
-
-        cd stream
-        # TODO: Run the stream tests
-        cd ..
 
 upgrade-deployment:
   box:
@@ -289,6 +308,6 @@ upgrade-deployment:
           PREVIOUS_VALUES="original-$WERCKER_GIT_COMMIT.yaml"
           UPGRADE_VALUES="upgrade-$WERCKER_GIT_COMMIT.yaml"
 
-          cmd="./linux-amd64/helm --debug --timeout $HELM_TIMEOUT --kubeconfig kube.config upgrade $HELM_RELEASE_NAME deploy/helm-chart/mushop -f $PREVIOUS_VALUES -f $UPGRADE_VALUES --atomic"
-          echo "Running Helm command $cmd"
-          eval $cmd
+          # cmd="./linux-amd64/helm --debug --timeout $HELM_TIMEOUT --kubeconfig kube.config upgrade $HELM_RELEASE_NAME deploy/helm-chart/mushop -f $PREVIOUS_VALUES -f $UPGRADE_VALUES --atomic"
+          # echo "Running Helm command $cmd"
+          # eval $cmd
