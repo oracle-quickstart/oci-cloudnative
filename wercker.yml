@@ -62,18 +62,13 @@ build-user:
 # Pushes the built Docker images to registry.
 # This pipeline needs DOCKER_USERNAME and DOCKER_PASSWORD variables set.
 push-to-registry:
-  docker: true
   box: alpine
   steps:
-    - script:
-        name: Install docker CLI
-        code: apk --no-cache add docker
     - script:
         name: Setup image tags
         code: |
           ls -a
-          tree
-          API_VERSION=$(cat src/api/VERSION)
+          API_VERSION=$(cat build-api/src/api/VERSION)
           IMAGE_TAGS=$(./ci/push.sh $DOCKER_REPOSITORY/api $API_VERSION)
           echo $IMAGE_TAGS
     - internal/docker-push:
