@@ -41,6 +41,9 @@ push-to-registry:
   box: alpine
   steps:
     - script:
+        name: Install docker CLI
+        code: apk --no-cache add docker
+    - script:
         name: Setup image tags
         code: |
           API_VERSION=$(cat src/api/VERSION)
