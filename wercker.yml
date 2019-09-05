@@ -170,7 +170,23 @@ upgrade-deployment:
           ls -a
           cat push-api/images.txt
           cat push-carts/images.txt
+          cat push-catalogue/images.txt
+          cat push-orders/images.txt
+          cat push-payment/images.txt
+          cat push-shipping/images.txt
+          cat push-storefront/images.txt
+          cat push-stream/images.txt
+          cat push-user/images.txt
+
           export $(cat push-api/images.txt | xargs)
+          export $(cat push-carts/images.txt | xargs)
+          export $(cat push-catalogue/images.txt | xargs)
+          export $(cat push-orders/images.txt | xargs)
+          export $(cat push-payment/images.txt | xargs)
+          export $(cat push-shipping/images.txt | xargs)
+          export $(cat push-storefront/images.txt | xargs)
+          export $(cat push-stream/images.txt | xargs)
+          export $(cat push-user/images.txt | xargs)
     - script:
         name: Create kube.config file
         code: |
@@ -246,6 +262,6 @@ upgrade-deployment:
           PREVIOUS_VALUES="original-$WERCKER_GIT_COMMIT.yaml"
           UPGRADE_VALUES="upgrade-$WERCKER_GIT_COMMIT.yaml"
 
-          # cmd="./linux-amd64/helm --debug --timeout $HELM_TIMEOUT --kubeconfig kube.config upgrade $HELM_RELEASE_NAME deploy/helm-chart/mushop -f $PREVIOUS_VALUES -f $UPGRADE_VALUES --atomic"
-          # echo "Running Helm command $cmd"
-          # eval $cmd
+          cmd="./linux-amd64/helm --debug --timeout $HELM_TIMEOUT --kubeconfig kube.config upgrade $HELM_RELEASE_NAME deploy/helm-chart/mushop -f $PREVIOUS_VALUES -f $UPGRADE_VALUES --atomic"
+          echo "Running Helm command $cmd"
+          eval $cmd
