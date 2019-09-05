@@ -10,6 +10,8 @@ build:
 build-api:
   box: node:10-alpine
   steps:
+    # TODO: We could use a generic build pipeline, but before we do that, we should standardize how to test each service.
+    # If we use the same command to run the tests for each service, then we can create a generic pipeline here for build and test.
     - internal/docker-build:
         context: src/api
         image-name: $DOCKER_REPOSITORY/api
@@ -145,9 +147,13 @@ push-to-registry:
     - script:
         name: Store image information
         code: |
+          option1=${SERVICE_NAME^^}
+          option2=$(echo $SERVICE_NAME | tr '[a-z]' '[A-Z]')
+          echo option1
+          echo option2
           IMAGE_NAMES_FILE=images.txt
-          echo ${SERVICE_NAME}_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/$SERVICE_NAME >> ${IMAGE_NAMES_FILE}
-          echo ${SERVICE_NAME}_IMAGE_TAG=$(cat src/${SERVICE_NAME}/VERSION) >> ${IMAGE_NAMES_FILE}
+          echo ${SERVICE_NAME^^}_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/$SERVICE_NAME >> ${IMAGE_NAMES_FILE}
+          echo ${SERVICE_NAME^^}_IMAGE_TAG=$(cat src/${SERVICE_NAME}/VERSION) >> ${IMAGE_NAMES_FILE}
 
       # CARTS_VERSION=$(cat src/carts/VERSION)
       # ./ci/push.sh $DOCKER_REPOSITORY/carts $CARTS_VERSION
@@ -172,29 +178,29 @@ push-to-registry:
 
       # USER_VERSION=$(cat src/user/VERSION)
       # ./ci/push.sh $DOCKER_REPOSITORY/user $USER_VERSION
-    - script:
-        name: Store image names
-        code: |
-          IMAGE_NAMES_FILE=images.txt
-          echo API_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/api >> ${IMAGE_NAMES_FILE}
-          echo API_IMAGE_TAG=$(cat src/api/VERSION) >> ${IMAGE_NAMES_FILE}
-          echo CARTS_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/carts >> ${IMAGE_NAMES_FILE}
-          echo CARTS_IMAGE_TAG=$(cat src/carts/VERSION) >> ${IMAGE_NAMES_FILE}
-          echo CATALOGUE_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/catalogue >> ${IMAGE_NAMES_FILE}
-          echo CATALOGUE_IMAGE_TAG=$(cat src/catalogue/VERSION) >> ${IMAGE_NAMES_FILE}
-          echo ORDERS_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/orders >> ${IMAGE_NAMES_FILE}
-          echo ORDERS_IMAGE_TAG=$(cat src/orders/VERSION) >> ${IMAGE_NAMES_FILE}
-          echo PAYMENT_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/payment >> ${IMAGE_NAMES_FILE}
-          echo PAYMENT_IMAGE_TAG=$(cat src/payment/VERSION) >> ${IMAGE_NAMES_FILE}
-          echo SHIPPING_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/shipping >> ${IMAGE_NAMES_FILE}
-          echo SHIPPING_IMAGE_TAG=$(cat src/shipping/VERSION) >> ${IMAGE_NAMES_FILE}
-          echo STOREFRONT_IMAGE_NAME=${DOCKER_REGISTRY}/${REPOSITORY}/storefront >> ${IMAGE_NAMES_FILE}
-          echo STOREFRONT_IMAGE_TAG=$(cat src/storefront/VERSION) >> ${IMAGE_NAMES_FILE}
-          echo STREAM_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/stream >> ${IMAGE_NAMES_FILE}
-          echo STREAM_IMAGE_TAG=$(cat src/stream/VERSION) >> ${IMAGE_NAMES_FILE}
-          echo USER_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/user >> ${IMAGE_NAMES_FILE}
-          echo USER_IMAGE_TAG=$(cat src/user/VERSION) >> ${IMAGE_NAMES_FILE}
-          cat $IMAGE_NAMES_FILE
+    # - script:
+    #     name: Store image names
+    #     code: |
+    #       IMAGE_NAMES_FILE=images.txt
+    #       echo API_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/api >> ${IMAGE_NAMES_FILE}
+    #       echo API_IMAGE_TAG=$(cat src/api/VERSION) >> ${IMAGE_NAMES_FILE}
+    #       echo CARTS_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/carts >> ${IMAGE_NAMES_FILE}
+    #       echo CARTS_IMAGE_TAG=$(cat src/carts/VERSION) >> ${IMAGE_NAMES_FILE}
+    #       echo CATALOGUE_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/catalogue >> ${IMAGE_NAMES_FILE}
+    #       echo CATALOGUE_IMAGE_TAG=$(cat src/catalogue/VERSION) >> ${IMAGE_NAMES_FILE}
+    #       echo ORDERS_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/orders >> ${IMAGE_NAMES_FILE}
+    #       echo ORDERS_IMAGE_TAG=$(cat src/orders/VERSION) >> ${IMAGE_NAMES_FILE}
+    #       echo PAYMENT_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/payment >> ${IMAGE_NAMES_FILE}
+    #       echo PAYMENT_IMAGE_TAG=$(cat src/payment/VERSION) >> ${IMAGE_NAMES_FILE}
+    #       echo SHIPPING_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/shipping >> ${IMAGE_NAMES_FILE}
+    #       echo SHIPPING_IMAGE_TAG=$(cat src/shipping/VERSION) >> ${IMAGE_NAMES_FILE}
+    #       echo STOREFRONT_IMAGE_NAME=${DOCKER_REGISTRY}/${REPOSITORY}/storefront >> ${IMAGE_NAMES_FILE}
+    #       echo STOREFRONT_IMAGE_TAG=$(cat src/storefront/VERSION) >> ${IMAGE_NAMES_FILE}
+    #       echo STREAM_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/stream >> ${IMAGE_NAMES_FILE}
+    #       echo STREAM_IMAGE_TAG=$(cat src/stream/VERSION) >> ${IMAGE_NAMES_FILE}
+    #       echo USER_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/user >> ${IMAGE_NAMES_FILE}
+    #       echo USER_IMAGE_TAG=$(cat src/user/VERSION) >> ${IMAGE_NAMES_FILE}
+    #       cat $IMAGE_NAMES_FILE
 
 test-go-services:
   box: golang:1.12
