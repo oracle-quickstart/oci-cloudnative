@@ -65,31 +65,32 @@ tag_and_push() {
         fi
     fi
 
+    echo $TAGS
 
-    OCIR_REPO=${DOCKER_REGISTRY}/${DOCKER_REPO}
-    # determine src tag
-    SRC="$WERCKER_RUN_ID${DOCKER_REGISTRY}/${DOCKER_REPO}"
-    # if [[ -n "$CI" ]]; then
-    #     SRC="${DOCKER_REPO}:${WERCKER_GIT_COMMIT}"
-    # fi
+    # OCIR_REPO=${DOCKER_REGISTRY}/${DOCKER_REPO}
+    # # determine src tag
+    # SRC="$WERCKER_RUN_ID${DOCKER_REGISTRY}/${DOCKER_REPO}"
+    # # if [[ -n "$CI" ]]; then
+    # #     SRC="${DOCKER_REPO}:${WERCKER_GIT_COMMIT}"
+    # # fi
 
-    echo "Wercker build ID: ${WERCKER_BUILD_ID}"
-    echo "Wercker run ID: ${WERCKER_RUN_ID}"
+    # echo "Wercker build ID: ${WERCKER_BUILD_ID}"
+    # echo "Wercker run ID: ${WERCKER_RUN_ID}"
 
-    docker images
+    # docker images
 
-    for tag in $TAGS; do
-        echo "Tagging ${SRC} as ${OCIR_REPO}:$tag"
-        docker tag $SRC ${OCIR_REPO}:$tag
-        push "$OCIR_REPO:$tag";
-    done
+    # for tag in $TAGS; do
+    #     echo "Tagging ${SRC} as ${OCIR_REPO}:$tag"
+    #     docker tag $SRC ${OCIR_REPO}:$tag
+    #     push "$OCIR_REPO:$tag";
+    # done
 }
 
 
-# Push the image tagged with the branch name
-if [ "$WERCKER_GIT_BRANCH" == "master" ] ; then
-    tag_and_push ${WERCKER_GIT_BRANCH}-${WERCKER_GIT_COMMIT:0:8}
-fi;
+# # Push the image tagged with the branch name
+# if [ "$WERCKER_GIT_BRANCH" == "master" ] ; then
+#     tag_and_push ${WERCKER_GIT_BRANCH}-${WERCKER_GIT_COMMIT:0:8}
+# fi;
 
 
 tag_and_push $VERSION

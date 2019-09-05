@@ -47,32 +47,37 @@ push-to-registry:
         name: Setup image tags
         code: |
           API_VERSION=$(cat src/api/VERSION)
-          ./ci/push.sh $DOCKER_REPOSITORY/api $API_VERSION
+          IMAGE_TAGS=$(./ci/push.sh $DOCKER_REPOSITORY/api $API_VERSION)
+          echo $IMAGE_TAGS
+    - internal/docker-push:
+        tag: $IMAGE_TAGS
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/api
+      # CARTS_VERSION=$(cat src/carts/VERSION)
+      # ./ci/push.sh $DOCKER_REPOSITORY/carts $CARTS_VERSION
 
-          # CARTS_VERSION=$(cat src/carts/VERSION)
-          # ./ci/push.sh $DOCKER_REPOSITORY/carts $CARTS_VERSION
+      # CATALOGUE_VERSION=$(cat src/catalogue/VERSION)
+      # ./ci/push.sh $DOCKER_REPOSITORY/catalogue $CATALOGUE_VERSION
 
-          # CATALOGUE_VERSION=$(cat src/catalogue/VERSION)
-          # ./ci/push.sh $DOCKER_REPOSITORY/catalogue $CATALOGUE_VERSION
+      # ORDERS_VERSION=$(cat src/orders/VERSION)
+      # ./ci/push.sh $DOCKER_REPOSITORY/orders $ORDERS_VERSION
 
-          # ORDERS_VERSION=$(cat src/orders/VERSION)
-          # ./ci/push.sh $DOCKER_REPOSITORY/orders $ORDERS_VERSION
+      # PAYMENT_VERSION=$(cat src/payment/VERSION)
+      # ./ci/push.sh $DOCKER_REPOSITORY/payment $PAYMENT_VERSION
 
-          # PAYMENT_VERSION=$(cat src/payment/VERSION)
-          # ./ci/push.sh $DOCKER_REPOSITORY/payment $PAYMENT_VERSION
+      # SHIPPING_VERSION=$(cat src/shipping/VERSION)
+      # ./ci/push.sh $DOCKER_REPOSITORY/shipping $SHIPPING_VERSION
 
-          # SHIPPING_VERSION=$(cat src/shipping/VERSION)
-          # ./ci/push.sh $DOCKER_REPOSITORY/shipping $SHIPPING_VERSION
+      # STOREFRONT_VERSION=$(cat src/storefront/VERSION)
+      # ./ci/push.sh $DOCKER_REPOSITORY/storefront $STOREFRONT_VERSION
 
-          # STOREFRONT_VERSION=$(cat src/storefront/VERSION)
-          # ./ci/push.sh $DOCKER_REPOSITORY/storefront $STOREFRONT_VERSION
+      # STREAM_VERSION=$(cat src/stream/VERSION)
+      # ./ci/push.sh $DOCKER_REPOSITORY/stream $STREAM_VERSION
 
-          # STREAM_VERSION=$(cat src/stream/VERSION)
-          # ./ci/push.sh $DOCKER_REPOSITORY/stream $STREAM_VERSION
-
-          # USER_VERSION=$(cat src/user/VERSION)
-          # ./ci/push.sh $DOCKER_REPOSITORY/user $USER_VERSION
-
+      # USER_VERSION=$(cat src/user/VERSION)
+      # ./ci/push.sh $DOCKER_REPOSITORY/user $USER_VERSION
     - script:
         name: Store image names
         code: |
