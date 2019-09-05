@@ -2,6 +2,9 @@
 /dist
 /node_modules
 
+# OADB
+Wallet_*
+
 # Logs
 logs
 *.log
