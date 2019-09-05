@@ -6,33 +6,58 @@ docker: true
 command-timeout: 30
 build:
   steps:
+
+build-api:
+  steps:
     - internal/docker-build:
         context: src/api
         image-name: $DOCKER_REPOSITORY/api
-    # - internal/docker-build:
-    #     context: src/carts
-    #     image-name: $DOCKER_REPOSITORY/carts
-    # - internal/docker-build:
-    #     context: src/catalogue
-    #     image-name: $DOCKER_REPOSITORY/catalogue
-    # - internal/docker-build:
-    #     context: src/orders
-    #     image-name: $DOCKER_REPOSITORY/orders
-    # - internal/docker-build:
-    #     context: src/payment
-    #     image-name: $DOCKER_REPOSITORY/payment
-    # - internal/docker-build:
-    #     context: src/shipping
-    #     image-name: $DOCKER_REPOSITORY/shipping
-    # - internal/docker-build:
-    #     context: src/storefront
-    #     image-name: $DOCKER_REPOSITORY/storefront
-    # - internal/docker-build:
-    #     context: src/stream
-    #     image-name: $DOCKER_REPOSITORY/stream
-    # - internal/docker-build:
-    #     context: src/user
-    #     image-name: $DOCKER_REPOSITORY/user
+build-carts:
+  steps:
+    - internal/docker-build:
+        context: src/carts
+        image-name: $DOCKER_REPOSITORY/carts
+
+build-catalogue:
+  steps:
+    - internal/docker-build:
+        context: src/catalogue
+        image-name: $DOCKER_REPOSITORY/catalogue
+
+build-orders:
+  steps:
+    - internal/docker-build:
+        context: src/orders
+        image-name: $DOCKER_REPOSITORY/orders
+
+build-payment:
+  steps:
+    - internal/docker-build:
+        context: src/payment
+        image-name: $DOCKER_REPOSITORY/payment
+build-shipping:
+  steps:
+    - internal/docker-build:
+        context: src/shipping
+        image-name: $DOCKER_REPOSITORY/shipping
+
+build-storefront:
+  steps:
+    - internal/docker-build:
+        context: src/storefront
+        image-name: $DOCKER_REPOSITORY/storefront
+
+build-stream:
+  steps:
+    - internal/docker-build:
+        context: src/stream
+        image-name: $DOCKER_REPOSITORY/stream
+
+build-user:
+  steps:
+    - internal/docker-build:
+        context: src/user
+        image-name: $DOCKER_REPOSITORY/user
 
 # Pushes the built Docker images to registry.
 # This pipeline needs DOCKER_USERNAME and DOCKER_PASSWORD variables set.
