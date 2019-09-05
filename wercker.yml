@@ -8,10 +8,21 @@ build:
   steps:
 
 build-api:
+  box: node:10-alpine
   steps:
     - internal/docker-build:
         context: src/api
         image-name: $DOCKER_REPOSITORY/api
+    - script:
+        name: Test API
+        code: |
+          cd src
+
+          cd api
+          npm install
+          npm test
+          cd ..
+
 build-carts:
   steps:
     - internal/docker-build:
