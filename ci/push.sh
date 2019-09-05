@@ -73,6 +73,11 @@ tag_and_push() {
     #     SRC="${DOCKER_REPO}:${WERCKER_GIT_COMMIT}"
     # fi
 
+    echo "Wercker build ID: ${WERCKER_BUILD_ID}"
+    echo "Wercker run ID: ${WERCKER_RUN_ID}"
+
+    docker images
+
     for tag in $TAGS; do
         echo "Tagging ${SRC} as ${OCIR_REPO}:$tag"
         docker tag $SRC ${OCIR_REPO}:$tag
