@@ -46,6 +46,8 @@ push-to-registry:
     - script:
         name: Setup image tags
         code: |
+          ls -a
+          tree
           API_VERSION=$(cat src/api/VERSION)
           IMAGE_TAGS=$(./ci/push.sh $DOCKER_REPOSITORY/api $API_VERSION)
           echo $IMAGE_TAGS
