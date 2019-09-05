@@ -167,11 +167,10 @@ upgrade-deployment:
     - script:
         name: Setup image names
         code: |
-          cat images.txt
           ls -a
           cat push-api/images.txt
           cat push-carts/images.txt
-          export $(cat images.txt | xargs)
+          export $(cat push-api/images.txt | xargs)
     - script:
         name: Create kube.config file
         code: |
