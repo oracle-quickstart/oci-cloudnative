@@ -136,7 +136,7 @@ push-to-registry:
         code: |
           echo $SERVICE_NAME
           SERVICE_VERSION=$(cat src/$SERVICE_NAME/VERSION)
-          export SERVICE_IMAGE_TAGS=$(./ci/push.sh $DOCKER_REPOSITORY/$SERVICE_NAME $SERVICE_VERSION)
+          export SERVICE_IMAGE_TAGS=$(./ci/push.sh $SERVICE_VERSION)
           echo $SERVICE_IMAGE_TAGS
     - internal/docker-push:
         tag: $SERVICE_IMAGE_TAGS
@@ -147,11 +147,10 @@ push-to-registry:
     - script:
         name: Store image information
         code: |
-          option2=$(echo $SERVICE_NAME | tr '[a-z]' '[A-Z]')
-          echo $option2
+          SERVICE_NAME_UPPER=$(echo $SERVICE_NAME | tr '[a-z]' '[A-Z]')
           IMAGE_NAMES_FILE=images.txt
-          echo ${SERVICE_NAME}_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/$SERVICE_NAME >> ${IMAGE_NAMES_FILE}
-          echo ${SERVICE_NAME}_IMAGE_TAG=$(cat src/${SERVICE_NAME}/VERSION) >> ${IMAGE_NAMES_FILE}
+          echo ${SERVICE_NAME_UPPER}_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/$SERVICE_NAME >> ${IMAGE_NAMES_FILE}
+          echo ${SERVICE_NAME_UPPER}_IMAGE_TAG=$(cat src/${SERVICE_NAME}/VERSION) >> ${IMAGE_NAMES_FILE}
 
       # CARTS_VERSION=$(cat src/carts/VERSION)
       # ./ci/push.sh $DOCKER_REPOSITORY/carts $CARTS_VERSION
