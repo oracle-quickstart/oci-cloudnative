@@ -27,6 +27,7 @@ services:
       - reschedule:on-node-failure
       - PORT=3000
       - MOCK_MODE=all
+      - STATIC_MEDIA_URL
       - NODE_ENV=development
 
   # Storefront UI (nginx)
