@@ -48,23 +48,12 @@ RUN npm run build
 #    Build stage (node/npm)   #
 ###############################
 FROM node:10-alpine as api-builder
-ENV NODE_ENV "development"
-
-RUN npm config set loglevel warn \
-  && npm set progress=false
-
-# Install application dependencies
-COPY src/api/package*.json /tmp/
-RUN cd /tmp && npm ci
-RUN mkdir -p /app/api && cp -a /tmp/node_modules /app/api/
-RUN rm -rf /tmp/node_modules
 
 WORKDIR /app/api
 COPY src/api/. .
 
 # Prune
-RUN rm -rf test scripts
-RUN npm prune --production
+RUN rm -rf test scripts node_modules
 #    ----- API Gateway -----  #
 
 ###############################
