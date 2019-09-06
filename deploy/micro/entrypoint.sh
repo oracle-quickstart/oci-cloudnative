@@ -16,6 +16,14 @@ export USERS_URL=http://user
 
 echo "Environment: $(uname -a)";
 
+echo "Checking Installation..."
+if [ ! -d "/app/api/node_modules" ]
+then
+  echo "Installing..."
+  cd /app/api && npm ci --production
+  cd /
+fi
+
 echo "Launching Storefront...";
 /usr/sbin/httpd -D FOREGROUND &
 
