@@ -10,6 +10,7 @@
 
 # To mock all services, change to MOCK_MODE=all
 export MOCK_MODE=carts,orders,users
+export NODE_ENV=production
 export CATALOGUE_PORT=3005
 export CATALOGUE_URL=http://localhost:3005
 export USERS_URL=http://user
