@@ -136,7 +136,7 @@ push-to-registry:
         code: |
           echo $SERVICE_NAME
           SERVICE_VERSION=$(cat src/$SERVICE_NAME/VERSION)
-          export SERVICE_IMAGE_TAGS=$(./ci/push.sh $SERVICE_VERSION)
+          export SERVICE_IMAGE_TAGS=$(./ci/tags.sh $SERVICE_VERSION)
           echo $SERVICE_IMAGE_TAGS
     - internal/docker-push:
         tag: $SERVICE_IMAGE_TAGS
