@@ -2,186 +2,156 @@
 box:
   id: busybox
 
+docker: true
 command-timeout: 30
 build:
   steps:
+
+build-api:
+  box: node:10-alpine
+  steps:
+    # TODO: We could use a generic build pipeline, but before we do that, we should standardize how to test each service.
+    # If we use the same command to run the tests for each service, then we can create a generic pipeline here for build and test.
     - internal/docker-build:
         context: src/api
         image-name: $DOCKER_REPOSITORY/api
+    - script:
+        name: Test API
+        code: |
+          cd src
+
+          cd api
+          npm install
+          npm test
+          cd ..
+
+build-carts:
+  steps:
     - internal/docker-build:
         context: src/carts
         image-name: $DOCKER_REPOSITORY/carts
+    - script:
+      name: Test Carts
+      code: |
+        cd src
+
+        # TODO: Run the carts tests
+        cd carts
+
+build-catalogue:
+  box: golang:1.12
+  steps:
     - internal/docker-build:
         context: src/catalogue
         image-name: $DOCKER_REPOSITORY/catalogue
+    - script:
+      name: Test Catalogue
+      code: |
+        cd src
+        # TODO: Run Catalogue tests
+
+build-orders:
+  steps:
     - internal/docker-build:
         context: src/orders
         image-name: $DOCKER_REPOSITORY/orders
+    - script:
+      name: Test Orders
+      code: |
+        cd src
+
+        # TODO: Run the orders tests
+        cd orders
+
+build-payment:
+  steps:
     - internal/docker-build:
         context: src/payment
         image-name: $DOCKER_REPOSITORY/payment
+    - script:
+      name: Test Payment
+      code: |
+        cd src
+        # TODO: Run payment tests
+
+build-shipping:
+  steps:
     - internal/docker-build:
         context: src/shipping
         image-name: $DOCKER_REPOSITORY/shipping
+    - script:
+      name: Test Shipping
+      code: |
+        cd src
+
+        # TODO: Run the shipping tests
+        cd shipping
+
+build-storefront:
+  box: node:10-alpine
+  steps:
     - internal/docker-build:
         context: src/storefront
         image-name: $DOCKER_REPOSITORY/storefront
-    - internal/docker-build:
-        context: src/stream
-        image-name: $DOCKER_REPOSITORY/stream
-    - internal/docker-build:
-        context: src/user
-        image-name: $DOCKER_REPOSITORY/user
-
-# Pushes the built Docker images to registry.
-# This pipeline needs DOCKER_USERNAME and DOCKER_PASSWORD variables set.
-push-to-registry:
-  steps:
     - script:
-        name: Setup image tag
-        code: |
-          export IMAGE_TAG=$(echo $WERCKER_GIT_COMMIT | head -c 7)-$WERCKER_GIT_BRANCH
-          echo Using tag $IMAGE_TAG
-    - internal/docker-push:
-        tag: $IMAGE_TAG
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
-        registry: https://phx.ocir.io/v2
-        repository: $DOCKER_REPOSITORY/api
-    - internal/docker-push:
-        tag: $IMAGE_TAG
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
-        registry: https://phx.ocir.io/v2
-        repository: $DOCKER_REPOSITORY/carts
-    - internal/docker-push:
-        tag: $IMAGE_TAG
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
-        registry: https://phx.ocir.io/v2
-        repository: $DOCKER_REPOSITORY/catalogue
-    - internal/docker-push:
-        tag: $IMAGE_TAG
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
-        registry: https://phx.ocir.io/v2
-        repository: $DOCKER_REPOSITORY/orders
-    - internal/docker-push:
-        tag: $IMAGE_TAG
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
-        registry: https://phx.ocir.io/v2
-        repository: $DOCKER_REPOSITORY/payment
-    - internal/docker-push:
-        tag: $IMAGE_TAG
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
-        registry: https://phx.ocir.io/v2
-        repository: $DOCKER_REPOSITORY/shipping
-    - internal/docker-push:
-        tag: $IMAGE_TAG
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
-        registry: https://phx.ocir.io/v2
-        repository: $DOCKER_REPOSITORY/storefront
-    - internal/docker-push:
-        tag: $IMAGE_TAG
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
-        registry: https://phx.ocir.io/v2
-        repository: $DOCKER_REPOSITORY/stream
-    - internal/docker-push:
-        tag: $IMAGE_TAG
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
-        registry: https://phx.ocir.io/v2
-        repository: $DOCKER_REPOSITORY/user
-    - script:
-        name: Store image names
-        code: |
-          IMAGE_NAMES_FILE=images.txt
-          echo API_IMAGE_NAME=${DOCKER_REPOSITORY}/api >> ${IMAGE_NAMES_FILE}
-          echo API_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
-          echo CARTS_IMAGE_NAME=${DOCKER_REPOSITORY}/carts >> ${IMAGE_NAMES_FILE}
-          echo CARTS_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
-          echo CATALOGUE_IMAGE_NAME=${DOCKER_REPOSITORY}/catalogue >> ${IMAGE_NAMES_FILE}
-          echo CATALOGUE_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
-          echo ORDERS_IMAGE_NAME=${DOCKER_REPOSITORY}/orders >> ${IMAGE_NAMES_FILE}
-          echo ORDERS_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
-          echo PAYMENT_IMAGE_NAME=${DOCKER_REPOSITORY}/payment >> ${IMAGE_NAMES_FILE}
-          echo PAYMENT_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
-          echo SHIPPING_IMAGE_NAME=${DOCKER_REPOSITORY}/shipping >> ${IMAGE_NAMES_FILE}
-          echo SHIPPING_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
-          echo STOREFRONT_IMAGE_NAME=${REPOSITORY}/storefront >> ${IMAGE_NAMES_FILE}
-          echo STOREFRONT_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
-          echo STREAM_IMAGE_NAME=${DOCKER_REPOSITORY}/stream >> ${IMAGE_NAMES_FILE}
-          echo STREAM_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
-          echo USER_IMAGE_NAME=${DOCKER_REPOSITORY}/user >> ${IMAGE_NAMES_FILE}
-          echo USER_IMAGE_TAG=${IMAGE_TAG} >> ${IMAGE_NAMES_FILE}
-          cat $IMAGE_NAMES_FILE
-
-test-go-services:
-  box: golang:1.12
-  steps:
-    - script:
-      name: Run tests for Go services
+      name: Test Storefront
       code: |
         cd src
-
-        cd catalogue
-        go test -v ./...
-        cd ..
-
-        cd user 
-        # TODO: Enable once MongoDB is mocked/replaced with ATP
-        # go test -v ./...
-        cd ..
-
-        cd payment
-        go test -v ./...
-        cd ..
-
-test-node-services:
-  box: node:10-alpine
-  steps:
-    - script:
-      name: Run tests for NodeJS services
-      code: |
-        cd src
-
-        cd api
-        npm install
-        npm test
-        cd ..
 
         cd storefront
         npm install
         npm test
-        cd ..
 
-test-java-services:
-  box: alpine
+build-stream:
   steps:
+    - internal/docker-build:
+        context: src/stream
+        image-name: $DOCKER_REPOSITORY/stream
     - script:
-      name: Run tests for Java services
+      name: Test Stream
       code: |
         cd src
 
-        cd carts
-        # TODO: Run the carts tests
-        cd ..
-
-        cd orders
-        # TODO: Run the orders tests
-        cd ..
-
-        cd shipping
-        # TODO: Run the shipping tests
-        cd ..
-
-        cd stream
         # TODO: Run the stream tests
-        cd ..
+        cd stream
+
+build-user:
+  steps:
+    - internal/docker-build:
+        context: src/user
+        image-name: $DOCKER_REPOSITORY/user
+    - script:
+      name: Test User
+      code: |
+        cd src
+        # TODO: Run User tests
+
+# Pushes the built Docker images to registry.
+# This pipeline needs DOCKER_USERNAME, DOCKER_PASSWORD, DOCKER_REPOSITORY and SERVICE_NAME (service folder name) variables set.
+push-to-registry:
+  box: alpine
+  steps:
+    - script:
+        name: Setup image tags
+        code: |
+          echo $SERVICE_NAME
+          SERVICE_VERSION=$(cat src/$SERVICE_NAME/VERSION)
+          export SERVICE_IMAGE_TAGS=$(./ci/tags.sh $SERVICE_VERSION)
+          echo $SERVICE_IMAGE_TAGS
+    - internal/docker-push:
+        tag: $SERVICE_IMAGE_TAGS
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/$SERVICE_NAME
+    - script:
+        name: Store image information
+        code: |
+          SERVICE_NAME_UPPER=$(echo $SERVICE_NAME | tr '[a-z]' '[A-Z]')
+          IMAGE_NAMES_FILE=images.txt
+          echo ${SERVICE_NAME_UPPER}_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/$SERVICE_NAME >> ${IMAGE_NAMES_FILE}
+          echo ${SERVICE_NAME_UPPER}_IMAGE_TAG=$(cat src/${SERVICE_NAME}/VERSION) >> ${IMAGE_NAMES_FILE}
+          cat $IMAGE_NAMES_FILE
 
 upgrade-deployment:
   box:
@@ -197,8 +167,26 @@ upgrade-deployment:
     - script:
         name: Setup image names
         code: |
-          cat images.txt
-          export $(cat images.txt | xargs)
+          ls -a
+          cat push-api/images.txt
+          cat push-carts/images.txt
+          cat push-catalogue/images.txt
+          cat push-orders/images.txt
+          cat push-payment/images.txt
+          cat push-shipping/images.txt
+          cat push-storefront/images.txt
+          cat push-stream/images.txt
+          cat push-user/images.txt
+
+          export $(cat push-api/images.txt | xargs)
+          export $(cat push-carts/images.txt | xargs)
+          export $(cat push-catalogue/images.txt | xargs)
+          export $(cat push-orders/images.txt | xargs)
+          export $(cat push-payment/images.txt | xargs)
+          export $(cat push-shipping/images.txt | xargs)
+          export $(cat push-storefront/images.txt | xargs)
+          export $(cat push-stream/images.txt | xargs)
+          export $(cat push-user/images.txt | xargs)
     - script:
         name: Create kube.config file
         code: |
