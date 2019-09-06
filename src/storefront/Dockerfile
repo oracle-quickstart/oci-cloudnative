@@ -30,8 +30,6 @@ WORKDIR /usr/src/app
 COPY src src
 COPY *.js* ./
 
-ARG STATIC_ASSET_URL
-ENV STATIC_ASSET_URL ${STATIC_ASSET_URL:-"https://objectstorage.us-phoenix-1.oraclecloud.com/n/intvravipati/b/mushop-images/o/"}
 ENV NODE_ENV "production"
 RUN npm run build
 

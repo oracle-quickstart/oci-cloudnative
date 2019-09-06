@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const pkg = require('./package.json');
 const buildDir = path.resolve(__dirname, 'build');
 
-const { NODE_ENV, STATIC_ASSET_URL } = process.env;
+const { NODE_ENV } = process.env;
 
 /**
  * This config is extended by gulp
@@ -44,7 +44,7 @@ module.exports = {
     new webpack.DefinePlugin({
       VERSION: JSON.stringify(pkg.version),
       PRODUCTION: JSON.stringify(NODE_ENV === 'production'),
-      STATIC_ASSET_URL: JSON.stringify(STATIC_ASSET_URL),
+      TIMESTAMP: JSON.stringify(Date.now()),
     }),
   ],
 };

@@ -23,7 +23,6 @@ start:
 		--name $(IMAGE)     		\
 		-v $$PWD:/usr/src/app   \
 		-e NODE_ENV=development \
-		-e STATIC_ASSET_URL="https://objectstorage.us-phoenix-1.oraclecloud.com/n/intvravipati/b/mushop-images/o/" \
 		-e API_PROXY=$(API) 		\
 		-e PORT=3000            \
 		-p 3000:3000            \
