@@ -1,8 +1,6 @@
 #!/bin/bash
 
 # Configure firewall
-firewall-offline-cmd --add-port=3000/tcp
-firewall-offline-cmd --add-port=3005/tcp
 firewall-offline-cmd --add-port=80/tcp
 systemctl restart firewalld
 
