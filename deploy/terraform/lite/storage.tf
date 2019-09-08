@@ -43,7 +43,7 @@ resource "oci_objectstorage_preauthrequest" "catalogue_sql_script_preauth" {
     bucket = "${oci_objectstorage_bucket.mushop.name}"
     name = "catalogue_sql_script_preauth"
     namespace = "${data.oci_objectstorage_namespace.user_namespace.namespace}"
-    time_expires = "2020-12-29T23:59:59Z"
+    time_expires = "${timeadd(timestamp(),"30m")}"
 
     #Optional
     object = "${oci_objectstorage_object.catalogue_sql_script.object}"
@@ -64,7 +64,7 @@ resource "oci_objectstorage_preauthrequest" "apache_conf_preauth" {
     bucket = "${oci_objectstorage_bucket.mushop.name}"
     name = "apache_conf_preauth"
     namespace = "${data.oci_objectstorage_namespace.user_namespace.namespace}"
-    time_expires = "2020-12-29T23:59:59Z"
+    time_expires = "${timeadd(timestamp(),"30m")}"
 
     #Optional
     object = "${oci_objectstorage_object.apache_conf.object}"
@@ -85,7 +85,7 @@ resource "oci_objectstorage_preauthrequest" "entrypoint_preauth" {
     bucket = "${oci_objectstorage_bucket.mushop.name}"
     name = "entrypoint_preauth"
     namespace = "${data.oci_objectstorage_namespace.user_namespace.namespace}"
-    time_expires = "2020-12-29T23:59:59Z"
+    time_expires = "${timeadd(timestamp(),"30m")}"
 
     #Optional
     object = "${oci_objectstorage_object.entrypoint.object}"
@@ -106,7 +106,7 @@ resource "oci_objectstorage_preauthrequest" "mushop_lite_preauth" {
     bucket = "${oci_objectstorage_bucket.mushop.name}"
     name = "mushop_lite_preauth"
     namespace = "${data.oci_objectstorage_namespace.user_namespace.namespace}"
-    time_expires = "2020-12-29T23:59:59Z"
+    time_expires = "${timeadd(timestamp(),"30m")}"
 
     #Optional
     object = "${oci_objectstorage_object.mushop_lite.object}"
