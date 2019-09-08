@@ -2,6 +2,31 @@
 
 Terraform based Resource manager stack that deploys Mushop on a standalone VM.
 
+
+
+## **Mono***lite*
+
+This terraform configuration is designed to be imported in to the OCI as a Resource Manager *stack*. Once imported,
+the user will can use the Resource Manager to deploy the application sample to a single VM. This is mode uses a transient cache for the `carts,orders,users` services and hooks up catalogue to an ATP instance that is provisioned by the terraform configuration.
+
+### Infrastucture
+
+This ORM stack creates the following resources
+- Compute
+  - E2.1 Shape VM
+- Database
+  - ATP instance
+- Networking
+  - VCN
+  - Regional Subnet
+  - Inter
+
+## Monolith VM details
+
+- Base EL7
+- oracle-instantclient19.3-basic, oracle-instantclient19.3-sqlplus
+- node 10.x, httpd, jq
+
 # Build
 
 - Clone MuShop
@@ -12,17 +37,3 @@ Terraform based Resource manager stack that deploys Mushop on a standalone VM.
 # Generate **Mono***lite* package for VM
 
 - `docker run -v $PWD/deploy/terraform/lite/scripts:/transfer --rm --entrypoint cp mushop-lite-mono:latest /package/mushop-lite-mono.tar.gz /transfer/mushop-lite-mono.tar.gz`
-
-## Monolith VM details
-
-- Base EL7
-- oracle-instantclient19.3-basic, oracle-instantclient19.3-sqlplus
-- node 10.x, httpd, jq
-
-
-## **Mono***lite*
-
-This terraform configuration is designed to be imported in to the OCI as a Resource Manager *stack*. Once imported,
-the user will can use the Resource Manager to deploy the application sample to a single VM. This is mode uses a transient cache for the `carts,orders,users` services and hooks up catalogue to an ATP instance that is provisioned by the terraform configuration.
-
-  
