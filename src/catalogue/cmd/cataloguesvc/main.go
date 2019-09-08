@@ -10,14 +10,14 @@ import (
 
 	"github.com/go-kit/kit/log"
 	stdopentracing "github.com/opentracing/opentracing-go"
-	zipkin "github.com/openzipkin/zipkin-go-opentracing"
+	zipkin "github.com/openzipkin-contrib/zipkin-go-opentracing"
 
 	"net"
 	"net/http"
 
 	"path/filepath"
 
-	"mushop/catalogue"
+	"github.com/junior/mushop/src/catalogue"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/prometheus/client_golang/prometheus"
