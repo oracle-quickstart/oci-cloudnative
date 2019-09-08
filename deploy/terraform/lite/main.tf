@@ -36,8 +36,8 @@ resource "oci_core_instance" "app-instance" {
   
 }
 
-// https://docs.cloud.oracle.com/iaas/images/image/cf34ce27-e82d-4c1a-93e6-e55103f90164/
-// Oracle-Linux-7.6-2019.05.14-0
+// https://docs.cloud.oracle.com/iaas/images/image/4e74174f-0b44-4447-bb09-dc05b23cf3ee/
+// Oracle-Linux-7.7-2019.08.28-0
 locals  {
   images = {
     ap-mumbai-1    =	"ocid1.image.oc1.ap-mumbai-1.aaaaaaaanqnm77gq2dpmc2aih2ddlwlahuv2qwmokufb7zbi52v67pzkzycq"
