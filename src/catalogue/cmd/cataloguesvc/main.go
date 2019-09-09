@@ -17,7 +17,7 @@ import (
 
 	"path/filepath"
 
-	"github.com/junior/mushop/src/catalogue"
+	"mushop/catalogue"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/prometheus/client_golang/prometheus"

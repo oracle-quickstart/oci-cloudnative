@@ -1,4 +1,4 @@
-module github.com/junior/mushop/src/catalogue
+module mushop/catalogue
 
 go 1.13
 
