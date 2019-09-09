@@ -1,3 +1,7 @@
+# LICENSE UPL 1.0
+#
+# Copyright (c) 1982-2019 Oracle and/or its affiliates. All rights reserved.
+# 
 data "template_file" "mushop" {
   template = "${file("./scripts/node.sh")}"
 }

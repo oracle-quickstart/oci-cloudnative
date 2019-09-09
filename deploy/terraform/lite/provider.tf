@@ -1,3 +1,7 @@
+# LICENSE UPL 1.0
+#
+# Copyright (c) 1982-2019 Oracle and/or its affiliates. All rights reserved.
+# 
 provider "oci" {
   tenancy_ocid     = "${var.tenancy_ocid}"
   # user_ocid        = "${var.user_ocid}"

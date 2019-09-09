@@ -1,3 +1,7 @@
+# LICENSE UPL 1.0
+#
+# Copyright (c) 1982-2019 Oracle and/or its affiliates. All rights reserved.
+# 
 resource "oci_objectstorage_bucket" "mushop" {
 
     #Required

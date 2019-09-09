@@ -1,4 +1,12 @@
 #!/bin/bash
+# LICENSE UPL 1.0
+#
+# Copyright (c) 1982-2019 Oracle and/or its affiliates. All rights reserved.
+#
+# Description: Sets up Mushop "Monolite".
+# Return codes: 0 = 
+# DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+# 
 
 # Configure firewall
 firewall-offline-cmd --add-port=80/tcp

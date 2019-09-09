@@ -1,3 +1,7 @@
+# LICENSE UPL 1.0
+#
+# Copyright (c) 1982-2019 Oracle and/or its affiliates. All rights reserved.
+# 
 resource "oci_core_security_list" "mushopSecurityList" {
   compartment_id = "${var.compartment_ocid}"
   vcn_id         = "${oci_core_virtual_network.mushopVCN.id}"

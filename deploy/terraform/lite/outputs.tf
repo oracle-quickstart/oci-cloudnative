@@ -1,3 +1,7 @@
+# LICENSE UPL 1.0
+#
+# Copyright (c) 1982-2019 Oracle and/or its affiliates. All rights reserved.
+# 
 output "Mushop" {
   value = "http://${data.oci_core_vnic.mushop_vnic.public_ip_address}"
 }
