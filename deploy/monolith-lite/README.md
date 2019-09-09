@@ -12,9 +12,14 @@
 
 - `docker run --rm -it -v $PWD/Wallet_Creds:/usr/lib/oracle/19.3/client64/lib/network/admin/ -e "OADB_USER=catalogue_user" -e "OADB_PW=default_Password1" -e "OADB_SERVICE=mcatalogue_tp" -p 80:80 -p 3000:3000 -p 3005:3005 mushop-lite-mono:latest`
 
-# [Monolith] Generate App Zip Package for VM
+# [Monolith] Copy generated App Zip Package for VM
 
 - `docker run -v $PWD:/transfer --rm --entrypoint cp mushop-lite-mono:latest /package/mushop-lite-mono.tar.gz /transfer/mushop-lite-mono.tar.gz`
+
+# [Monolith] Copy generated Generate Stack Zip Package for the ORM
+
+- `docker run -v $PWD:/transfer --rm --entrypoint cp mushop-lite-mono:latest /package/mushop-lite-mono-stack.zip /transfer/mushop-lite-mono-stack.zip`
+
 
 ## Monolith VM requirements:
 
