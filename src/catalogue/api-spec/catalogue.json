@@ -4,8 +4,8 @@
 	 "title": "Catalogue resources",
 	 "description": "",
 	 "license": {
-	     "name": "MIT",
-	     "url": "http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT"
+	     "name": "UPL-1.0",
+	     "url": "https://github.com/oracle/oci-quickstart-cloudnative/blob/master/LICENSE"
 	 }
      },
      "host": "catalogue",
