@@ -1,3 +1,7 @@
+global:
+  mock:
+    service: "false"
+
 certManager:
   enabled: false
 
@@ -44,11 +48,16 @@ user-db:
   enabled: true
 
 secrets:
-  oci:
+  streams:
     compartmentId:
     tenantId:
     userId:
     fingerprint:
     region:
-    apiKey:
+    passphrase:
+  serviceBroker:
+    tenantId:
+    userId:
+    fingerprint:
+    region:
     passphrase:

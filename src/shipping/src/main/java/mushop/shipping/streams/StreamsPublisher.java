@@ -29,7 +29,7 @@ public class StreamsPublisher {
 	
 
 	/*
-	 * 
+	 * Builds a message list.
 	 */
 	public List<PutMessagesDetailsEntry>  buildMessageList(int count, String message) {
 		List<PutMessagesDetailsEntry> messages = new ArrayList<>();
@@ -55,42 +55,35 @@ public class StreamsPublisher {
 	 * Builds a message detail entry with JSON
 	 */
 	private PutMessagesDetailsEntry buildMessageDetailJson(JSONObject json) {
-		
-		// Use the line below for Strings
-		//.value( String.format(message).getBytes(UTF_8) )
-		
 		return PutMessagesDetailsEntry.builder()
-		.key( json.get("id").toString().getBytes(UTF_8) )
-		.value( json.toString().getBytes(UTF_8) )
+		.key(json.get("id").toString().getBytes(UTF_8) )
+		.value(json.toString().getBytes(UTF_8))
+
 		.build(); 
 	}
 	
 	/*
-	 * 
+	 * Adds a message to the list.
 	 */
 	private List<PutMessagesDetailsEntry> addMessageToList(Shipment shipment) {
-		
 		List<PutMessagesDetailsEntry> messages = new ArrayList<>();
 		messages.add(buildMessageDetailJson(shipment.ToJson()));
-		System.out.println("Created list of with one message"); 
+		System.out.println("Created a list with one message"); 
 		return messages;
 	}
 	
 	/*
-	  * 
+	  * Publishes a single message.
 	  */
 	 public void publishMessage(Shipment shipment) {
-
 		 List<PutMessagesDetailsEntry> messages = addMessageToList(shipment);
 		 publishMessages(messages);
 	 }
 	 
 	 /*
-	  * 
+	  * Publishes a list of messages.
 	  */
 	 public void publishMessages(List<PutMessagesDetailsEntry> messages) {
-
-		 
 		 System.out.println(
 				 String.format("Publishing %s messages to stream %s.", messages.size(), streamsConfig.getStreamId()));
 		 

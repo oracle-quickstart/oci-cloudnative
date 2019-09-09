@@ -1,3 +1,10 @@
+#!make
+
+#
+# Copyright (c) 2019, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0
+#
+
 IMAGE=mushop-dev-storefront
 
 API=http://api:3000
@@ -23,7 +30,6 @@ start:
 		--name $(IMAGE)     		\
 		-v $$PWD:/usr/src/app   \
 		-e NODE_ENV=development \
-		-e STATIC_ASSET_URL="https://objectstorage.us-phoenix-1.oraclecloud.com/n/intvravipati/b/mushop-images/o/" \
 		-e API_PROXY=$(API) 		\
 		-e PORT=3000            \
 		-p 3000:3000            \

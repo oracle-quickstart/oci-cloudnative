@@ -48,10 +48,7 @@ public class Shipment {
      */
     @Override
     public String toString() {
-        return "Shipment{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                '}';
+        return ToJson().toString();
     }
 
     /*
@@ -63,9 +60,7 @@ public class Shipment {
         if (o == null || getClass() != o.getClass()) return false;
 
         Shipment shipment = (Shipment) o;
-
         return getId() != null ? getId().equals(shipment.getId()) : shipment.getId() == null;
-
     }
 
     /*

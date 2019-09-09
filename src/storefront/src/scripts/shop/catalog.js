@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
+
 import { Mu, MuMx, attrToSelector, MuCtxInheritOnly, MuCtxSetterMixin } from '../mu';
 import { ShopMxSubscriber } from './helper/subscriber';
 import { ViewTemplateMixin } from './helper/viewmx';
@@ -19,41 +24,42 @@ const CATALOG_MU = {
   TILE: 'mu-product-tile',
 };
 
-export function getStaticUrl(src) {
-  const prefix = /^\/catalog/.test(src) ? '/api' : (STATIC_ASSET_URL || '/api/catalogue/images').replace(/\/$/, '');
+export function getStaticUrl(src, cdn) {
+  const prefix = /^\/catalog/.test(src) ? '/api' : (cdn || '/api/catalogue/images').replace(/\/$/, '');
   return `${prefix}/${src.replace(/^\//, '')}`;
+}
+
+export function normalizeProduct(product, config) {
+  // image prefixer
+  const imageUrl = src => getStaticUrl(src, config.cdn);
+
+  // create route link
+  product.href = `product.html?id=${product.id}`;
+  // map product images from API to the respective ingress
+  product.imageUrl = (product.imageUrl || []).map(imageUrl);
+  product.image = product.imageUrl[0];
+  // fix price format
+  product.priceDecimal = product.price;
+  product.price = product.price.toFixed(2);
+  // create pseudo shortdesc
+  product.shortDescription = product.description.split('.').shift();
+  // create pseudo type/attributes
+  product.type = (product.tags || product.category || []).join(', ');
+  product.attributes = ['weight', 'product_size', 'colors']
+    .filter(p => product[p] && product[p] !== "0")
+    .map(p => ({ name: p.replace(/[_-]/, ' '), value: product[p] }));
+  // backcompat
+  product.count = product.count || product.qty || 0;
+  product.name = product.name || product.title || '';
+
+  return product;
 }
 
 export class CatalogController {
   constructor() {
     this._serviceUri = '/catalogue';
     this._serviceReg = new RegExp(`^(${this._serviceUri})`);
-    this._normalize = this._normalize.bind(this);
     this._handleRes = this._handleRes.bind(this);
-    // console.log({ STATIC_ASSET_URL, PRODUCTION, VERSION })
-  }
-
-  _normalize(product) {
-    // create route link
-    product.href = `product.html?id=${product.id}`;
-    // map product images from API to the respective ingress
-    product.imageUrl = (product.imageUrl || []).map(getStaticUrl);
-    product.image = product.imageUrl[0];
-    // fix price format
-    product.priceDecimal = product.price;
-    product.price = product.price.toFixed(2);
-    // create pseudo shortdesc
-    product.shortDescription = product.description.split('.').shift();
-    // create pseudo type/attributes
-    product.type = (product.tags || product.category || []).join(', ');
-    product.attributes = ['weight', 'product_size', 'colors']
-      .filter(p => product[p] && product[p] !== "0")
-      .map(p => ({ name: p.replace(/[_-]/, ' '), value: product[p] }));
-    // backcompat
-    product.count = product.count || product.qty || 0;
-    product.name = product.name || product.title || '';
-
-    return product;
   }
 
   _handleRes(res) {
@@ -72,25 +78,37 @@ export class CatalogController {
       .then(d => d.categories);
   }
 
+  config() {
+    return this.mu.config.get()
+      .then(conf => ({
+        cdn: conf.staticAssetPrefix,
+      }));
+  }
+
   search(params) {
     const { router, http } = this.mu;
     const qs = typeof params === 'string' ? params : router.querystring(params || {});
-    return http.get(`${this._serviceUri}?${qs}`)
-      .then(this._handleRes)
-      .then(data => data.map(this._normalize));
+    return this.config().then(config => 
+      http.get(`${this._serviceUri}?${qs}`)
+        .then(this._handleRes)
+        .then(data => data.map(sku => normalizeProduct(sku, config)))
+    );
   }
 
   product(id) {
-    return this.mu.http.get(`${this._serviceUri}/${id}`)
-      .then(this._handleRes)
-      .then(sku => this._normalize(sku));
+    const { http } = this.mu;
+    return this.config().then(config => 
+      http.get(`${this._serviceUri}/${id}`)
+        .then(this._handleRes)
+        .then(sku => normalizeProduct(sku, config))
+    );
   }
 }
 
 
-
-
-
+/**
+ * full category page
+ */
 export class CategoryPage extends MuMx.compose(null, 
   MxCtxInsulator,
   ShopMxSubscriber,

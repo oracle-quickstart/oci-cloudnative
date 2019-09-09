@@ -1,3 +1,7 @@
+/**
+ * Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
 (function (){
   'use strict';
   
@@ -18,6 +22,10 @@
     USERS: 'USERS_URL',
   };
 
+  const settingKeyMap = {
+    CDN: 'STATIC_MEDIA_URL',
+  };
+
   module.exports = {
     env: function(key) {
       return key ? process.env[key] : process.env;
@@ -28,10 +36,17 @@
     test: function() {
       return /^test/i.test(this.env('NODE_ENV') || '');
     },
+    mockMode: function(service) {
+      const mocks = (this.env('MOCK_MODE') || '').split(',').map(m => m.trim().toLowerCase());
+      return ['true', 'all', '1'] // match all
+        .concat(service || []) // match specific service
+        .some(val => mocks.indexOf(val) > -1);
+    },
     keyMap: function() {
       return {
         session: sessionKeyMap,
         services: serviceUrlKeyMap,
+        setting: settingKeyMap,
       };
     },
     session: function() {

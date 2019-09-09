@@ -1,0 +1,51 @@
+shipping:
+  enabled: true
+  image:
+    repository: IMAGE NAME HERE
+    tag: IMAGE TAG HERE
+    pullPolicy: Never
+
+stream:
+  enabled: true
+
+secrets:
+  streams:
+    compartmentId: OCI_COMPARTMENT_ID
+    tenantId: OCI_TENANT_ID
+    userId: OCI_USER_ID
+    fingerprint: OCI_FINGERPRINT
+    region: OCI_REGION
+    passphrase: OCI_PASSPHRASE
+
+ingress:
+  enabled: false
+
+api:
+  enabled: false
+
+carts:
+  enabled: false
+
+catalogue:
+  enabled: false
+
+edge:
+  enabled: false
+
+orders:
+  enabled: false
+
+payment:
+  enabled: false
+
+session:
+  enabled: false
+
+storefront:
+  enabled: false
+
+user:
+  enabled: false
+
+user-db:
+  enabled: false

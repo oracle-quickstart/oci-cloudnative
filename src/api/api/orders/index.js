@@ -1,19 +1,24 @@
+/**
+ * Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
 (function (){
   'use strict';
 
   const axios = require("axios")
     , express   = require("express")
     , endpoints = require("../endpoints")
+    , common    = require("../common")
     , helpers   = require("../../helpers")
     , app       = express.Router()
 
   app.get("/orders", function (req, res, next) {
 
     if (!helpers.isLoggedIn(req)) {
-      return next(helpers.createError("User not logged in.", 401));
+      return next(helpers.createError("User not logged in", 401));
     }
 
-    const custId = helpers.getCustomerId(req, app.get('env'));
+    const custId = helpers.getCustomerId(req);
     const { sort = 'orderDate,desc' } = req.query;
     const url = endpoints.ordersUrl + `/orders/search/customer?custId=${custId}&sort=${sort}`;
     axios.get(url)
@@ -39,12 +44,11 @@
       return next(helpers.createError("User not logged in.", 401));
     }
 
-    const custId = helpers.getCustomerId(req, app.get('env'));
     const cartId = helpers.getCartId(req);
 
     try {
       // load customer & links
-      const { data: user } = await axios.get(endpoints.customersUrl + "/" + custId);
+      const user = await common.getCustomer(req);
       const { _links: { customer, addresses, cards }} = user;
 
       // resolve user address/payment card

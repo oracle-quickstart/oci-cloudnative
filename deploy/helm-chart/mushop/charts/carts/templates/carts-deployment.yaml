@@ -58,7 +58,16 @@ spec:
           volumeMounts:
             - mountPath: /tmp
               name: tmp-volume
-            - mountPath: /config
+            - mountPath: /app/config/keystore.jks
+              subPath: keystore.jks
+              name: wallet
+              readOnly: true
+            - mountPath: /app/config/truststore.jks
+              subPath: truststore.jks
+              name: wallet
+              readOnly: true
+            - mountPath: /app/config/tnsnames.ora
+              subPath: tnsnames.ora
               name: wallet
               readOnly: true
       volumes:

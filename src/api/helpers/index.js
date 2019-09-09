@@ -1,9 +1,15 @@
+/**
+ * Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
 (function (){
   'use strict';
 
   const axios = require('axios');
   const ulid = require("ulid");
   const helpers = {};
+
+  const [ COOKIE_NAME, COOKIE_TTL ] = [ 'logged_in', 3.6e6 ];
 
   /* Public: errorHandler is a middleware that handles your errors
    *
@@ -15,7 +21,7 @@
   helpers.errorHandler = function(err, req, res, next) {
     const ret = {
       message: err.message,
-      error:   err
+      error:   err.toString(),
     };
     res.status(err.status || 500).json(ret);
   };
@@ -103,12 +109,26 @@
    * Check for authenticated user
    */
   helpers.isLoggedIn = function(req) {
-    const { logged_in } = req.cookies;
+    const { [COOKIE_NAME]: logged_in } = req.cookies;
     return !!logged_in;
   };
 
+  helpers.setAuthenticated = function(req, res, userId) {
+    if (userId) {
+      const sessionId = req.session.id;
+      req.session.customerId = userId;
+      res.cookie(COOKIE_NAME, sessionId, { maxAge: COOKIE_TTL });
+    } else {
+      // logout
+      req.session.customerId = null;
+      req.session.cartId = null;
+      res.cookie(COOKIE_NAME, '', { expires: new Date(0) });
+    }
+    return res;
+  };
+
   /* TODO: Add documentation */
-  helpers.getCustomerId = function(req, env) {
+  helpers.getCustomerId = function(req) {
     // Check if logged in. Get customer Id
     const { id, customerId } = req.session;
 

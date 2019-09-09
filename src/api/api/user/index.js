@@ -1,3 +1,7 @@
+/**
+ * Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
 (function() {
     'use strict';
 
@@ -5,28 +9,27 @@
     const axios = require("axios")
       , express = require("express")
       , app = express.Router()
+      , common    = require("../common")
       , endpoints = require("../endpoints")
       , helpers = require("../../helpers")
-      , mock = require("../../helpers/mock")
+      , mock = require("../../helpers/mock");
 
-    // TODO: move to config
-    const [ COOKIE_NAME, COOKIE_TTL ] = [ 'logged_in', 3.6e6 ];
+    function profile(req, res) {
+        common.getCustomer(req)
+            .then(u => (u ? res.json(u) : Promise.reject('not authorized')))
+            .catch(() => helpers.respondStatus(res, 401));
+    }
 
-    app.get("/profile", function(req, res, next) {
-        const userId = helpers.getCustomerId(req, app.get("env"));
-        helpers.simpleHttpRequest(endpoints.customersUrl + "/" + userId, res, next);
-    });
+    app.get("/profile", profile);
+    
     app.get("/customers/:id", function(req, res, next) {
         const { id } = req.params;
-        const userId = helpers.getCustomerId(req, app.get("env"));
+        const userId = helpers.getCustomerId(req);
         if (~~id === ~~userId) {
-            helpers.simpleHttpRequest(endpoints.customersUrl + "/" + userId, res, next);
+            profile(req, res);
         } else {
             res.status(401).end();
         }
-    });
-    app.get("/cards/:id", function(req, res, next) {
-        helpers.simpleHttpRequest(endpoints.cardsUrl + "/" + req.params.id, res, next);
     });
 
     // Designed to be blocked by WAF
@@ -45,7 +48,7 @@
 
     // Create an address
     app.post("/address", function(req, res, next) {
-        req.body.userID = helpers.getCustomerId(req, app.get("env"));
+        req.body.userID = helpers.getCustomerId(req);
 
         axios.post(endpoints.addressUrl, req.body)
             .then(({ status, data }) => res.status(status).json(data))
@@ -54,20 +57,21 @@
 
     // get a single address
     app.get("/address", function(req, res, next) {
-        var custId = helpers.getCustomerId(req, app.get("env"));
+        const custId = helpers.getCustomerId(req);
         axios.get(endpoints.customersUrl + '/' + custId + '/addresses')
             .then(({ data }) => {
                 if (data.status_code !== 500 && data._embedded.address && data._embedded.address.length ) {
                     const addr = data._embedded.address.pop();
                     return res.json(addr);
                 }
+                // TODO: deprecate 200 => 500 in client
                 return res.json({ status_code: 500 });
             }).catch(next);
     });
 
-    // Fetch a single card
+    // Fetch a single card for the user
     app.get("/card", function(req, res, next) {
-        var custId = helpers.getCustomerId(req, app.get("env"));
+        const custId = helpers.getCustomerId(req);
         axios.get(endpoints.customersUrl + '/' + custId + '/cards')
             .then(({ data }) => {
                 if (data.status_code !== 500 && data._embedded.card && data._embedded.card.length ) {
@@ -85,13 +89,13 @@
 
     // create a stored card
     app.post("/card", function(req, res, next) {
-        req.body.userID = helpers.getCustomerId(req, app.get("env"));
+        req.body.userID = helpers.getCustomerId(req);
         axios.post(endpoints.cardsUrl, req.body)
             .then(({ status, data }) => res.status(status).json(data))
             .catch(next);
     });
 
-    // Delete Customer - TO BE USED FOR TESTING ONLY (for now)
+    // Delete Customer
     app.delete("/customers/:id", function(req, res, next) {
         axios.delete(endpoints.customersUrl + "/" + req.params.id)
             .then(({ status, data }) => res.status(status).json(data))
@@ -105,7 +109,7 @@
             .catch(next);
     });
 
-    // Delete Card - TO BE USED FOR TESTING ONLY (for now)
+    // Delete Card
     app.delete("/cards/:id", function(req, res, next) {
         axios.delete(endpoints.cardsUrl + "/" + req.params.id)
             .then(({ status, data }) => res.status(status).json(data))
@@ -116,15 +120,12 @@
         try {
             const { status, data: user } = await axios.post(endpoints.registerUrl, req.body);
 
-            const sessionId = req.session.id;
-            req.session.customerId = user.id;
-
             // TODO: fix merge cart
             // const cartId = helpers.getCartId(req);
             // await axios.get(`${endpoints.cartsUrl}/${user.id}/merge?sessionId=${sessionId}`).catch(() => {/* noop */});
 
-            res.status(status)
-                .cookie(COOKIE_NAME, sessionId, { maxAge: COOKIE_TTL})
+            helpers.setAuthenticated(req, res, user.id)
+                .status(status)
                 .json({ id: user.id });
 
         } catch (e) {
@@ -141,15 +142,12 @@
                 }
             });
 
-            const sessionId = req.session.id;
-            req.session.customerId = user.id;
-
             // TODO: fix merge cart
             // const cartId = helpers.getCartId(req);
             // await axios.get(`${endpoints.cartsUrl}/${user.id}/merge?sessionId=${sessionId}`).catch(() => {/* noop */});
 
-            res.status(200)
-                .cookie(COOKIE_NAME, sessionId, { maxAge: COOKIE_TTL})
+            helpers.setAuthenticated(req, res, user.id)
+                .status(200)
                 .send('OK');
         } catch (e) {
             res.status(401).end();
@@ -158,10 +156,8 @@
     });
 
     app.get('/logout', (req, res) => {
-        req.session.customerId = null;
-        req.session.cartId = null;
-        res.cookie(COOKIE_NAME, '', {expires: new Date(0)});
-        helpers.respondStatus(res, 200);
+        helpers.setAuthenticated(req, res, false)
+            .send(200);
     });
 
     module.exports = app;

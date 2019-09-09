@@ -26,6 +26,8 @@ spec:
             - name: http
               containerPort: 3000
           env:
+          - name: MOCK_MODE
+            value: "{{ .Values.global.mock.service }}"
           - name: SESSION_REDIS
             value: {{ .Release.Name }}-session
           - name: CATALOGUE_URL
@@ -36,6 +38,8 @@ spec:
             value: http://{{ .Release.Name }}-carts
           - name: USERS_URL
             value: http://{{ .Release.Name }}-user
+          - name: STATIC_MEDIA_URL
+            value: "{{ .Values.env.mediaUrl }}"
           livenessProbe:
             httpGet:
               path: /health

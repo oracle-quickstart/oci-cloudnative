@@ -7,7 +7,7 @@ describe('Endpoints', () => {
   });
 
   it('should error when service is undefined', () => {
-    const bad = () => endpoints.getEnvVar('_FOO_');
+    const bad = () => endpoints.getEnvVar('_FOO_', true);
     expect(bad).toThrow();
   });
 

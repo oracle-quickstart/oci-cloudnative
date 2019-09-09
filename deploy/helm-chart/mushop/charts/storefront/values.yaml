@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: phx.ocir.io/intvravipati/mushop/storefront
-  tag: 1
+  tag: 1.0.8
   pullPolicy: Always
 
 resources:
@@ -31,12 +31,12 @@ hpa:
   minReplicas: 1
   maxReplicas: 10
   metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 70
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
 
 service:
   port: 80

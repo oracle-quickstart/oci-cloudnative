@@ -1,0 +1,6 @@
+{
+  "dist": "dist",
+  "headers": {
+    "cache-control": "max-age=604800, public, no-transform"
+  }
+}

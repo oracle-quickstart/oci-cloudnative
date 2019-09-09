@@ -1,0 +1,72 @@
+global:
+  mock:
+    service: "false"
+
+ingress:
+  enabled: false
+
+catalog:
+  enabled: false
+
+api:
+  enabled: true
+
+carts:
+  enabled: true
+  image:
+    repository: <IMAGE NAME HERE>
+    tag: <IMAGE TAG HERE>
+    pullPolicy: Never
+  secrets:
+    oadbPassword: <PASSWORD HERE>
+    trustPass: <PASSWORD HERE>
+    keyPass: <PASSWORD HERE>
+
+orders:
+  enabled: true
+  image:
+    repository: <IMAGE NAME HERE>
+    tag: <IMAGE TAG HERE>
+    pullPolicy: Never
+  secrets:
+    oadbPassword: <PASSWORD HERE>
+    trustPass: <PASSWORD HERE>
+    keyPass: <PASSWORD HERE>
+
+catalogue:
+  enabled: true
+  secrets:
+    oadbPassword: <PASSWORD HERE>
+
+edge:
+  enabled: true
+
+payment:
+  enabled: true
+
+session:
+  enabled: true
+
+shipping:
+  enabled: true
+
+storefront:
+  enabled: true
+
+stream:
+  enabled: true
+
+user:
+  enabled: true
+
+user-db:
+  enabled: true
+
+secrets:
+  streams:
+    compartmentId: <OCI_COMPARTMENT_ID>
+    tenantId: <OCI_TENANT_ID>
+    userId: <OCI_USER_ID>
+    fingerprint: <OCI_FINGERPRINT>
+    region: <OCI_REGION>
+    passphrase: <OCI_PASSPHRASE>

@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.json.JSONObject;
+
 /*
  * 
  */
@@ -38,11 +40,11 @@ public class HealthCheck {
     */
    @Override
    public String toString() {
-      return "HealthCheck{" +
-               "service='" + service + '\'' +
-               ", status='" + status + '\'' +
-               ", date='" + date +
-               '}';
+      JSONObject hc = new JSONObject();
+      hc.put("service", service);
+      hc.put("status", status);
+      hc.put("date", date);
+      return hc.toString();
    }
 
    /*

@@ -1,10 +1,14 @@
+global:
+  mock:
+    service: "false"
+
 ingress:
   enabled: true
 
   hosts:
     - mushop.ateam.cloud
     - insecure.mushop.ateam.cloud
-  
+
   # Value can be either prod or staging
   # This controls the cluster issuer what's used in Ingress
   clusterIssuer: prod
@@ -21,6 +25,8 @@ ingress:
 
 api:
   enabled: true
+  env:
+    mediaUrl: "https://objectstorage.us-phoenix-1.oraclecloud.com/n/intvravipati/b/mushop-images/o/"
 
 carts:
   enabled: true
@@ -58,11 +64,16 @@ user-db:
   enabled: true
 
 secrets:
-  oci:
+  streams:
     compartmentId:
     tenantId:
     userId:
     fingerprint:
     region:
-    apiKey:
+    passphrase:
+  serviceBroker:
+    tenantId:
+    userId:
+    fingerprint:
+    region:
     passphrase:

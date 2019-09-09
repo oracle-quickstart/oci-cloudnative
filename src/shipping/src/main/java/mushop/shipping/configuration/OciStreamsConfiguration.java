@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
 import com.oracle.bmc.Region;
-//import com.google.common.util.concurrent.Uninterruptibles;
 import com.oracle.bmc.auth.AuthenticationDetailsProvider;
 import com.oracle.bmc.auth.SimpleAuthenticationDetailsProvider;
 import com.oracle.bmc.auth.StringPrivateKeySupplier;
@@ -18,13 +17,12 @@ import com.oracle.bmc.streaming.requests.ListStreamsRequest;
 import com.oracle.bmc.streaming.responses.GetStreamResponse;
 import com.oracle.bmc.streaming.responses.ListStreamsResponse;
 
-/* Obtains a connection to OCI Streams
- * 
+/* 
+ * Creates a connection to the OCI Stream
  */
 @Configuration
 public class OciStreamsConfiguration {
-	
-	@Autowired
+        @Autowired
 	private Environment env;
 	
 	private StreamClient streamClient = null;
@@ -39,59 +37,62 @@ public class OciStreamsConfiguration {
 		return streamId;
 	}
 	
-	
 	/* Initializes a connection to be used thoughout the application.
 	 * The connection requires these attributes which are available via environment variables:
-	 * TENANT_ID, USER_ID, FINGERPRINT, OCI_API_KEY, REGION AND CONTAINER_ID
-	 * If the api key was created with a pass_phrase then the PASS_PHRASE variable is also required.
+	 * OCI_TENANT_ID, OCI_USER_ID, OCI_FINGERPRINT, OCI_API_KEY, OCI_REGION and OCI_COMPARTMENT_ID
+	 * If the api key was created with a pass_phrase then the OCI_PASS_PHRASE variable is also required.
 	 */
 	public void initConnection() throws Exception {
-		
-		final String tenantId = env.getProperty("OCI_TENANT_ID");
-        final String userId = env.getProperty("OCI_USER_ID");
-        final String fingerprint = env.getProperty("OCI_FINGERPRINT");
-        final String privateKey = env.getProperty("OCI_API_KEY");
-        final String passPhrase = env.getProperty("OCI_PASS_PHRASE");
-        final String region = env.getProperty("OCI_REGION");
-		
-        AuthenticationDetailsProvider provider = null;
-        
-        if (privateKey.contains("Proc-Type: 4,ENCRYPTED")) {
-        	provider = SimpleAuthenticationDetailsProvider.builder()
-                .tenantId(tenantId)
-                .userId(userId)
-                .fingerprint(fingerprint)
-                .privateKeySupplier(new StringPrivateKeySupplier(privateKey))
-                .region(Region.fromRegionId(region))
-                .passPhrase(passPhrase)
-                .build();
-        } else {
-        	provider = SimpleAuthenticationDetailsProvider.builder()
-	            .tenantId(tenantId)
-	            .userId(userId)
-	            .fingerprint(fingerprint)
-	            .privateKeySupplier(new StringPrivateKeySupplier(privateKey))
-	            .region(Region.fromRegionId(region))
-	            .build();
-        }
-        
-        // Create an admin-client for the phoenix region.
-        final StreamAdminClient adminClient = new StreamAdminClient(provider);
+                final String tenantId = env.getProperty("OCI_TENANT_ID");
+                final String userId = env.getProperty("OCI_USER_ID");
+                final String fingerprint = env.getProperty("OCI_FINGERPRINT");
+                final String privateKey = env.getProperty("OCI_API_KEY");
+                final String passPhrase = env.getProperty("OCI_PASS_PHRASE");
+                final String region = env.getProperty("OCI_REGION");
+                final String compartmentId = env.getProperty("OCI_COMPARTMENT_ID");
+                String streamName = env.getProperty("STREAM_NAME");
 
-        final String streamName = "shipping-stream";
-        final int partitions = 1;
+                if (streamName == null || streamName.isEmpty()) {
+                        streamName = "shipping-stream";
+                }
+                
+                AuthenticationDetailsProvider provider = null;
+                
+                if (privateKey.contains("Proc-Type: 4,ENCRYPTED")) {
+                        provider = SimpleAuthenticationDetailsProvider.builder()
+                        .tenantId(tenantId)
+                        .userId(userId)
+                        .fingerprint(fingerprint)
+                        .privateKeySupplier(new StringPrivateKeySupplier(privateKey))
+                        .region(Region.fromRegionId(region))
+                        .passPhrase(passPhrase)
+                        .build();
+                } else {
+                        provider = SimpleAuthenticationDetailsProvider.builder()
+                        .tenantId(tenantId)
+                        .userId(userId)
+                        .fingerprint(fingerprint)
+                        .privateKeySupplier(new StringPrivateKeySupplier(privateKey))
+                        .region(Region.fromRegionId(region))
+                        .build();
+                }
+                
+                // Create an admin-client for the phoenix region.
+                final StreamAdminClient adminClient = new StreamAdminClient(provider);
+                final int partitions = 1;
 
-        Stream stream = getStream(adminClient, env.getProperty("OCI_COMPARTMENT_ID"), streamName, partitions);
-        
-     // Streams are assigned a specific endpoint url based on where they are provisioned.
-        // Create a stream client using the provided message endpoint.
-        streamClient = new StreamClient(provider);
-        streamClient.setEndpoint(stream.getMessagesEndpoint());
+                Stream stream = getStream(
+                        adminClient, compartmentId, streamName, partitions);
+                
+                // Streams are assigned a specific endpoint url based on where they are provisioned.
+                // Create a stream client using the provided message endpoint.
+                streamClient = new StreamClient(provider);
+                streamClient.setEndpoint(stream.getMessagesEndpoint());
 
-        streamId = stream.getId();
-        if (null!=streamId) {
-        	System.out.println("got streamId: " + streamId);
-        }
+                streamId = stream.getId();
+                if (null != streamId) {
+                        System.out.println("got streamId: " + streamId);
+                }
 	}
 	
 	/*
@@ -101,47 +102,24 @@ public class OciStreamsConfiguration {
             StreamAdminClient adminClient, String compartmentId, String streamName, int partitions)
             throws Exception {
 
-        ListStreamsRequest listRequest =
-                ListStreamsRequest.builder()
-                        .compartmentId(compartmentId)
-                        .lifecycleState(LifecycleState.Active)
-                        .name(streamName)
-                        .build();
+                ListStreamsRequest listRequest =
+                        ListStreamsRequest.builder()
+                                .compartmentId(compartmentId)
+                                .lifecycleState(LifecycleState.Active)
+                                .name(streamName)
+                                .build();
 
-        ListStreamsResponse listResponse = adminClient.listStreams(listRequest);
+                ListStreamsResponse listResponse = adminClient.listStreams(listRequest);
 
-        if (!listResponse.getItems().isEmpty()) {
-            // if we find an active stream with the correct name, we'll use it.
-            System.out.println(String.format("An active stream named %s was found.", streamName));
+                if (!listResponse.getItems().isEmpty()) {
+                // if we find an active stream with the correct name, we'll use it.
+                System.out.println(String.format("An active stream named %s was found.", streamName));
 
-            String streamId = listResponse.getItems().get(0).getId();
-            GetStreamResponse getResponse =
-	                adminClient.getStream(GetStreamRequest.builder().streamId(streamId).build());
-	        return getResponse.getStream();
-        }
-
-        //TODO: should we allow it to create a stream? 
-//        System.out.println(
-//                String.format("No active stream named %s was found; creating it now.", streamName));
-//        Stream createdStream = createStream(adminClient, compartmentId, streamName, partitions);
-
-        // GetStream provides details about a specific stream.
-        // Since stream creation is asynchronous; we need to wait for the stream to become active.
-//        GetStreamRequest streamRequest =
-//                GetStreamRequest.builder().streamId(createdStream.getId()).build();
-//        Stream activeStream =
-//                adminClient
-//                        .getWaiters()
-//                        .forStream(streamRequest, LifecycleState.Active)
-//                        .execute()
-//                        .getStream();
-
-        // Give a little time for the stream to be ready.
-//        Uninterruptibles.sleepUninterruptibly(1, TimeUnit.SECONDS);
-//        return activeStream;
-        return null;
+                String streamId = listResponse.getItems().get(0).getId();
+                GetStreamResponse getResponse =
+                                adminClient.getStream(GetStreamRequest.builder().streamId(streamId).build());
+                        return getResponse.getStream();
+                }
+                return null;
     }
-	
-	 
-
 }
