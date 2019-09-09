@@ -105,8 +105,8 @@ RUN yum update -y && \
   yum clean all && \
   rm -rf /var/cache/yum
 
-COPY deploy/micro/httpd.conf /etc/httpd/conf/
-COPY deploy/micro/entrypoint.sh /
+COPY deploy/monolith-lite/httpd.conf /etc/httpd/conf/
+COPY deploy/monolith-lite/entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
 #    ----- Base Image ------  #
@@ -125,9 +125,14 @@ COPY --from=api-builder /app/api /app/api
 COPY --from=catalogue-builder /catalogue /app/catalogue/catalogue
 
 # Create zip package of the Apps and local images
-# RUN zip -r /app/mushop-lite-mono.zip /app /images
 RUN mkdir /package && GZIP=-9 tar cvzf /package/mushop-lite-mono.tar.gz /app /images
 
+# Create ORM package
+COPY deploy/terraform/lite /lite
+COPY deploy/monolith-lite/httpd.conf /lite/scripts
+COPY deploy/monolith-lite/entrypoint.sh /lite/scripts
+RUN cp /package/mushop-lite-mono.tar.gz /lite/scripts && \
+    cd /lite && zip -r /package/mushop-lite-mono-stack.zip .
 
 VOLUME ["/usr/lib/oracle/${oracleClientVersion}/client64/lib/network/admin/"]
 VOLUME ["/transfer/"]
