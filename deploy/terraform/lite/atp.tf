@@ -2,10 +2,6 @@
 #
 # Copyright (c) 1982-2019 Oracle and/or its affiliates. All rights reserved.
 #
-# Description: Starts Mushop "Monolite".
-# Return codes: 0 = 
-# DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
-# 
 
 # creates an ATP database
 resource "oci_database_autonomous_database" "mushop_autonomous_database" {
