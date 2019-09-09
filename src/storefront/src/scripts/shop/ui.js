@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
+
 import { Mu, MuMx, attrToSelector, MuCtxSetterMixin } from '../mu';
 import { getGlobal } from '../util/window';
 import { UI_GLOBAL } from '../util/constants';
