@@ -1,6 +1,6 @@
 # LICENSE UPL 1.0
 #
-# Copyright (c) 1982-2019 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2019 Oracle and/or its affiliates. All rights reserved.
 # 
 resource "oci_core_virtual_network" "mushopVCN" {
   cidr_block     = "10.1.0.0/16"
