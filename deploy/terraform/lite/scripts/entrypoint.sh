@@ -1,8 +1,7 @@
 #!/bin/bash
-# LICENSE UPL 1.0
-#
 # Copyright (c) 2019 Oracle and/or its affiliates. All rights reserved.
-#
+# The Universal Permissive License (UPL), Version 1.0
+# 
 # Description: Starts Mushop "Monolite".
 # Return codes: 0 = 
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.

@@ -1,7 +1,6 @@
-# LICENSE UPL 1.0
-#
 # Copyright (c) 2019 Oracle and/or its affiliates. All rights reserved.
-#
+# The Universal Permissive License (UPL), Version 1.0
+# 
 
 # creates an ATP database
 resource "oci_database_autonomous_database" "mushop_autonomous_database" {
