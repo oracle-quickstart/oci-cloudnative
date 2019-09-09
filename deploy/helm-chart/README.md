@@ -10,9 +10,9 @@ The `mushop` Helm chart can be used to install all components of the MuShop to t
 
 ## Mock Installation
 
-For local installation without OCI, use the following:
+For an installation without using the OCI services, use the following:
 
-```text
+```bash
 helm install mushop --name mymushop \
     --set global.mock.service=all
 ```
@@ -79,39 +79,13 @@ helm install --name cert-manager --namespace cert-manager jetstack/cert-manager
 For prod/test installation, you can use the `values-prod.yaml` or `values-test.yaml` and call Helm install and pass in the values file:
 
 ```bash
-helm install --dry-run --debug mushop -f /mushop/values-prod.yaml --name mymushop \
-    --set carts.secrets.oadbPassword=xxxxxx \
-    --set carts.secrets.trustPass=xxxxxx \
-    --set carts.secrets.keyPass=xxxxxx \
-    --set catalogue.secrets.oadbPassword=xxxxxx \
-    --set orders.secrets.oadbPassword=xxxxxx \
-    --set orders.secrets.trustPass=xxxxxx \
-    --set orders.secrets.keyPass=xxxxxx \
-    --set secrets.oci.compartmentId=<your compartment id> \
-    --set secrets.oci.tenantId=<your tenant id> \
-    --set secrets.oci.fingerprint=<api_key fingerprint> \
-    --set secrets.oci.userId=<your user id> \
-    --set secrets.oci.region=<your region> \
-    --set secrets.oci.passphrase=<api_key passphrase>
+helm install --dry-run --debug mushop -f /mushop/values-prod.yaml --name mymushop
 ```
 
 ## Creating all/individual YAML files
 
-If you don't want to deploy the charts, you can also render the template and get all YAML files by running the `template` command and providing an output directory:
+If you don't want to deploy the charts, you can also render the template and get all YAML files by running the `template` command,  providing an output directory and the values file to use.
 
 ```bash
-helm template mushop --output-dir [SOME_DIR] --name mymushop \
-    --set carts.secrets.oadbPassword=xxxxxx \
-    --set carts.secrets.trustPass=xxxxxx \
-    --set carts.secrets.keyPass=xxxxxx \
-    --set catalogue.secrets.oadbPassword=xxxxxx \
-    --set orders.secrets.oadbPassword=xxxxxx \
-    --set orders.secrets.trustPass=xxxxxx \
-    --set orders.secrets.keyPass=xxxxxx \
-    --set secrets.oci.compartmentId=<your compartment id> \
-    --set secrets.oci.tenantId=<your tenant id> \
-    --set secrets.oci.fingerprint=<api_key fingerprint> \
-    --set secrets.oci.userId=<your user id> \
-    --set secrets.oci.region=<your region> \
-    --set secrets.oci.passphrase=<api_key passphrase>
+helm template mushop --output-dir [SOME_DIR] -f [VALUES_FILE] --name mymushop
 ```
