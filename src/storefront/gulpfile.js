@@ -1,7 +1,7 @@
 const gulp     = require('gulp'),
   fs           = require('fs'),
   path         = require('path'),
-  util         = require('gulp-util'),
+  argv         = require('minimist')(process.argv.slice(2)),
   less         = require('gulp-less'),
   header       = require('gulp-header'),
   rev          = require('gulp-rev'),
@@ -82,7 +82,7 @@ gulp.task('styles', function() {
 
 gulp.task('scripts', function() {
   const wpconf = require('./webpack.config');
-  const { production } = util.env;
+  const { production } = argv;
   return gulp.src('src/scripts/*.js')
     .pipe(webpack({
       ...wpconf,
