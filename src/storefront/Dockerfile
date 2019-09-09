@@ -34,6 +34,7 @@ RUN rm -rf /tmp/node_modules
 WORKDIR /usr/src/app
 COPY src src
 COPY *.js* ./
+COPY VERSION VERSION
 
 ENV NODE_ENV "production"
 RUN npm run build

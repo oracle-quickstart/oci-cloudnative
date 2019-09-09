@@ -41,6 +41,7 @@ RUN rm -rf /tmp/node_modules
 WORKDIR /app/storefront
 COPY src/storefront/src src
 COPY src/storefront/*.js* ./
+COPY src/storefront/VERSION VERSION
 
 ARG STATIC_ASSET_URL
 ENV STATIC_ASSET_URL ${STATIC_ASSET_URL:-""}
