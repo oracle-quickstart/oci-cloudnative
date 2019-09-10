@@ -10,3 +10,48 @@ source:
   reference: 63403427
 
 locale: "en"
+
+variableGroups:
+  - title: "Mushop - Free Tier"
+    variables:
+      - ${num_nodes}
+      - ${availability_domain}
+      - ${database_name}
+      - ${ssh_public_key}
+    visible: true
+  - title: "Global"
+    variables:
+      - ${tenancy_ocid}
+      - ${region}
+      - ${compartment_ocid}
+    visible: false
+
+variables:
+  num_nodes:
+    type: enum
+    enum:
+    - "1"
+    - "2"
+    title: "Node Count"
+    description: "Choose the number of compute instances to deploy"
+    required: true
+  
+  availability_domain:
+    type: integer
+    title: "Availability Domain"
+    description: "Select AD"
+    minimum: 1
+    maximum: 3
+    required: true
+
+  database_name:
+    type: string
+    title: "Database Name"
+    description: "Name your Autonomous Database Instance"
+    required: false
+
+  ssh_public_key:
+    type: string
+    title: "SSH Public Key"
+    description: "Public key for the SSH key pair, that you will use to connect to your compute instance"
+    required: false
