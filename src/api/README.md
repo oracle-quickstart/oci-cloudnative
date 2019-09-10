@@ -1,5 +1,5 @@
 
-# MuShop Backend App
+# MuShop Storefront API
 
 ---
 Storefront backend written in [Node.js](https://nodejs.org/en/) orchestrating
