@@ -21,85 +21,88 @@ block article
 
       header.uk-text-center
         //- Title
-        h1.uk-article-title= shopInfo.storeName + " CloudNative Demo"
+        h1.uk-article-title= "About " + shopInfo.storeName
 
-      div.uk-article-body(mu-service-chart)
-        div
+      div.uk-article-body(mu-service-chart mu-cloak)
+        //- full version
+        div(mu-if="!basic")
           p.uk-text-lead
             | Welcome to MuShop! This application was developed in order to 
             | demonstrate a cloud native approach of microservices delivered
             | with <b>Oracle Cloud Infrastructure</b>. Below is a view of the holistic 
             | application architecture and services.
+          //- full service diagram
+          div.tm-ratio.tm-ratio-2-1
+            div.mu-tech.mu-tech-oci.uk-animation-fade(mu-tech-box="OCI" mu-hide="hide.oci")
+              img.mu-tech-img.uk-position-top-right(uk-img data-src="images/tech/oci.png")
+            div.mu-tech.mu-tech-oke.uk-animation-fade(mu-tech-box="OKE" mu-hide="hide.oke")
+              img.mu-tech-img.uk-position-bottom-left(uk-img data-src="images/tech/k8s.png")
+            div.mu-tech.mu-tech-edge.uk-animation-fade(mu-tech-box="EDGE" mu-hide="hide.edge")
+            figure(mu-chart options="services.chart" onInit="initChart")
 
-        //- h2.uk-text-center Service Diagram
-        div.tm-ratio.tm-ratio-2-1
-          div.mu-tech.mu-tech-oci.uk-animation-fade(mu-tech-box="OCI" mu-hide="hide.oci")
-            img.mu-tech-img.uk-position-top-right(uk-img data-src="images/tech/oci.png")
-          div.mu-tech.mu-tech-oke.uk-animation-fade(mu-tech-box="OKE" mu-hide="hide.oke")
-            img.mu-tech-img.uk-position-bottom-left(uk-img data-src="images/tech/k8s.png")
-          div.mu-tech.mu-tech-edge.uk-animation-fade(mu-tech-box="EDGE" mu-hide="hide.edge")
-          figure(mu-chart options="services.chart" onInit="initChart")
+          h2.uk-text-center Additional Information
+          div.uk-overflow-auto
+            ul.uk-child-width-expand(uk-tab)
+              li.uk-active
+                a Services
+              li
+                a Assumptions
+
+            ul.uk-switcher
+              li
+                table(class="uk-table mu-service-table " +
+                  "uk-table-responsive " +
+                  "uk-table-divider " +
+                  "uk-table-striped")
+                  thead
+                    tr
+                      th
+                      th Service
+                      th Type
+                      th Infrastructure
+                      th Detail
+                  tbody
+                    tr(mu-each="services.list" mu-each-as="svc")
+                      td
+                        img.tm-grayscale(mu-attr mu-attr-src="svc.type.icon" mu-attr-alt="svc.name" uk-img)
+                      td(mu-html="svc.name")
+                      td(mu-html="svc.type.name")
+                      td(mu-html="svc.tech.name")
+                      td ...
+              
+              li
+                table(class="uk-table " +
+                  "uk-table-justify " +
+                  "uk-table-responsive " +
+                  "uk-table-divider " +
+                  "uk-table-striped")
+                  tbody
+                    tr
+                      th Subscribe
+                      td Email subscriptions are mocked, and no emails will be sent to addresses entered on the site
+                      td.uk-text-muted
+                        span.uk-label.uk-label-warning mock
+                    tr
+                      th CMS
+                      td A CMS system is intentionally omitted from the demo app
+                      td.uk-text-muted
+                        +icon('ban')
+                    tr
+                      th Search
+                      td Search/Filter functionality has been limited to the client only
+                      td
+                        span.uk-label.uk-label-warning client-side
+                    tr
+                      th Reviews
+                      td Reviews are a normal part of eCommerce, but removed here for simplicity
+                      td.uk-text-muted
+                        +icon('ban')
         
-        h2.uk-text-center Additional Information
-        div.uk-overflow-auto
-          ul.uk-child-width-expand(uk-tab)
-            li.uk-active
-              a Services
-            li
-              a Services (Other)
-            li
-              a Assumptions
-
-          ul.uk-switcher
-            li
-              table(class="uk-table mu-service-table " +
-                "uk-table-responsive " +
-                "uk-table-divider " +
-                "uk-table-striped")
-                thead
-                  tr
-                    th
-                    th Service
-                    th Type
-                    th Infrastructure
-                    th Detail
-                tbody
-                  tr(mu-each="services.list" mu-each-as="svc")
-                    td
-                      img.tm-grayscale(mu-attr mu-attr-src="svc.type.icon" mu-attr-alt="svc.name" uk-img)
-                    td(mu-html="svc.name")
-                    td(mu-html="svc.type.name")
-                    td(mu-html="svc.tech.name")
-                    td ...
-              //- div(mu-debug="services.list")
-            li
-              p.uk-text-muted TODO...
-            li
-              table(class="uk-table " +
-                "uk-table-justify " +
-                "uk-table-responsive " +
-                "uk-table-divider " +
-                "uk-table-striped")
-                tbody
-                  tr
-                    th Subscribe
-                    td Email subscriptions are mocked, and no emails will be sent to addresses entered on the site
-                    td.uk-text-muted
-                      span.uk-label.uk-label-warning mock
-                  tr
-                    th CMS
-                    td A CMS system is intentionally omitted from the demo app
-                    td.uk-text-muted
-                      +icon('ban')
-                  tr
-                    th Search
-                    td Search/Filter functionality has been limited to the client only
-                    td
-                      span.uk-label.uk-label-warning client-side
-                  tr
-                    th Reviews
-                    td Reviews are a normal part of eCommerce, but removed here for simplicity
-                    td.uk-text-muted
-                      +icon('ban')
-
-            
+        //- basic version
+        div(mu-if="basic")
+          p.uk-text-lead
+            | Welcome to MuShop! This application was developed in order to
+            | demonstrate the use of services offered by <b>Oracle Cloud Infrastructure</b>.
+            | Below is a diagram of the basic architecture and services.
+          div
+            img(uk-img data-src="/images/tech/basic.png")

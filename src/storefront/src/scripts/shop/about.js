@@ -25,9 +25,14 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
 
   onMount() {
     super.onMount();
-    this.render({
-      initChart: this.handleChart.bind(this),
-    }).then(() => this.setOptions());
+    this.mu.config.get()
+      .then(config => this.render({
+        basic: !!Object.keys(config.mockMode || {}).filter(s => config.mockMode[s]).length,
+        mocked: config.mockMode,
+        initChart: this.handleChart.bind(this),
+      }))
+      .then(() => this.setOptions());
+    
   }
 
   chartData() {
