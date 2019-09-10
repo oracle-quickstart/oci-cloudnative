@@ -1,6 +1,6 @@
 # Build
 
-- Clone MuShop
+- Clone https://github.com/oracle/oci-quickstart-cloudnative
 - From the root of the repo exeucte the command:
  `docker build -t mushop-lite-mono -f deploy/monolith-lite/Dockerfile .`
 
