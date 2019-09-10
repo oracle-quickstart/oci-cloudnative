@@ -1,0 +1,18 @@
+extends /layouts/_embed
+
+block vars
+  -
+    page = {
+      title: shopInfo.storeName
+    }
+
+block embed
+
+  div(mu-service-chart)
+    div.tm-ratio.tm-ratio-2-1
+      div.mu-tech.mu-tech-oci.uk-animation-fade(mu-tech-box="OCI" mu-hide="hide.oci")
+        img.mu-tech-img.uk-position-top-right(uk-img data-src="images/tech/oci.png")
+      div.mu-tech.mu-tech-oke.uk-animation-fade(mu-tech-box="OKE" mu-hide="hide.oke")
+        img.mu-tech-img.uk-position-bottom-left(uk-img data-src="images/tech/k8s.png")
+      div.mu-tech.mu-tech-edge.uk-animation-fade(mu-tech-box="EDGE" mu-hide="hide.edge")
+      figure(mu-chart options="services.chart" onInit="initChart")

@@ -1,0 +1,87 @@
+# Copyright 2019, Oracle Corporation and/or its affiliates. All rights reserved.
+#
+# Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
+#
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalogue
+  labels:
+    name: catalogue
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: catalogue
+  template:
+    metadata:
+      labels:
+        name: catalogue
+    spec:
+      terminationGracePeriodSeconds: 5
+      containers:
+        - name: catalogue
+          image: phx.ocir.io/intvravipati/mushop/catalogue:1.1
+          command: ["/app"]
+          args:
+          - -port=80
+          ports:
+          - containerPort: 80
+          env:
+          - name: ZIPKIN
+            value: zipkin.jaeger.svc.cluster.local
+          - name: OADB_USER
+            valueFrom:
+              secretKeyRef:
+                name: atp-secret
+                key: catalogue_oadb_user
+          - name: OADB_PW
+            valueFrom:
+              secretKeyRef:
+                name: atp-secret
+                key: catalogue_oadb_pw
+          - name: OADB_SERVICE
+            valueFrom:
+              secretKeyRef:
+                name: atp-secret
+                key: catalogue_oadb_service 
+          securityContext:
+            capabilities:
+              drop:
+                - all
+              add:
+                - NET_BIND_SERVICE
+            readOnlyRootFilesystem: true
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 300
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 180
+            periodSeconds: 3          
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalogue
+  labels:
+    name: catalogue
+spec:
+  ports:
+    # the port that this service should serve on
+  - port: 80
+    targetPort: 80
+  selector:
+    name: catalogue
