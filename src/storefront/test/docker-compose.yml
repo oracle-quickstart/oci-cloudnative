@@ -10,7 +10,7 @@ services:
   # Storefront API service (node)
   api:
     build:
-      context: ../api
+      context: ../../api
       dockerfile: ./Dockerfile
     image: mushop/api
     hostname: api
