@@ -6,7 +6,7 @@ These are Terraform modules that deploy MuShop demo on [Oracle Cloud Infrastruct
 
 ## Deployment
 
-* [lite](lite) deploys the lite version of MuShop, light enough to run on the Always Free tier. Deploys the UI (Storefront), API service and the Catalogue service connected to the ATP.
+* [lite](deploy/terraform/lite) deploys the lite version of MuShop, light enough to run on the Always Free tier. Deploys the UI (Storefront), API service and the Catalogue service connected to the ATP.
 
 Please follow the instructions in [lite](deploy/terraform/lite) folders to deploy.
 
