@@ -1,3 +1,7 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+ 
 extends /layouts/_account
 
 block vars
@@ -12,9 +16,3 @@ block account
   div(class="uk-grid-collapse " +
             "tm-products-list"
       uk-grid)
-    //- each product in products
-      if product.isAddedToFavorites
-        +product(product)
-
-
-

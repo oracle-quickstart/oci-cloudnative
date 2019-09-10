@@ -131,11 +131,7 @@ export class CartController {
           update: this.update.bind(this, pMap[item.itemId]),
           remove: this.remove.bind(this, pMap[item.itemId]),
         }
-      })))
-      // .catch(() => {
-      //   this.empty(); // fire delete and reload
-      //   return this.contents(); // resolve promise
-      // });
+      })));
     return this.combinedData;
   }
 }
