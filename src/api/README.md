@@ -40,10 +40,6 @@ services for consumption by the microservices [web application](../storefront)
 
 ### Docker
 
-`make image`
-
-### Docker Compose
-
 `make up`
 
 ## Run
@@ -54,13 +50,13 @@ services for consumption by the microservices [web application](../storefront)
 
 ### Docker
 
-`make server`
+`make up`
 
 ## Use
 
 ### Node
 
-`curl http://localhost:8081`
+`curl http://localhost:3000`
 
 ### Docker Compose
 
