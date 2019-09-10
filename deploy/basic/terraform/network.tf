@@ -6,17 +6,19 @@ resource "oci_core_virtual_network" "mushopVCN" {
   compartment_id = "${var.compartment_ocid}"
   display_name   = "mushop-${random_id.mushop_id.dec}"
   dns_label      = "mushop${random_id.mushop_id.dec}"
+  freeform_tags  = "${local.common_tags}"
 }
 
 resource "oci_core_subnet" "mushopSubnet" {
-  cidr_block          = "10.1.20.0/24"
-  display_name        = "mushop-${random_id.mushop_id.dec}"
-  dns_label           = "mushop${random_id.mushop_id.dec}"
-  security_list_ids   = ["${oci_core_security_list.mushopSecurityList.id}"]
-  compartment_id      = "${var.compartment_ocid}"
-  vcn_id              = "${oci_core_virtual_network.mushopVCN.id}"
-  route_table_id      = "${oci_core_route_table.mushopRT.id}"
-  dhcp_options_id     = "${oci_core_virtual_network.mushopVCN.default_dhcp_options_id}"
+  cidr_block        = "10.1.20.0/24"
+  display_name      = "mushop-${random_id.mushop_id.dec}"
+  dns_label         = "mushop${random_id.mushop_id.dec}"
+  security_list_ids = ["${oci_core_security_list.mushopSecurityList.id}"]
+  compartment_id    = "${var.compartment_ocid}"
+  vcn_id            = "${oci_core_virtual_network.mushopVCN.id}"
+  route_table_id    = "${oci_core_route_table.mushopRT.id}"
+  dhcp_options_id   = "${oci_core_virtual_network.mushopVCN.default_dhcp_options_id}"
+  freeform_tags     = "${local.common_tags}"
 }
 
 
@@ -24,6 +26,7 @@ resource "oci_core_internet_gateway" "mushopIG" {
   compartment_id = "${var.compartment_ocid}"
   display_name   = "mushop-IG-${random_id.mushop_id.dec}"
   vcn_id         = "${oci_core_virtual_network.mushopVCN.id}"
+  freeform_tags  = "${local.common_tags}"
 }
 
 
@@ -32,6 +35,7 @@ resource "oci_core_route_table" "mushopRT" {
   compartment_id = "${var.compartment_ocid}"
   vcn_id         = "${oci_core_virtual_network.mushopVCN.id}"
   display_name   = "mushop-RT-${random_id.mushop_id.dec}"
+  freeform_tags  = "${local.common_tags}"
 
   route_rules {
     destination       = "0.0.0.0/0"

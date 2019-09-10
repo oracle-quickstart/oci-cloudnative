@@ -105,8 +105,8 @@ RUN yum update -y && \
   yum clean all && \
   rm -rf /var/cache/yum
 
-COPY deploy/monolith-lite/httpd.conf /etc/httpd/conf/
-COPY deploy/monolith-lite/entrypoint.sh /
+COPY deploy/basic/httpd.conf /etc/httpd/conf/
+COPY deploy/basic/entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
 #    ----- Base Image ------  #
@@ -128,9 +128,10 @@ COPY --from=catalogue-builder /catalogue /app/catalogue/catalogue
 RUN mkdir /package && GZIP=-9 tar cvzf /package/mushop-lite-mono.tar.gz /app /images
 
 # Create ORM package
-COPY deploy/terraform/lite /lite
-COPY deploy/monolith-lite/httpd.conf /lite/scripts
-COPY deploy/monolith-lite/entrypoint.sh /lite/scripts
+COPY deploy/basic/terraform /lite
+COPY src/catalogue/dbdata/atp_mushop_catalogue.sql /lite/scripts
+COPY deploy/basic/httpd.conf /lite/scripts
+COPY deploy/basic/entrypoint.sh /lite/scripts
 RUN cp /package/mushop-lite-mono.tar.gz /lite/scripts && \
     cd /lite && zip -r /package/mushop-lite-mono-stack.zip .
 

@@ -4,7 +4,8 @@
 resource "oci_core_security_list" "mushopSecurityList" {
   compartment_id = "${var.compartment_ocid}"
   vcn_id         = "${oci_core_virtual_network.mushopVCN.id}"
-  display_name   = "mushopSecurityList"
+  display_name   = "mushop-${random_id.mushop_id.dec}"
+  freeform_tags  = "${local.common_tags}"
 
   egress_security_rules = [
     {

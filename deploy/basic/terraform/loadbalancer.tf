@@ -5,6 +5,7 @@ resource "oci_load_balancer_load_balancer" "mushop_lb" {
   shape          = "${local.lb_shape}"
   subnet_ids     = ["${oci_core_subnet.mushopSubnet.id}"]
   is_private     = "false"
+  freeform_tags  = "${local.common_tags}"
 
 }
 
@@ -22,7 +23,7 @@ resource "oci_load_balancer_backend_set" "mushop-bes" {
 }
 
 resource "oci_load_balancer_backend" "mushop-be" {
-  count            = "${local.num_nodes}"
+  count            = "${var.num_nodes}"
   load_balancer_id = "${oci_load_balancer_load_balancer.mushop_lb.id}"
   backendset_name  = "${oci_load_balancer_backend_set.mushop-bes.name}"
   ip_address       = "${element(oci_core_instance.app-instance.*.private_ip, count.index)}"
