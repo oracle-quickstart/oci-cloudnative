@@ -69,7 +69,7 @@ locals  {
   lb_shape = "10Mbps-Micro"
 
   common_tags = {
-    created_by = "Created by OCI QuickStart for Free Tier"
+    created_by = "OCI QuickStart for Free Tier"
   }
 
 }
