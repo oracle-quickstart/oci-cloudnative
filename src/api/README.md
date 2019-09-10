@@ -7,9 +7,9 @@ services for consumption by the microservices [web application](../storefront)
 
 > Modified from original source by Weaveworks [microservices-demo](https://github.com/microservices-demo/front-end)
 
-# Build
+## Build
 
-## Dependencies
+### Dependencies
 
 <table>
   <thead>
@@ -34,62 +34,34 @@ services for consumption by the microservices [web application](../storefront)
   </tbody>
 </table>
 
-## Node
+### Node
 
 `npm install`
 
-## Docker
+### Docker
 
-`make test-image`
+`make image`
 
-## Docker Compose
+### Docker Compose
 
 `make up`
 
-# Test
+## Run
 
-**Make sure that the microservices are up & running**
-
-## Unit & Functional tests:
-
-```
-make test
-```
-
-## End-to-End tests:
-  
-To make sure that the test suite is running against the latest (local) version with your changes, you need to manually build
-the image, run the container and attach it to the proper Docker networks.
-There is a make task that will do all this for you:
-
-```
-make dev
-```
-
-That will also tail the logs of the container to make debugging easy.
-Then you can run the tests with:
-
-```
-make e2e
-```
-
-# Run
-
-## Node
+### Node
 
 `npm start`
 
-## Docker
+### Docker
 
 `make server`
 
-# Use
+## Use
 
-## Node
+### Node
 
 `curl http://localhost:8081`
 
-## Docker Compose
+### Docker Compose
 
 `curl http://localhost:8080`
-
