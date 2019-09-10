@@ -22,5 +22,5 @@ services:
       - STATIC_MEDIA_URL
       - NODE_ENV=development
     ports:
-      - "8080:80"
+      - "8080:3000"
   
