@@ -76,7 +76,7 @@ outputs:
   comments:
     type: string
     title: "Comments"
-    displayText: "The application URL will be unavailable for a few minutes after provisioning, while the application bootstraps"
+    displayText: "The application URL will be unavailable for a few minutes after provisioning, while the application is configured"
     visible: true
   
 primaryOutputButton: ${lb_public_url}

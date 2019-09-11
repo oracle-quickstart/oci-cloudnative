@@ -17,7 +17,7 @@ output "dev" {
 }
 
 output "comments" {
-  value = "The application URL will be unavailable for a few minutes after provisioning, while the application bootstraps"
+  value = "The application URL will be unavailable for a few minutes after provisioning, while the application is configured"
 }
 
 
