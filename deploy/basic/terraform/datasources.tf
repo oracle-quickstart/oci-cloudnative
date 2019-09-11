@@ -40,10 +40,3 @@ data "oci_database_autonomous_database_wallet" "autonomous_database_wallet" {
   base64_encode_content  = "false"
 
 }
-
-resource "local_file" "autonomous_database_wallet_file" {
-
-  content  = "${data.oci_database_autonomous_database_wallet.autonomous_database_wallet.content}"
-  filename = "${path.module}/autonomous_database_wallet.zip"
-
-}
