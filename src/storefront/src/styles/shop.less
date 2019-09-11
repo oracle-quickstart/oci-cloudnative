@@ -19,6 +19,11 @@
 @fixed-footer-reveal-height: 200px;
 @fixed-footer-reveal-height-sm: 600px;
 
+header {
+  position: relative;
+  z-index: @sticky-z-index;
+}
+
 main {
   display: block;
   position: relative;
@@ -56,11 +61,17 @@ main {
 // Logo
 // ========
 .uk-logo {
+  @media(max-width: @breakpoint-small) {
+    padding: 0 @global-xsmall-gutter 0 0 !important;
+  }
   img, svg {
     height: @logo-default-img-height;
     width: auto;
     @media(max-width: @breakpoint-small) {
       height: @navbar-nav-logo-height-small !important;
+    }
+    @media(max-width: @breakpoint-small - 1) {
+      height: @navbar-nav-logo-height-xsmall !important;
     }
   }
 }
@@ -103,6 +114,15 @@ main {
 // ========================================================================
 
 .hook-button() { border-radius: @button-border-radius; }
+
+// Notification
+// ========================================================================
+
+.uk-notification {
+  @media(max-width: @breakpoint-small) {
+    top: @header-navbar-fixed-nav-item-height;
+  }
+}
 
 
 // Section
@@ -414,6 +434,18 @@ main {
     height: 15%;
     top: 33px;
     right: 68%;
+  }
+
+  &.mu-tech-compute {
+    top: 18%;
+    bottom: 18%;
+    left: 20%;
+    right: 20%;
+    height: auto;
+    img {
+      margin: -@global-small-margin/2;
+      max-height: 40px !important;
+    }
   }
 
   &.mu-tech-oci {
