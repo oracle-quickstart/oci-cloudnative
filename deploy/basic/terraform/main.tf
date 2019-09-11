@@ -7,7 +7,7 @@ data "template_file" "mushop" {
 
 resource "oci_core_instance" "app-instance" {
   count               = "${var.num_nodes}"
-  availability_domain = "${lookup(data.oci_identity_availability_domains.ADs.availability_domains[var.availability_domain - 1],"name")}"
+  availability_domain = "${var.availability_domain}"
   compartment_id      = "${var.compartment_ocid}"
   display_name        = "mushop-${random_id.mushop_id.dec}-${count.index}"
   shape               = "${local.instance_shape}"
