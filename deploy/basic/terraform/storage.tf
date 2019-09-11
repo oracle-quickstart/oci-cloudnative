@@ -95,12 +95,12 @@ resource "oci_objectstorage_preauthrequest" "entrypoint_preauth" {
   object = "${oci_objectstorage_object.entrypoint.object}"
 }
 
-resource "oci_objectstorage_object" "mushop_lite" {
+resource "oci_objectstorage_object" "mushop_basic" {
   #Required
   bucket    = "${oci_objectstorage_bucket.mushop.name}"
-  content   = "${file("./scripts/mushop-lite-mono.tar.gz")}"
+  content   = "${file("./scripts/mushop-basic.tar.gz")}"
   namespace = "${data.oci_objectstorage_namespace.user_namespace.namespace}"
-  object    = "mushop_lite"
+  object    = "mushop_basic"
 
 }
 
@@ -113,7 +113,7 @@ resource "oci_objectstorage_preauthrequest" "mushop_lite_preauth" {
   time_expires = "${timeadd(timestamp(), "30m")}"
 
   #Optional
-  object = "${oci_objectstorage_object.mushop_lite.object}"
+  object = "${oci_objectstorage_object.mushop_basic.object}"
 }
 
 
