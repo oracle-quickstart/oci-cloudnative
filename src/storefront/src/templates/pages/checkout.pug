@@ -89,11 +89,15 @@ block checkout
                   div(class="uk-grid-small uk-child-width-1-1 uk-child-width-1-2@s"
                       uk-grid)
 
-                    div.uk-text-small
+                    div
+                      p.uk-text-danger
+                        +icon('warning')(class="uk-margin-small-right")
+                        span Not available
+
+                    div.uk-text-small.uk-text-muted
                       div.uk-text-bolder= shopInfo.storeName + " headquarters"
                       div!= shopInfo.address
                       div= shopInfo.openingHours
-                
 
           //- Payment
           section
@@ -124,7 +128,7 @@ block checkout
                   section
                     div(mu-user-payment editing="false" onCard="onCard")
                   section
-                    p.uk-text-warning
+                    p.uk-text-danger
                       +icon('warning')(class="uk-margin-small-right")
                       span Electronic payment options coming soon
 

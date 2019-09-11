@@ -51,7 +51,7 @@ export class CartController {
       .then(this.load)
       .then(() => ui.notification(`${name} added to cart!`, {
         status: 'success',
-        timeout: 2e3
+        timeout: 102e3
       }));
   }
 
