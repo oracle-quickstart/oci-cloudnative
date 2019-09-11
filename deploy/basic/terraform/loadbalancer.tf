@@ -3,7 +3,7 @@ resource "oci_load_balancer_load_balancer" "mushop_lb" {
   compartment_id = "${var.compartment_ocid}"
   display_name   = "mushop-${random_id.mushop_id.dec}"
   shape          = "${local.lb_shape}"
-  subnet_ids     = ["${oci_core_subnet.mushopSubnet.id}"]
+  subnet_ids     = ["${oci_core_subnet.mushopLBSubnet.id}"]
   is_private     = "false"
   freeform_tags  = "${local.common_tags}"
 
