@@ -38,7 +38,7 @@ resource "oci_load_balancer_backend" "mushop-be" {
   weight           = 1
 }
 
-resource "oci_load_balancer_listener" "test_listener" {
+resource "oci_load_balancer_listener" "mushop_listener" {
   #Required
 
   load_balancer_id         = "${oci_load_balancer_load_balancer.mushop_lb.id}"

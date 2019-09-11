@@ -10,7 +10,7 @@ output "instance_public_ip" {
 }
 
 output "instance_public_url" {
-  value = "${format("https://%s", oci_load_balancer_load_balancer.mushop_lb.ip_address_details)}"
+  value = "${format("https://%s", lookup(oci_load_balancer_load_balancer.mushop_lb.ip_address_details[0],"ip_address"))}"
 }
 
 output "autonomous_database_password" {
