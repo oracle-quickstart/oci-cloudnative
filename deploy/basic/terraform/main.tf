@@ -6,16 +6,17 @@ data "template_file" "mushop" {
 }
 
 resource "oci_core_instance" "app-instance" {
-  count               = "${local.num_nodes}"
-  availability_domain = "${lookup(data.oci_identity_availability_domains.ADs.availability_domains[local.availability_domain - 1],"name")}"
+  count               = "${var.num_nodes}"
+  availability_domain = "${var.availability_domain}"
   compartment_id      = "${var.compartment_ocid}"
   display_name        = "mushop-${random_id.mushop_id.dec}-${count.index}"
   shape               = "${local.instance_shape}"
+  freeform_tags       = "${local.common_tags}"
 
   create_vnic_details {
     subnet_id        = "${oci_core_subnet.mushopSubnet.id}"
     display_name     = "primaryvnic"
-    assign_public_ip = true
+    assign_public_ip = false
     hostname_label   = "mushop-${random_id.mushop_id.dec}-${count.index}"
   }
 
@@ -66,5 +67,9 @@ locals  {
   num_nodes = 2
 
   lb_shape = "10Mbps-Micro"
+
+  common_tags = {
+    created_by = "OCI QuickStart for Free Tier"
+  }
 
 }

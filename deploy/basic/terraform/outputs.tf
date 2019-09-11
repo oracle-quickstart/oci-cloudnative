@@ -5,6 +5,14 @@ output "Mushop" {
   value = "${oci_load_balancer_load_balancer.mushop_lb.ip_address_details}"
 }
 
+output "instance_public_ip" {
+  value = "${oci_load_balancer_load_balancer.mushop_lb.ip_address_details}"
+}
+
+output "instance_public_url" {
+  value = "${format("https://%s", lookup(oci_load_balancer_load_balancer.mushop_lb.ip_address_details[0],"ip_address"))}"
+}
+
 output "autonomous_database_password" {
   value = "${random_string.autonomous_database_wallet_password.result}"
 }
