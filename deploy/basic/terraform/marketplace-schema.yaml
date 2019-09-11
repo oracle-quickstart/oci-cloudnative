@@ -1,15 +1,9 @@
-title: "MuShop Always Free Quickstart Demo"
+title: "Three-tier web application using Always Free resources"
 description: "A demo eCommerce example app using Always Free Oracle Cloud Infrastructure"
 schemaVersion: 1.1.0
 version: "20190304"
-
-logoUrl: "https://cloudmarketplace.oracle.com/marketplace/content?contentId=63403497"
-
-source:
-  type: marketplace
-  reference: 
-
 locale: "en"
+
 groupings:
   - title: "General Configuration"
     visible: false
@@ -17,16 +11,12 @@ groupings:
     - compartment_ocid
     - tenancy_ocid
     - region
-    - mp_listing_id
-    - mp_listing_resource_id
-    - mp_listing_resource_version
 
-  - title: "MuShop Configuration"
+  - title: "General Configuration"
     variables:
     - database_name
     - num_nodes
     - availability_domain
-    - compute_shape
 
   - title: "Optional Configuration"
     variables:
@@ -37,8 +27,8 @@ variables:
     type: oci:identity:compartment:id
     # type: string
     required: true
-    title: "MuShop Compartment"
-    description: "The compartment in which to create MuShop instance(s)"
+    title: "Compartment"
+    description: "The compartment in which to create compute instance(s)"
 
   availability_domain:
     type: oci:identity:availabilitydomain:name
@@ -49,48 +39,26 @@ variables:
     title: "Availability Domain"
     description: "Availability Domain"
 
-  compute_shape:
-    type: oci:core:instanceshape:name
-    default: "VM.Standard.E2.1.Micro"
-    #type: string
-    title: "Compute Shape"
+  num_nodes:
+    type: enum
+    enum:
+    - "1"
+    - "2"
+    title: "Node Count"
+    description: "Choose the number of compute instances to deploy"
     required: true
-    dependsOn:
-      compartmentId: ${compartment_ocid}
-      imageId: ${mp_listing_resource_id}
 
-  mp_listing_id:
-    type: string    
-    required: true    
-    description: "Marketplace Listing ID"
-
-  mp_listing_resource_id:
-    type: oci:core:image:id
-    required: true
-    description: "Marketplace Image OCID"
-    dependsOn:
-      compartmentId: ${compartment_ocid} 
-
-  mp_listing_resource_version:
-    type: string
-    required: true
-    description: "Marketplace Listing package version"
 
 outputGroups:
   - title: "Output Group"
     outputs:
-      - ${instance_public_ip}
-      - ${instance_id}
+      - ${lb_public_url}
 
 outputs:
-  instance_public_url:
-    type: link
-    title: MuShop VM
-    visible: false
 
-  instance_public_ip:
+  lb_public_url:
     type: link
-    title: Public IP
+    title: Open
     visible: true
   
   autonomous_database_password:
@@ -105,4 +73,4 @@ outputs:
     displayText: "Made with \u2764 by Oracle A-Team"
     visible: true
   
-primaryOutputButton: ${instance_public_url}
+primaryOutputButton: ${lb_public_url}
