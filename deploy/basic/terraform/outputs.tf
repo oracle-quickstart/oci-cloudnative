@@ -16,4 +16,8 @@ output "dev" {
   value = "Made with \u2764 by Oracle A-Team"
 }
 
+output "comments" {
+  value = "The application URL will be unavailable for a few minutes after provisioning, while the application bootstraps"
+}
+
 
