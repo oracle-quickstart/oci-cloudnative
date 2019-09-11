@@ -19,6 +19,10 @@ resource "oci_load_balancer_backend_set" "mushop-bes" {
     protocol            = "HTTP"
     response_body_regex = ".*"
     url_path            = "/"
+    return_code         = 200
+    interval_ms         = 10000
+    timeout_in_millis   = 2000
+    retries             = 10
   }
 }
 
