@@ -35,3 +35,7 @@ To know more about how you can use this sample to build your own applications, c
 Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
 
 The Universal Permissive License (UPL), Version 1.0
+
+[oci]: https://cloud.oracle.com/en_US/cloud-infrastructure
+[orm]: https://docs.cloud.oracle.com/iaas/Content/ResourceManager/Concepts/resourcemanager.htm
+[tf]: https://www.terraform.io
