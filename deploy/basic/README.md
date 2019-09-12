@@ -1,4 +1,4 @@
-![MuShop Logo](../..//images/logo.png)
+![MuShop Logo](../../images/logo.png)
 
 This is a Terraform configuration that deploys the MuShop Basic demo on [Oracle Cloud Infrastructure (OCI)][oci]. 
 
@@ -7,7 +7,7 @@ MuShop Basic is a sample 3-tier web application that implements an e-commerce si
 ## Topology
 
 The application uses a typical topology for a 3-tier web application as follows
-![MuShop Lite Infra](../../images/basic/00-Topology.png)
+![MuShop Basic Infra](../../images/basic/00-Topology.png)
 
 ### Components
 

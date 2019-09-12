@@ -25,6 +25,11 @@ MuShop is a sample 3-tier web application that implements an e-commerce site. It
   - All the resources will be created, and the URL to the load balancer will be displayed.
   - Note that the application is being deployed to the compute instances asynchronously, and it may take a couple of minutes for the URL to serve the application.
 
+The following diagram shows the topology created by this stack.
+![MuShop Basic Infra](../../images/basic/00-Topology.png)
+
+To know more about how you can use this sample to build your own applications, click [here](./deploy/basic/README.md)
+
 ## License
 
 Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
