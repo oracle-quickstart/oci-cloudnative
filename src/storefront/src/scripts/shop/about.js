@@ -240,8 +240,9 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
     const cats = categories.map(c => c.name);
     // assign nodes to categories
     data.forEach(node => {
-      const { name } = (isBasic ? node.basic : node.tech);
-      node.category = cats.indexOf(name);
+      const tech = (isBasic ? node.basic : node.tech);
+      node.category = cats.indexOf(tech.name);
+      node.techref = tech;
     });
 
     // determine links
