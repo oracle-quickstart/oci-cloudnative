@@ -2,23 +2,23 @@
 
 - Clone https://github.com/oracle/oci-quickstart-cloudnative
 - From the root of the repo exeucte the command:
- `docker build -t mushop-lite-mono -f deploy/monolith-lite/Dockerfile .`
+ `docker build -t mushop-basic -f deploy/basic/Dockerfile .`
 
 # [Docker] Run
 
-- `docker run --rm -it -p 80:80 -p 3000:3000 -p 3005:3005 mushop-lite-mono:latest`
+- `docker run --rm -it -p 80:80 -p 3000:3000 -p 3005:3005 mushop-basic:latest`
 
 # [Docker] Run with the wallet extracted locally
 
-- `docker run --rm -it -v $PWD/Wallet_Creds:/usr/lib/oracle/19.3/client64/lib/network/admin/ -e "OADB_USER=catalogue_user" -e "OADB_PW=default_Password1" -e "OADB_SERVICE=mcatalogue_tp" -p 80:80 -p 3000:3000 -p 3005:3005 mushop-lite-mono:latest`
+- `docker run --rm -it -v $PWD/Wallet_Creds:/usr/lib/oracle/19.3/client64/lib/network/admin/ -e "OADB_USER=catalogue_user" -e "OADB_PW=default_Password1" -e "OADB_SERVICE=mcatalogue_tp" -p 80:80 -p 3000:3000 -p 3005:3005 mushop-basic:latest`
 
 # [Monolith] Copy generated App Zip Package for VM
 
-- `docker run -v $PWD:/transfer --rm --entrypoint cp mushop-lite-mono:latest /package/mushop-lite-mono.tar.gz /transfer/mushop-lite-mono.tar.gz`
+- `docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic.tar.gz /transfer/mushop-basic.tar.gz`
 
 # [Monolith] Copy generated Generate Stack Zip Package for the ORM
 
-- `docker run -v $PWD:/transfer --rm --entrypoint cp mushop-lite-mono:latest /package/mushop-lite-mono-stack.zip /transfer/mushop-lite-mono-stack.zip`
+- `docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic.zip /transfer/mushop-basic.zip`
 
 
 ## Monolith VM requirements:
