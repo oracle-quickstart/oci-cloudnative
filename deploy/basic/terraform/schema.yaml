@@ -1,0 +1,82 @@
+title: "Three-tier web application using Always Free resources"
+description: "A demo eCommerce example app using Always Free Oracle Cloud Infrastructure"
+schemaVersion: 1.1.0
+version: "20190304"
+locale: "en"
+
+groupings:
+  - title: "General Configuration"
+    visible: false
+    variables:
+    - compartment_ocid
+    - tenancy_ocid
+    - region
+
+  - title: "General Configuration"
+    variables:
+    - database_name
+    - num_nodes
+    - availability_domain
+
+  - title: "Optional Configuration"
+    variables:
+    - ssh_public_key
+
+variables:
+  compartment_ocid:
+    type: oci:identity:compartment:id
+    # type: string
+    required: true
+    title: "Compartment"
+    description: "The compartment in which to create compute instance(s)"
+
+  availability_domain:
+    type: oci:identity:availabilitydomain:name
+    dependsOn:
+      compartmentId: ${compartment_ocid}
+    required: true
+    default: 3
+    title: "Availability Domain"
+    description: "Availability Domain"
+
+  num_nodes:
+    type: enum
+    enum:
+    - "1"
+    - "2"
+    title: "Node Count"
+    description: "Choose the number of compute instances to deploy"
+    required: true
+
+
+outputGroups:
+  - title: "Output Group"
+    outputs:
+      - ${lb_public_url}
+
+outputs:
+
+  lb_public_url:
+    type: link
+    title: Open
+    visible: true
+  
+  autonomous_database_password:
+    type: string
+    title: "Database Password"
+    displayText: "Autonomous Database Password"
+    visible: true
+  
+  dev:
+    type: string
+    title: "Message"
+    displayText: "Made with \u2764 by Oracle A-Team"
+    visible: true
+  
+  comments:
+    type: string
+    title: "Comments"
+    displayText: "The application URL will be unavailable for a few minutes after provisioning, while the application is configured"
+    visible: true
+  
+primaryOutputButton: ${lb_public_url}

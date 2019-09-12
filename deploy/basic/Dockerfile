@@ -125,15 +125,15 @@ COPY --from=api-builder /app/api /app/api
 COPY --from=catalogue-builder /catalogue /app/catalogue/catalogue
 
 # Create zip package of the Apps and local images
-RUN mkdir /package && GZIP=-9 tar cvzf /package/mushop-lite-mono.tar.gz /app /images
+RUN mkdir /package && GZIP=-9 tar cvzf /package/mushop-basic.tar.gz /app /images
 
 # Create ORM package
 COPY deploy/basic/terraform /lite
 COPY src/catalogue/dbdata/atp_mushop_catalogue.sql /lite/scripts
 COPY deploy/basic/httpd.conf /lite/scripts
 COPY deploy/basic/entrypoint.sh /lite/scripts
-RUN cp /package/mushop-lite-mono.tar.gz /lite/scripts && \
-    cd /lite && zip -r /package/mushop-lite-mono-stack.zip .
+RUN cp /package/mushop-basic.tar.gz /lite/scripts && \
+    cd /lite && zip -r /package/mushop-basic.zip .
 
 VOLUME ["/usr/lib/oracle/${oracleClientVersion}/client64/lib/network/admin/"]
 VOLUME ["/transfer/"]
