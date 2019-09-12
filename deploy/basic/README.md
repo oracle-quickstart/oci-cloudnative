@@ -28,24 +28,15 @@ The application uses a typical topology for a 3-tier web application as follows
 ## Build
 
 - Clone https://github.com/oracle/oci-quickstart-cloudnative
-- From the root of the repo exeucte the command:
+- From the root of the repo execute the command:
   
  `docker build -t mushop-basic -f deploy/basic/Dockerfile .`
 
-### Running & Testing locally
-
-You can run the application locally on docker, connecting to an ATP instance in OCI.
-
-- Download the credentials to [your Autonomous Database](https://docs.cloud.oracle.com/iaas/Content/Database/Tasks/adbconnecting.htm)
-- unzip the credentials to `Wallet_Creds`.
-- Now run
-
-`docker run --rm -it -v $PWD/Wallet_Creds:/usr/lib/oracle/19.3/client64/lib/network/admin/ -e "OADB_USER=catalogue_user" -e "OADB_PW=default_Password1" -e "OADB_SERVICE=mcatalogue_tp" -p 80:80 -p 3000:3000 -p 3005:3005 mushop-basic:latest`
-
-
-## Generate Stack Zip Package for OCI Resource Manager
+- Generate Stack Zip Package for OCI Resource Manager
 
 `docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic.zip /transfer/mushop-basic.zip`
+
+This creates a `.zip` file in your working directory that can be imported in to OCI Resource Manager.
 
 [oci]: https://cloud.oracle.com/en_US/cloud-infrastructure
 [orm]: https://docs.cloud.oracle.com/iaas/Content/ResourceManager/Concepts/resourcemanager.htm
