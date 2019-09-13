@@ -4,7 +4,9 @@
 
 This is a Terraform configuration that deploys the MuShop application demo on [Oracle Cloud Infrastructure (OCI)][oci]. 
 
-MuShop is a 3-tier web application that implements an e-commerce site. It is built to showcase the features of [Oracle Cloud Infrastructure (OCI)][oci]. This application is designed to run using only the Always Free tier resources. This repository contains the application code as well as the [Terraform][tf] code to create a [Resource Manager][orm] stack. This stack creates all the required resources and configures the application on the created resources.
+MuShop is a 3-tier web application that implements an e-commerce site. It is built to showcase the features of [Oracle Cloud Infrastructure (OCI)][oci]. This application is designed to run using only the Always Free tier resources. 
+The repository contains the application code as well as the [Terraform][tf] code to create a [Resource Manager][orm] stack, 
+that creates all the required resources and configures the application on the created resources.
 
 | ![home](./images/screenshot/mushop.home.png) | ![browse](./images/screenshot/mushop.browse.png) | ![cart](./images/screenshot/mushop.cart.png) | ![about](./images/screenshot/mushop.about.png) |
 |---|---|---|---|
@@ -14,7 +16,7 @@ MuShop is a 3-tier web application that implements an e-commerce site. It is bui
 The steps below guide you through deploying the application on your tenancy using the OCI Resource Manager.
 
 1. Download the latest [`mushop-basic-stack.zip`](./releases/mushop-basic-stack.zip) file.
-2. [Login](https://console.us-phoenix-1.oraclecloud.com/resourcemanager/stacks/create) to OCI to import the stack
+2. [Login](https://console.us-phoenix-1.oraclecloud.com/resourcemanager/stacks/create) to Oracle Cloud Infrastructure to import the stack
     > `Home > Solutions & Platform > Resource Manager > Stacks > Create Stack`
 3. Upload the `mushop-basic-stack.zip` file that was downloaded earlier, and provide a name and description for the stack
 4. Configure the stack

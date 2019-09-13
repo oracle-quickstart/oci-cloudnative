@@ -5,8 +5,8 @@ This is a Terraform configuration that deploys the MuShop application demo on [O
 MuShop is a 3-tier web application that implements an e-commerce site. 
 It is built to showcase the features of [Oracle Cloud Infrastructure (OCI)][oci].
 This application is designed to run using only the Always Free tier resources. 
-This repository contains the application code as well as the [Terraform][tf] code to create a [Resource Manager][orm] stack.
-This stack creates all the required resources and configures the application on the created resources.
+The repository contains the application code as well as the [Terraform][tf] code to create a [Resource Manager][orm] stack, 
+that creates all the required resources and configures the application on the created resources.
 
 ## Topology
 
