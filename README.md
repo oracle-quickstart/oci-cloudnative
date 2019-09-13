@@ -15,10 +15,10 @@ that creates all the required resources and configures the application on the cr
 
 The steps below guide you through deploying the application on your tenancy using the OCI Resource Manager.
 
-1. Download the latest [`mushop-basic-stack_v1.0.0.zip`](./releases/mushop-basic-stack_v1.0.0.zip) file.
+1. Download the latest [`mushop-v1.0.0-basic-stack.zip`](./releases/mushop-v1.0.0-basic-stack.zip) file.
 2. [Login](https://console.us-phoenix-1.oraclecloud.com/resourcemanager/stacks/create) to Oracle Cloud Infrastructure to import the stack
     > `Home > Solutions & Platform > Resource Manager > Stacks > Create Stack`
-3. Upload the `mushop-basic-stack_v1.0.0.zip` file that was downloaded earlier, and provide a name and description for the stack
+3. Upload the `mushop-v1.0.0-basic-stack.zip` file that was downloaded earlier, and provide a name and description for the stack
 4. Configure the stack
    1. **Database Name** - You can choose to provide a database name (optional)
    2. **Node Count** - Select if you want to deploy one or two application instances.
