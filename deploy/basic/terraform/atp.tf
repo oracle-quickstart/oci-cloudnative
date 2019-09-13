@@ -11,7 +11,7 @@ resource "oci_database_autonomous_database" "mushop_autonomous_database" {
   data_storage_size_in_tbs = 1
   db_name                  = "${var.database_name}${random_id.mushop_id.dec}"
   freeform_tags            = "${local.common_tags}"
-  
+  is_free_tier             = true
 
   #Optional
 
