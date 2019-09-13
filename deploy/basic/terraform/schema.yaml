@@ -37,7 +37,7 @@ variables:
     required: true
     default: 3
     title: "Availability Domain"
-    description: "Availability Domain"
+    description: "The availability domain in the selected region, where you want to deploy the resources"
 
   num_nodes:
     type: enum
@@ -45,8 +45,22 @@ variables:
     - "1"
     - "2"
     title: "Node Count"
+    default: "2"
     description: "Choose the number of compute instances to deploy"
     required: true
+
+  database_name:
+    type: string
+    required: true
+    title: "Database Name"
+    description: "The name for the Autonomous Database instance"
+    default: "mushop"
+
+  ssh_public_key:
+    type: string
+    required: false
+    title: "SSH Public Key"
+    description: "The public SSH key for the key-pair that you want to use, if you wish to login to the instances over SSH"
 
 
 outputGroups:
