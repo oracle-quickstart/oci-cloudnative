@@ -34,24 +34,54 @@ MUSHOP_APP_URI=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j
 WALLET_URI=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".wallet_par")
 
 # get artifacts from object storage
-wget -O /root/wallet.zip $${WALLET_URI}
-wget -O /root/catalogue.sql $${CATALOGUE_SQL_URI}
-wget -O /etc/httpd/conf/httpd.conf $${APACHE_CONF_URI}
-wget -O /root/entrypoint.sh $${ENTRYPOINT_URI}
-
+http_status=$(curl -w '%%{http_code}' -L -s -o /root/wallet.zip $${WALLET_URI})
+if [ "$http_status" != "200" ]; then
+    echo "Retrying $${WALLET_URI}"
+    sleep 10
+    curl -L -o /root/wallet.zip $${WALLET_URI}
+fi
 # Setup ATP wallet files
 unzip /root/wallet.zip -d /usr/lib/oracle/19.3/client64/lib/network/admin/
 
 # Init DB
+http_status=$(curl -w '%%{http_code}' -L -s -o /root/catalogue.sql $${CATALOGUE_SQL_URI})
+if [ "$http_status" != "200" ]; then
+    echo "Retrying $${CATALOGUE_SQL_URI}"
+    sleep 10
+    curl -L -o /root/catalogue.sql $${CATALOGUE_SQL_URI}
+fi
 sqlplus admin/$${ATP_PW}@$${ATP_DB_NAME}_tp @/root/catalogue.sql
 
+# Get http server config
+http_status=$(curl -w '%%{http_code}' -L -s -o /etc/httpd/conf/httpd.conf $${APACHE_CONF_URI})
+if [ "$http_status" != "200" ]; then
+    echo "Retrying $${APACHE_CONF_URI}"
+    sleep 10
+    curl -L -o /etc/httpd/conf/httpd.conf $${APACHE_CONF_URI}
+fi
+sleep 10
+
+#Get binaries
+http_status=$(curl -w '%%{http_code}' -L -s -o /root/mushop-bin.tar.gz $${MUSHOP_APP_URI})
+if [ "$http_status" != "200" ]; then
+    echo "Retrying $${MUSHOP_APP_URI}"
+    sleep 10
+    curl -L -o /root/mushop-bin.tar.gz $${MUSHOP_APP_URI}
+fi
+tar zxvf /root/mushop-bin.tar.gz -C /
+
+# setup init script
+http_status=$(curl -w '%%{http_code}' -L -s -o /root/entrypoint.sh $${ENTRYPOINT_URI})
+if [ "$http_status" != "200" ]; then
+    echo "Retrying $${ENTRYPOINT_URI} "
+    sleep 10
+    curl -L -o /root/entrypoint.sh $${ENTRYPOINT_URI}
+fi
+chmod +x /root/entrypoint.sh
+
+# Setup app variables
 export OADB_USER=catalogue_user
 export OADB_PW=default_Password1
 export OADB_SERVICE=$${ATP_DB_NAME}_tp
-
-wget -O /root/mushop-bin.tar.gz $${MUSHOP_APP_URI}
-tar zxvf /root/mushop-bin.tar.gz -C /
-
-chmod +x /root/entrypoint.sh
 cd /root
 /root/entrypoint.sh >/root/mushop.log 2>&1 &
