@@ -38,7 +38,7 @@ The application uses a typical topology for a 3-tier web application as follows
 
 - Generate Stack Zip Package for OCI Resource Manager
 
-`docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic.zip /transfer/mushop-basic.zip`
+`docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic.zip /transfer/mushop-basic-stack.zip`
 
 This creates a `.zip` file in your working directory that can be imported in to OCI Resource Manager.
 
