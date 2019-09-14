@@ -18,9 +18,9 @@ resource "oci_load_balancer_backend_set" "mushop-bes" {
     port                = "80"
     protocol            = "HTTP"
     response_body_regex = ".*"
-    url_path            = "/"
+    url_path            = "/api/health"
     return_code         = 200
-    interval_ms         = 10000
+    interval_ms         = 5000
     timeout_in_millis   = 2000
     retries             = 10
   }
