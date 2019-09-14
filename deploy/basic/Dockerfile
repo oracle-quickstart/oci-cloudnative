@@ -3,10 +3,10 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
-##### Oracle Instant Client version
+# Oracle Instant Client version
 ARG oracleClientVersion=19.3
 
-##### Node version
+# Node version
 ARG nodeVersion=10
 
 ###############################
@@ -90,7 +90,7 @@ RUN GO111MODULE=on GOARCH=amd64 GOOS=linux \
 #      Everything needed      #
 ###############################
 
-##### Base image with Oracle Instant Client Basic Lite
+# Base image with Oracle Instant Client Basic Lite
 FROM oraclelinux:7-slim AS base
 ARG oracleClientVersion
 ARG nodeVersion
@@ -111,7 +111,12 @@ RUN chmod +x /entrypoint.sh
 
 #    ----- Base Image ------  #
 
-##### Runtime Image
+###############################
+#  ----- Runtime Image -----  #
+#   runtime app and stack     #
+###############################
+
+# Runtime Image
 FROM base
 ARG oracleClientVersion
 ARG nodeVersion
@@ -128,12 +133,12 @@ COPY --from=catalogue-builder /catalogue /app/catalogue/catalogue
 RUN mkdir /package && GZIP=-9 tar cvzf /package/mushop-basic.tar.gz /app /images
 
 # Create ORM package
-COPY deploy/basic/terraform /lite
-COPY src/catalogue/dbdata/atp_mushop_catalogue.sql /lite/scripts
-COPY deploy/basic/httpd.conf /lite/scripts
-COPY deploy/basic/entrypoint.sh /lite/scripts
-RUN cp /package/mushop-basic.tar.gz /lite/scripts && \
-    cd /lite && zip -r /package/mushop-basic.zip .
+COPY deploy/basic/terraform /basic
+COPY src/catalogue/dbdata/atp_mushop_catalogue.sql /basic/scripts
+COPY deploy/basic/httpd.conf /basic/scripts
+COPY deploy/basic/entrypoint.sh /basic/scripts
+RUN cp /package/mushop-basic.tar.gz /basic/scripts && \
+    cd /basic && zip -r /package/mushop-basic-stack.zip .
 
 VOLUME ["/usr/lib/oracle/${oracleClientVersion}/client64/lib/network/admin/"]
 VOLUME ["/transfer/"]
@@ -141,3 +146,5 @@ ENTRYPOINT ["/entrypoint.sh"]
 EXPOSE 80
 EXPOSE 3000
 EXPOSE 3005
+
+#    ----- Base Image ------  #
