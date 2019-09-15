@@ -1,12 +1,30 @@
 #!/bin/bash
 # Copyright (c) 2019 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
-# 
+#
 #
 # Description: Sets up Mushop "Monolite".
-# Return codes: 0 = 
+# Return codes: 0 =
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
-# 
+#
+
+get_object() {
+    out_file=$1
+    os_uri=$2
+    success=1
+    for i in $(seq 1 9); do
+        echo "trying ($i) $2"
+        http_status=$(curl -w '%%{http_code}' -L -s -o $1 $2)
+        if [ "$http_status" -eq "200" ]; then
+            success=0
+            echo "saved to $1"
+            break 
+        else
+             sleep 15
+        fi
+    done
+    return $success
+}
 
 # Configure firewall
 firewall-offline-cmd --add-port=80/tcp
@@ -34,49 +52,25 @@ MUSHOP_APP_URI=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j
 WALLET_URI=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".wallet_par")
 
 # get artifacts from object storage
-http_status=$(curl -w '%%{http_code}' -L -s -o /root/wallet.zip $${WALLET_URI})
-if [ "$http_status" != "200" ]; then
-    echo "Retrying $${WALLET_URI}"
-    sleep 10
-    curl -L -o /root/wallet.zip $${WALLET_URI}
-fi
+get_object /root/wallet.zip $${WALLET_URI}
 # Setup ATP wallet files
 unzip /root/wallet.zip -d /usr/lib/oracle/19.3/client64/lib/network/admin/
 
 # Init DB
-http_status=$(curl -w '%%{http_code}' -L -s -o /root/catalogue.sql $${CATALOGUE_SQL_URI})
-if [ "$http_status" != "200" ]; then
-    echo "Retrying $${CATALOGUE_SQL_URI}"
-    sleep 10
-    curl -L -o /root/catalogue.sql $${CATALOGUE_SQL_URI}
-fi
+get_object /root/catalogue.sql $${CATALOGUE_SQL_URI}
 sqlplus admin/$${ATP_PW}@$${ATP_DB_NAME}_tp @/root/catalogue.sql
 
 # Get http server config
+get_object /etc/httpd/conf/httpd.conf $${APACHE_CONF_URI}
 http_status=$(curl -w '%%{http_code}' -L -s -o /etc/httpd/conf/httpd.conf $${APACHE_CONF_URI})
-if [ "$http_status" != "200" ]; then
-    echo "Retrying $${APACHE_CONF_URI}"
-    sleep 10
-    curl -L -o /etc/httpd/conf/httpd.conf $${APACHE_CONF_URI}
-fi
-sleep 10
+
 
 #Get binaries
-http_status=$(curl -w '%%{http_code}' -L -s -o /root/mushop-bin.tar.gz $${MUSHOP_APP_URI})
-if [ "$http_status" != "200" ]; then
-    echo "Retrying $${MUSHOP_APP_URI}"
-    sleep 10
-    curl -L -o /root/mushop-bin.tar.gz $${MUSHOP_APP_URI}
-fi
+get_object /root/mushop-bin.tar.gz $${MUSHOP_APP_URI}
 tar zxvf /root/mushop-bin.tar.gz -C /
 
 # setup init script
-http_status=$(curl -w '%%{http_code}' -L -s -o /root/entrypoint.sh $${ENTRYPOINT_URI})
-if [ "$http_status" != "200" ]; then
-    echo "Retrying $${ENTRYPOINT_URI} "
-    sleep 10
-    curl -L -o /root/entrypoint.sh $${ENTRYPOINT_URI}
-fi
+get_object /root/entrypoint.sh $${ENTRYPOINT_URI}
 chmod +x /root/entrypoint.sh
 
 # Setup app variables
