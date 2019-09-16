@@ -62,8 +62,6 @@ sqlplus admin/$${ATP_PW}@$${ATP_DB_NAME}_tp @/root/catalogue.sql
 
 # Get http server config
 get_object /etc/httpd/conf/httpd.conf $${APACHE_CONF_URI}
-http_status=$(curl -w '%%{http_code}' -L -s -o /etc/httpd/conf/httpd.conf $${APACHE_CONF_URI})
-
 
 #Get binaries
 get_object /root/mushop-bin.tar.gz $${MUSHOP_APP_URI}
