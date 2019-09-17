@@ -1,12 +1,30 @@
 #!/bin/bash
 # Copyright (c) 2019 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
-# 
+#
 #
 # Description: Sets up Mushop "Monolite".
-# Return codes: 0 = 
+# Return codes: 0 =
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
-# 
+#
+
+get_object() {
+    out_file=$1
+    os_uri=$2
+    success=1
+    for i in $(seq 1 9); do
+        echo "trying ($i) $2"
+        http_status=$(curl -w '%%{http_code}' -L -s -o $1 $2)
+        if [ "$http_status" -eq "200" ]; then
+            success=0
+            echo "saved to $1"
+            break 
+        else
+             sleep 15
+        fi
+    done
+    return $success
+}
 
 # Configure firewall
 firewall-offline-cmd --add-port=80/tcp
@@ -34,24 +52,28 @@ MUSHOP_APP_URI=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j
 WALLET_URI=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".wallet_par")
 
 # get artifacts from object storage
-wget -O /root/wallet.zip $${WALLET_URI}
-wget -O /root/catalogue.sql $${CATALOGUE_SQL_URI}
-wget -O /etc/httpd/conf/httpd.conf $${APACHE_CONF_URI}
-wget -O /root/entrypoint.sh $${ENTRYPOINT_URI}
-
+get_object /root/wallet.zip $${WALLET_URI}
 # Setup ATP wallet files
 unzip /root/wallet.zip -d /usr/lib/oracle/19.3/client64/lib/network/admin/
 
 # Init DB
+get_object /root/catalogue.sql $${CATALOGUE_SQL_URI}
 sqlplus admin/$${ATP_PW}@$${ATP_DB_NAME}_tp @/root/catalogue.sql
 
+# Get http server config
+get_object /etc/httpd/conf/httpd.conf $${APACHE_CONF_URI}
+
+#Get binaries
+get_object /root/mushop-bin.tar.gz $${MUSHOP_APP_URI}
+tar zxvf /root/mushop-bin.tar.gz -C /
+
+# setup init script
+get_object /root/entrypoint.sh $${ENTRYPOINT_URI}
+chmod +x /root/entrypoint.sh
+
+# Setup app variables
 export OADB_USER=catalogue_user
 export OADB_PW=default_Password1
 export OADB_SERVICE=$${ATP_DB_NAME}_tp
-
-wget -O /root/mushop-bin.tar.gz $${MUSHOP_APP_URI}
-tar zxvf /root/mushop-bin.tar.gz -C /
-
-chmod +x /root/entrypoint.sh
 cd /root
 /root/entrypoint.sh >/root/mushop.log 2>&1 &
