@@ -6,10 +6,6 @@ variable "region" {}
 
 variable "compartment_ocid" {}
 
-# variable "instance_shape" {
-#   default = "VM.Standard.E2.1.Micro"
-# }
-
 variable "availability_domain" {
   default = 1
 }
@@ -17,10 +13,6 @@ variable "availability_domain" {
 variable "num_nodes" {
   default = 1
 }
-
-# variable "lb_shape" {
-#   default = "10Mbps-Micro"
-# }
 
 variable "database_name" {
   default = "mushop"
