@@ -48,7 +48,7 @@ func init() {
 
 func main() {
 	var (
-		port          = flag.String("port", getEnv("CATALOGUE_PORT", "80"), "Port to bind HTTP listener") // TODO(pb): should be -addr, default ":80"
+		port          = flag.String("port", getEnv("CATALOGUE_PORT", "80"), "Port to bind HTTP listener")
 		images        = flag.String("images", "./images/", "Image path")
 		connectString = flag.String("CONNECTSTRING", os.Getenv("OADB_USER")+"/"+os.Getenv("OADB_PW")+"@"+os.Getenv("OADB_SERVICE"), "Connection String: [username[/password]@][tnsname]]")
 		zip           = flag.String("zipkin", os.Getenv("ZIPKIN"), "Zipkin address")
