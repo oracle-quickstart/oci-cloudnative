@@ -22,9 +22,9 @@ services:
             - Wallet_Creds:/usr/lib/oracle/19.3/client64/lib/network/admin/
         environment:
             - reschedule=on-node-failure
-            - OADB_USER=catalogue_user
-            - OADB_PW=default_Password1
-            - OADB_SERVICE=mcatalogue_tp
+            - OADB_USER=${OADB_USER}
+            - OADB_PW=${OADB_PW}
+            - OADB_SERVICE=${OADB_SERVICE}
         ports:
             - "8080:80"
 
