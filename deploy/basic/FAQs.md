@@ -12,6 +12,11 @@
 
 2. **I get an error stating** `Permissions granted to the object storage service in this region are insufficient to execute this policy` **when I try to apply the terraform configuration.**
 
-    This is an edge case we are addressing and in the meantime, simply retrying the the `terraform apply` should resolve it.
+    This is an edge case we are addressing and in the meantime, simply retrying the `Terraform Actions > Apply` on the stack details page should resolve it.
+
+3. How do I delete the sample application and free up my resources ?
+
+   On Stack details page, click on `Terraform Actions > Destroy`. This will delete and free up all the resources that were created by the application.
+
 
 If you see something issue thats not listed here or have a question for us, please [open an issue](https://github.com/oracle/oci-quickstart-cloudnative/issues/new) and we will get back to you.
