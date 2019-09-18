@@ -44,6 +44,10 @@ lb_public_url = http://xxx.xxx.xxx.xxx
 
 > The application is being deployed to the compute instances asynchronously, and it may take a couple of minutes for the URL to serve the application.
 
+## Questions
+
+If you have an issue or a question, please take a look at our [FAQs](./deploy/basic/FAQs.md) or [open an issue](https://github.com/oracle/oci-quickstart-cloudnative/issues/new).
+
 ## Deployment Topology
 
 The following diagram shows the topology created by this stack.
