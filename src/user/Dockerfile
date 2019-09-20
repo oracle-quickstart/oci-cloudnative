@@ -1,8 +1,11 @@
-##### Oracle Instant Client version
+# Oracle Instant Client version
 ARG oracleClientVersion=19.3
 
-##### Node version
+# Node version
 ARG nodeVersion=10
+
+# Node ENV
+ARG nodeEnv
 
 ###############################
 #    ----- Base Image ------  #
@@ -24,31 +27,34 @@ RUN yum update -y && \
 ###############################
 #   ----- Build Image ------  #
 ###############################
-FROM base AS user-build
-
+FROM base AS node-build
+ARG nodeEnv
 RUN npm config set loglevel warn \
   && npm set progress=false
 
 # Install application dependencies
 COPY package*.json /tmp/
-RUN cd /tmp && npm ci
+RUN cd /tmp && npm install --no-optional
 RUN mkdir -p /usr/src/app && cp -a /tmp/node_modules /usr/src/app/
 RUN rm -rf /tmp/node_modules
 
-# Copy src
+# Copy files
 WORKDIR /usr/src/app
-COPY . .
+COPY *.js* ./
+COPY src src
+COPY schema schema
+COPY build.sh ./
+RUN chmod +x ./build.sh
 
 # Build
-RUN npm run build
-# RUN npm prune --production
+ENV NODE_ENV ${nodeEnv:-"production"}
+RUN ./build.sh
 
 ###############################
 #   ----- User Runtime -----  #
 ###############################
-FROM user-build
+FROM node-build
 VOLUME ["/usr/lib/oracle/${oracleClientVersion}/client64/lib/network/admin/"]
-ENV NODE_ENV "production"
 ENV PORT 3000
 EXPOSE 3000
 

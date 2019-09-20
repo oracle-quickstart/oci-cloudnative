@@ -1,4 +1,6 @@
 .DS_Store
-node_modules
-db
 .env
+node_modules
+Dockerfile
+docker-compose.yaml
+dist

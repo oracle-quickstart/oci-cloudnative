@@ -5,7 +5,12 @@
  * @see https://typeorm.io/#/using-ormconfig
  */
 
-const { OADB_SERVICE, OADB_USER, OADB_PW } = process.env;
+// read env
+const { OADB_SERVICE, OADB_USER, OADB_PW, NODE_ENV } = process.env;
+
+// determine opts
+const prod = /^prod/i.test(NODE_ENV || '');
+const useExt = prod ? 'js' : 'ts';
 
 module.exports = {
   type: 'oracle',
@@ -13,6 +18,6 @@ module.exports = {
   password: OADB_PW,
   connectString: OADB_SERVICE,
   entities: [
-    '**/*.entity{.ts,.js}',
+    `**/*.entity.${useExt}`,
   ],
 };
