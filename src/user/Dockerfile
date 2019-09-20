@@ -14,7 +14,7 @@ RUN yum update -y && \
   yum -y install oracle-release-el7 && \
   yum-config-manager --enable ol7_oracle_instantclient && \
   yum -y install oracle-instantclient${oracleClientVersion}-basiclite && \
-  yum install -y gcc-c++ make sudo zip && \
+  yum -y install sudo && \
   curl -sL https://rpm.nodesource.com/setup_${nodeVersion}.x | sudo -E bash - && \
   yum -y install nodejs && \
   yum clean all && \
@@ -41,7 +41,7 @@ COPY . .
 
 # Build
 RUN npm run build
-RUN npm prune --production
+# RUN npm prune --production
 
 ###############################
 #   ----- User Runtime -----  #
