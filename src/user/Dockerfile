@@ -13,16 +13,10 @@ ARG nodeEnv
 FROM oraclelinux:7-slim AS base
 ARG oracleClientVersion
 ARG nodeVersion
-RUN yum update -y && \
-  yum -y install oracle-release-el7 && \
-  yum-config-manager --enable ol7_oracle_instantclient && \
-  yum -y install oracle-instantclient${oracleClientVersion}-basiclite && \
-  yum -y install sudo && \
-  curl -sL https://rpm.nodesource.com/setup_${nodeVersion}.x | sudo -E bash - && \
-  yum -y install nodejs && \
-  yum clean all && \
+RUN yum -y install oracle-release-el7 oracle-nodejs-release-el7 && \
+  yum-config-manager --disable ol7_developer_EPEL && \
+  yum -y install oracle-instantclient${oracleClientVersion}-basiclite nodejs && \
   rm -rf /var/cache/yum
-
 
 ###############################
 #   ----- Build Image ------  #
