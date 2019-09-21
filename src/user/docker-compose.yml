@@ -18,8 +18,6 @@ services:
     volumes:
       - ./Wallet_Creds:/usr/lib/oracle/19.3/client64/lib/network/admin/:ro
       - ./src:/usr/src/app/src
-      - ./ormconfig.js:/usr/src/app/ormconfig.js
-      - ./package.json:/usr/src/app/package.json
     environment:
       - reschedule=on-node-failure
       - OADB_USER

@@ -117,6 +117,8 @@ Development mode includes dependencies for TypeScript, and developer facilities.
 
 ## Endpoints
 
+### REST
+
 The following table describes the high-level REST endpoints provided
 by this service.
 
@@ -129,3 +131,10 @@ by this service.
 | `/customers/:id/addresses`, | CRUD endpoints for customer **addresses** | `GET`, `POST` |
 | `/cards[/:id]`, | CRUD endpoints for **cards** | `GET`, `POST`, `PATCH`, `PUT`, `DELETE` |
 | `/addresses[/:id]`, | CRUD endpoints for **addresses** | `GET`, `POST`, `PATCH`, `PUT`, `DELETE` |
+
+### Other Endpoints
+
+| Endpoint | Description | Verb |
+|---|---|---|
+| `/health` | Readiness healthcheck | `GET` |
+| `/metrics` | Prometheus metrics endpoint | `GET` |

@@ -1,5 +1,6 @@
 .DS_Store
 .env
+Wallet_*
 node_modules
 Dockerfile
 docker-compose.yaml

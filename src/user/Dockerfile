@@ -47,7 +47,12 @@ RUN ./build.sh
 ###############################
 #   ----- User Runtime -----  #
 ###############################
-FROM node-build
+FROM base
+ARG nodeEnv
+ENV NODE_ENV ${nodeEnv:-"production"}
+WORKDIR /usr/src/app
+COPY --from=node-build /usr/src/app .
+
 VOLUME ["/usr/lib/oracle/${oracleClientVersion}/client64/lib/network/admin/"]
 ENV PORT 3000
 EXPOSE 3000
