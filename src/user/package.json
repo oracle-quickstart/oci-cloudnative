@@ -27,6 +27,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@digikare/nestjs-prom": "^0.2.1",
     "@godaddy/terminus": "^4.2.0",
     "@nestjs/common": "^6.7.1",
     "@nestjs/core": "^6.7.1",
@@ -41,6 +42,7 @@
     "oracledb": "^4.0.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
+    "prom-client": "^11.5.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.5.2",
     "typeorm": "^0.2.19"
