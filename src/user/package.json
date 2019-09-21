@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "MuShop Node.js Users Service",
   "author": "Oracle",
-  "license": "MIT",
+  "license": "UPL-1.0",
   "scripts": {
     "build": "rimraf dist && tsc -p tsconfig.build.json",
     "schema:user": "npm run typeorm -- query \"$(./schema/atp.init.sh)\"",
