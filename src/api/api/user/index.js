@@ -1,3 +1,7 @@
+/**
+ * Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
 (function() {
     'use strict';
 
@@ -30,15 +34,12 @@
 
     // Designed to be blocked by WAF
     app.get("/customers", function(req, res) {
-        // helpers.simpleHttpRequest(endpoints.customersUrl, res, next);
         res.json(mock.response('customer', mock.Customers));
     });
     app.get("/addresses", function(req, res) {
-        // helpers.simpleHttpRequest(endpoints.addressUrl, res, next);
         res.json(mock.response('address', mock.Addresses));
     });
     app.get("/cards", function(req, res) {
-        // helpers.simpleHttpRequest(endpoints.cardsUrl, res, next);
         res.json(mock.response('card', mock.Cards));
     });
 
@@ -60,7 +61,6 @@
                     const addr = data._embedded.address.pop();
                     return res.json(addr);
                 }
-                // TODO: deprecate 200 => 500 in client
                 return res.json({ status_code: 500 });
             }).catch(next);
     });
@@ -78,7 +78,6 @@
                         number: card.longNum.slice(-4),
                     });
                 }
-                // TODO: deprecate 200 => 500 in client
                 return res.json({ status_code: 500 });
             }).catch(next);
     });
@@ -116,10 +115,6 @@
         try {
             const { status, data: user } = await axios.post(endpoints.registerUrl, req.body);
 
-            // TODO: fix merge cart
-            // const cartId = helpers.getCartId(req);
-            // await axios.get(`${endpoints.cartsUrl}/${user.id}/merge?sessionId=${sessionId}`).catch(() => {/* noop */});
-
             helpers.setAuthenticated(req, res, user.id)
                 .status(status)
                 .json({ id: user.id });
@@ -137,10 +132,6 @@
                     authorization: req.get('authorization'),
                 }
             });
-
-            // TODO: fix merge cart
-            // const cartId = helpers.getCartId(req);
-            // await axios.get(`${endpoints.cartsUrl}/${user.id}/merge?sessionId=${sessionId}`).catch(() => {/* noop */});
 
             helpers.setAuthenticated(req, res, user.id)
                 .status(200)

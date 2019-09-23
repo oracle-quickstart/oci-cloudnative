@@ -1,8 +1,14 @@
+/**
+ * Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
+
 import { Mu, MuMx, attrToSelector } from '../mu';
 import { ShopMxSubscriber } from './helper/subscriber';
 import { ViewTemplateMixin } from './helper/viewmx';
 import { MxCtxInsulator } from './helper/mixins';
 import { MUSHOP } from './constants';
+import { getGlobal } from '../util/window';
 
 export class UserController {
   constructor() {
@@ -142,6 +148,7 @@ export const USER_MU = {
   ADDRESS: 'mu-user-address',
   PAYMENT: 'mu-user-payment',
   CUSTOMER: 'mu-customer',
+  CONSENT: 'mu-user-consent',
 };
 
 
@@ -397,9 +404,52 @@ export class CustomerAccount extends MuMx.compose(null, UserViewMixin) {
 
 }
 
+export class UserConsent extends MuMx.compose(null, ViewTemplateMixin) {
+
+  onMount() {
+    super.onMount();
+    if (!this.consented()) {
+      console.log('alskdjf');
+      this.render({
+        consent: this.accept.bind(this),
+      });
+    }
+  }
+
+  consented(consent) {
+    const local = getGlobal('localStorage');
+    if (local) {
+      if (null == consent) {
+        // get
+        return !!local.getItem(USER_MU.CONSENT);
+      } else {
+        // set
+        local.setItem(USER_MU.CONSENT, consent);
+        return this;
+      }
+    }
+  }
+
+  dismiss() {
+    // dismiss
+    const { ui: { kit } } = this.mu;
+    kit.alert(this.node).close();
+
+    const { parentNode } = this.node;
+    return parentNode && parentNode.removeChild(this.node);
+  }
+
+  accept() {
+    this.consented(true);
+    this.dismiss();
+  }
+
+}
+
 export default Mu.macro(MUSHOP.MACRO.USER, UserController)
   .micro(UserView, attrToSelector(USER_MU.VIEW))
   .micro(UserAddress, attrToSelector(USER_MU.ADDRESS))
   .micro(UserPayment, attrToSelector(USER_MU.PAYMENT))
   .micro(UserToolbar, attrToSelector(USER_MU.TOOLBAR))
+  .micro(UserConsent, attrToSelector(USER_MU.CONSENT))
   .micro(CustomerAccount, attrToSelector(USER_MU.CUSTOMER));

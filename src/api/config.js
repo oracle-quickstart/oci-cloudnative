@@ -1,3 +1,7 @@
+/**
+ * Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
 (function (){
   'use strict';
   
@@ -16,6 +20,10 @@
     CARTS: 'CARTS_URL',
     ORDERS: 'ORDERS_URL',
     USERS: 'USERS_URL',
+  };
+
+  const settingKeyMap = {
+    CDN: 'STATIC_MEDIA_URL',
   };
 
   module.exports = {
@@ -38,6 +46,7 @@
       return {
         session: sessionKeyMap,
         services: serviceUrlKeyMap,
+        setting: settingKeyMap,
       };
     },
     session: function() {

@@ -1,3 +1,10 @@
+#!make
+
+#
+# Copyright (c) 2019, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0
+#
+
 IMAGE=mushop-dev-storefront
 
 API=http://api:3000
@@ -23,7 +30,6 @@ start:
 		--name $(IMAGE)     		\
 		-v $$PWD:/usr/src/app   \
 		-e NODE_ENV=development \
-		-e STATIC_ASSET_URL="https://objectstorage.us-phoenix-1.oraclecloud.com/n/intvravipati/b/mushop-images/o/" \
 		-e API_PROXY=$(API) 		\
 		-e PORT=3000            \
 		-p 3000:3000            \
@@ -33,31 +39,11 @@ start:
 # Removes the development container
 clean:
 	@if [ $$(docker ps -a -q -f name=$(IMAGE) | wc -l) -ge 1 ]; then docker rm -f $(IMAGE); fi
-	# @if [ $$(docker images -q $(IMAGE) | wc -l) -ge 1 ]; then docker rmi $(IMAGE); fi
-
-chaos:
-	@docker stop ${PROJECT}_carts_1
+	@if [ $$(docker images -q $(IMAGE) | wc -l) -ge 1 ]; then docker rmi $(IMAGE); fi
 
 # Builds the Docker image used for running tests
 test-image:
 	@docker build -t $(IMAGE) -f test/Dockerfile .
-
-# Runs unit tests in Docker
-# test: test-image
-# 	@docker run              \
-# 		--rm                   \
-# 		-it                    \
-# 		-v $$PWD:/usr/src/app  \
-# 		$(IMAGE) /usr/local/bin/npm test
-
-# Runs integration tests in Docker
-# e2e: test-image
-# 	@docker run              \
-# 		--rm                   \
-# 		-it                    \
-# 		--network mutest_default \
-# 		-v $$PWD:/usr/src/app  \
-# 		$(IMAGE) /usr/src/app/test/e2e/runner.sh
 
 kill-services:
 	@docker-compose -p $(PROJECT) -f test/docker-compose.yml down

@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
+
 import { Mu, MuMx } from '../mu';
 import { MuCtxSingleAttrMixin, MuCtxAttrMixin, MuCtxInheritOnly, MxCtxAttrRefresh } from '../bindings';
 import { attrToSelector } from '../util';

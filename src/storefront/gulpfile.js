@@ -1,6 +1,9 @@
-const gulp         = require('gulp'),
-  util         = require('gulp-util'),
+const gulp     = require('gulp'),
+  fs           = require('fs'),
+  path         = require('path'),
+  argv         = require('minimist')(process.argv.slice(2)),
   less         = require('gulp-less'),
+  header       = require('gulp-header'),
   rev          = require('gulp-rev'),
   revReplace   = require('gulp-rev-replace'),
   sync         = require('browser-sync'),
@@ -8,7 +11,7 @@ const gulp         = require('gulp'),
   del          = require('del'),
   imagemin     = require('gulp-imagemin'),
   pngquant     = require('imagemin-pngquant'),
-  mozjpeg     = require('imagemin-mozjpeg'),
+  mozjpeg      = require('imagemin-mozjpeg'),
   cache        = require('gulp-cache'),
   autoprefixer = require('autoprefixer'),
   postcss      = require('gulp-postcss'),
@@ -24,13 +27,23 @@ const opt = {
   buildDir: 'build'
 };
 
+const scriptBanner = [
+  '/**',
+  `* Copyright © ${new Date().getFullYear()}, Oracle and/or its affiliates. All rights reserved.`,
+  '* The Universal Permissive License (UPL), Version 1.0',
+  '*/'
+].join('\n');
+
+// load ci version
+const VERSION = fs.readFileSync(path.join(__dirname, 'VERSION')).toString();
+
 // HTML
 const pugOpt = {
   basedir: 'src/templates',
   doctype: 'html',
   pretty: true,
   locals: {
-    version: pkg.version,
+    version: VERSION,
   }
 };
 
@@ -58,6 +71,7 @@ gulp.task('styles', function() {
     // .pipe(concat('style.css'))
     .pipe(postcss([autoprefixer()]))
     .pipe(csso())
+    .pipe(header(scriptBanner))
     .pipe(gulp.dest(`${opt.buildDir}/styles`))
     .pipe(sync.stream({
       once: true
@@ -68,7 +82,7 @@ gulp.task('styles', function() {
 
 gulp.task('scripts', function() {
   const wpconf = require('./webpack.config');
-  const { production } = util.env;
+  const { production } = argv;
   return gulp.src('src/scripts/*.js')
     .pipe(webpack({
       ...wpconf,
