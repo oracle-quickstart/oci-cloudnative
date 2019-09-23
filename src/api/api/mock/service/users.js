@@ -1,3 +1,7 @@
+/**
+ * Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
 const crypto = require('crypto');
 const helpers = require('../../../helpers');
 const config = require('../../../config');
