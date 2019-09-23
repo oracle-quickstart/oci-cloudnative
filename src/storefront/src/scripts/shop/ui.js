@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
+
 import { Mu, MuMx, attrToSelector, MuCtxSetterMixin } from '../mu';
 import { getGlobal } from '../util/window';
 import { UI_GLOBAL } from '../util/constants';
@@ -25,11 +30,6 @@ export class MuUi {
 
 const UkComponentAttr = 'mu-uk-component';
 export class UKComponent extends MuMx.compose(null, [MuCtxSetterMixin, UkComponentAttr]) {
-  // onMount() {
-  //   this.mu.ui.kit.update(this.node);
-  //   return super.onMount && super.onMount();
-  // }
-
 
   onDispose() {
     super.onDispose();

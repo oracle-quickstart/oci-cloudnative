@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
+
 import { Mu, MuMx } from '../../mu';
 import { MuCtxSetterMixin, MxCtxAttrRefresh } from '../../mu/bindings';
 import { ShopMxSubscriber } from '../helper/subscriber';

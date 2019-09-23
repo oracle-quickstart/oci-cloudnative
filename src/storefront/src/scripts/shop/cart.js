@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
+
 import { Mu, MuMx, MuCtxSetterMixin } from '../mu';
 import { ShopMxSubscriber } from './helper/subscriber';
 import { Badge } from './components/badge';
@@ -126,11 +131,7 @@ export class CartController {
           update: this.update.bind(this, pMap[item.itemId]),
           remove: this.remove.bind(this, pMap[item.itemId]),
         }
-      })))
-      // .catch(() => {
-      //   this.empty(); // fire delete and reload
-      //   return this.contents(); // resolve promise
-      // });
+      })));
     return this.combinedData;
   }
 }

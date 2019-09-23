@@ -1,3 +1,7 @@
+/**
+ * Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
 /* ========================================================================
    UIKit
  ========================================================================== */
@@ -26,21 +30,29 @@
 @inverse-global-color:                          #fff;
 @inverse-global-muted-color:                    fade(@inverse-global-color, 80%);
 
+// classic O 
 @color-red:                                     #f80000;
 @color-green:                                   #3a913f;
 @color-blue:                                    #00758f;
-@color-burgundy:                                #942645;
 @color-orange:                                  #DE6C0A;
+@color-burgundy:                                #942645;
+// redwood
+@color-red:                                     #c54a39;
+@color-green:                                   #6b8f63;
+@color-blue:                                    #2C5968;
+@color-orange:                                  #e3a665;
+@color-burgundy:                                #7a3c4b;
+// rest
 @color-slate:                                   #8aadbf;
 @color-grey:                                    #939699;
 @color-highlight:                                 @color-orange;
-@color-hyperlink:                               #00758f;
+@color-hyperlink:                               @color-blue;
 @color-icon-muted:                              #5F5F5F;
 
 // incorporate brand
 @global-link-color:                               @color-hyperlink;
 @global-primary-background:                       @color-blue;
-@global-secondary-background:                   #000;
+@global-secondary-background:                   #312d2a; // redwood
 
 @global-success-background:                       @color-green;
 @global-warning-background:                       @color-orange;
@@ -233,6 +245,7 @@
 @navbar-nav-item-height:                        80px;
 @navbar-nav-logo-height:                        @navbar-nav-item-height * 2/3;
 @navbar-nav-logo-height-small:                  @navbar-nav-item-height * 1/2;
+@navbar-nav-logo-height-xsmall:                 @navbar-nav-item-height * 2/5;
 @navbar-nav-item-font-size:                     18px;
 @header-navbar-nav-item-height:                 @navbar-nav-item-height;
 @header-navbar-nav-icon-height:                 28px;

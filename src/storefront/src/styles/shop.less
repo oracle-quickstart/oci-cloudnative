@@ -1,3 +1,7 @@
+/**
+ * Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
 
 // Reference UIKit's less to reuse variables but don't actually import the source:
 @import (reference) "uikit.less";
@@ -14,6 +18,11 @@
 
 @fixed-footer-reveal-height: 200px;
 @fixed-footer-reveal-height-sm: 600px;
+
+header {
+  position: relative;
+  z-index: @sticky-z-index;
+}
 
 main {
   display: block;
@@ -52,11 +61,17 @@ main {
 // Logo
 // ========
 .uk-logo {
+  @media(max-width: @breakpoint-small) {
+    padding: 0 @global-xsmall-gutter 0 0 !important;
+  }
   img, svg {
     height: @logo-default-img-height;
     width: auto;
     @media(max-width: @breakpoint-small) {
       height: @navbar-nav-logo-height-small !important;
+    }
+    @media(max-width: @breakpoint-small - 1) {
+      height: @navbar-nav-logo-height-xsmall !important;
     }
   }
 }
@@ -99,6 +114,15 @@ main {
 // ========================================================================
 
 .hook-button() { border-radius: @button-border-radius; }
+
+// Notification
+// ========================================================================
+
+.uk-notification {
+  @media(max-width: @breakpoint-small) {
+    top: @header-navbar-fixed-nav-item-height;
+  }
+}
 
 
 // Section
@@ -412,6 +436,18 @@ main {
     right: 68%;
   }
 
+  &.mu-tech-compute {
+    top: 18%;
+    bottom: 18%;
+    left: 20%;
+    right: 20%;
+    height: auto;
+    img {
+      margin: -@global-small-margin/2;
+      max-height: 40px !important;
+    }
+  }
+
   &.mu-tech-oci {
     border-color: @color-red;
     margin: 0;
@@ -649,6 +685,7 @@ li.mu-product-slider-item {
   border-radius: 500px;
   justify-content: center;
   align-items: center;
+  white-space: nowrap;
 }
 
 .tm-product-card-add-button-text {
@@ -1446,6 +1483,13 @@ li.mu-product-slider-item {
     max-width: 100%;
     max-height: 100%;
   }
+}
+
+// Consent
+// ========================================================================
+.mu-consent {
+  box-shadow: 0 2px 8px fade(@global-color, 80%);
+  z-index: @sticky-z-index + 1;
 }
 
 

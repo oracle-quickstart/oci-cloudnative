@@ -1,3 +1,8 @@
+#
+# Copyright (c) 2019, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0
+#
+
 ###############################
 #    Build stage (node/npm)   #
 ###############################
@@ -29,9 +34,8 @@ RUN rm -rf /tmp/node_modules
 WORKDIR /usr/src/app
 COPY src src
 COPY *.js* ./
+COPY VERSION VERSION
 
-ARG STATIC_ASSET_URL
-ENV STATIC_ASSET_URL ${STATIC_ASSET_URL:-"https://objectstorage.us-phoenix-1.oraclecloud.com/n/intvravipati/b/mushop-images/o/"}
 ENV NODE_ENV "production"
 RUN npm run build
 

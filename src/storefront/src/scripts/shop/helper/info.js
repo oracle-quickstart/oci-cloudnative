@@ -1,3 +1,7 @@
+/**
+ * Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
 
 const iconDir = 'images/tech/';
 const toArray = obj => Object.keys(obj).map(k => obj[k]);
@@ -12,6 +16,11 @@ export const TechType = {
   EDGE: {
     name: 'Oracle Edge Services',
     icon: 'cdn.svg',
+    color: '#5F5F5F',
+  },
+  COMPUTE: {
+    name: 'Compute',
+    icon: 'compute.svg',
     color: '#5F5F5F',
   },
   OKE: {
@@ -85,6 +94,10 @@ export const ServiceType = {
     name: 'Nginx',
     icon: 'nginx.png',
   },
+  HTML5: {
+    name: 'HTML5',
+    icon: 'html5.png',
+  },
   MONGO: {
     name: 'MongoDB',
     icon: 'mongo.png',
@@ -104,11 +117,13 @@ export const Services = {
     name: 'Bucket',
     type: ServiceType.BUCKET,
     tech: TechType.OCI,
+    basic: TechType.OCI,
   },
   ATP: {
     name: 'ATP Database',
     type: ServiceType.ATP,
     tech: TechType.OCI,
+    basic: TechType.OCI,
   },
   STREAMING: {
     name: 'OCI Stream',
@@ -130,6 +145,7 @@ export const Services = {
     name: 'LB',
     type: ServiceType.LB,
     tech: TechType.OCI,
+    basic: TechType.OCI,
   },
   // OKE Services
   INGRESS: {
@@ -144,13 +160,15 @@ export const Services = {
   },
   STORE: {
     name: 'Storefront UI',
-    type: ServiceType.NGINX,
+    type: ServiceType.HTML5,
     tech: TechType.OKE,
+    basic: TechType.COMPUTE,
   },
   API: {
     name: 'REST API',
     type: ServiceType.NODE,
     tech: TechType.OKE,
+    basic: TechType.COMPUTE,
   },
   SESSION: {
     name: 'Session DB',
@@ -161,6 +179,7 @@ export const Services = {
     name: 'Catalog',
     type: ServiceType.GO,
     tech: TechType.OKE,
+    basic: TechType.COMPUTE,
   },
   CART: {
     name: 'Carts',
@@ -237,4 +256,15 @@ export const ServiceLinks = [
   { source: Services.SHIPPING, target: Services.STREAMING },
   { source: Services.STREAMING, target: Services.STREAM },
 
+];
+
+/**
+ * link definitions for basic mode
+ */
+export const BasicServiceLinks = [
+  { source: Services.LB, target: Services.STORE },
+  { source: Services.LB, target: Services.API },
+  { source: Services.API, target: Services.CATALOG },
+  { source: Services.CATALOG, target: Services.ATP },
+  // { source: Services.CATALOG, target: Services.BUCKET },
 ];
