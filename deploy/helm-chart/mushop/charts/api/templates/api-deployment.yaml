@@ -38,6 +38,8 @@ spec:
             value: http://{{ .Release.Name }}-carts
           - name: USERS_URL
             value: http://{{ .Release.Name }}-user
+          - name: STATIC_MEDIA_URL
+            value: "{{ .Values.env.mediaUrl }}"
           livenessProbe:
             httpGet:
               path: /health

@@ -1,3 +1,8 @@
+#
+# Copyright (c) 2019, Oracle and/or its affiliates. All rights reserved.
+# Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
+# 
+
 ##### Oracle Instant Client version
 ARG oracleClientVersion=19.3
 
@@ -36,6 +41,7 @@ RUN rm -rf /tmp/node_modules
 WORKDIR /app/storefront
 COPY src/storefront/src src
 COPY src/storefront/*.js* ./
+COPY src/storefront/VERSION VERSION
 
 ARG STATIC_ASSET_URL
 ENV STATIC_ASSET_URL ${STATIC_ASSET_URL:-""}
@@ -48,23 +54,12 @@ RUN npm run build
 #    Build stage (node/npm)   #
 ###############################
 FROM node:10-alpine as api-builder
-ENV NODE_ENV "development"
-
-RUN npm config set loglevel warn \
-  && npm set progress=false
-
-# Install application dependencies
-COPY src/api/package*.json /tmp/
-RUN cd /tmp && npm ci
-RUN mkdir -p /app/api && cp -a /tmp/node_modules /app/api/
-RUN rm -rf /tmp/node_modules
 
 WORKDIR /app/api
 COPY src/api/. .
 
 # Prune
-RUN rm -rf test scripts
-RUN npm prune --production
+RUN rm -rf test scripts node_modules
 #    ----- API Gateway -----  #
 
 ###############################
@@ -73,7 +68,7 @@ RUN npm prune --production
 ###############################
 
 # ##### Go Builder image
-FROM golang:1.12 AS catalogue-builder
+FROM golang:1.13 AS catalogue-builder
 WORKDIR /go/src/mushop/catalogue
 
 # # Catalogue Go Source
@@ -84,6 +79,7 @@ COPY src/catalogue/go.mod ./
 # # Build Catalogue service
 RUN GO111MODULE=on GOARCH=amd64 GOOS=linux \
   go build -a \
+  -ldflags="-s -w" \
   -installsuffix cgo \
   -o /catalogue mushop/catalogue/cmd/cataloguesvc
 
@@ -109,8 +105,8 @@ RUN yum update -y && \
   yum clean all && \
   rm -rf /var/cache/yum
 
-COPY deploy/micro/httpd.conf /etc/httpd/conf/
-COPY deploy/micro/entrypoint.sh /
+COPY deploy/monolith-lite/httpd.conf /etc/httpd/conf/
+COPY deploy/monolith-lite/entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
 #    ----- Base Image ------  #
@@ -129,7 +125,14 @@ COPY --from=api-builder /app/api /app/api
 COPY --from=catalogue-builder /catalogue /app/catalogue/catalogue
 
 # Create zip package of the Apps and local images
-RUN zip -r /app/microMuShop.zip /app /images
+RUN mkdir /package && GZIP=-9 tar cvzf /package/mushop-lite-mono.tar.gz /app /images
+
+# Create ORM package
+COPY deploy/terraform/lite /lite
+COPY deploy/monolith-lite/httpd.conf /lite/scripts
+COPY deploy/monolith-lite/entrypoint.sh /lite/scripts
+RUN cp /package/mushop-lite-mono.tar.gz /lite/scripts && \
+    cd /lite && zip -r /package/mushop-lite-mono-stack.zip .
 
 VOLUME ["/usr/lib/oracle/${oracleClientVersion}/client64/lib/network/admin/"]
 VOLUME ["/transfer/"]

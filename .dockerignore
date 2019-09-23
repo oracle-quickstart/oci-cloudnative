@@ -1,6 +1,8 @@
 .DS_Store
 .env
-build
-coverage
-node_modules
-Makefile
+assets
+*.tgz
+**/build
+**/coverage
+**/node_modules
+**/Makefile

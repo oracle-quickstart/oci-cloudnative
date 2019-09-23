@@ -7,7 +7,7 @@
 ARG clientVersion=19.3
 
 ##### Go Builder image
-FROM golang:1.12 AS go-builder
+FROM golang:1.13 AS go-builder
 WORKDIR /go/src/mushop/catalogue
 
 # Support for Offline local image. Online image on OCI Object Storage

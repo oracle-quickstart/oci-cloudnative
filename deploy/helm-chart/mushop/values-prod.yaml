@@ -25,6 +25,8 @@ ingress:
 
 api:
   enabled: true
+  env:
+    mediaUrl: "https://objectstorage.us-phoenix-1.oraclecloud.com/n/intvravipati/b/mushop-images/o/"
 
 carts:
   enabled: true

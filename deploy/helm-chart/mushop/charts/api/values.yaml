@@ -2,11 +2,12 @@ replicaCount: 1
 
 image:
   repository: phx.ocir.io/intvravipati/mushop/api
-  tag: 1
+  tag: 1.1.0
   pullPolicy: Always
 
 env:
   sessionRedis: session
+  mediaUrl:
 
 resources:
   limits:

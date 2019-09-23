@@ -36,6 +36,7 @@ server: kill-server
 		-v $$PWD:/usr/src/app   \
 		-P                      \
 		-e MOCK_MODE=all				\
+		-e STATIC_MEDIA_URL=$(STATIC_MEDIA_URL) \
 		-e NODE_ENV=development \
 		-e STATIC_MEDIA_URL=$(STATIC_MEDIA_URL) \
 		-e PORT=3000            \

@@ -17,7 +17,7 @@ const optimize = async dir => await imagemin([`${dir}/*`], {
   ],
 }).then(files => console.log(`Optimized ${files.length} images in ./${dir}`));
 
-Promise.all(['hero', 'products'].map(optimize))
+Promise.all(['hero', 'products', 'brand'].map(optimize))
   .catch(e => {
     console.error(e);
     process.exit(1);
