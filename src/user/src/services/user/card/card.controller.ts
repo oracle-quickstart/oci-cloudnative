@@ -14,7 +14,7 @@ import { BaseCardsController } from './card.base.controller';
     type: UserCard,
   },
   routes: {
-    only: ['createOneBase', 'deleteOneBase'],
+    only: ['getOneBase'],
   },
 })
 @Controller(ROUTE.CARDS)

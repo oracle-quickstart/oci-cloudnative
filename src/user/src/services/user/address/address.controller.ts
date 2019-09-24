@@ -15,7 +15,7 @@ import { BaseAddressController } from './address.base.controller';
     type: UserAddress,
   },
   routes: {
-    only: ['createOneBase', 'deleteOneBase'],
+    only: ['getOneBase'],
   },
 })
 @Controller(ROUTE.ADDRESSES)
