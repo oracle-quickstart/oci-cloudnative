@@ -1,101 +1,140 @@
-#User Service
-[![wercker status](https://app.wercker.com/status/f59f625d8e8d9c33c00378517e1b26bb/s/ "wercker status")](https://app.wercker.com/project/byKey/f59f625d8e8d9c33c00378517e1b26bb)
+# MuShop User Service
 
+Represents a microservice for customer information, authentication, and metadata
 
-This service covers user account storage, to include cards and addresses
+## Technologies
 
->## API Spec
+The MuShop user service is written with TypeScript and leverages the following technologies:
 
-Checkout the API Spec [here](https://mushop.docs.apiary.io)
+- [NestJs](https://docs.nestjs.com/) Progressive Node.js server framework
+- [TypeOrm](https://typeorm.io) TypeScript ORM (Object Relational Mapper) with `oracledb` support
+- [oracledb](https://oracle.github.io/node-oracledb) Oracle Database module
 
->## Build
+---
 
-### Using Go natively
+## Build Image
 
-```bash
-go build -mod=vendor
+⚠️ Build the docker image before proceeding with any other steps
+
+```text
+docker build -t mushop/user .
 ```
 
-### Using Docker Compose
+## Prepare Environment
 
-```bash
-docker-compose build
-```
+The application runtime requires certain environment variables in order to function
+properly. Below is a table with information about all variables.
 
->## Test
+| Variable | Description | Default | Required |
+|---|---|---|---|
+| `PORT` | Service port | 3000 | N |
+| `PORT_USERS` | Alias for `PORT`. Used to disambiguate from other services | 3000 | N |
+| `OADB_USER` | ATP Database username | - | Y |
+| `OADB_PW` | ATP Database password  | - | Y |
+| `OADB_SERVICE` | ATP Database service name assigned by provisioning. (shown as `mymushop_tp` below)  | - | Y |
+| `OADB_SCHEMA_USER` | Used to create a schema user with `OADB_USER=admin` | - | N |
+| `OADB_SCHEMA_USER_PW` | Used to create schema user pw with `OADB_USER=admin` | - | N |
 
-```bash
-go test -v ./...
-```
+> **ℹ️ TIP:** Add a `.env` file with the desired values for ease of development
 
->## Run
+⚠️ An Oracle Database **Wallet** is also required, which contains ATP
+connection information. The `Wallet_*.zip` contents must be extracted and bound
+to the container volume `/usr/lib/oracle/19.3/client64/lib/network/admin/`
 
-### Using Docker Compose
-```bash
-docker-compose up
-```
+## Create Database Schema
 
->## Check
+Before running the application, **it is necessary** to prepare the database schema.
+This requires an instance of Autonomous Transaction Processing with `admin` credentials.
 
-```bash
-curl http://localhost:8080/health
-```
+1. Extract ATP `Wallet_*.zip` contents into the project directory as `Wallet_Creds` or other preferred name.
+1. Prepare the application **USER** schema running as `admin`:
 
->## Use
+    ```text
+    docker run --rm \
+      -v $PWD/Wallet_Creds:/usr/lib/oracle/19.3/client64/lib/network/admin/ \
+      -e OADB_USER=admin \
+      -e OADB_PW=${OADB_ADMIN_PW} \
+      -e OADB_SERVICE=mymushop_tp \
+      -e OADB_SCHEMA_USER=${OADB_USER} \
+      -e OADB_SCHEMA_USER_PW=${OADB_PW} \
+      npm run schema:user
+    ```
 
-Test user account passwords can be found in the comments in `users-db-test/scripts/customer-insert.js`
+    > ℹ️ Creates a new DB user identified as `$OADB_SCHEMA_USER`/`$OADB_SCHEMA_USER_PW`, which are used as `$OADB_USER`/`$OADB_PW` respectively in the runtime.
 
-### Customers
+1. **OPTIONAL:** Synchronize the **USER.TABLE** schema defined by [TypeOrm](https://typeorm.io) entity models:
 
-```bash
-curl http://localhost:8080/customers
-```
+    ```text
+    docker run --rm \
+      -v $PWD/Wallet_Creds:/usr/lib/oracle/19.3/client64/lib/network/admin/ \
+      -e OADB_USER=${OADB_USER} \
+      -e OADB_PW=${OADB_PW} \
+      -e OADB_SERVICE=mymushop_tp \
+      npm run schema:sync
+    ```
 
-### Cards
-```bash
-curl http://localhost:8080/cards
-```
+    > ⚠️ **NOTE:** This step is required in production, and uses the credentials
+      created in the previous step. An alternative would be to execute various
+      `CREATE TABLE...` statements directly on the database. Instead
+      **[TypeOrm](https://typeorm.io)** does this hard work for us. 
 
-### Addresses
+## Develop
 
-```bash
-curl http://localhost:8080/addresses
-```
+Development mode includes dependencies for TypeScript, and developer facilities.
 
-### Login
-```bash
-curl http://localhost:8080/login
-```
+1. Create the development image using `--build-arg` as follows:
 
-### Register
+    ```text
+    docker build --build-arg nodeEnv=development -t mushop/user .
+    ```
 
-```bash
-curl http://localhost:8080/register
-```
+    > **OR** with `docker-compose`
 
-## Push
+    ```text
+    docker-compose build --build-arg nodeEnv=development
+    ```
 
-```bash
-make dockertravisbuild
-```
+1. Run the docker container with Wallet and database user credentials.
 
-## Test Zipkin
+    ```text
+    docker run --rm -it \
+      -v $PWD/Wallet_Creds:/usr/lib/oracle/19.3/client64/lib/network/admin/ \
+      -e OADB_USER=${OADB_USER} \
+      -e OADB_PW=${OADB_PW} \
+      -e OADB_SERVICE=${OADB_SERVICE} \
+      -p 3000:3000 \
+      mushop/user
+      npm run start:dev
+    ```
 
-To test with Zipkin
+    > **OR** with `docker-compose` (assuming environment variables set as above)
 
-```
-make
-docker-compose -f docker-compose-zipkin.yml build
-docker-compose -f docker-compose-zipkin.yml up
-```
-It takes about 10 seconds to seed data
+    ```text
+    docker-compose up
+    ```
 
-you should see it at:
-[http://localhost:9411/](http://localhost:9411)
+1. **OPTIONAL:** Replace command with `npm run start:sync` to synchronize ORM schema when necessary.
 
-be sure to hit the "Find Traces" button.  You may need to reload the page.
+## Endpoints
 
-when done you can run:
-```
-docker-compose -f docker-compose-zipkin.yml down
-```
+### REST
+
+The following table describes the high-level REST endpoints provided
+by this service.
+
+| Endpoint | Description | Verb |
+|---|---|---|
+| `/register` | User registration | `POST` |
+| `/login` | User authentication | `POST` |
+| `/customers[/:id]` | CRUD endpoints for **customer** | `GET`, `POST`, `PATCH`, `PUT`, `DELETE` |
+| `/customers/:userId/cards[/:id]`, | CRUD endpoints for customer **cards** | `GET`, `POST`, `PATCH`, `PUT`, `DELETE` |
+| `/customers/:userId/addresses[/:id]`, | CRUD endpoints for customer **addresses** | `GET`, `POST`, `PATCH`, `PUT`, `DELETE` |
+| `/cards[/:id]`, | Read endpoint for **cards** | `GET` |
+| `/addresses[/:id]`, | Read endpoint for **addresses** | `GET` |
+
+### Other Endpoints
+
+| Endpoint | Description | Verb |
+|---|---|---|
+| `/health` | Readiness healthcheck | `GET` |
+| `/metrics` | Prometheus metrics endpoint | `GET` |
