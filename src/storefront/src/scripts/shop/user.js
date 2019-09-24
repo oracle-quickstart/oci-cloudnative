@@ -76,7 +76,7 @@ export class UserController {
   }
 
   login(username, password) {
-    return this.mu.http.get('/login', {
+    return this.mu.http.post('/login', null, {
       auth: { username, password }
     }).then(this.getUser);
   }

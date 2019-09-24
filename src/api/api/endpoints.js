@@ -29,8 +29,6 @@
     ordersUrl,
     cartsUrl: `${cartsUrl}/carts`,
     customersUrl: `${usersUrl}/customers`,
-    addressUrl: `${usersUrl}/addresses`,
-    cardsUrl: `${usersUrl}/cards`,
     loginUrl:  `${usersUrl}/login`,
     registerUrl:  `${usersUrl}/register`,
   };
