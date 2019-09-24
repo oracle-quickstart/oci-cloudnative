@@ -14,9 +14,6 @@ import { BaseCardsController } from './card/card.base.controller';
   model: {
     type: UserCard,
   },
-  routes: {
-    only: ['getManyBase', 'getOneBase', 'createOneBase'],
-  },
   params: {
     userId: {
       field: 'userId',

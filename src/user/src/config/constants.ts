@@ -10,4 +10,6 @@ export enum ROUTE {
   USERS = 'customers',
   CARDS = 'cards',
   ADDRESSES = 'addresses',
+  LOGIN = 'login',
+  REGISTER = 'register',
 }

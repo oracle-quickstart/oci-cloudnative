@@ -124,13 +124,13 @@ by this service.
 
 | Endpoint | Description | Verb |
 |---|---|---|
-| `/customers/register` | User registration | `POST` |
-| `/customers/login` | User AuthN | `POST` |
+| `/register` | User registration | `POST` |
+| `/login` | User authentication | `POST` |
 | `/customers[/:id]` | CRUD endpoints for **customer** | `GET`, `POST`, `PATCH`, `PUT`, `DELETE` |
-| `/customers/:id/cards`, | CRUD endpoints for customer **cards** | `GET`, `POST`
-| `/customers/:id/addresses`, | CRUD endpoints for customer **addresses** | `GET`, `POST` |
-| `/cards[/:id]`, | CRUD endpoints for **cards** | `GET`, `POST`, `PATCH`, `PUT`, `DELETE` |
-| `/addresses[/:id]`, | CRUD endpoints for **addresses** | `GET`, `POST`, `PATCH`, `PUT`, `DELETE` |
+| `/customers/:userId/cards[/:id]`, | CRUD endpoints for customer **cards** | `GET`, `POST`, `PATCH`, `PUT`, `DELETE` |
+| `/customers/:userId/addresses[/:id]`, | CRUD endpoints for customer **addresses** | `GET`, `POST`, `PATCH`, `PUT`, `DELETE` |
+| `/cards[/:id]`, | CRUD endpoints for **cards** | `POST`, `DELETE` |
+| `/addresses[/:id]`, | CRUD endpoints for **addresses** | `POST`, `DELETE` |
 
 ### Other Endpoints
 

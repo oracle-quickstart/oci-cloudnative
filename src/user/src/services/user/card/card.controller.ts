@@ -13,6 +13,9 @@ import { BaseCardsController } from './card.base.controller';
   model: {
     type: UserCard,
   },
+  routes: {
+    only: ['createOneBase', 'deleteOneBase'],
+  },
 })
 @Controller(ROUTE.CARDS)
 export class CardsController extends BaseCardsController {

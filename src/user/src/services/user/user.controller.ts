@@ -1,6 +1,5 @@
-import { Controller, Request, Post, UseGuards, UseInterceptors, Body } from '@nestjs/common';
-import { Crud, CrudController, Override, ParsedRequest, ParsedBody, CrudRequest, CrudRequestInterceptor } from '@nestjsx/crud';
-import { AuthGuard } from '@nestjs/passport';
+import { Controller } from '@nestjs/common';
+import { Crud, CrudController, Override, ParsedRequest, ParsedBody, CrudRequest } from '@nestjsx/crud';
 
 import { User, USER_EXCLUDES } from './user.entity';
 import { UserService } from './user.service';
@@ -27,27 +26,6 @@ export class UsersController implements CrudController<User> {
    */
   get base(): CrudController<User> {
     return this;
-  }
-
-  /**
-   * User authentication
-   * @param req
-   */
-  @UseGuards(AuthGuard('local'))
-  @Post('login')
-  async login(@Request() req) {
-    return req.user;
-  }
-
-  /**
-   * alias for POST / customer registration
-   * @param req
-   * @param dto
-   */
-  @UseInterceptors(CrudRequestInterceptor)
-  @Post('register')
-  register(@ParsedRequest() req: CrudRequest, @Body() dto: User) {
-    return this.createOne(req, dto);
   }
 
   /**
