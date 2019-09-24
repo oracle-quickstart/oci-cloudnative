@@ -25,7 +25,7 @@ export class UserService extends TypeOrmCrudService<User> {
    * @param password plain password
    */
   verifyPassword(user: User, password: string): boolean {
-    return User.verifyPassword(user, password);
+    return user && User.verifyPassword(user, password);
   }
 
   /**

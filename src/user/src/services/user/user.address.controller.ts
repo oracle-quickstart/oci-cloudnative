@@ -14,9 +14,6 @@ import { BaseAddressController } from './address/address.base.controller';
   model: {
     type: UserAddress,
   },
-  routes: {
-    only: ['getManyBase', 'getOneBase', 'createOneBase'],
-  },
   params: {
     userId: {
       field: 'userId',
