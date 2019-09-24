@@ -64,4 +64,4 @@ test: image
 
 
 kill-server:
-	@if [ $$(docker ps -a -q -f name=$(CONTAINER) | wc -l) -ge 1 ]; then docker rm -f $(CONTAINER); fi
+	@if [ $$(docker ps -a -q -f name=$(CONTAINER) | wc -l) -ge 1 ]; then docker rm -f $$(docker ps -a -q -f name=$(CONTAINER)); fi
