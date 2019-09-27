@@ -5,14 +5,14 @@
 # Gets a list of Availability Domains
 data "oci_identity_availability_domains" "ADs" {
 
-  compartment_id = "${var.tenancy_ocid}"
+  compartment_id = var.tenancy_ocid
 
 }
 
 
 data "oci_objectstorage_namespace" "user_namespace" {
 
-  compartment_id = "${var.compartment_ocid}"
+  compartment_id = var.compartment_ocid
 
 }
 
@@ -35,8 +35,8 @@ resource "random_id" "mushop_id" {
 
 data "oci_database_autonomous_database_wallet" "autonomous_database_wallet" {
 
-  autonomous_database_id = "${oci_database_autonomous_database.mushop_autonomous_database.id}"
-  password               = "${random_string.autonomous_database_wallet_password.result}"
+  autonomous_database_id = oci_database_autonomous_database.mushop_autonomous_database.id
+  password               = random_string.autonomous_database_wallet_password.result
   base64_encode_content  = "false"
 
 }
