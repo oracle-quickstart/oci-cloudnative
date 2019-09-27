@@ -24,6 +24,15 @@ build-api:
           npm install
           npm test
           cd ..
+    - internal/docker-push:
+        # We tag and push a temporary image, just so we can pull and re-tag the official ones later.
+        # In order for the build and push steps to work together, they need to be in the same pipeline.
+        image-name: $DOCKER_REPOSITORY/api
+        tag: $WERCKER_GIT_COMMIT
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/api
 
 build-carts:
   steps:
@@ -37,6 +46,13 @@ build-carts:
 
         # TODO: Run the carts tests
         cd carts
+    - internal/docker-push:
+        image-name: $DOCKER_REPOSITORY/carts
+        tag: $WERCKER_GIT_COMMIT
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/carts
 
 build-catalogue:
   box: golang:1.12
@@ -49,6 +65,13 @@ build-catalogue:
       code: |
         cd src
         # TODO: Run Catalogue tests
+    - internal/docker-push:
+        image-name: $DOCKER_REPOSITORY/catalogue
+        tag: $WERCKER_GIT_COMMIT
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/catalogue
 
 build-orders:
   steps:
@@ -62,6 +85,13 @@ build-orders:
 
         # TODO: Run the orders tests
         cd orders
+    - internal/docker-push:
+        image-name: $DOCKER_REPOSITORY/orders
+        tag: $WERCKER_GIT_COMMIT
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/orders
 
 build-payment:
   steps:
@@ -73,6 +103,13 @@ build-payment:
       code: |
         cd src
         # TODO: Run payment tests
+    - internal/docker-push:
+        image-name: $DOCKER_REPOSITORY/payment
+        tag: $WERCKER_GIT_COMMIT
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/payment
 
 build-shipping:
   steps:
@@ -86,6 +123,13 @@ build-shipping:
 
         # TODO: Run the shipping tests
         cd shipping
+    - internal/docker-push:
+        image-name: $DOCKER_REPOSITORY/shipping
+        tag: $WERCKER_GIT_COMMIT
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/shipping
 
 build-storefront:
   box: node:10-alpine
@@ -101,6 +145,13 @@ build-storefront:
         cd storefront
         npm install
         npm test
+    - internal/docker-push:
+        image-name: $DOCKER_REPOSITORY/storefront
+        tag: $WERCKER_GIT_COMMIT
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/storefront
 
 build-stream:
   steps:
@@ -114,6 +165,13 @@ build-stream:
 
         # TODO: Run the stream tests
         cd stream
+    - internal/docker-push:
+        image-name: $DOCKER_REPOSITORY/stream
+        tag: $WERCKER_GIT_COMMIT
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/stream
 
 build-user:
   steps:
@@ -125,31 +183,36 @@ build-user:
       code: |
         cd src
         # TODO: Run User tests
+    - internal/docker-push:
+        image-name: $DOCKER_REPOSITORY/user
+        tag: $WERCKER_GIT_COMMIT
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/user
 
 # Pushes the built Docker images to registry.
 # This pipeline needs DOCKER_USERNAME, DOCKER_PASSWORD, DOCKER_REPOSITORY and SERVICE_NAME (service folder name) variables set.
 push-to-registry:
   box: alpine
+  docker: true
   steps:
     - script:
-        name: Setup image tags
+        name: Install docker
+        code: apk --no-cache add docker
+    - script:
+        name: Tag and push images
         code: |
           echo $SERVICE_NAME
           SERVICE_VERSION=$(cat src/$SERVICE_NAME/VERSION)
-          export SERVICE_IMAGE_TAGS=$(./ci/tags.sh $SERVICE_VERSION)
-          echo $SERVICE_IMAGE_TAGS
-    - internal/docker-push:
-        tag: $SERVICE_IMAGE_TAGS
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
-        registry: https://phx.ocir.io/v2
-        repository: $DOCKER_REPOSITORY/$SERVICE_NAME
+          echo $SERVICE_VERSION
+          ./ci/tag_and_push.sh $SERVICE_VERSION
     - script:
         name: Store image information
         code: |
           SERVICE_NAME_UPPER=$(echo $SERVICE_NAME | tr '[a-z]' '[A-Z]')
           IMAGE_NAMES_FILE=images.txt
-          echo ${SERVICE_NAME_UPPER}_IMAGE_NAME=${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}/$SERVICE_NAME >> ${IMAGE_NAMES_FILE}
+          echo ${SERVICE_NAME_UPPER}_IMAGE_NAME=${DOCKER_REPOSITORY}/$SERVICE_NAME >> ${IMAGE_NAMES_FILE}
           echo ${SERVICE_NAME_UPPER}_IMAGE_TAG=$(cat src/${SERVICE_NAME}/VERSION) >> ${IMAGE_NAMES_FILE}
           cat $IMAGE_NAMES_FILE
 
