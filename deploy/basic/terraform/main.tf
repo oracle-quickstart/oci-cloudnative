@@ -28,7 +28,7 @@ resource "oci_core_instance" "app-instance" {
     source_id   = local.images[var.region]
   }
 
-  metadata {
+  metadata = {
     ssh_authorized_keys = var.ssh_public_key
     user_data           = base64encode(data.template_file.mushop.rendered)
     db_name             = oci_database_autonomous_database.mushop_autonomous_database.db_name
