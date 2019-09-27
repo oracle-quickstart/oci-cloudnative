@@ -98,7 +98,7 @@ resource "oci_objectstorage_preauthrequest" "entrypoint_preauth" {
 resource "oci_objectstorage_object" "mushop_basic" {
   #Required
   bucket    = oci_objectstorage_bucket.mushop.name
-  content   = filebase64("./scripts/mushop-basic.tar.gz")
+  source   = "./scripts/mushop-basic.tar.gz"
   namespace = data.oci_objectstorage_namespace.user_namespace.namespace
   object    = "mushop_basic"
 
