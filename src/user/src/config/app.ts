@@ -23,6 +23,11 @@ export class AppConfig {
     return {...this.ENV};
   }
 
+  public prod(): boolean {
+    const { NODE_ENV } = this.ENV;
+    return /^prod/i.test(NODE_ENV || '');
+  }
+
   /**
    * get db configuration
    */

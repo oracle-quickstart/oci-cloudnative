@@ -1,4 +1,5 @@
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
+import { LoggerMiddleware } from '../../middleware/logger/logger.middleware';
 
 import { AuthModule } from '../../auth/auth.module';
 import { UserModule } from './user.module';
@@ -18,11 +19,19 @@ import { CardsController } from './card/card.controller';
 @Module({
   imports: [AuthModule, UserModule],
   controllers: [
-    UsersController, /* /customers */
-    UserCardsController, /* /customers/:id/cards */
-    UserAddressController, /* /customers/:id/addresses */
-    AddressController, /* /addresses */
-    CardsController, /* /cards */
+    UsersController,        /* /customers */
+    UserCardsController,    /* /customers/:id/cards */
+    UserAddressController,  /* /customers/:id/addresses */
+    AddressController,      /* /addresses */
+    CardsController,        /* /cards */
   ],
 })
-export class UserHttpModule {}
+export class UserHttpModule implements NestModule {
+
+  configure(consumer: MiddlewareConsumer): any {
+    consumer
+      .apply(LoggerMiddleware())
+      .forRoutes('*');
+  }
+
+}
