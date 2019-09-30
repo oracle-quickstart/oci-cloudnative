@@ -41,6 +41,8 @@ To run it use:
 ./catalogue
 ```
 
+Note: When doing development and running local, you need to set the variables to connect to the Oracle Autonomous Database. OADB_USER, OADB_PW and OADB_SERVICE need to be load as environment variables. Using [.env](https://docs.docker.com/compose/env-file/) file or EXPORT.
+
 #### Docker
 `docker-compose up`
 
