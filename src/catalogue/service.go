@@ -1,7 +1,7 @@
 /*
 ** Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
 ** Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
-*/
+ */
 
 package catalogue
 
@@ -219,13 +219,4 @@ func cut(products []Product, pageNum, pageSize int) []Product {
 		end = len(products)
 	}
 	return products[start:end]
-}
-
-func contains(s []string, e string) bool {
-	for _, a := range s {
-		if a == e {
-			return true
-		}
-	}
-	return false
 }

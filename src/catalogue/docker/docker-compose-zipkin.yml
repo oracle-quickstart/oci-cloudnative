@@ -25,6 +25,28 @@ services:
             - OADB_USER=${OADB_USER}
             - OADB_PW=${OADB_PW}
             - OADB_SERVICE=${OADB_SERVICE}
+            - ZIPKIN=http://zipkin:9411/api/v1/spans
         ports:
             - "8080:80"
 
+    zipkin:
+        image: openzipkin/zipkin 
+        hostname: zipkin
+        restart: always
+        cap_drop:
+            - all
+        cap_add:
+            - CHOWN
+            - SETGID
+            - SETUID
+        read_only: true
+        tmpfs:
+            - /tmp:rw,noexec,nosuid
+        environment:
+            - reschedule=on-node-failure
+        ports:
+            - "9411:9411"
+
+    zipkinseed:
+        image: alpine
+        command: /bin/sh -c 'sleep 10 ; wget http://catalogue/health ; wget http://catalogue/catalogue ; wget http://catalogue/catalogue/size ; wget http://catalogue/categories'
