@@ -14,11 +14,11 @@ describe('Users', () => {
     it('should fail invalid login', done => {
       // mock user service login failure
       mock.service()
-        .get('/login')
+        .post('/login')
         .reply(401);
 
       agent
-        .get('/api/login')
+        .post('/api/login')
         .auth('user', 'pass')
         .expect(401)
         .end(done);
@@ -30,12 +30,12 @@ describe('Users', () => {
       // mock the user service
       const user = { id: 12345 };
       mock.service()
-        .get('/login')
-        .reply(200, { user });
+        .post('/login')
+        .reply(200, user);
 
       // call login api
       agent
-        .get('/api/login')
+        .post('/api/login')
         .auth('user', 'pass')
         .expect(res => {
           const { text, headers } = res;
