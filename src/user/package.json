@@ -6,7 +6,8 @@
   "license": "UPL-1.0",
   "scripts": {
     "build": "rimraf dist && tsc -p tsconfig.build.json",
-    "schema:user": "npm run typeorm -- query \"$(./schema/atp.init.sh)\"",
+    "build:docker": "if [ \"$NODE_ENV\" = \"production\" ]; then npm run build && npm prune --production; fi",
+    "schema:init": "npm run typeorm -- query \"$(./schema/atp.init.sh)\"",
     "schema:sync": "npm run typeorm -- schema:sync",
     "schema:syncdev": "npm run typeorm:ts -- schema:sync",
     "schema:sync:dryrun": "npm run typeorm -- schema:log",

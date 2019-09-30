@@ -1,0 +1,39 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: user-schema-sync
+spec:
+  ttlSecondsAfterFinished: 120
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: user-schema-sync
+        imagePullPolicy: Never
+        image: mushop/user
+        command: ["npm", "run", "schema:sync"]
+        env:
+        - name: OADB_USER
+          valueFrom:
+            secretKeyRef:
+              name: oadb-connection
+              key: oadb_user
+        - name: OADB_PW
+          valueFrom:
+            secretKeyRef:
+              name: oadb-connection
+              key: oadb_pw
+        - name: OADB_SERVICE
+          valueFrom:
+            secretKeyRef:
+              name: oadb-connection
+              key: oadb_service
+        volumeMounts:
+        - name: wallet
+          mountPath: "/usr/lib/oracle/19.3/client64/lib/network/admin"
+      volumes:
+      - name: wallet
+        secret:
+          secretName: oadb-wallet
+          defaultMode: 256

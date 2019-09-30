@@ -32,8 +32,7 @@ properly. Below is a table with information about all variables.
 | `OADB_USER` | ATP Database username | - | Y |
 | `OADB_PW` | ATP Database password  | - | Y |
 | `OADB_SERVICE` | ATP Database service name assigned by provisioning. (shown as `mymushop_tp` below)  | - | Y |
-| `OADB_SCHEMA_USER` | Used to create a schema user with `OADB_USER=admin` | - | N |
-| `OADB_SCHEMA_USER_PW` | Used to create schema user pw with `OADB_USER=admin` | - | N |
+| `OADB_ADMIN_PW` | Used to init user schema and credentials | - | N |
 
 > **ℹ️ TIP:** Add a `.env` file with the desired values for ease of development
 
@@ -44,7 +43,7 @@ to the container volume `/usr/lib/oracle/19.3/client64/lib/network/admin/`
 ## Create Database Schema
 
 Before running the application, **it is necessary** to prepare the database schema.
-This requires an instance of Autonomous Transaction Processing with `admin` credentials.
+This requires an Autonomous Transaction Processing database instance with `admin` credentials.
 
 1. Extract ATP `Wallet_*.zip` contents into the project directory as `Wallet_Creds` or other preferred name.
 1. Prepare the application **USER** schema running as `admin`:
@@ -52,15 +51,16 @@ This requires an instance of Autonomous Transaction Processing with `admin` cred
     ```text
     docker run --rm \
       -v $PWD/Wallet_Creds:/usr/lib/oracle/19.3/client64/lib/network/admin/ \
-      -e OADB_USER=admin \
-      -e OADB_PW=${OADB_ADMIN_PW} \
+      -e OADB_ADMIN_PW=${OADB_ADMIN_PW} \
+      -e OADB_USER=${OADB_USER} \
+      -e OADB_PW=${OADB_PW} \
       -e OADB_SERVICE=mymushop_tp \
-      -e OADB_SCHEMA_USER=${OADB_USER} \
-      -e OADB_SCHEMA_USER_PW=${OADB_PW} \
-      npm run schema:user
+      npm run schema:init
     ```
 
-    > ℹ️ Creates a new DB user identified as `$OADB_SCHEMA_USER`/`$OADB_SCHEMA_USER_PW`, which are used as `$OADB_USER`/`$OADB_PW` respectively in the runtime.
+    > ℹ️ Creates a new DB user identified as `$OADB_USER`/`$OADB_PW`, which are then
+    available for use in the runtime. An alternative would be to execute various schema
+    creation commands as contained in `[atp.init.sh](./schema/atp.init.sh)`
 
 1. **OPTIONAL:** Synchronize the **USER.TABLE** schema defined by [TypeOrm](https://typeorm.io) entity models:
 
@@ -114,6 +114,10 @@ Development mode includes dependencies for TypeScript, and developer facilities.
     ```
 
 1. **OPTIONAL:** Replace command with `npm run start:sync` to synchronize ORM schema when necessary.
+
+## Deploy
+
+Refer to [kubernetes](./kubernetes/README.md) documentation
 
 ## Endpoints
 

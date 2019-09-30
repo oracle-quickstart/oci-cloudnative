@@ -4,4 +4,5 @@ Wallet_*
 node_modules
 Dockerfile
 docker-compose.yaml
+kubernetes
 dist

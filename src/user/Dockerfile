@@ -7,9 +7,12 @@ ARG nodeVersion=10
 # Node ENV
 ARG nodeEnv
 
-###############################
-#    ----- Base Image ------  #
-###############################
+# PROXY
+ARG httpProxy
+
+################################
+#    ----- Base Image -----    #
+################################
 FROM oraclelinux:7-slim AS base
 ARG oracleClientVersion
 ARG nodeVersion
@@ -18,12 +21,16 @@ RUN yum -y install oracle-release-el7 oracle-nodejs-release-el7 && \
   yum -y install oracle-instantclient${oracleClientVersion}-basiclite nodejs && \
   rm -rf /var/cache/yum
 
-###############################
-#   ----- Build Image ------  #
-###############################
+#################################
+#    ----- Build Image -----    #
+#################################
 FROM base AS node-build
-ARG nodeEnv
-RUN npm config set loglevel warn \
+
+# Configure npm
+ARG httpProxy
+ENV HTTP_PROXY ${httpProxy:-""}
+ENV HTTPS_PROXY ${httpProxy:-""}
+RUN npm config set loglevel error \
   && npm set progress=false
 
 # Install application dependencies
@@ -37,16 +44,15 @@ WORKDIR /usr/src/app
 COPY *.js* ./
 COPY src src
 COPY schema schema
-COPY build.sh ./
-RUN chmod +x ./build.sh
 
 # Build
+ARG nodeEnv
 ENV NODE_ENV ${nodeEnv:-"production"}
-RUN ./build.sh
+RUN npm run build:docker
 
-###############################
-#   ----- User Runtime -----  #
-###############################
+###################################
+#    ----- Image Runtime -----    #
+###################################
 FROM base
 ARG nodeEnv
 ENV NODE_ENV ${nodeEnv:-"production"}
