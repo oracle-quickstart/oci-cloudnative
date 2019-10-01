@@ -23,17 +23,17 @@ spec:
         - name: OADB_USER
           valueFrom:
             secretKeyRef:
-              name: oadb-connection
+              name: user-oadb-connection
               key: oadb_user
         - name: OADB_PW
           valueFrom:
             secretKeyRef:
-              name: oadb-connection
+              name: user-oadb-connection
               key: oadb_pw
         - name: OADB_SERVICE
           valueFrom:
             secretKeyRef:
-              name: oadb-connection
+              name: user-oadb-connection
               key: oadb_service
         resources:
           limits:
@@ -68,7 +68,7 @@ spec:
       volumes:
       - name: wallet
         secret:
-          secretName: oadb-wallet
+          secretName: user-oadb-wallet
           defaultMode: 256
 ---
 apiVersion: v1

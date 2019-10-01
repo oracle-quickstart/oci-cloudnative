@@ -43,12 +43,14 @@ RUN rm -rf /tmp/node_modules
 WORKDIR /usr/src/app
 COPY *.js* ./
 COPY src src
-COPY schema schema
 
 # Build
 ARG nodeEnv
 ENV NODE_ENV ${nodeEnv:-"production"}
 RUN npm run build:docker
+
+# Add schema for init operation
+COPY schema schema
 
 ###################################
 #    ----- Image Runtime -----    #

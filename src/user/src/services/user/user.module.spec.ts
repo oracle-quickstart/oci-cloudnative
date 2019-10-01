@@ -28,7 +28,6 @@ describe('User Module', () => {
     let ctrl: UsersController;
     beforeEach(() => {
       ctrl = app.get<UsersController>(UsersController);
-      // console.log(ctrl);
     });
 
     it('should be defined', () => {

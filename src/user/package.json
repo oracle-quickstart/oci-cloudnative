@@ -7,7 +7,7 @@
   "scripts": {
     "build": "rimraf dist && tsc -p tsconfig.build.json",
     "build:docker": "if [ \"$NODE_ENV\" = \"production\" ]; then npm run build && npm prune --production; fi",
-    "schema:init": "npm run typeorm -- query \"$(./schema/atp.init.sh)\"",
+    "schema:init": "node ./schema/init.js",
     "schema:sync": "npm run typeorm -- schema:sync",
     "schema:syncdev": "npm run typeorm:ts -- schema:sync",
     "schema:sync:dryrun": "npm run typeorm -- schema:log",

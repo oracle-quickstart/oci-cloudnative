@@ -11,23 +11,23 @@ spec:
       containers:
       - name: user-schema-sync
         imagePullPolicy: Never
-        image: mushop/user
+        image: mushop/user:latest
         command: ["npm", "run", "schema:sync"]
         env:
         - name: OADB_USER
           valueFrom:
             secretKeyRef:
-              name: oadb-connection
+              name: user-oadb-connection
               key: oadb_user
         - name: OADB_PW
           valueFrom:
             secretKeyRef:
-              name: oadb-connection
+              name: user-oadb-connection
               key: oadb_pw
         - name: OADB_SERVICE
           valueFrom:
             secretKeyRef:
-              name: oadb-connection
+              name: user-oadb-connection
               key: oadb_service
         volumeMounts:
         - name: wallet
@@ -35,5 +35,5 @@ spec:
       volumes:
       - name: wallet
         secret:
-          secretName: oadb-wallet
+          secretName: user-oadb-wallet
           defaultMode: 256

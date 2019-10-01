@@ -11,7 +11,7 @@ Several steps are required in order to properly configure the `user` service for
 1. Create a Kubernetes secret containing the **Wallet** contents.
 
     ```text
-    kubectl create secret generic oadb-wallet \
+    kubectl create secret generic user-oadb-wallet \
       --from-file=Wallet_Creds
     ```
 
@@ -20,7 +20,7 @@ Several steps are required in order to properly configure the `user` service for
 1. Create a Kubernetes secret with the database `ADMIN` password specified during provisioning.
 
     ```text
-    kubectl create secret generic oadb-admin \
+    kubectl create secret generic user-oadb-admin \
       --from-literal=oadb_admin_pw='xxxxxx' \
       --from-literal=oadb_wallet_pw='xxxxxx'
     ```
@@ -30,7 +30,7 @@ Several steps are required in order to properly configure the `user` service for
 1. Create a Kubernetes secret with the ATP **schema user** credentials and **Connection String** information.
 
     ```text
-    kubectl create secret generic oadb-connection \
+    kubectl create secret generic user-oadb-connection \
       --from-literal=oadb_service={generateddbname}_tp \
       --from-literal=oadb_user='xxxxxx' \
       --from-literal=oadb_pw='xxxxxx'
@@ -51,6 +51,8 @@ Several steps are required in order to properly configure the `user` service for
     ```text
     kubectl create -f init-job.yaml
     ```
+
+    > **NOTE:** this can be replaced by binding init operation when using Service Broker
 
 1. Synchronize the table schema with [TypeOrm](https://typeorm.io) entity models
 

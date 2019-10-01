@@ -1,8 +1,7 @@
 #! /bin/sh
 
 # This script prepares the OADB user schema statements by using
-# env var subsitition for configured values of ${OADB_SCHEMA_USER}
-# and ${OADB_SCHEMA_USER_PW}.
+# env var subsitition for configured values of ${OADB_USER} and ${OADB_PW}.
 
 cat <<EOF
 CREATE USER ${OADB_USER} IDENTIFIED BY ${OADB_PW};
