@@ -10,6 +10,6 @@ const ORM = [TypeOrmModule.forRoot()];
 @Module({
   imports: [...ORM],
   exports: [OracleDbHealthIndicator, ...ORM],
-  providers: [ OracleDbHealthIndicator ],
+  providers: [OracleDbHealthIndicator],
 })
 export class DatabaseModule {}
