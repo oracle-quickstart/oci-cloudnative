@@ -74,13 +74,19 @@ export const ServiceType = {
     name: 'Node.js',
     icon: 'nodejs.png',
   },
+  TYPESCRIPT: {
+    name: 'TypeScript/Node.js',
+    icon: 'ts.svg',
+    scale: 0.9,
+  },
   REDIS: {
     name: 'Redis',
     icon: 'redis.png',
   },
   GO: {
     name: 'Go',
-    icon: 'go.svg',
+    icon: 'go.png',
+    scale: 1.8,
   },
   TRAEFIK: {
     name: 'Traefik',
@@ -208,12 +214,7 @@ export const Services = {
   },
   USER: {
     name: 'Users',
-    type: ServiceType.GO,
-    tech: TechType.OKE,
-  },
-  USERDB: {
-    name: 'Users NoSQL',
-    type: ServiceType.MONGO,
+    type: ServiceType.TYPESCRIPT,
     tech: TechType.OKE,
   },
 };
@@ -224,7 +225,7 @@ export const Services = {
 export const ServiceLinks = [
   // edge
   { source: Services.DNS, target: Services.WAF },
-  { source: Services.DNS, target: Services.LB, lineStyle: { type: 'dotted' } }, // insecure
+  { source: Services.DNS, target: Services.LB, lineStyle: { type: 'dotted', curveness: 0.2 } }, // insecure
   { source: Services.WAF, target: Services.LB },
   { source: Services.LB, target: Services.INGRESS },
   { source: Services.INGRESS, target: Services.EDGE_ROUTER },
@@ -240,14 +241,14 @@ export const ServiceLinks = [
   { source: Services.API, target: Services.USER },
   { source: Services.API, target: Services.ORDERS },
   // User
-  { source: Services.USER, target: Services.USERDB },
+  { source: Services.USER, target: Services.ATP, edgeSymbol: ['arrow', 'arrow'] }, // read/write
   // Catalog
-  { source: Services.CATALOG, target: Services.ATP },
+  { source: Services.CATALOG, target: Services.ATP }, // read
   { source: Services.CATALOG, target: Services.BUCKET },
   // Cart
-  { source: Services.CART, target: Services.ATP },
+  { source: Services.CART, target: Services.ATP, edgeSymbol: ['arrow', 'arrow'] }, // read/write
   // Orders
-  { source: Services.ORDERS, target: Services.ATP },
+  { source: Services.ORDERS, target: Services.ATP, edgeSymbol: ['arrow', 'arrow'] }, // read/write
   { source: Services.ORDERS, target: Services.USER },
   { source: Services.ORDERS, target: Services.CART },
   { source: Services.ORDERS, target: Services.SHIPPING },
