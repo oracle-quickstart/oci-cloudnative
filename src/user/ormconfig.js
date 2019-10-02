@@ -6,18 +6,26 @@
  */
 
 // read env
-const { OADB_SERVICE, OADB_USER, OADB_PW, NODE_ENV } = process.env;
+const {
+  OADB_ADMIN_PW,
+  OADB_SERVICE,
+  OADB_USER,
+  OADB_PW,
+  NODE_ENV,
+} = process.env;
 
 // determine opts
+const admin = !!OADB_ADMIN_PW;
 const prod = /^prod/i.test(NODE_ENV || '');
 const useExt = prod ? 'js' : 'ts';
 
 module.exports = {
   type: 'oracle',
-  username: OADB_USER,
-  password: OADB_PW,
+  username: admin ? 'ADMIN' : OADB_USER,
+  password: admin ? OADB_ADMIN_PW : OADB_PW,
   connectString: OADB_SERVICE,
   entities: [
+    // use glob and prevent dupes in development when both `src` and `dist` exist
     `**/*.entity.${useExt}`,
   ],
 };

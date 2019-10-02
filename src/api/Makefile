@@ -35,10 +35,12 @@ server: kill-server
 		--network-alias $(CONTAINER) \
 		-v $$PWD:/usr/src/app   \
 		-P                      \
-		-e MOCK_MODE=all				\
 		-e STATIC_MEDIA_URL=$(STATIC_MEDIA_URL) \
+		-e CATALOGUE_URL=http://catalogue \
+		-e CARTS_URL=http://carts \
+		-e ORDERS_URL=http://orders \
+		-e USERS_URL=http://user \
 		-e NODE_ENV=development \
-		-e STATIC_MEDIA_URL=$(STATIC_MEDIA_URL) \
 		-e PORT=3000            \
 		-p 8080:3000            \
 		-p 9229:9229            \

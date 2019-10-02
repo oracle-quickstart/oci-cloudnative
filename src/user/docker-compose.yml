@@ -20,9 +20,9 @@ services:
       - ./src:/usr/src/app/src
     environment:
       - reschedule=on-node-failure
-      - OADB_USER
-      - OADB_PW
-      - OADB_SERVICE
+      - OADB_USER=${OADB_USER}
+      - OADB_PW=${OADB_PW}
+      - OADB_SERVICE=${OADB_SERVICE}
     ports:
       - '3000:3000'
     command: ['npm', 'run', 'start:dev']
