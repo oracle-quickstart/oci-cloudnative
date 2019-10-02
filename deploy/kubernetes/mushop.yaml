@@ -763,7 +763,7 @@ spec:
           httpGet:
             path: /health
             port: http
-          initialDelaySeconds: 30
+          initialDelaySeconds: 10
           periodSeconds: 5
         volumeMounts:
         - name: wallet
