@@ -78,8 +78,8 @@ metadata:
   labels:
     name: user
 spec:
-  selector:
-    name: user
   ports:
   - port: 80
     targetPort: 3000
+  selector:
+    name: user
