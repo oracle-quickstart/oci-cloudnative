@@ -78,7 +78,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: phx.ocir.io/intvravipati/mushop/api:1
+        image: phx.ocir.io/intvravipati/mushop/api:2.0
         imagePullPolicy: Always
         ports:
         - name: http
@@ -95,7 +95,7 @@ spec:
         - name: USERS_URL
           value: http://user
         - name: STATIC_MEDIA_URL
-          value:
+          value: https://objectstorage.us-phoenix-1.oraclecloud.com/n/intvravipati/b/mushop-images/o/
         resources:
           limits:
             cpu: 300m
@@ -284,7 +284,7 @@ spec:
           - containerPort: 80
           env:
           - name: ZIPKIN
-            value: zipkin.jaeger.svc.cluster.local
+            value:
           - name: OADB_USER
             valueFrom:
               secretKeyRef:
@@ -357,7 +357,7 @@ spec:
     spec:
       containers:
       - name: storefront
-        image: phx.ocir.io/intvravipati/mushop/storefront:1
+        image: phx.ocir.io/intvravipati/mushop/storefront:2.0
         imagePullPolicy: Always
         ports:
         - name: http
@@ -706,57 +706,6 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: user-db
-  labels:
-    name: user-db
-spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        name: user-db
-    spec:
-      containers:
-      - name: user-db
-        image: phx.ocir.io/intvravipati/mushop/user-db:0.0.1
-        ports:
-        - name: mongo
-          containerPort: 27017
-        securityContext:
-          capabilities:
-            drop:
-              - all
-            add:
-              - CHOWN
-              - SETGID
-              - SETUID
-          readOnlyRootFilesystem: true
-        volumeMounts:
-        - mountPath: /tmp
-          name: tmp-volume
-      volumes:
-        - name: tmp-volume
-          emptyDir:
-            medium: Memory
-      nodeSelector:
-        beta.kubernetes.io/os: linux
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: user-db
-  labels:
-    name: user-db
-spec:
-  ports:
-  - port: 27017
-    targetPort: 27017
-  selector:
-    name: user-db
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
   name: user
   labels:
     name: user
@@ -769,22 +718,35 @@ spec:
     spec:
       containers:
       - name: user
-        image: phx.ocir.io/intvravipati/mushop/user:0.0.1
+        image: phx.ocir.io/intvravipati/mushop/user:1.0.0
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 3000
+        env:
+        - name: OADB_USER
+          valueFrom:
+            secretKeyRef:
+              name: user-oadb-connection
+              key: oadb_user
+        - name: OADB_PW
+          valueFrom:
+            secretKeyRef:
+              name: user-oadb-connection
+              key: oadb_pw
+        - name: OADB_SERVICE
+          valueFrom:
+            secretKeyRef:
+              name: user-oadb-connection
+              key: oadb_service
         resources:
           limits:
             cpu: 300m
-            memory: 100Mi
+            memory: 1000Mi
           requests:
             cpu: 100m
-            memory: 100Mi
-        ports:
-        - containerPort: 80
-        env:
-        - name: mongo
-          value: user-db:27017
+            memory: 300Mi
         securityContext:
-          runAsNonRoot: true
-          runAsUser: 10001
           capabilities:
             drop:
               - all
@@ -794,17 +756,23 @@ spec:
         livenessProbe:
           httpGet:
             path: /health
-            port: 80
+            port: http
           initialDelaySeconds: 300
-          periodSeconds: 3
+          periodSeconds: 30
         readinessProbe:
           httpGet:
             path: /health
-            port: 80
-          initialDelaySeconds: 180
-          periodSeconds: 3
-      nodeSelector:
-        beta.kubernetes.io/os: linux
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 5
+        volumeMounts:
+        - name: wallet
+          mountPath: "/usr/lib/oracle/19.3/client64/lib/network/admin"
+      volumes:
+      - name: wallet
+        secret:
+          secretName: user-oadb-wallet
+          defaultMode: 256
 ---
 apiVersion: v1
 kind: Service
@@ -815,7 +783,7 @@ metadata:
 spec:
   ports:
   - port: 80
-    targetPort: 80
+    targetPort: 3000
   selector:
     name: user
 

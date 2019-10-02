@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: storefront
-        image: phx.ocir.io/intvravipati/mushop/storefront:1
+        image: phx.ocir.io/intvravipati/mushop/storefront:2.0
         imagePullPolicy: Always
         ports:
         - name: http

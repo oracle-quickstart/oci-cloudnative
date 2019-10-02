@@ -14,22 +14,35 @@ spec:
     spec:
       containers:
       - name: user
-        image: phx.ocir.io/intvravipati/mushop/user:0.0.1
+        image: phx.ocir.io/intvravipati/mushop/user:1.0.0
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 3000
+        env:
+        - name: OADB_USER
+          valueFrom:
+            secretKeyRef:
+              name: user-oadb-connection
+              key: oadb_user
+        - name: OADB_PW
+          valueFrom:
+            secretKeyRef:
+              name: user-oadb-connection
+              key: oadb_pw
+        - name: OADB_SERVICE
+          valueFrom:
+            secretKeyRef:
+              name: user-oadb-connection
+              key: oadb_service
         resources:
           limits:
             cpu: 300m
-            memory: 100Mi
+            memory: 1000Mi
           requests:
             cpu: 100m
-            memory: 100Mi
-        ports:
-        - containerPort: 80
-        env:
-        - name: mongo
-          value: user-db:27017
+            memory: 300Mi
         securityContext:
-          runAsNonRoot: true
-          runAsUser: 10001
           capabilities:
             drop:
               - all
@@ -39,14 +52,20 @@ spec:
         livenessProbe:
           httpGet:
             path: /health
-            port: 80
+            port: http
           initialDelaySeconds: 300
-          periodSeconds: 3
+          periodSeconds: 30
         readinessProbe:
           httpGet:
             path: /health
-            port: 80
-          initialDelaySeconds: 180
-          periodSeconds: 3
-      nodeSelector:
-        beta.kubernetes.io/os: linux
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 5
+        volumeMounts:
+        - name: wallet
+          mountPath: "/usr/lib/oracle/19.3/client64/lib/network/admin"
+      volumes:
+      - name: wallet
+        secret:
+          secretName: user-oadb-wallet
+          defaultMode: 256
