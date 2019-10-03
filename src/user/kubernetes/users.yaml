@@ -38,10 +38,10 @@ spec:
         resources:
           limits:
             cpu: 300m
-            memory: 1000Mi
+            memory: 300Mi
           requests:
             cpu: 100m
-            memory: 300Mi
+            memory: 100Mi
         securityContext:
           capabilities:
             drop:
@@ -59,7 +59,7 @@ spec:
           httpGet:
             path: /health
             port: http
-          initialDelaySeconds: 30
+          initialDelaySeconds: 10
           periodSeconds: 5
         volumeMounts:
         - name: wallet
@@ -78,8 +78,8 @@ metadata:
   labels:
     name: user
 spec:
-  selector:
-    name: user
   ports:
   - port: 80
     targetPort: 3000
+  selector:
+    name: user

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: storefront
-        image: phx.ocir.io/intvravipati/mushop/storefront:1
+        image: phx.ocir.io/intvravipati/mushop/storefront:2.0
         imagePullPolicy: Always
         ports:
         - name: http
@@ -26,10 +26,10 @@ spec:
         resources:
           limits:
             cpu: 300m
-            memory: 1000Mi
+            memory: 300Mi
           requests:
             cpu: 100m
-            memory: 300Mi
+            memory: 100Mi
         securityContext:
           runAsNonRoot: true
           runAsUser: 10001

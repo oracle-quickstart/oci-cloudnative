@@ -47,6 +47,23 @@ server: kill-server
 		--network mutest_default  \
 		$(IMAGE) supper --inspect -i node_modules server.js
 
+# Runs the Node.js application in a Docker container
+mock: kill-server 
+	@docker run               \
+		-d                      \
+		--rm										\
+		--name $(CONTAINER)     \
+		--network-alias $(CONTAINER) \
+		-v $$PWD:/usr/src/app   \
+		-P                      \
+		-e STATIC_MEDIA_URL=$(STATIC_MEDIA_URL) \
+		-e MOCK_MODE=all \
+		-e NODE_ENV=development \
+		-e PORT=3000            \
+		-p 8080:3000            \
+		-p 9229:9229            \
+		$(IMAGE) supper --inspect -i node_modules server.js
+
 # Removes the development container & image
 clean:
 	@if [ $$(docker ps -a -q -f name=$(IMAGE) | wc -l) -ge 1 ]; then docker rm -f $(IMAGE); fi

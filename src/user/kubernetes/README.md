@@ -5,9 +5,11 @@
 Several steps are required in order to properly configure the `user` service for use in Kubernetes. Follow these instructions to prepare a Kubernetes cluster.
 
 1. Provision an instance of Oracle Autonomous Transaction Processing database.
-    > **Note** the `ADMIN` password used and keep this available.
+    > ⚠️**Note** the `ADMIN` password used and keep this available.
 
 1. Download the **DB Connection** Credential Wallet and extract to a local working directory.
+    > ⚠️ **Note** the **Wallet** password used for download and keep this available.
+
 1. Create a Kubernetes secret containing the **Wallet** contents.
 
     ```text
@@ -21,8 +23,7 @@ Several steps are required in order to properly configure the `user` service for
 
     ```text
     kubectl create secret generic user-oadb-admin \
-      --from-literal=oadb_admin_pw='xxxxxx' \
-      --from-literal=oadb_wallet_pw='xxxxxx'
+      --from-literal=oadb_admin_pw='xxxxxx'
     ```
 
     > 🔒 This is used to initialize database schema and create service credentials. It may be disposed after intial configuration.
@@ -31,6 +32,7 @@ Several steps are required in order to properly configure the `user` service for
 
     ```text
     kubectl create secret generic user-oadb-connection \
+      --from-literal=oadb_wallet_pw='xxxxxx' \
       --from-literal=oadb_service={generateddbname}_tp \
       --from-literal=oadb_user='xxxxxx' \
       --from-literal=oadb_pw='xxxxxx'

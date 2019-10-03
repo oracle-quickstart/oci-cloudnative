@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: phx.ocir.io/intvravipati/mushop/api:1
+        image: phx.ocir.io/intvravipati/mushop/api:2.0
         imagePullPolicy: Always
         ports:
         - name: http
@@ -33,14 +33,14 @@ spec:
         - name: USERS_URL
           value: http://user
         - name: STATIC_MEDIA_URL
-          value:
+          value: https://objectstorage.us-phoenix-1.oraclecloud.com/n/intvravipati/b/mushop-images/o/
         resources:
           limits:
             cpu: 300m
-            memory: 1000Mi
+            memory: 300Mi
           requests:
             cpu: 100m
-            memory: 300Mi
+            memory: 100Mi
         securityContext:
           runAsNonRoot: true
           runAsUser: 10001
