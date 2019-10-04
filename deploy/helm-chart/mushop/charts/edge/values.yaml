@@ -8,11 +8,10 @@ image:
 resources:
   limits:
     cpu: 100m
-    memory: 1000Mi
+    memory: 256Mi
   requests:
     cpu: 50m
-    memory: 256Mi
-
+    memory: 128Mi
 hpa:
   enabled: false
   minReplicas: 1

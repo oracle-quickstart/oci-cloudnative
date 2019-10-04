@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: phx.ocir.io/intvravipati/mushop/api
-  tag: 1.1.0
+  tag: 2.0.0
   pullPolicy: Always
 
 env:
@@ -12,10 +12,10 @@ env:
 resources:
   limits:
     cpu: 300m
-    memory: 1000Mi
+    memory: 300Mi
   requests:
     cpu: 100m
-    memory: 300Mi
+    memory: 100Mi
 
 securityContext:
   runAsNonRoot: true
