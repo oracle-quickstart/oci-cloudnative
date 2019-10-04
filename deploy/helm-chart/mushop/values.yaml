@@ -5,6 +5,9 @@ global:
 certManager:
   enabled: false
 
+hpa:
+  enabled: false
+
 catalog:
   enabled: false
 
@@ -42,9 +45,6 @@ stream:
   enabled: true
 
 user:
-  enabled: true
-
-user-db:
   enabled: true
 
 secrets:

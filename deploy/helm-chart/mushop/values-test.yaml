@@ -2,6 +2,9 @@ global:
   mock:
     service: "false"
 
+hpa:
+  enabled: true
+
 ingress:
   enabled: true
 
@@ -52,9 +55,6 @@ stream:
   enabled: true
 
 user:
-  enabled: true
-
-user-db:
   enabled: true
 
 secrets:
