@@ -9,8 +9,7 @@ secrets:
   oadbService: morders_tp
   oadbUser: orders_user
   oadbPassword:
-  trustPass:
-  keyPass:
+  oadbWalletPassword:
 
 env:
   zipkin: zipkin.jaeger.svc.cluster.local

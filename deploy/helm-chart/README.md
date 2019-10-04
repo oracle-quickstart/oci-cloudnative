@@ -6,9 +6,23 @@ The `mushop` Helm chart can be used to install all components of the MuShop to t
 
 - Kubernetes cluster
 - Helm
-- Secrets (Wallet/OCI) in the `/secrets` folders under root, `carts` and `orders` charts
+- Secrets as defined in the `/secrets` folders for each of the following:
+    1. Root [./mushop/secrets](./secrets/README.md)
+    1. Carts [./mushop/charts/carts/secrets](./mushop/charts/carts/secrets/README.md)
+    1. Orders [./mushop/charts/orders/secrets](./mushop/charts/orders/secrets/README.md)
+    1. Users [./mushop/charts/user/secrets](./mushop/charts/user/secrets/README.md)
 
-## Mock Installation
+## Installation
+
+Before installing the chart, it is necessary to load the chart dependencies
+
+```text
+helm dependency update mushop
+```
+
+> This is necessary because chart binaries are not included inside the source code
+
+### Mock Installation
 
 For an installation without using the OCI services, use the following:
 
@@ -17,7 +31,7 @@ helm install mushop --name mymushop \
     --set global.mock.service=all
 ```
 
-## Dev installation
+### Dev installation
 
 The default chart installation creates an Ingress resource for development (i.e. simple Ingress, without the DNS and need for Prod/Staging secrets).
 
@@ -44,7 +58,7 @@ helm install --dry-run --debug mushop --name mymushop -f myvalues.yaml \
     --set api.hpa.enabled=true
 ```
 
-## Prod/Test installation
+## Prod/Test Installation
 
 ### Installing cert-manager
 
@@ -87,5 +101,5 @@ helm install --dry-run --debug mushop -f /mushop/values-prod.yaml --name mymusho
 If you don't want to deploy the charts, you can also render the template and get all YAML files by running the `template` command,  providing an output directory and the values file to use.
 
 ```bash
-helm template mushop --output-dir [SOME_DIR] -f [VALUES_FILE] --name mymushop
+helm template mushop --output-dir <SOME_DIR> -f <VALUES_FILE> --name mymushop
 ```

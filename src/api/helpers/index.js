@@ -19,11 +19,13 @@
    * app.use(helpers.errorHandler);
    * */
   helpers.errorHandler = function(err, req, res, next) {
+    const { response } = err;
+    const status = (response && response.status) || err.status || 500;
     const ret = {
-      message: err.message,
+      message: response ? response.statusText : err.message,
       error:   err.toString(),
     };
-    res.status(err.status || 500).json(ret);
+    res.status(status).json(ret);
   };
 
   /**

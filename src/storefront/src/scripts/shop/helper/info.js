@@ -18,6 +18,11 @@ export const TechType = {
     icon: 'cdn.svg',
     color: '#5F5F5F',
   },
+  COMPUTE: {
+    name: 'Compute',
+    icon: 'compute.svg',
+    color: '#5F5F5F',
+  },
   OKE: {
     name: 'Oracle Container Engine',
     icon: 'k8s.png',
@@ -69,13 +74,19 @@ export const ServiceType = {
     name: 'Node.js',
     icon: 'nodejs.png',
   },
+  TYPESCRIPT: {
+    name: 'TypeScript/Node.js',
+    icon: 'ts.svg',
+    scale: 0.9,
+  },
   REDIS: {
     name: 'Redis',
     icon: 'redis.png',
   },
   GO: {
     name: 'Go',
-    icon: 'go.svg',
+    icon: 'go.png',
+    scale: 1.8,
   },
   TRAEFIK: {
     name: 'Traefik',
@@ -88,6 +99,10 @@ export const ServiceType = {
   NGINX: {
     name: 'Nginx',
     icon: 'nginx.png',
+  },
+  HTML5: {
+    name: 'HTML5',
+    icon: 'html5.png',
   },
   MONGO: {
     name: 'MongoDB',
@@ -108,11 +123,13 @@ export const Services = {
     name: 'Bucket',
     type: ServiceType.BUCKET,
     tech: TechType.OCI,
+    basic: TechType.OCI,
   },
   ATP: {
     name: 'ATP Database',
     type: ServiceType.ATP,
     tech: TechType.OCI,
+    basic: TechType.OCI,
   },
   STREAMING: {
     name: 'OCI Stream',
@@ -134,6 +151,7 @@ export const Services = {
     name: 'LB',
     type: ServiceType.LB,
     tech: TechType.OCI,
+    basic: TechType.OCI,
   },
   // OKE Services
   INGRESS: {
@@ -148,13 +166,15 @@ export const Services = {
   },
   STORE: {
     name: 'Storefront UI',
-    type: ServiceType.NGINX,
+    type: ServiceType.HTML5,
     tech: TechType.OKE,
+    basic: TechType.COMPUTE,
   },
   API: {
     name: 'REST API',
     type: ServiceType.NODE,
     tech: TechType.OKE,
+    basic: TechType.COMPUTE,
   },
   SESSION: {
     name: 'Session DB',
@@ -165,6 +185,7 @@ export const Services = {
     name: 'Catalog',
     type: ServiceType.GO,
     tech: TechType.OKE,
+    basic: TechType.COMPUTE,
   },
   CART: {
     name: 'Carts',
@@ -193,12 +214,7 @@ export const Services = {
   },
   USER: {
     name: 'Users',
-    type: ServiceType.GO,
-    tech: TechType.OKE,
-  },
-  USERDB: {
-    name: 'Users NoSQL',
-    type: ServiceType.MONGO,
+    type: ServiceType.TYPESCRIPT,
     tech: TechType.OKE,
   },
 };
@@ -209,7 +225,7 @@ export const Services = {
 export const ServiceLinks = [
   // edge
   { source: Services.DNS, target: Services.WAF },
-  { source: Services.DNS, target: Services.LB, lineStyle: { type: 'dotted' } }, // insecure
+  { source: Services.DNS, target: Services.LB, lineStyle: { type: 'dotted', curveness: 0.2 } }, // insecure
   { source: Services.WAF, target: Services.LB },
   { source: Services.LB, target: Services.INGRESS },
   { source: Services.INGRESS, target: Services.EDGE_ROUTER },
@@ -225,14 +241,14 @@ export const ServiceLinks = [
   { source: Services.API, target: Services.USER },
   { source: Services.API, target: Services.ORDERS },
   // User
-  { source: Services.USER, target: Services.USERDB },
+  { source: Services.USER, target: Services.ATP, edgeSymbol: ['arrow', 'arrow'] }, // read/write
   // Catalog
-  { source: Services.CATALOG, target: Services.ATP },
+  { source: Services.CATALOG, target: Services.ATP }, // read
   { source: Services.CATALOG, target: Services.BUCKET },
   // Cart
-  { source: Services.CART, target: Services.ATP },
+  { source: Services.CART, target: Services.ATP, edgeSymbol: ['arrow', 'arrow'] }, // read/write
   // Orders
-  { source: Services.ORDERS, target: Services.ATP },
+  { source: Services.ORDERS, target: Services.ATP, edgeSymbol: ['arrow', 'arrow'] }, // read/write
   { source: Services.ORDERS, target: Services.USER },
   { source: Services.ORDERS, target: Services.CART },
   { source: Services.ORDERS, target: Services.SHIPPING },
@@ -241,4 +257,15 @@ export const ServiceLinks = [
   { source: Services.SHIPPING, target: Services.STREAMING },
   { source: Services.STREAMING, target: Services.STREAM },
 
+];
+
+/**
+ * link definitions for basic mode
+ */
+export const BasicServiceLinks = [
+  { source: Services.LB, target: Services.STORE },
+  { source: Services.LB, target: Services.API },
+  { source: Services.API, target: Services.CATALOG },
+  { source: Services.CATALOG, target: Services.ATP },
+  // { source: Services.CATALOG, target: Services.BUCKET },
 ];

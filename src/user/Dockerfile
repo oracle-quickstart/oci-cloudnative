@@ -1,35 +1,68 @@
-FROM golang:1.12-alpine AS go-builder
-RUN apk add --no-cache ca-certificates git
-WORKDIR /src
-COPY . .
+# Oracle Instant Client version
+ARG oracleClientVersion=19.3
 
-RUN GO111MODULE=on GOARCH=amd64 CGO_ENABLED=0 GOOS=linux \
-	go build -a \
-	-installsuffix cgo \
-	-o /user main.go
+# Node version
+ARG nodeVersion=10
 
-FROM alpine:3.4
-ENV	SERVICE_USER=myuser \
-	SERVICE_UID=10001 \
-	SERVICE_GROUP=mygroup \
-	SERVICE_GID=10001
+# Node ENV
+ARG nodeEnv
 
-RUN	addgroup -g ${SERVICE_GID} ${SERVICE_GROUP} && \
-	adduser -g "${SERVICE_NAME} user" -D -H -G ${SERVICE_GROUP} -s /sbin/nologin -u ${SERVICE_UID} ${SERVICE_USER} && \
-	apk add --update libcap
+# PROXY
+ARG httpProxy
 
-ENV HATEAOS user
-ENV USER_DATABASE mongodb
-ENV MONGO_HOST user-db
+################################
+#    ----- Base Image -----    #
+################################
+FROM oraclelinux:7-slim AS base
+ARG oracleClientVersion
+ARG nodeVersion
+RUN yum -y install oracle-release-el7 oracle-nodejs-release-el7 && \
+  yum-config-manager --disable ol7_developer_EPEL && \
+  yum -y install oracle-instantclient${oracleClientVersion}-basiclite nodejs && \
+  rm -rf /var/cache/yum
 
-WORKDIR /
-EXPOSE 80
-COPY --from=go-builder /user /
+#################################
+#    ----- Build Image -----    #
+#################################
+FROM base AS node-build
 
-RUN	chmod +x /user && \
-	chown -R ${SERVICE_USER}:${SERVICE_GROUP} /user && \
-	setcap 'cap_net_bind_service=+ep' /user
+# Configure npm
+ARG httpProxy
+ENV HTTP_PROXY ${httpProxy:-""}
+ENV HTTPS_PROXY ${httpProxy:-""}
+RUN npm config set loglevel error \
+  && npm set progress=false
 
-USER ${SERVICE_USER}
+# Install application dependencies
+COPY package*.json /tmp/
+RUN cd /tmp && npm install --no-optional
+RUN mkdir -p /usr/src/app && cp -a /tmp/node_modules /usr/src/app/
+RUN rm -rf /tmp/node_modules
 
-CMD ["/user", "-port=80"]
+# Copy files
+WORKDIR /usr/src/app
+COPY *.js* ./
+COPY src src
+
+# Build
+ARG nodeEnv
+ENV NODE_ENV ${nodeEnv:-"production"}
+RUN npm run build:docker
+
+# Add schema for init operation
+COPY schema schema
+
+###################################
+#    ----- Image Runtime -----    #
+###################################
+FROM base
+ARG nodeEnv
+ENV NODE_ENV ${nodeEnv:-"production"}
+WORKDIR /usr/src/app
+COPY --from=node-build /usr/src/app .
+
+VOLUME ["/usr/lib/oracle/${oracleClientVersion}/client64/lib/network/admin/"]
+ENV PORT 3000
+EXPOSE 3000
+
+CMD [ "node", "dist/main.js" ]

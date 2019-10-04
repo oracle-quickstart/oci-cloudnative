@@ -264,11 +264,6 @@ export class Products extends MuMx.compose(null,
     // const categories = category && [].concat(category || []);
     const params = {
       ...(max ? { size: max } : {}), // limit total results
-      // TODO: fix broken filtering
-      // ...(category ? {
-      //   categories: categories.join(','),
-      //   tags: categories.join(','), // backcompat
-      // }: {}),
     };
     
     this.render({ loading: true })

@@ -2,6 +2,9 @@ global:
   mock:
     service: "false"
 
+hpa:
+  enabled: true
+
 ingress:
   enabled: true
 
@@ -25,6 +28,8 @@ ingress:
 
 api:
   enabled: true
+  hpa:
+    enabled: true
   env:
     mediaUrl: "https://objectstorage.us-phoenix-1.oraclecloud.com/n/intvravipati/b/mushop-images/o/"
 
@@ -33,9 +38,13 @@ carts:
 
 catalogue:
   enabled: true
+  hpa:
+    enabled: true
 
 edge:
   enabled: true
+  hpa:
+    enabled: true
   service:
     port: 80
 
@@ -53,15 +62,16 @@ shipping:
 
 storefront:
   enabled: true
+  hpa:
+    enabled: true
 
 stream:
   enabled: true
 
 user:
   enabled: true
-
-user-db:
-  enabled: true
+  hpa:
+    enabled: true
 
 secrets:
   streams:
