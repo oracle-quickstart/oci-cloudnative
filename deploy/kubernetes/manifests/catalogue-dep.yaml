@@ -31,18 +31,18 @@ spec:
           - name: OADB_USER
             valueFrom:
               secretKeyRef:
-                name: atp-secret
-                key: catalogue_oadb_user
+                name: catalogue-oadb-connection
+                key: oadb_user
           - name: OADB_PW
             valueFrom:
               secretKeyRef:
-                name: atp-secret
-                key: catalogue_oadb_pw
+                name: catalogue-oadb-connection
+                key: oadb_pw
           - name: OADB_SERVICE
             valueFrom:
               secretKeyRef:
-                name: atp-secret
-                key: catalogue_oadb_service 
+                name: catalogue-oadb-connection
+                key: oadb_service
           securityContext:
             capabilities:
               drop:
