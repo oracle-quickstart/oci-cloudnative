@@ -49,14 +49,14 @@ spec:
             httpGet:
               path: /health
               port: http
-            initialDelaySeconds: 300
-            periodSeconds: 3
+            initialDelaySeconds: 120
+            periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /health
               port: http
-            initialDelaySeconds: 180
-            periodSeconds: 3
+            initialDelaySeconds: 10
+            periodSeconds: 5
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           securityContext:

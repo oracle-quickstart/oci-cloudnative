@@ -71,12 +71,12 @@ spec:
               name: wallet
               readOnly: true
       volumes:
-          - name: tmp-volume
-            emptyDir:
-              medium: Memory
-          - name: wallet
-            secret:
-              secretName: {{ include "orders.fullname" . }}-wallet
-              defaultMode: 256
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory
+        - name: wallet
+          secret:
+            secretName: {{ include "orders.fullname" . }}-wallet
+            defaultMode: 256
       nodeSelector:
           beta.kubernetes.io/os: linux

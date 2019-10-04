@@ -21,33 +21,33 @@ spec:
           value: zipkin.jaeger.svc.cluster.local
         - name: JAVA_OPTS
           value: -Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
-        - name: JDBC_URL
-          value: "jdbc:oracle:thin:@db3_tp?TNS_ADMIN=./config"
+        - name: TNS_ADMIN
+          value: /app/config
         - name: OADB_USER
           valueFrom:
             secretKeyRef:
-              name: atp-secret
-              key: carts_oadb_user
+              name: carts-oadb-connection
+              key: oadb_user
         - name: OADB_PW
           valueFrom:
             secretKeyRef:
-              name: atp-secret
-              key: carts_oadb_pw
+              name: carts-oadb-connection
+              key: oadb_pw
         - name: OADB_SERVICE
           valueFrom:
             secretKeyRef:
-              name: atp-secret
-              key: carts_oadb_service   
+              name: carts-oadb-connection
+              key: oadb_service   
         - name: ATP_TRUST_PASS
           valueFrom:
-          secretKeyRef:
-              name: atp-secret
-              key: carts_trust_pass 
+            secretKeyRef:
+              name: carts-oadb-connection
+              key: oadb_wallet_pw 
         - name: ATP_KEY_PASS
           valueFrom:
-          secretKeyRef:
-              name: atp-secret
-              key: carts_key_pass
+            secretKeyRef:
+              name: carts-oadb-connection
+              key: oadb_wallet_pw
         volumeMounts:
         - mountPath: /tmp
           name: tmp-volume
