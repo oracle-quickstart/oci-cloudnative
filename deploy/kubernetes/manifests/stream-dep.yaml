@@ -34,39 +34,39 @@ spec:
         - name: OCI_TENANT_ID
           valueFrom:
             secretKeyRef:
-            name: streams-secret
-            key: oci_tenant_id
+              name: streams-secret
+              key: oci_tenant_id
         - name: OCI_USER_ID
           valueFrom:
             secretKeyRef:
-            name: streams-secret
-            key: oci_user_id
+              name: streams-secret
+              key: oci_user_id
         - name: OCI_FINGERPRINT
           valueFrom:
             secretKeyRef:
-            name: streams-secret
-            key: oci_fingerprint
+              name: streams-secret
+              key: oci_fingerprint
         - name: OCI_PASS_PHRASE
           valueFrom:
             secretKeyRef:
-            name: streams-secret
-            key: oci_pass_phrase
-            optional: true
+              name: streams-secret
+              key: oci_pass_phrase
+              optional: true
         - name: OCI_API_KEY
           valueFrom:
             secretKeyRef:
-            name: streams-secret
-            key: oci_api_key
+              name: streams-secret
+              key: oci_api_key
         - name: OCI_REGION
           valueFrom:
             secretKeyRef:
-            name: streams-secret
-            key: oci_region
+              name: streams-secret
+              key: oci_region
         - name: OCI_COMPARTMENT_ID
           valueFrom:
             secretKeyRef:
-            name: streams-secret
-            key: oci_compartment_id
+              name: streams-secret
+              key: oci_compartment_id
         ports:
         - containerPort: 80
           protocol: TCP
