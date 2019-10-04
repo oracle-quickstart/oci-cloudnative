@@ -63,8 +63,8 @@ spec:
           periodSeconds: 5
         volumeMounts:
         - name: wallet
-          mountPath: "/usr/lib/oracle/19.3/client64/lib/network/admin"
-
+          mountPath: /usr/lib/oracle/19.3/client64/lib/network/admin
+          readOnly: true
       volumes:
       - name: wallet
         secret:
