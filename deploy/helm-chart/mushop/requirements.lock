@@ -1,9 +1,12 @@
 dependencies:
+- name: metrics-server
+  repository: https://kubernetes-charts.storage.googleapis.com
+  version: 2.8.7
 - name: nginx-ingress
   repository: https://kubernetes-charts.storage.googleapis.com
   version: 1.2.1
 - name: catalog
   repository: https://svc-catalog-charts.storage.googleapis.com
   version: 0.2.1
-digest: sha256:ec62a2bed5b2a4e092af16ee5b5fe3661448b0a826e94e7b79c42859487dd9a3
-generated: "2019-08-08T15:11:58.618439-07:00"
+digest: sha256:0b6a7fc3866fb970589682b6c11da5440cb3dcf1d03d184b7a6932a5f1f99706
+generated: "2019-10-03T10:51:22.281295-06:00"

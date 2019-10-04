@@ -46,6 +46,3 @@ storefront:
 
 user:
   enabled: false
-
-user-db:
-  enabled: false

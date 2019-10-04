@@ -9,8 +9,7 @@ secrets:
   oadbService: mcarts_tp
   oadbUser: carts_user
   oadbPassword:
-  trustPass:
-  keyPass:
+  oadbWalletPassword:
 
 env:
   zipkin: zipkin.jaeger.svc.cluster.local

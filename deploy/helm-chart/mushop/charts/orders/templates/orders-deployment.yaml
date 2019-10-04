@@ -33,28 +33,28 @@ spec:
             - name: OADB_USER
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "orders.fullname" . }}
+                  name: {{ include "orders.fullname" . }}-connection
                   key: oadb_user
             - name: OADB_PW
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "orders.fullname" . }}
+                  name: {{ include "orders.fullname" . }}-connection
                   key: oadb_pw
             - name: OADB_SERVICE
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "orders.fullname" . }}
+                  name: {{ include "orders.fullname" . }}-connection
                   key: oadb_service
             - name: ATP_TRUST_PASS
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "orders.fullname" . }}
-                  key: trust_pass
+                  name: {{ include "orders.fullname" . }}-connection
+                  key: oadb_wallet_pw
             - name: ATP_KEY_PASS
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "orders.fullname" . }}
-                  key: key_pass
+                  name: {{ include "orders.fullname" . }}-connection
+                  key: oadb_wallet_pw
           volumeMounts:
             - mountPath: /tmp
               name: tmp-volume
@@ -76,6 +76,7 @@ spec:
               medium: Memory
           - name: wallet
             secret:
-              secretName: {{ include "orders.fullname" . }}
+              secretName: {{ include "orders.fullname" . }}-wallet
+              defaultMode: 256
       nodeSelector:
           beta.kubernetes.io/os: linux

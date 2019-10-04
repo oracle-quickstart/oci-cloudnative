@@ -26,6 +26,18 @@ spec:
             - containerPort: 80
               protocol: TCP
           env:
+            - name: STREAM_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-oss-connection
+                  key: streamName
+                  optional: true
+            - name: STREAM_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-oss-connection
+                  key: streamId
+                  optional: true
             - name: OCI_TENANT_ID
               valueFrom:
                 secretKeyRef:
