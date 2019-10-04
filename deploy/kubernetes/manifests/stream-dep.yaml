@@ -19,42 +19,54 @@ spec:
         imagePullPolicy: Always
         name: stream
         env:
-         - name: OCI_TENANT_ID
-           valueFrom:
-             secretKeyRef:
-              name: streams-secret
-              key: oci_tenant_id
-         - name: OCI_USER_ID
-           valueFrom:
-             secretKeyRef:
-              name: streams-secret
-              key: oci_user_id
-         - name: OCI_FINGERPRINT
-           valueFrom:
-             secretKeyRef:
-              name: streams-secret
-              key: oci_fingerprint
-         - name: OCI_PASS_PHRASE
-           valueFrom:
-             secretKeyRef:
-              name: streams-secret
-              key: oci_pass_phrase
+        - name: STREAM_NAME
+          valueFrom:
+            secretKeyRef:
+              name: oss-connection
+              key: streamName
               optional: true
-         - name: OCI_API_KEY
-           valueFrom:
-             secretKeyRef:
-              name: streams-secret
-              key: oci_api_key
-         - name: OCI_REGION
-           valueFrom:
-             secretKeyRef:
-              name: streams-secret
-              key: oci_region
-         - name: OCI_COMPARTMENT_ID
-           valueFrom:
-             secretKeyRef:
-              name: streams-secret
-              key: oci_compartment_id
+        - name: STREAM_ID
+          valueFrom:
+            secretKeyRef:
+              name: oss-connection
+              key: streamId
+              optional: true
+        - name: OCI_TENANT_ID
+          valueFrom:
+            secretKeyRef:
+            name: streams-secret
+            key: oci_tenant_id
+        - name: OCI_USER_ID
+          valueFrom:
+            secretKeyRef:
+            name: streams-secret
+            key: oci_user_id
+        - name: OCI_FINGERPRINT
+          valueFrom:
+            secretKeyRef:
+            name: streams-secret
+            key: oci_fingerprint
+        - name: OCI_PASS_PHRASE
+          valueFrom:
+            secretKeyRef:
+            name: streams-secret
+            key: oci_pass_phrase
+            optional: true
+        - name: OCI_API_KEY
+          valueFrom:
+            secretKeyRef:
+            name: streams-secret
+            key: oci_api_key
+        - name: OCI_REGION
+          valueFrom:
+            secretKeyRef:
+            name: streams-secret
+            key: oci_region
+        - name: OCI_COMPARTMENT_ID
+          valueFrom:
+            secretKeyRef:
+            name: streams-secret
+            key: oci_compartment_id
         ports:
         - containerPort: 80
           protocol: TCP
