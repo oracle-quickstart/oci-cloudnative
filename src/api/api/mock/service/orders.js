@@ -7,6 +7,7 @@ const { MockServiceAbstract } = require('./abstract');
 const { MockDb } = require('../db');
 const common = require('../../common');
 const helpers = require('../../../helpers');
+const endpoints = require('../../endpoints');
 
 /**
  * Mocked orders service
@@ -63,18 +64,15 @@ module.exports = class MockOrdersService extends MockServiceAbstract {
         const cartItems = await common.getCartItems(cartId);
         // load customer & links
         const customer = await common.getCustomer(req);
-        const { _links: { addresses, cards }} = customer;
 
         // resolve user address/payment card
-        const [ address, card ] = await Promise.all([
-          { link: addresses, key: 'address' },
-          { link: cards, key: 'card' },
-        ].map(ref => {
-          // resolve each to a single result
-          return axios.get(ref.link.href)
-            .then(({ data }) => data._embedded && data._embedded[ref.key])
-            .then(list => list && list.length && list.pop());
-        }));
+        const [ address, card ] = await Promise.all(['addresses', 'cards']
+          .map(ref => {
+            // resolve each to a single result
+            return axios.get(endpoints.customersUrl + '/' + customer.id + '/' + ref)
+              .then(({ data }) => data)
+              .then(list => list && list.length && list.pop());
+          }));
 
         // create total
         const subtotal = cartItems

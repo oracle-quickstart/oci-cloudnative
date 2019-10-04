@@ -6,10 +6,10 @@
 import { Mu, MuMx, MuCtxAttrMixin } from '../mu';
 
 import { ViewTemplateMixin } from './helper/viewmx';
-import { Services, ServiceType, ServiceLinks, TechType } from './helper/info';
+import { Services, ServiceType, ServiceLinks, BasicServiceLinks, TechType } from './helper/info';
 
 const toArray = obj => Object.keys(obj).map(k => obj[k]);
-const createIds = arr => arr.forEach((row, id) => (row.id = row.id || id));
+const createIds = arr => arr.forEach((row, id) => (row.id = id));
 const nodeMax = (list, prop) => list.reduce((last, item) => Math.max(last, item[prop]), 0);
 const toSymbol = icon => icon ? `image://${icon}` : 'circle';
 
@@ -25,9 +25,18 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
 
   onMount() {
     super.onMount();
-    this.render({
-      initChart: this.handleChart.bind(this),
-    }).then(() => this.setOptions());
+    const { router, config } = this.mu;
+    const { basic, full } = router.queryparams() || {};
+    config.get()
+      .then(c => this.render({
+        basic: basic || (!full && !!Object.keys(c.mockMode || {}).filter(s => c.mockMode[s]).length),
+        initChart: this.handleChart.bind(this),
+      }))
+      .then(() => this.setOptions());
+  }
+
+  isBasic() {
+    return this.context.get('basic');
   }
 
   chartData() {
@@ -36,41 +45,61 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
 
     const col = n => n * gridDim;
     const row = n => n * gridDim;
+    const setCord = (svc, x, y, ...rest) => Object.assign(svc, { x, y }, ...rest);
 
+    const isBasic = this.isBasic();
+    const skew = {
+      go: { label: { offset: [0, -20] }},
+      java: { label: { offset: [0, -5] }},
+    }
+
+    // determine layout
     const data = { ...Services };
-    Object.assign(data.DNS, { x: col(1), y: row(0.05) });
-    Object.assign(data.WAF, { x: col(2), y: row(0.05) });
-    Object.assign(data.LB, { x: col(3.1), y: row(0.05) });
+    if (isBasic) {
+      // basic coordinates
+      setCord(data.LB, col(0), row(0.5));
+      
+      setCord(data.API, col(1), row(0.75));
+      setCord(data.STORE, col(1), row(0.25));
+      setCord(data.CATALOG, col(2), row(0.5));
 
-    Object.assign(data.BUCKET, { x: col(7), y: row(0) });
-    Object.assign(data.ATP, { x: col(5), y: row(0), label: { offset: [0, 0] }});
-    Object.assign(data.STREAMING, { x: col(6), y: row(0), label: { offset: [0, 5] }});
+      setCord(data.ATP, col(3), row(0.25));
+      setCord(data.BUCKET, col(3), row(1));
+    } else {
+      // full system coordinates
+      setCord(data.DNS, col(1), row(0.05));
+      setCord(data.WAF, col(2), row(0.05));
+      setCord(data.LB, col(3.1), row(0.05));
 
-    Object.assign(data.INGRESS, { x: col(3.1), y: row(1) });
-    Object.assign(data.EDGE_ROUTER, { x: col(2), y: row(1) });
-    Object.assign(data.STORE, { x: col(1), y: row(2) });
-    Object.assign(data.API, { x: col(3), y: row(2) });
-    Object.assign(data.SESSION, { x: col(4), y: row(3) });
+      setCord(data.BUCKET, col(7), row(0));
+      setCord(data.ATP, col(5), row(0));
+      setCord(data.STREAMING, col(6), row(0), { label: { offset: [0, 10] }});
 
-    Object.assign(data.CATALOG, { x: col(6), y: row(1) });
-    Object.assign(data.ORDERS, { x: col(6), y: row(2) });
-    Object.assign(data.CART, { x: col(7), y: row(2) });
+      setCord(data.INGRESS, col(3.1), row(1));
+      setCord(data.EDGE_ROUTER, col(2), row(1));
+      setCord(data.STORE, col(1), row(2));
+      setCord(data.API, col(3), row(2));
+      setCord(data.SESSION, col(4), row(3));
 
-    Object.assign(data.SHIPPING, { x: col(7), y: row(1) });
-    Object.assign(data.STREAM, { x: col(8), y: row(2) });
-    Object.assign(data.PAYMENT, { x: col(8), y: row(1) });
+      setCord(data.CATALOG, col(6), row(1), skew.go);
+      setCord(data.CART, col(6), row(3), skew.java);
+      setCord(data.ORDERS, col(7), row(2), skew.java);
 
-    Object.assign(data.USER, { x: col(4), y: row(2) });
-    Object.assign(data.USERDB, { x: col(5), y: row(3) });
+      setCord(data.SHIPPING, col(7), row(1), skew.java);
+      setCord(data.STREAM, col(8), row(1), skew.java);
+      setCord(data.PAYMENT, col(8), row(2), skew.go);
 
-    const nodes = toArray(data);
+      setCord(data.USER, col(6), row(2));
+    }
+
+    const nodes = toArray(data)
+      .filter(node => isBasic ? node.basic : true);
+
     createIds(nodes);
     nodes.forEach(node => {
-      // categorize services by type
-      node.category = node.tech.id;
       node.symbol = node.symbol || toSymbol(node.icon || node.type.icon);
       node.symbolSize = SYMBOL_SVC * (node.type.scale || 1);
-    })
+    });
     return nodes;
   }
 
@@ -81,7 +110,7 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
       categories,
       type: 'graph',
       layout: 'none',
-      top: AXIS_TOP,
+      top: AXIS_TOP * (this.isBasic() ? 2 : 1),
       roam: false,
       focusNodeAdjacency: true,
       itemStyle: {
@@ -94,19 +123,20 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
       },
       symbolKeepAspect: true,
       edgeSymbol: ['none', 'arrow'],
-      edgeSymbolSize: [5, 8],
+      edgeSymbolSize: [10, 10],
       label: {
         show: true,
         fontSize: 16,
         color: '#333',
-        backgroundColor: '#fff',
+        // backgroundColor: '#fff',
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
         position: 'bottom',
         formatter: '{b}',
       },
       lineStyle: {
-        color: 'source',
+        color: 'target',
         opacity: 0.3,
-        curveness: 0.35
+        curveness: 0.15
       },
       emphasis: {
         lineStyle: {
@@ -191,21 +221,36 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
       },
       series: [
         this.serviceSeries(data, links, categories),
-        // this.techSeries(data),
       ],
     };
   }
 
   setOptions() {
+    const isBasic = this.isBasic();
 
     const data = this.chartData();
-    const categories = toArray(TechType).map(c => ({
-      ...c,
-      itemStyle: {
-        color: c.color || null
-      }
-    }));
-    const links = ServiceLinks
+    const techs = data.map(d => isBasic ? d.basic.id : d.tech.id);
+    // collect relevant categories
+    const categories = toArray(TechType)
+      .filter(t => techs.indexOf(t.id) > -1)
+      .map(c => ({
+        ...c,
+        itemStyle: {
+          color: c.color || null
+        }
+      }));
+    // re-index
+    createIds(categories);
+    const cats = categories.map(c => c.name);
+    // assign nodes to categories
+    data.forEach(node => {
+      const tech = (isBasic ? node.basic : node.tech);
+      node.category = cats.indexOf(tech.name);
+      node.techref = tech;
+    });
+
+    // determine links
+    const links = (isBasic ? BasicServiceLinks : ServiceLinks)
       .filter(l => l.source && l.target)
       .map(({source, target, ...rest}) => ({source: source.id, target: target.id, ...rest}));
 
@@ -224,6 +269,7 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
         oci: !selected[TechType.OCI.name],
         oke: !selected[TechType.OKE.name],
         edge: !selected[TechType.EDGE.name],
+        compute: !selected[TechType.COMPUTE.name],
       });
     });
   }

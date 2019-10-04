@@ -15,6 +15,7 @@ helm install --dry-run --debug mushop --name mymushop \
     --set secrets.catalogue.oadbPassword=xxxxxx \
     --set secrets.carts.oadbPassword=xxxxxx \
     --set secrets.orders.oadbPassword=xxxxxx\
+    --set secrets.user.oadbPassword=xxxxxx\
     --set secrets.oci.compartmentId=<your compartment id>
     --set secrets.oci.tenantId=<your tenant id>
     --set secrets.oci.userId=<your user id>

@@ -27,22 +27,22 @@ spec:
           - containerPort: 80
           env:
           - name: ZIPKIN
-            value: zipkin.jaeger.svc.cluster.local
+            value:
           - name: OADB_USER
             valueFrom:
               secretKeyRef:
-                name: atp-secret
-                key: catalogue_oadb_user
+                name: catalogue-oadb-connection
+                key: oadb_user
           - name: OADB_PW
             valueFrom:
               secretKeyRef:
-                name: atp-secret
-                key: catalogue_oadb_pw
+                name: catalogue-oadb-connection
+                key: oadb_pw
           - name: OADB_SERVICE
             valueFrom:
               secretKeyRef:
-                name: atp-secret
-                key: catalogue_oadb_service 
+                name: catalogue-oadb-connection
+                key: oadb_service
           securityContext:
             capabilities:
               drop:
@@ -54,14 +54,14 @@ spec:
             httpGet:
               path: /health
               port: 80
-            initialDelaySeconds: 300
-            periodSeconds: 3
+            initialDelaySeconds: 120
+            periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /health
               port: 80
-            initialDelaySeconds: 180
-            periodSeconds: 3          
+            initialDelaySeconds: 10
+            periodSeconds: 5
           resources:
             requests:
               cpu: 100m
@@ -69,3 +69,11 @@ spec:
             limits:
               cpu: 200m
               memory: 128Mi
+          volumeMounts:
+          - name: wallet
+            mountPath: "/usr/lib/oracle/19.3/client64/lib/network/admin"
+      volumes:
+      - name: wallet
+        secret:
+          secretName: catalogue-oadb-wallet
+          defaultMode: 256

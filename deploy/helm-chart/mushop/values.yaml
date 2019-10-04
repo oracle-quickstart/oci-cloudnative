@@ -5,6 +5,9 @@ global:
 certManager:
   enabled: false
 
+hpa:
+  enabled: false
+
 catalog:
   enabled: false
 
@@ -44,9 +47,6 @@ stream:
 user:
   enabled: true
 
-user-db:
-  enabled: true
-
 secrets:
   streams:
     compartmentId:
@@ -55,6 +55,9 @@ secrets:
     fingerprint:
     region:
     passphrase:
+    # future support
+    streamId:
+    streamName:
   serviceBroker:
     tenantId:
     userId:

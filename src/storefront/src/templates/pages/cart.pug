@@ -1,3 +1,7 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+ 
 extends /layouts/_pages
 
 block vars
@@ -52,7 +56,7 @@ block pages
               uk-grid)
 
             //- Product cell
-            div
+            div(class="uk-flex-last uk-flex-first@m")
               div.uk-grid-small(uk-grid)
 
                 //- Image
@@ -79,6 +83,7 @@ block pages
               div(class="uk-grid-small " +
                         "uk-child-width-1-1 " +
                         "uk-child-width-expand@s " +
+                        "uk-flex-nowrap " +
                         "uk-flex-middle " +
                         "uk-text-center"
                   uk-grid)

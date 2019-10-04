@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: {{ include "session.fullname" . }}
   labels:
-{{ include "user-db.labels" . | indent 4 }}
+{{ include "session.labels" . | indent 4 }}
 spec:
   selector:
     app.kubernetes.io/name: {{ include "session.name" . }}

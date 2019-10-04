@@ -24,10 +24,10 @@ spec:
         resources:
           limits:
             cpu: 100m
-            memory: 1000Mi
+            memory: 256Mi
           requests:
             cpu: 50m
-            memory: 256Mi
+            memory: 128Mi
         securityContext:
           runAsNonRoot: true
           runAsUser: 10001
@@ -78,7 +78,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: phx.ocir.io/intvravipati/mushop/api:1
+        image: phx.ocir.io/intvravipati/mushop/api:2.0
         imagePullPolicy: Always
         ports:
         - name: http
@@ -95,14 +95,14 @@ spec:
         - name: USERS_URL
           value: http://user
         - name: STATIC_MEDIA_URL
-          value:
+          value: https://objectstorage.us-phoenix-1.oraclecloud.com/n/intvravipati/b/mushop-images/o/
         resources:
           limits:
             cpu: 300m
-            memory: 1000Mi
+            memory: 300Mi
           requests:
             cpu: 100m
-            memory: 300Mi
+            memory: 100Mi
         securityContext:
           runAsNonRoot: true
           runAsUser: 10001
@@ -202,44 +202,60 @@ spec:
         ports:
          - containerPort: 80
         env:
-         - name: ZIPKIN
-           value: zipkin.jaeger.svc.cluster.local
-         - name: JAVA_OPTS
-           value: -Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
-         - name: JDBC_URL
-           value: "jdbc:oracle:thin:@db3_tp?TNS_ADMIN=./config"
-         - name: OADB_USER
-           valueFrom:
-             secretKeyRef:
-               name: atp-secret
-               key: carts_oadb_user
-         - name: OADB_PW
-           valueFrom:
-             secretKeyRef:
-               name: atp-secret
-               key: carts_oadb_pw
-         - name: OADB_SERVICE
-           valueFrom:
-             secretKeyRef:
-               name: atp-secret
-               key: carts_oadb_service   
-         - name: ATP_TRUST_PASS
-           valueFrom:
+        - name: ZIPKIN
+          value: zipkin.jaeger.svc.cluster.local
+        - name: JAVA_OPTS
+          value: -Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+        - name: TNS_ADMIN
+          value: /app/config
+        - name: OADB_USER
+          valueFrom:
             secretKeyRef:
-               name: atp-secret
-               key: carts_trust_pass 
-         - name: ATP_KEY_PASS
-           valueFrom:
+              name: carts-oadb-connection
+              key: oadb_user
+        - name: OADB_PW
+          valueFrom:
             secretKeyRef:
-               name: atp-secret
-               key: carts_key_pass 
+              name: carts-oadb-connection
+              key: oadb_pw
+        - name: OADB_SERVICE
+          valueFrom:
+            secretKeyRef:
+              name: carts-oadb-connection
+              key: oadb_service   
+        - name: ATP_TRUST_PASS
+          valueFrom:
+            secretKeyRef:
+              name: carts-oadb-connection
+              key: oadb_wallet_pw 
+        - name: ATP_KEY_PASS
+          valueFrom:
+            secretKeyRef:
+              name: carts-oadb-connection
+              key: oadb_wallet_pw
         volumeMounts:
         - mountPath: /tmp
           name: tmp-volume
+        - mountPath: /app/config/keystore.jks
+          subPath: keystore.jks
+          name: wallet
+          readOnly: true
+        - mountPath: /app/config/truststore.jks
+          subPath: truststore.jks
+          name: wallet
+          readOnly: true
+        - mountPath: /app/config/tnsnames.ora
+          subPath: tnsnames.ora
+          name: wallet
+          readOnly: true
       volumes:
         - name: tmp-volume
           emptyDir:
             medium: Memory
+        - name: wallet
+          secret:
+            secretName: carts-oadb-wallet
+            defaultMode: 256
       nodeSelector:
         beta.kubernetes.io/os: linux
 ---
@@ -255,6 +271,7 @@ spec:
     targetPort: 80
   selector:
     name: carts
+---
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -284,22 +301,22 @@ spec:
           - containerPort: 80
           env:
           - name: ZIPKIN
-            value: zipkin.jaeger.svc.cluster.local
+            value:
           - name: OADB_USER
             valueFrom:
               secretKeyRef:
-                name: atp-secret
-                key: catalogue_oadb_user
+                name: catalogue-oadb-connection
+                key: oadb_user
           - name: OADB_PW
             valueFrom:
               secretKeyRef:
-                name: atp-secret
-                key: catalogue_oadb_pw
+                name: catalogue-oadb-connection
+                key: oadb_pw
           - name: OADB_SERVICE
             valueFrom:
               secretKeyRef:
-                name: atp-secret
-                key: catalogue_oadb_service 
+                name: catalogue-oadb-connection
+                key: oadb_service
           securityContext:
             capabilities:
               drop:
@@ -311,14 +328,14 @@ spec:
             httpGet:
               path: /health
               port: 80
-            initialDelaySeconds: 300
-            periodSeconds: 3
+            initialDelaySeconds: 120
+            periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /health
               port: 80
-            initialDelaySeconds: 180
-            periodSeconds: 3          
+            initialDelaySeconds: 10
+            periodSeconds: 5
           resources:
             requests:
               cpu: 100m
@@ -326,6 +343,14 @@ spec:
             limits:
               cpu: 200m
               memory: 128Mi
+          volumeMounts:
+          - name: wallet
+            mountPath: "/usr/lib/oracle/19.3/client64/lib/network/admin"
+      volumes:
+      - name: wallet
+        secret:
+          secretName: catalogue-oadb-wallet
+          defaultMode: 256
 ---
 apiVersion: v1
 kind: Service
@@ -357,7 +382,7 @@ spec:
     spec:
       containers:
       - name: storefront
-        image: phx.ocir.io/intvravipati/mushop/storefront:1
+        image: phx.ocir.io/intvravipati/mushop/storefront:2.0
         imagePullPolicy: Always
         ports:
         - name: http
@@ -367,10 +392,10 @@ spec:
         resources:
           limits:
             cpu: 300m
-            memory: 1000Mi
+            memory: 300Mi
           requests:
             cpu: 100m
-            memory: 300Mi
+            memory: 100Mi
         securityContext:
           runAsNonRoot: true
           runAsUser: 10001
@@ -429,48 +454,65 @@ spec:
     spec: 
       containers:
       - name: orders
-        image: phx.ocir.io/intvravipati/mushop/orders:1.0.1
+        image: phx.ocir.io/intvravipati/mushop/orders:1.0.2
+        imagePullPolicy: Always
         env:
-         - name: ZIPKIN
-           value: zipkin.jaeger.svc.cluster.local
-         - name: JAVA_OPTS
-           value: -Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
-         - name: JDBC_URL
-           value: "jdbc:oracle:thin:@appdb_tp?TNS_ADMIN=./config"
-         - name: OADB_USER
-           valueFrom:
-             secretKeyRef:
-               name: atp-secret
-               key: orders_oadb_user
-         - name: OADB_PW
-           valueFrom:
-             secretKeyRef:
-               name: atp-secret
-               key: orders_oadb_pw
-         - name: OADB_SERVICE
-           valueFrom:
-             secretKeyRef:
-               name: atp-secret
-               key: orders_oadb_service
-         - name: ATP_TRUST_PASS
-           valueFrom:
+        - name: ZIPKIN
+          value: zipkin.jaeger.svc.cluster.local
+        - name: JAVA_OPTS
+          value: -Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+        - name: TNS_ADMIN
+          value: /app/config
+        - name: OADB_USER
+          valueFrom:
             secretKeyRef:
-               name: atp-secret
-               key: orders_trust_pass 
-         - name: ATP_KEY_PASS
-           valueFrom:
+              name: orders-oadb-connection
+              key: oadb_user
+        - name: OADB_PW
+          valueFrom:
             secretKeyRef:
-               name: atp-secret
-               key: orders_key_pass   
+              name: orders-oadb-connection
+              key: oadb_pw
+        - name: OADB_SERVICE
+          valueFrom:
+            secretKeyRef:
+              name: orders-oadb-connection
+              key: oadb_service   
+        - name: ATP_TRUST_PASS
+          valueFrom:
+            secretKeyRef:
+              name: orders-oadb-connection
+              key: oadb_wallet_pw 
+        - name: ATP_KEY_PASS
+          valueFrom:
+            secretKeyRef:
+              name: orders-oadb-connection
+              key: oadb_wallet_pw
         ports:
         - containerPort: 80
         volumeMounts:
         - mountPath: /tmp
           name: tmp-volume
+        - mountPath: /app/config/keystore.jks
+          subPath: keystore.jks
+          name: wallet
+          readOnly: true
+        - mountPath: /app/config/truststore.jks
+          subPath: truststore.jks
+          name: wallet
+          readOnly: true
+        - mountPath: /app/config/tnsnames.ora
+          subPath: tnsnames.ora
+          name: wallet
+          readOnly: true
       volumes:
         - name: tmp-volume
           emptyDir:
             medium: Memory
+        - name: wallet
+          secret:
+            secretName: orders-oadb-wallet
+            defaultMode: 256
       nodeSelector:
         beta.kubernetes.io/os: linux
 ---
@@ -569,40 +611,52 @@ spec:
         imagePullPolicy: Always
         name: stream
         env:
-         - name: OCI_TENANT_ID
-           valueFrom:
-             secretKeyRef:
+        - name: STREAM_NAME
+          valueFrom:
+            secretKeyRef:
+              name: oss-connection
+              key: streamName
+              optional: true
+        - name: STREAM_ID
+          valueFrom:
+            secretKeyRef:
+              name: oss-connection
+              key: streamId
+              optional: true
+        - name: OCI_TENANT_ID
+          valueFrom:
+            secretKeyRef:
               name: streams-secret
               key: oci_tenant_id
-         - name: OCI_USER_ID
-           valueFrom:
-             secretKeyRef:
+        - name: OCI_USER_ID
+          valueFrom:
+            secretKeyRef:
               name: streams-secret
               key: oci_user_id
-         - name: OCI_FINGERPRINT
-           valueFrom:
-             secretKeyRef:
+        - name: OCI_FINGERPRINT
+          valueFrom:
+            secretKeyRef:
               name: streams-secret
               key: oci_fingerprint
-         - name: OCI_PASS_PHRASE
-           valueFrom:
-             secretKeyRef:
+        - name: OCI_PASS_PHRASE
+          valueFrom:
+            secretKeyRef:
               name: streams-secret
               key: oci_pass_phrase
               optional: true
-         - name: OCI_API_KEY
-           valueFrom:
-             secretKeyRef:
+        - name: OCI_API_KEY
+          valueFrom:
+            secretKeyRef:
               name: streams-secret
               key: oci_api_key
-         - name: OCI_REGION
-           valueFrom:
-             secretKeyRef:
+        - name: OCI_REGION
+          valueFrom:
+            secretKeyRef:
               name: streams-secret
               key: oci_region
-         - name: OCI_COMPARTMENT_ID
-           valueFrom:
-             secretKeyRef:
+        - name: OCI_COMPARTMENT_ID
+          valueFrom:
+            secretKeyRef:
               name: streams-secret
               key: oci_compartment_id
         ports:
@@ -648,40 +702,52 @@ spec:
         imagePullPolicy: Always
         name: shipping
         env:
-         - name: OCI_TENANT_ID
-           valueFrom:
-             secretKeyRef:
+        - name: STREAM_NAME
+          valueFrom:
+            secretKeyRef:
+              name: oss-connection
+              key: streamName
+              optional: true
+        - name: STREAM_ID
+          valueFrom:
+            secretKeyRef:
+              name: oss-connection
+              key: streamId
+              optional: true
+        - name: OCI_TENANT_ID
+          valueFrom:
+            secretKeyRef:
               name: streams-secret
               key: oci_tenant_id
-         - name: OCI_USER_ID
-           valueFrom:
-             secretKeyRef:
+        - name: OCI_USER_ID
+          valueFrom:
+            secretKeyRef:
               name: streams-secret
               key: oci_user_id
-         - name: OCI_FINGERPRINT
-           valueFrom:
-             secretKeyRef:
+        - name: OCI_FINGERPRINT
+          valueFrom:
+            secretKeyRef:
               name: streams-secret
               key: oci_fingerprint
-         - name: OCI_PASS_PHRASE
-           valueFrom:
-             secretKeyRef:
+        - name: OCI_PASS_PHRASE
+          valueFrom:
+            secretKeyRef:
               name: streams-secret
               key: oci_pass_phrase
               optional: true
-         - name: OCI_API_KEY
-           valueFrom:
-             secretKeyRef:
+        - name: OCI_API_KEY
+          valueFrom:
+            secretKeyRef:
               name: streams-secret
               key: oci_api_key
-         - name: OCI_REGION
-           valueFrom:
-             secretKeyRef:
+        - name: OCI_REGION
+          valueFrom:
+            secretKeyRef:
               name: streams-secret
               key: oci_region
-         - name: OCI_COMPARTMENT_ID
-           valueFrom:
-             secretKeyRef:
+        - name: OCI_COMPARTMENT_ID
+          valueFrom:
+            secretKeyRef:
               name: streams-secret
               key: oci_compartment_id
         ports:
@@ -706,57 +772,6 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: user-db
-  labels:
-    name: user-db
-spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        name: user-db
-    spec:
-      containers:
-      - name: user-db
-        image: phx.ocir.io/intvravipati/mushop/user-db:0.0.1
-        ports:
-        - name: mongo
-          containerPort: 27017
-        securityContext:
-          capabilities:
-            drop:
-              - all
-            add:
-              - CHOWN
-              - SETGID
-              - SETUID
-          readOnlyRootFilesystem: true
-        volumeMounts:
-        - mountPath: /tmp
-          name: tmp-volume
-      volumes:
-        - name: tmp-volume
-          emptyDir:
-            medium: Memory
-      nodeSelector:
-        beta.kubernetes.io/os: linux
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: user-db
-  labels:
-    name: user-db
-spec:
-  ports:
-  - port: 27017
-    targetPort: 27017
-  selector:
-    name: user-db
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
   name: user
   labels:
     name: user
@@ -769,22 +784,35 @@ spec:
     spec:
       containers:
       - name: user
-        image: phx.ocir.io/intvravipati/mushop/user:0.0.1
+        image: phx.ocir.io/intvravipati/mushop/user:1.0.0
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 3000
+        env:
+        - name: OADB_USER
+          valueFrom:
+            secretKeyRef:
+              name: user-oadb-connection
+              key: oadb_user
+        - name: OADB_PW
+          valueFrom:
+            secretKeyRef:
+              name: user-oadb-connection
+              key: oadb_pw
+        - name: OADB_SERVICE
+          valueFrom:
+            secretKeyRef:
+              name: user-oadb-connection
+              key: oadb_service
         resources:
           limits:
             cpu: 300m
-            memory: 100Mi
+            memory: 300Mi
           requests:
             cpu: 100m
             memory: 100Mi
-        ports:
-        - containerPort: 80
-        env:
-        - name: mongo
-          value: user-db:27017
         securityContext:
-          runAsNonRoot: true
-          runAsUser: 10001
           capabilities:
             drop:
               - all
@@ -794,17 +822,24 @@ spec:
         livenessProbe:
           httpGet:
             path: /health
-            port: 80
+            port: http
           initialDelaySeconds: 300
-          periodSeconds: 3
+          periodSeconds: 30
         readinessProbe:
           httpGet:
             path: /health
-            port: 80
-          initialDelaySeconds: 180
-          periodSeconds: 3
-      nodeSelector:
-        beta.kubernetes.io/os: linux
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        volumeMounts:
+        - name: wallet
+          mountPath: /usr/lib/oracle/19.3/client64/lib/network/admin
+          readOnly: true
+      volumes:
+      - name: wallet
+        secret:
+          secretName: user-oadb-wallet
+          defaultMode: 256
 ---
 apiVersion: v1
 kind: Service
@@ -815,7 +850,7 @@ metadata:
 spec:
   ports:
   - port: 80
-    targetPort: 80
+    targetPort: 3000
   selector:
     name: user
 
