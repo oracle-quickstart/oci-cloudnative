@@ -40,6 +40,10 @@ The application uses a typical topology for a 3-tier web application as follows
 
 `docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic-stack.zip /transfer/mushop-basic-stack.zip`
 
+or under windows powershell:
+
+`docker run -v "$((pwd).path -replace '\\', '/'):/transfer" --rm --entrypoint cp mushop-basic:latest /package/mushop-basic-stack.zip /transfer/mushop-basic-stack.zip`
+
 This creates a `.zip` file in your working directory that can be imported in to OCI Resource Manager.
 
 [oci]: https://cloud.oracle.com/en_US/cloud-infrastructure
