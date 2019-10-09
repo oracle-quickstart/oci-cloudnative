@@ -33,7 +33,7 @@ spec:
         - name: wallet
           mountPath: /wallet
       - name: init-service-database
-        image: phx.ocir.io/intvravipati/mushop/dbtools:1.0
+        image: phx.ocir.io/intvravipati/mushop/dbtools:1.0.1
         env:
           - name: OADB_USER
             valueFrom:
