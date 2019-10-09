@@ -122,12 +122,6 @@ EOF
 kubectl --namespace=mushop-dev create configmap catalogue-sql --from-file=../dbdata/catalogue.sql
 ```
 
-<!-- 1. Create Kubernetes configMap variables for the OADB provisioning.
-```
-kubectl --namespace=mushop-dev create configmap catalogue-oadb-info --from-literal=name="MuShop Catalogue DB - dev" --from-literal=dbName=catalogue-dev --from-literal=compartmentId=ocid1.compartment.oc1..aaaaa...
-```
-    > ⚠️ Note the `compartmentId` need to be updated with the desired compartment to provision the catalogue-dev db. -->
-
 
 ## Autonomous Database Provisioning
 
