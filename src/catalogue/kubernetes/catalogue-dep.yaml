@@ -21,11 +21,10 @@ spec:
       terminationGracePeriodSeconds: 5
       initContainers:
       - name: decode-wallet
-        command:
-        - bash
-        - -c
-        - "for i in `ls -1 /tmp/wallet | grep -v user_name`; do cat /tmp/wallet/$i  | base64 --decode > /wallet/$i; done; ls -l /wallet/*;"
         image: oraclelinux:7.6
+        command: ["/bin/sh","-c"]
+        args: 
+        - for i in `ls -1 /tmp/wallet | grep -v user_name`; do cat /tmp/wallet/$i  | base64 --decode > /wallet/$i; done; ls -l /wallet/*;
         volumeMounts:
         - name: wallet-raw
           mountPath: /tmp/wallet
@@ -34,6 +33,9 @@ spec:
           mountPath: /wallet
       - name: init-service-database
         image: phx.ocir.io/intvravipati/mushop/dbtools:1.0.1
+        command: ["/bin/sh","-c"]
+        args: 
+        - sqlplus ADMIN/\"$( echo "$OADB_ADMIN_PW" | jq -r 'keys[0] as $k | "\(.[$k])"' )\"@$OADB_SERVICE @service.sql $OADB_USER
         env:
           - name: OADB_USER
             valueFrom:

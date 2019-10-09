@@ -17,9 +17,7 @@ RUN yum -y upgrade && \
   yum clean all && \
   rm -rf /var/cache/yum
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
 WORKDIR /work
 VOLUME ["/usr/lib/oracle/${clientVersion}/client64/lib/network/admin/"]
 
-ENTRYPOINT [ "/entrypoint.sh" ]
+CMD ["/bin/sh","-c","echo","Nothing to run"]
