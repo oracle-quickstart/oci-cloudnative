@@ -35,7 +35,7 @@ spec:
         image: phx.ocir.io/intvravipati/mushop/dbtools:1.0.1
         command: ["/bin/sh","-c"]
         args: 
-        - sqlplus ADMIN/\"$( echo "$OADB_ADMIN_PW" | jq -r 'keys[0] as $k | "\(.[$k])"' )\"@$OADB_SERVICE @service.sql $OADB_USER
+        - sqlplus ADMIN/\"$( echo "$OADB_ADMIN_PW" | jq -r 'keys[0] as $k | "\(.[$k])"' )\"@$OADB_SERVICE @service.sql $OADB_USER $OADB_PW
         env:
           - name: OADB_USER
             valueFrom:
