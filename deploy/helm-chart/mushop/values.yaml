@@ -55,9 +55,9 @@ secrets:
     fingerprint:
     region:
     passphrase:
+    streamName:
     # future support
     streamId:
-    streamName:
   serviceBroker:
     tenantId:
     userId:

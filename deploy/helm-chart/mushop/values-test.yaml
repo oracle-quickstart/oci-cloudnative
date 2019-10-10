@@ -5,6 +5,9 @@ global:
 hpa:
   enabled: true
 
+catalog:
+  enabled: false
+
 ingress:
   enabled: true
 
@@ -58,10 +61,13 @@ user:
   enabled: true
 
 secrets:
-  oci:
+  streams:
     compartmentId:
     tenantId:
     userId:
     fingerprint:
     region:
     passphrase:
+    streamName:
+    # future support
+    streamId:

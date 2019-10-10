@@ -16,8 +16,12 @@ secrets:
     fingerprint: OCI_FINGERPRINT
     region: OCI_REGION
     passphrase: OCI_PASSPHRASE
+    streamName: STREAM_NAME
 
 ingress:
+  enabled: false
+
+catalog:
   enabled: false
 
 api:
