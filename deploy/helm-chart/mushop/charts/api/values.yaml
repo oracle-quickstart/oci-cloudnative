@@ -28,7 +28,7 @@ securityContext:
   readOnlyRootFilesystem: true
 
 hpa:
-  enabled: false
+  enabled: true
   minReplicas: 1
   maxReplicas: 10
   metrics:

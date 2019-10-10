@@ -10,14 +10,20 @@ For practical purposes, multiple charts are used to separate installation into t
 ## Setup
 
 The `setup` chart includes several recommended installations on the cluster. These
-installations represent 3rd party services, which integrate with Oracle Cloud Infrastructure
-or enable certain features within the application.
+installations represent common 3rd party services, which integrate with
+Oracle Cloud Infrastructure or enable certain features within the application.
 
 1. Update chart dependencies: `helm dependency update setup`
     > This is necessary because chart binaries are not included inside the source code
 1. Install chart: `helm install setup --name musetup --namespace --musetup`
-    > **NOTE:** If using with `--set certManager.enabled=true`, you must install the
-    cert manager chart separately, using these [instructions](#installing-cert-manager).
+    > **NOTE:** It is possible that certain services may conflict with pre-existing installs.
+    If so, try editing using `--set <chart>.enabled=null` for problematic charts.
+
+> Example setting with alternate LoadBalancer port:
+
+```text
+helm install setup --set nginx-ingress.controller.service.ports.http=8000
+```
 
 The installed dependencies are listed below. Note that any can be disabled as needed.
 

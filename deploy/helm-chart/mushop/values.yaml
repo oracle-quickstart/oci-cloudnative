@@ -2,12 +2,6 @@ global:
   mock:
     service: "false"
 
-certManager:
-  enabled: false
-
-hpa:
-  enabled: false
-
 catalog:
   enabled: false
 
