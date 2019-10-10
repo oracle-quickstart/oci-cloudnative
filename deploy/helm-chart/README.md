@@ -1,11 +1,42 @@
 # MuShop Helm Chart
 
-The `mushop` Helm chart can be used to install all components of the MuShop to the Kubernetes cluster.
+The helm charts here can be used to install all components of MuShop to the Kubernetes cluster.
+For practical purposes, multiple charts are used to separate installation into the following steps:
+
+1. `[setup:](#setup)` Installs _optional_ chart dependencies on the cluster
+1. `[provision:](#provision)` Provisions OCI resources integrated with Service Broker _(optional)_
+1. `[mushop:](#mushop)` Deploys the MuShop application runtime
+
+## Setup
+
+The `setup` chart includes several recommended installations on the cluster. These
+installations represent 3rd party services, which integrate with Oracle Cloud Infrastructure
+or enable certain features within the application.
+
+1. Update chart dependencies: `helm dependency update setup`
+    > This is necessary because chart binaries are not included inside the source code
+1. Install chart: `helm install setup --name musetup --namespace --musetup`
+    > **NOTE:** If using with `--set certManager.enabled=true`, you must install the
+    cert manager chart separately, using these [instructions](#installing-cert-manager).
+
+The installed dependencies are listed below. Note that any can be disabled as needed.
+
+| Chart | Purpose |
+|---|---|
+| [Prometheus](https://github.com/helm/charts/blob/master/stable/prometheus/README.md) | Service metrics aggregation |
+| [Grafana](https://github.com/helm/charts/blob/master/stable/grafana/README.md) | Infra/Service visualization dashboards |
+| [Metrics Server](https://github.com/helm/charts/blob/master/stable/metrics-server/README.md) | Support for Horizontal Pod Autoscaling |
+| [Service Catalog](https://github.com/kubernetes-sigs/service-catalog/tree/master/charts/catalog) | Interface for Oracle Service Broker |
+| [Nginx Ingress](https://github.com/helm/charts/blob/master/stable/nginx-ingress/README.md) | Load Balancer ingress control |
+
+## Provision
+
+- Service provisioning: ATP, Streaming?
+- Secret Binding (Available to runtime)
+- TODO...
 
 ## Prerequisites
 
-- Kubernetes cluster
-- Helm
 - Secrets as defined in the `/secrets` folders for each of the following:
     1. Root [./mushop/secrets](./secrets/README.md)
     1. Carts [./mushop/charts/carts/secrets](./mushop/charts/carts/secrets/README.md)
@@ -66,7 +97,7 @@ You only need to run this if you are installing Mushop on a new cluster *and* yo
 
 ```
 kubectl apply \
-    -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.9/deploy/manifests/00-crds.yaml
+    -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.10/deploy/manifests/00-crds.yaml
 ```
 
 Create the `cert-manager` namespace and label it to disable validation:

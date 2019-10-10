@@ -1,0 +1,26 @@
+# https://github.com/helm/charts/blob/master/stable/prometheus/README.md
+prometheus:
+  enabled: true
+
+# https://github.com/helm/charts/blob/master/stable/grafana/README.md
+grafana:
+  enabled: true
+  plugins: [ 'oci-datasource' ]
+
+# https://github.com/helm/charts/blob/master/stable/metrics-server/README.md
+metrics-server:
+  enabled: true
+
+# https://github.com/kubernetes-sigs/service-catalog/tree/master/charts/catalog
+catalog:
+  enabled: true
+
+# https://github.com/helm/charts/blob/master/stable/nginx-ingress/README.md
+nginx-ingress:
+  enabled: true
+
+# setup params
+certManager:
+  enabled: false
+  email: no-reply@example.com
+    
