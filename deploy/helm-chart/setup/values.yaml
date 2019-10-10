@@ -18,9 +18,3 @@ catalog:
 # https://github.com/helm/charts/blob/master/stable/nginx-ingress/README.md
 nginx-ingress:
   enabled: true
-
-# setup params
-certManager:
-  enabled: false
-  email: no-reply@example.com
-    

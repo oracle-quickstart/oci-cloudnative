@@ -16,7 +16,7 @@ dependencies:
     repository: https://kubernetes-charts.storage.googleapis.com
   # Ingress Controller
   - name: nginx-ingress
-    version: 1.2.1
+    version: 1.24.2
     condition: nginx-ingress.enabled
     repository: https://kubernetes-charts.storage.googleapis.com
   # Service Catalog
