@@ -59,9 +59,17 @@ secrets:
     compartmentId:
     tenantId:
     userId:
-    fingerprint:
     region:
+    fingerprint:
     passphrase:
+    keyFile:
     streamName:
     # future support
     streamId:
+  serviceBroker:
+    tenantId:
+    userId:
+    region:
+    fingerprint:
+    passphrase:
+    keyFile:

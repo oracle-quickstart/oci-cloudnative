@@ -1,4 +1,9 @@
 global:
+  secrets:
+    oadbAdminPassword:
+    oadbWallet:
+    oadbWalletPassword:
+    oadbService:
   mock:
     service: "false"
 
@@ -46,15 +51,17 @@ secrets:
     compartmentId:
     tenantId:
     userId:
-    fingerprint:
     region:
+    fingerprint:
     passphrase:
+    keyFile: secrets/oci_streams_api_key.pem
     streamName:
     # future support
     streamId:
   serviceBroker:
     tenantId:
     userId:
-    fingerprint:
     region:
+    fingerprint:
     passphrase:
+    keyFile: secrets/oci_service_broker_api_key.pem

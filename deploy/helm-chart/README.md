@@ -47,6 +47,7 @@ The installed dependencies are listed below. Note that any can be disabled as ne
 
 ## Provision
 
+- OSB oci credentials secret file
 - Service provisioning: ATP, Streaming?
 - Secret Binding (Available to runtime)
 - TODO...
@@ -60,14 +61,6 @@ The installed dependencies are listed below. Note that any can be disabled as ne
     1. Users [./mushop/charts/user/secrets](./mushop/charts/user/secrets/README.md)
 
 ## Installation
-
-Before installing the chart, it is necessary to load the chart dependencies
-
-```text
-helm dependency update mushop
-```
-
-> This is necessary because chart binaries are not included inside the source code
 
 ### Mock Installation
 
