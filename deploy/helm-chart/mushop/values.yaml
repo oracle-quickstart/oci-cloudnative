@@ -1,9 +1,8 @@
 global:
-  secrets:
-    oadbAdminPassword:
-    oadbWallet:
-    oadbWalletPassword:
-    oadbService:
+  oadbAdminPassword:
+  oadbWallet:
+  oadbWalletPassword:
+  oadbService:
   mock:
     service: "false"
 
@@ -58,10 +57,3 @@ secrets:
     streamName:
     # future support
     streamId:
-  serviceBroker:
-    tenantId:
-    userId:
-    region:
-    fingerprint:
-    passphrase:
-    keyFile: secrets/oci_service_broker_api_key.pem

@@ -1,3 +1,36 @@
+{{- define "user.oadb.connection" -}}
+- name: OADB_USER
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "user.fullname" . }}-connection
+      key: oadb_user
+- name: OADB_PW
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "user.fullname" . }}-connection
+      key: oadb_pw
+- name: OADB_SERVICE
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "user.fullname" . }}-connection
+      key: oadb_service
+{{- end -}}
+
+{{- define "user.oadb.admin" -}}
+- name: OADB_ADMIN_PW
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "user.fullname" . }}-admin
+      key: oadb_admin_pw
+{{- end -}}
+
+{{- define "user.mount.wallet" -}}
+- name: wallet
+  mountPath: /usr/lib/oracle/19.3/client64/lib/network/admin/
+  readOnly: true
+{{- end -}}
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,53 +48,68 @@ spec:
         app.kubernetes.io/name: {{ include "user.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      initContainers:
+        # DbTools Init
+        {{- if .Values.secrets.oadbAdminPassword }}
+        - name: initdb
+          image: "{{ .Values.dbtools.repository }}:{{ .Values.dbtools.tag }}"
+          imagePullPolicy: {{ .Values.dbtools.pullPolicy }}
+          command: ["/bin/sh","-c"]
+          args: 
+            # NOTE: will use alternate syntax for osb
+            - sqlplus ADMIN/${OADB_ADMIN_PW}@${OADB_SERVICE} @service.sql ${OADB_USER} ${OADB_PW}
+          env:
+            {{- include "user.oadb.connection" . | nindent 12 }}
+            {{- include "user.oadb.admin" . | nindent 12 }}
+          volumeMounts:
+            {{- include "user.mount.wallet" . | nindent 12 }}
+            - name: initdb
+              mountPath: /work/
+        {{- end }}
+        # Schema Sync (TypeORM)
+        - name: sync
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["npm", "run", "schema:sync"]
+          env:
+            {{- include "user.oadb.connection" . | nindent 12 }}
+          volumeMounts:
+            {{- include "user.mount.wallet" . | nindent 12 }}
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
               containerPort: 3000
           env:
-            - name: OADB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "user.fullname" . }}-connection
-                  key: oadb_user
-            - name: OADB_PW
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "user.fullname" . }}-connection
-                  key: oadb_pw
-            - name: OADB_SERVICE
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "user.fullname" . }}-connection
-                  key: oadb_service
+            {{- include "user.oadb.connection" . | nindent 12 }}
+          volumeMounts:
+            {{- include "user.mount.wallet" . | nindent 12 }}
+          resources: {{- toYaml .Values.resources | nindent 12 }}
+          securityContext: {{- toYaml .Values.securityContext | nindent 12 }}
           livenessProbe:
             httpGet:
               path: /health
               port: http
-            initialDelaySeconds: 300
-            periodSeconds: 30
+            initialDelaySeconds: 120
+            periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /health
               port: http
             initialDelaySeconds: 10
             periodSeconds: 5
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          volumeMounts:
-            - name: wallet
-              mountPath: /usr/lib/oracle/19.3/client64/lib/network/admin
-              readOnly: true
       volumes:
         - name: wallet
           secret:
             secretName: {{ include "user.fullname" . }}-wallet
             defaultMode: 256
+        - name: initdb
+          configMap:
+            name: {{ include "user.fullname" . }}-init
+            items:
+            - key: atp.init.sql
+              path: service.sql
       nodeSelector:
         beta.kubernetes.io/os: linux

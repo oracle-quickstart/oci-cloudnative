@@ -38,6 +38,5 @@ hpa:
         target:
           type: Utilization
           averageUtilization: 70
-
 service:
   port: 80

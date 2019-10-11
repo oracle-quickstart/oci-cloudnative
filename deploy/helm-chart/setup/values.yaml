@@ -1,3 +1,12 @@
+# https://github.com/helm/charts/blob/master/stable/metrics-server/README.md
+metrics-server:
+  enabled: true
+  args: [
+    # not recommended in production
+    --kubelet-insecure-tls,
+    --kubelet-preferred-address-types=InternalIP
+  ]
+
 # https://github.com/helm/charts/blob/master/stable/prometheus/README.md
 prometheus:
   enabled: true
@@ -7,11 +16,7 @@ grafana:
   enabled: true
   plugins: [ 'oci-datasource' ]
 
-# https://github.com/helm/charts/blob/master/stable/metrics-server/README.md
-metrics-server:
-  enabled: true
-
-# https://github.com/kubernetes-sigs/service-catalog/tree/master/charts/catalog
+# https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md
 catalog:
   enabled: true
 

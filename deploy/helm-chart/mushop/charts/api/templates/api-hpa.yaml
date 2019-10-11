@@ -10,6 +10,5 @@ spec:
     name: {{ include "api.fullname" . }}
   minReplicas: {{ .Values.hpa.minReplicas }}
   maxReplicas: {{ .Values.hpa.maxReplicas }}
-  metrics:
-  {{- toYaml .Values.hpa.metrics | nindent 2 }}
+  metrics: {{- toYaml .Values.hpa.metrics | nindent 4 }}
 {{- end -}}

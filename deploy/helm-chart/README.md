@@ -42,7 +42,7 @@ The installed dependencies are listed below. Note that any can be disabled as ne
 | [Prometheus](https://github.com/helm/charts/blob/master/stable/prometheus/README.md) | Service metrics aggregation | `prometheus.enabled` |
 | [Grafana](https://github.com/helm/charts/blob/master/stable/grafana/README.md) | Infra/Service visualization dashboards | `grafana.enabled` |
 | [Metrics Server](https://github.com/helm/charts/blob/master/stable/metrics-server/README.md) | Support for Horizontal Pod Autoscaling | `metrics-server.enabled` |
-| [Service Catalog](https://github.com/kubernetes-sigs/service-catalog/tree/master/charts/catalog) | Interface for Oracle Service Broker | `catalog.enabled` |
+| [Service Catalog](https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md) | Interface for Oracle Service Broker | `catalog.enabled` |
 | [Nginx Ingress](https://github.com/helm/charts/blob/master/stable/nginx-ingress/README.md) | Load Balancer ingress control | `nginx-ingress.enabled` |
 
 ## Provision
@@ -55,10 +55,32 @@ The installed dependencies are listed below. Note that any can be disabled as ne
 ## Prerequisites
 
 - Secrets as defined in the `/secrets` folders for each of the following:
-    1. Root [./mushop/secrets](./secrets/README.md)
+    1. . [./mushop/secrets](./secrets/README.md)
     1. Carts [./mushop/charts/carts/secrets](./mushop/charts/carts/secrets/README.md)
+    1. Catalogue [./mushop/charts/catalogue/secrets](./mushop/charts/catalogue/secrets/README.md)
     1. Orders [./mushop/charts/orders/secrets](./mushop/charts/orders/secrets/README.md)
     1. Users [./mushop/charts/user/secrets](./mushop/charts/user/secrets/README.md)
+
+> Example folders with secrets in place. This shows a single DB Wallet used
+
+```text
+mushop/
+├── charts
+│   ├── carts
+│   │   └── secrets
+│   │       └── Wallet_mymushopdb
+│   ├── catalogue
+│   │   └── secrets
+│   │       └── Wallet_mymushopdb
+│   ├── orders
+│   │   └── secrets
+│   │       └── Wallet_mymushopdb
+│   └── user
+│       └── secrets
+│   │       └── Wallet_mymushopdb
+└── secrets
+    └── oci_streams_api_key.pem
+```
 
 ## Installation
 
@@ -75,7 +97,7 @@ helm install mushop --name mymushop \
 
 The default chart installation creates an Ingress resource for development (i.e. simple Ingress, without the DNS and need for Prod/Staging secrets).
 
-Before installing the chart, you need to copy the secrets (wallet files and OCI key for streams and the service broker) to a couple of places in the chart. Check the README.md in `secrets` folder under `carts` and `orders` as well as root chart.
+Before installing the chart, ensure all [prerequistes](#prerequisites) are met.
 
 To install the chart, make a copy of the `values.yaml` file, fill in the missing values (e.g. secrets) and then run:
 

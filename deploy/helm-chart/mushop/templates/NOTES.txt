@@ -26,16 +26,16 @@ with the following command:
 
 kubectl get pod --watch --namespace {{ .Release.Namespace }}
 
-{{- if .Values.ingress.enabled }}
-
-  {{- if .Values.ingress.hosts }}
+{{ if .Release.IsInstall }}
+{{ if .Values.ingress.enabled }}
+{{ if .Values.ingress.hosts }}
 
 The application will be available on the hosts you provided, assuming the hostname(s)
 used resolve to the ingress controller IP address:
 
-  {{ toYaml .Values.ingress.hosts | indent 2 }}
+{{ toYaml .Values.ingress.hosts | indent 2 }}
 
-  {{- else }}
+{{ else }}
 
 Access the application on your ingress controller service IP address:
 (Will be a self-signed SSL certificate)
@@ -43,7 +43,7 @@ Access the application on your ingress controller service IP address:
   Local: https://localhost
   Cloud: https://xxx.xx.xx.xxx
 
-  {{- end }}
+{{ end }}
 
 Alternatively access the application with a port-forward from this machine
 to the cluster service:
@@ -53,7 +53,7 @@ to the cluster service:
 
   Open http://localhost:8000
 
-{{- else }}
+{{ else }}
 
 To access the application, create a proxy to the application on this
 machine:
@@ -63,8 +63,10 @@ machine:
 
   Open http://localhost:8000
 
-{{- end }}
+{{ end }}
 
 ## Uninstalling the Chart:
 
   helm delete --purge {{ .Release.Name }}
+
+{{ end }}
