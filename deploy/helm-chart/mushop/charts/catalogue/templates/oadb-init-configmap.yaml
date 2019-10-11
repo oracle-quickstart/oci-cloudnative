@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "catalogue.fullname" . }}-init
+  labels: {{ include "catalogue.labels" . | nindent 4 }}
+data: {{- (.Files.Glob "config/*.sql").AsConfig | nindent 2 }}
+
