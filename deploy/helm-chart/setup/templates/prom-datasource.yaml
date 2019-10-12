@@ -1,4 +1,3 @@
-{{ if .Values.prometheus.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -15,4 +14,3 @@ data:
       access: proxy
       orgId: 1
       url: http://{{ .Release.Name }}-prometheus-server.{{ .Release.Namespace }}.svc.cluster.local
-{{ end }}
