@@ -15,6 +15,10 @@ prometheus:
 grafana:
   enabled: true
   plugins: [ 'oci-datasource' ]
+  sidecar:
+    datasources:
+      enabled: true
+      label: grafana_datasource
 
 # https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md
 catalog:
