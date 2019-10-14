@@ -49,7 +49,7 @@ Alternatively access the application with a port-forward from this machine
 to the cluster service:
 
   kubectl port-forward -n {{ .Release.Namespace}} \
-    svc/{{ include "mushop.fullname" . }}-edge 8000:{{ .Values.edge.service.port }}
+    svc/edge 8000:{{ .Values.edge.service.port }}
 
   Open http://localhost:8000
 
@@ -59,7 +59,7 @@ To access the application, create a proxy to the application on this
 machine:
 
   kubectl port-forward -n {{ .Release.Namespace}} \
-    svc/{{ include "mushop.fullname" . }}-edge 8000:{{ .Values.edge.service.port }}
+    svc/edge 8000:{{ .Values.edge.service.port }}
 
   Open http://localhost:8000
 
