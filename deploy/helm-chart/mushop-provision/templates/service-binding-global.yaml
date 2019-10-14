@@ -1,0 +1,15 @@
+{{ if .Values.global.osb }}
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceBinding
+metadata:
+  name: {{ .Values.global.osb.instanceName }}-oadb-wallet-binding
+  labels:
+{{ include "provision.labels" . | indent 4 }}
+spec:
+  instanceRef:
+    name: {{ .Values.global.osb.instanceName }}-db
+  parametersFrom:
+    - secretKeyRef:
+        name: {{ .Values.global.osb.instanceName}}-oadb-connection
+        key: oadb_wallet_pw_osb
+{{ end }}

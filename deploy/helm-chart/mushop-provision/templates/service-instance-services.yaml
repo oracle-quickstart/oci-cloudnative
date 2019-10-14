@@ -25,9 +25,6 @@ spec:
     - secretKeyRef:
         name: {{ $svcName }}-oadb-admin
         key: oadb_admin_pw_osb
-    # - secretKeyRef:
-    #     name: {{ $svcName }}-oadb-wallet-access
-    #     key: oadb_wallet_pw_osb
     - secretKeyRef:
         name: {{ $svcName }}-oadb-connection
         key: oadb_db_osb

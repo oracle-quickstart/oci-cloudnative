@@ -20,9 +20,6 @@ spec:
         name: {{ .Values.global.osb.instanceName}}-oadb-admin
         key: oadb_admin_pw_osb
     - secretKeyRef:
-        name: {{ .Values.global.osb.instanceName}}-oadb-wallet-access
-        key: oadb_wallet_pw_osb
-    - secretKeyRef:
         name: {{ .Values.global.osb.instanceName}}-oadb-connection
         key: oadb_db_osb
 {{ end }}

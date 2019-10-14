@@ -1,0 +1,22 @@
+{{- range .Values.global.services }}
+{{- $svcName := . }}
+{{/* The svcKey has the value of e.g. .Values.catalogue. This is so we can use it to check if we need to overwrite the values*/}}
+{{- $svcKey := index $.Values (printf "%s" $svcName) -}}
+
+{{/* Check if need to create instance for the particular service */}}
+{{ if $svcKey.osb.atp -}}
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceBinding
+metadata:
+  name: {{ $svcName }}-oadb-wallet-binding
+  labels:
+{{ include "provision.labels" . | indent 4 }}
+spec:
+  instanceRef:
+    name: {{ $svcName }}-db
+  parametersFrom:
+    - secretKeyRef:
+        name: {{ $svcName}}-oadb-connection
+        key: oadb_wallet_pw_osb
+{{ end }}
+{{ end }}
