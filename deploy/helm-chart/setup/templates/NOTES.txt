@@ -1,0 +1,42 @@
+########################################
+  __  __        _____ _                 
+ |  \/  |      / ____| |                
+ | \  / |_   _| (___ | |__   ___  _ __  
+ | |\/| | | | |\___ \| '_ \ / _ \| '_ \ 
+ | |  | | |_| |____) | | | | (_) | |_) |
+ |_|  |_|\__,_|_____/|_| |_|\___/| .__/ 
+                                 | |    
+                                 |_|    
+      Made with ♥ by Oracle A-Team
+########################################
+
+Summary:
+  Name: {{ .Release.Name }}
+  Chart: {{ .Chart.Name }}
+  Version: {{ .Chart.Version }}
+  Namespace: {{ .Release.Namespace }}
+  Revision: {{ .Release.Revision }}
+
+{{- if .Values.grafana.enabled }}
+
+## Grafana
+
+An instance of Grafana was installed with this chart. These instructions describe
+how to access the Grafana application. 
+
+- Get the admin password:
+
+  kubectl get secret -n {{ .Release.Namespace }} {{ .Release.Name }}-grafana \
+    -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+
+- Access the dashboard with admin/<password>:
+  
+  kubectl port-forward -n {{ .Release.Namespace }} svc/{{ .Release.Name }}-grafana 3000:80
+
+- Then open http://localhost:3000
+
+{{- end }}
+
+## Uninstalling the Chart:
+
+  helm delete --purge {{ .Release.Name }}

@@ -1,9 +1,41 @@
+{{- define "catalogue.oadb.connection" -}}
+- name: OADB_USER
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "catalogue.fullname" . }}-connection
+      key: oadb_user
+- name: OADB_PW
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "catalogue.fullname" . }}-connection
+      key: oadb_pw
+- name: OADB_SERVICE
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "catalogue.fullname" . }}-connection
+      key: oadb_service
+{{- end -}}
+
+{{- define "catalogue.oadb.admin" -}}
+- name: OADB_ADMIN_PW
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "catalogue.fullname" . }}-admin
+      key: oadb_admin_pw
+{{- end -}}
+
+{{- define "catalogue.mount.wallet" -}}
+- name: wallet
+  mountPath: /usr/lib/oracle/19.3/client64/lib/network/admin/
+  readOnly: true
+{{- end -}}
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "catalogue.fullname" . }}
-  labels:
-{{ include "catalogue.labels" . | indent 4 }}
+  labels: {{ include "catalogue.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -17,6 +49,24 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       terminationGracePeriodSeconds: 5
+      initContainers:
+        # DbTools Init 
+        {{- if .Values.secrets.oadbAdminPassword }}
+        - name: initdb
+          image: "{{ .Values.dbtools.repository }}:{{ .Values.dbtools.tag }}"
+          imagePullPolicy: {{ .Values.dbtools.pullPolicy }}
+          command: ["/bin/sh","-c"]
+          args:
+            # NOTE: will use alternate syntax for osb
+            - sqlplus ADMIN/${OADB_ADMIN_PW}@${OADB_SERVICE} @service.sql ${OADB_USER} ${OADB_PW}
+          env:
+            {{- include "catalogue.oadb.connection" . | nindent 12 }}
+            {{- include "catalogue.oadb.admin" . | nindent 12 }}
+          volumeMounts:
+            {{- include "catalogue.mount.wallet" . | nindent 12 }}
+            - name: initdb
+              mountPath: /work/
+        {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -30,21 +80,9 @@ spec:
           env:
             - name: ZIPKIN
               value: {{ .Values.env.zipkin }}
-            - name: OADB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "catalogue.fullname" . }}
-                  key: oadb_user
-            - name: OADB_PW
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "catalogue.fullname" . }}
-                  key: oadb_pw
-            - name: OADB_SERVICE
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "catalogue.fullname" . }}
-                  key: oadb_service
+            {{- include "catalogue.oadb.connection" . | nindent 12 }}
+          volumeMounts:
+            {{- include "catalogue.mount.wallet" . | nindent 12 }}
           livenessProbe:
             httpGet:
               path: /health
@@ -61,3 +99,14 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+      volumes:
+        - name: wallet
+          secret:
+            secretName: {{ include "catalogue.fullname" . }}-wallet
+            defaultMode: 256
+        - name: initdb
+          configMap:
+            name: {{ include "catalogue.fullname" . }}-init
+            items:
+            - key: atp.init.sql
+              path: service.sql
