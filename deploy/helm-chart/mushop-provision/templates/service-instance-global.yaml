@@ -1,0 +1,25 @@
+{{ if .Values.global.osb }}
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceInstance
+metadata:
+  name: {{ .Values.global.osb.instanceName }}-db
+  labels:
+{{ include "provision.labels" . | indent 4 }}
+spec:
+  clusterServiceClassExternalName: atp-service
+  clusterServicePlanExternalName: standard
+  parameters:
+    name: {{ .Values.global.osb.instanceName | quote }}
+    compartmentId: {{ .Values.global.osb.compartmentId | quote }}
+    cpuCount: 1
+    storageSizeTBs: 1
+    licenseType: BYOL
+    autoScaling: false
+  parametersFrom:
+    - secretKeyRef:
+        name: {{ .Values.global.osb.instanceName}}-oadb-admin
+        key: oadb_admin_pw_osb
+    - secretKeyRef:
+        name: {{ .Values.global.osb.instanceName}}-oadb-connection
+        key: oadb_db_osb
+{{ end }}
