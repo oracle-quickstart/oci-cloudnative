@@ -15,7 +15,7 @@ class WebTasks(TaskSet):
         item_id = category_item["id"]
 
         self.client.get("/")
-        self.client.get("/api/login", headers={"Authorization":"Basic %s" % base64string})
+        self.client.post("/api/login", headers={"Authorization":"Basic %s" % base64string})
         self.client.get("/category.html")
         self.client.get("/product.html?id={}".format(item_id))
         self.client.delete("/api/cart")

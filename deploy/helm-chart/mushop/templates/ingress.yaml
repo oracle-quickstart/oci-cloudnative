@@ -21,7 +21,8 @@ spec:
         paths:
         - path: /
           backend:
-            serviceName: {{ $.Release.Name }}-edge
+            # intentionally w/o .Release.Name for metrics workshop
+            serviceName: edge
             servicePort: {{ $.Values.edge.service.port }}
     {{- end -}}
     {{ else }}
@@ -29,7 +30,8 @@ spec:
         paths:
         - path: /
           backend:
-            serviceName: {{ .Release.Name }}-edge
+            # intentionally w/o .Release.Name for metrics workshop
+            serviceName: edge
             servicePort: {{ .Values.edge.service.port }}
     {{- end -}}
   {{- if .Values.ingress.tls }}

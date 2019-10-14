@@ -3,69 +3,49 @@ global:
     service: "false"
 
 ingress:
-  enabled: false
-
-catalog:
-  enabled: false
-
-api:
   enabled: true
 
 carts:
-  enabled: true
-  image:
-    repository: <IMAGE NAME HERE>
-    tag: <IMAGE TAG HERE>
-    pullPolicy: Never
   secrets:
-    oadbPassword: <PASSWORD HERE>
-    trustPass: <PASSWORD HERE>
-    keyPass: <PASSWORD HERE>
-
-orders:
-  enabled: true
-  image:
-    repository: <IMAGE NAME HERE>
-    tag: <IMAGE TAG HERE>
-    pullPolicy: Never
-  secrets:
-    oadbPassword: <PASSWORD HERE>
-    trustPass: <PASSWORD HERE>
-    keyPass: <PASSWORD HERE>
+    oadbAdminPassword:
+    oadbWalletPassword:
+    oadbService:
+    # provide your own if oadbAdminPassword is available
+    oadbUser:
+    oadbPassword:
 
 catalogue:
-  enabled: true
   secrets:
-    oadbPassword: <PASSWORD HERE>
+    oadbAdminPassword:
+    oadbService:
+    # provide your own if oadbAdminPassword is available
+    oadbUser:
+    oadbPassword:
 
-edge:
-  enabled: true
-
-payment:
-  enabled: true
-
-session:
-  enabled: true
-
-shipping:
-  enabled: true
-
-storefront:
-  enabled: true
-
-stream:
-  enabled: true
+orders:
+  secrets:
+    oadbAdminPassword:
+    oadbWalletPassword:
+    oadbService:
+    # provide your own if oadbAdminPassword is available
+    oadbUser:
+    oadbPassword:
 
 user:
-  enabled: true
-
+  secrets:
+    oadbAdminPassword:
+    oadbService:
+    # provide your own if oadbAdminPassword is available
+    oadbUser:
+    oadbPassword:
+ 
 secrets:
   streams:
-    streamName: <STREAM_NAME>
-    compartmentId: <OCI_COMPARTMENT_ID>
-    tenantId: <OCI_TENANT_ID>
-    userId: <OCI_USER_ID>
-    region: <OCI_REGION>
-    fingerprint: <OCI_FINGERPRINT>
-    passphrase: <OCI_PASSPHRASE>
-    keyFile: <OCI_API_KEY_FILE>
+    streamName:
+    tenantId: 
+    compartmentId: 
+    userId: 
+    region: 
+    fingerprint: 
+    passphrase: 
+    keyFile: 

@@ -27,7 +27,7 @@ Oracle Cloud Infrastructure or enable certain features within the application.
     helm install setup --name mushop-setup --namespace --mushop-setup
     ```
 
-    > **NOTE:** It is possible that certain services may conflict with pre-existing installs. If so, try editing using `--set <chart>.enabled=null` for problematic charts.
+    > **NOTE:** It is possible that certain services may conflict with pre-existing installs. If so, try editing using `--set <chart>.enabled=false` any conflicting charts.
 
 > Example setting with alternate LoadBalancer port:
 
