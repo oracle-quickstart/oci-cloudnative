@@ -4,7 +4,7 @@ Prerequisites:
 1. Set the namespace:
 
 ```
-export MUSHOP_NAMESPACE=mushop-dev
+export MUSHOP_NAMESPACE=mushop
 ```
 
 1. Install the OCI service broker:
