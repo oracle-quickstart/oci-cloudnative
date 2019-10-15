@@ -37,6 +37,19 @@ how to access the Grafana application.
 
 {{- end }}
 
+{{- if .Values.nginx-ingress.enabled }}
+
+## Ingress
+
+An nginx ingress controller has been installed, which includes a LoadBalancer
+resource in this namespace.
+
+- Locate the ingress controller EXTERNAL-IP address
+
+  kubectl get svc -n {{ .Release.Namespace }} {{ .Release.Name }}-nginx-ingres
+
+{{- end }}
+
 ## Uninstalling the Chart:
 
   helm delete --purge {{ .Release.Name }}
