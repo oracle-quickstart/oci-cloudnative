@@ -4,25 +4,26 @@ global:
     atp: true
     # Service broker name (used in the service URL)
     name: oci-service-broker
+    namespace: mushop
     port: 8080
     compartmentId:
     # Service instance name
-    instanceName:
-  # Leave values empty to auto-generate thme
-  oadbAdminPassword: 
-  oadbWalletPassword:
-  oadbUser:
-  oadbName:
+    instanceName: mushop
   services:
     - catalogue
     - carts
     - orders
-    - users
-  namespace: mushop
+    - user
+  # Leave values empty to auto-generate them
+  oadbAdminPassword: 
+  oadbWalletPassword:
+  oadbName:
+  oadbUser:
+  oadbPassword:
 
 # Each separate service can get its own ATP created
 # by setting the osb.atp=true and providing the compartmentId
-# If passwords are not provided, they will be auto-generated.
+# If names/passwords are not provided, they will be auto-generated.
 # catalogue:
 #   osb:
 #     atp: true
@@ -35,3 +36,4 @@ secrets:
     fingerprint:
     region:
     passphrase:
+    keyFile: secrets/oci_service_broker_api_key.pem

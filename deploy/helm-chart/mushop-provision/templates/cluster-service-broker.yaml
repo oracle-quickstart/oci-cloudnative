@@ -1,8 +1,0 @@
-apiVersion: servicecatalog.k8s.io/v1beta1
-kind: ClusterServiceBroker
-metadata:
-  name: {{.Values.global.osb.name}}
-  labels:
-{{ include "provision.labels" . | indent 4 }}
-spec:
-  url: http://{{ .Values.global.osb.name }}.{{ .Values.global.namespace }}:{{ .Values.global.osb.port }}
