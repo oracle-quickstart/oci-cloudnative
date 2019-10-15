@@ -47,10 +47,10 @@ The installed dependencies are listed below. Note that any can be disabled as ne
 
 ## Provision
 
-- OSB oci credentials secret file
-- Service provisioning: ATP, Streaming?
-- Secret Binding (Available to runtime)
-- TODO...
+The `provision` chart utilizes the open-source [OCI Service Broker](https://github.com/oracle/oci-service-broker)
+for _provisioning_ OCI services. This implementation is used to install [Open Service Broker](https://github.com/openservicebrokerapi/servicebroker/blob/v2.14/spec.md) in Oracle Container Engine for Kubernetes or in other Kubernetes clusters.
+
+See [./provision/README.md](./provision/README.md) for full details
 
 ## Prerequisites
 
