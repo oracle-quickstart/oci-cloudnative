@@ -37,7 +37,8 @@ how to access the Grafana application.
 
 {{- end }}
 
-{{- if .Values.nginx-ingress.enabled }}
+{{- $ingressConfig := index $.Values "nginx-ingress" -}}
+{{- if $ingressConfig.enabled }}
 
 ## Ingress
 
