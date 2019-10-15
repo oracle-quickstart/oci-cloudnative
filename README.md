@@ -55,3 +55,7 @@ The following diagram shows the topology created by this stack.
 ![MuShop Basic Infra](./images/basic/00-Topology.png)
 
 To learn more about how you can use this application to build your own applications, click [here](./deploy/basic/README.md).
+
+[oci]: https://cloud.oracle.com/en_US/cloud-infrastructure
+[orm]: https://docs.cloud.oracle.com/iaas/Content/ResourceManager/Concepts/resourcemanager.htm
+[tf]: https://www.terraform.io
