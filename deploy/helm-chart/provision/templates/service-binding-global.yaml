@@ -7,7 +7,7 @@ metadata:
 {{ include "provision.labels" . | indent 4 }}
 spec:
   instanceRef:
-    name: {{ .Values.global.osb.instanceName }}-db
+    name: {{ .Values.global.osb.instanceName }}-atp
   parametersFrom:
     - secretKeyRef:
         name: {{ .Values.global.osb.instanceName}}-oadb-connection

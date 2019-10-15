@@ -14,7 +14,7 @@ metadata:
 {{ include "provision.labels" . | indent 4 }}
 spec:
   instanceRef:
-    name: {{ $svcName }}-db
+    name: {{ $svcName }}-atp
   parametersFrom:
     - secretKeyRef:
         name: {{ $svcName}}-oadb-connection

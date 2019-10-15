@@ -1,4 +1,3 @@
-{{- $globalOsbKey := index .Values (printf "%s.osb" "global") }}
 {{- range .Values.global.services }}
 {{- $svcName := . }}
 {{/* The svcOsbKey has the value of e.g. .Values.catalogue.osb This is so we can use it to check if we need to overwrite the values*/}}
@@ -9,7 +8,7 @@
 apiVersion: servicecatalog.k8s.io/v1beta1
 kind: ServiceInstance
 metadata:
-  name: {{ $svcName }}-db
+  name: {{ $svcName }}-atp
   labels:
 {{ include "provision.labels" . | indent 4 }}
 spec:
@@ -17,8 +16,7 @@ spec:
   clusterServicePlanExternalName: standard
   parameters:
     name: {{ (printf "MuShop %s Db" $svcName) | quote }}
-    {{- $compartmentId := $svcOsbKey.compartmentId | default $globalOsbKey.compartmentId }}
-    compartmentId: {{ required (printf "Value .%s.compartmentId is required!" $svcOsbKey) $compartmentId | quote }}
+    compartmentId: {{ required (printf "Value .%s.compartmentId is required!" $svcOsbKey) $svcOsbKey.compartmentId | quote }}
     cpuCount: 1
     storageSizeTBs: 1
     licenseType: BYOL
