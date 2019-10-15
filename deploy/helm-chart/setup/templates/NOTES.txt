@@ -46,7 +46,7 @@ resource in this namespace.
 
 - Locate the ingress controller EXTERNAL-IP address
 
-  kubectl get svc -n {{ .Release.Namespace }} {{ .Release.Name }}-nginx-ingres
+  kubectl get svc -n {{ .Release.Namespace }} {{ .Release.Name }}-nginx-ingress
 
 {{- end }}
 
