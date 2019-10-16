@@ -1,13 +1,8 @@
 global:
-  oadbAdminPassword:
-  oadbWallet:
-  oadbWalletPassword:
-  oadbService:
   mock:
     service: "false"
-
-catalog:
-  enabled: false
+  osb:
+    instanceName: mushop
 
 ingress:
   enabled: true

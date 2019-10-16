@@ -2,9 +2,6 @@ global:
   mock:
     service: "false"
 
-catalog:
-  enabled: false
-
 ingress:
   enabled: true
 

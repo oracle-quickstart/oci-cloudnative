@@ -22,9 +22,6 @@ secrets:
 ingress:
   enabled: false
 
-catalog:
-  enabled: false
-
 api:
   enabled: false
 
