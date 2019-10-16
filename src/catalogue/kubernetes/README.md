@@ -8,7 +8,7 @@ These steps are necessary if you using a local kubernetes (e.g.: Docker Desktop 
 If you are using a cluster with already deployed the MuShop App, the steps are not necessary.
 
 ### 1) Helm Installed
-Installs helm client and the optiona svcat cli:
+Installs helm client and the optional svcat cli:
 
   ```brew update && brew install kubernetes-helm kubernetes-service-catalog-client``` 
 
