@@ -110,8 +110,6 @@ EOF
 
     > ⚠️ The passwords and schema user on this example are just placeholders, please change to your own
 
-    > ⚠️ Note the `oadb_user` have the placeholder example in CAPS. This is mandatory for this release.
-
     > ⚠️ Credentials `oadb_user` and `oadb_pw` are defined here, which are used by services connecting to ATP. The `oadb_service` string is the desired [TNS Name][tns], and follows the naming pattern: `{db.name}_tp`.
     
 
