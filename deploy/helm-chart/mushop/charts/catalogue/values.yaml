@@ -10,6 +10,8 @@ dbtools:
   tag: 1.0.1
   pullPolicy: IfNotPresent
 
+osb: {}
+
 secrets:
   oadbService:
   oadbUser:

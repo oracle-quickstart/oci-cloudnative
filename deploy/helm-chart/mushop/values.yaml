@@ -1,13 +1,13 @@
 global:
-  oadbAdminPassword:
-  oadbWallet:
-  oadbWalletPassword:
-  oadbService:
   mock:
     service: "false"
+  osb:
+    instanceName: mushop
 
-catalog:
-  enabled: false
+# Depending on the scenario, certain resources might need to be skipped.
+# For example, --set skip.streaming=true to disable required streaming secrets
+skip:
+  streaming: false
 
 ingress:
   enabled: true

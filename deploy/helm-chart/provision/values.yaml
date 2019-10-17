@@ -29,6 +29,12 @@ global:
 #     atp: true
 #     compartmentId: ...
 
+# Certain resources created by this chart will not be deleted when the chart is
+# deleted. To re-use any orphaned resources, you may skip them in a subsequent install
+skip:
+  ociCredentials: false
+  clusterBroker: false
+
 secrets:
   serviceBroker:
     tenantId:

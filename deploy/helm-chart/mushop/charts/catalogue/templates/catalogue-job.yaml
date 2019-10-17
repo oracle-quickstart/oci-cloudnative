@@ -1,0 +1,33 @@
+{{- $usesOsb := (index (.Values.global | default .Values) "osb").atp | default .Values.osb.atp -}}
+{{- if or $usesOsb .Values.secrets.oadbAdminPassword }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "catalogue.fullname" . }}-{{ .Values.image.tag }}-init
+  labels: {{ include "catalogue.labels" . | nindent 4 }}
+spec:
+  ttlSecondsAfterFinished: 120
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "catalogue.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      restartPolicy: Never
+      initContainers:
+        {{- include "catalogue.init.wallet" . | nindent 8 }}
+      containers:
+        - name: init
+          image: "{{ .Values.dbtools.repository }}:{{ .Values.dbtools.tag }}"
+          imagePullPolicy: {{ .Values.dbtools.pullPolicy }}
+          command: ["/bin/sh","-c"]
+          args:
+            - sqlplus ADMIN/\"${OADB_ADMIN_PW}\"@${OADB_SERVICE} @service.sql ${OADB_USER^^} ${OADB_PW}
+          env:
+            {{- include "catalogue.oadb.connection" . | nindent 12 }}
+            {{- include "catalogue.oadb.admin" . | nindent 12 }}
+          volumeMounts:
+            {{- include "catalogue.mount.wallet" . | nindent 12 }}
+            {{- include "catalogue.mount.initdb" . | nindent 12 }}
+      volumes: {{- include "catalogue.volumes" . | nindent 8 }}
+{{- end }}
