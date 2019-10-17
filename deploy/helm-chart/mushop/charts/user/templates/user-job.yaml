@@ -3,7 +3,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "user.fullname" . }}-init
+  name: {{ include "user.fullname" . }}-{{ .Values.image.tag }}-init
   labels: {{ include "user.labels" . | nindent 4 }}
 spec:
   ttlSecondsAfterFinished: 120
@@ -23,7 +23,7 @@ spec:
           imagePullPolicy: {{ .Values.dbtools.pullPolicy }}
           command: ["/bin/sh","-c"]
           args:
-            - sqlplus ADMIN/\"${OADB_ADMIN_PW}\"@${OADB_SERVICE} @service.sql ${OADB_USER} ${OADB_PW}
+            - sqlplus ADMIN/\"${OADB_ADMIN_PW}\"@${OADB_SERVICE} @service.sql ${OADB_USER^^} ${OADB_PW}
           env:
             {{- include "user.oadb.connection" . | nindent 12 }}
             {{- include "user.oadb.admin" . | nindent 12 }}
