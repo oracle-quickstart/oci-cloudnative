@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: phx.ocir.io/intvravipati/mushop/carts
-  tag: 1.0.1
+  tag: 1.0.2
   pullPolicy: Always
 
 dbtools:
