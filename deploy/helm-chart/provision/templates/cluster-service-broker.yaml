@@ -1,4 +1,4 @@
-{{- if not .Values.skipClusterBroker }}
+{{- if not .Values.skip.clusterBroker }}
 apiVersion: servicecatalog.k8s.io/v1beta1
 kind: ClusterServiceBroker
 metadata:
