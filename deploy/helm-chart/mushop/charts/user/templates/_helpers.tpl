@@ -51,10 +51,14 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- $globalOsb := index (.Values.global | default .) "osb" -}}
 {{- $keyName := (and .Values.osb.atp .Chart.Name) | (default (and $globalOsb.atp ($globalOsb.instanceName | default "mushop"))) | default .Chart.Name -}}
 - name: OADB_USER
+  {{- if $globalOsb.atp }}
+  value: {{ printf "mu_%s_user" .Chart.Name }}
+  {{- else }}
   valueFrom:
     secretKeyRef:
       name: {{ $keyName }}-oadb-connection
       key: oadb_user
+  {{- end }}
 - name: OADB_PW
   valueFrom:
     secretKeyRef:
