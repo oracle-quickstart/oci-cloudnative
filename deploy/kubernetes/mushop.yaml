@@ -198,7 +198,7 @@ spec:
     spec:
       containers:
       - name: carts
-        image: phx.ocir.io/intvravipati/mushop/carts:1.0.1
+        image: phx.ocir.io/intvravipati/mushop/carts:1.0.2
         ports:
          - containerPort: 80
         env:
@@ -454,7 +454,7 @@ spec:
     spec: 
       containers:
       - name: orders
-        image: phx.ocir.io/intvravipati/mushop/orders:1.0.2
+        image: phx.ocir.io/intvravipati/mushop/orders:1.0.3
         imagePullPolicy: Always
         env:
         - name: ZIPKIN
