@@ -4,6 +4,11 @@ global:
   osb:
     instanceName: mushop
 
+# Depending on the scenario, certain resources might need to be skipped.
+# For example, --set skip.streaming=true to disable required streaming secrets
+skip:
+  streaming: false
+
 ingress:
   enabled: true
 
