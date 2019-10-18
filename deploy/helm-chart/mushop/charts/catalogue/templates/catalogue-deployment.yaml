@@ -2,8 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "catalogue.fullname" . }}
-  labels:
-{{ include "catalogue.labels" . | indent 4 }}
+  labels: {{ include "catalogue.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -17,6 +16,8 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       terminationGracePeriodSeconds: 5
+      initContainers:
+        {{- include "catalogue.init.wallet" . | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -30,21 +31,9 @@ spec:
           env:
             - name: ZIPKIN
               value: {{ .Values.env.zipkin }}
-            - name: OADB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "catalogue.fullname" . }}
-                  key: oadb_user
-            - name: OADB_PW
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "catalogue.fullname" . }}
-                  key: oadb_pw
-            - name: OADB_SERVICE
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "catalogue.fullname" . }}
-                  key: oadb_service
+            {{- include "catalogue.oadb.connection" . | nindent 12 }}
+          volumeMounts:
+            {{- include "catalogue.mount.wallet" . | nindent 12 }}
           livenessProbe:
             httpGet:
               path: /health
@@ -61,3 +50,4 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+      volumes: {{- include "catalogue.volumes" . | nindent 8 }}

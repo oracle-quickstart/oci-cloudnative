@@ -2,8 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "carts.fullname" . }}
-  labels:
-{{ include "carts.labels" . | indent 4 }}
+  labels: {{ include "carts.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -16,13 +15,15 @@ spec:
         app.kubernetes.io/name: {{ include "carts.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      initContainers:
+        {{- include "carts.init.wallet" . | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: 80
           env:
             - name: ZIPKIN
               value: {{ .Values.env.zipkin }}
@@ -30,53 +31,15 @@ spec:
               value: {{ .Values.env.javaOpts }}
             - name: TNS_ADMIN
               value: {{ .Values.env.tnsAdmin }}
-            - name: OADB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "carts.fullname" . }}-connection
-                  key: oadb_user
-            - name: OADB_PW
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "carts.fullname" . }}-connection
-                  key: oadb_pw
-            - name: OADB_SERVICE
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "carts.fullname" . }}-connection
-                  key: oadb_service
-            - name: ATP_TRUST_PASS
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "carts.fullname" . }}-connection
-                  key: oadb_wallet_pw
-            - name: ATP_KEY_PASS
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "carts.fullname" . }}-connection
-                  key: oadb_wallet_pw
+            {{- include "carts.oadb.connection" . | nindent 12 }}
           volumeMounts:
             - mountPath: /tmp
               name: tmp-volume
-            - mountPath: /app/config/keystore.jks
-              subPath: keystore.jks
-              name: wallet
-              readOnly: true
-            - mountPath: /app/config/truststore.jks
-              subPath: truststore.jks
-              name: wallet
-              readOnly: true
-            - mountPath: /app/config/tnsnames.ora
-              subPath: tnsnames.ora
-              name: wallet
-              readOnly: true
+            {{- include "carts.mount.wallet" . | nindent 12 }}
       volumes:
         - name: tmp-volume
           emptyDir:
             medium: Memory
-        - name: wallet
-          secret:
-            secretName: {{ include "carts.fullname" . }}-wallet
-            defaultMode: 256
+        {{- include "carts.volumes" . | nindent 8 }}
       nodeSelector:
           beta.kubernetes.io/os: linux

@@ -9,7 +9,7 @@ metadata:
     {{- if .Values.ingress.tls }}
     ingress.kubernetes.io/ssl-redirect: "true"
     kubernetes.io/tls-acme: "true"
-    certmanager.k8s.io/cluster-issuer: {{ $.Release.Name}}-{{ .Values.ingress.clusterIssuer }}
+    certmanager.k8s.io/cluster-issuer: {{ include "mushop.fullname" . }}-{{ .Values.ingress.clusterIssuer }}
     {{- end }}
     kubernetes.io/ingress.class: nginx
 spec:
@@ -21,7 +21,8 @@ spec:
         paths:
         - path: /
           backend:
-            serviceName: {{ $.Release.Name }}-edge
+            # intentionally w/o .Release.Name for metrics workshop
+            serviceName: edge
             servicePort: {{ $.Values.edge.service.port }}
     {{- end -}}
     {{ else }}
@@ -29,11 +30,13 @@ spec:
         paths:
         - path: /
           backend:
-            serviceName: {{ .Release.Name }}-edge
+            # intentionally w/o .Release.Name for metrics workshop
+            serviceName: edge
             servicePort: {{ .Values.edge.service.port }}
     {{- end -}}
   {{- if .Values.ingress.tls }}
   tls:
-{{ toYaml .Values.ingress.tls | indent 4 }}
+    - secretName: {{ include "mushop.fullname" . }}-{{ .Values.ingress.clusterIssuer }}-tls
+      hosts: {{- toYaml .Values.ingress.hosts | nindent 6 }}
   {{- end -}}
 {{- end -}}

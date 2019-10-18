@@ -2,12 +2,19 @@ replicaCount: 1
 
 image:
   repository: phx.ocir.io/intvravipati/mushop/orders
-  tag: 1.0.2
+  tag: 1.0.3
   pullPolicy: Always
 
+dbtools:
+  repository: phx.ocir.io/intvravipati/mushop/dbtools
+  tag: 1.0.1
+  pullPolicy: IfNotPresent
+
+osb: {}
+
 secrets:
-  oadbService: morders_tp
-  oadbUser: orders_user
+  oadbService:
+  oadbUser:
   oadbPassword:
   oadbWalletPassword:
 

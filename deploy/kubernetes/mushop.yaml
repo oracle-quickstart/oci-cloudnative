@@ -198,7 +198,7 @@ spec:
     spec:
       containers:
       - name: carts
-        image: phx.ocir.io/intvravipati/mushop/carts:1.0.1
+        image: phx.ocir.io/intvravipati/mushop/carts:1.0.2
         ports:
          - containerPort: 80
         env:
@@ -292,7 +292,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: catalogue
-          image: phx.ocir.io/intvravipati/mushop/catalogue:1.1
+          image: phx.ocir.io/intvravipati/mushop/catalogue:1.2
           imagePullPolicy: Always
           command: ["/app"]
           args:
@@ -454,7 +454,7 @@ spec:
     spec: 
       containers:
       - name: orders
-        image: phx.ocir.io/intvravipati/mushop/orders:1.0.2
+        image: phx.ocir.io/intvravipati/mushop/orders:1.0.3
         imagePullPolicy: Always
         env:
         - name: ZIPKIN
@@ -566,14 +566,14 @@ spec:
           httpGet:
             path: /health
             port: 80
-          initialDelaySeconds: 300
-          periodSeconds: 3
+          initialDelaySeconds: 120
+          periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /health
             port: 80
-          initialDelaySeconds: 180
-          periodSeconds: 3
+          initialDelaySeconds: 10
+          periodSeconds: 5
       nodeSelector:
         beta.kubernetes.io/os: linux
 ---

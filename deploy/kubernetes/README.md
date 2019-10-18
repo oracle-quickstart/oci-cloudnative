@@ -4,27 +4,24 @@
 
 1. Store the contents of your OCI API key in an environment variable:
 
-```bash
-export OCI_KEY=$(cat <your home folder>/.oci/oci_api_key.pem)
-```
+    ```bash
+    export OCI_KEY=$(cat <your home folder>/.oci/oci_api_key.pem)
+    ```
 
-2. Install the Helm chart by providing necessary values:
+1. Install the Helm chart by providing necessary values:
 
-```bash
-helm install --dry-run --debug mushop --name mymushop \
-    --set secrets.catalogue.oadbPassword=xxxxxx \
-    --set secrets.carts.oadbPassword=xxxxxx \
-    --set secrets.orders.oadbPassword=xxxxxx\
-    --set secrets.user.oadbPassword=xxxxxx\
-    --set secrets.oci.compartmentId=<your compartment id>
-    --set secrets.oci.tenantId=<your tenant id>
-    --set secrets.oci.userId=<your user id>
-    --set secrets.oci.region=<your region>
-    --set secrets.oci.apiKey="$OCI_KEY"
-```
-
-
-
+    ```bash
+    helm install --dry-run --debug mushop --name mymushop \
+        --set secrets.catalogue.oadbPassword=xxxxxx \
+        --set secrets.carts.oadbPassword=xxxxxx \
+        --set secrets.orders.oadbPassword=xxxxxx\
+        --set secrets.user.oadbPassword=xxxxxx\
+        --set secrets.oci.compartmentId=<your compartment id>
+        --set secrets.oci.tenantId=<your tenant id>
+        --set secrets.oci.userId=<your user id>
+        --set secrets.oci.region=<your region>
+        --set secrets.oci.apiKey="$OCI_KEY"
+    ```
 
 ## Prerequisites
 
@@ -66,6 +63,7 @@ kubectl create secret generic streams-secret \
 --from-file=oci_api_key=\<your home folder>/.oci/oci_api_key.pem \
 --from-literal=oci_pass_phrase="[your key passphrase]"
 ```
+
 ## Deploy
 
 ### Create Runtime in K8S

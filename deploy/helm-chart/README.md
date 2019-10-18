@@ -1,26 +1,88 @@
 # MuShop Helm Chart
 
-The `mushop` Helm chart can be used to install all components of the MuShop to the Kubernetes cluster.
+The helm charts here can be used to install all components of MuShop to the Kubernetes cluster.
+For practical purposes, multiple charts are used to separate installation into the following steps:
+
+1. `[setup](#setup)` Installs _optional_ chart dependencies on the cluster
+1. `[provision](#provision)` Provisions OCI resources integrated with Service Broker _(optional)_
+1. `[mushop](#mushop)` Deploys the MuShop application runtime
+
+## Setup
+
+The `setup` chart includes several recommended installations on the cluster. These
+installations represent common 3rd party services, which integrate with
+Oracle Cloud Infrastructure or enable certain features within the application.
+
+1. Update chart dependencies:
+
+    ```text
+    helm dependency update setup
+    ```
+
+    > This is necessary because chart binaries are not included inside the source code
+
+1. Install `setup` chart:
+
+    ```text
+    helm install setup --name mushop-setup --namespace --mushop-setup
+    ```
+
+    > **NOTE:** It is possible that certain services may conflict with pre-existing installs. If so, try setting `--set <chart>.enabled=false` for any conflicting charts.
+
+> Example setting with alternate LoadBalancer port:
+
+```text
+helm install setup --set nginx-ingress.controller.service.ports.http=8000
+```
+
+The installed dependencies are listed below. Note that any can be disabled as needed.
+
+| Chart | Purpose | Option |
+|---|---|---|
+| [Prometheus](https://github.com/helm/charts/blob/master/stable/prometheus/README.md) | Service metrics aggregation | `prometheus.enabled` |
+| [Grafana](https://github.com/helm/charts/blob/master/stable/grafana/README.md) | Infra/Service visualization dashboards | `grafana.enabled` |
+| [Metrics Server](https://github.com/helm/charts/blob/master/stable/metrics-server/README.md) | Support for Horizontal Pod Autoscaling | `metrics-server.enabled` |
+| [Service Catalog](https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md) | Interface for Oracle Service Broker | `catalog.enabled` |
+| [Nginx Ingress](https://github.com/helm/charts/blob/master/stable/nginx-ingress/README.md) | Load Balancer ingress control | `nginx-ingress.enabled` |
+
+## Provision
+
+The `provision` chart utilizes the open-source [OCI Service Broker](https://github.com/oracle/oci-service-broker)
+for _provisioning_ OCI services. This implementation is used to install [Open Service Broker](https://github.com/openservicebrokerapi/servicebroker/blob/v2.14/spec.md) in Oracle Container Engine for Kubernetes or in other Kubernetes clusters.
+
+See [./provision/README.md](./provision/README.md) for full details
 
 ## Prerequisites
 
-- Kubernetes cluster
-- Helm
 - Secrets as defined in the `/secrets` folders for each of the following:
-    1. Root [./mushop/secrets](./secrets/README.md)
+    1. . [./mushop/secrets](./secrets/README.md)
     1. Carts [./mushop/charts/carts/secrets](./mushop/charts/carts/secrets/README.md)
+    1. Catalogue [./mushop/charts/catalogue/secrets](./mushop/charts/catalogue/secrets/README.md)
     1. Orders [./mushop/charts/orders/secrets](./mushop/charts/orders/secrets/README.md)
     1. Users [./mushop/charts/user/secrets](./mushop/charts/user/secrets/README.md)
 
-## Installation
-
-Before installing the chart, it is necessary to load the chart dependencies
+> Example folders with secrets in place. This shows a single DB Wallet used
 
 ```text
-helm dependency update mushop
+mushop/
+├── charts
+│   ├── carts
+│   │   └── secrets
+│   │       └── Wallet_mymushopdb
+│   ├── catalogue
+│   │   └── secrets
+│   │       └── Wallet_mymushopdb
+│   ├── orders
+│   │   └── secrets
+│   │       └── Wallet_mymushopdb
+│   └── user
+│       └── secrets
+│   │       └── Wallet_mymushopdb
+└── secrets
+    └── oci_streams_api_key.pem
 ```
 
-> This is necessary because chart binaries are not included inside the source code
+## Installation
 
 ### Mock Installation
 
@@ -35,7 +97,7 @@ helm install mushop --name mymushop \
 
 The default chart installation creates an Ingress resource for development (i.e. simple Ingress, without the DNS and need for Prod/Staging secrets).
 
-Before installing the chart, you need to copy the secrets (wallet files and OCI key for streams and the service broker) to a couple of places in the chart. Check the README.md in `secrets` folder under `carts` and `orders` as well as root chart.
+Before installing the chart, ensure all [prerequistes](#prerequisites) are met.
 
 To install the chart, make a copy of the `values.yaml` file, fill in the missing values (e.g. secrets) and then run:
 
@@ -66,7 +128,7 @@ You only need to run this if you are installing Mushop on a new cluster *and* yo
 
 ```
 kubectl apply \
-    -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.9/deploy/manifests/00-crds.yaml
+    -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.10/deploy/manifests/00-crds.yaml
 ```
 
 Create the `cert-manager` namespace and label it to disable validation:

@@ -15,53 +15,31 @@ spec:
         app.kubernetes.io/name: {{ include "user.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      initContainers:
+        {{- include "user.init.wallet" . | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
               containerPort: 3000
-          env:
-            - name: OADB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "user.fullname" . }}-connection
-                  key: oadb_user
-            - name: OADB_PW
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "user.fullname" . }}-connection
-                  key: oadb_pw
-            - name: OADB_SERVICE
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "user.fullname" . }}-connection
-                  key: oadb_service
+          env: {{- include "user.oadb.connection" . | nindent 12 }}
+          volumeMounts: {{- include "user.mount.wallet" . | nindent 12 }}
+          resources: {{- toYaml .Values.resources | nindent 12 }}
+          securityContext: {{- toYaml .Values.securityContext | nindent 12 }}
           livenessProbe:
             httpGet:
               path: /health
               port: http
-            initialDelaySeconds: 300
-            periodSeconds: 30
+            initialDelaySeconds: 120
+            periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /health
               port: http
             initialDelaySeconds: 10
             periodSeconds: 5
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          volumeMounts:
-            - name: wallet
-              mountPath: /usr/lib/oracle/19.3/client64/lib/network/admin
-              readOnly: true
-      volumes:
-        - name: wallet
-          secret:
-            secretName: {{ include "user.fullname" . }}-wallet
-            defaultMode: 256
+      volumes: {{- include "user.volumes" . | nindent 8 }}
       nodeSelector:
         beta.kubernetes.io/os: linux

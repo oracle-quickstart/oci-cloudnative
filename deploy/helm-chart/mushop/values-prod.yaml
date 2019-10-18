@@ -2,9 +2,6 @@ global:
   mock:
     service: "false"
 
-hpa:
-  enabled: true
-
 ingress:
   enabled: true
 
@@ -19,12 +16,8 @@ ingress:
   # Used for ACME registration (if TLS is set)
   email: "no-reply@ateam-oracle.com"
 
-  tls:
-    # Name of the secret where the cert will be stored for the host
-    - secretName: mushop-ateam-cloud
-      hosts:
-        - mushop.ateam.cloud
-        - insecure.mushop.ateam.cloud
+  # If TLS is provided, cert-manager needs to be installed.
+  tls: true
 
 api:
   enabled: true
@@ -78,12 +71,17 @@ secrets:
     compartmentId:
     tenantId:
     userId:
-    fingerprint:
     region:
+    fingerprint:
     passphrase:
+    keyFile:
+    streamName:
+    # future support
+    streamId:
   serviceBroker:
     tenantId:
     userId:
-    fingerprint:
     region:
+    fingerprint:
     passphrase:
+    keyFile:

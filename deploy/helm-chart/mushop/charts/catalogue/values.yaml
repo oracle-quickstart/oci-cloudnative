@@ -2,12 +2,19 @@ replicaCount: 1
 
 image:
   repository: phx.ocir.io/intvravipati/mushop/catalogue
-  tag: 1.1
+  tag: 1.2
   pullPolicy: Always
 
+dbtools:
+  repository: phx.ocir.io/intvravipati/mushop/dbtools
+  tag: 1.0.1
+  pullPolicy: IfNotPresent
+
+osb: {}
+
 secrets:
-  oadbService: mcatalogue_tp
-  oadbUser: catalogue_user
+  oadbService:
+  oadbUser:
   oadbPassword:
 
 resources:
@@ -19,10 +26,10 @@ resources:
     memory: 64Mi
 
 env:
-  zipkin: zipkin.jaeger.svc.cluster.local
+  zipkin:
 
 hpa:
-  enabled: false
+  enabled: true
   minReplicas: 1
   maxReplicas: 10
   metrics:
