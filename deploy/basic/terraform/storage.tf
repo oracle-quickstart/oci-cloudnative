@@ -8,7 +8,7 @@ resource "oci_objectstorage_bucket" "mushop" {
   name           = "mushop-${random_id.mushop_id.dec}"
   namespace      = "${data.oci_objectstorage_namespace.user_namespace.namespace}"
   freeform_tags  = "${local.common_tags}"
-
+  depends_on = ["oci_identity_policy.mushop_allow_object_storage_lifecycle"]
 }
 
 resource "oci_objectstorage_object" "mushop_wallet" {
@@ -126,6 +126,6 @@ resource "oci_objectstorage_object_lifecycle_policy" "mushop_deploy_assets_lifec
     name        = "mushop-delete-deploy-assets-rule"
     time_amount = "1"
     time_unit   = "DAYS"
-
   }
+  depends_on = ["oci_identity_policy.mushop_allow_object_storage_lifecycle","oci_objectstorage_object.mushop_wallet"]
 }
