@@ -8,7 +8,7 @@ The following global variables need to be set on the Wercker application (the En
 
 | Environment variable name | Description | Example |
 | --- | --- | --- |
-| DOCKER_REPOSITORY | Docker repository name | `phx.ocir.io/intvravipati/peterj` |
+| DOCKER_REPOSITORY | Docker repository name | `phx.ocir.io/{tenancyName}/mushop` |
 
 ### Build (`build`)
 
@@ -20,8 +20,8 @@ This pipeline pushes the build Docker images to the registry. The following envi
 
 | Environment variable name | Description | Example |
 | --- | --- | --- |
-| DOCKER_USERNAME | Docker registry username | `intvravipati/first.last@oracle.com` |
-| DOCKER_PASSWORD | Docker registry password | `iLovePizza` |
+| DOCKER_USERNAME | Docker registry username | `{tenancyName}/{myUserName}` |
+| DOCKER_PASSWORD | Docker registry password | `{myUserPassword}` |
 
 ### Testing
 
