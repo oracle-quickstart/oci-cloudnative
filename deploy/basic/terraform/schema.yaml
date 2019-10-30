@@ -16,7 +16,6 @@ groupings:
     variables:
     - database_name
     - num_nodes
-    - availability_domain
 
   - title: "Optional Configuration"
     variables:
@@ -29,15 +28,6 @@ variables:
     required: true
     title: "Compartment"
     description: "The compartment in which to create compute instance(s)"
-
-  availability_domain:
-    type: oci:identity:availabilitydomain:name
-    dependsOn:
-      compartmentId: ${compartment_ocid}
-    required: true
-    default: 3
-    title: "Availability Domain"
-    description: "The availability domain in the selected region, where you want to deploy the resources"
 
   num_nodes:
     type: enum
@@ -64,12 +54,14 @@ variables:
 
 
 outputGroups:
-  - title: "Output Group"
+  - title: "MuShop App details"
     outputs:
       - ${lb_public_url}
+      - ${autonomous_database_password}
+      - ${dev}
+      - ${comments}
 
 outputs:
-
   lb_public_url:
     type: link
     title: Open

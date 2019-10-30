@@ -10,7 +10,7 @@ data "template_file" "mushop" {
 
 resource "oci_core_instance" "app-instance" {
   count               = var.num_nodes
-  availability_domain = var.availability_domain
+  availability_domain = local.availability_domain[0]
   compartment_id      = var.compartment_ocid
   display_name        = "mushop-${random_id.mushop_id.dec}-${count.index}"
   shape               = local.instance_shape
@@ -65,7 +65,7 @@ locals  {
   
   instance_shape = "VM.Standard.E2.1.Micro"
 
-  availability_domain = 3
+  availability_domain = [for limit in data.oci_limits_limit_values.test_limit_values : limit.limit_values[0].availability_domain if limit.limit_values[0].value > 0 ]
 
   num_nodes = 2
 
