@@ -17,9 +17,9 @@ resource "oci_core_instance" "app-instance" {
   freeform_tags       = local.common_tags
 
   create_vnic_details {
-    subnet_id        = oci_core_subnet.mushopSubnet.id
+    subnet_id        = oci_core_subnet.mushopLBSubnet.id
     display_name     = "primaryvnic"
-    assign_public_ip = false
+    assign_public_ip = true
     hostname_label   = "mushop-${random_id.mushop_id.dec}-${count.index}"
   }
 
