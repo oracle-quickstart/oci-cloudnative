@@ -37,6 +37,6 @@ data "oci_database_autonomous_database_wallet" "autonomous_database_wallet" {
 
   autonomous_database_id = oci_database_autonomous_database.mushop_autonomous_database.id
   password               = random_string.autonomous_database_wallet_password.result
-  base64_encode_content  = "false"
+  base64_encode_content  = "true"
 
 }
