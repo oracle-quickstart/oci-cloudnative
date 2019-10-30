@@ -5,7 +5,7 @@ For practical purposes, multiple charts are used to separate installation into t
 
 1. `[setup](#setup)` Installs _optional_ chart dependencies on the cluster
 1. `[provision](#provision)` Provisions OCI resources integrated with Service Broker _(optional)_
-1. `[mushop](#mushop)` Deploys the MuShop application runtime
+1. `[mushop](#installation)` Deploys the MuShop application runtime
 
 ## Setup
 
@@ -13,10 +13,11 @@ The `setup` chart includes several recommended installations on the cluster. The
 installations represent common 3rd party services, which integrate with
 Oracle Cloud Infrastructure or enable certain features within the application.
 
+1. `cd deploy/helm-chart`
 1. Update chart dependencies:
 
     ```text
-    helm dependency update setup
+    helm dependency update ./setup
     ```
 
     > This is necessary because chart binaries are not included inside the source code
@@ -47,19 +48,33 @@ The installed dependencies are listed below. Note that any can be disabled as ne
 
 ## Provision
 
-The `provision` chart utilizes the open-source [OCI Service Broker](https://github.com/oracle/oci-service-broker)
-for _provisioning_ OCI services. This implementation is used to install [Open Service Broker](https://github.com/openservicebrokerapi/servicebroker/blob/v2.14/spec.md) in Oracle Container Engine for Kubernetes or in other Kubernetes clusters.
+The `provision` chart is an application of the open-source [OCI Service Broker](https://github.com/oracle/oci-service-broker)
+for _provisioning_ Oracle Cloud Infrastructure services. This implementation utilizes [Open Service Broker](https://github.com/openservicebrokerapi/servicebroker/blob/v2.14/spec.md) in Oracle Container Engine for Kubernetes or in other Kubernetes clusters.
 
-See [./provision/README.md](./provision/README.md) for full details
+See [./provision/README.md](./provision/README.md) for complete usage details.
 
-## Prerequisites
+## Installation
 
-- Secrets as defined in the `/secrets` folders for each of the following:
-    1. . [./mushop/secrets](./secrets/README.md)
-    1. Carts [./mushop/charts/carts/secrets](./mushop/charts/carts/secrets/README.md)
-    1. Catalogue [./mushop/charts/catalogue/secrets](./mushop/charts/catalogue/secrets/README.md)
-    1. Orders [./mushop/charts/orders/secrets](./mushop/charts/orders/secrets/README.md)
-    1. Users [./mushop/charts/user/secrets](./mushop/charts/user/secrets/README.md)
+### QuickStart
+
+For an installation without connecting Oracle Cloud Infrastructure services, use the following:
+
+```text
+helm install mushop --name mymushop \
+    --set global.mock.service=all
+```
+
+### Prerequisites
+
+Deploying the full application requires cloud backing services from Oracle Cloud Infrastructure. These services are configured using kubernetes secrets.
+
+Secrets are defined in the `/secrets` folders for each of the following:
+
+1. . [./mushop/secrets](./secrets/README.md)
+1. Carts [./mushop/charts/carts/secrets](./mushop/charts/carts/secrets/README.md)
+1. Catalogue [./mushop/charts/catalogue/secrets](./mushop/charts/catalogue/secrets/README.md)
+1. Orders [./mushop/charts/orders/secrets](./mushop/charts/orders/secrets/README.md)
+1. Users [./mushop/charts/user/secrets](./mushop/charts/user/secrets/README.md)
 
 > Example folders with secrets in place. This shows a single DB Wallet used
 
@@ -80,17 +95,6 @@ mushop/
 │   │       └── Wallet_mymushopdb
 └── secrets
     └── oci_streams_api_key.pem
-```
-
-## Installation
-
-### Mock Installation
-
-For an installation without using the OCI services, use the following:
-
-```bash
-helm install mushop --name mymushop \
-    --set global.mock.service=all
 ```
 
 ### Dev installation
@@ -126,27 +130,27 @@ helm install --dry-run --debug mushop --name mymushop -f myvalues.yaml \
 
 You only need to run this if you are installing Mushop on a new cluster *and* you want to use SSL. You need to install the CRDs first, before running Helm for cert-manager:
 
-```
+```text
 kubectl apply \
     -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.10/deploy/manifests/00-crds.yaml
 ```
 
 Create the `cert-manager` namespace and label it to disable validation:
 
-```
+```text
 kubectl create ns cert-manager
 kubectl label namespace cert-manager certmanager.k8s.io/disable-validation="true"
 ```
 
 Add the JetStack Helm repo:
 
-```
+```text
 helm repo add jetstack https://charts.jetstack.io
 ```
 
 Install the `cert-manager` Helm chart:
 
-```
+```text
 helm install --name cert-manager --namespace cert-manager jetstack/cert-manager
 ```
 
