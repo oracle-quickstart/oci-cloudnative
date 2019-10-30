@@ -17,16 +17,13 @@ The Microservices Demo using Oracle Cloud Infrastructure (OCI) - Rebranded to Mu
 | [user](./src/user)                | TypeScript | Autonomous DB (ATP)  | Customer account service + AuthN |   |
 | [edge-router](./src/edge-router)  | traefik   | Development only      | Optional Edge routing container for MuShop backend/frontend services. Used for running development environments                   |   |
 
-
 ## Instructions to connect to OSS
 
 Detailed instructions are found in this [document](https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm)
 
-
 * Create user in IAM for the person or system who will be calling the API
     * Add desired permissions
 * Generate API signing key. More detailed instructions can be found [OCI Documentation](https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm#How)
-    * Generate a key with no passphrase to make it simple.
 * Get fingerprint of the public key
 * Upload the public key to OCI’s console
 * Get the following:
@@ -37,10 +34,12 @@ Detailed instructions are found in this [document](https://docs.cloud.oracle.com
 * Create the scripts below.
 
 ## Environment Setup
+
 In order to connect to external services such as Autonomous Transaction Processing (ATP) or Oracle Streaming Services (OSS), you will need to create the following secrets. These can be in a script if you prefer.
 Note that passwords have been masked and you need to substitute with your own passwords.
 
 Secret for ATP access:
+
 ```text
 kubectl create secret generic atp-secret \
 --from-literal=catalogue_oadb_user="catalogue_user" \
@@ -55,14 +54,14 @@ kubectl create secret generic atp-secret \
 ```
 
 Secret for OSS access:
+
 ```text
 kubectl create secret generic streams-secret \
 --from-literal=oci_compartment_id="<your compartment id>" \
 --from-literal=oci_tenant_id="<your tenant id>" \
---from-literal=oci_user_id="<your user id>" \
---from-literal=oci_fingerprint="<your API key fingetprint>" \
 --from-literal=oci_region="<your region>" \
+--from-literal=oci_user_id="<your user id>" \
+--from-literal=oci_fingerprint="<your API key fingerprint>" \
+--from-literal=oci_pass_phrase="<optional key passphrase>" \
 --from-file=oci_api_key=\<your home folder>/.oci/oci_api_key.pem
 ```
-
-
