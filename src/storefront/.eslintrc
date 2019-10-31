@@ -13,7 +13,6 @@
     "jest/globals": true
   },
   "globals": {
-    "STATIC_ASSET_URL": "readonly",
     "PRODUCTION": "readonly",
     "VERSION": "readonly"
   },

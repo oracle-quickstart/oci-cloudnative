@@ -33,7 +33,7 @@ spec:
         - name: USERS_URL
           value: http://user
         - name: STATIC_MEDIA_URL
-          value: https://objectstorage.us-phoenix-1.oraclecloud.com/n/intvravipati/b/mushop-images/o/
+          value: 
         resources:
           limits:
             cpu: 300m
