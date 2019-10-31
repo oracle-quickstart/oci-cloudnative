@@ -54,7 +54,7 @@ WALLET_URI=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".w
 # get artifacts from object storage
 get_object /root/wallet.64 $${WALLET_URI}
 # Setup ATP wallet files
-base64 --decode /root/wallet.64 >  /root/wallet.zip
+base64 --decode /root/wallet.64 > /root/wallet.zip
 unzip /root/wallet.zip -d /usr/lib/oracle/19.3/client64/lib/network/admin/
 
 # Init DB
