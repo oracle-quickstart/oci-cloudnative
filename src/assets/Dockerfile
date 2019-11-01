@@ -27,10 +27,11 @@ RUN rm -rf /tmp/node_modules
 # copy source and build
 WORKDIR /usr/src/app
 COPY . .
+RUN npm run build
 
 # Object Storage PAR
 ARG BUCKET_PAR
 ENV BUCKET_PAR ${BUCKET_PAR}
 
 # optimize and deploy
-CMD [ "npm", "run", "build" ]
+CMD [ "npm", "run", "deploy" ]
