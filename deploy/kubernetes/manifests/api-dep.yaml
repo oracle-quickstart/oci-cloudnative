@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: phx.ocir.io/intvravipati/mushop/api:2.0
+        image: iad.ocir.io/oracle/ateam/mushop-api:2.0
         imagePullPolicy: Always
         ports:
         - name: http
@@ -33,7 +33,7 @@ spec:
         - name: USERS_URL
           value: http://user
         - name: STATIC_MEDIA_URL
-          value: https://objectstorage.us-phoenix-1.oraclecloud.com/n/intvravipati/b/mushop-images/o/
+          value: 
         resources:
           limits:
             cpu: 300m

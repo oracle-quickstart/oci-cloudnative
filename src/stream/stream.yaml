@@ -15,7 +15,7 @@ spec:
         run: stream
     spec:
       containers:
-      - image: phx.ocir.io/intvravipati/mushop/stream:1.0.0
+      - image: iad.ocir.io/oracle/ateam/mushop-stream:1.0.0
         name: stream
         env:
          - name: OCI_TENANT_ID

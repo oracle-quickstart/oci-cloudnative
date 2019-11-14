@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: phx.ocir.io/intvravipati/mushop/stream
+  repository: iad.ocir.io/oracle/ateam/mushop-stream
   tag: 1.0.0
   pullPolicy: Always
 
