@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: phx.ocir.io/intvravipati/mushop/api:2.0
+        image: iad.ocir.io/oracle/ateam/mushop-api:2.0
         imagePullPolicy: Always
         ports:
         - name: http

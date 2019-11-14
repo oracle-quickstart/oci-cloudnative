@@ -15,7 +15,7 @@ spec:
         run: shipping
     spec:
       containers:
-      - image: phx.ocir.io/intvravipati/mushop/shipping:1.0.0
+      - image: iad.ocir.io/oracle/ateam/mushop-shipping:1.0.0
         imagePullPolicy: Always
         name: shipping
         env:

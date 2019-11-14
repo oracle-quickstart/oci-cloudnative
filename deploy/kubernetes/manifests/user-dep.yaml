@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: user
-        image: phx.ocir.io/intvravipati/mushop/user:1.0.0
+        image: iad.ocir.io/oracle/ateam/mushop-user:1.0.0
         imagePullPolicy: Always
         ports:
         - name: http

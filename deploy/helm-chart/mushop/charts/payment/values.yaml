@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: phx.ocir.io/intvravipati/mushop/payment
+  repository: iad.ocir.io/oracle/ateam/mushop-payment
   tag: 0.0.1
   pullPolicy: Always
 

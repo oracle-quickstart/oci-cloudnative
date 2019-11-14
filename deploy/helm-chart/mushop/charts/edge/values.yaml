@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: phx.ocir.io/intvravipati/mushop/edge-router
+  repository: iad.ocir.io/oracle/ateam/mushop-edge-router
   tag: 1
   pullPolicy: Always
 

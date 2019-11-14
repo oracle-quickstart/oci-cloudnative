@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: edge
-        image: phx.ocir.io/intvravipati/mushop/edge-router:1
+        image: iad.ocir.io/oracle/ateam/mushop-edge-router:1
         imagePullPolicy: Always
         ports:
         - name: http
@@ -78,7 +78,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: phx.ocir.io/intvravipati/mushop/api:2.0
+        image: iad.ocir.io/oracle/ateam/mushop-api:2.0
         imagePullPolicy: Always
         ports:
         - name: http
@@ -198,7 +198,7 @@ spec:
     spec:
       containers:
       - name: carts
-        image: phx.ocir.io/intvravipati/mushop/carts:1.0.2
+        image: iad.ocir.io/oracle/ateam/mushop-carts:1.0.2
         ports:
          - containerPort: 80
         env:
@@ -292,7 +292,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: catalogue
-          image: phx.ocir.io/intvravipati/mushop/catalogue:1.2
+          image: iad.ocir.io/oracle/ateam/mushop-catalogue:1.2
           imagePullPolicy: Always
           command: ["/app"]
           args:
@@ -382,7 +382,7 @@ spec:
     spec:
       containers:
       - name: storefront
-        image: phx.ocir.io/intvravipati/mushop/storefront:2.0
+        image: iad.ocir.io/oracle/ateam/mushop-storefront:2.0
         imagePullPolicy: Always
         ports:
         - name: http
@@ -454,7 +454,7 @@ spec:
     spec: 
       containers:
       - name: orders
-        image: phx.ocir.io/intvravipati/mushop/orders:1.0.3
+        image: iad.ocir.io/oracle/ateam/mushop-orders:1.0.3
         imagePullPolicy: Always
         env:
         - name: ZIPKIN
@@ -545,7 +545,7 @@ spec:
     spec:
       containers:
       - name: payment
-        image: phx.ocir.io/intvravipati/mushop/payment:0.0.1
+        image: iad.ocir.io/oracle/ateam/mushop-payment:0.0.1
         resources:
           limits:
             cpu: 100m
@@ -607,7 +607,7 @@ spec:
         run: stream
     spec:
       containers:
-      - image: phx.ocir.io/intvravipati/mushop/stream:1.0.0
+      - image: iad.ocir.io/oracle/ateam/mushop-stream:1.0.0
         imagePullPolicy: Always
         name: stream
         env:
@@ -698,7 +698,7 @@ spec:
         run: shipping
     spec:
       containers:
-      - image: phx.ocir.io/intvravipati/mushop/shipping:1.0.0
+      - image: iad.ocir.io/oracle/ateam/mushop-shipping:1.0.0
         imagePullPolicy: Always
         name: shipping
         env:
@@ -784,7 +784,7 @@ spec:
     spec:
       containers:
       - name: user
-        image: phx.ocir.io/intvravipati/mushop/user:1.0.0
+        image: iad.ocir.io/oracle/ateam/mushop-user:1.0.0
         imagePullPolicy: Always
         ports:
         - name: http

@@ -3,7 +3,7 @@ version: "2"
 services:
   # Edge router application entrypoint
   edge-router:
-    image: phx.ocir.io/intvravipati/mushop/edge-router:1
+    image: iad.ocir.io/oracle/ateam/mushop-edge-router:1
     hostname: edge-router
     restart: always
     ports:
@@ -18,7 +18,7 @@ services:
 
   # Storefront application middleware
   api:
-    image: phx.ocir.io/intvravipati/mushop/api:2.0.0
+    image: iad.ocir.io/oracle/ateam/mushop-api:2.0.0
     hostname: api
     restart: always
     cap_drop:
@@ -56,7 +56,7 @@ services:
 
   # Storefront backend API service
   storefront:
-    image: phx.ocir.io/intvravipati/mushop/storefront:2.0.0
+    image: iad.ocir.io/oracle/ateam/mushop-storefront:2.0.0
     hostname: storefront
     restart: always
     cap_drop:
@@ -74,7 +74,7 @@ services:
 
   # OCI Catalog service
   catalogue:
-    image: phx.ocir.io/intvravipati/mushop/catalogue:1.1
+    image: iad.ocir.io/oracle/ateam/mushop-catalogue:1.1
     hostname: catalogue
     restart: always
     cap_drop:
@@ -90,7 +90,7 @@ services:
 
   # OCI Carts service
   carts:
-    image: phx.ocir.io/intvravipati/mushop/carts:1.0.1
+    image: iad.ocir.io/oracle/ateam/mushop-carts:1.0.1
     ports:
       - 8086:80
     hostname: carts
@@ -110,7 +110,7 @@ services:
 
   # OCI Orders service
   orders:
-    image: phx.ocir.io/intvravipati/mushop/orders:1.0.2
+    image: iad.ocir.io/oracle/ateam/mushop-orders:1.0.2
     ports:
       - 8085:80
     hostname: orders
@@ -130,7 +130,7 @@ services:
 
   # Shipping service
   shipping:
-    image: phx.ocir.io/intvravipati/mushop/shipping:1.0.0
+    image: iad.ocir.io/oracle/ateam/mushop-shipping:1.0.0
     hostname: shipping
     restart: always
     cap_drop:
@@ -151,7 +151,7 @@ services:
 
   # OCI Stream
   stream:
-    image: phx.ocir.io/intvravipati/mushop/stream:1.0.0
+    image: iad.ocir.io/oracle/ateam/mushop-stream:1.0.0
     hostname: stream
     restart: always
     cap_drop:
@@ -169,7 +169,7 @@ services:
       - OCI_API_KEY
 
   payment:
-    image: phx.ocir.io/intvravipati/mushop/payment:0.0.1
+    image: iad.ocir.io/oracle/ateam/mushop-payment:0.0.1
     hostname: payment
     restart: always
     cap_drop:
@@ -179,7 +179,7 @@ services:
     read_only: true
 
   user:
-    image: phx.ocir.io/intvravipati/mushop/user:1.0.0
+    image: iad.ocir.io/oracle/ateam/mushop-user:1.0.0
     hostname: user
     restart: always
     cap_drop:

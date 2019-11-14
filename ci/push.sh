@@ -49,7 +49,7 @@ tag_and_push() {
     fi
 
     DOCKER_REPO=${PROJECT}/${CONTAINER}
-    OCIR_REPO=${OCIR}/${DOCKER_REPO}
+    OCIR_REPO=${OCIR}/ateam/${PROJECT}-${CONTAINER}
 
     # determine src tag
     SRC="${DOCKER_REPO}:latest"
