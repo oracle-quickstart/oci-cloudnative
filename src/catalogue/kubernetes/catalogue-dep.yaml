@@ -32,7 +32,7 @@ spec:
         - name: wallet
           mountPath: /wallet
       - name: init-service-database
-        image: phx.ocir.io/intvravipati/mushop/dbtools:1.0.1
+        image: iad.ocir.io/oracle/ateam/mushop-dbtools:1.0.1
         command: ["/bin/sh","-c"]
         args: 
         - sqlplus ADMIN/\"$( echo "$OADB_ADMIN_PW" | jq -r 'keys[0] as $k | "\(.[$k])"' )\"@$OADB_SERVICE @service.sql ${OADB_USER^^} $OADB_PW
@@ -65,7 +65,7 @@ spec:
             mountPath: /work/
       containers:
         - name: catalogue
-          image: phx.ocir.io/intvravipati/mushop/catalogue:1.2
+          image: iad.ocir.io/oracle/ateam/mushop-catalogue:1.2
           imagePullPolicy: Always
           command: ["/app"]
           args:

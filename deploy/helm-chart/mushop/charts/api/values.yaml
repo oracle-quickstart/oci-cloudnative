@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: phx.ocir.io/intvravipati/mushop/api
+  repository: iad.ocir.io/oracle/ateam/mushop-api
   tag: 2.0.0
   pullPolicy: Always
 

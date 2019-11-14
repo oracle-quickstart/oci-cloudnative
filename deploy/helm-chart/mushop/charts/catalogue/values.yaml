@@ -1,12 +1,12 @@
 replicaCount: 1
 
 image:
-  repository: phx.ocir.io/intvravipati/mushop/catalogue
+  repository: iad.ocir.io/oracle/ateam/mushop-catalogue
   tag: 1.2
   pullPolicy: Always
 
 dbtools:
-  repository: phx.ocir.io/intvravipati/mushop/dbtools
+  repository: iad.ocir.io/oracle/ateam/mushop-dbtools
   tag: 1.0.1
   pullPolicy: IfNotPresent
 

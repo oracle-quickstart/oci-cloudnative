@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: payment
-        image: phx.ocir.io/intvravipati/mushop/payment:0.0.1
+        image: iad.ocir.io/oracle/ateam/mushop-payment:0.0.1
         resources:
           limits:
             cpu: 100m

@@ -10,7 +10,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: user-initdb
-        image: phx.ocir.io/intvravipati/mushop/user:1.0.0
+        image: iad.ocir.io/oracle/ateam/mushop-user:1.0.0
         command: ["npm", "run", "schema:init"]
         env:
         - name: OADB_ADMIN_PW
