@@ -6,10 +6,6 @@ variable "region" {}
 
 variable "compartment_ocid" {}
 
-variable "availability_domain" {
-  default = 1
-}
-
 variable "num_nodes" {
   default = 1
 }

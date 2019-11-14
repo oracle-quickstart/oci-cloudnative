@@ -3,13 +3,11 @@
 # 
 
 output "lb_public_url" {
-  value = "${format("http://%s", lookup(oci_load_balancer_load_balancer.mushop_lb.ip_address_details[0],"ip_address"))}"
+  value = format("http://%s", lookup(oci_load_balancer_load_balancer.mushop_lb.ip_address_details[0],"ip_address"))
 }
 
-
-
 output "autonomous_database_password" {
-  value = "${random_string.autonomous_database_wallet_password.result}"
+  value = random_string.autonomous_database_wallet_password.result
 }
 
 output "dev" {

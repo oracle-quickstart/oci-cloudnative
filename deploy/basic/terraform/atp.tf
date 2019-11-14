@@ -5,12 +5,12 @@
 # creates an ATP database
 resource "oci_database_autonomous_database" "mushop_autonomous_database" {
   #Required
-  admin_password           = "${random_string.autonomous_database_wallet_password.result}"
-  compartment_id           = "${var.compartment_ocid}"
+  admin_password           = random_string.autonomous_database_wallet_password.result
+  compartment_id           = var.compartment_ocid
   cpu_core_count           = 1
   data_storage_size_in_tbs = 1
   db_name                  = "${var.database_name}${random_id.mushop_id.dec}"
-  freeform_tags            = "${local.common_tags}"
+  freeform_tags            = local.common_tags
   is_free_tier             = true
 
   #Optional

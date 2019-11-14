@@ -5,14 +5,14 @@
 # Gets a list of Availability Domains
 data "oci_identity_availability_domains" "ADs" {
 
-  compartment_id = "${var.tenancy_ocid}"
+  compartment_id = var.tenancy_ocid
 
 }
 
 
 data "oci_objectstorage_namespace" "user_namespace" {
 
-  compartment_id = "${var.compartment_ocid}"
+  compartment_id = var.compartment_ocid
 
 }
 
@@ -35,8 +35,28 @@ resource "random_id" "mushop_id" {
 
 data "oci_database_autonomous_database_wallet" "autonomous_database_wallet" {
 
-  autonomous_database_id = "${oci_database_autonomous_database.mushop_autonomous_database.id}"
-  password               = "${random_string.autonomous_database_wallet_password.result}"
-  base64_encode_content  = "false"
+  autonomous_database_id = oci_database_autonomous_database.mushop_autonomous_database.id
+  password               = random_string.autonomous_database_wallet_password.result
+  base64_encode_content  = "true"
 
+}
+
+data "oci_limits_services" "test_services" {
+  #Required
+  compartment_id = var.tenancy_ocid
+
+  filter {
+    name   = "name"
+    values = ["compute"]
+  }
+}
+
+data "oci_limits_limit_values" "test_limit_values" {
+  count          = length(data.oci_identity_availability_domains.ADs.availability_domains)
+  compartment_id = var.tenancy_ocid
+  service_name   = data.oci_limits_services.test_services.services.0.name
+
+  availability_domain = data.oci_identity_availability_domains.ADs.availability_domains[count.index].name
+  name                = "vm-standard-e2-1-micro-count"
+  scope_type          = "AD"
 }
