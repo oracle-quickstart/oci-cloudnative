@@ -1,0 +1,138 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+
+div.uk-navbar-container.tm-navbar-container(uk-sticky="cls-active: tm-navbar-container-fixed")
+  //- div.uk-container(uk-navbar="dropbar: true")
+  div.uk-container(uk-navbar)
+
+    div.uk-navbar-left
+
+      //- Hamburger
+      button(class="uk-navbar-toggle uk-hidden@m"
+             uk-toggle="target: #nav-offcanvas"
+             uk-navbar-toggle-icon)
+
+      //- Logo
+      a.uk-navbar-item.uk-logo(href="index.html" mu-route)
+        img(src="images/logo.png" alt=shopInfo.storeLogoText)
+        //- img(uk-svg src="images/logo.svg" alt=shopInfo.storeLogoText)
+        //- include ../partials/_logo.pug
+        //- span= shopInfo.storeLogoText
+
+      //- Navigation
+      nav(class="uk-visible@m")
+        ul.uk-navbar-nav
+          each item in navbarMenu
+            li(class= {"uk-active": item.active})
+              a(href= item.href mu-route)= item.name
+                if item.items
+                  +icon('chevron-down', '.75')(class="uk-margin-xsmall-left")
+              if item.items
+                div(class="uk-navbar-dropdown uk-margin-remove uk-padding-remove-vertical"
+                    uk-drop="pos: bottom-justify;" +
+                            "delay-hide: 200;" +
+                            "duration: 75;" +
+                            "boundary: .tm-navbar-container;" +
+                            "boundary-align: true;" +
+                            "flip: x")
+
+                  if item.name === "Catalog"
+                    div.uk-container
+                      ul.uk-navbar-dropdown-grid.uk-child-width-1-4(uk-grid)
+                        each category in item.items
+                          li
+                            div.uk-margin-top.uk-margin-bottom
+                              a.uk-link-reset(href=(category.href + "?category=" + category.name) mu-route)
+                                if category.image
+                                  img(class="uk-display-block uk-margin-auto uk-margin-bottom mu-category-image"
+                                      uk-img
+                                      data-src= category.image
+                                      alt= category.name
+                                      width="80"
+                                      height="80")
+                                div.uk-text-bolder= category.name
+                              if category.items
+                                ul.uk-nav.uk-nav-default
+                                  each subcategory in category.items
+                                    li
+                                      a(href=("subcategory.html?category=" + subcategory) mu-route)= subcategory
+
+                  if item.name === "Brands"
+                    div.uk-container.uk-container-small.uk-margin-top.uk-margin-bottom
+                      ul.uk-grid-small.uk-child-width-1-6(uk-grid)
+                        each brand in item.items
+                          li
+                            div.tm-ratio.tm-ratio-4-3
+                              a(class="uk-link-muted " +
+                                      "uk-text-center " +
+                                      "uk-display-block " +
+                                      "uk-padding-small " +
+                                      "uk-box-shadow-hover-large " +
+                                      "tm-media-box"
+                                href="#"
+                                title= brand.name)
+                                figure.tm-media-box-wrap
+                                  img(src= brand.image alt= brand.name)
+                      div.uk-text-center.uk-margin
+                        +link-to-all('See all brands', item.href)(mu-route)
+
+                  if item.name === "Pages"
+                    div.uk-container.uk-container-small.uk-margin-top.uk-margin-bottom
+                      ul.uk-nav.uk-nav-default.uk-column-1-3
+                        each page in item.items
+                          li
+                            a(href=page.href mu-route)= page.name
+
+    div.uk-navbar-right
+
+      //- Search
+      a.uk-navbar-toggle.tm-navbar-button(href="#")
+        +icon('search', 1.4)
+      div.uk-navbar-dropdown.uk-padding-small.uk-margin-remove(
+        uk-drop="mode: click;" +
+                "cls-drop: uk-navbar-dropdown;" +
+                "boundary: .tm-navbar-container;" +
+                "boundary-align: true;" +
+                "pos: bottom-justify;" +
+                "flip: x")
+        div.uk-container
+          div.uk-grid-small.uk-flex-middle(uk-grid)
+            div.uk-width-expand
+              form.uk-search.uk-search-navbar.uk-width-1-1(mu-form muAction="category.html")
+                input.uk-search-input(type="search" name="search" placeholder="Search…" autofocus)
+            div.uk-width-auto
+              a.uk-navbar-dropdown-close(href="#" uk-close)
+
+      //- Compare
+      //- a(class="uk-navbar-item uk-link-muted uk-visible@m tm-navbar-button" href="compare.html")
+      //-   +icon("copy", 1.4)
+      //-   span.uk-badge 3
+
+      //- User
+      a.uk-navbar-item.uk-link-muted.tm-navbar-button(href="personal.html" mu-route)
+        +icon("user", 1.4)
+      div(mu mu-if="global.profile"
+          class="uk-padding-small uk-margin-remove"
+          uk-dropdown="pos: bottom-right; offset: -10; delay-hide: 200;"
+          style="min-width: 150px;")
+        ul.uk-nav.uk-dropdown-nav
+          li
+            a(href="orders.html" mu-route) Orders
+          //- li
+          //-   a(href="favorites.html" mu-route) Favorites
+          li
+            a(href="personal.html" mu-route) Profile
+          li
+            a(href="settings.html" mu-route) Settings
+          li.uk-nav-divider
+          li
+            a(href="#" mu onclick="return this.mu.user.logout();") Log out
+
+      //- Cart
+      a.uk-navbar-item.uk-link-muted.tm-navbar-button(
+        uk-toggle="target: #cart-offcanvas"
+        onclick="return false")
+        +icon("cart", 1.4)
+        span(mu-cart-badge)
+          //- span.uk-badge 2

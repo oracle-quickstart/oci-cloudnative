@@ -1,0 +1,59 @@
+global:
+  mock:
+    service: "false"
+  osb:
+    instanceName: mushop
+
+# Depending on the scenario, certain resources might need to be skipped.
+# For example, --set skip.streaming=true to disable required streaming secrets
+skip:
+  streaming: false
+
+ingress:
+  enabled: true
+
+api:
+  enabled: true
+
+carts:
+  enabled: true
+
+catalogue:
+  enabled: true
+
+edge:
+  enabled: true
+
+orders:
+  enabled: true
+
+payment:
+  enabled: true
+
+session:
+  enabled: true
+
+shipping:
+  enabled: true
+
+storefront:
+  enabled: true
+
+stream:
+  enabled: true
+
+user:
+  enabled: true
+
+secrets:
+  streams:
+    compartmentId:
+    tenantId:
+    userId:
+    region:
+    fingerprint:
+    passphrase:
+    keyFile: secrets/oci_streams_api_key.pem
+    streamName:
+    # future support
+    streamId:

@@ -1,0 +1,35 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+ 
+extends /layouts/_embed
+
+block vars
+  -
+    page = {
+      title: shopInfo.storeName
+    }
+
+block embed
+
+  div(mu-service-chart mu-cloak)
+    //- full version
+    div(mu-if="!basic")
+      div.tm-ratio.tm-ratio-2-1
+        div.mu-tech.mu-tech-oci.uk-animation-fade(mu-tech-box="OCI" mu-hide="hide.oci")
+          img.mu-tech-img.uk-position-top-right(uk-img data-src="images/tech/oci.png")
+        div.mu-tech.mu-tech-oke.uk-animation-fade(mu-tech-box="OKE" mu-hide="hide.oke")
+          img.mu-tech-img.uk-position-bottom-left(uk-img data-src="images/tech/k8s.png")
+        div.mu-tech.mu-tech-edge.uk-animation-fade(mu-tech-box="EDGE" mu-hide="hide.edge")
+        figure(mu-chart options="services.chart" onInit="initChart")
+
+    //- basic version
+    div.mu-basic(mu-if="basic")
+      //- div.uk-grid-medium.uk-flex-center(uk-grid)
+      //-   div.uk-width-2-3
+      div.tm-ratio.tm-ratio-2-1
+        div.mu-tech.mu-tech-oci.uk-animation-fade(mu-tech-box="OCI")
+          img.mu-tech-img.uk-position-top-right(uk-img data-src="images/tech/oci.png")
+        div.mu-tech.mu-tech-compute.uk-animation-fade(mu-tech-box="COMPUTE" mu-hide="hide.compute")
+          img.mu-tech-img.uk-position-top-right(uk-img data-src="images/tech/compute.svg")
+        figure(mu-chart options="services.chart" onInit="initChart")

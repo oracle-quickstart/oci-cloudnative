@@ -1,0 +1,42 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ include "mushop.fullname" . }}
+  labels:
+{{ include "mushop.labels" . | indent 4 }}
+  annotations:
+    {{- if .Values.ingress.tls }}
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/tls-acme: "true"
+    certmanager.k8s.io/cluster-issuer: {{ include "mushop.fullname" . }}-{{ .Values.ingress.clusterIssuer }}
+    {{- end }}
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    {{- if .Values.ingress.hosts }}
+    {{- range $host := .Values.ingress.hosts }}
+    - host: {{ $host }}
+      http:
+        paths:
+        - path: /
+          backend:
+            # intentionally w/o .Release.Name for metrics workshop
+            serviceName: edge
+            servicePort: {{ $.Values.edge.service.port }}
+    {{- end -}}
+    {{ else }}
+    - http:
+        paths:
+        - path: /
+          backend:
+            # intentionally w/o .Release.Name for metrics workshop
+            serviceName: edge
+            servicePort: {{ .Values.edge.service.port }}
+    {{- end -}}
+  {{- if .Values.ingress.tls }}
+  tls:
+    - secretName: {{ include "mushop.fullname" . }}-{{ .Values.ingress.clusterIssuer }}-tls
+      hosts: {{- toYaml .Values.ingress.hosts | nindent 6 }}
+  {{- end -}}
+{{- end -}}

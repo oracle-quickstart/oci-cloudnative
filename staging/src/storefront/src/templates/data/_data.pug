@@ -1,0 +1,269 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+ 
+-
+  var shopInfo = {
+    phone: '+1 800.392.2999',
+    email: 'example@example.com',
+    address: 'Lanai, Hawaii 96763',
+    openingHours: 'Daily 10:00–22:00',
+    storeLogoText: 'μShop',
+    storeName: 'MuShop',
+    latitude: 20.7379498, 
+    longitude: -156.8871740
+  }
+
+  var catalog = [{
+    name: 'Feeders',
+    id: 'feeders',
+    href: 'category.html',
+    image: 'images/catalog/cat-feeders.svg',
+    quantity: 10,
+    items: [
+      'Auto Feeders',
+      'Bowls',
+      'Placemats',
+      'Storage',
+    ]
+  }, {
+    name: 'Food',
+    id: 'food',
+    href: 'category.html',
+    image: 'images/catalog/cat-food.svg',
+    quantity: 144,
+    items: [
+      'Dry Food',
+      'Wet Food',
+      'Food Pouches',
+      'Limited Diet',
+    ]
+  }, {
+    name: 'Grooming',
+    id: 'grooming',
+    href: 'category.html',
+    image: 'images/catalog/cat-grooming.svg',
+    quantity: 58,
+    items: [
+      'Brushes',
+      'Grooming Tools',
+      'Shampoos and Conditioners'
+    ]
+  }, {
+    name: 'Cat Litter',
+    id: 'litter',
+    href: 'category.html',
+    image: 'images/catalog/cat-litter.svg',
+    quantity: 13,
+    items: [
+      'Cleaning Supplies',
+      'Deodorizers',
+      'Litter Accessories',
+      'Litter Boxes'
+    ]
+  }]
+
+  var toolbarMenu = [{
+    name: 'FAQ',
+    href: 'faq.html'
+  }, {
+    name: 'Payment',
+    href: '#'
+  }]
+
+  var navbarMenu = [{
+    name: 'Catalog',
+    href: 'catalog.html',
+    items: catalog
+  //- }, {
+  //-   name: 'Blog',
+  //-   href: 'blog.html'
+  }, {
+    name: 'About',
+    href: 'about.html'
+  }, {
+    name: 'Contact',
+    href: 'contacts.html'
+  }]
+
+  var footerMenuLeft = [{
+    name: 'Catalog',
+    href: 'catalog.html'
+  }, {
+  //-   name: 'Brands',
+  //-   href: 'brands.html'
+  //- }, {
+    name: 'Delivery',
+    href: 'delivery.html'
+  }, {
+    name: 'FAQ',
+    href: 'faq.html'
+  }]
+
+  var footerMenuRight = [{
+    name: 'About',
+    href: 'about.html'
+  }, {
+    name: 'Contact',
+    href: 'contacts.html'
+  //- }, {
+  //-   name: 'Blog',
+  //-   href: 'blog.html'
+  }]
+
+  var socials = [{
+    name: 'Facebook',
+    icon: 'facebook',
+    href: '#'
+  }, {
+    name: 'Twitter',
+    icon: 'twitter',
+    href: '#'
+  }, {
+    name: 'YouTube',
+    icon: 'youtube',
+    href: '#'
+  }, {
+    name: 'Instagram',
+    icon: 'instagram',
+    href: '#'
+  }]
+
+  var articles = []
+
+
+  var profileNav = [{
+    id: 1,
+    title: 'Orders',
+    href: 'orders.html'
+  //- }, {
+  //-   id: 2,
+  //-   title: 'Favorites',
+  //-   href: 'favorites.html'
+  }, {
+    id: 3,
+    title: 'Profile',
+    href: 'personal.html'
+  }]
+
+  var orders = [{
+    id: '36637649',
+    date: 'June 17, 2018',
+    items: 7,
+    shipping: 'Pick up from store',
+    payment: 'Online by card',
+    total: '$4896.00',
+    status: 'Processing'
+  }, {
+    id: '36637648',
+    date: 'June 16, 2018',
+    items: 2,
+    shipping: 'Pick up from store',
+    payment: 'Online by card',
+    total: '$599.00',
+    status: 'Canceled'
+  }]
+
+  var informationalNav = [{
+    id: 'about',
+    title: 'About',
+    href: 'about.html'
+  }, {
+    id: 'contact',
+    title: 'Contact',
+    href: 'contacts.html'
+  }, {
+  //-   id: 'blog',
+  //-   title: 'Blog',
+  //-   href: 'blog.html'
+  //- }, {
+    id: 'faq',
+    title: 'FAQ',
+    href: 'faq.html'
+  }, {
+    id: 'delivery',
+    title: 'Delivery',
+    href: 'delivery.html'
+  }]
+
+  var promo = [{
+    background: '#004950',
+    image: 'images/hero/01.jpg',
+    title: 'Food!',
+    subtitle: 'Feed your feline with proven ingredients',
+    cta: 'Shop Food',
+    href: 'category.html?category=Food',
+    position: 'center-right'
+  }, {
+    background: '#7f7f7f',
+    image: 'images/hero/02.jpg',
+    title: 'Groom On!',
+    subtitle: 'Great deals on grooming accessories',
+    cta: 'Shop Grooming',
+    href: 'category.html?category=Grooming',
+    position: 'center-right'
+  }, {
+    background: '#12110c',
+    image: 'images/hero/03.jpg',
+    title: 'Feeders!',
+    subtitle: 'Witness Pavlovian responses like never before',
+    cta: 'Shop Feeders',
+    href: 'category.html?category=Feeders',
+    position: 'center-left'
+  }]
+
+  var categories = [{
+    title: 'Laptops',
+    href: 'subcategory.html',
+    comment: 'from $149',
+    image: 'images/catalog/laptops.png'
+  }, {
+    title: 'Smartphones',
+    href: 'subcategory.html',
+    comment: 'from $99',
+    image: 'images/catalog/smartphones.png'
+  }, {
+    title: 'Tablets',
+    href: 'subcategory.html',
+    comment: 'from $129',
+    image: 'images/catalog/tablets.png'
+  }, {
+    title: 'Smart Watches',
+    href: 'subcategory.html',
+    comment: 'from $49',
+    image: 'images/catalog/watches.png'
+  }, {
+    title: 'Gaming Consoles',
+    href: 'subcategory.html',
+    comment: 'from $399',
+    image: 'images/catalog/consoles.png'
+  }, {
+    title: 'Cameras',
+    href: 'subcategory.html',
+    comment: 'from $129',
+    image: 'images/catalog/cameras.png'
+  }]
+
+  var advantages = [{
+    title: 'Love cats',
+    description: 'The internet does, so we do too',
+    icon: 'heart'
+  }, {
+    title: 'Unbeatable',
+    description: 'Our cats price our products, which makes everyone happy',
+    icon: 'happy'
+  }, {
+    title: 'Call us',
+    description: 'A friendly agent might be very surprised',
+    icon: 'receiver'
+  }, {
+    title: 'Mu stores',
+    description: 'Find one and we\'ll be impressed!',
+    icon: 'location'
+  }, {
+    title: 'Feedback',
+    description: 'No guarantees the cats will listen. Mew ¯\\_(ツ)_/¯',
+    icon: 'comments'
+  }]
+
+

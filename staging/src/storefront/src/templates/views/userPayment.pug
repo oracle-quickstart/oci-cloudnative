@@ -1,0 +1,63 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+ 
+include ../mixins/_icon
+
+div.uk-grid-medium.uk-flex-left(uk-grid mu-if="!editing")
+  div.uk-width-1-1
+    div.uk-h4(mu-if="legend" mu-html="legend")
+
+  div.uk-width-expand(mu-class="{'uk-text-muted': 'loading'}")
+    div(mu-if="card")
+      +icon('credit-card', '1.1')(class="uk-margin-small-right")
+      span.uk-text-bolder card ending *
+      span.uk-text-muted(mu-html="card.number")
+          
+    div.uk-text-danger(mu-if="!card") 
+      p No stored payment accounts
+
+  div(uk-spinner mu-hide="!loading")
+  div(mu-hide="loading")
+    a.uk-icon-link(uk-icon="pencil" mu-click="actions.edit" uk-tooltip="Change Card")
+    //- Delete
+    a.uk-icon-link.uk-text-warning.uk-invisible-hover(uk-icon="close"
+      mu-if="card.id"
+      mu-click="actions.delete"
+      uk-tooltip="Delete")
+
+div(mu-if="editing")
+  form.uk-form-stacked(mu-form="paymentForm")
+    div.uk-grid-medium.uk-child-width-1-1(uk-grid)
+      fieldset.uk-fieldset
+        legend.uk-h4(mu-if="legend" mu-html="legend")
+
+        div.uk-grid-small(uk-grid)
+
+          div(class="uk-width-1-1 uk-width-1-2@s uk-width-3-5@m")
+            label.uk-form-label.uk-form-label-required(for="longNum") Card Number
+            div.uk-inline.uk-width-expand
+              +icon('credit-card')(class="uk-form-icon")
+              input.uk-input(name="longNum" placeholder="XXXX-XXXX-XXXX-XXXX" required mu-attr mu-attr-disabled="loading")
+
+          div(class="uk-width-1-3 uk-width-1-4@s uk-width-1-5@m")
+            label
+              div.uk-form-label.uk-form-label-required(for="expires") Expires
+            input.uk-input(name="expires" placeholder="MM/YY" required mu-attr mu-attr-disabled="loading")
+
+          div(class="uk-width-1-3 uk-width-1-4@s uk-width-1-5@m")
+            label
+              div.uk-form-label.uk-form-label-required(for="ccv") CCV
+            input.uk-input(type="password" name="ccv" placeholder="***" required mu-attr mu-attr-disabled="loading")
+
+    div.uk-margin.uk-text-right
+      span.uk-text-success.uk-margin-xsmall-right(mu-if="success" mu-class="{'uk-animation-fade uk-animation-reverse': '!success'}")
+        +icon('check')
+        span Saved
+      span.uk-text-danger.uk-margin-xsmall-right(mu-if="error")
+        +icon('warning')(class="uk-margin-small-right")
+        span(mu-html="error")
+      div(uk-spinner mu-if="loading")
+      button.uk-button.uk-button-primary(type="submit" mu-attr mu-attr-disabled="loading") Save
+
+//- div(mu-debug="editing")

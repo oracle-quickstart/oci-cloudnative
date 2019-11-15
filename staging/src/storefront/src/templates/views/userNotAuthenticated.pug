@@ -1,0 +1,15 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+ 
+section.uk-section.uk-section-small
+  div.uk-container
+    div.uk-text-center
+      div(mu-if="!profile")
+        h1.uk-heading-hero ¯\_(ツ)_/¯
+        div.uk-text-lead(mu-if="!profile") Please login or register to continue
+      div(mu-if="profile")
+        h1.uk-heading-hero You're here, yay!
+
+      div.uk-flex-center(uk-grid)
+        div(mu-user-toolbar inline="true")

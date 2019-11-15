@@ -1,0 +1,198 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+ 
+include ../data/_data
+include ../mixins/_import
+
+div.uk-grid-medium(uk-grid)
+  //- Checkout process
+  div.uk-width-1-1.tm-checkout(class="uk-width-expand@m")
+    div.uk-grid-medium.uk-child-width-1-1(uk-grid)
+
+      //- Contact Information
+      section
+        form.uk-form-stacked(mu-form="form.contact")
+          h2.tm-checkout-title Contact Information
+          div.uk-card.uk-card-default.uk-card-small.uk-card-body.tm-ignore-container(mu-user-view)
+            div(class="uk-grid-small " +
+                      "uk-child-width-1-1 " +
+                      "uk-child-width-1-2@s"
+                uk-grid)
+
+              div
+                label
+                  div.uk-form-label.uk-form-label-required First Name
+                  input.uk-input(type="text" required name="firstName" mu-attr mu-attr-value="profile.firstName")
+
+              div
+                label
+                  div.uk-form-label.uk-form-label-required Last Name
+                  input.uk-input(type="text" required mu-attr mu-attr-value="profile.lastName")
+
+              div
+                label
+                  div.uk-form-label Phone Number
+                  input.uk-input(type="tel")
+
+              div
+                label
+                  div.uk-form-label Email
+                  input.uk-input(type="email")
+
+      //- Shipping
+      section
+        h2.tm-checkout-title Shipping
+        div.uk-card.uk-card-default.uk-card-small.uk-card-body.tm-ignore-container
+          div(class="uk-grid-small " +
+                    "uk-grid-match " +
+                    "uk-child-width-1-2 " +
+                    "uk-child-width-1-2@s " +
+                    "uk-flex-center"
+              uk-switcher
+              uk-grid)
+              
+              div.tm-choose
+                div
+                  div.tm-choose-title Home delivery
+                  div.tm-choose-description Ships in a few days, maybe
+
+              div.tm-choose
+                div
+                  div.tm-choose-title Local pickup
+                  div.tm-choose-description Free, if you can find it
+
+          div.uk-switcher.uk-margin
+
+            //- Delivery
+            section(mu-user-address editing="false" type="shipping")
+
+            //- Pick up
+            section
+              div(class="uk-grid-small uk-child-width-1-1 uk-child-width-1-2@s"
+                  uk-grid)
+
+                div.uk-text-small
+                  div.uk-text-bolder= shopInfo.storeName + " headquarters"
+                  div!= shopInfo.address
+                  div= shopInfo.openingHours
+            
+
+      //- Payment
+      section
+        h2.tm-checkout-title Payment
+        div.uk-card.uk-card-default.uk-card-small.tm-ignore-container
+          div.uk-card-body
+            div(class="uk-grid-small " +
+                      "uk-grid-match " +
+                      "uk-child-width-1-2 " +
+                      "uk-child-width-1-2@s " +
+                      "uk-flex-center"
+                uk-switcher
+                uk-grid)
+
+              //- div
+              div.tm-choose
+                div
+                  div.tm-choose-title online by card
+                  div.tm-choose-description Visa, MasterCard
+
+              //- div
+              div.tm-choose
+                div
+                  div.tm-choose-title electronic payment
+                  div.tm-choose-description PayPal, Yandex.Money, QIWI
+            
+            div.uk-switcher.uk-margin
+              section
+                div(mu-user-payment editing="false")
+              section
+                p.uk-text-warning
+                  +icon('warning')(class="uk-margin-small-right")
+                  span Electronic payment options coming soon
+
+          div.uk-card-footer
+            div.uk-grid-small.uk-flex-middle.uk-flex-center.uk-text-center(uk-grid)
+
+              div.uk-text-meta
+                +icon("lock", ".75")(class="uk-margin-xsmall-right")
+                | Security of payments is is provided by secure protocols
+
+              div
+                img(src="images/verified-by-visa.svg"
+                    title="Verified by Visa"
+                    style="height: 25px;")
+
+              div
+                img(src="images/mastercard-securecode.svg"
+                    title="MasterCard SecureCode"
+                    style="height: 25px;")
+
+  //- Checkout
+  div(class="uk-width-1-1 uk-width-1-4@m tm-aside-column")
+    div.uk-card.uk-card-default.uk-card-small.tm-ignore-container(
+      uk-sticky="offset: 30; bottom: true; media: @m;")
+
+      div(mu-cart="shopCart")
+        section.uk-card-body
+          h4 Items in order
+          div.uk-grid-small(uk-grid mu-each="items" mu-each-as="row")
+            div.uk-width-expand
+              div.uk-text-small(mu-html="row.product.name")
+              div.uk-text-meta.uk-text-xsmall
+                  span(mu-html="row.item.quantity")
+                  |  × 
+                  +price("row.item.rowUnitPrice")
+
+            div.uk-text-right
+              +price("row.item.rowTotalPrice")
+
+        section.uk-card-body
+
+          div.uk-grid-small(uk-grid)
+            div.uk-width-expand.uk-text-muted Payment
+            div.uk-text-right Online by card
+
+        section.uk-card-body
+          //- subtotal
+          div.uk-grid-small(uk-grid)
+            div.uk-width-expand.uk-text-muted Subtotal
+            div.uk-text-right
+              +price("totals.subtotal")
+
+          //- tax
+          div.uk-grid-small(uk-grid)
+            div.uk-width-expand.uk-text-muted Tax
+            div
+              +price("totals.tax")
+
+          //- shipping
+          div.uk-grid-small(uk-grid)
+            div.uk-width-expand.uk-text-muted(mu-class="{'uk-text-success': '!rawTotals.shipping'}")
+              span(mu-if="!rawTotals.shipping") FREE
+                | 
+              span Shipping
+            div.uk-text-right
+              div(mu-if="rawTotals.shipping")
+                +price("totals.shipping")
+              s(mu-if="!rawTotals.shipping")
+                +price("totals.shipRate")
+
+          //- discounts
+          div.uk-grid-small(uk-grid mu-if="rawTotals.discounts")
+            div.uk-width-expand.uk-text-muted Discounts
+            div.uk-text-danger.uk-text-right
+              +price("totals.discounts", true)
+
+        section.uk-card-body
+          //- total
+          div.uk-grid-small.uk-flex-middle(uk-grid)
+            div.uk-width-expand.uk-text-muted Total
+            div.uk-text-lead.uk-text-bolder
+              +price("totals.total")
+
+        button.uk-button.uk-button-primary.uk-width-1-1(
+          type="submit"
+          mu-click="order.submit"
+          mu-attr mu-attr-disabled="!order.ready"
+        ) Place Order

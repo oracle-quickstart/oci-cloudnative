@@ -1,0 +1,23 @@
+#
+# Copyright (c) 2019, Oracle and/or its affiliates. All rights reserved.
+# Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
+#
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceInstance
+metadata:
+  name: catalogue-db
+spec:
+  clusterServiceClassExternalName: atp-service
+  clusterServicePlanExternalName: standard
+  parameters:
+    name: "MuShop Catalogue DB - dev"
+    compartmentId: ocid1.compartment.oc1..aaaaaa....
+    dbName: catalogue-dev
+    cpuCount: 1
+    storageSizeTBs: 1
+    licenseType: BYOL
+    autoScaling: false
+  parametersFrom:
+    - secretKeyRef:
+        name: catalogue-oadb-admin
+        key: oadb_admin_pw

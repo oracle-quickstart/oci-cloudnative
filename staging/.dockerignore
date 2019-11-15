@@ -1,0 +1,8 @@
+.DS_Store
+.env
+assets
+*.tgz
+**/build
+**/coverage
+**/node_modules
+**/Makefile

@@ -1,0 +1,19 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+ 
+mixin filterbox(list, name)
+  ul.uk-list.tm-scrollbox
+    li(mu-each=list mu-each-as="row")
+      input.tm-checkbox(
+        mu-attr
+        mu-attr-id="row.value"
+        mu-attr-value="row.value"
+        name= name + "[]"
+        type="checkbox")
+      label(mu-attr mu-attr-for="row.value")
+        span
+          span(mu-html="row.value")
+          |
+          |
+          span.uk-text-meta.uk-text-xsmall(mu-html="row.count")

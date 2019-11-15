@@ -1,0 +1,60 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: api
+  labels:
+    name: api
+    layer: client
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: api
+        layer: client
+    spec:
+      containers:
+      - name: api
+        image: iad.ocir.io/oracle/ateam/mushop-api:2.0
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 3000
+        env:
+        - name: SESSION_REDIS
+          value: session
+        - name: CATALOGUE_URL
+          value: http://catalogue
+        - name: ORDERS_URL
+          value: http://orders
+        - name: CARTS_URL
+          value: http://carts
+        - name: USERS_URL
+          value: http://user
+        - name: STATIC_MEDIA_URL
+          value: 
+        resources:
+          limits:
+            cpu: 300m
+            memory: 300Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 10001
+          capabilities:
+            drop:
+              - all
+            add:
+              - NET_BIND_SERVICE
+          readOnlyRootFilesystem: true
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: http
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: http

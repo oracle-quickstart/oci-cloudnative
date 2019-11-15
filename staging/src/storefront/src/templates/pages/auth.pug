@@ -1,0 +1,14 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+ 
+extends /layouts/_default
+
+block vars
+  -
+    page = {
+      title: 'Please login'
+    }
+
+block default
+  div(mu-user-view="userNotAuthenticated.html")

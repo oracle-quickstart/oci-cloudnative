@@ -1,0 +1,73 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+ 
+section.uk-section.uk-section-secondary.uk-section-xsmall.uk-light
+  div.uk-container
+    div(class="uk-grid-medium " +
+              "uk-child-width-1-1 " +
+              "uk-child-width-1-4@m"
+        uk-grid)
+
+      div
+        a.uk-logo(href="index.html" mu-route)
+          img(src="images/logo-inverse.png" alt=shopInfo.storeLogoText)
+          //- img(uk-svg src="images/logo-inverse.svg" alt=shopInfo.storeLogoText)
+          //- include _logo-inverse.pug
+        p.uk-text-small Specialty products that every cat deserves, especially yours.
+
+      div
+        nav.uk-grid-small.uk-child-width-1-2(uk-grid)
+          div
+            ul.uk-nav.uk-nav-default
+              each item in footerMenuLeft
+                li: a(href= item.href mu-route)= item.name
+          div
+            ul.uk-nav.uk-nav-default
+              each item in footerMenuRight
+                li: a(href= item.href mu-route)= item.name
+        
+        ul.uk-iconnav.uk-margin
+          each social in socials
+            li: a(href="#" title= social.name uk-icon= social.icon)
+
+      div
+        ul.uk-list.uk-text-small
+          li
+            a.uk-link-muted(href="tel:"+shopInfo.phone)
+              +icon("receiver")(class="uk-margin-small-right")
+              span.tm-pseudo= shopInfo.phone
+          li
+            a.uk-link-muted(href="email:"+shopInfo.email)
+              +icon("mail")(class="uk-margin-small-right")
+              span.tm-pseudo= shopInfo.email
+          li
+            div.uk-text-muted
+              +icon("location")(class="uk-margin-small-right")
+              span!= shopInfo.address
+          li
+            div.uk-text-muted
+              +icon("clock")(class="uk-margin-small-right")
+              span= shopInfo.openingHours
+
+      div
+        form.uk-form-stacked
+          label
+            div.uk-form-label.uk-text-muted Subscribe for updates
+            div.uk-inline.uk-width-1-1
+              a.uk-form-icon.uk-form-icon-flip(uk-icon="mail" mu onclick="this.mu.ui.notification('Subscribed email!', 'success')")
+              input.uk-input(type="email" placeholder="Your email" required)
+
+        div.uk-margin-small.uk-text-muted.uk-text-small
+          |Made with
+          +icon('heart', '0.75')(class="uk-margin-xsmall-left uk-margin-xsmall-right")
+          |by Oracle A-Team
+
+    
+    //- copyright
+    div.uk-text-muted.uk-text-xsmall.uk-margin-small.uk-width-1-1
+      div(uk-grid class="uk-grid-collapse uk-child-width-1-1 uk-child-width-1-2@m")
+        div
+          a(href="https://cloud.oracle.com/iaas") Powered by Oracle Cloud Infrastructure
+        div(class="uk-text-right@m")
+          include /partials/_copyright

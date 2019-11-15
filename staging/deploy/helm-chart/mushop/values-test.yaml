@@ -1,0 +1,72 @@
+global:
+  mock:
+    service: "false"
+
+ingress:
+  enabled: true
+
+  hosts:
+    - test.mushop.ateam.cloud
+
+  # Value can be either prod or staging
+  # This controls the cluster issuer what's used in Ingress
+  clusterIssuer: prod
+
+  # Used for ACME registration (if TLS is set)
+  email: "no-reply@ateam-oracle.com"
+
+  # If TLS is provided, cert-manager needs to be installed.
+  tls: true
+
+api:
+  enabled: true
+
+carts:
+  enabled: true
+
+catalogue:
+  enabled: true
+
+edge:
+  enabled: true
+
+orders:
+  enabled: true
+
+payment:
+  enabled: true
+
+session:
+  enabled: true
+
+shipping:
+  enabled: true
+
+storefront:
+  enabled: true
+
+stream:
+  enabled: true
+
+user:
+  enabled: true
+
+secrets:
+  streams:
+    compartmentId:
+    tenantId:
+    userId:
+    region:
+    fingerprint:
+    passphrase:
+    keyFile:
+    streamName:
+    # future support
+    streamId:
+  serviceBroker:
+    tenantId:
+    userId:
+    region:
+    fingerprint:
+    passphrase:
+    keyFile:

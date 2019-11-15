@@ -1,0 +1,394 @@
+/**
+ * Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
+/* ========================================================================
+   UIKit
+ ========================================================================== */
+
+// Breakpoints
+// ========================================================================
+
+@breakpoint-tablet:                            768px;
+
+
+// Global variables
+// ========================================================================
+
+//
+// Typography
+//
+
+@global-font-family:                            "Quicksand", "Helvetica Neue", Arial, sans-serif;
+@global-xsmall-font-size:                       0.6875rem; // 11px
+
+//
+// Colors
+//
+@global-color:                                  #000;
+@global-muted-color:                            #707070; //#121212;
+@inverse-global-color:                          #fff;
+@inverse-global-muted-color:                    fade(@inverse-global-color, 80%);
+
+// classic O 
+@color-red:                                     #f80000;
+@color-green:                                   #3a913f;
+@color-blue:                                    #00758f;
+@color-orange:                                  #DE6C0A;
+@color-burgundy:                                #942645;
+// redwood
+@color-red:                                     #c54a39;
+@color-green:                                   #6b8f63;
+@color-blue:                                    #2C5968;
+@color-orange:                                  #e3a665;
+@color-burgundy:                                #7a3c4b;
+// rest
+@color-slate:                                   #8aadbf;
+@color-grey:                                    #939699;
+@color-highlight:                                 @color-orange;
+@color-hyperlink:                               @color-blue;
+@color-icon-muted:                              #5F5F5F;
+
+// incorporate brand
+@global-link-color:                               @color-hyperlink;
+@global-primary-background:                       @color-blue;
+@global-secondary-background:                   #312d2a; // redwood
+
+@global-success-background:                       @color-green;
+@global-warning-background:                       @color-orange;
+@global-danger-background:                        @color-red;
+
+//
+// Borders
+//
+
+@global-border-radius:                          4px;
+
+//
+// Spacings
+//
+
+@global-xsmall-margin:                          5px;
+@global-xsmall-gutter:                          10px;
+
+
+// Base
+// ========================================================================
+
+@base-body-background:                          @global-muted-background;
+@base-link-hover-text-decoration:               none;
+
+@base-h1-font-size:                             @base-h1-font-size-m * 0.6;
+@base-h2-font-size:                             @base-h2-font-size-m * 0.7;
+@base-h3-font-size-m:                           @global-large-font-size;
+@base-h3-font-size:                             @base-h3-font-size-m * 0.8;
+@base-heading-font-weight:                      500;
+
+.hook-base-body() {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+
+// Logo
+// ========================================================================
+
+@logo-font-size:                                @global-xlarge-font-size;
+
+// Button
+// ========================================================================
+
+@button-border-radius:                          @global-border-radius;
+.hook-button() {
+  font-weight: 500;
+}
+
+// Section
+// ========================================================================
+
+@section-small-padding-vertical:                @global-margin;
+@section-small-padding-vertical-m:              @global-medium-margin;
+
+// Card
+// ========================================================================
+
+@card-default-border-radius:                    @global-border-radius;
+@card-default-body-border-width:                @global-border-width;
+@card-default-body-border:                      @global-border;
+
+.hook-card-default() {
+  border-radius: @card-default-border-radius;
+}
+
+.hook-card-media() {
+  margin: 0;
+}
+
+// Article
+// ========================================================================
+
+@article-title-font-size:                       @article-title-font-size-m * 0.6;
+@article-body-width:                            640px;
+
+// Lightbox
+// ========================================================================
+
+@lightbox-background:                           #fff;
+@lightbox-item-color:                           rgba(0, 0, 0, 0.7);
+@lightbox-toolbar-background:                   transparent;
+@lightbox-toolbar-color:                        rgba(0, 0, 0, 0.7);
+@lightbox-toolbar-icon-color:                   rgba(0, 0, 0, 0.7);
+@lightbox-toolbar-icon-hover-color:             #000;
+@lightbox-button-background:                    none;
+@lightbox-button-color:                         rgba(0, 0, 0, 0.7);
+@lightbox-button-hover-color:                   #000;
+
+// Off-canvas
+// ========================================================================
+
+@offcanvas-bar-background:                      @global-background;
+
+// Accordion
+// ========================================================================
+
+.hook-accordion-title() {
+  cursor: pointer;
+}
+
+// Notifications
+// ========================================================================
+
+@notification-width:                            475px;
+@notification-close-top:                        @global-small-margin;
+@notification-close-right:                      @global-small-margin;
+
+// Switcher
+// ========================================================================
+
+@subnav-item-border-radius:                     @global-border-radius;
+
+.hook-subnav-item() {
+  border-radius: @subnav-item-border-radius;
+}
+
+// Notification
+// ========================================================================
+
+@notification-message-background:               @global-background;
+
+.hook-notification-message() {
+  box-shadow: @global-small-box-shadow;
+}
+
+// Text
+// ========================================================================
+
+@text-xsmall-font-size:                         @global-xsmall-font-size;
+@text-xsmall-line-height:                       1.2;
+
+// Background
+// ========================================================================
+
+@background-primary-background-lighten:         lighten(tint(@global-primary-background, 40%), 20%);
+
+// Utility
+// ========================================================================
+
+@border-rounded-border-radius:                  @global-border-radius;
+
+// Margin
+// ========================================================================
+
+@margin-xsmall-margin:                          @global-xsmall-margin;
+
+
+
+// Inverse
+// ========================================================================
+
+// Card
+@card-primary-color-mode: none;
+@card-secondary-color-mode: none;
+
+// Navbar
+@navbar-color-mode: none;
+
+// Off-canvas
+@offcanvas-bar-color-mode: none;
+
+// Overlay
+@overlay-primary-color-mode: none;
+
+// Section
+@section-primary-color-mode: none;
+@section-secondary-color-mode: none;
+
+
+
+/* ========================================================================
+   Theme
+ ========================================================================== */
+
+
+// Toolbar (type of nav)
+
+@header-toolbar-background:                     @global-secondary-background;
+@header-toolbar-nav-item-height:                40px;
+@header-toolbar-nav-item-font-size:             14px;
+
+// Logo & images
+@logo-default-img-height:                       50px;
+@catalog-category-img-height:                   70px;
+
+// Navbar
+@navbar-nav-item-height:                        80px;
+@navbar-nav-logo-height:                        @navbar-nav-item-height * 2/3;
+@navbar-nav-logo-height-small:                  @navbar-nav-item-height * 1/2;
+@navbar-nav-logo-height-xsmall:                 @navbar-nav-item-height * 2/5;
+@navbar-nav-item-font-size:                     18px;
+@header-navbar-nav-item-height:                 @navbar-nav-item-height;
+@header-navbar-nav-icon-height:                 28px;
+
+@header-navbar-background:                      @global-background;
+@header-navbar-background:                      @global-background;
+@header-navbar-border-width:                    @global-border-width;
+@header-navbar-border:                          @global-border;
+@header-navbar-item-border-width:               3px;
+
+@header-navbar-fixed-nav-item-height:           @header-navbar-nav-item-height * 3/5;
+@header-navbar-z-index:                         @global-z-index + 5;
+@navbar-nav-item-color:                         #121212;
+
+.hook-navbar-nav-item() {
+}
+
+.hook-navbar-nav-item-active() {
+  border-bottom-color: @color-highlight !important;
+}
+
+.hook-navbar-nav-item-hover() {
+  transition: border 0.25s ease-in;
+  border-bottom-color: @color-highlight !important;
+}
+
+.hook-navbar-toggle-hover() {
+  color: @navbar-nav-item-hover-color;
+}
+
+.hook-navbar-dropdown() {
+  top: 101% !important;
+}
+
+// Navbar button
+
+@header-navbar-button-badge-width:              22px;
+
+
+// Aside column
+
+@aside-column-width:                            270px;
+
+
+// Product card
+
+@product-card-background-color:                 @global-background;
+@product-card-media-width:                      40%;
+@product-card-title-max-lines:                  2;
+@product-card-title-font-size:                  16px;
+@product-card-title-line-height:                22px;
+@product-card-title-max-height:                 @product-card-title-max-lines * @product-card-title-line-height;
+@product-card-title-font-size-s:                18px;
+@product-card-title-line-height-s:              24px;
+@product-card-title-max-height-s:               @product-card-title-max-lines * @product-card-title-line-height-s;
+@product-card-price-font-size:                  20px;
+@product-card-add-button-width:                 36px;
+@product-card-add-button-height:                36px;
+@product-card-desc-line-height:                 18px;
+@product-card-desc-max-height:                  @product-card-title-max-lines * @product-card-desc-line-height;
+@product-card-transition:                       transform 0.1s ease-in-out;
+
+
+// List view product card
+
+@list-view-product-card-media-width:            33.3%;
+@list-view-product-card-media-min-width:        170px;
+@list-view-product-card-price-font-size:        24px;
+
+
+// Scrollbox
+
+@scrollbox-background-color:                    @global-background;
+@scrollbox-max-height:                          300px;
+
+
+// Checkbox, radio
+
+@control-checkbox-image:                        "../../images/backgrounds/form-checkbox.svg";
+@control-radio-image:                           "../../images/backgrounds/form-radio.svg";
+@control-inputs-size:                           16px;
+@control-inputs-margin-right:                   @global-small-margin;
+@control-inputs-hover:                          #F8F8F8;
+@control-inputs-border-width:                   @global-border-width;
+@control-inputs-border:                         @global-border;
+@control-checked-icon-color:                    @global-inverse-color;
+@control-focus-border:                          @global-primary-background;
+@control-checked-background:                    @global-primary-background;
+@control-disabled-border:                       @global-border;
+
+
+// Product
+
+@product-info-width:                            390px;
+@product-price-font-size:                       32px;
+
+
+// Quantity
+
+@quantity-width:                                60px;
+
+
+// Compare table
+
+@compare-table-column-width:                    240px;
+
+
+// Reviews
+
+@reviews-column-width:                          200px;
+
+
+// Cart
+
+@cart-quantity-column-width:                    115px;
+
+
+// Nav
+
+@custom-nav-item-padding-vertical:              10px;
+@custom-nav-item-padding-horizontal:            0;
+@custom-nav-item-active-border-width:           2px;
+@custom-nav-item-active-border-color:           @global-primary-background;
+
+
+// Ratio
+
+@ratio-1-1:                                     100%;
+@ratio-3-2:                                     66.66%;
+@ratio-4-3:                                     75%;
+@ratio-16-9:                                    56.25%;
+@ratio-2-1:                                     50%;
+
+
+// Media box
+
+@media-box-frame-border-width:                  @global-border-width;
+@media-box-frame-border:                        @global-border;
+@media-box-frame-border-hover-color:            @global-primary-background;
+
+
+// Pseudo
+
+@pseudo-border-width:                           @global-border-width;
+@pseudo-border-style:                           dotted;
+

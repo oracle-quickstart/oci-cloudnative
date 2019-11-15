@@ -1,0 +1,10 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+ 
+mixin icon(name, ratio)
+
+  if !ratio
+    span(uk-icon= name)&attributes(attributes)
+  else
+    span(uk-icon=`icon: ${name}; ratio: ${ratio};`)&attributes(attributes)

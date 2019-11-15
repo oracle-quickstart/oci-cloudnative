@@ -1,0 +1,98 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+ 
+include ../mixins/_icon
+include ../mixins/_price
+
+aside.uk-offcanvas-bar.uk-padding-remove
+  div(class="uk-card " +
+            "uk-card-default " +
+            "uk-card-small " +
+            "uk-height-1-1 " +
+            "uk-flex " +
+            "uk-flex-column " +
+            "tm-shadow-remove")
+
+    header.uk-card-header.uk-flex.uk-flex-middle
+      div.uk-grid-small.uk-flex-1(uk-grid)
+        div.uk-width-expand
+          div.uk-h3 Cart
+        button.uk-offcanvas-close(type="button" uk-close)
+
+    div.uk-card-body.uk-overflow-auto
+      //- empty
+      div.uk-text-warning.uk-text-center(mu-if="!items.length")
+        +icon('ban')(class="uk-margin-small-right")
+        span There are no items in your cart
+
+      //- list
+      ul.uk-list.uk-list-divider(mu-if="items.length")
+        //- item iterator
+        li.uk-visible-toggle(mu-each="items" mu-each-as="row")
+          article.uk-position-relative
+            //- Delete
+            a.uk-icon-link.uk-text-warning.uk-invisible-hover.uk-position-top-right(
+              mu-click="row.actions.remove"
+              uk-icon="icon: close; ratio: 1"
+              uk-tooltip="Remove")
+
+            div.uk-grid-small(uk-grid)
+              //- Image
+              div.uk-width-1-4
+                div.tm-ratio.tm-ratio-4-3
+                  a.tm-media-box(mu-attr mu-attr-href="row.product.href" mu-route)
+                    figure.tm-media-box-wrap
+                      img(mu-if="row.product.image" mu-attr mu-attr-src="row.product.image" mu-attr-alt="row.product.name")
+                      span(mu-if="!row.product.image")
+                        +icon("image", "4")(class="uk-text-muted")
+              //- Info
+              div.uk-width-expand
+                a.uk-link-heading.uk-text-small(mu-attr mu-attr-href="row.product.href" mu-route)
+                  span(mu-html="row.product.name")
+                div.uk-margin-xsmall.uk-grid-small.uk-flex-middle(uk-grid)
+                  div.uk-text-meta.uk-text-xsmall.uk-width-expand
+                    span(mu-html="row.item.quantity")
+                    |  × 
+                    +price("row.item.rowUnitPrice")
+                  div.uk-text-bolder.uk-text-small
+                    +price("row.item.rowTotalPrice")
+
+              //- div(mu-debug="row.product")
+
+    footer.uk-card-footer
+
+      div.uk-grid-small(uk-grid)      
+        div.uk-width-expand.uk-text-muted.uk-h4 Subtotal
+        div.uk-h4.uk-text-bolder
+          +price("totals.subtotal")
+      
+      //- div.uk-grid-small(uk-grid)
+        div.uk-width-expand.uk-text-muted.uk-h4(mu-class="{'uk-text-success': '!rawTotals.shipping'}")
+          span(mu-if="!rawTotals.shipping") FREE
+            | 
+          span Shipping
+        div.uk-h4.uk-text-bolder
+          div(mu-if="rawTotals.shipping")
+            +price("totals.shipping")
+          s(mu-if="!rawTotals.shipping")
+            +price("totals.shipRate")
+
+      div(class="uk-grid-small " +
+                "uk-child-width-1-1 " +
+                "uk-child-width-1-2@m " +
+                "uk-margin-small" uk-grid)
+      
+        div.uk-width-1-1(mu-if="!items.length")
+          a.uk-button.uk-button-primary.uk-margin-small.uk-width-1-1(
+            href="catalog.html" mu-route) Shop Products
+
+        div(mu-if="items.length")
+          a.uk-button.uk-button-default.uk-margin-small.uk-width-1-1(
+            href="cart.html" mu-route) view cart
+
+        div(mu-if="items.length")
+          a.uk-button.uk-button-primary.uk-margin-small.uk-width-1-1(
+            href="checkout.html" mu-route) checkout
+
+    //- div(mu-debug="items")

@@ -1,0 +1,93 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+ 
+include ../mixins/_icon
+
+ul(mu-class="{'uk-navbar-nav': '!offcanvas', 'uk-nav uk-nav-default': 'offcanvas', 'mu-user-toolbar-inline': 'inline'}")
+  li(class="uk-visible@m" mu-if="profile")
+    a(href="personal.html" mu-route)
+      | {{profile.firstName}} {{profile.lastName}}
+  li(mu-if="profile")
+    a(mu onclick="this.mu.user.logout(); return false;") Logout
+  li(mu-if="!profile")
+    a(uk-toggle="target: #auth-modal-{{ctxId}}") Login/Register
+
+div(mu-if="!profile")
+  div( id="auth-modal-{{ctxId}}" uk-modal mu-uk-component="ui.modal")
+    div.uk-modal-dialog.uk-modal-body
+      button.uk-modal-close-default(type="button" uk-close)
+      //- tab switch
+      //- ul(uk-tab mu-uk-component="ui.tabswitch")
+      ul(uk-tab)
+        li
+          a Login
+        li(mu-class="{'uk-active':'register'}")
+          a Create Account
+
+      //- form switcher
+      ul.uk-switcher.uk-margin
+        //- user login
+        li
+          form.uk-form-stacked(mu-form="form.auth")
+            fieldset.uk-fieldset
+              div.uk-grid.uk-grid-small
+                div(class="uk-width-1-2@s")
+                  label.uk-form-label(for="username") Username
+                  div.uk-inline.uk-width-expand
+                    +icon('user')(class="uk-form-icon")
+                    input.uk-input(name="username" type="text" autofocus mu-attr mu-attr-value="fields.username")
+                div(class="uk-width-1-2@s")
+                  label.uk-form-label(for="password") Password
+                  div.uk-inline.uk-width-expand
+                    +icon('lock')(class="uk-form-icon")
+                    input.uk-input(name="password" type="password")
+
+            hr.uk-divider-icon
+            div.uk-text-right
+              span.uk-text-warning.uk-margin-small-right(hidden mu-hide="!error.auth")
+                +icon('warning')(class="uk-margin-small-right")
+                span(mu-html="error.auth")
+              div(uk-spinner mu-hide="!loading")
+              button.uk-button.uk-button-primary(type="submit" mu-attr mu-attr-disabled="loading")
+                +icon('sign-in', 'ratio: .75')(class="uk-margin-xsmall-right")
+                |Sign In
+
+        //- user registration
+        li
+          form.uk-form-stacked(mu-form="form.reg")
+            fieldset.uk-fieldset
+              div.uk-grid.uk-grid-small
+                //- personal
+                div(class="uk-width-1-2@s")
+                  label.uk-form-label.uk-form-label-required(for="firstName") First Name
+                  input.uk-input(required name="firstName" type="text" placeholder="One" autofocus mu-attr mu-attr-value="fields.firstName")
+                div(class="uk-width-1-2@s")
+                  label.uk-form-label.uk-form-label-required(for="lastName") Last Name
+                  input.uk-input(required name="lastName" type="text" placeholder="Cool Cat" mu-attr mu-attr-value="fields.lastName")
+                div(class="uk-margin uk-width-1-1@s")
+                  label.uk-form-label.uk-form-label-required(for="email") Email
+                  div.uk-inline.uk-width-expand
+                    +icon('mail')(class="uk-form-icon")
+                    input.uk-input(required name="email" placeholder="user@example.com" mu-attr mu-attr-value="fields.email")
+                //- credential
+                div(class="uk-width-1-2@s")
+                  label.uk-form-label(for="username") Username
+                  div.uk-inline.uk-width-expand
+                    +icon('user')(class="uk-form-icon")
+                    input.uk-input(required name="username" type="text" mu-attr mu-attr-value="fields.username")
+                div(class="uk-width-1-2@s")
+                  label.uk-form-label(for="password") Password
+                  div.uk-inline.uk-width-expand
+                    +icon('lock')(class="uk-form-icon")
+                    input.uk-input(required name="password" type="password")
+
+            hr.uk-divider-icon
+            div.uk-text-right
+              span.uk-text-warning.uk-margin-small-right(hidden mu-hide="!error.reg")
+                +icon('warning')(class="uk-margin-small-right")
+                span(mu-html="error.reg")
+              div(uk-spinner mu-hide="!loading")
+              button.uk-button.uk-button-primary(type="submit" mu-attr mu-attr-disabled="loading")
+                +icon('sign-in', 'ratio: .75')(class="uk-margin-xsmall-right")
+                |Register

@@ -1,0 +1,57 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+ 
+extends /layouts/_account
+
+block vars
+  -
+    page = {
+      title: 'My Account'
+    }
+
+block account
+  div
+    div.uk-card-body
+      div(mu-customer)
+        //- loader
+        div(mu-hide="!loading")
+          div(uk-spinner)
+
+        //- ERROR
+        div.uk-text-warning.uk-text-center.uk-padding-small(mu-if="error")
+          +icon('warning')(class="uk-margin-small-right")
+          span(mu-html="error")
+
+        //- specifically designed iteration for demo purposes
+        div(mu-if="result")
+          section.uk-card-body(mu-each="result" mu-each-as="c")
+            h3
+              span(mu-html="c.firstName")
+              | 
+              span(mu-html="c.lastName")
+
+            table(class="uk-table " +
+                        "uk-table-small " +
+                        "uk-table-justify " +
+                        "uk-table-responsive " +
+                        "uk-table-divider " +
+                        "uk-margin-small-top " +
+                        "uk-margin-remove-bottom")
+              tbody
+                tr
+                  th.uk-width-medium Id
+                  td(mu-html="c.id")
+                tr
+                  th.uk-width-medium Username
+                  td(mu-html="c.username")
+
+          //- Exhibit WAF
+          section(mu-if="mock")
+            div.uk-grid-small(uk-grid)
+              img(data-src="/images/tech/waf.svg" uk-img)
+              div.uk-width-expand
+                | Below is a response containing sensitive information,
+                | which is <span class="uk-text-danger">blocked</span> by the
+                | Oracle Cloud Infrastructure WAF service.
+            div(mu-debug="data")

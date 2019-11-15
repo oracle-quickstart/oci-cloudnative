@@ -1,0 +1,77 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+ 
+extends /layouts/_account
+
+block vars
+  -
+    page = {
+      title: 'Orders'
+    }
+
+    profileActivePage = 1
+
+block account
+  //- loader
+  div(mu-orders mu-cloak)
+    section.uk-text-center.uk-padding(hidden mu-hide="!loading")
+      div(uk-spinner)
+
+    //- ERROR
+    div.uk-text-warning.uk-text-center.uk-padding-small(mu-if="error")
+      +icon('warning')(class="uk-margin-small-right")
+      span(mu-html="error")
+
+    //- No orders
+    div.uk-text-center.uk-padding-small(mu-if="noHistory")
+      div.uk-text-lead We couldn't find any previous orders in our records
+
+    //- each order in orders
+    div(mu-if="orders")
+      section.uk-card-body(mu-each="orders" mu-each-as="order")
+        h3
+          a.uk-link-heading(mu-attr mu-attr-href="order.href" mu-route) #
+            span(mu-html="order.humanId")
+            | 
+            span.uk-text-muted.uk-text-small from 
+              span(mu-html="order.shortDate")
+
+        table(class="uk-table " +
+                    "uk-table-small " +
+                    "uk-table-justify " +
+                    "uk-table-responsive " +
+                    "uk-table-divider " +
+                    "uk-margin-small-top " +
+                    "uk-margin-remove-bottom")
+          tbody
+            tr
+              th.uk-width-medium Items
+              td(mu-html="order.totalSize")
+            tr
+              th.uk-width-medium Payment
+              td
+                span.uk-text-bolder Card ending *
+                span.uk-text-muted(mu-html="order.paymentCard")
+            tr
+              th.uk-width-medium Total
+              td
+                +price("order.totalPrice")
+            tr
+              th.uk-width-medium Shipping
+              td
+                div
+                  span(mu-html="order.address.number")
+                  |  
+                  span(mu-html="order.address.street")
+                div
+                  span(mu-html="order.address.city")
+                  |, 
+                  span(mu-html="order.address.postcode")
+            tr
+              th.uk-width-medium Status
+              td
+                span.uk-label(
+                  mu-class= "{'uk-label-danger': '!order.shipment'}"
+                  mu-html="order.status"
+                )

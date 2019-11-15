@@ -1,0 +1,12 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+ 
+mixin quantity(qty, hooks)
+  a(uk-icon="icon: minus; ratio: .75" mu-click= hooks + ".dec")
+  input(class="uk-input tm-quantity-input"
+        mu-attr mu-attr-value= qty mu-attr-disabled="loading"
+        mu-change= hooks + ".change"
+        type="number"
+        maxlength="3")
+  a(uk-icon="icon: plus; ratio: .75" mu-click= hooks + ".inc")

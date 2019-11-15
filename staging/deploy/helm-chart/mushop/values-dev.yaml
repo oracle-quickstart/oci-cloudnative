@@ -1,0 +1,51 @@
+global:
+  mock:
+    service: "false"
+
+ingress:
+  enabled: true
+
+carts:
+  secrets:
+    oadbAdminPassword:
+    oadbWalletPassword:
+    oadbService:
+    # provide your own if oadbAdminPassword is available
+    oadbUser:
+    oadbPassword:
+
+catalogue:
+  secrets:
+    oadbAdminPassword:
+    oadbService:
+    # provide your own if oadbAdminPassword is available
+    oadbUser:
+    oadbPassword:
+
+orders:
+  secrets:
+    oadbAdminPassword:
+    oadbWalletPassword:
+    oadbService:
+    # provide your own if oadbAdminPassword is available
+    oadbUser:
+    oadbPassword:
+
+user:
+  secrets:
+    oadbAdminPassword:
+    oadbService:
+    # provide your own if oadbAdminPassword is available
+    oadbUser:
+    oadbPassword:
+ 
+secrets:
+  streams:
+    streamName:
+    tenantId: 
+    compartmentId: 
+    userId: 
+    region: 
+    fingerprint: 
+    passphrase: 
+    keyFile: 

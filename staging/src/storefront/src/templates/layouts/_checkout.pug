@@ -1,0 +1,52 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+ 
+extends _index
+
+block vars
+
+block index
+
+  header
+    div.uk-navbar-container.tm-navbar-container
+      div.uk-container(uk-navbar)
+
+        div.uk-navbar-left
+          //- Logo
+          a.uk-navbar-item.uk-logo(href="index.html" mu-route)
+            img(src="images/logo.png" alt=shopInfo.storeLogoText)
+
+        div.uk-navbar-right
+          //- Phone
+          a.uk-navbar-item.uk-link-muted(href="#")
+            +icon("receiver", ".75")(class="uk-margin-xsmall-right")
+            span.tm-pseudo= shopInfo.phone
+
+
+  main.short-footer
+    section.uk-section.uk-section-small
+      div.uk-container
+        div.uk-grid-medium.uk-child-width-1-1(uk-grid)
+
+          section.uk-text-center
+            a.uk-link-muted.uk-text-small(href="cart.html" mu-route)
+              +icon("arrow-left", ".75")(class="uk-margin-xsmall-right")
+              | Return to cart
+            h1.uk-margin-small-top.uk-margin-remove-bottom Checkout
+
+          section
+            block checkout
+
+  footer
+    div.uk-section.uk-section-secondary.uk-section-small.uk-light
+      div.uk-container.uk-text-muted.uk-text-small
+        div.uk-flex-middle(uk-grid)
+
+          div.uk-width-expand
+            include /partials/_copyright
+
+          div
+            a.uk-link-muted(href="#")
+              +icon("receiver", ".75")(class="uk-margin-xsmall-right")
+              span.tm-pseudo= shopInfo.phone

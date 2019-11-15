@@ -1,0 +1,50 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+ 
+extends /layouts/_informational
+
+block vars
+  -
+    page = {
+      title: 'FAQ',
+      breadcrumbs: {}
+    }
+
+    informationalActivePage = 'faq'
+
+block informational
+  article(class="uk-card " +
+                "uk-card-default " +
+                "uk-card-small " +
+                "uk-card-body " +
+                "uk-article " +
+                "tm-ignore-container")
+
+    ul.uk-list-divider.uk-list-large(uk-accordion="multiple: true")
+      li
+        a.uk-accordion-title(href="#") What's with our name?
+        div.uk-accordion-content
+          div
+            span Mew (said the cat)  
+            +icon("arrow-right")(class="uk-margin-small-right uk-margin-small-left")
+            span Mu 
+            +icon("arrow-right")(class="uk-margin-small-right uk-margin-small-left")
+            span μ
+            +icon("arrow-right")(class="uk-margin-small-right uk-margin-small-left")
+            span micro
+            +icon("arrow-right")(class="uk-margin-small-right uk-margin-small-left")
+            span microservices
+            +icon("happy")(class="uk-margin-small-right uk-margin-small-left")
+      li
+        a.uk-accordion-title(href="#") Do we really love cats?
+        div.uk-accordion-content
+          p Yes!
+      li
+        a.uk-accordion-title(href="#") Are these products for real?
+        div.uk-accordion-content
+          p Well, yes and no. Yes, we do show some real products. But no, we don't actually sell anything... so sad.
+      li
+        a.uk-accordion-title(href="#") Is there actually a cat store in Lanai, Hi?
+        div.uk-accordion-content
+          p Let us google that for you.

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "carts.fullname" . }}
+  labels: {{ include "carts.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "carts.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "carts.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      initContainers:
+        {{- include "carts.init.wallet" . | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+          env:
+            - name: ZIPKIN
+              value: {{ .Values.env.zipkin }}
+            - name: JAVA_OPTS
+              value: {{ .Values.env.javaOpts }}
+            - name: TNS_ADMIN
+              value: {{ .Values.env.tnsAdmin }}
+            {{- include "carts.oadb.connection" . | nindent 12 }}
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp-volume
+            {{- include "carts.mount.wallet" . | nindent 12 }}
+      volumes:
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory
+        {{- include "carts.volumes" . | nindent 8 }}
+      nodeSelector:
+          beta.kubernetes.io/os: linux

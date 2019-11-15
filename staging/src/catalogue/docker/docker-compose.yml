@@ -1,0 +1,30 @@
+#
+# Copyright (c) 2019, Oracle and/or its affiliates. All rights reserved.
+# Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
+# 
+
+version: '2'
+
+services:
+    catalogue:
+        build:
+            context: ..
+            dockerfile: ./Dockerfile
+        image: mushop/catalogue
+        hostname: catalogue
+        restart: always
+        cap_drop:
+            - all
+        cap_add:
+            - NET_BIND_SERVICE
+        read_only: true
+        volumes:
+            - Wallet_Creds:/usr/lib/oracle/19.3/client64/lib/network/admin/
+        environment:
+            - reschedule=on-node-failure
+            - OADB_USER=${OADB_USER}
+            - OADB_PW=${OADB_PW}
+            - OADB_SERVICE=${OADB_SERVICE}
+        ports:
+            - "8080:80"
+

@@ -1,0 +1,56 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+ 
+div#nav-offcanvas.tm-nav-offcanvas(uk-offcanvas="overlay: true" mu-uk-component)
+  aside.uk-offcanvas-bar.uk-padding-remove
+
+    div.uk-card.uk-card-default.uk-card-small.tm-shadow-remove
+
+      //- Brand
+      header.uk-card-header.uk-flex.uk-flex-middle
+        a.uk-logo(href="index.html" mu-route)
+          img(src="images/logo.png" alt=shopInfo.storeLogoText)
+          //- img(uk-svg src="images/logo.svg" alt=shopInfo.storeLogoText)
+
+      //- Store info
+      nav.uk-card-body
+        div.tm-nav-offcanvas-summary
+          div
+            a.uk-text-small.uk-link-muted(href="tel:"+shopInfo.phone)
+              +icon("receiver", ".75")(class="uk-margin-xsmall-right")
+              span= shopInfo.phone
+          div
+            a.uk-text-small.uk-link-muted(href="contacts.html" mu-route)
+              +icon("location", ".75")(class="uk-margin-xsmall-right")
+              span= shopInfo.address
+          div.uk-text-small.uk-text-muted
+            +icon("clock", ".75")(class="uk-margin-xsmall-right")
+            span= shopInfo.openingHours
+
+      //- Navigation
+      nav.uk-card-small.uk-card-body
+        ul.uk-nav-default.uk-nav-parent-icon.uk-list-divider(uk-nav)
+          each item in navbarMenu
+            li(class= { "uk-parent": item.items, "uk-active": item.active })
+              a(href= item.href class={"mu-route": !item.items})= item.name
+              if item.items
+                ul.uk-nav-sub.uk-list-divider
+                  each category in item.items
+                    li: a(href="subcategory.html" mu-route)= category.name
+                  if item.name === "Catalog"
+                    li
+                      +link-to-all('see all categories', item.href)(mu-route)
+                  if item.name === "Brands"
+                    li
+                      +link-to-all('see all brands', item.href)(mu-route)
+
+      //- Toolbar links
+      div.uk-card-small.uk-card-body(mu-user-toolbar="offcanvas")
+        
+      //- Social
+      nav.uk-card-body
+        ul.uk-iconnav.uk-flex-center
+          each social in socials
+            li: a(href="#" title= social.name uk-icon= social.icon)
+

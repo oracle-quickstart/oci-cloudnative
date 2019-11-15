@@ -1,0 +1,73 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+ 
+extends /layouts/_account
+
+block vars
+  -
+    page = {
+      title: 'Settings'
+    }
+
+    profileActivePage = 4
+
+block account
+  div.uk-card-body
+    form.uk-form-stacked(mu-form mu-user-view)
+      div.uk-grid-medium.uk-child-width-1-1(uk-grid)
+        
+        //- Password
+        fieldset.uk-fieldset
+          legend.uk-h4 Password
+          div(uk-grid class="uk-grid-small uk-child-width-1-1 uk-child-width-1-2@s")
+            div(class="uk-width-1-1")
+              label
+                div.uk-form-label.uk-form-label-required Current Password
+                input.uk-input(type="password" required disabled)
+            div
+              label
+                div.uk-form-label New Password
+                input.uk-input(type="password" disabled)
+            div
+              label
+                div.uk-form-label Confirm Password
+                input.uk-input(type="password" disabled)
+            div.uk-width-1-1.uk-text-right
+              //- indicate non-functional
+              span.uk-text-warning.uk-margin-small-right
+                +icon('warning')(class="uk-margin-small-right")
+                span Password updates are not enabled
+              button.uk-button.uk-button-primary(disabled) update password
+
+        //- Email notifications
+        fieldset.uk-fieldset
+          legend.uk-h4 Email Notifications
+          ul.uk-list.uk-margin-remove
+            li
+              input(class="tm-checkbox"
+                    id="notification-1"
+                    type="checkbox"
+                    name="notification"
+                    value="1"
+                    checked)
+              label(for="notification-1")
+                span Weekly Newsletter
+            li
+              input(class="tm-checkbox"
+                    id="notification-2"
+                    type="checkbox"
+                    name="notification"
+                    value="1"
+                    checked)
+              label(for="notification-2")
+                span New Product Announcements
+            li
+              input(class="tm-checkbox"
+                    id="notification-3"
+                    type="checkbox"
+                    name="notification"
+                    value="1"
+                    checked)
+              label(for="notification-3")
+                span Product Specials

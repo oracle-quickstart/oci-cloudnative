@@ -1,0 +1,65 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+ 
+extends /layouts/_account
+
+block vars
+  -
+    page = {
+      title: 'Personal Info'
+    }
+
+    profileActivePage = 3
+
+block account
+  //- div(mu mu-if="global.profile")
+  div
+    div.uk-card-body
+      //- Contact
+      form.uk-form-stacked(mu-form mu-user-view)
+        div.uk-grid-medium.uk-child-width-1-1(uk-grid)
+          fieldset.uk-fieldset
+            legend.uk-h4 Contact
+            div(class="uk-grid-small " +
+                      "uk-child-width-1-1 " +
+                      "uk-child-width-1-2@s"
+                uk-grid)
+
+              div
+                label
+                  div.uk-form-label First Name
+                  input.uk-input(type="text" mu-attr mu-attr-value="profile.firstName" disabled)
+
+              div
+                label
+                  div.uk-form-label Last Name
+                  input.uk-input(type="text" mu-attr mu-attr-value="profile.lastName" disabled)
+
+              div
+                label
+                  div.uk-form-label Current Email
+                  input.uk-input(type="email" disabled mu-attr mu-attr-value="profile.email")
+              div
+                label
+                  div.uk-form-label New Email
+                  input.uk-input(type="email" disabled)
+
+        div.uk-margin.uk-text-right
+          //- indicate non-functional
+          span.uk-text-warning.uk-margin-small-right
+            +icon('warning')(class="uk-margin-small-right")
+            span Profile updates are not enabled
+          button.uk-button.uk-button-primary(type="submit" disabled) Update
+
+    //- Payment
+    div.uk-card-body
+      div(mu-user-payment editing="false" legend="Saved Payment Information")
+
+    //- Address
+    div.uk-card-body
+      div(mu-user-address editing="true" type="home" legend="Address")
+  
+  //- //- NO USER
+  //- div(mu mu-if="!global.profile")
+  //-   div(mu-user-view="userNotAuthenticated.html")

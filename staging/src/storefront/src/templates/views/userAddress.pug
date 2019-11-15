@@ -1,0 +1,85 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+ 
+include ../mixins/_icon
+
+div.uk-grid-medium.uk-flex-left(uk-grid mu-if="!editing")
+  div.uk-width-1-1.uk-h4(mu-if="legend")
+    div.uk-h4(mu-html="legend")
+
+  div.uk-width-expand(mu-class="{'uk-text-muted': 'loading'}")
+    div(mu-if="address")
+      div.uk-text-bolder
+      |{{address.number}} {{address.street}}
+      div.uk-text-muted
+      |{{address.city}} {{address.country}}, {{address.postcode}}
+    div.uk-text-danger(mu-if="!address") 
+      p No {{addressType}} address found.
+
+  div(uk-spinner mu-hide="!loading")
+  div(mu-hide="loading")
+    a.uk-icon-link(uk-icon="pencil" mu-click="actions.edit" uk-tooltip="Change Address")
+    //- Delete
+    a.uk-icon-link.uk-text-warning.uk-invisible-hover(uk-icon="close"
+      mu-if="address.id"
+      mu-click="actions.delete"
+      uk-tooltip="Delete")
+
+div(mu-if="editing")
+  form.uk-form-stacked(mu-form="addressForm")
+    div.uk-grid-medium.uk-child-width-1-1(uk-grid)
+      fieldset.uk-fieldset
+        legend.uk-h4(mu-if="legend" mu-html="legend")
+
+        div.uk-grid-small(uk-grid)
+
+          div(class="uk-width-1-3 uk-width-1-6@s")
+            label
+              div.uk-form-label House
+              input.uk-input(type="text" required name="number" mu-attr mu-attr-value="address.number" mu-attr-disabled="loading")
+
+          div.uk-width-expand
+            label
+              div.uk-form-label Street
+              input.uk-input(type="text" required name="street" mu-attr mu-attr-value="address.street" mu-attr-disabled="loading")
+
+        div.uk-grid-small(uk-grid)
+
+          div.uk-width-expand
+            label
+              div.uk-form-label City
+              input.uk-input(type="text" required name="city" mu-attr mu-attr-value="address.city" mu-attr-disabled="loading")
+
+          div(class="uk-width-1-3 uk-width-1-6@s")
+            label
+              div.uk-form-label Post Code
+              input.uk-input(type="number" required name="postcode" mu-attr mu-attr-value="address.postcode" mu-attr-disabled="loading")
+
+        div.uk-grid-small(uk-grid)
+          div.uk-width-1-1
+            label
+              div.uk-form-label Country
+              select.uk-select(required name="country" mu-attr mu-attr-disabled="loading")
+                option Choose
+                option(value="USA" selected) USA
+
+          div.uk-width-1-1
+            label
+              div.uk-form-label Comment
+              textarea.uk-textarea(
+                rows="5"
+                mu-attr mu-attr-disabled="loading"
+                placeholder="Additional information: phone numbers or doorphone code")
+
+    div.uk-margin.uk-text-right
+      span.uk-text-success.uk-margin-xsmall-right(mu-if="success" mu-class="{'uk-animation-fade uk-animation-reverse': '!success'}")
+        +icon('check')
+        span Success
+      span.uk-text-danger.uk-margin-xsmall-right(mu-if="error")
+        +icon('warning')(class="uk-margin-small-right")
+        span(mu-html="error")
+      div(uk-spinner mu-hide="!loading")
+      button.uk-button.uk-button-primary(type="submit" mu-attr mu-attr-disabled="loading") Save
+
+//- div(mu-debug="success")

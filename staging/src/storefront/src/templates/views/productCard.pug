@@ -1,0 +1,76 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+ 
+include ../mixins/_icon
+include ../mixins/_price
+
+//- Media
+div.tm-product-card-media.uk-background-default
+  div.tm-ratio.tm-ratio-4-3
+    a.tm-media-box(href="product.html?id={{product.id}}" mu-route)
+
+      //- Image
+      figure.tm-media-box-wrap
+        //- img( mu-if="product.image" mu-attr mu-attr-alt="product.name" mu-attr-src="product.image")
+        //- div.uk-animation-fade.uk-background-cover.uk-width-1-1.uk-height-1-1(
+        div.uk-animation-fade.uk-background-contain.uk-width-1-1.uk-height-1-1(
+          uk-img
+          mu-if="product.image"
+          mu-attr mu-attr-data-src="product.image")
+        span(mu-if="!product.image")
+          +icon("image", "5")(class="uk-text-muted")
+
+//- Body
+div.tm-product-card-body
+
+  //- Info
+  div.tm-product-card-info
+
+    //- Type
+    div.uk-text-meta.uk-margin-xsmall-bottom(mu-html="product.type")
+
+    //- Title
+    h3.tm-product-card-title
+      a.uk-link-heading(href="product.html?id={{product.id}}" mu-route mu-html="product.name")
+
+    //- short desc
+    div.uk-text-meta.uk-text-truncate.tm-product-card-description(
+      mu-html="product.shortDescription")
+
+    //- Properties
+    ul.uk-list.uk-text-small.tm-product-card-properties
+      li(mu-each="product.attributes" mu-each-as="attrib")
+        span.uk-text-muted.uk-text-uppercase(mu-html="attrib.name")
+        |: 
+        span(mu-html="attrib.value")
+
+  //- Shop
+  div.tm-product-card-shop
+
+    //- Prices
+    div.tm-product-card-prices
+      del.uk-text-meta(mu-if="product.sale")
+        +price("product.sale")
+      div.tm-product-card-price
+        +price("product.price")
+
+    //- Actions buttons
+    div.tm-product-card-add
+      div.uk-text-meta.tm-product-card-actions
+
+        //- Favorite
+        a.tm-product-card-action.tm-action-button-active(
+          mu onclick="this.mu.ui.notification('Added to Favorites!', 'success')"
+          title="Add to favorites")
+          
+          +icon("heart", ".75")
+          span.tm-product-card-action-text Add to favorites
+
+      //- Add to cart
+      button.uk-button.uk-button-primary.tm-product-card-add-button.tm-shine.js-add-to-cart(
+        mu-click="atc"
+        mu-attr mu-attr-disabled="!product.count"
+      )
+        +icon("cart")(class="tm-product-card-add-button-icon")
+        span.tm-product-card-add-button-text add to cart

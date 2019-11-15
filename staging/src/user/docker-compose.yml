@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  user:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        nodeEnv: development
+    image: mushop/user
+    hostname: user
+    restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: false
+    volumes:
+      - ./Wallet_Creds:/usr/lib/oracle/19.3/client64/lib/network/admin/:ro
+      - ./src:/usr/src/app/src
+    environment:
+      - reschedule=on-node-failure
+      - OADB_USER=${OADB_USER}
+      - OADB_PW=${OADB_PW}
+      - OADB_SERVICE=${OADB_SERVICE}
+    ports:
+      - '3000:3000'
+    command: ['npm', 'run', 'start:dev']

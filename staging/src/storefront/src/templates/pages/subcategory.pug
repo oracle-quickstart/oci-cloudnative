@@ -1,0 +1,78 @@
+//-
+ Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+ The Universal Permissive License (UPL), Version 1.0
+ 
+extends /layouts/_pages
+
+block vars
+  -
+    page = {
+      muTitle: true,
+      breadcrumbs: {
+        'Catalog': 'catalog.html',
+        //- 'Laptops & Tablets': 'category.html'
+      },
+      quantity: 289
+    }
+
+block pages
+  div.uk-grid-medium(uk-grid mu-category)
+
+    //- Filters
+    aside#filters.uk-width-1-4.tm-aside-column.tm-filters(
+      uk-offcanvas="overlay: true; " +
+                   "container: false;")
+
+      div.uk-offcanvas-bar.uk-padding-remove
+        div(class="uk-card " +
+                  "uk-card-default " +
+                  "uk-card-small " +
+                  "uk-flex " +
+                  "uk-flex-column " +
+                  "uk-height-1-1")
+
+          //- Header
+          header.uk-card-header.uk-flex.uk-flex-middle
+            div.uk-grid-small.uk-flex-1(uk-grid)
+              div.uk-width-expand
+                h3 Filter
+              button.uk-offcanvas-close(type="button" uk-close)
+
+          //- Accordion
+          form(mu-form muChange="filterChange")
+            div.uk-margin-remove.uk-flex-1.uk-overflow-auto(
+              uk-accordion="multiple: true; targets: > .js-accordion-section"
+              style="flex-basis: auto")
+
+              //- Prices
+              section.uk-card-body.uk-open.js-accordion-section
+                h4.uk-accordion-title.uk-margin-remove Price
+                div.uk-accordion-content
+                  div.uk-grid-small.uk-child-width-1-2.uk-text-small(uk-grid)
+                    div
+                      div.uk-inline
+                        span.uk-form-icon.uk-text-xsmall from
+                        input.uk-input(type="text" placeholder="$0")
+                    div
+                      div.uk-inline
+                        span.uk-form-icon.uk-text-xsmall to
+                        input.uk-input(type="text" placeholder="$199")
+
+              //- Brands
+              section.uk-card-body.uk-open.js-accordion-section.uk-animation-slide-left-medium(
+                hidden mu-hide="!filter.options.brands")
+                h4.uk-accordion-title.uk-margin-remove Brand
+                div.uk-accordion-content
+                  +filterbox("filter.options.brands", "brands")
+
+              div.uk-card-body
+                button.uk-button.uk-button-default.uk-width-1-1(
+                  mu-click="filterReset"
+                  mu-attr mu-attr-disabled="!filter.values"
+                  mu-class="{'uk-button-danger': 'filter.values'}")
+                  +icon("close", ".75")(class="uk-margin-xsmall-right")
+                  | Clear filters
+
+    //- Content
+    div.uk-width-expand
+      div(mu-products ref="products" delegate="search" filter="filter.values" limit="6")
