@@ -5,6 +5,7 @@
 const crypto = require('crypto');
 const helpers = require('../../../helpers');
 const config = require('../../../config');
+const endpoints = require('../../endpoints');
 
 const { MockServiceAbstract } = require('./abstract');
 const { MockDb } = require('../db');
@@ -35,14 +36,7 @@ function userRecord(user) {
 
 function userResponse(user) {
   const { salt, password, addresses, cards, ...data } = user;
-  return  {
-    ...data,
-    // add links back to mocked services
-    _links: {
-      addresses: { href: MockServiceAbstract.link(`/customers/${data.id}/addresses`) },
-      cards: { href: MockServiceAbstract.link(`/customers/${data.id}/cards`) },
-    }
-  };
+  return  { ...data };
 }
 
 /**
@@ -72,6 +66,8 @@ module.exports = class MockUserService extends MockServiceAbstract {
     // replace method in common
     this.replaceCommon('getCustomer', 
       async req => userResponse(this._user(req)));
+    // replace users target endpoint
+    endpoints.customersUrl = MockServiceAbstract.link('/customers');
 
     // seed db
     if (!config.prod()) {
@@ -120,7 +116,7 @@ module.exports = class MockUserService extends MockServiceAbstract {
     })
     
     // authentication
-    .get('/login', (req, res) => {
+    .post('/login', (req, res) => {
       const auth = req.get('authorization');
       const [username, password] = Buffer.from(auth.replace(/^\w+\s/, ''), 'base64').toString('utf8').split(':');
 
@@ -168,19 +164,12 @@ module.exports = class MockUserService extends MockServiceAbstract {
     });
 
     // Endpoints called by related services (orders)
-    const links = [
-      {ref: 'addresses', key: 'address'},
-      {ref: 'cards', key: 'card'},
-    ];
-    links.forEach(link => {
-      router.get(`/customers/:id/${link.ref}`, (req, res) => {
+    const links = ['addresses', 'cards'];
+    links.forEach(ref => {
+      router.get(`/customers/:id/${ref}`, (req, res) => {
         const { id } = req.params;
         const u = this.users.findById(id);
-        res.json({
-          _embedded: {
-            [link.key]: u[link.ref].all()
-          }
-        });
+        res.json(u[ref].all());
       });
     });
   }
