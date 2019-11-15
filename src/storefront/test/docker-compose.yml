@@ -10,7 +10,7 @@ services:
   # Storefront API service (node)
   api:
     build:
-      context: ../../api
+      context: ../api
       dockerfile: ./Dockerfile
     image: mushop/api
     hostname: api
@@ -22,5 +22,5 @@ services:
       - STATIC_MEDIA_URL
       - NODE_ENV=development
     ports:
-      - "8080:3000"
+      - "8080:80"
   

@@ -1,0 +1,5 @@
+secretGenerator:
+- name: db-certs-orders
+  files:
+  - keystore.jks
+  - truststore.jks

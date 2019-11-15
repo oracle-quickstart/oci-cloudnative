@@ -49,25 +49,25 @@
     try {
       // load customer & links
       const user = await common.getCustomer(req);
-      const { _links: { customer, addresses, cards }} = user;
+      const { id } = user;
 
       // resolve user address/payment card
-      const [ address, card ] = await Promise.all([
-        { link: addresses, key: 'address' },
-        { link: cards, key: 'card' },
-      ].map(ref => {
-        // resolve each to a single result (_links.self)
-        return axios.get(ref.link.href)
-          .then(({ data }) => data._embedded && data._embedded[ref.key])
-          .then(list => list && list.length && list.pop()._links.self);
-      }));
+      const [ address, card ] = await Promise.all(['addresses', 'cards']
+        .map(ref => {
+          const endpoint = endpoints.customersUrl + '/' + id + '/' + ref;
+          // resolve each to a single result link
+          return axios.get(endpoint)
+            .then(({ data }) => data)
+            .then(list => list && list.length && list.pop()) // last item
+            .then(row => `${endpoint}/${row.id}`);
+        }));
 
       // place order & respond
       const order = {
         items: `${endpoints.cartsUrl}/${cartId}/items`,
-        customer: customer && customer.href,
-        address: address && address.href,
-        card: card && card.href,
+        customer: endpoints.customersUrl + '/' + id,
+        address: address,
+        card: card,
       };
       await axios.post(endpoints.ordersUrl + '/orders', order)
         .then(({data, status}) => res.status(status).json(data));

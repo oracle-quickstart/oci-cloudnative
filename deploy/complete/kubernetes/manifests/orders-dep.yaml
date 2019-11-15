@@ -1,0 +1,76 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: orders
+  labels:
+    name: orders
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: orders
+    spec: 
+      containers:
+      - name: orders
+        image: iad.ocir.io/oracle/ateam/mushop-orders:1.0.3
+        imagePullPolicy: Always
+        env:
+        - name: ZIPKIN
+          value: zipkin.jaeger.svc.cluster.local
+        - name: JAVA_OPTS
+          value: -Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+        - name: TNS_ADMIN
+          value: /app/config
+        - name: OADB_USER
+          valueFrom:
+            secretKeyRef:
+              name: orders-oadb-connection
+              key: oadb_user
+        - name: OADB_PW
+          valueFrom:
+            secretKeyRef:
+              name: orders-oadb-connection
+              key: oadb_pw
+        - name: OADB_SERVICE
+          valueFrom:
+            secretKeyRef:
+              name: orders-oadb-connection
+              key: oadb_service   
+        - name: ATP_TRUST_PASS
+          valueFrom:
+            secretKeyRef:
+              name: orders-oadb-connection
+              key: oadb_wallet_pw 
+        - name: ATP_KEY_PASS
+          valueFrom:
+            secretKeyRef:
+              name: orders-oadb-connection
+              key: oadb_wallet_pw
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp-volume
+        - mountPath: /app/config/keystore.jks
+          subPath: keystore.jks
+          name: wallet
+          readOnly: true
+        - mountPath: /app/config/truststore.jks
+          subPath: truststore.jks
+          name: wallet
+          readOnly: true
+        - mountPath: /app/config/tnsnames.ora
+          subPath: tnsnames.ora
+          name: wallet
+          readOnly: true
+      volumes:
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory
+        - name: wallet
+          secret:
+            secretName: orders-oadb-wallet
+            defaultMode: 256
+      nodeSelector:
+        beta.kubernetes.io/os: linux

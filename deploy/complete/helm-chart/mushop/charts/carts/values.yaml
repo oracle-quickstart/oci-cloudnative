@@ -1,0 +1,27 @@
+replicaCount: 1
+
+image:
+  repository: iad.ocir.io/oracle/ateam/mushop-carts
+  tag: 1.0.2
+  pullPolicy: Always
+
+dbtools:
+  repository: iad.ocir.io/oracle/ateam/mushop-dbtools
+  tag: 1.0.1
+  pullPolicy: IfNotPresent
+
+osb: {}
+
+secrets:
+  oadbService:
+  oadbUser:
+  oadbPassword:
+  oadbWalletPassword:
+
+env:
+  zipkin: zipkin.jaeger.svc.cluster.local
+  javaOpts: -Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+  tnsAdmin: "/app/config"
+
+service:
+  port: 80
