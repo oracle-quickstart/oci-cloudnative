@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+
+  # edge router (traefik)
+  edge:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: mushop/edge
+    hostname: edge
+    restart: always
+    environment:
+      - reschedule:on-node-failure
+    ports:
+      - '80:8080'
+
+  # Storefront API service (node)
+  api:
+    build:
+      context: ../api
+      dockerfile: ./Dockerfile
+    image: mushop/api
+    hostname: api
+    restart: always
+    environment:
+      - reschedule:on-node-failure
+      - PORT=3000
+      - MOCK_MODE=all
+      - STATIC_MEDIA_URL
+      - NODE_ENV=development
+
+  # Storefront UI (nginx)
+  storefront:
+    build:
+      context: ../storefront
+      dockerfile: ./Dockerfile
+    image: mushop/storefront
+    hostname: storefront
+    restart: always
+    environment:
+      - reschedule:on-node-failure

@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: mushop-ingress
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+spec:
+  tls:
+  - secretName: mushop-tls-prod-secret 
+    hosts:
+    - mushop.ateam.cloud
+    - insecure.mushop.ateam.cloud
+  rules:
+  - host: mushop.ateam.cloud
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: edge
+          servicePort: 80
+  - host: insecure.mushop.ateam.cloud
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: edge
+          servicePort: 80

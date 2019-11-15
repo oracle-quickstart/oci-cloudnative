@@ -1,0 +1,39 @@
+replicaCount: 1
+
+image:
+  repository: iad.ocir.io/oracle/ateam/mushop-edge-router
+  tag: 1
+  pullPolicy: Always
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 256Mi
+  requests:
+    cpu: 50m
+    memory: 128Mi
+
+hpa:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 10001
+  capabilities:
+    drop:
+      - all
+    add:
+      - NET_BIND_SERVICE
+  readOnlyRootFilesystem: true
+
+service:
+  port: 80

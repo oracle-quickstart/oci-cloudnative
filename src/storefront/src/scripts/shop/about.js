@@ -48,6 +48,10 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
     const setCord = (svc, x, y, ...rest) => Object.assign(svc, { x, y }, ...rest);
 
     const isBasic = this.isBasic();
+    const skew = {
+      go: { label: { offset: [0, -20] }},
+      java: { label: { offset: [0, -5] }},
+    }
 
     // determine layout
     const data = { ...Services };
@@ -68,8 +72,8 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
       setCord(data.LB, col(3.1), row(0.05));
 
       setCord(data.BUCKET, col(7), row(0));
-      setCord(data.ATP, col(5), row(0), { label: { offset: [0, 0] }});
-      setCord(data.STREAMING, col(6), row(0), { label: { offset: [0, 5] }});
+      setCord(data.ATP, col(5), row(0));
+      setCord(data.STREAMING, col(6), row(0), { label: { offset: [0, 10] }});
 
       setCord(data.INGRESS, col(3.1), row(1));
       setCord(data.EDGE_ROUTER, col(2), row(1));
@@ -77,16 +81,15 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
       setCord(data.API, col(3), row(2));
       setCord(data.SESSION, col(4), row(3));
 
-      setCord(data.CATALOG, col(6), row(1));
-      setCord(data.ORDERS, col(6), row(2));
-      setCord(data.CART, col(7), row(2));
+      setCord(data.CATALOG, col(6), row(1), skew.go);
+      setCord(data.CART, col(6), row(3), skew.java);
+      setCord(data.ORDERS, col(7), row(2), skew.java);
 
-      setCord(data.SHIPPING, col(7), row(1));
-      setCord(data.STREAM, col(8), row(2));
-      setCord(data.PAYMENT, col(8), row(1));
+      setCord(data.SHIPPING, col(7), row(1), skew.java);
+      setCord(data.STREAM, col(8), row(1), skew.java);
+      setCord(data.PAYMENT, col(8), row(2), skew.go);
 
-      setCord(data.USER, col(4), row(2));
-      setCord(data.USERDB, col(5), row(3));
+      setCord(data.USER, col(6), row(2));
     }
 
     const nodes = toArray(data)
@@ -120,19 +123,20 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
       },
       symbolKeepAspect: true,
       edgeSymbol: ['none', 'arrow'],
-      edgeSymbolSize: [5, 8],
+      edgeSymbolSize: [10, 10],
       label: {
         show: true,
         fontSize: 16,
         color: '#333',
-        backgroundColor: '#fff',
+        // backgroundColor: '#fff',
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
         position: 'bottom',
         formatter: '{b}',
       },
       lineStyle: {
-        color: 'source',
+        color: 'target',
         opacity: 0.3,
-        curveness: 0.35
+        curveness: 0.15
       },
       emphasis: {
         lineStyle: {

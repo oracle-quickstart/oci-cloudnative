@@ -1,0 +1,45 @@
+global:
+  osb:
+    # Set to true to create a global ATP instance
+    atp: true
+    # Service broker name (used in the service URL)
+    name: oci-service-broker
+    namespace: mushop
+    port: 8080
+    compartmentId:
+    # Service instance name
+    instanceName: mushop
+  services:
+    - catalogue
+    - carts
+    - orders
+    - user
+  # Leave values empty to auto-generate them
+  oadbAdminPassword: 
+  oadbWalletPassword:
+  oadbName:
+  oadbUser:
+  oadbPassword:
+
+# Each separate service can get its own ATP created
+# by setting the osb.atp=true and providing the compartmentId
+# If names/passwords are not provided, they will be auto-generated.
+# catalogue:
+#   osb:
+#     atp: true
+#     compartmentId: ...
+
+# Certain resources created by this chart will not be deleted when the chart is
+# deleted. To re-use any orphaned resources, you may skip them in a subsequent install
+skip:
+  ociCredentials: false
+  clusterBroker: false
+
+secrets:
+  serviceBroker:
+    tenantId:
+    userId:
+    fingerprint:
+    region:
+    passphrase:
+    keyFile: secrets/oci_service_broker_api_key.pem

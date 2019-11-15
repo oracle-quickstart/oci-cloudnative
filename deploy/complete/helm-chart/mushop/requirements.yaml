@@ -1,0 +1,34 @@
+dependencies:
+  - name: api
+    version: 0.1.0
+    condition: api.enabled
+  - name: carts
+    version: 0.1.0	
+    condition: carts.enabled	
+  - name: catalogue	
+    version: 0.1.0	
+    condition: catalogue.enabled	
+  - name: edge	
+    version: 0.1.0	
+    condition: edge.enabled	
+  - name: orders	
+    version: 0.1.0	
+    condition: orders.enabled	
+  - name: payment	
+    version: 0.1.0	
+    condition: payment.enabled	
+  - name: session	
+    version: 0.1.0	
+    condition: session.enabled	
+  - name: shipping	
+    version: 0.1.0	
+    condition: shipping.enabled	
+  - name: storefront	
+    version: 0.1.0	
+    condition: storefront.enabled	
+  - name: stream	
+    version: 0.1.0	
+    condition: stream.enabled	
+  - name: user	
+    version: 0.1.0	
+    condition: user.enabled

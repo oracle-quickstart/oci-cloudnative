@@ -1,0 +1,32 @@
+{{- range .Values.global.services }}
+{{- $svcName := . }}
+{{/* The svcOsbKey has the value of e.g. .Values.catalogue.osb This is so we can use it to check if we need to overwrite the values*/}}
+{{- $svcOsbKey := index $.Values (printf "%s.osb" $svcName) -}}
+
+{{/* Check if need to create instance for the particular service */}}
+{{ if $svcOsbKey.atp -}}
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceInstance
+metadata:
+  name: {{ $svcName }}-atp
+  labels:
+{{ include "provision.labels" . | indent 4 }}
+spec:
+  clusterServiceClassExternalName: atp-service
+  clusterServicePlanExternalName: standard
+  parameters:
+    name: {{ (printf "MuShop %s Db" $svcName) | quote }}
+    compartmentId: {{ required (printf "Value .%s.compartmentId is required!" $svcOsbKey) $svcOsbKey.compartmentId | quote }}
+    cpuCount: 1
+    storageSizeTBs: 1
+    licenseType: BYOL
+    autoScaling: false
+  parametersFrom:
+    - secretKeyRef:
+        name: {{ $svcName }}-oadb-admin
+        key: oadb_admin_pw_osb
+    - secretKeyRef:
+        name: {{ $svcName }}-oadb-connection
+        key: oadb_db_osb
+{{- end }}
+{{- end }}

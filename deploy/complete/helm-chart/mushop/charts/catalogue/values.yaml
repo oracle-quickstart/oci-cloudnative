@@ -1,0 +1,52 @@
+replicaCount: 1
+
+image:
+  repository: iad.ocir.io/oracle/ateam/mushop-catalogue
+  tag: 1.2
+  pullPolicy: Always
+
+dbtools:
+  repository: iad.ocir.io/oracle/ateam/mushop-dbtools
+  tag: 1.0.1
+  pullPolicy: IfNotPresent
+
+osb: {}
+
+secrets:
+  oadbService:
+  oadbUser:
+  oadbPassword:
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 64Mi
+
+env:
+  zipkin:
+
+hpa:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+
+securityContext:
+  capabilities:
+    drop:
+      - all
+    add:
+      - NET_BIND_SERVICE
+  readOnlyRootFilesystem: true
+
+service:
+  port: 80

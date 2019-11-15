@@ -1,0 +1,330 @@
+# The container definition we want to use for developing our app
+box:
+  id: busybox
+
+docker: true
+command-timeout: 30
+build:
+  steps:
+
+build-api:
+  box: node:10-alpine
+  steps:
+    # TODO: We could use a generic build pipeline, but before we do that, we should standardize how to test each service.
+    # If we use the same command to run the tests for each service, then we can create a generic pipeline here for build and test.
+    - internal/docker-build:
+        context: src/api
+        image-name: $DOCKER_REPOSITORY/api
+    - script:
+        name: Test API
+        code: |
+          cd src
+
+          cd api
+          npm install
+          npm test
+          cd ..
+    - internal/docker-push:
+        # We tag and push a temporary image, just so we can pull and re-tag the official ones later.
+        # In order for the build and push steps to work together, they need to be in the same pipeline.
+        image-name: $DOCKER_REPOSITORY/api
+        tag: $WERCKER_GIT_COMMIT
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/api
+
+build-carts:
+  steps:
+    - internal/docker-build:
+        context: src/carts
+        image-name: $DOCKER_REPOSITORY/carts
+    - script:
+      name: Test Carts
+      code: |
+        cd src
+
+        # TODO: Run the carts tests
+        cd carts
+    - internal/docker-push:
+        image-name: $DOCKER_REPOSITORY/carts
+        tag: $WERCKER_GIT_COMMIT
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/carts
+
+build-catalogue:
+  box: golang:1.12
+  steps:
+    - internal/docker-build:
+        context: src/catalogue
+        image-name: $DOCKER_REPOSITORY/catalogue
+    - script:
+      name: Test Catalogue
+      code: |
+        cd src
+        # TODO: Run Catalogue tests
+    - internal/docker-push:
+        image-name: $DOCKER_REPOSITORY/catalogue
+        tag: $WERCKER_GIT_COMMIT
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/catalogue
+
+build-orders:
+  steps:
+    - internal/docker-build:
+        context: src/orders
+        image-name: $DOCKER_REPOSITORY/orders
+    - script:
+      name: Test Orders
+      code: |
+        cd src
+
+        # TODO: Run the orders tests
+        cd orders
+    - internal/docker-push:
+        image-name: $DOCKER_REPOSITORY/orders
+        tag: $WERCKER_GIT_COMMIT
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/orders
+
+build-payment:
+  steps:
+    - internal/docker-build:
+        context: src/payment
+        image-name: $DOCKER_REPOSITORY/payment
+    - script:
+      name: Test Payment
+      code: |
+        cd src
+        # TODO: Run payment tests
+    - internal/docker-push:
+        image-name: $DOCKER_REPOSITORY/payment
+        tag: $WERCKER_GIT_COMMIT
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/payment
+
+build-shipping:
+  steps:
+    - internal/docker-build:
+        context: src/shipping
+        image-name: $DOCKER_REPOSITORY/shipping
+    - script:
+      name: Test Shipping
+      code: |
+        cd src
+
+        # TODO: Run the shipping tests
+        cd shipping
+    - internal/docker-push:
+        image-name: $DOCKER_REPOSITORY/shipping
+        tag: $WERCKER_GIT_COMMIT
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/shipping
+
+build-storefront:
+  box: node:10-alpine
+  steps:
+    - internal/docker-build:
+        context: src/storefront
+        image-name: $DOCKER_REPOSITORY/storefront
+    - script:
+      name: Test Storefront
+      code: |
+        cd src
+
+        cd storefront
+        npm install
+        npm test
+    - internal/docker-push:
+        image-name: $DOCKER_REPOSITORY/storefront
+        tag: $WERCKER_GIT_COMMIT
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/storefront
+
+build-stream:
+  steps:
+    - internal/docker-build:
+        context: src/stream
+        image-name: $DOCKER_REPOSITORY/stream
+    - script:
+      name: Test Stream
+      code: |
+        cd src
+
+        # TODO: Run the stream tests
+        cd stream
+    - internal/docker-push:
+        image-name: $DOCKER_REPOSITORY/stream
+        tag: $WERCKER_GIT_COMMIT
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/stream
+
+build-user:
+  steps:
+    - internal/docker-build:
+        context: src/user
+        image-name: $DOCKER_REPOSITORY/user
+    - script:
+      name: Test User
+      code: |
+        cd src
+        # TODO: Run User tests
+    - internal/docker-push:
+        image-name: $DOCKER_REPOSITORY/user
+        tag: $WERCKER_GIT_COMMIT
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        registry: https://phx.ocir.io/v2
+        repository: $DOCKER_REPOSITORY/user
+
+# Pushes the built Docker images to registry.
+# This pipeline needs DOCKER_USERNAME, DOCKER_PASSWORD, DOCKER_REPOSITORY and SERVICE_NAME (service folder name) variables set.
+push-to-registry:
+  box: alpine
+  docker: true
+  steps:
+    - script:
+        name: Install docker
+        code: apk --no-cache add docker
+    - script:
+        name: Tag and push images
+        code: |
+          echo $SERVICE_NAME
+          SERVICE_VERSION=$(cat src/$SERVICE_NAME/VERSION)
+          echo $SERVICE_VERSION
+          ./ci/tag_and_push.sh $SERVICE_VERSION
+    - script:
+        name: Store image information
+        code: |
+          SERVICE_NAME_UPPER=$(echo $SERVICE_NAME | tr '[a-z]' '[A-Z]')
+          IMAGE_NAMES_FILE=images.txt
+          echo ${SERVICE_NAME_UPPER}_IMAGE_NAME=${DOCKER_REPOSITORY}/$SERVICE_NAME >> ${IMAGE_NAMES_FILE}
+          echo ${SERVICE_NAME_UPPER}_IMAGE_TAG=$(cat src/${SERVICE_NAME}/VERSION) >> ${IMAGE_NAMES_FILE}
+          cat $IMAGE_NAMES_FILE
+
+upgrade-deployment:
+  box:
+    id: alpine
+    cmd: /bin/sh
+  steps:
+    - script:
+        name: Download Helm
+        code: |
+          wget https://get.helm.sh/helm-v2.14.3-linux-amd64.tar.gz
+          tar xvzf helm-v2.14.3-linux-amd64.tar.gz
+          ./linux-amd64/helm version --client
+    - script:
+        name: Setup image names
+        code: |
+          ls -a
+          cat push-api/images.txt
+          cat push-carts/images.txt
+          cat push-catalogue/images.txt
+          cat push-orders/images.txt
+          cat push-payment/images.txt
+          cat push-shipping/images.txt
+          cat push-storefront/images.txt
+          cat push-stream/images.txt
+          cat push-user/images.txt
+
+          export $(cat push-api/images.txt | xargs)
+          export $(cat push-carts/images.txt | xargs)
+          export $(cat push-catalogue/images.txt | xargs)
+          export $(cat push-orders/images.txt | xargs)
+          export $(cat push-payment/images.txt | xargs)
+          export $(cat push-shipping/images.txt | xargs)
+          export $(cat push-storefront/images.txt | xargs)
+          export $(cat push-stream/images.txt | xargs)
+          export $(cat push-user/images.txt | xargs)
+    - script:
+        name: Create kube.config file
+        code: |
+          cat <<EOF > kube.config
+          apiVersion: v1
+          clusters:
+          - cluster:
+              insecure-skip-tls-verify: true
+              server: $KUBERNETES_SERVER
+            name: cluster
+          contexts:
+          - context:
+              cluster: cluster
+              user: user
+            name: cluster
+          current-context: cluster
+          kind: Config
+          preferences: {}
+          users:
+          - name: user
+            user:
+              token: $KUBERNETES_TOKEN
+          EOF
+    - script:
+        name: Get previous deployment values for release $HELM_RELEASE_NAME
+        code: |
+          ./linux-amd64/helm --kubeconfig kube.config get values $HELM_RELEASE_NAME > original-$WERCKER_GIT_COMMIT.yaml
+    - script:
+        name: Create new deployment values
+        code: |
+          cat <<EOF > upgrade-$WERCKER_GIT_COMMIT.yaml
+          api:
+            image:
+              repository: $API_IMAGE_NAME
+              tag: $API_IMAGE_TAG
+          carts:
+            image:
+              repository: $CARTS_IMAGE_NAME
+              tag: $CARTS_IMAGE_TAG
+          catalogue:
+            image:
+              repository: $CATALOGUE_IMAGE_NAME
+              tag: $CATALOGUE_IMAGE_TAG
+          orders:
+            image:
+              repository: $ORDERS_IMAGE_NAME
+              tag: $ORDERS_IMAGE_TAG
+          payment:
+            image:
+              repository: $PAYMENT_IMAGE_NAME
+              tag: $PAYMENT_IMAGE_TAG
+          shipping:
+            image:
+              repository: $SHIPPING_IMAGE_NAME
+              tag: $SHIPPING_IMAGE_TAG
+          storefront:
+            image:
+              repository: $STOREFRONT_IMAGE_NAME
+              tag: $STOREFRONT_IMAGE_TAG
+          stream:
+            image:
+              repository: $STREAM_IMAGE_NAME
+              tag: $STREAM_IMAGE_TAG
+          user:
+            image:
+              repository: $USER_IMAGE_NAME
+              tag: $USER_IMAGE_TAG
+          EOF
+          cat upgrade-$WERCKER_GIT_COMMIT.yaml
+    - script:
+        name: Upgrade deployment '$HELM_RELEASE_NAME'
+        code: |
+          PREVIOUS_VALUES="original-$WERCKER_GIT_COMMIT.yaml"
+          UPGRADE_VALUES="upgrade-$WERCKER_GIT_COMMIT.yaml"
+
+          cmd="./linux-amd64/helm --debug --timeout $HELM_TIMEOUT --kubeconfig kube.config upgrade $HELM_RELEASE_NAME deploy/helm-chart/mushop -f $PREVIOUS_VALUES -f $UPGRADE_VALUES --atomic"
+          echo "Running Helm command $cmd"
+          eval $cmd
