@@ -1,19 +1,19 @@
 %o-content-blockquote {
+  $bargap: 10px;
   background: transparent;
   color: inherit;
-  $bargap: 10px;
   float: none;
   clear: none;
   width: auto;
-  margin-top: $bargap;
+  // margin-top: $bargap;
   margin-right: $examples-width;
   margin-left: $main-padding;
-  margin-bottom: 1rem;
+  margin-bottom: $main-padding;
+  border-left: 4px solid rgba($o-color-brown, 0.5);
 
   p {
     font-weight: 200;
     padding: $bargap / 2 $bargap;
-    // border-left: 2px solid rgba($o-color-accent-3, 0.5);
     background: transparent;
     color: inherit;
     font-size: 0.95rem;
@@ -30,6 +30,6 @@
 }
 
 %code-inline {
-  background-color: rgba($o-color-black, 0.1);
+  background-color: rgba($o-color-black, 0.075);
   white-space: nowrap;
 }

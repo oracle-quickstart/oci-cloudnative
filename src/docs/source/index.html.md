@@ -14,7 +14,11 @@ toc_footers:
 
 includes:
   - intro
+  - topics
   - getstarted
+  - deployment
+  - extras
+  - cleanup
   - acknowledgements
 
 page_footers: []

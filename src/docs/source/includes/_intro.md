@@ -1,32 +1,22 @@
 # Introduction
 
-> MuShop microservices
->
-| Service | Language  | Cloud Services | Description |
-| --- | --- | --- | --- |
-| `api` | Node.js   | | Storefront API |
-| `carts` | Java | Autonomous DB (ATP) | Shopping cart |
-| `catalogue` | Go | Autonomous DB (ATP) | Product catalogue |
-| `orders` | Java | Autonomous DB (ATP)   | Customer orders |
-| `payments` | Go | | Payment processing |
-| `router` | traefik  |  | Request routing |
-| `shipping` | Java | Streaming | Shipping producer |
-| `stream` | Java | Streaming | Shipping fulfillment |
-| `storefront` | JavaScript  |  | Store UI |
-| `user` | TypeScript | Autonomous DB (ATP)  | Customer accounts |
-
 MuShop is a microservices demo application **purpose-built** to showcase
-interoperable _Cloud Native_ services on
-[Oracle Cloud Infrastructure](https://www.oracle.com/cloud/cloud-native/).
+interoperable [Cloud Native](https://www.oracle.com/cloud/cloud-native/) services on
+[Oracle Cloud Infrastructure](https://www.oracle.com/cloud/).
 
 The premise of MuShop is an e-commerce website offering a variety of cat
 products. It represents a polyglot microservice application, with **actual use case**
 scenarios for many Oracle Cloud Infrastructure services.
 
-![mushop](mushop.home.png "MuShop UI")
+| ![mushop](mushop.home.png "MuShop UI") | ![services](images/mushop.about.png "MuShop Services") |
+| -- | -- |
 
-<!-- <blockquote class="o-align-content">
-  <p>
-    hey
-  </p>
-</blockquote> -->
+> Each microservice in MuShop is designed to highlight its own, or common high-level
+subject in Oracle Cloud Infrastructure, while keeping context of the demo application.
+
+## Goals
+
+- Explore [Cloud Native](#cloud-native) services offered by Oracle Cloud Infrastructure
+- Build and deploy microservices with [Container Engine for Kubernetes](https://www.oracle.com/cloud/compute/container-engine-kubernetes.html) (OKE)
+- Experience Oracle Cloud services integrated into a single project
+- Provide reference implementations and sample code for real-world development

@@ -3,12 +3,20 @@
 @import 'redwood';
 @import '../screen.css';
 
+html, body {
+  // background-color: $examples-bg;
+  background: $examples-bg url(../../images/rw.swerve.jpg) repeat;
+}
+
 // TOC
 .toc-wrapper {
 
   > img.logo {
     max-width: 90%;
     margin: $nav-v-padding auto 0;
+    &.print {
+      display: none;
+    }
   }
 
   .toc-footer {
@@ -22,8 +30,17 @@
 
 }
 
+
+.page-wrapper {
+  padding: 0;
+  margin-right: auto;
+  max-width: $main-width-max;
+}
+
 // MAIN CONTENT
 .content {
+  background-color: $main-bg;
+
 
   // TYPOGRAPHY
   > h1 {
@@ -34,23 +51,30 @@
     // border-bottom: 1px solid $o-color-hr;
   }
   h2 {
-    // border: none;
     margin-top: 0;
-    // font-weight: 300;
     background: none;
+    + ul, + ol {
+      margin-top: 0;
+    }
   }
-  // h3 {
-  //   margin-top: 0;
-  //   text-transform: uppercase;
-  //   font-weight: 500;
-  //   font-size: 1rem;
-  //   color: $o-color-darkish;
-  //   > code {
-  //     text-transform: none;
-  //   }
-  // }
+  h3 {
+    margin-top: 0;
+    border-top: 1px solid #ccc;
+    padding-top: $main-padding;
+    text-transform: uppercase;
+    > code {
+      text-transform: none;
+    }
+  }
+
+  hr + h2, hr + h3 {
+    padding-top: 0;
+    border: none;
+  }
+
   a {
     color: $o-color-orange;
+    text-decoration: none;
   }
   // BLOCKS
   aside {
@@ -65,57 +89,81 @@
       }
     }
   }
+
   img {
     display: block;
     margin: 0 auto;
   }
+
+  // override examples area
+  pre, blockquote {
+    width: auto;
+    float: none;
+    clear: right;
+  }
+
   pre {
+    padding: $main-padding $main-padding;
+    margin-bottom: $main-padding;
     code {
       color: $o-color-light;
     }
-    // code inline with content :)
-    &[class*="--content"] {
-      float: none;
-      width: auto;
-      clear: none;
-      margin-right: $examples-width;
-      margin-bottom: 1rem;
-      + blockquote { // inline preformatted annotation (after pre)
-        @extend %o-content-blockquote;
-      }
+    + blockquote {
+      margin-top: -($main-padding / 2);
     }
   }
 
   blockquote {
-    &.o-align-content {
-      @extend %o-content-blockquote;
-    }
+    @extend %o-content-blockquote;
+  }
 
-    table {
-      width: 100%;
-      margin: 0;
-      td {
-        color: $main-text;
-      }
-      tr:nth-child(even) > td {
-        background-color: lighten($main-bg, 10%);
-      }
+  table {
+    display: table;
+    width: 100%;
+    
+    th {
+      border-bottom: none;
+    }
+    
+    th, td {
+      padding: $main-padding / 2 $main-padding;
+    }
+    tr:nth-child(even) > td {
+      background-color: lighten($main-bg, 10%);
     }
   }
 
-  p, aside, li { // inline code style
+  a, p, aside, li { // inline code style
     > code {
       @extend %code-inline;
     }
   }
 
-  p > code {
-    color: $o-color-red;
+  a > code, p > code {
+    color: $o-color-red !important;
+    text-decoration: none;
   }
-}
 
-.page-wrapper {
-  padding: 0;
+  ul > li, ol > li {
+    p {
+      margin-bottom: 5px;
+    }
+    > pre, blockquote {
+      margin-right: 0 !important; 
+      margin-left: 0;
+    }
+    > blockquote {
+      // @extend %o-content-blockquote;
+      // margin-top: -($main-padding / 2);
+    }
+    
+    // Nested lists
+    > ol, ul {
+      padding-left: 1rem;
+      margin-bottom: $main-padding;
+    }
+
+  }
 }
 
 .redwood-bar {

@@ -36,6 +36,14 @@ body {
   display: block;
 }
 
+img.logo.screen {
+  display: none;
+}
+
+.toc-wrapper .toc-list-h2 {
+  display: block !important;
+}
+
 .content {
   font-size: 12px;
 
@@ -63,6 +71,7 @@ body {
 
   table {
     border: 1px solid $print-color;
+    max-width: 100%;
     tr {
       border-bottom: 1px solid $print-color;
     }

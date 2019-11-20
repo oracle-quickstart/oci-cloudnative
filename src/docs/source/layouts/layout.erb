@@ -51,7 +51,8 @@ under the License.
       </span>
     </a>
     <div class="toc-wrapper">
-      <%= image_tag "logo.png", class: 'logo' %>
+      <%= image_tag "logo.png", class: 'logo screen' %>
+      <%= image_tag "logo.print.png", class: 'logo print' %>
       <% if language_tabs.any? %>
         <div class="lang-selector">
           <% language_tabs.each do |lang| %>
@@ -111,7 +112,7 @@ under the License.
           </div>
         <% end %>
       </div>
-      <div class="footer-wrapper redwood-bar">
+      <div class="footer-wrapper">
         <% if current_page.data.page_footers.any? %>
         <ul class="page-footers">
           <% current_page.data.page_footers.each do |footer| %>
