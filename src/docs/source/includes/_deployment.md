@@ -103,7 +103,7 @@ cd deploy/complete/helm-chart
 manage services from within the cluster. Create a secret containing these
 values:
 
-    ```text
+    ```shell
     kubectl create secret generic oci-service-broker \
       --namespace mushop \
       --from-literal=tenancy=<TENANCY_OCID> \
@@ -116,7 +116,7 @@ values:
 
 1. Deploy the OCI service broker on your cluster. This is done with the [Oracle OCI Service Broker](https://github.com/oracle/oci-service-broker) helm chart:
 
-    ```text
+    ```shell
     helm install https://github.com/oracle/oci-service-broker/releases/download/v1.3.1/oci-service-broker-1.3.1.tgz \
       --namespace mushop \
       --name oci-service-broker \
@@ -129,13 +129,15 @@ values:
 
 1. Now establish the link between Service Catalog and the OCI Service Broker implementation by installing the `provision` chart:
 
-    ```text
+    ```shell
     helm install provision \
       --namespace mushop \
       --name mushop-provision \
       --set skip.ociCredentials=true \
       --set global.osb.compartmentId=<compartmentId>
     ```
+
+    > Note that `ociCredentials` were created previously
 
 1. Verify `serviceinstances` and `servicebindings` are **READY**
 
@@ -147,3 +149,21 @@ values:
     kubectl get servicebindings -A
     ```
 
+## Deploy
+
+Having completed the [Provisioning](#provision) steps above, the `mushop` deployment
+helm chart is used with settings to leverage cloud backing services and their resulting
+`servicebindings` with connection information
+
+```shell
+helm install mushop \
+  --namespace mushop \
+  --name mushop \
+  --set global.osb.atp=true \
+  --set skip.streaming=true
+```
+
+<aside class="notice">
+  The above command includes <code>--skip.streaming=true</code> indicating that the Streaming
+  configurations should be excluded. Refer to details in <a href="https://github.com/oracle-quickstart/oci-cloudnative/blob/master/deploy/complete/helm-chart/mushop/values.yaml">values.yaml</a> for information on connecting to the Streaming service
+</aside>
