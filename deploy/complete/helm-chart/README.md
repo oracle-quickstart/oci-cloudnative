@@ -1,11 +1,13 @@
 # MuShop Helm Chart
 
-The helm charts here can be used to install all components of MuShop to the Kubernetes cluster.
+The Helm charts here can be used to install all components of MuShop to the Kubernetes cluster.
 For practical purposes, multiple charts are used to separate installation into the following steps:
 
 1. [`setup`](#setup) Installs _optional_ chart dependencies on the cluster
 1. [`provision`](#provision) Provisions OCI resources integrated with Service Broker _(optional)_
 1. [`mushop`](#installation) Deploys the MuShop application runtime
+
+You can install the latest Helm from [here](https://github.com/helm/helm/releases).
 
 ## Setup
 
@@ -24,15 +26,15 @@ Oracle Cloud Infrastructure or enable certain features within the application.
 
 1. Install `setup` chart:
 
-    ```text
-    helm install setup --name mushop-setup --namespace mushop-setup
-    ```
-
-    If using Helm 3:
-
     ```bash
     kubectl create ns mushop-setup
     helm install mushop-setup setup
+    ```
+
+    If using Helm v2:
+
+    ```text
+    helm install setup --name mushop-setup --namespace mushop-setup
     ```
 
     > **NOTE:** It is possible that certain services may conflict with pre-existing installs. If so, try setting `--set <chart>.enabled=false` for any conflicting charts.
@@ -66,15 +68,15 @@ See [./provision/README.md](./provision/README.md) for complete usage details.
 
 For an installation without connecting Oracle Cloud Infrastructure services, use the following:
 
-```text
-helm install mushop --name mymushop \
-    --set global.mock.service=all
-```
-
-If using Helm 3:
-
 ```bash
 helm install --set global.mock.service=all mymushop setup
+```
+
+If using Helm v2:
+
+```bash
+helm install mushop --name mymushop \
+    --set global.mock.service=all
 ```
 
 ### Prerequisites
@@ -119,25 +121,25 @@ Before installing the chart, ensure all [prerequistes](#prerequisites) are met.
 To install the chart, make a copy of the `values.yaml` file, fill in the missing values (e.g. secrets) and then run:
 
 ```bash
-helm install mushop --name mymushop -f myvalues.yaml
+helm install -f myvalues.yaml mymushop mushop
 ```
 
-If using Helm 3:
+If using Helm v2:
 
 ```bash
-helm install -f myvalues.yaml mymushop mushop
+helm install mushop --name mymushop -f myvalues.yaml
 ```
 
 If you want to troubleshoot the chart, add the `--dry-run` and `--debug` flags and re-run the command again. For example:
 
 ```bash
-helm install mushop --dry-run --debug --name mymushop -f myvalues.yaml
+helm install -f myvalues.yaml mymushop mushop --dry-run --debug
 ```
 
-If using Helm 3:
+If using Helm v2:
 
 ```bash
-helm install -f myvalues.yaml mymushop mushop --dry-run --debug
+helm install mushop --dry-run --debug --name mymushop -f myvalues.yaml
 ```
 
 ### Installing HPA for components
@@ -145,14 +147,14 @@ helm install -f myvalues.yaml mymushop mushop --dry-run --debug
 Optionally, you can enable HPA for components by setting the `hpa.enabled` property to `true`. For example: `api.hpa.enabled=true`, and then pass it to the install command:
 
 ```bash
-helm install --dry-run --debug mushop --name mymushop -f myvalues.yaml \
-    --set api.hpa.enabled=true
+helm install  -f myvalues.yaml --set api.hpa.enabled=true mymushop mushop --dry-run --debug
 ```
 
-If using Helm 3:
+If using Helm v2:
 
 ```bash
-helm install  -f myvalues.yaml --set api.hpa.enabled=true mymushop mushop --dry-run --debug
+helm install --dry-run --debug mushop --name mymushop -f myvalues.yaml \
+    --set api.hpa.enabled=true
 ```
 
 ## Prod/Test Installation
@@ -181,15 +183,15 @@ helm repo add jetstack https://charts.jetstack.io
 
 Install the `cert-manager` Helm chart:
 
-```text
-helm install --name cert-manager --namespace cert-manager jetstack/cert-manager
-```
-
-If using Helm 3:
-
 ```bash
 kubectl create ns cert-manager
 helm install cert-manager jetstack/cert-manager
+```
+
+If using Helm v2:
+
+```text
+helm install --name cert-manager --namespace cert-manager jetstack/cert-manager
 ```
 
 ### Installing Mushop
@@ -197,13 +199,13 @@ helm install cert-manager jetstack/cert-manager
 For prod/test installation, you can use the `values-prod.yaml` or `values-test.yaml` and call Helm install and pass in the values file:
 
 ```bash
-helm install --dry-run --debug mushop -f /mushop/values-prod.yaml --name mymushop
+helm install -f /mushop/values-prod.yaml mymushop mushop --dry-run --debug
 ```
 
-If using Helm 3:
+If using Helm v2:
 
 ```bash
-helm install -f /mushop/values-prod.yaml mymushop mushop --dry-run --debug
+helm install --dry-run --debug mushop -f /mushop/values-prod.yaml --name mymushop
 ```
 
 ## Creating all/individual YAML files
@@ -211,11 +213,11 @@ helm install -f /mushop/values-prod.yaml mymushop mushop --dry-run --debug
 If you don't want to deploy the charts, you can also render the template and get all YAML files by running the `template` command, providing an output directory and the values file to use.
 
 ```bash
-helm template mushop --output-dir <SOME_DIR> -f <VALUES_FILE> --name mymushop
+helm template -f <VALUES_FILE> mymushop mushop --output-dir <SOME_DIR>
 ```
 
-If using Helm 3:
+If using Helm v2:
 
 ```bash
-helm template -f <VALUES_FILE> mymushop mushop --output-dir <SOME_DIR>
+helm template mushop --output-dir <SOME_DIR> -f <VALUES_FILE> --name mymushop
 ```
