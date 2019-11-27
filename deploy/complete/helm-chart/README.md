@@ -3,9 +3,9 @@
 The helm charts here can be used to install all components of MuShop to the Kubernetes cluster.
 For practical purposes, multiple charts are used to separate installation into the following steps:
 
-1. `[setup](#setup)` Installs _optional_ chart dependencies on the cluster
-1. `[provision](#provision)` Provisions OCI resources integrated with Service Broker _(optional)_
-1. `[mushop](#installation)` Deploys the MuShop application runtime
+1. [`setup`](#setup) Installs _optional_ chart dependencies on the cluster
+1. [`provision`](#provision) Provisions OCI resources integrated with Service Broker _(optional)_
+1. [`mushop`](#installation) Deploys the MuShop application runtime
 
 ## Setup
 
@@ -25,7 +25,14 @@ Oracle Cloud Infrastructure or enable certain features within the application.
 1. Install `setup` chart:
 
     ```text
-    helm install setup --name mushop-setup --namespace --mushop-setup
+    helm install setup --name mushop-setup --namespace mushop-setup
+    ```
+
+    If using Helm 3:
+
+    ```bash
+    kubectl create ns mushop-setup
+    helm install mushop-setup setup
     ```
 
     > **NOTE:** It is possible that certain services may conflict with pre-existing installs. If so, try setting `--set <chart>.enabled=false` for any conflicting charts.
@@ -38,13 +45,13 @@ helm install setup --set nginx-ingress.controller.service.ports.http=8000
 
 The installed dependencies are listed below. Note that any can be disabled as needed.
 
-| Chart | Purpose | Option |
-|---|---|---|
-| [Prometheus](https://github.com/helm/charts/blob/master/stable/prometheus/README.md) | Service metrics aggregation | `prometheus.enabled` |
-| [Grafana](https://github.com/helm/charts/blob/master/stable/grafana/README.md) | Infra/Service visualization dashboards | `grafana.enabled` |
-| [Metrics Server](https://github.com/helm/charts/blob/master/stable/metrics-server/README.md) | Support for Horizontal Pod Autoscaling | `metrics-server.enabled` |
-| [Service Catalog](https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md) | Interface for Oracle Service Broker | `catalog.enabled` |
-| [Nginx Ingress](https://github.com/helm/charts/blob/master/stable/nginx-ingress/README.md) | Load Balancer ingress control | `nginx-ingress.enabled` |
+| Chart                                                                                                      | Purpose                                | Option                   |
+| ---------------------------------------------------------------------------------------------------------- | -------------------------------------- | ------------------------ |
+| [Prometheus](https://github.com/helm/charts/blob/master/stable/prometheus/README.md)                       | Service metrics aggregation            | `prometheus.enabled`     |
+| [Grafana](https://github.com/helm/charts/blob/master/stable/grafana/README.md)                             | Infra/Service visualization dashboards | `grafana.enabled`        |
+| [Metrics Server](https://github.com/helm/charts/blob/master/stable/metrics-server/README.md)               | Support for Horizontal Pod Autoscaling | `metrics-server.enabled` |
+| [Service Catalog](https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md) | Interface for Oracle Service Broker    | `catalog.enabled`        |
+| [Nginx Ingress](https://github.com/helm/charts/blob/master/stable/nginx-ingress/README.md)                 | Load Balancer ingress control          | `nginx-ingress.enabled`  |
 
 ## Provision
 
@@ -62,6 +69,12 @@ For an installation without connecting Oracle Cloud Infrastructure services, use
 ```text
 helm install mushop --name mymushop \
     --set global.mock.service=all
+```
+
+If using Helm 3:
+
+```bash
+helm install --set global.mock.service=all mymushop setup
 ```
 
 ### Prerequisites
@@ -109,10 +122,22 @@ To install the chart, make a copy of the `values.yaml` file, fill in the missing
 helm install mushop --name mymushop -f myvalues.yaml
 ```
 
+If using Helm 3:
+
+```bash
+helm install -f myvalues.yaml mymushop mushop
+```
+
 If you want to troubleshoot the chart, add the `--dry-run` and `--debug` flags and re-run the command again. For example:
 
 ```bash
 helm install mushop --dry-run --debug --name mymushop -f myvalues.yaml
+```
+
+If using Helm 3:
+
+```bash
+helm install -f myvalues.yaml mymushop mushop --dry-run --debug
 ```
 
 ### Installing HPA for components
@@ -124,11 +149,17 @@ helm install --dry-run --debug mushop --name mymushop -f myvalues.yaml \
     --set api.hpa.enabled=true
 ```
 
+If using Helm 3:
+
+```bash
+helm install  -f myvalues.yaml --set api.hpa.enabled=true mymushop mushop --dry-run --debug
+```
+
 ## Prod/Test Installation
 
 ### Installing cert-manager
 
-You only need to run this if you are installing Mushop on a new cluster *and* you want to use SSL. You need to install the CRDs first, before running Helm for cert-manager:
+You only need to run this if you are installing Mushop on a new cluster _and_ you want to use SSL. You need to install the CRDs first, before running Helm for cert-manager:
 
 ```text
 kubectl apply \
@@ -154,6 +185,13 @@ Install the `cert-manager` Helm chart:
 helm install --name cert-manager --namespace cert-manager jetstack/cert-manager
 ```
 
+If using Helm 3:
+
+```bash
+kubectl create ns cert-manager
+helm install cert-manager jetstack/cert-manager
+```
+
 ### Installing Mushop
 
 For prod/test installation, you can use the `values-prod.yaml` or `values-test.yaml` and call Helm install and pass in the values file:
@@ -162,10 +200,22 @@ For prod/test installation, you can use the `values-prod.yaml` or `values-test.y
 helm install --dry-run --debug mushop -f /mushop/values-prod.yaml --name mymushop
 ```
 
+If using Helm 3:
+
+```bash
+helm install -f /mushop/values-prod.yaml mymushop mushop --dry-run --debug
+```
+
 ## Creating all/individual YAML files
 
-If you don't want to deploy the charts, you can also render the template and get all YAML files by running the `template` command,  providing an output directory and the values file to use.
+If you don't want to deploy the charts, you can also render the template and get all YAML files by running the `template` command, providing an output directory and the values file to use.
 
 ```bash
 helm template mushop --output-dir <SOME_DIR> -f <VALUES_FILE> --name mymushop
+```
+
+If using Helm 3:
+
+```bash
+helm template -f <VALUES_FILE> mymushop mushop --output-dir <SOME_DIR>
 ```
