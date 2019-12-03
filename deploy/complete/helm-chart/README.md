@@ -7,8 +7,6 @@ For practical purposes, multiple charts are used to separate installation into t
 1. [`provision`](#provision) Provisions OCI resources integrated with Service Broker _(optional)_
 1. [`mushop`](#installation) Deploys the MuShop application runtime
 
-You can install the latest Helm from [here](https://github.com/helm/helm/releases).
-
 ## Setup
 
 The `setup` chart includes several recommended installations on the cluster. These
