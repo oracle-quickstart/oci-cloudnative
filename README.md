@@ -1,17 +1,23 @@
 ![MuShop Logo](./images/logo.png)
 
 ---
+MuShop represents a showcase of many [Oracle Cloud Infrastructure (OCI)][oci] Cloud Native services as a unified reference application. The sample application implements an e-commerce platform built as a set of micro-services. The accompanying content can be used as a self paced workshop to get started with cloud native application development on [Oracle Cloud Infrastructure (OCI)][oci].
 
-This is a Terraform configuration that deploys the MuShop basic sample application on [Oracle Cloud Infrastructure (OCI)][oci]. 
+MuShop comes in two flavors
 
-MuShop basic is a 3-tier web application that implements an e-commerce site. It is built to showcase the features of [Oracle Cloud Infrastructure (OCI)][oci]. This application is designed to run using only the Always Free tier resources. 
-The repository contains the application code as well as the [Terraform][tf] code to create a [Resource Manager][orm] stack, 
-that creates all the required resources and configures the application on the created resources.
+- Basic - A small set of services that run directly on OCI, and demonstrate infrastructure automation. Can be run on the Always Free Eligible resources.
+- Complete - A fully cloud native implementation that runs on Oracle Container Engine for Kubernetes(OKE) utilizing an array of [Oracle Cloud Infrastructure (OCI)][oci] Cloud Native services.
 
 | ![home](./images/screenshot/mushop.home.png) | ![browse](./images/screenshot/mushop.browse.png) | ![cart](./images/screenshot/mushop.cart.png) | ![about](./images/screenshot/mushop.about.png) |
 |---|---|---|---|
 
-## Getting Started
+## Getting Started with MuShop Basic
+
+This is a Terraform configuration that deploys the MuShop basic sample application on [Oracle Cloud Infrastructure (OCI)][oci].
+
+MuShop Basic is a 3-tier web application that implements an e-commerce site. It is built to showcase the features of [Oracle Cloud Infrastructure (OCI)][oci]. This application is designed to run using only the Always Free tier resources. The services run directly on OCI compute resources and leverage OCI services.
+
+The repository contains the application code as well as the [Terraform][tf] code to create a [Resource Manager][orm] stack, that creates all the required resources and configures the application on the created resources.
 
 The steps below guide you through deploying the application on your tenancy using the OCI Resource Manager.
 
@@ -43,6 +49,8 @@ lb_public_url = http://xxx.xxx.xxx.xxx
 ```
 
 > The application is being deployed to the compute instances asynchronously, and it may take a couple of minutes for the URL to serve the application.
+
+## MuShop Cloud Native 
 
 ## Questions
 
