@@ -1,0 +1,56 @@
+@import '../variables';
+
+$o-color-red:      #E55844;
+$o-color-green:    #6A9D67;
+$o-color-blue:     #2d7480;
+$o-color-orange:   #bc6c37;
+$o-color-brown:    #3F3A36;
+$o-color-browner:  #383330;
+
+$o-color-light:    #f1f0eb;
+$o-color-dark:     #1A1816;
+$o-color-black:    #100f0e;
+$o-color-hr:       #D6D4CF;
+
+$o-color-darkish: lighten($o-color-dark, 10%);
+$o-color-darker: darken($o-color-dark, 10%);
+$o-color-tint: #DCE3E4;
+$o-color-lightgrey: #7F7F7F;
+
+// FONTS
+%default-font {
+  font-family: "Oracle Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+}
+
+// NAV
+$nav-width: 250px;
+$nav-bg: $o-color-browner;
+$nav-active-bg: $o-color-brown;
+$nav-subitem-bg: $o-color-dark;
+$nav-text: $o-color-light;
+$nav-active-text: $o-color-light;
+
+// CONTENT
+$main-bg:     $o-color-light;
+$main-text:   $o-color-black;
+$main-padding: 15px;
+$main-width-max: 1280px - $nav-width;
+
+// NOTICES
+$notice-alpha:     0.75;
+$aside-notice-bg:  rgba($o-color-blue, $notice-alpha);
+$aside-warning-bg: rgba($o-color-orange, $notice-alpha);
+$aside-success-bg: rgba($o-color-green, $notice-alpha);
+$search-notice-bg: $o-color-orange;
+
+// CODE
+$examples-width:        0%;
+$lang-select-bg:        $o-color-black;
+$lang-select-active-bg: $o-color-blue;
+$examples-bg:           $o-color-browner;
+$code-bg:               $o-color-dark;
+$code-annotation-bg:    $o-color-brown;
