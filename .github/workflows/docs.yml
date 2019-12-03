@@ -1,13 +1,30 @@
 name: Build Docs
-on: [push]
+on:
+  pull_request:
+    branches:
+    - master
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v1
-
-    - name: Build and Deploy
+    - name: Setup Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+    - name: Setup Ruby
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.6.x
+    - name: Build
+      run: |
+          sudo apt-get -yqq install libpq-dev
+          gem install bundler
+          bundle install --retry 3
+          bundle exec middleman build --clean
+    - name: Deploy
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
