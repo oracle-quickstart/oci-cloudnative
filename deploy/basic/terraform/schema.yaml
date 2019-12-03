@@ -1,0 +1,88 @@
+title: "Three-tier web application using Always Free resources"
+description: "A demo eCommerce example app using Always Free Oracle Cloud Infrastructure"
+schemaVersion: 1.1.0
+version: "20190304"
+locale: "en"
+
+groupings:
+  - title: "General Configuration"
+    visible: false
+    variables:
+    - compartment_ocid
+    - tenancy_ocid
+    - region
+
+  - title: "General Configuration"
+    variables:
+    - database_name
+    - num_nodes
+
+  - title: "Optional Configuration"
+    variables:
+    - ssh_public_key
+
+variables:
+  compartment_ocid:
+    type: oci:identity:compartment:id
+    # type: string
+    required: true
+    title: "Compartment"
+    description: "The compartment in which to create compute instance(s)"
+
+  num_nodes:
+    type: enum
+    enum:
+    - "1"
+    - "2"
+    title: "Node Count"
+    default: "2"
+    description: "Choose the number of compute instances to deploy"
+    required: true
+
+  database_name:
+    type: string
+    required: true
+    title: "Database Name"
+    description: "The name for the Autonomous Database instance"
+    default: "mushop"
+
+  ssh_public_key:
+    type: string
+    required: false
+    title: "SSH Public Key"
+    description: "The public SSH key for the key-pair that you want to use, if you wish to login to the instances over SSH"
+
+
+outputGroups:
+  - title: "MuShop App details"
+    outputs:
+      - ${lb_public_url}
+      - ${autonomous_database_password}
+      - ${dev}
+      - ${comments}
+
+outputs:
+  lb_public_url:
+    type: link
+    title: Open
+    visible: true
+  
+  autonomous_database_password:
+    type: string
+    title: "Database Password"
+    displayText: "Autonomous Database Password"
+    visible: true
+  
+  dev:
+    type: string
+    title: "Message"
+    displayText: "Made with \u2764 by Oracle A-Team"
+    visible: true
+  
+  comments:
+    type: string
+    title: "Comments"
+    displayText: "The application URL will be unavailable for a few minutes after provisioning, while the application is configured"
+    visible: true
+  
+primaryOutputButton: ${lb_public_url}
