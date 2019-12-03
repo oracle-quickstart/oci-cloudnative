@@ -1,0 +1,10 @@
+version: '3'
+services:
+  docs:
+    build: .
+    image: mushop/docs
+    command: ["bundle", "exec", "middleman", "server", "--watcher-force-polling"]
+    ports:
+      - 4567:4567
+    volumes:
+      - .:/usr/src/app
