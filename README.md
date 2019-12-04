@@ -6,11 +6,11 @@ MuShop is a showcase of several [Oracle Cloud Infrastructure (OCI)][oci] service
 | ![home](./images/screenshot/mushop.home.png) | ![browse](./images/screenshot/mushop.browse.png) | ![cart](./images/screenshot/mushop.cart.png) | ![about](./images/screenshot/mushop.about.png) |
 |---|---|---|---|
 
-MuShop can be deployed in two ways depending on your choices.
+MuShop can be deployed in different ways to explore [Oracle Cloud Infrastructure (OCI)][oci] based on your subscription. Both deployment models can be used with trial subscriptions. However, [Oracle Cloud Infrastructure (OCI)][oci] offers an *Always Free* tier with resources that can be used indefinitely.
 
 | [Basic: `deploy/basic`](#Getting-Started-with-MuShop-Basic) | [Complete: `deploy/complete`](#Getting-Started-with-MuShop-Complete) |
 |--|--|
-| Simplified runtime utilizing **only** [Always Free](https://www.oracle.com/cloud/free/) resources deployed with [Resource Manager](https://www.oracle.com/cloud/systems-management/resource-manager/) | Full-featured [Kubernetes](https://kubernetes.io/) micro-services deployment showcasing Oracle [Cloud Native](https://www.oracle.com/cloud/cloud-native/) technologies and backing services |
+| Simplified runtime utilizing **only** [Always Free](https://www.oracle.com/cloud/free/) resources. Deployed using [Terraform][tf] and [Resource Manager](https://www.oracle.com/cloud/systems-management/resource-manager/) | Full-featured [Kubernetes](https://kubernetes.io/) micro-services deployment showcasing Oracle [Cloud Native](https://www.oracle.com/cloud/cloud-native/) technologies and backing services |
 
 ```text
 mushop
@@ -18,8 +18,6 @@ mushop
     ├── basic
     └── complete
 ```
-
-> Options for different MuShop deployment modes
 
 ## Getting Started with MuShop Basic
 
@@ -66,13 +64,15 @@ The following diagram shows the topology created by this stack.
 
 ![MuShop Basic Infra](./images/basic/00-Free-Tier.png)
 
+---
+
 ## Getting Started with MuShop Complete
 
 MuShop Complete is a polyglot micro-services application built to showcase a cloud native approach to application development on [Oracle Cloud Infrastructure (OCI)][oci] using Oracle's [cloud native](https://www.oracle.com/cloud/cloud-native/) services. MuShop Complete uses a Kubernetes cluster, and can be deployed using the provided `helm` charts (preferred), or Kubernetes manifests. It is recommended to use an Oracle Container Engine for Kubernetes cluster, however other Kubernetes distributions will also work.
 
 The [helm chart documentation][chartdocs] walks through the deployment process and various options for customizing the deployment  
 
-###  MuShop Complete Topology
+### MuShop Complete Topology
 
 The following diagram shows the topology created by this stack.
 
