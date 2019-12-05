@@ -31,9 +31,9 @@ A microservice demo that stores the MuShop shopping carts. The service is writte
       SELECT c.json_document.customerId
       FROM carts c
       ```
-      See [examples.sql](src/main/java/mushop/carts/sql/examples.sql) for more examples of how SQL can be used over the _carts_ collection used by this service.
+      See [examples.sql](examples.sql) for more examples of how SQL can be used over the _carts_ collection used by this service.
 
-    * **Multimodel** - Data stored in JSON collections can be queried along side other types of data in Oracle Database such as relational, geospatial, graph, and so on.  See [examples.sql](src/main/java/mushop/carts/sql/examples.sql) for an example that joins the _cart_ collection with other relational tables.
+    * **Multimodel** - Data stored in JSON collections can be queried along side other types of data in Oracle Database such as relational, geospatial, graph, and so on.  See [examples.sql](examples.sql) for an example that joins the _cart_ collection with other relational tables.
 
     * **Autonomous** - JSON collections benefit from all the general features of the [autonomous database](https://www.oracle.com/database/what-is-autonomous-database.html) such as advanced security, automated patching, automated backups, and so on.
 
@@ -54,7 +54,7 @@ A microservice demo that stores the MuShop shopping carts. The service is writte
      ```
      See [src/main/java/mushop/carts/CartService.java](src/main/java/mushop/carts/CartService.java)
 
-   Helidon is designed to support cloud-native applications. It comes with built-in support for things like health checks, metrics, tracing, and fault tolerance.  These features make it work well for deployment in Docker and Kubernetes.
+     Helidon is designed to support cloud-native applications. It comes with built-in support for things like health checks, metrics, tracing, and fault tolerance.  These features make it work well for deployment in Docker and Kubernetes.
 
 # Usage
 
