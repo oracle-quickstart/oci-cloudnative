@@ -7,18 +7,19 @@
 A microservice demo that stores the MuShop shopping carts. The service is written in Java and makes use of the following components:
 
   * **Autonomous Database JSON** - Each shopping cart is stored in the autonomous database as a JSON document using [SODA (Simple Oracle Document Access)](https://docs.oracle.com/en/database/oracle/simple-oracle-document-access/).  The microservice stores cart data using simple create, read, update, and delete operations over a collection of JSON documents.  For example:
-  ```java
-  OracleCollection col = db.openCollection("carts");
-  // insert a cart
-  OracleDocument doc = db.createDocumentFromString("{\"customerId\" : 123, \"items\" : [...] }")
-  col.save(doc);
+    ```Java
+    OracleCollection col = db.openCollection("carts");
+    // insert a cart
+    OracleDocument doc = db.createDocumentFromString("{\"customerId\" : 123, \"items\" : [...] }")
+    col.save(doc);
 
-  // get a cart
-  doc = col.find().filter("{\"customerId\" : 123}").getOne()
-  ```
-  See [src/main/java/mushop/carts/CartRepositoryDatabaseImpl.java](src/main/java/mushop/carts/CartRepositoryDatabaseImpl.java)
+    // get a cart
+    doc = col.find().filter("{\"customerId\" : 123}").getOne()
+    ```
 
-  Why JSON in the Autonomous Database?
+    See [src/main/java/mushop/carts/CartRepositoryDatabaseImpl.java](src/main/java/mushop/carts/CartRepositoryDatabaseImpl.java)
+
+    Why JSON in the Autonomous Database?
 
     * **Flexibility** - the shopping cart service can evolve to store new attributes without modifying a database schema or existing SQL queries and DML.  [JSON-B](http://json-b.net/) is used to automatically map basic [Cart](src/main/java/mushop/carts/Cart.java) objects to and from JSON. Storing a new Cart attribute only requires modifying the Cart class (not the database, queries, or other parts of the application code).
 
@@ -40,18 +41,18 @@ A microservice demo that stores the MuShop shopping carts. The service is writte
 
   * **Helidon** - The REST services are built using [Helidon SE](https://helidon.io/), a lightweight, fast platform for building microservices in Java.  Helidon makes it easy to map REST URL patterns to Java functions.
 
-  ```java
-   public void update(Rules rules) {
-      rules.get("/{cartId}/items", this::getCartItems);
-   }
+    ```java
+     public void update(Rules rules) {
+        rules.get("/{cartId}/items", this::getCartItems);
+     }
 
-   public void getCartItems(ServerRequest request, ServerResponse response) {
-      String cartId = request.path().param("cartId");
-      result = carts.getById(cartId);
-      response.status(200).send(result.getItems());
-   }
-   ```
-   See [src/main/java/mushop/carts/CartService.java](src/main/java/mushop/carts/CartService.java)
+     public void getCartItems(ServerRequest request, ServerResponse response) {
+        String cartId = request.path().param("cartId");
+        result = carts.getById(cartId);
+        response.status(200).send(result.getItems());
+     }
+     ```
+     See [src/main/java/mushop/carts/CartService.java](src/main/java/mushop/carts/CartService.java)
 
    Helidon is designed to support cloud-native applications. It comes with built-in support for things like health checks, metrics, tracing, and fault tolerance.  These features make it work well for deployment in Docker and Kubernetes.
 
