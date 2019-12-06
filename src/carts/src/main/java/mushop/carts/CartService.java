@@ -2,6 +2,7 @@ package mushop.carts;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Set;
 
 import io.helidon.common.http.Http;
@@ -25,7 +26,7 @@ public class CartService implements Service {
     
     public CartService(Config config) {
         String dbName = config.get("OADB_SERVICE").asString().get();
-        if (MOCKDB.equals(dbName)) {
+        if (MOCKDB.equalsIgnoreCase(dbName)) {
             carts = new CartRepositoryMemoryImpl();
         } else {
             carts = new CartRepositoryDatabaseImpl(config);

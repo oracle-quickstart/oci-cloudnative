@@ -1,7 +1,4 @@
 
-[![Build Status](https://travis-ci.org/microservices-demo/carts.svg?branch=master)](https://travis-ci.org/microservices-demo/carts) [![Coverage Status](https://coveralls.io/repos/github/microservices-demo/carts/badge.svg?branch=master)](https://coveralls.io/github/microservices-demo/carts?branch=master)
-[![](https://images.microbadger.com/badges/image/weaveworksdemos/cart.svg)](http://microbadger.com/images/weaveworksdemos/cart "Get your own image badge on microbadger.com")
-
 # Shopping Cart
 
 A microservice demo that stores the MuShop shopping carts. The service is written in Java and makes use of the following components:
@@ -31,9 +28,9 @@ A microservice demo that stores the MuShop shopping carts. The service is writte
       SELECT c.json_document.customerId
       FROM carts c
       ```
-      See [examples.sql](examples.sql) for more examples of how SQL can be used over the _carts_ collection used by this service.
+      See [sql/examples.sql](sql/examples.sql) for more examples of how SQL can be used over the _carts_ collection used by this service.
 
-    * **Multimodel** - Data stored in JSON collections can be queried along side other types of data in Oracle Database such as relational, geospatial, graph, and so on.  See [examples.sql](examples.sql) for an example that joins the _cart_ collection with other relational tables.
+    * **Multimodel** - Data stored in JSON collections can be queried along side other types of data in Oracle Database such as relational, geospatial, graph, and so on.  See [sql/examples.sql](sql/examples.sql) for an example that joins the _cart_ collection with other relational tables.
 
     * **Autonomous** - JSON collections benefit from all the general features of the [autonomous database](https://www.oracle.com/database/what-is-autonomous-database.html) such as advanced security, automated patching, automated backups, and so on.
 
@@ -75,7 +72,7 @@ To compile the service:
 ```bash
 mvn clean package
 ```
-This will run the tests and produce the jar `target/carts-0.0.1-SNAPSHOT.jar`
+This will run the tests and produce the jar `target/carts-1.1.0-SNAPSHOT.jar`
 
 ### Run
 
@@ -87,7 +84,7 @@ java -Dserver.port=8080 \
      -DOADB_SERVICE=mushop_high \
      -DOADB_USER=CARTS_USER \
      -DOADB_PW=MyPassword \
-     -jar ./target/carts-0.0.1-SNAPSHOT.jar
+     -jar ./target/carts-1.1.0-SNAPSHOT.jar
 ```
 But replace:
 * `/path/to/wallet` with the location of your Autonomous Database wallet
