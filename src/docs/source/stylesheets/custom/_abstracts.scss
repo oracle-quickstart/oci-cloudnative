@@ -1,0 +1,35 @@
+%o-content-blockquote {
+  $bargap: 10px;
+  background: transparent;
+  color: inherit;
+  float: none;
+  clear: none;
+  width: auto;
+  // margin-top: $bargap;
+  margin-right: $examples-width;
+  margin-left: $main-padding;
+  margin-bottom: $main-padding;
+  border-left: 4px solid rgba($o-color-brown, 0.5);
+
+  p {
+    font-weight: 200;
+    padding: $bargap / 2 $bargap;
+    background: transparent;
+    color: inherit;
+    font-size: 0.95rem;
+  }
+
+  a {
+    color: inherit;
+    font-weight: normal;
+  }
+
+  code {
+    color: inherit;
+  }
+}
+
+%code-inline {
+  background-color: rgba($o-color-black, 0.075);
+  white-space: nowrap;
+}
