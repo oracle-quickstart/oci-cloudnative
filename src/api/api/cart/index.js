@@ -52,8 +52,9 @@
       // lookup product information
       const product = await common.getProduct(item.id);
       // post to cart items with default quantity
+
       const { status } = await axios.post(endpoints.cartsUrl + "/" + cartId, {
-        customerId: req.session.customerId,
+        customerId: helpers.isLoggedIn(req) ? req.session.customerId : null,
         items: [{
           itemId: product.id,
           unitPrice: product.price,
