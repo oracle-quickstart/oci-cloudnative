@@ -54,6 +54,11 @@
             <version>${helidon.version}</version>
         </dependency>
         <dependency>
+            <groupId>io.helidon.metrics</groupId>
+            <artifactId>helidon-metrics</artifactId>
+            <version>${helidon.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.oracle.ojdbc</groupId>
             <artifactId>ojdbc8</artifactId>
             <version>${jdbc.version}</version>
@@ -78,7 +83,6 @@
             <artifactId>soda</artifactId>
             <version>${soda.version}</version>
         </dependency>
-
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>

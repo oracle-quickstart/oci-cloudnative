@@ -1,8 +1,9 @@
 package mushop.carts.test;
 
-import static java.net.HttpURLConnection.HTTP_OK;
 import static java.net.HttpURLConnection.HTTP_CREATED;
+import static java.net.HttpURLConnection.HTTP_OK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -11,7 +12,6 @@ import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.util.UUID;
 
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -46,13 +46,22 @@ public class TestCartService {
         server.shutdown().toCompletableFuture().join();
         server = null;
     }
+    
+    @Test
+    public void testMetrics() throws Exception {
+        JsonObject result = get(baseUrl() + "/metrics", "Accept: application/json").asJsonObject();
+
+        assertTrue(result.get("vendor").asJsonObject()
+                         .getInt("requests.count") > 0);
+        
+    }
 
     @Test
     public void testHealthCheck() throws Exception {
         JsonValue result = get(baseUrl() + "/health");
         assertEquals("UP", result.asJsonObject().getString("status"));
     }
-
+    
     @Test
     public void testStoreCart() throws Exception {
         Item i = new Item();
@@ -107,10 +116,14 @@ public class TestCartService {
         return con.getResponseCode();
     }
     
-    private JsonValue get(String urlStr) throws IOException {
+    private JsonValue get(String urlStr, String... headers) throws IOException {
         URL url = new URL(urlStr);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
+        for (String header : headers) {
+            String[] kv = header.split(":");
+            con.setRequestProperty(kv[0], kv[1]);
+        }
         try (JsonReader reader = Json.createReader(con.getInputStream())) {
             return reader.readValue();
         }

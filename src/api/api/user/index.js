@@ -124,7 +124,6 @@
                    .status(status)
                    .json({ id: user.id });
         } catch (e) {
-            console.log(e);
             next(e);
         }
     });

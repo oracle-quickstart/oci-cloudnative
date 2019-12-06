@@ -66,7 +66,6 @@
       }
       helpers.respondStatus(res, status);
     } catch (e) {
-      console.log(e);
       next(e);
     }
   });

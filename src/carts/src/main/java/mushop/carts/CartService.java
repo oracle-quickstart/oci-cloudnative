@@ -15,7 +15,7 @@ import io.helidon.webserver.Service;
 public class CartService implements Service {
     
     /** A reserved dbname to use for an in-memory repository instead of the autonomous database */
-    private static final String MOCKDB = "Mock";
+    private static final String MOCKDB = "mock";
     
     /** @see https://github.com/oracle/helidon/issues/1172 */
     private static final Set<RequestMethod> PATCH = 

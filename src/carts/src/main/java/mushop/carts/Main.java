@@ -4,6 +4,7 @@ import io.helidon.config.Config;
 import io.helidon.health.HealthSupport;
 import io.helidon.health.checks.HealthChecks;
 import io.helidon.media.jsonb.server.JsonBindingSupport;
+import io.helidon.metrics.MetricsSupport;
 import io.helidon.webserver.Routing;
 import io.helidon.webserver.Routing.Builder;
 import io.helidon.webserver.ServerConfiguration;
@@ -39,7 +40,8 @@ public class Main {
         
         Builder routes = Routing.builder()
                       .register(JsonBindingSupport.create())
-                      .register(health)
+                      .register(MetricsSupport.create())    // "/metrics" 
+                      .register(health)                     // "/health"
                       .register("/carts", cartService);
         
         return WebServer.create(serverConfig, routes);
