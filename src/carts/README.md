@@ -115,7 +115,7 @@ docker run -it \
    --env DOADB_PW=MyPassword \
    --env TNS_ADMIN=/wallet \
    --volume /local/path/to/wallet:/wallet \
-   -p 80:8080 \
+   -p 8080:80 \
    mushop/carts
 ```
 
