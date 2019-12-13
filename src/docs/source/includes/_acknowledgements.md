@@ -8,4 +8,3 @@ some special recognition:
 - [Slate](https://github.com/slatedocs/slate): Tool used to create this documentation
 - [Reveal.js](https://revealjs.com/): HTML presentation tool used to develop workshop materials
 - [Roman Chekurov](https://github.com/chekromul/uikit-ecommerce-template): Inspiration and basis for MuShop UI
-
