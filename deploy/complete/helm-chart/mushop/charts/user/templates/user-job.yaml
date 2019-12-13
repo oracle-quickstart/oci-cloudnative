@@ -3,7 +3,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "user.fullname" . }}-{{ .Values.image.tag }}-init
+  name: {{ include "user.fullname" . }}-{{ .Values.image.tag }}-init-{{ .Release.Revision }}
   labels: {{ include "user.labels" . | nindent 4 }}
 spec:
   ttlSecondsAfterFinished: 120

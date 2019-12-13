@@ -9,14 +9,14 @@ spec:
   selector:
     matchLabels:
       app: {{ .Chart.Name }}
-      version: {{ .Values.image.tag }}
+      version: {{ .Values.image.tag | quote }}
       app.kubernetes.io/name: {{ include "storefront.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
         app: {{ .Chart.Name }}
-        version: {{ .Values.image.tag }}
+        version: {{ .Values.image.tag | quote }}
         app.kubernetes.io/name: {{ include "storefront.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
