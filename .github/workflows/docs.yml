@@ -24,7 +24,7 @@ jobs:
       run: |
           cd src/docs
           gem install bundler
-          # bundle install --retry 3
+          bundle install --jobs 4 --retry 3
           bundle exec middleman build --clean
     - name: Publish to Github Pages
       uses: peaceiris/actions-gh-pages@v2
