@@ -38,7 +38,6 @@ Common labels
 app.kubernetes.io/name: {{ include "edge-router.name" . }}
 helm.sh/chart: {{ include "edge-router.chart" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-layer: client
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}

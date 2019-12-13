@@ -8,12 +8,16 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
+      app: {{ .Chart.Name }}
+      version: {{ .Values.image.tag | quote }}
       app.kubernetes.io/name: {{ include "stream.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
       run: {{ include "stream.name" . }}
   template:
     metadata:
       labels:
+        app: {{ .Chart.Name }}
+        version: {{ .Values.image.tag | quote }}
         app.kubernetes.io/name: {{ include "stream.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
         run: {{ include "stream.name" . }}

@@ -10,14 +10,14 @@ stream:
 
 secrets:
   streams:
-    streamName: <STREAM_NAME>
-    compartmentId: <OCI_COMPARTMENT_ID>
-    tenantId: <OCI_TENANT_ID>
-    userId: <OCI_USER_ID>
-    region: <OCI_REGION>
-    fingerprint: <OCI_FINGERPRINT>
-    passphrase: <OCI_PASSPHRASE>
-    keyFile: <OCI_API_KEY_FILE>
+    # streamName: <STREAM_NAME>
+    # compartmentId: <OCI_COMPARTMENT_ID>
+    # tenantId: <OCI_TENANT_ID>
+    # userId: <OCI_USER_ID>
+    # region: <OCI_REGION>
+    # fingerprint: <OCI_FINGERPRINT>
+    # passphrase: <OCI_PASSPHRASE>
+    # keyFile: <OCI_API_KEY_FILE>
 
 ingress:
   enabled: false

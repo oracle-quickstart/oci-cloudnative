@@ -10,14 +10,6 @@
       Made with ♥ by Oracle A-Team
 ########################################
 
-Summary:
-  Name: {{ .Release.Name }}
-  Chart: {{ .Chart.Name }}
-  Version: {{ .Chart.Version }}
-  Namespace: {{ .Release.Namespace }}
-  Revision: {{ .Release.Revision }}
-
-
 ## MuShop
 
 The MuShop store has been deployed with the options provided. It may take a few

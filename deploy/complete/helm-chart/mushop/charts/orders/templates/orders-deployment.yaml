@@ -7,13 +7,18 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
+      app: {{ .Chart.Name }}
+      version: {{ .Values.image.tag | quote }}
       app.kubernetes.io/name: {{ include "orders.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
+        app: {{ .Chart.Name }}
+        version: {{ .Values.image.tag | quote }}
         app.kubernetes.io/name: {{ include "orders.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+        mockmode: {{ .Values.global.mock.service | quote }}
     spec:
       initContainers:
         {{- include "orders.init.wallet" . | nindent 8 }}

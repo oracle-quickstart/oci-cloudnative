@@ -1,9 +1,9 @@
 {{- $usesOsb := (index (.Values.global | default .Values) "osb").atp | default .Values.osb.atp -}}
-
+{{- if or $usesOsb (and .Values.secrets.oadbAdminPassword .Values.secrets.oadbUser .Values.secrets.oadbPassword) }}
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "user.fullname" . }}-{{ .Values.image.tag }}-init
+  name: {{ include "user.fullname" . }}-{{ .Values.image.tag }}-init-{{ .Release.Revision }}
   labels: {{ include "user.labels" . | nindent 4 }}
 spec:
   ttlSecondsAfterFinished: 120
@@ -39,3 +39,4 @@ spec:
           env: {{- include "user.oadb.connection" . | nindent 12 }}
           volumeMounts: {{- include "user.mount.wallet" . | nindent 12 }}
       volumes: {{- include "user.volumes" . | nindent 8 }}
+{{ end }}
