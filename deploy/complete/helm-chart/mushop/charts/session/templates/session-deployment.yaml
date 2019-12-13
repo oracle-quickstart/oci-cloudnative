@@ -8,15 +8,17 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
+      app: {{ .Chart.Name }}
+      version: {{ .Values.image.tag }}
       app.kubernetes.io/name: {{ include "session.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
-      layer: client
   template:
     metadata:
       labels:
+        app: {{ .Chart.Name }}
+        version: {{ .Values.image.tag }}
         app.kubernetes.io/name: {{ include "session.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
-        layer: client
     spec:
       containers:
         - name: {{ .Chart.Name }}

@@ -5,14 +5,12 @@ metadata:
   name: edge
   labels:
     name: edge
-    layer: client
 spec:
   replicas: 1
   template:
     metadata:
       labels:
         name: edge
-        layer: client
     spec:
       containers:
       - name: edge
@@ -52,11 +50,9 @@ metadata:
   name: edge
   labels:
     name: edge
-    layer: client
 spec:
   selector:
     name: edge
-    layer: client
   ports:
   - port: 80
     targetPort: 8080

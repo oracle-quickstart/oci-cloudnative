@@ -8,11 +8,15 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
+      app: {{ .Chart.Name }}
+      version: {{ .Values.image.tag }}
       app.kubernetes.io/name: {{ include "payment.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
+        app: {{ .Chart.Name }}
+        version: {{ .Values.image.tag }}
         app.kubernetes.io/name: {{ include "payment.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:

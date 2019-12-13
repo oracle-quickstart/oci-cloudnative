@@ -1,5 +1,5 @@
 {{- $usesOsb := (index (.Values.global | default .Values) "osb").atp | default .Values.osb.atp -}}
-
+{{- if or $usesOsb (and .Values.secrets.oadbAdminPassword .Values.secrets.oadbUser .Values.secrets.oadbPassword) }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -39,3 +39,4 @@ spec:
           env: {{- include "user.oadb.connection" . | nindent 12 }}
           volumeMounts: {{- include "user.mount.wallet" . | nindent 12 }}
       volumes: {{- include "user.volumes" . | nindent 8 }}
+{{ end }}
