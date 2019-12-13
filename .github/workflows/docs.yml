@@ -1,9 +1,11 @@
-name: Build Docs
-on:
-  pull_request:
-    branches:
-    - master
+name: Publish Slate Docs
 
+on:
+  push:
+    branches: 
+      - master
+    paths:
+    - 'src/docs/**'
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -18,16 +20,15 @@ jobs:
       uses: actions/setup-ruby@v1
       with:
         ruby-version: 2.6.x
-    - name: Build
+    - name: Build Slate Docs
       run: |
-          sudo apt-get -yqq install libpq-dev
+          cd src/docs
           gem install bundler
-          bundle install --retry 3
+          # bundle install --retry 3
           bundle exec middleman build --clean
-    - name: Deploy
-      uses: JamesIves/github-pages-deploy-action@releases/v3
-      with:
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        BASE_BRANCH: master # The branch the action should deploy from.
-        BRANCH: gh-pages # The branch the action should deploy to.
-        FOLDER: build # The folder the action should deploy.
+    - name: Publish to Github Pages
+      uses: peaceiris/actions-gh-pages@v2
+      env:
+        ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+        PUBLISH_BRANCH: gh-pages
+        PUBLISH_DIR: src/docs/build
