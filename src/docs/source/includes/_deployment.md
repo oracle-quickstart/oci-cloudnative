@@ -95,11 +95,11 @@ tenancy. Check minimum resource availability as follows:
 The included `provision` chart is an application of the open-source [OCI Service Broker](https://github.com/oracle/oci-service-broker)
 for _provisioning_ Oracle Cloud Infrastructure services. This implementation utilizes [Open Service Broker](https://github.com/openservicebrokerapi/servicebroker/blob/v2.14/spec.md) in Oracle Container Engine for Kubernetes or in other Kubernetes clusters.
 
-```text--linux-macos
+```shell--linux-macos
 cd deploy/complete/helm-chart
 ```
 
-```text--win
+```shell--win
 dir deploy/complete/helm-chart
 ```
 

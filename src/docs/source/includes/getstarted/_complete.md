@@ -6,11 +6,11 @@ cluster. It is _recommended_ to use an
 [Oracle Container Engine for Kubernetes](https://docs.cloud.oracle.com/iaas/Content/ContEng/Concepts/contengoverview.htm)
 cluster, however other **standard** Kubernetes clusters will also work.
 
-```text--linux-macos
+```shell--linux-macos
 cd deploy/complete/helm-chart
 ```
 
-```text--win
+```shell--win
 dir deploy/complete/helm-chart
 ```
 
