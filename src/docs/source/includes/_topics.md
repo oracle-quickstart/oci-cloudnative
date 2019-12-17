@@ -1,6 +1,6 @@
 ## Cloud Native
 
-The MuShop application highlights many topics related to [Cloud Native](https://www.oracle.com/cloud/cloud-native/) application
+The MuShop application highlights several topics related to [Cloud Native](https://www.oracle.com/cloud/cloud-native/) application
 development with Oracle Cloud Infrastructure.
 
 | Cloud Service | Description |
@@ -10,7 +10,7 @@ development with Oracle Cloud Infrastructure.
 | [Resource Manager](https://www.oracle.com/cloud/systems-management/resource-manager/) | Infrastructure as code with Terraform |
 | [Streaming](https://www.oracle.com/big-data/streaming/) | Large scale data collection and processing |
 | [Monitoring](https://www.oracle.com/cloud/systems-management/monitoring/) | Integrated metrics from all resources and services |
-| [Kubernetes Service Broker](https://github.com/oracle/oci-service-broker) | Provisioning cloud resources within Kubernetes |
+| [Open Service Broker](https://github.com/oracle/oci-service-broker) | Provisioning cloud resources within Kubernetes |
 | _Others coming soon_ | - |
 | [Events](https://www.oracle.com/cloud-native/events-service/) | Trigger actions in response to infrastructure changes |
 | [Functions](https://www.oracle.com/cloud-native/functions/) | Scalable, multitenant serverless functions |

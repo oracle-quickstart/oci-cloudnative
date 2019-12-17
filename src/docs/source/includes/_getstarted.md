@@ -16,8 +16,6 @@ mushop
     └── complete
 ```
 
-> Options for different MuShop deployment modes
-
 ## Basic Cloud Installation
 
 This deployment is designed to run using **only** Always Free resources.
@@ -117,9 +115,18 @@ From `deploy/complete/helm-chart` directory:
 
 1. Install `setup` chart:
 
-    ```shell
+    ```shell--helm2
     helm install setup \
       --name mushop-setup \
+      --namespace mushop-setup
+    ```
+
+    ```shell--helm3
+    kubectl create ns mushop-setup
+    ```
+
+    ```shell--helm3
+    helm install mushop-setup setup \
       --namespace mushop-setup
     ```
 
