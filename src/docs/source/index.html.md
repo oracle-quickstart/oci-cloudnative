@@ -9,11 +9,17 @@ language_tabs: # must be one of https://git.io/vQNgJ
   # - javascript
 
 smart_toggles:
+  - name: OS
+    category: language
+    options:
+      - macos: MacOS
+      - linux: Linux
+      - win: Windows
   - name: Helm
     category: language
     options:
-      - helm2: 2.x
       - helm3: 3.x
+      - helm2: 2.x
 
 toc_footers:
   - <a href="https://github.com/oracle-quickstart/oci-cloudnative">GitHub Project</a>
@@ -22,10 +28,15 @@ toc_footers:
 
 includes:
   - intro
-  - topics
+  - intro/goals
+  - intro/services
   - getstarted
+  - getstarted/clone
+  - getstarted/basic
+  - getstarted/complete
   - deployment
-  - extras
+  - topics
+  - topics/grafana
   - cleanup
   - acknowledgements
 

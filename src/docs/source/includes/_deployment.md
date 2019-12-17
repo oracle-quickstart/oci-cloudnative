@@ -68,7 +68,7 @@ then a Group with specific Policies must be created, and the User added as a mem
 
 <aside class="warning">
    This policy is intentionally broad for the sake of simplicity,
-   and is **not** recommended in most real-world use cases.
+   and is <b>not</b> recommended in most real-world use cases.
    Refer to the <a href="https://docs.cloud.oracle.com/iaas/Content/Identity/Concepts/overview.htm#three">Documentation</a>
    for more on this topic.
 </aside>
@@ -95,8 +95,12 @@ tenancy. Check minimum resource availability as follows:
 The included `provision` chart is an application of the open-source [OCI Service Broker](https://github.com/oracle/oci-service-broker)
 for _provisioning_ Oracle Cloud Infrastructure services. This implementation utilizes [Open Service Broker](https://github.com/openservicebrokerapi/servicebroker/blob/v2.14/spec.md) in Oracle Container Engine for Kubernetes or in other Kubernetes clusters.
 
-```text
+```text--linux-macos
 cd deploy/complete/helm-chart
+```
+
+```text--win
+dir deploy/complete/helm-chart
 ```
 
 1. The Service Broker for Kubernetes requires tenancy credentials to provision and
@@ -116,10 +120,18 @@ values:
 
 1. Deploy the OCI service broker on your cluster. This is done with the [Oracle OCI Service Broker](https://github.com/oracle/oci-service-broker) helm chart:
 
-    ```shell
-    helm install https://github.com/oracle/oci-service-broker/releases/download/v1.3.1/oci-service-broker-1.3.1.tgz \
+    ```shell--helm2
+    helm install https://github.com/oracle/oci-service-broker/releases/download/v1.3.2/oci-service-broker-1.3.2.tgz \
       --namespace mushop \
       --name oci-service-broker \
+      --set ociCredentials.secretName=oci-service-broker \
+      --set storage.etcd.useEmbedded=true \
+      --set tls.enabled=false
+    ```
+
+    ```shell--helm3
+    helm install oci-service-broker https://github.com/oracle/oci-service-broker/releases/download/v1.3.2/oci-service-broker-1.3.2.tgz \
+      --namespace mushop \
       --set ociCredentials.secretName=oci-service-broker \
       --set storage.etcd.useEmbedded=true \
       --set tls.enabled=false
@@ -129,10 +141,17 @@ values:
 
 1. Now establish the link between Service Catalog and the OCI Service Broker implementation by installing the `provision` chart:
 
-    ```shell
+    ```shell--helm2
     helm install provision \
       --namespace mushop \
       --name mushop-provision \
+      --set skip.ociCredentials=true \
+      --set global.osb.compartmentId=<compartmentId>
+    ```
+
+    ```shell--helm3
+    helm install mushop-provision provision \
+      --namespace mushop \
       --set skip.ociCredentials=true \
       --set global.osb.compartmentId=<compartmentId>
     ```
@@ -155,10 +174,17 @@ Having completed the [Provisioning](#provision) steps above, the `mushop` deploy
 helm chart is used with settings to leverage cloud backing services and their resulting
 `servicebindings` with connection information
 
-```shell
-helm install mushop \
-  --namespace mushop \
+```shell--helm2
+helm install ./mushop \
   --name mushop \
+  --namespace mushop \
+  --set global.osb.atp=true \
+  --set skip.streaming=true
+```
+
+```shell--helm3
+helm install mushop ./mushop \
+  --namespace mushop \
   --set global.osb.atp=true \
   --set skip.streaming=true
 ```

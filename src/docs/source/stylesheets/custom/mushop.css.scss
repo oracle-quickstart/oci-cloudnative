@@ -105,11 +105,17 @@ html, body {
   }
 
   pre {
+    overflow: initial;
     position: relative;
-    padding: $main-padding $main-padding;
-    margin-bottom: $main-padding;
+    padding: 0;
+    margin: 0 $main-padding $main-padding;
+    background: transparent;
     code {
+      display: block;
+      overflow: auto;
+      padding: $main-padding/2 $main-padding;
       color: $o-color-light;
+      background: $code-bg;
     }
     + blockquote {
       margin-top: -($main-padding / 2);
@@ -205,9 +211,11 @@ html, body {
     margin-top: 0.5em;
 
     label {
+      width: 3em;
       margin-right: 5px;
+      flex-shrink: 0;
     }
-    $radius: 2px;
+    $radius: 3px;
     a {
       color: $nav-text;
       display: block;
@@ -215,6 +223,7 @@ html, body {
       border: 1px solid $o-color-light;
       background: $o-color-dark;
       text-decoration: none;
+      font-size: 0.9em;
       + a {
         border-left: 0;
       }
@@ -245,7 +254,7 @@ pre {
     border: none !important;
     display: none;
     position: absolute;
-    top: 0; right: 0;
+    top: $copier-stroke; right: $copier-stroke;
     padding: 3 * $copier-stroke;
     cursor: pointer;
     span {
