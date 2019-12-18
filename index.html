@@ -908,16 +908,19 @@ depending on the actions performed for setup and deployment of MuShop.</p>
 
 <ul>
 <li><p>List any <code>helm</code> releases that may have been installed:</p>
-<pre class="highlight plaintext"><code>helm list
+<pre class="highlight shell tab-shell--helm2"><code>helm list
+</code></pre><pre class="highlight shell tab-shell--helm3"><code>helm list --all-namespaces
 </code></pre><pre class="highlight plaintext"><code>NAME          REVISION        UPDATED                         STATUS          CHART                   APP VERSION     NAMESPACE
 mushop-setup  1               Tue Nov 12 06:12:45 2019        DEPLOYED        mushop-setup-0.0.1      1.0             mushop-setup
 mushop        1               Wed Nov 13 20:23:28 2019        DEPLOYED        mushop-0.1.0            1.0             mushop
 </code></pre></li>
 <li><p>Remove the application from Kubernetes where <code>--name mushop</code> was used during install:</p>
-<pre class="highlight shell tab-shell"><code>helm delete --purge mushop
+<pre class="highlight shell tab-shell--helm2"><code>helm delete --purge mushop
+</code></pre><pre class="highlight shell tab-shell--helm3"><code>helm delete mushop
 </code></pre></li>
 <li><p>Remove the <code>setup</code> cluster dependency installation:</p>
-<pre class="highlight shell tab-shell"><code>helm delete --purge mushop-setup
+<pre class="highlight shell tab-shell--helm2"><code>helm delete --purge mushop-setup
+</code></pre><pre class="highlight shell tab-shell--helm3"><code>helm delete mushop-setup
 </code></pre></li>
 </ul>
 <h1 id='acknowledgements'>Acknowledgements</h1><h2 id='community'>Community</h2>
