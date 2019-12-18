@@ -3,7 +3,7 @@ name: Publish Slate Docs
 on:
   push:
     branches: 
-      - master
+    - master
     paths:
     - 'src/docs/**'
 jobs:
