@@ -1,6 +1,4 @@
-# Extras
-
-## Metrics
+## Prometheus and Grafana Monitoring
 
 Prometheus and Grafana are installed part of the [`setup`](#setup) umbrella helm chart.
 Revisit the application charts and connect to some Grafana dashboards:
@@ -43,4 +41,6 @@ Revisit the application charts and connect to some Grafana dashboards:
     - [Kubernetes Cluster](https://grafana.com/grafana/dashboards/6417)
     - [Kubernetes Pods](https://grafana.com/grafana/dashboards/6336)
 
-    > Many community dashboards exist, those above are some basic recommendations
+<aside class="notice">
+  Many community dashboards exist, those above are some basic recommendations
+</aside>

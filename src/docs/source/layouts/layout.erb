@@ -14,6 +14,7 @@ License for the specific language governing permissions and limitations
 under the License.
 %>
 <% language_tabs = current_page.data.language_tabs || [] %>
+<% smart_toggles = current_page.data.smart_toggles || [] %>
 <% page_content = yield %>
 <%
   if current_page.data.includes
@@ -53,6 +54,7 @@ under the License.
     <div class="toc-wrapper">
       <%= image_tag "logo.png", class: 'logo screen' %>
       <%= image_tag "logo.print.png", class: 'logo print' %>
+
       <% if language_tabs.any? %>
         <div class="lang-selector">
           <% language_tabs.each do |lang| %>
@@ -64,6 +66,7 @@ under the License.
           <% end %>
         </div>
       <% end %>
+
       <% if current_page.data.search %>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -86,6 +89,29 @@ under the License.
           </li>
         <% end %>
       </ul>
+
+      <% if smart_toggles.any? %>
+        <div class="smart-toggles">
+          <div>Settings</div>
+          <% smart_toggles.each do |toggle| %>
+            <div class="toggle-group flex flex-middle"
+              data-toggle-name="<%= toggle[:name] %>"
+              data-toggle-category="<%= toggle[:category] %>">
+              <label><%= toggle[:name] %>:</label>
+              <div class="flex">
+              <% toggle[:options].each do |opt| %>
+                <% if opt.is_a? Hash %>
+                  <a href="#" data-toggle="<%=opt.keys.first %>"><%= opt.values.first %></a>
+                <% else %>
+                  <a href="#" data-toggle="<%= opt %>"><%= opt %></a>
+                <% end %>
+              <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
       <% if current_page.data.toc_footers %>
         <ul class="toc-footer">
           <% current_page.data.toc_footers.each do |footer| %>
@@ -94,12 +120,13 @@ under the License.
         </ul>
       <% end %>
     </div>
+
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
         <%= page_content %>
       </div>
-      <div class="dark-box redwood-bar">
+      <div class="dark-box">
         <% if language_tabs.any? %>
           <div class="lang-selector">
             <% language_tabs.each do |lang| %>
