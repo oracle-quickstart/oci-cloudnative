@@ -9,7 +9,7 @@ RUN bundle install
 COPY . .
 
 VOLUME /transfer
-RUN bundle exec middleman build --clean
+RUN bundle exec middleman build --clean --verbose
 
 EXPOSE 4567
 CMD ["bundle", "exec", "middleman", "server", "--watcher-force-polling"]
