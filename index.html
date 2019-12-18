@@ -196,9 +196,9 @@
   color: #f92672;
 }
     </style>
-    <link href="stylesheets/custom/mushop-58dd62ca.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/custom/mushop-9a02d053.css" rel="stylesheet" media="screen" />
     <link href="stylesheets/print-21c7ca2f.css" rel="stylesheet" media="print" />
-      <script src="javascripts/all-c5541673.js"></script>
+      <script src="javascripts/all-2622bbf8.js"></script>
   </head>
 
   <body class="index" data-languages="[]">
@@ -211,6 +211,8 @@
     <div class="toc-wrapper">
       <img src="images/logo-734bf5ad.png" class="logo screen" alt="Logo" />
       <img src="images/logo.print-dfe0bcaa.png" class="logo print" alt="Logo.print" />
+
+
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
         </div>
@@ -223,7 +225,7 @@
                     <a href="#goals" class="toc-h2 toc-link" data-title="Goals">Goals</a>
                   </li>
                   <li>
-                    <a href="#cloud-native" class="toc-h2 toc-link" data-title="Cloud Native">Cloud Native</a>
+                    <a href="#cloud-services" class="toc-h2 toc-link" data-title="Cloud Services">Cloud Services</a>
                   </li>
               </ul>
           </li>
@@ -231,10 +233,13 @@
             <a href="#getting-started" class="toc-h1 toc-link" data-title="Getting Started">Getting Started</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#basic-cloud-installation" class="toc-h2 toc-link" data-title="Basic Cloud Installation">Basic Cloud Installation</a>
+                    <a href="#clone-repository" class="toc-h2 toc-link" data-title="Clone Repository">Clone Repository</a>
                   </li>
                   <li>
-                    <a href="#cloud-native-installation" class="toc-h2 toc-link" data-title="Cloud Native Installation">Cloud Native Installation</a>
+                    <a href="#basic-deployment" class="toc-h2 toc-link" data-title="Basic Deployment">Basic Deployment</a>
+                  </li>
+                  <li>
+                    <a href="#kubernetes-deployment" class="toc-h2 toc-link" data-title="Kubernetes Deployment">Kubernetes Deployment</a>
                   </li>
               </ul>
           </li>
@@ -256,7 +261,7 @@
             <a href="#extras" class="toc-h1 toc-link" data-title="Extras">Extras</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#metrics" class="toc-h2 toc-link" data-title="Metrics">Metrics</a>
+                    <a href="#prometheus-and-grafana-monitoring" class="toc-h2 toc-link" data-title="Prometheus and Grafana Monitoring">Prometheus and Grafana Monitoring</a>
                   </li>
               </ul>
           </li>
@@ -265,14 +270,47 @@
           </li>
           <li>
             <a href="#acknowledgements" class="toc-h1 toc-link" data-title="Acknowledgements">Acknowledgements</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#community" class="toc-h2 toc-link" data-title="Community">Community</a>
+                  </li>
+                  <li>
+                    <a href="#contributors" class="toc-h2 toc-link" data-title="Contributors">Contributors</a>
+                  </li>
+              </ul>
           </li>
       </ul>
+
+        <div class="smart-toggles">
+          <div>Settings</div>
+            <div class="toggle-group flex flex-middle"
+              data-toggle-name="OS"
+              data-toggle-category="language">
+              <label>OS:</label>
+              <div class="flex">
+                  <a href="#" data-toggle="macos">MacOS</a>
+                  <a href="#" data-toggle="linux">Linux</a>
+                  <a href="#" data-toggle="win">Windows</a>
+              </div>
+            </div>
+            <div class="toggle-group flex flex-middle"
+              data-toggle-name="Helm"
+              data-toggle-category="language">
+              <label>Helm:</label>
+              <div class="flex">
+                  <a href="#" data-toggle="helm3">3.x</a>
+                  <a href="#" data-toggle="helm2">2.x</a>
+              </div>
+            </div>
+        </div>
+
         <ul class="toc-footer">
-            <li><a href="https://github.com/oracle-quickstart/oci-cloudnative">GitHub</a></li>
+            <li><a href="https://github.com/oracle-quickstart/oci-cloudnative">GitHub Project</a></li>
             <li>Made with <icon>♥</icon> by Oracle A-Team</li>
-            <li>© 2019 Oracle</li>
+            <li>© 2019 Oracle and/or its affiliates. All rights reserved.</li>
         </ul>
     </div>
+
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
@@ -304,8 +342,8 @@ subject in Oracle Cloud Infrastructure, while keeping context of the demo applic
 <li>Experience Oracle Cloud services integrated into a single project</li>
 <li>Provide reference implementations and sample code for real-world development</li>
 </ul>
-<h2 id='cloud-native'>Cloud Native</h2>
-<p>The MuShop application highlights many topics related to <a href="https://www.oracle.com/cloud/cloud-native/">Cloud Native</a> application
+<h2 id='cloud-services'>Cloud Services</h2>
+<p>The MuShop application highlights several topics related to <a href="https://www.oracle.com/cloud/cloud-native/">Cloud Native</a> application
 development with Oracle Cloud Infrastructure.</p>
 
 <table><thead>
@@ -335,7 +373,7 @@ development with Oracle Cloud Infrastructure.</p>
 <td>Integrated metrics from all resources and services</td>
 </tr>
 <tr>
-<td><a href="https://github.com/oracle/oci-service-broker">Kubernetes Service Broker</a></td>
+<td><a href="https://github.com/oracle/oci-service-broker">Open Service Broker</a></td>
 <td>Provisioning cloud resources within Kubernetes</td>
 </tr>
 <tr>
@@ -454,8 +492,8 @@ deployment.</p>
 
 <table><thead>
 <tr>
-<th><a href="#basic-cloud-installation">Basic: <code>deploy/basic</code></a></th>
-<th><a href="#cloud-native-installation">Cloud Native: <code>deploy/complete</code></a></th>
+<th><a href="#basic-deployment">Basic: <code>deploy/basic</code></a></th>
+<th><a href="#kubernetes-deployment">Cloud Native: <code>deploy/complete</code></a></th>
 </tr>
 </thead><tbody>
 <tr>
@@ -467,18 +505,22 @@ deployment.</p>
 └── deploy
     ├── basic
     └── complete
-</code></pre>
-<blockquote>
-<p>Options for different MuShop deployment modes</p>
-</blockquote>
-<h2 id='basic-cloud-installation'>Basic Cloud Installation</h2>
-<p>This deployment is designed to run using <strong>only</strong> Always Free resources.
-It uses MuShop source code and the Oracle Cloud Infrastructure
+</code></pre><h2 id='clone-repository'>Clone Repository</h2>
+<p>Each topic in this document references the source code contents, which should be
+cloned to a personal workspace.</p>
+<pre class="highlight shell tab-shell--macos-linux"><code>git clone https://github.com/oracle-quickstart/oci-cloudnative.git
+<span class="nb">cd </span>oci-cloudnative
+</code></pre><pre class="highlight shell tab-shell--win"><code>git clone https://github.com/oracle-quickstart/oci-cloudnative.git
+dir oci-cloudnative
+</code></pre><h2 id='basic-deployment'>Basic Deployment</h2>
+<p>This deployment is designed to run on Oracle Cloud Infrastructure using
+only <strong>Always Free</strong> resources. It uses MuShop source code and the Oracle Cloud Infrastructure
 <a href="https://www.terraform.io/docs/providers/oci/index.html">Terraform Provider</a> to
 produce a <a href="https://docs.cloud.oracle.com/iaas/Content/ResourceManager/Concepts/resourcemanager.htm">Resource Manager</a> stack,
 that <em>provisions</em> all required resources and <em>configures</em> the application on
 those resources.</p>
-<pre class="highlight shell tab-shell"><code><span class="nb">cd </span>deploy/basic
+<pre class="highlight shell tab-shell--linux-macos"><code><span class="nb">cd </span>deploy/basic
+</code></pre><pre class="highlight shell tab-shell--win"><code>dir deploy/basic
 </code></pre>
 <blockquote>
 <p>Source directory for basic deployment option</p>
@@ -511,15 +553,19 @@ those resources.</p>
 
 <aside class="notice">
   The application is deployed to the compute instances <strong>asynchronously</strong>,
-  and it may take a few minutes for the public URL to serve the application.
+  and it may take a few minutes for the public URL to serve the application. If
+  the stack is applied successfully but the application returns a
+  <strong>503 Bad Gateway</strong> message, then wait a few moments and reload
+  until the application comes online.
 </aside>
-<h2 id='cloud-native-installation'>Cloud Native Installation</h2>
+<h2 id='kubernetes-deployment'>Kubernetes Deployment</h2>
 <p>This deployment option utilizes <a href="https://github.com/helm/helm"><code>helm</code></a> for
 configuration and installation onto a <a href="https://kubernetes.io/">Kubernetes</a>
 cluster. It is <em>recommended</em> to use an
 <a href="https://docs.cloud.oracle.com/iaas/Content/ContEng/Concepts/contengoverview.htm">Oracle Container Engine for Kubernetes</a>
 cluster, however other <strong>standard</strong> Kubernetes clusters will also work.</p>
-<pre class="highlight plaintext"><code>cd deploy/complete/helm-chart
+<pre class="highlight shell tab-shell--linux-macos"><code><span class="nb">cd </span>deploy/complete/helm-chart
+</code></pre><pre class="highlight shell tab-shell--win"><code>dir deploy/complete/helm-chart
 </code></pre>
 <blockquote>
 <p>Path for Cloud Native deployment configurations using <code>helm</code></p>
@@ -531,9 +577,12 @@ Infrastructure involves the use of the following helm charts:</p>
 <ol>
 <li><a href="#setup"><code>setup</code></a>: Installs umbrella chart dependencies on the cluster <em>(optional)</em></li>
 <li><a href="#provision"><code>provision</code></a>: Provisions OCI resources integrated with Service Broker <em>(optional)</em></li>
-<li><a href="#installation"><code>mushop</code></a>: Deploys the MuShop application runtime</li>
+<li><a href="#deploy-mushop"><code>mushop</code></a>: Deploys the MuShop application runtime</li>
 </ol>
 
+<p>To get started, create a namespace for the application and its associative deployments:</p>
+<pre class="highlight shell tab-shell"><code>kubectl create ns mushop
+</code></pre>
 <hr>
 <h3 id='setup'>Setup</h3>
 <p>MuShop provides an umbrella helm chart called <code>setup</code>, which includes several
@@ -590,8 +639,11 @@ helm repo add stable https://kubernetes-charts.storage.googleapis.com
 <pre class="highlight shell tab-shell"><code>helm dependency update setup
 </code></pre></li>
 <li><p>Install <code>setup</code> chart:</p>
-<pre class="highlight shell tab-shell"><code>helm install setup <span class="se">\</span>
+<pre class="highlight shell tab-shell--helm2"><code>helm install setup <span class="se">\</span>
   --name mushop-setup <span class="se">\</span>
+  --namespace mushop-setup
+</code></pre><pre class="highlight shell tab-shell--helm3"><code>kubectl create ns mushop-setup
+</code></pre><pre class="highlight shell tab-shell--helm3"><code>helm install mushop-setup setup <span class="se">\</span>
   --namespace mushop-setup
 </code></pre></li>
 <li><p><strong>NOTE</strong> the public <code>EXTERNAL-IP</code> assigned to the ingress controller load balancer:</p>
@@ -609,16 +661,21 @@ testing, and cases where cloud connectivity is not available.</p>
 
 <ol>
 <li><p>Deploy &quot;mock mode&quot; with <code>helm</code>:</p>
-<pre class="highlight shell tab-shell"><code>helm install mushop <span class="se">\</span>
+<pre class="highlight shell tab-shell--helm2"><code>helm install mushop <span class="se">\</span>
   --name mushop <span class="se">\</span>
+  --namespace mushop <span class="se">\</span>
+  --set global.mock.service<span class="o">=</span><span class="s2">"all"</span>
+</code></pre><pre class="highlight shell tab-shell--helm3"><code>helm install mushop ./mushop <span class="se">\</span>
+  --namespace mushop <span class="se">\</span>
   --set global.mock.service<span class="o">=</span><span class="s2">"all"</span>
 </code></pre></li>
 <li><p>Wait for services to be <em>Ready</em>:</p>
-<pre class="highlight shell tab-shell"><code>kubectl get pod --watch
+<pre class="highlight shell tab-shell"><code>kubectl get pod --watch --namespace mushop
 </code></pre></li>
 <li><p>Open a browser with the <code>EXTERNAL-IP</code> created during setup, <strong>OR</strong> <code>port-forward</code>
 directly to the <code>edge</code> service resource:</p>
 <pre class="highlight shell tab-shell"><code>kubectl port-forward <span class="se">\</span>
+  --namespace mushop <span class="se">\</span>
   svc/edge 8000:80
 </code></pre>
 <blockquote>
@@ -703,7 +760,7 @@ then a Group with specific Policies must be created, and the User added as a mem
 
 <aside class="warning">
    This policy is intentionally broad for the sake of simplicity,
-   and is **not** recommended in most real-world use cases.
+   and is <b>not</b> recommended in most real-world use cases.
    Refer to the <a href="https://docs.cloud.oracle.com/iaas/Content/Identity/Concepts/overview.htm#three">Documentation</a>
    for more on this topic.
 </aside>
@@ -741,7 +798,8 @@ tenancy. Check minimum resource availability as follows:</p>
 <h2 id='provision'>Provision</h2>
 <p>The included <code>provision</code> chart is an application of the open-source <a href="https://github.com/oracle/oci-service-broker">OCI Service Broker</a>
 for <em>provisioning</em> Oracle Cloud Infrastructure services. This implementation utilizes <a href="https://github.com/openservicebrokerapi/servicebroker/blob/v2.14/spec.md">Open Service Broker</a> in Oracle Container Engine for Kubernetes or in other Kubernetes clusters.</p>
-<pre class="highlight plaintext"><code>cd deploy/complete/helm-chart
+<pre class="highlight shell tab-shell--linux-macos"><code><span class="nb">cd </span>deploy/complete/helm-chart
+</code></pre><pre class="highlight shell tab-shell--win"><code>dir deploy/complete/helm-chart
 </code></pre>
 <ol>
 <li><p>The Service Broker for Kubernetes requires tenancy credentials to provision and
@@ -757,9 +815,14 @@ values:</p>
   --from-file<span class="o">=</span><span class="nv">privatekey</span><span class="o">=</span>&lt;PATH_OF_PRIVATE_API_KEY&gt;
 </code></pre></li>
 <li><p>Deploy the OCI service broker on your cluster. This is done with the <a href="https://github.com/oracle/oci-service-broker">Oracle OCI Service Broker</a> helm chart:</p>
-<pre class="highlight shell tab-shell"><code>helm install https://github.com/oracle/oci-service-broker/releases/download/v1.3.1/oci-service-broker-1.3.1.tgz <span class="se">\</span>
+<pre class="highlight shell tab-shell--helm2"><code>helm install https://github.com/oracle/oci-service-broker/releases/download/v1.3.2/oci-service-broker-1.3.2.tgz <span class="se">\</span>
   --namespace mushop <span class="se">\</span>
   --name oci-service-broker <span class="se">\</span>
+  --set ociCredentials.secretName<span class="o">=</span>oci-service-broker <span class="se">\</span>
+  --set storage.etcd.useEmbedded<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+  --set tls.enabled<span class="o">=</span><span class="nb">false</span>
+</code></pre><pre class="highlight shell tab-shell--helm3"><code>helm install oci-service-broker https://github.com/oracle/oci-service-broker/releases/download/v1.3.2/oci-service-broker-1.3.2.tgz <span class="se">\</span>
+  --namespace mushop <span class="se">\</span>
   --set ociCredentials.secretName<span class="o">=</span>oci-service-broker <span class="se">\</span>
   --set storage.etcd.useEmbedded<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
   --set tls.enabled<span class="o">=</span><span class="nb">false</span>
@@ -768,9 +831,13 @@ values:</p>
 <p>The above command will deploy the OCI Service Broker using an embedded etcd instance. It is not recommended to deploy the OCI Service Broker using an embedded etcd instance and tls disabled in production environments, instead a separate etcd cluster should be setup and used by the OCI Service Broker.</p>
 </blockquote></li>
 <li><p>Now establish the link between Service Catalog and the OCI Service Broker implementation by installing the <code>provision</code> chart:</p>
-<pre class="highlight shell tab-shell"><code>helm install provision <span class="se">\</span>
+<pre class="highlight shell tab-shell--helm2"><code>helm install provision <span class="se">\</span>
   --namespace mushop <span class="se">\</span>
   --name mushop-provision <span class="se">\</span>
+  --set skip.ociCredentials<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+  --set global.osb.compartmentId<span class="o">=</span>&lt;compartmentId&gt;
+</code></pre><pre class="highlight shell tab-shell--helm3"><code>helm install mushop-provision provision <span class="se">\</span>
+  --namespace mushop <span class="se">\</span>
   --set skip.ociCredentials<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
   --set global.osb.compartmentId<span class="o">=</span>&lt;compartmentId&gt;
 </code></pre>
@@ -786,9 +853,13 @@ values:</p>
 <p>Having completed the <a href="#provision">Provisioning</a> steps above, the <code>mushop</code> deployment
 helm chart is used with settings to leverage cloud backing services and their resulting
 <code>servicebindings</code> with connection information</p>
-<pre class="highlight shell tab-shell"><code>helm install mushop <span class="se">\</span>
-  --namespace mushop <span class="se">\</span>
+<pre class="highlight shell tab-shell--helm2"><code>helm install ./mushop <span class="se">\</span>
   --name mushop <span class="se">\</span>
+  --namespace mushop <span class="se">\</span>
+  --set global.osb.atp<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+  --set skip.streaming<span class="o">=</span><span class="nb">true</span>
+</code></pre><pre class="highlight shell tab-shell--helm3"><code>helm install mushop ./mushop <span class="se">\</span>
+  --namespace mushop <span class="se">\</span>
   --set global.osb.atp<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
   --set skip.streaming<span class="o">=</span><span class="nb">true</span>
 </code></pre>
@@ -796,7 +867,7 @@ helm chart is used with settings to leverage cloud backing services and their re
   The above command includes <code>--skip.streaming=true</code> indicating that the Streaming
   configurations should be excluded. Refer to details in <a href="https://github.com/oracle-quickstart/oci-cloudnative/blob/master/deploy/complete/helm-chart/mushop/values.yaml">values.yaml</a> for information on connecting to the Streaming service
 </aside>
-<h1 id='extras'>Extras</h1><h2 id='metrics'>Metrics</h2>
+<h1 id='extras'>Extras</h1><h2 id='prometheus-and-grafana-monitoring'>Prometheus and Grafana Monitoring</h2>
 <p>Prometheus and Grafana are installed part of the <a href="#setup"><code>setup</code></a> umbrella helm chart.
 Revisit the application charts and connect to some Grafana dashboards:</p>
 
@@ -825,12 +896,12 @@ mushop        1               Wed Nov 13 20:23:28 2019        DEPLOYED        mu
 <ul>
 <li><a href="https://grafana.com/grafana/dashboards/6417">Kubernetes Cluster</a></li>
 <li><a href="https://grafana.com/grafana/dashboards/6336">Kubernetes Pods</a></li>
-</ul>
-
-<blockquote>
-<p>Many community dashboards exist, those above are some basic recommendations</p>
-</blockquote></li>
+</ul></li>
 </ol>
+
+<aside class="notice">
+  Many community dashboards exist, those above are some basic recommendations
+</aside>
 <h1 id='cleanup'>Cleanup</h1>
 <p>The following list represents cleanup operations, which may vary
 depending on the actions performed for setup and deployment of MuShop.</p>
@@ -849,7 +920,7 @@ mushop        1               Wed Nov 13 20:23:28 2019        DEPLOYED        mu
 <pre class="highlight shell tab-shell"><code>helm delete --purge mushop-setup
 </code></pre></li>
 </ul>
-<h1 id='acknowledgements'>Acknowledgements</h1>
+<h1 id='acknowledgements'>Acknowledgements</h1><h2 id='community'>Community</h2>
 <p>This project, and its associative materials utilizes many excellent projects from
 the open source community. While there are numerous, the following projects deserve
 some special recognition:</p>
@@ -860,9 +931,13 @@ some special recognition:</p>
 <li><a href="https://revealjs.com/">Reveal.js</a>: HTML presentation tool used to develop workshop materials</li>
 <li><a href="https://github.com/chekromul/uikit-ecommerce-template">Roman Chekurov</a>: Inspiration and basis for MuShop UI</li>
 </ul>
+<h2 id='contributors'>Contributors</h2>
+<p>Thanks to all our contributors for their commitment to open source!</p>
+
+<div id="muContributors" class="flex flex-wrap gutters"></div>
 
       </div>
-      <div class="dark-box redwood-bar">
+      <div class="dark-box">
       </div>
       <div class="footer-wrapper">
       </div>
