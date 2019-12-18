@@ -5,7 +5,7 @@ on:
     paths:
     - 'src/docs/**'
 jobs:
-  build-and-deploy:
+  test-build:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
