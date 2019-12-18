@@ -23,7 +23,7 @@ Licensed under the Universal Permissive License v 1.0 as shown at http://oss.ora
   $(function() {
     var api = 'https://api.github.com/repos/oracle-quickstart/oci-cloudnative/contributors';
     $.getJSON(api, function(data) {
-      return data && data.filter(row => row.type.toLowerCase() === 'user')
+      return data && data.filter(function(row) { return row.type.toLowerCase() === 'user' })
         .map(addContributor.bind(null, $('#muContributors')));
     });
   });
