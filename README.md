@@ -1,16 +1,16 @@
 ![MuShop Logo](./images/logo.png)
 
 ---
-MuShop is a showcase of several [Oracle Cloud Infrastructure (OCI)][oci] services in a unified reference application. The sample application implements an e-commerce platform built as a set of micro-services. The accompanying content can be used as a self paced workshop to get started with cloud native application development on [Oracle Cloud Infrastructure (OCI)][oci].
+MuShop is a showcase of several [Oracle Cloud Infrastructure][oci] services in a unified reference application. The sample application implements an e-commerce platform built as a set of micro-services. The accompanying content can be used to get started with cloud native application development on [Oracle Cloud Infrastructure][oci].
 
 | ![home](./images/screenshot/mushop.home.png) | ![browse](./images/screenshot/mushop.browse.png) | ![cart](./images/screenshot/mushop.cart.png) | ![about](./images/screenshot/mushop.about.png) |
 |---|---|---|---|
 
-MuShop can be deployed in different ways to explore [Oracle Cloud Infrastructure (OCI)][oci] based on your subscription. Both deployment models can be used with trial subscriptions. However, [Oracle Cloud Infrastructure (OCI)][oci] offers an *Always Free* tier with resources that can be used indefinitely.
+MuShop can be deployed in different ways to explore [Oracle Cloud Infrastructure][oci] based on your subscription. Both deployment models can be used with trial subscriptions. However, [Oracle Cloud Infrastructure][oci] offers an *Always Free* tier with resources that can be used indefinitely.
 
 | [Basic: `deploy/basic`](#Getting-Started-with-MuShop-Basic) | [Complete: `deploy/complete`](#Getting-Started-with-MuShop-Complete) |
 |--|--|
-| Simplified runtime utilizing **only** [Always Free](https://www.oracle.com/cloud/free/) resources. Deployed using [Terraform][tf] and [Resource Manager](https://www.oracle.com/cloud/systems-management/resource-manager/) | Full-featured [Kubernetes](https://kubernetes.io/) micro-services deployment showcasing Oracle [Cloud Native](https://www.oracle.com/cloud/cloud-native/) technologies and backing services |
+| Simplified runtime utilizing **only** [Always Free](https://www.oracle.com/cloud/free/) resources. Deployed using [Terraform][tf] and [Resource Manager](https://www.oracle.com/cloud/systems-management/resource-manager/) | Polyglot set of micro-services deployed on [Kubernetes](https://kubernetes.io/), showcasing Oracle [Cloud Native](https://www.oracle.com/cloud/cloud-native/) technologies and backing services |
 
 ```text
 mushop
@@ -21,11 +21,9 @@ mushop
 
 ## Getting Started with MuShop Basic
 
-This is a Terraform configuration that deploys the MuShop basic sample application on [Oracle Cloud Infrastructure (OCI)][oci].
+This is a Terraform configuration that deploys the MuShop basic sample application on [Oracle Cloud Infrastructure][oci] and is designed to run using only the Always Free tier resources.
 
-MuShop Basic is a 3-tier web application that implements an e-commerce site. It is built to showcase the features of [Oracle Cloud Infrastructure (OCI)][oci]. This application is designed to run using only the Always Free tier resources. The services run directly on OCI compute resources and leverage [Oracle Cloud Infrastructure (OCI)][oci] services.
-
-The repository contains the application code as well as the [Terraform][tf] code to create a [Resource Manager][orm] stack, that creates all the required resources and configures the application on the created resources.
+The repository contains the application code as well as the [Terraform][tf] code to create a [Resource Manager][orm] stack, that creates all the required resources and configures the application on the created resources. To simplify getting started, the Resource Manager Stack is created as part of each [release](https://github.com/oracle-quickstart/oci-cloudnative/releases)
 
 The steps below guide you through deploying the application on your tenancy using the OCI Resource Manager.
 
@@ -58,7 +56,7 @@ lb_public_url = http://xxx.xxx.xxx.xxx
 
 > The application is being deployed to the compute instances asynchronously, and it may take a couple of minutes for the URL to serve the application.
 
-### MuShop Basic Topology
+#### Topology
 
 The following diagram shows the topology created by this stack.
 
@@ -68,11 +66,11 @@ The following diagram shows the topology created by this stack.
 
 ## Getting Started with MuShop Complete
 
-MuShop Complete is a polyglot micro-services application built to showcase a cloud native approach to application development on [Oracle Cloud Infrastructure (OCI)][oci] using Oracle's [cloud native](https://www.oracle.com/cloud/cloud-native/) services. MuShop Complete uses a Kubernetes cluster, and can be deployed using the provided `helm` charts (preferred), or Kubernetes manifests. It is recommended to use an Oracle Container Engine for Kubernetes cluster, however other Kubernetes distributions will also work.
+MuShop Complete is a polyglot micro-services application built to showcase a cloud native approach to application development on [Oracle Cloud Infrastructure][oci] using Oracle's [cloud native](https://www.oracle.com/cloud/cloud-native/) services. MuShop Complete uses a Kubernetes cluster, and can be deployed using the provided `helm` charts (preferred), or Kubernetes manifests. It is recommended to use an Oracle Container Engine for Kubernetes cluster, however other Kubernetes distributions will also work.
 
-The [helm chart documentation][chartdocs] walks through the deployment process and various options for customizing the deployment  
+The [helm chart documentation][chartdocs] walks through the deployment process and various options for customizing the deployment.
 
-### MuShop Complete Topology
+#### Topology
 
 The following diagram shows the topology created by this stack.
 
@@ -80,7 +78,7 @@ The following diagram shows the topology created by this stack.
 
 ## Questions
 
-If you have an issue or a question, please take a look at our [FAQs](./deploy/basic/FAQs.md) or [open an issue](https://github.com/oracle/oci-quickstart-cloudnative/issues/new).
+If you have an issue or a question, please take a look at our [FAQs](./deploy/basic/FAQs.md) or [open an issue](https://github.com/oracle-quickstart/oci-cloudnative/issues/new).
 
 [oci]: https://cloud.oracle.com/en_US/cloud-infrastructure
 [orm]: https://docs.cloud.oracle.com/iaas/Content/ResourceManager/Concepts/resourcemanager.htm
