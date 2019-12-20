@@ -8,5 +8,5 @@ metadata:
   labels:
 {{ include "provision.labels" . | indent 4 }}
 spec:
-  url: http://{{ .Values.global.osb.name }}.{{ .Values.global.osb.namespace }}:{{ .Values.global.osb.port }}
+  url: http://{{ .Values.global.osb.name }}.{{ .Release.Namespace }}:{{ .Values.global.osb.port }}
 {{- end }}

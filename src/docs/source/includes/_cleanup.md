@@ -5,8 +5,12 @@ depending on the actions performed for setup and deployment of MuShop.
 
 - List any `helm` releases that may have been installed:
 
-    ```text
+    ```shell--helm2
     helm list
+    ```
+
+    ```shell--helm3
+    helm list --all-namespaces
     ```
 
     ```text
@@ -17,12 +21,20 @@ depending on the actions performed for setup and deployment of MuShop.
 
 - Remove the application from Kubernetes where `--name mushop` was used during install:
 
-    ```shell
+    ```shell--helm2
     helm delete --purge mushop
+    ```
+
+    ```shell--helm3
+    helm delete mushop
     ```
 
 - Remove the `setup` cluster dependency installation:
 
-    ```shell
+    ```shell--helm2
     helm delete --purge mushop-setup
+    ```
+
+    ```shell--helm3
+    helm delete mushop-setup
     ```

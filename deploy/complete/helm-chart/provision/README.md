@@ -10,7 +10,7 @@ Prerequisites:
 1. Install the OCI service broker:
 
     ```text
-    helm install https://github.com/oracle/oci-service-broker/releases/download/v1.3.1/oci-service-broker-1.3.1.tgz  --name oci-service-broker \
+    helm install oci-service-broker https://github.com/oracle/oci-service-broker/releases/download/v1.3.2/oci-service-broker-1.3.2.tgz \
       --namespace $MUSHOP_NAMESPACE \
       --set ociCredentials.secretName=oci-service-broker \
       --set storage.etcd.useEmbedded=true \

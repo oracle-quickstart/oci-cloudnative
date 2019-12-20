@@ -1,0 +1,26 @@
+name: Test Build Slate Docs
+
+on:
+  pull_request:
+    paths:
+    - 'src/docs/**'
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Setup Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+    - name: Setup Ruby
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.6.x
+    - name: Build Slate Docs
+      run: |
+          cd src/docs
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+          bundle exec middleman build --clean

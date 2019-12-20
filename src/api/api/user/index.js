@@ -22,16 +22,30 @@
 
     /**
      * user resource uri
-     * @param {express.Request} req 
-     * @param {string} resource 
+     * @param {express.Request} req
+     * @param {string} resource
      */
     function resourceUri(req, resource) {
         const custId = helpers.getCustomerId(req);
         return `${endpoints.customersUrl}/${custId}/${resource}`;
     }
 
+    /**
+     * Attempt to update cart with customerId if present.
+     * @param {express.Request} req
+     * @param {customerId} the customer id
+     */
+    async function updateCart(req, customerId) {
+      const cartId = req.session.cartId;
+      if (cartId) {
+          await axios.post(endpoints.cartsUrl + "/" + cartId, {
+            customerId: customerId
+          });
+      }
+    }
+
     app.get("/profile", profile);
-    
+
     app.get("/customers/:id", function(req, res, next) {
         const { id } = req.params;
         const userId = helpers.getCustomerId(req);
@@ -105,9 +119,10 @@
     app.post("/register", async (req, res, next) => {
         try {
             const { status, data: user } = await axios.post(endpoints.registerUrl, req.body);
+            await updateCart(req, user.id).catch();
             helpers.setAuthenticated(req, res, user.id)
-                .status(status)
-                .json({ id: user.id });
+                   .status(status)
+                   .json({ id: user.id });
         } catch (e) {
             next(e);
         }
@@ -122,9 +137,10 @@
                 username,
                 password,
             });
+            await updateCart(req, user.id).catch();
             helpers.setAuthenticated(req, res, user.id)
-                .status(200)
-                .send('OK');
+                   .status(200)
+                   .send('OK');
         } catch (e) {
             res.status(401).end();
         }

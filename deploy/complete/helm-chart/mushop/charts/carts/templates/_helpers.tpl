@@ -100,15 +100,15 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
   mountPath: /usr/lib/oracle/19.3/client64/lib/network/admin/
   readOnly: true
 # for runtime
-- mountPath: /app/config/keystore.jks
+- mountPath: {{ .Values.tnsAdmin }}/keystore.jks
   subPath: keystore.jks
   name: wallet
   readOnly: true
-- mountPath: /app/config/truststore.jks
+- mountPath: {{ .Values.tnsAdmin }}/truststore.jks
   subPath: truststore.jks
   name: wallet
   readOnly: true
-- mountPath: /app/config/tnsnames.ora
+- mountPath: {{ .Values.tnsAdmin }}/tnsnames.ora
   subPath: tnsnames.ora
   name: wallet
   readOnly: true

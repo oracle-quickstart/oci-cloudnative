@@ -14,9 +14,3 @@ scenarios for many Oracle Cloud Infrastructure services.
 > Each microservice in MuShop is designed to highlight its own, or common high-level
 subject in Oracle Cloud Infrastructure, while keeping context of the demo application.
 
-## Goals
-
-- Explore [Cloud Native](#cloud-native) services offered by Oracle Cloud Infrastructure
-- Build and deploy microservices with [Container Engine for Kubernetes](https://www.oracle.com/cloud/compute/container-engine-kubernetes.html) (OKE)
-- Experience Oracle Cloud services integrated into a single project
-- Provide reference implementations and sample code for real-world development

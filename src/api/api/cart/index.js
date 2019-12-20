@@ -48,17 +48,20 @@
     if (!item.id) {
       return next(helpers.createError("Must pass id of item to add", 400));
     }
-    
     try {
       // lookup product information
       const product = await common.getProduct(item.id);
       // post to cart items with default quantity
-      const { status } = await axios.post(endpoints.cartsUrl + "/" + cartId + "/items", {
-        itemId: product.id,
-        unitPrice: product.price,
+
+      const { status } = await axios.post(endpoints.cartsUrl + "/" + cartId, {
+        customerId: helpers.isLoggedIn(req) ? req.session.customerId : null,
+        items: [{
+          itemId: product.id,
+          unitPrice: product.price,
+        }]
       });
       // verify created
-      if (status !== 201) {
+      if (status !== 201 && status != 200) {
         return next(helpers.createError("Unable to add to cart. Status code: " + status, status));
       }
       helpers.respondStatus(res, status);
@@ -100,6 +103,6 @@
     }
 
   });
-  
+
   module.exports = app;
 }());
