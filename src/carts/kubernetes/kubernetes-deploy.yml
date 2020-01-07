@@ -1,64 +1,9 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: carts-db
-  labels:
-    name: carts-db
-  namespace: durhamdenim
-spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        name: carts-db
-    spec:
-      containers:
-      - name: carts-db
-        image: mongo
-        ports:
-        - name: mongo
-          containerPort: 27017
-        securityContext:
-          capabilities:
-            drop:
-              - all
-            add:
-              - CHOWN
-              - SETGID
-              - SETUID
-          readOnlyRootFilesystem: true
-        volumeMounts:
-        - mountPath: /tmp
-          name: tmp-volume
-      volumes:
-        - name: tmp-volume
-          emptyDir:
-            medium: Memory
-      nodeSelector:
-        beta.kubernetes.io/os: linux
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: carts-db
-  labels:
-    name: carts-db
-  namespace: durhamdenim
-spec:
-  ports:
-    # the port that this service should serve on
-  - port: 27017
-    targetPort: 27017
-  selector:
-    name: carts-db
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
   name: carts
   labels:
     name: carts
-  namespace: durhamdenim
 spec:
   replicas: 1
   template:
@@ -68,12 +13,10 @@ spec:
     spec:
       containers:
       - name: carts
-        image: oracleateam/carts:latest
+        image: mushop/carts:latest
         ports:
          - containerPort: 80
         env:
-         - name: ZIPKIN
-           value: zipkin.jaeger.svc.cluster.local
          - name: JAVA_OPTS
            value: -Xms64m -Xmx128m -XX:PermSize=32m -XX:MaxPermSize=64m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom
         securityContext:
@@ -88,6 +31,7 @@ spec:
         volumeMounts:
         - mountPath: /tmp
           name: tmp-volume
+        imagePullPolicy: Never
       volumes:
         - name: tmp-volume
           emptyDir:
@@ -101,7 +45,6 @@ metadata:
   name: carts
   labels:
     name: carts
-  namespace: durhamdenim
 spec:
   ports:
     # the port that this service should serve on

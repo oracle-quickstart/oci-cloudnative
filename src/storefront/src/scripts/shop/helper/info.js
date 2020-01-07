@@ -70,6 +70,10 @@ export const ServiceType = {
     icon: 'java.png',
     scale: 1.5,
   },
+  HELIDON: {
+    name: 'Helidon',
+    icon: 'helidon.svg',
+  },
   NODE: {
     name: 'Node.js',
     icon: 'nodejs.png',
@@ -189,7 +193,7 @@ export const Services = {
   },
   CART: {
     name: 'Carts',
-    type: ServiceType.JAVA,
+    type: ServiceType.HELIDON,
     tech: TechType.OKE,
   },
   ORDERS: {
