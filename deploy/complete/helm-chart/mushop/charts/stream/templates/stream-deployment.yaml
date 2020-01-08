@@ -1,4 +1,4 @@
-{{- $credentialSecret := (required "Value .ociSecretName is required!" (.Values.ociSecretName | default .Values.global.ociSecretName)) -}}
+{{- if ne .Values.global.mock.service "all" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -31,6 +31,7 @@ spec:
             - containerPort: 80
               protocol: TCP
           env:
+          {{- $credentialSecret := required "Value .ociAuthSecret is required!" (.Values.ociAuthSecret | default .Values.global.ociAuthSecret) }}
           - name: STREAM_ID
             valueFrom:
               secretKeyRef:
@@ -72,8 +73,10 @@ spec:
               secretKeyRef:
                 name: {{ $credentialSecret }}
                 key: passphrase
+                optional: true
           - name: OCI_API_KEY
             valueFrom:
               secretKeyRef:
                 name: {{ $credentialSecret }}
                 key: privatekey
+{{- end -}}

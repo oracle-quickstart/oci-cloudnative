@@ -13,7 +13,6 @@ global:
     - carts
     - orders
     - user
-  ociSecretName:
   # Leave values empty to auto-generate them
   oadbAdminPassword: 
   oadbWalletPassword:

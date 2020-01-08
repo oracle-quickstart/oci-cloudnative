@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   repository: redis
   tag: alpine
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
 
 securityContext:
   capabilities:

@@ -1,5 +1,5 @@
 {{- $usesOsb := (index (.Values.global | default .Values) "osb").atp | default .Values.osb.atp -}}
-{{- if or $usesOsb (and .Values.secrets.oadbAdminPassword .Values.secrets.oadbUser .Values.secrets.oadbPassword) }}
+{{- if or $usesOsb .Values.oadbAdminSecret .Values.global.oadbAdminSecret .Values.secrets.oadbAdminPassword  }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -17,7 +17,6 @@ spec:
       initContainers:
         {{- include "user.init.wallet" . | nindent 8 }}
         # DbTools Init
-        {{- if or $usesOsb .Values.secrets.oadbAdminPassword }}
         - name: init
           image: "{{ .Values.dbtools.repository }}:{{ .Values.dbtools.tag }}"
           imagePullPolicy: {{ .Values.dbtools.pullPolicy }}
@@ -30,7 +29,6 @@ spec:
           volumeMounts:
             {{- include "user.mount.wallet" . | nindent 12 }}
             {{- include "user.mount.initdb" . | nindent 12 }}
-        {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

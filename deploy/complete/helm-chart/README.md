@@ -154,49 +154,20 @@ These services are configured using kubernetes secrets.
 
     ```yaml
     global:
-      oadbWalletSecret: oadb-wallet # Name of wallet secret created earlier
-
-    carts:
-      oadbWalletSecret:       # Empty unless using a separate database/wallet for this service
-      secrets:
-        oadbAdminPassword:    # ADMIN password entered when provisioning ATP database
-        oadbWalletPassword:   # Wallet password entered when downloading ATP connection Wallet
-        oadbService:          # TNS Name displayed when the Wallet is downloaded an example would be `mushopdb_TP`
-        oadbUser: carts_user  # can be changed as long as oadbAdminPassword is available
-        oadbPassword: 'default_Pass1' # can be changed as long as oadbAdminPassword is available
-
-    catalogue:
-      oadbWalletSecret:       # Empty unless using a separate database/wallet for this service
-      secrets:
-        oadbAdminPassword:    # ADMIN password entered when provisioning ATP database
-        oadbService:          # TNS Name displayed when the Wallet is downloaded an example would be `mushopdb_TP`
-        oadbUser: catalogue_user  # can be changed as long as oadbAdminPassword is available
-        oadbPassword: 'default_Pass1' # can be changed as long as oadbAdminPassword is available
-
-    orders:
-      oadbWalletSecret:       # Empty unless using a separate database/wallet for this service
-      secrets:
-        oadbAdminPassword:    # ADMIN password entered when provisioning ATP database
-        oadbWalletPassword:   # Wallet password entered when downloading ATP connection Wallet
-        oadbService:          # TNS Name displayed when the Wallet is downloaded an example would be `mushopdb_TP`
-        oadbUser: orders_user  # can be changed as long as oadbAdminPassword is available
-        oadbPassword: 'default_Pass1' # can be changed as long as oadbAdminPassword is available
-
-    user:
-      oadbWalletSecret:       # Empty unless using a separate database/wallet for this service
-      secrets:
-        oadbAdminPassword:    # ADMIN password entered when provisioning ATP database
-        oadbService:          # TNS Name displayed when the Wallet is downloaded an example would be `mushopdb_TP`
-        oadbUser: users_user  # can be changed as long as oadbAdminPassword is available
-        oadbPassword: 'default_Pass1' # can be changed as long as oadbAdminPassword is available
+      ociAuthSecret: oci-credentials        # OCI authentication credentials secret name
+      oadbAdminSecret: oadb-admin           # Name of DB Admin secret created earlier
+      oadbWalletSecret: oadb-wallet         # Name of wallet secret created earlier
+      oadbConnectionSecret: oadb-connection # Name of connection secret created earlier
 
     secrets:
       streams:
-        region:         # Region where resources will be provisioned. (ex: us-phoenix-1)
+        region:         # Region where stream is provisioned
         streamId:       # Stream OCID value
         streamName:     # Stream name
         compartmentId:  # Stream Compartment OCID value
     ```
+
+    > **NOTE:** If it's desired to connect a separate databases for a given service, you can specify values specific for each service, such as `carts.oadbAdminSecret`, `carts.oadbWalletSecret`... 
 
 ### Dev installation
 
