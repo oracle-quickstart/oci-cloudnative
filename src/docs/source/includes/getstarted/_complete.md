@@ -96,7 +96,7 @@ testing, and cases where cloud connectivity is not available.
 
 From `deploy/complete/helm-chart` directory:
 
-1. Deploy "mock mode" with `helm`:
+1. Deploy _"mock mode"_ with `helm`:
 
     ```shell--helm2
     helm install mushop \

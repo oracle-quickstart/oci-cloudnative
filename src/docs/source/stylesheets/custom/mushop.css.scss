@@ -82,6 +82,8 @@ html, body {
   aside {
     margin-top: 1rem;
     margin-bottom: 1rem;
+    padding-left: $main-padding;
+    padding-right: $main-padding;
     &.notice {
       // color: $o-color-light !important;
       * { color: inherit; }
@@ -217,7 +219,7 @@ html, body {
     }
     $radius: 3px;
     a {
-      color: $nav-text;
+      color: $o-color-light;
       display: block;
       padding: .375em .75em;
       border: 1px solid $o-color-light;
@@ -231,7 +233,6 @@ html, body {
         background: $o-color-darkish;
       }
       &.active {
-        color: $o-color-black;
         background: $o-color-blue;
       }
       &:first-child {
