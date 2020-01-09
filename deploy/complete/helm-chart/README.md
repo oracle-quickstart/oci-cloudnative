@@ -64,7 +64,7 @@ The installed dependencies are listed below. Note that any can be disabled as ne
 The `provision` chart is an application of the open-source [OCI Service Broker](https://github.com/oracle/oci-service-broker)
 for _provisioning_ Oracle Cloud Infrastructure services. This implementation utilizes [Open Service Broker](https://github.com/openservicebrokerapi/servicebroker/blob/v2.14/spec.md) in Oracle Container Engine for Kubernetes or in other Kubernetes clusters.
 
-Using the `provision` chart is **optional**, 
+Using the `provision` chart is **OPTIONAL**, and will replace the manual ATP provisioning steps outlined below
 
 See [./provision/README.md](./provision/README.md) for complete usage details.
 
@@ -124,6 +124,14 @@ These services are configured using kubernetes secrets.
           --from-literal=oadb_admin_pw='<DB_ADMIN_PASSWORD>'
         ```
 
+    - Create `oadb-wallet` secret with the Wallet _contents_ using the downloaded `Wallet_*.zip`. The extracted `Wallet_*` directory is specified as the secret contents.
+
+        ```shell
+        kubectl create secret generic oadb-wallet \
+          --namespace mushop \
+          --from-file=<PATH_TO_EXTRACTED_WALLET_FOLDER>
+        ```
+
     - Create `oadb-connection` secret with the Wallet **password** and the service **TNS name** to use for connections.
 
         ```shell
@@ -135,36 +143,35 @@ These services are configured using kubernetes secrets.
 
         > Each database has 5 unique TNS Names displayed when the Wallet is downloaded an example would be `mushopdb_TP`.
 
-    - Create `oadb-wallet` secret with the Wallet _contents_ using the downloaded `Wallet_*.zip`. The extracted `Wallet_*` directory is specified as the secret contents.
-
-        ```shell
-        kubectl create secret generic oadb-wallet \
-          --namespace mushop \
-          --from-file=<PATH_TO_EXTRACTED_WALLET_FOLDER>
-        ```
-
-1. **Optional**: Instead of creating a shared database for the application, you may establish full separation of services by provisioning individual ATP instances for each service that requires a database. To do so, repeat the previous steps for each database,and give each secret a unique name, for example: `carts-oadb-admin`, `carts-oadb-connection`, `carts-oadb-wallet`.
+1. **Optional**: Instead of creating a shared database for the entire application, you may establish full separation of services by provisioning _individual_ ATP instances for each service that requires a database. To do so, repeat the previous steps for each database,and give each secret a unique name, for example: `carts-oadb-admin`, `carts-oadb-connection`, `carts-oadb-wallet`.
 
     - `carts`
     - `catalogue`
     - `orders`
     - `user`
 
+1. Provision a Streaming instance from the [Oracle Cloud Infrastructure Console](https://console.us-phoenix-1.oraclecloud.com/storage/streaming), and make note of the created Stream `OCID` value.
+
+    - Create `oss-connection` secret containing the Stream connection details.
+
+        ```shell
+        kubectl create secret generic oss-connection \
+          --namespace mushop \
+          --from-literal=compartmentId='<COMPARTMENT_OCID>' \
+          --from-literal=region='<REGION_NAME>' \
+          --from-literal=streamId='<STREAM_OCID>' \
+          --from-literal=streamName='<STREAM_NAME>'
+        ```
+
 1. Make a copy of the [`values-dev.yaml`](./mushop/values-dev.yaml) file in this directory. Then complete the missing values (e.g. secrets) like the following:
 
     ```yaml
     global:
-      ociAuthSecret: oci-credentials        # OCI authentication credentials secret name
-      oadbAdminSecret: oadb-admin           # Name of DB Admin secret created earlier
-      oadbWalletSecret: oadb-wallet         # Name of wallet secret created earlier
-      oadbConnectionSecret: oadb-connection # Name of connection secret created earlier
-
-    secrets:
-      streams:
-        region:         # Region where stream is provisioned
-        streamId:       # Stream OCID value
-        streamName:     # Stream name
-        compartmentId:  # Stream Compartment OCID value
+      ociAuthSecret: oci-credentials        # OCI authentication credentials secret
+      ossStreamSecret: oss-connection       # Name of Stream connection secret
+      oadbAdminSecret: oadb-admin           # Name of DB Admin secret
+      oadbWalletSecret: oadb-wallet         # Name of Wallet secret
+      oadbConnectionSecret: oadb-connection # Name of DB Connection secret
     ```
 
     > **NOTE:** If it's desired to connect a separate databases for a given service, you can specify values specific for each service, such as `carts.oadbAdminSecret`, `carts.oadbWalletSecret`... 
@@ -236,7 +243,7 @@ helm install --name cert-manager --namespace cert-manager jetstack/cert-manager
 
 ### Installing Mushop
 
-For prod/test installation, you can use the `values-prod.yaml` or `values-test.yaml` and call Helm install and pass in the values file:
+For prod/test installation, you can use the `values-prod.yaml` and call Helm install and pass in the values file:
 
 ```bash
 helm install -f /mushop/values-prod.yaml mymushop mushop --dry-run --debug

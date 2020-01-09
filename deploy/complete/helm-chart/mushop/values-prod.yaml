@@ -1,6 +1,9 @@
 global:
-  mock:
-    service: "false"
+  ociAuthSecret: oci-credentials        # OCI authentication credentials secret name
+  ossStreamSecret: oss-connection       # Name of Stream Connection secret
+  oadbAdminSecret: oadb-admin           # Name of DB Admin secret created earlier
+  oadbWalletSecret: oadb-wallet         # Name of wallet secret created earlier
+  oadbConnectionSecret: oadb-connection # Name of connection secret created earlier
 
 ingress:
   enabled: true
@@ -18,11 +21,3 @@ ingress:
 
   # If TLS is provided, cert-manager needs to be installed.
   tls: true
-
-secrets:
-  streams:
-    region:
-    compartmentId:
-    streamName:
-    # future support
-    streamId:

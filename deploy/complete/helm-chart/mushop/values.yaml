@@ -4,6 +4,7 @@ global:
   osb:
     instanceName: mushop
   ociAuthSecret:
+  ossStreamSecret:
   oadbAdminSecret:
   oadbWalletSecret:
   oadbConnectionSecret:
@@ -54,5 +55,4 @@ secrets:
     region:
     compartmentId:
     streamName:
-    # future support
     streamId:

@@ -32,25 +32,26 @@ spec:
               protocol: TCP
           env:
           {{- $credentialSecret := required "Value .ociAuthSecret is required!" (.Values.ociAuthSecret | default .Values.global.ociAuthSecret) }}
+          {{- $streamSecret := .Values.global.ossStreamSecret | default (printf "%s-oss-connection" .Release.Name) }}
           - name: STREAM_ID
             valueFrom:
               secretKeyRef:
-                name: {{ .Release.Name }}-oss-connection
+                name: {{ $streamSecret }}
                 key: streamId
           - name: STREAM_NAME
             valueFrom:
               secretKeyRef:
-                name: {{ .Release.Name }}-oss-connection
+                name: {{ $streamSecret }}
                 key: streamName
           - name: OCI_COMPARTMENT_ID
             valueFrom:
               secretKeyRef:
-                name: {{ .Release.Name }}-oss-connection
+                name: {{ $streamSecret }}
                 key: compartmentId
           - name: OCI_REGION
             valueFrom:
               secretKeyRef:
-                name: {{ .Release.Name }}-oss-connection
+                name: {{ $streamSecret }}
                 key: region
           # oci credentials
           - name: OCI_TENANT_ID
