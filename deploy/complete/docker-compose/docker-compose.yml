@@ -7,7 +7,7 @@ services:
     hostname: edge-router
     restart: always
     ports:
-      - "80:80"
+      - "80:8080"
     cap_drop:
       - all
     cap_add:
@@ -18,7 +18,7 @@ services:
 
   # Storefront application middleware
   api:
-    image: iad.ocir.io/oracle/ateam/mushop-api:2.0.0
+    image: iad.ocir.io/oracle/ateam/mushop-api:2.0.1
     hostname: api
     restart: always
     cap_drop:
@@ -26,6 +26,8 @@ services:
     cap_add:
       - NET_BIND_SERVICE
     read_only: true
+    ports:
+      - "8080:3000"
     environment:
       - reschedule=on-node-failure
       - PORT=3000
@@ -34,6 +36,8 @@ services:
       - CARTS_URL=http://carts
       - ORDERS_URL=http://orders
       - USERS_URL=http://user
+      - MOCK_MODE=users,catalogue
+      - DEBUG=true
 
   # Redis session DB
   session-db:
@@ -74,7 +78,7 @@ services:
 
   # OCI Catalog service
   catalogue:
-    image: iad.ocir.io/oracle/ateam/mushop-catalogue:1.1
+    image: iad.ocir.io/oracle/ateam/mushop-catalogue:1.2
     hostname: catalogue
     restart: always
     cap_drop:
@@ -90,7 +94,7 @@ services:
 
   # OCI Carts service
   carts:
-    image: iad.ocir.io/oracle/ateam/mushop-carts:1.0.1
+    image: iad.ocir.io/oracle/ateam/mushop-carts:1.1.0
     ports:
       - 8086:80
     hostname: carts
@@ -105,12 +109,12 @@ services:
     environment:
       - OADB_USER=carts_user
       - OADB_PW=Default_Password123#
-      - OADB_SERVICE=mcarts_tp
+      - OADB_SERVICE=mock
       - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
 
   # OCI Orders service
   orders:
-    image: iad.ocir.io/oracle/ateam/mushop-orders:1.0.2
+    image: iad.ocir.io/oracle/ateam/mushop-orders:1.0.3
     ports:
       - 8085:80
     hostname: orders
@@ -125,7 +129,7 @@ services:
     environment:
       - OADB_USER=orders_user
       - OADB_PW=Default_Password123#
-      - OADB_SERVICE=morders_tp
+      - OADB_SERVICE=mock
       - JAVA_OPTS=-Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
 
   # Shipping service
@@ -150,23 +154,23 @@ services:
       - OCI_API_KEY
 
   # OCI Stream
-  stream:
-    image: iad.ocir.io/oracle/ateam/mushop-stream:1.0.0
-    hostname: stream
-    restart: always
-    cap_drop:
-      - all
-    cap_add:
-      - NET_BIND_SERVICE
-    read_only: true
-    environment:
-      - reschedule:on-node-failure
-      - OCI_TENANT_ID
-      - OCI_COMPARTMENT_ID
-      - OCI_REGION
-      - OCI_USER_ID
-      - OCI_FINGERPRINT
-      - OCI_API_KEY
+  # stream:
+  #   image: iad.ocir.io/oracle/ateam/mushop-stream:1.0.0
+  #   hostname: stream
+  #   restart: always
+  #   cap_drop:
+  #     - all
+  #   cap_add:
+  #     - NET_BIND_SERVICE
+  #   read_only: true
+  #   environment:
+  #     - reschedule:on-node-failure
+  #     - OCI_TENANT_ID
+  #     - OCI_COMPARTMENT_ID
+  #     - OCI_REGION
+  #     - OCI_USER_ID
+  #     - OCI_FINGERPRINT
+  #     - OCI_API_KEY
 
   payment:
     image: iad.ocir.io/oracle/ateam/mushop-payment:0.0.1
