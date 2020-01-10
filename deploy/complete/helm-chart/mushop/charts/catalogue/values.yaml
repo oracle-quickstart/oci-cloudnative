@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   repository: iad.ocir.io/oracle/ateam/mushop-catalogue
   tag: 1.2
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
 
 dbtools:
   repository: iad.ocir.io/oracle/ateam/mushop-dbtools

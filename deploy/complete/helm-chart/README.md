@@ -13,7 +13,8 @@ The `setup` chart includes several recommended installations on the cluster. The
 installations represent common 3rd party services, which integrate with
 Oracle Cloud Infrastructure or enable certain features within the application.
 
-1. `cd deploy/helm-chart`
+1. `cd deploy/complete/helm-chart`
+
 1. Update chart dependencies:
 
     ```text
@@ -22,11 +23,16 @@ Oracle Cloud Infrastructure or enable certain features within the application.
 
     > This is necessary because chart binaries are not included inside the source code
 
-1. Install `setup` chart:
+1. Create namespace:
 
     ```bash
     kubectl create ns mushop-setup
-    helm install mushop-setup setup
+    ```
+
+1. Install `setup` chart:
+
+    ```bash
+    helm install mushop-setup setup --namespace mushop-setup
     ```
 
     If using Helm v2:
@@ -58,65 +64,123 @@ The installed dependencies are listed below. Note that any can be disabled as ne
 The `provision` chart is an application of the open-source [OCI Service Broker](https://github.com/oracle/oci-service-broker)
 for _provisioning_ Oracle Cloud Infrastructure services. This implementation utilizes [Open Service Broker](https://github.com/openservicebrokerapi/servicebroker/blob/v2.14/spec.md) in Oracle Container Engine for Kubernetes or in other Kubernetes clusters.
 
+Using the `provision` chart is **OPTIONAL**, and will replace the manual ATP provisioning steps outlined below
+
 See [./provision/README.md](./provision/README.md) for complete usage details.
 
 ## Installation
+
+Create a Kubernetes namespace where MuShop will be deployed:
+
+```shell
+kubectl create ns mushop
+```
 
 ### QuickStart
 
 For an installation without connecting Oracle Cloud Infrastructure services, use the following:
 
 ```bash
-helm install --set global.mock.service=all mymushop setup
+helm install mymushop mushop \
+  --namespace mushop \
+  --set global.mock.service=all
 ```
 
 If using Helm v2:
 
 ```bash
 helm install mushop --name mymushop \
+    --namespace mushop \
     --set global.mock.service=all
 ```
 
-### Prerequisites
+### Configuration
 
-Deploying the full application requires cloud backing services from Oracle Cloud Infrastructure. These services are configured using kubernetes secrets.
+Deploying the full application requires cloud backing services from Oracle Cloud Infrastructure.
+These services are configured using kubernetes secrets.
 
-Secrets are defined in the `/secrets` folders for each of the following:
+1. Create a secret `oci-credentials` with Oracle Cloud Infrastructure [API credentials](https://docs.cloud.oracle.com/iaas/Content/Functions/Tasks/functionssetupapikey.htm):
 
-1. . [./mushop/secrets](./secrets/README.md)
-1. Carts [./mushop/charts/carts/secrets](./mushop/charts/carts/secrets/README.md)
-1. Catalogue [./mushop/charts/catalogue/secrets](./mushop/charts/catalogue/secrets/README.md)
-1. Orders [./mushop/charts/orders/secrets](./mushop/charts/orders/secrets/README.md)
-1. Users [./mushop/charts/user/secrets](./mushop/charts/user/secrets/README.md)
+    ```shell
+    kubectl create secret generic oci-credentials \
+      --namespace mushop \
+      --from-literal=tenancy=<TENANCY_OCID> \
+      --from-literal=user=<USER_OCID> \
+      --from-literal=region=<USER_OCI_REGION> \
+      --from-literal=fingerprint=<USER_PUBLIC_API_KEY_FINGERPRINT> \
+      --from-literal=passphrase=<PASSPHRASE_STRING> \
+      --from-file=privatekey=<PATH_OF_USER_PRIVATE_API_KEY>
+    ```
 
-> Example folders with secrets in place. This shows a single DB Wallet used
+    > **NOTE:** The passphrase entry is **required**. If you do not have passphrase for your key, just leave empty
 
-```text
-mushop/
-├── charts
-│   ├── carts
-│   │   └── secrets
-│   │       └── Wallet_mymushopdb
-│   ├── catalogue
-│   │   └── secrets
-│   │       └── Wallet_mymushopdb
-│   ├── orders
-│   │   └── secrets
-│   │       └── Wallet_mymushopdb
-│   └── user
-│       └── secrets
-│   │       └── Wallet_mymushopdb
-└── secrets
-    └── oci_streams_api_key.pem
-```
+1. Provision an Autonomous Transaction Processing (ATP) database. Once **RUNNING** download the DB Connection Wallet and configure secrets as follows:
+
+    - Create `oadb-admin` secret containing the database administrator password. Used once for schema initializations.
+
+        ```shell
+        kubectl create secret generic oadb-admin \
+          --namespace mushop \
+          --from-literal=oadb_admin_pw='<DB_ADMIN_PASSWORD>'
+        ```
+
+    - Create `oadb-wallet` secret with the Wallet _contents_ using the downloaded `Wallet_*.zip`. The extracted `Wallet_*` directory is specified as the secret contents.
+
+        ```shell
+        kubectl create secret generic oadb-wallet \
+          --namespace mushop \
+          --from-file=<PATH_TO_EXTRACTED_WALLET_FOLDER>
+        ```
+
+    - Create `oadb-connection` secret with the Wallet **password** and the service **TNS name** to use for connections.
+
+        ```shell
+        kubectl create secret generic oadb-connection \
+          --namespace mushop \
+          --from-literal=oadb_wallet_pw='<DB_WALLET_PASSWORD>' \
+          --from-literal=oadb_service='<DB_TNS_NAME>'
+        ```
+
+        > Each database has 5 unique TNS Names displayed when the Wallet is downloaded an example would be `mushopdb_TP`.
+
+1. **Optional**: Instead of creating a shared database for the entire application, you may establish full separation of services by provisioning _individual_ ATP instances for each service that requires a database. To do so, repeat the previous steps for each database,and give each secret a unique name, for example: `carts-oadb-admin`, `carts-oadb-connection`, `carts-oadb-wallet`.
+
+    - `carts`
+    - `catalogue`
+    - `orders`
+    - `user`
+
+1. Provision a Streaming instance from the [Oracle Cloud Infrastructure Console](https://console.us-phoenix-1.oraclecloud.com/storage/streaming), and make note of the created Stream `OCID` value.
+
+    - Create `oss-connection` secret containing the Stream connection details.
+
+        ```shell
+        kubectl create secret generic oss-connection \
+          --namespace mushop \
+          --from-literal=compartmentId='<COMPARTMENT_OCID>' \
+          --from-literal=region='<REGION_NAME>' \
+          --from-literal=streamId='<STREAM_OCID>' \
+          --from-literal=streamName='<STREAM_NAME>'
+        ```
+
+1. Make a copy of the [`values-dev.yaml`](./mushop/values-dev.yaml) file in this directory. Then complete the missing values (e.g. secrets) like the following:
+
+    ```yaml
+    global:
+      ociAuthSecret: oci-credentials        # OCI authentication credentials secret
+      ossStreamSecret: oss-connection       # Name of Stream connection secret
+      oadbAdminSecret: oadb-admin           # Name of DB Admin secret
+      oadbWalletSecret: oadb-wallet         # Name of Wallet secret
+      oadbConnectionSecret: oadb-connection # Name of DB Connection secret
+    ```
+
+    > **NOTE:** If it's desired to connect a separate databases for a given service, you can specify values specific for each service, such as `carts.oadbAdminSecret`, `carts.oadbWalletSecret`... 
 
 ### Dev installation
 
 The default chart installation creates an Ingress resource for development (i.e. simple Ingress, without the DNS and need for Prod/Staging secrets).
 
-Before installing the chart, ensure all [prerequistes](#prerequisites) are met.
-
-To install the chart, make a copy of the `values.yaml` file, fill in the missing values (e.g. secrets) and then run:
+Before installing the chart, ensure all [configurations](#configuration) are complete.
 
 ```bash
 helm install -f myvalues.yaml mymushop mushop
@@ -138,21 +202,6 @@ If using Helm v2:
 
 ```bash
 helm install mushop --dry-run --debug --name mymushop -f myvalues.yaml
-```
-
-### Installing HPA for components
-
-Optionally, you can enable HPA for components by setting the `hpa.enabled` property to `true`. For example: `api.hpa.enabled=true`, and then pass it to the install command:
-
-```bash
-helm install  -f myvalues.yaml --set api.hpa.enabled=true mymushop mushop --dry-run --debug
-```
-
-If using Helm v2:
-
-```bash
-helm install --dry-run --debug mushop --name mymushop -f myvalues.yaml \
-    --set api.hpa.enabled=true
 ```
 
 ## Prod/Test Installation
@@ -194,7 +243,7 @@ helm install --name cert-manager --namespace cert-manager jetstack/cert-manager
 
 ### Installing Mushop
 
-For prod/test installation, you can use the `values-prod.yaml` or `values-test.yaml` and call Helm install and pass in the values file:
+For prod/test installation, you can use the `values-prod.yaml` and call Helm install and pass in the values file:
 
 ```bash
 helm install -f /mushop/values-prod.yaml mymushop mushop --dry-run --debug

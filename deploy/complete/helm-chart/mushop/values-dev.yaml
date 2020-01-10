@@ -1,4 +1,8 @@
 global:
+  ociAuthSecret: oci-credentials        # OCI authentication credentials secret name
+  oadbAdminSecret: oadb-admin           # Name of DB Admin secret created earlier
+  oadbWalletSecret: oadb-wallet         # Name of wallet secret created earlier
+  oadbConnectionSecret: oadb-connection # Name of connection secret created earlier
   mock:
     service: "false"
 
@@ -7,45 +11,36 @@ ingress:
 
 carts:
   secrets:
-    oadbAdminPassword:
-    oadbWalletPassword:
-    oadbService:
-    # provide your own if oadbAdminPassword is available
-    oadbUser:
-    oadbPassword:
+    oadbAdminPassword:    # ADMIN password entered when provisioning ATP database
+    oadbWalletPassword:   # Wallet password entered when downloading ATP connection Wallet
+    oadbService:          # TNS Name displayed when the Wallet is downloaded an example would be `mushopdb_TP`
+    oadbUser:             # can be changed as long as oadbAdminPassword is available
+    oadbPassword:         # can be changed as long as oadbAdminPassword is available
 
 catalogue:
   secrets:
-    oadbAdminPassword:
-    oadbService:
-    # provide your own if oadbAdminPassword is available
-    oadbUser:
-    oadbPassword:
+    oadbAdminPassword:    # ADMIN password entered when provisioning ATP database
+    oadbService:          # TNS Name displayed when the Wallet is downloaded an example would be `mushopdb_TP`
+    oadbUser:             # can be changed as long as oadbAdminPassword is available
+    oadbPassword:         # can be changed as long as oadbAdminPassword is available
 
 orders:
   secrets:
-    oadbAdminPassword:
-    oadbWalletPassword:
-    oadbService:
-    # provide your own if oadbAdminPassword is available
-    oadbUser:
-    oadbPassword:
+    oadbAdminPassword:    # ADMIN password entered when provisioning ATP database
+    oadbWalletPassword:   # Wallet password entered when downloading ATP connection Wallet
+    oadbService:          # TNS Name displayed when the Wallet is downloaded an example would be `mushopdb_TP`
+    oadbUser:             # can be changed as long as oadbAdminPassword is available
+    oadbPassword:         # can be changed as long as oadbAdminPassword is available
 
 user:
   secrets:
-    oadbAdminPassword:
-    oadbService:
-    # provide your own if oadbAdminPassword is available
-    oadbUser:
-    oadbPassword:
+    oadbAdminPassword:    # ADMIN password entered when provisioning ATP database
+    oadbService:          # TNS Name displayed when the Wallet is downloaded an example would be `mushopdb_TP`
+    oadbUser:             # can be changed as long as oadbAdminPassword is available
+    oadbPassword:         # can be changed as long as oadbAdminPassword is available
  
 secrets:
   streams:
+    streamId:
     streamName:
-    tenantId: 
     compartmentId: 
-    userId: 
-    region: 
-    fingerprint: 
-    passphrase: 
-    keyFile: 
