@@ -1,14 +1,6 @@
 # MuShop Docker
 
 The complete **MuShop** application can be run using `docker-compose` locally.
-Like most 12-factor micro services, **MuShop** is built with testability 
-and portability in mind. The application configuration is [externalized](https://12factor.net/config) 
-from the container image so that the same application container image can be configured 
-to behave differently.  
-
-Using `docker-compose` to run **MuShop** is useful when making changes to individual services or 
-running tests on the application locally. If you have a kubernetes cluster available, the helm 
-based deployment is recommended. Note that you can have a local kubernetes cluster based on [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) or [kind](https://kind.sigs.k8s.io/)
 
 ## Default Configuration
 
