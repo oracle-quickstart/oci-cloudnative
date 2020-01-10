@@ -89,7 +89,7 @@ services:
     environment:
       - reschedule=on-node-failure
       - OADB_USER=catalogue_user
-      - OADB_PW=default_Password1
+      - OADB_PW
       - OADB_SERVICE=mcatalogue_tp
 
   # OCI Carts service
@@ -108,7 +108,7 @@ services:
       - /tmp:rw,noexec,nosuid
     environment:
       - OADB_USER=carts_user
-      - OADB_PW=Default_Password123#
+      - OADB_PW
       - OADB_SERVICE=mock
       - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
 
@@ -128,7 +128,7 @@ services:
       - /tmp:rw,noexec,nosuid
     environment:
       - OADB_USER=orders_user
-      - OADB_PW=Default_Password123#
+      - OADB_PW
       - OADB_SERVICE=mock
       - JAVA_OPTS=-Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
 
@@ -153,7 +153,7 @@ services:
       - OCI_FINGERPRINT
       - OCI_API_KEY
 
-  OCI Stream
+  # OCI Stream
   stream:
     image: iad.ocir.io/oracle/ateam/mushop-stream:1.0.0
     hostname: stream
@@ -192,6 +192,6 @@ services:
       - NET_BIND_SERVICE
     read_only: true
     environment:
-      - OADB_USER
+      - OADB_USER=userdb_admin
       - OADB_PW
-      - OADB_SERVICE
+      - OADB_SERVICE=mock
