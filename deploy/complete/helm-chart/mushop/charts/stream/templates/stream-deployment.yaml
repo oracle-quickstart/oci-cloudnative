@@ -1,3 +1,4 @@
+{{- if ne .Values.global.mock.service "all" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -30,50 +31,53 @@ spec:
             - containerPort: 80
               protocol: TCP
           env:
-          - name: STREAM_NAME
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Release.Name }}-oss-connection
-                key: streamName
-                optional: true
+          {{- $credentialSecret := required "Value .ociAuthSecret is required!" (.Values.ociAuthSecret | default .Values.global.ociAuthSecret) }}
+          {{- $streamSecret := .Values.global.ossStreamSecret | default (printf "%s-oss-connection" .Release.Name) }}
           - name: STREAM_ID
             valueFrom:
               secretKeyRef:
-                name: {{ .Release.Name }}-oss-connection
+                name: {{ $streamSecret }}
                 key: streamId
-                optional: true
-          - name: OCI_TENANT_ID
+          - name: STREAM_NAME
             valueFrom:
               secretKeyRef:
-                name: streaming-secret
-                key: oci_tenant_id
-          - name: OCI_USER_ID
-            valueFrom:
-              secretKeyRef:
-                name: streaming-secret
-                key: oci_user_id
-          - name: OCI_FINGERPRINT
-            valueFrom:
-              secretKeyRef:
-                name: streaming-secret
-                key: oci_fingerprint
-          - name: OCI_API_KEY
-            valueFrom:
-              secretKeyRef:
-                name: streaming-secret
-                key: oci_api_key
-          - name: OCI_REGION
-            valueFrom:
-              secretKeyRef:
-                name: streaming-secret
-                key: oci_region
+                name: {{ $streamSecret }}
+                key: streamName
           - name: OCI_COMPARTMENT_ID
             valueFrom:
               secretKeyRef:
-                name: streaming-secret
-                key: oci_compartment_id
+                name: {{ $streamSecret }}
+                key: compartmentId
+          - name: OCI_REGION
+            valueFrom:
+              secretKeyRef:
+                name: {{ $streamSecret }}
+                key: region
+          # oci credentials
+          - name: OCI_TENANT_ID
+            valueFrom:
+              secretKeyRef:
+                name: {{ $credentialSecret }}
+                key: tenancy
+          - name: OCI_USER_ID
+            valueFrom:
+              secretKeyRef:
+                name: {{ $credentialSecret }}
+                key: user
+          - name: OCI_FINGERPRINT
+            valueFrom:
+              secretKeyRef:
+                name: {{ $credentialSecret }}
+                key: fingerprint
           - name: OCI_PASS_PHRASE
             valueFrom:
               secretKeyRef:
-                name: streaming-secret
-                key: oci_pass_phrase
+                name: {{ $credentialSecret }}
+                key: passphrase
+                optional: true
+          - name: OCI_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ $credentialSecret }}
+                key: privatekey
+{{- end -}}

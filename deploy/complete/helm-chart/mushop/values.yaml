@@ -3,6 +3,11 @@ global:
     service: "false"
   osb:
     instanceName: mushop
+  ociAuthSecret:
+  ossStreamSecret:
+  oadbAdminSecret:
+  oadbWalletSecret:
+  oadbConnectionSecret:
 
 # Depending on the scenario, certain resources might need to be skipped.
 # For example, --set skip.streaming=true to disable required streaming secrets
@@ -47,13 +52,7 @@ user:
 
 secrets:
   streams:
-    compartmentId:
-    tenantId:
-    userId:
     region:
-    fingerprint:
-    passphrase:
-    keyFile: secrets/oci_streams_api_key.pem
+    compartmentId:
     streamName:
-    # future support
     streamId:
