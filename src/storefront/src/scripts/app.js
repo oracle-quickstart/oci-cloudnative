@@ -13,4 +13,7 @@ import './shop';
 export default Mu.run(document.getElementById('app'), {
   root: '#app',
   baseViewUrl: 'views',
+  context: {
+    VERSION,
+  }
 });
