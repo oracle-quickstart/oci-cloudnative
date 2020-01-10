@@ -196,7 +196,7 @@
   color: #f92672;
 }
     </style>
-    <link href="stylesheets/custom/mushop-9a02d053.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/custom/mushop-15beb4b6.css" rel="stylesheet" media="screen" />
     <link href="stylesheets/print-21c7ca2f.css" rel="stylesheet" media="print" />
       <script src="javascripts/all-2622bbf8.js"></script>
   </head>
@@ -250,10 +250,10 @@
                     <a href="#prerequisites" class="toc-h2 toc-link" data-title="Prerequisites">Prerequisites</a>
                   </li>
                   <li>
-                    <a href="#provision" class="toc-h2 toc-link" data-title="Provision">Provision</a>
+                    <a href="#provisioning" class="toc-h2 toc-link" data-title="Provisioning">Provisioning</a>
                   </li>
                   <li>
-                    <a href="#deploy" class="toc-h2 toc-link" data-title="Deploy">Deploy</a>
+                    <a href="#deployment" class="toc-h2 toc-link" data-title="Deployment">Deployment</a>
                   </li>
               </ul>
           </li>
@@ -660,7 +660,7 @@ testing, and cases where cloud connectivity is not available.</p>
 <p>From <code>deploy/complete/helm-chart</code> directory:</p>
 
 <ol>
-<li><p>Deploy &quot;mock mode&quot; with <code>helm</code>:</p>
+<li><p>Deploy <em>&quot;mock mode&quot;</em> with <code>helm</code>:</p>
 <pre class="highlight shell tab-shell--helm2"><code>helm install mushop <span class="se">\</span>
   --name mushop <span class="se">\</span>
   --namespace mushop <span class="se">\</span>
@@ -795,17 +795,28 @@ tenancy. Check minimum resource availability as follows:</p>
 <aside class="notice">
   This does not include requirements in cases where OKE is used.
 </aside>
-<h2 id='provision'>Provision</h2>
-<p>The included <code>provision</code> chart is an application of the open-source <a href="https://github.com/oracle/oci-service-broker">OCI Service Broker</a>
-for <em>provisioning</em> Oracle Cloud Infrastructure services. This implementation utilizes <a href="https://github.com/openservicebrokerapi/servicebroker/blob/v2.14/spec.md">Open Service Broker</a> in Oracle Container Engine for Kubernetes or in other Kubernetes clusters.</p>
-<pre class="highlight shell tab-shell--linux-macos"><code><span class="nb">cd </span>deploy/complete/helm-chart
-</code></pre><pre class="highlight shell tab-shell--win"><code>dir deploy/complete/helm-chart
-</code></pre>
-<ol>
-<li><p>The Service Broker for Kubernetes requires tenancy credentials to provision and
-manage services from within the cluster. Create a secret containing these
-values:</p>
-<pre class="highlight shell tab-shell"><code>kubectl create secret generic oci-service-broker <span class="se">\</span>
+<h2 id='provisioning'>Provisioning</h2>
+<p>Deploying the full application requires cloud backing services from Oracle Cloud Infrastructure.
+Provisioning these services may be done manually of course, but can also be done <em>automatically</em> 
+through the use of <a href="https://github.com/oracle/oci-service-broker">OCI Service Broker</a>. You are
+encouraged to explore each approach.</p>
+
+<table><thead>
+<tr>
+<th><a href="#manual-steps">Manual</a></th>
+<th><a href="#using-service-broker">Automated</a></th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Provides steps for provisioning and connecting cloud services to the application</td>
+<td>Uses OCI Service Broker to <em>provision</em> <strong>and</strong> <em>connect</em> the Autonomous Transaction Processing database</td>
+</tr>
+</tbody></table>
+
+<p>In all cases, begin by adding tenancy credentials to manage and
+connect services from within the cluster. Create a secret containing these
+values: </p>
+<pre class="highlight shell tab-shell"><code>kubectl create secret generic oci-credentials <span class="se">\</span>
   --namespace mushop <span class="se">\</span>
   --from-literal<span class="o">=</span><span class="nv">tenancy</span><span class="o">=</span>&lt;TENANCY_OCID&gt; <span class="se">\</span>
   --from-literal<span class="o">=</span><span class="nv">user</span><span class="o">=</span>&lt;USER_OCID&gt; <span class="se">\</span>
@@ -813,60 +824,187 @@ values:</p>
   --from-literal<span class="o">=</span><span class="nv">fingerprint</span><span class="o">=</span>&lt;PUBLIC_API_KEY_FINGERPRINT&gt; <span class="se">\</span>
   --from-literal<span class="o">=</span><span class="nv">passphrase</span><span class="o">=</span>&lt;PRIVATE_API_KEY_PASSPHRASE&gt; <span class="se">\</span>
   --from-file<span class="o">=</span><span class="nv">privatekey</span><span class="o">=</span>&lt;PATH_OF_PRIVATE_API_KEY&gt;
+</code></pre>
+<blockquote>
+<p><strong>NOTE:</strong> The passphrase entry is <strong>required</strong>. If you do not have passphrase for your key, just leave empty.</p>
+</blockquote>
+<h3 id='manual-steps'>Manual Steps</h3>
+<p>Follow the steps outlined below to provision and configure the cluster with cloud service connection details</p>
+
+<ol>
+<li><p>Provision an Autonomous Transaction Processing (ATP) database. The default options will work well, as will an <strong>Always Free</strong> shape if available. Once <strong>RUNNING</strong> download the DB Connection Wallet and configure secrets as follows:</p>
+
+<ul>
+<li><p>Create <code>oadb-admin</code> secret containing the database administrator password. Used once for schema initializations.</p>
+<pre class="highlight shell tab-shell"><code>kubectl create secret generic oadb-admin <span class="se">\</span>
+  --namespace mushop <span class="se">\</span>
+  --from-literal<span class="o">=</span><span class="nv">oadb_admin_pw</span><span class="o">=</span><span class="s1">'&lt;DB_ADMIN_PASSWORD&gt;'</span>
 </code></pre></li>
+<li><p>Create <code>oadb-wallet</code> secret with the Wallet <em>contents</em> using the downloaded <code>Wallet_*.zip</code>. The extracted <code>Wallet_*</code> directory is specified as the secret file path. Each file will become a key name in the secret data.</p>
+<pre class="highlight shell tab-shell"><code>kubectl create secret generic oadb-wallet <span class="se">\</span>
+  --namespace mushop <span class="se">\</span>
+  --from-file<span class="o">=</span>&lt;PATH_TO_EXTRACTED_WALLET_FOLDER&gt;
+</code></pre></li>
+<li><p>Create <code>oadb-connection</code> secret with the Wallet <strong>password</strong> and the service <strong>TNS name</strong> to use for connections.</p>
+<pre class="highlight shell tab-shell"><code>kubectl create secret generic oadb-connection <span class="se">\</span>
+  --namespace mushop <span class="se">\</span>
+  --from-literal<span class="o">=</span><span class="nv">oadb_wallet_pw</span><span class="o">=</span><span class="s1">'&lt;DB_WALLET_PASSWORD&gt;'</span> <span class="se">\</span>
+  --from-literal<span class="o">=</span><span class="nv">oadb_service</span><span class="o">=</span><span class="s1">'&lt;DB_TNS_NAME&gt;'</span>
+</code></pre>
+<blockquote>
+<p>Each database has 5 unique TNS Names displayed when the Wallet is downloaded. For a database named <code>mushopdb</code> an example would be <code>mushopdb_TP</code>.</p>
+</blockquote></li>
+</ul></li>
+<li><p><strong>Optional</strong>: Instead of creating a shared database for the entire application, you may establish full separation of services by provisioning <em>individual</em> ATP instances for each service that requires a database. To do so, repeat the previous steps for each database,and give each secret a unique name, for example: <code>carts-oadb-admin</code>, <code>carts-oadb-connection</code>, <code>carts-oadb-wallet</code>.</p>
+
+<ul>
+<li><code>carts</code></li>
+<li><code>catalogue</code></li>
+<li><code>orders</code></li>
+<li><code>user</code></li>
+</ul></li>
+<li><p>Provision a Streaming instance from the Oracle Cloud Infrastructure <a href="https://console.us-phoenix-1.oraclecloud.com/storage/streaming">Console</a>, and make note of the created Stream <code>OCID</code> value. Then create an <code>oss-connection</code> secret containing the Stream connection details.</p>
+<pre class="highlight shell tab-shell"><code>kubectl create secret generic oss-connection <span class="se">\</span>
+  --namespace mushop <span class="se">\</span>
+  --from-literal<span class="o">=</span><span class="nv">compartmentId</span><span class="o">=</span><span class="s1">'&lt;COMPARTMENT_OCID&gt;'</span> <span class="se">\</span>
+  --from-literal<span class="o">=</span><span class="nv">region</span><span class="o">=</span><span class="s1">'&lt;REGION_NAME&gt;'</span> <span class="se">\</span>
+  --from-literal<span class="o">=</span><span class="nv">streamId</span><span class="o">=</span><span class="s1">'&lt;STREAM_OCID&gt;'</span> <span class="se">\</span>
+  --from-literal<span class="o">=</span><span class="nv">streamName</span><span class="o">=</span><span class="s1">'&lt;STREAM_NAME&gt;'</span>
+</code></pre></li>
+<li><p>Verify the secrets are created and available in the <code>mushop</code> namespace:</p>
+<pre class="highlight shell tab-shell"><code>kubectl get secret --namespace mushop
+</code></pre><pre class="highlight plaintext"><code>NAME              TYPE      DATA   AGE
+oadb-admin        Opaque    1      3m
+oadb-connection   Opaque    2      3m
+oadb-wallet       Opaque    7      3m
+oci-credentials   Opaque    6      3m
+oss-connection    Opaque    4      3m
+</code></pre></li>
+</ol>
+<h3 id='using-service-broker'>Using Service Broker</h3>
+<p>As an alternative to manually provisioning, the included <a href="https://github.com/oracle-quickstart/oci-cloudnative/tree/master/deploy/complete/helm-chart/provision"><code>provision</code></a>
+chart is an application of the open-source <a href="https://github.com/oracle/oci-service-broker">OCI Service Broker</a>
+for <em>provisioning</em> Oracle Cloud Infrastructure services. This implementation utilizes <a href="https://github.com/openservicebrokerapi/servicebroker/blob/v2.14/spec.md">Open Service Broker</a> in Oracle Container Engine for Kubernetes or in other Kubernetes clusters.</p>
+<pre class="highlight shell tab-shell--linux-macos"><code><span class="nb">cd </span>deploy/complete/helm-chart
+</code></pre><pre class="highlight shell tab-shell--win"><code>dir deploy/complete/helm-chart
+</code></pre>
+<ol>
+<li><p>The Service Broker for Kubernetes requires access credentials to provision and
+manage services from within the cluster. Create a secret containing these
+values as described <a href="#provisioning">above</a></p></li>
 <li><p>Deploy the OCI service broker on your cluster. This is done with the <a href="https://github.com/oracle/oci-service-broker">Oracle OCI Service Broker</a> helm chart:</p>
 <pre class="highlight shell tab-shell--helm2"><code>helm install https://github.com/oracle/oci-service-broker/releases/download/v1.3.2/oci-service-broker-1.3.2.tgz <span class="se">\</span>
   --namespace mushop <span class="se">\</span>
   --name oci-service-broker <span class="se">\</span>
-  --set ociCredentials.secretName<span class="o">=</span>oci-service-broker <span class="se">\</span>
+  --set ociCredentials.secretName<span class="o">=</span>oci-credentials <span class="se">\</span>
   --set storage.etcd.useEmbedded<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
   --set tls.enabled<span class="o">=</span><span class="nb">false</span>
 </code></pre><pre class="highlight shell tab-shell--helm3"><code>helm install oci-service-broker https://github.com/oracle/oci-service-broker/releases/download/v1.3.2/oci-service-broker-1.3.2.tgz <span class="se">\</span>
   --namespace mushop <span class="se">\</span>
-  --set ociCredentials.secretName<span class="o">=</span>oci-service-broker <span class="se">\</span>
+  --set ociCredentials.secretName<span class="o">=</span>oci-credentials <span class="se">\</span>
   --set storage.etcd.useEmbedded<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
   --set tls.enabled<span class="o">=</span><span class="nb">false</span>
 </code></pre>
 <blockquote>
 <p>The above command will deploy the OCI Service Broker using an embedded etcd instance. It is not recommended to deploy the OCI Service Broker using an embedded etcd instance and tls disabled in production environments, instead a separate etcd cluster should be setup and used by the OCI Service Broker.</p>
 </blockquote></li>
-<li><p>Now establish the link between Service Catalog and the OCI Service Broker implementation by installing the <code>provision</code> chart:</p>
+<li><p>Next connect Service Catalog with the OCI Service Broker implementation and create an ATP service instance by installing the included <code>provision</code> chart:</p>
 <pre class="highlight shell tab-shell--helm2"><code>helm install provision <span class="se">\</span>
   --namespace mushop <span class="se">\</span>
   --name mushop-provision <span class="se">\</span>
-  --set skip.ociCredentials<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
   --set global.osb.compartmentId<span class="o">=</span>&lt;compartmentId&gt;
 </code></pre><pre class="highlight shell tab-shell--helm3"><code>helm install mushop-provision provision <span class="se">\</span>
   --namespace mushop <span class="se">\</span>
-  --set skip.ociCredentials<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
   --set global.osb.compartmentId<span class="o">=</span>&lt;compartmentId&gt;
 </code></pre>
 <blockquote>
-<p>Note that <code>ociCredentials</code> were created previously</p>
+<p>Note that the <code>oci-credentials</code> secret was created <a href="#provisioning">previously</a></p>
 </blockquote></li>
-<li><p>Verify <code>serviceinstances</code> and <code>servicebindings</code> are <strong>READY</strong></p>
+<li><p>It will take a few minutes for the ATP database to provision, and the Wallet binding to become available. Verify <code>serviceinstances</code> and <code>servicebindings</code> are <strong>READY</strong>:</p>
 <pre class="highlight plaintext"><code>kubectl get serviceinstances -A
 </code></pre><pre class="highlight plaintext"><code>kubectl get servicebindings -A
 </code></pre></li>
 </ol>
-<h2 id='deploy'>Deploy</h2>
-<p>Having completed the <a href="#provision">Provisioning</a> steps above, the <code>mushop</code> deployment
-helm chart is used with settings to leverage cloud backing services and their resulting
-<code>servicebindings</code> with connection information</p>
+<h2 id='deployment'>Deployment</h2>
+<p>Having completed the <a href="#provisioning">provisioning</a> steps above, the <code>mushop</code> deployment
+helm chart is installed using settings to leverage cloud backing services.</p>
+
+<ol>
+<li><p>Make a copy of the <a href="https://github.com/oracle-quickstart/oci-cloudnative/blob/master/deploy/complete/helm-chart/mushop/values-dev.yaml"><code>values-dev.yaml</code></a> file and store somewhere on your machine as <code>myvalues.yaml</code>. Then complete the missing values (e.g. secret names) like the following:</p>
+<pre class="highlight yaml tab-yaml"><code><span class="na">global</span><span class="pi">:</span>
+  <span class="na">ociAuthSecret</span><span class="pi">:</span> <span class="s">oci-credentials</span>        <span class="c1"># OCI authentication credentials secret</span>
+  <span class="na">ossStreamSecret</span><span class="pi">:</span> <span class="s">oss-connection</span>       <span class="c1"># Name of Stream connection secret</span>
+  <span class="na">oadbAdminSecret</span><span class="pi">:</span> <span class="s">oadb-admin</span>           <span class="c1"># Name of DB Admin secret</span>
+  <span class="na">oadbWalletSecret</span><span class="pi">:</span> <span class="s">oadb-wallet</span>         <span class="c1"># Name of Wallet secret</span>
+  <span class="na">oadbConnectionSecret</span><span class="pi">:</span> <span class="s">oadb-connection</span> <span class="c1"># Name of DB Connection secret</span>
+</code></pre>
+<blockquote>
+<p><strong>NOTE:</strong> If it&#39;s desired to connect a separate databases for a given service, you can specify values specific for each service, such as <code>carts.oadbAdminSecret</code>, <code>carts.oadbWalletSecret</code>... </p>
+</blockquote>
+
+<aside class="notice">
+Database secrets (<code>oadb*</code>) may be omitted if using the automated service broker approach.
+</aside></li>
+<li><p>Install the <a href="https://github.com/oracle-quickstart/oci-cloudnative/tree/master/deploy/complete/helm-chart/mushop"><code>mushop</code></a> application helm chart using the <code>myvalues.yaml</code> created above:</p>
+
+<ul>
+<li><p><strong>OPTION 1:</strong> With cloud services provisioned <strong>manually</strong>:</p>
+<pre class="highlight shell tab-shell--helm2"><code>helm install ./mushop <span class="se">\</span>
+  --name mushop <span class="se">\</span>
+  --namespace mushop <span class="se">\</span>
+  --values path/to/myvalues.yaml
+</code></pre><pre class="highlight shell tab-shell--helm3"><code>helm install mushop ./mushop <span class="se">\</span>
+  --namespace mushop <span class="se">\</span>
+  --values path/to/myvalues.yaml
+</code></pre></li>
+<li><p><strong>OPTION 2:</strong> When using <strong>OCI Service Broker</strong> (<code>provision</code> chart):</p>
 <pre class="highlight shell tab-shell--helm2"><code>helm install ./mushop <span class="se">\</span>
   --name mushop <span class="se">\</span>
   --namespace mushop <span class="se">\</span>
   --set global.osb.atp<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
-  --set skip.streaming<span class="o">=</span><span class="nb">true</span>
+  --values path/to/myvalues.yaml
 </code></pre><pre class="highlight shell tab-shell--helm3"><code>helm install mushop ./mushop <span class="se">\</span>
   --namespace mushop <span class="se">\</span>
   --set global.osb.atp<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
-  --set skip.streaming<span class="o">=</span><span class="nb">true</span>
+  --values path/to/myvalues.yaml
+</code></pre></li>
+</ul></li>
+<li><p>Wait for deployment pods to become <strong>READY</strong> and init pods to show <strong>COMPLETE</strong>:</p>
+<pre class="highlight shell tab-shell"><code>kubectl get pods --watch
+</code></pre><pre class="highlight plaintext"><code>NAME                                                     READY   STATUS      RESTARTS   AGE
+mushop-api-75cd7f4f47-2wzpw                              1/1     Running     0          7m55s
+mushop-carts-56c9f548b5-5rxkz                            1/1     Running     0          7m57s
+mushop-carts-init-1-jprv6                                0/1     Completed   0          7m57s
+mushop-catalogue-85cbfb949b-mcjt9                        1/1     Running     0          7m50s
+mushop-catalogue-init-1-cppf9                            0/1     Completed   0          7m57s
+mushop-edge-7959d6b6f8-vkhgm                             1/1     Running     0          7m55s
+mushop-orders-6586dcb898-qkncx                           1/1     Running     0          7m49s
+mushop-orders-init-1-s4hq7                               0/1     Completed   0          7m57s
+mushop-payment-c7dccd8cc-p7jjq                           1/1     Running     0          7m57s
+mushop-session-5ff4c9557f-df4hh                          1/1     Running     0          7m57s
+mushop-shipping-5db9b4c9ff-wxzbp                         1/1     Running     0          7m55s
+mushop-storefront-f5f988cb-ql8bd                         1/1     Running     0          7m57s
+mushop-stream-6fc9d4749c-sfn2h                           1/1     Running     0          7m50s
+mushop-user-65858dd6cd-d5bjs                             1/1     Running     0          7m57s
+mushop-user-init-1-nsx7p                                 0/1     Completed   0          7m57s
+</code></pre></li>
+<li><p>Open a browser with the <code>EXTERNAL-IP</code> created during setup, <strong>OR</strong> <code>port-forward</code>
+directly to the <code>edge</code> service resource:</p>
+<pre class="highlight shell tab-shell"><code>kubectl port-forward <span class="se">\</span>
+  --namespace mushop <span class="se">\</span>
+  svc/edge 8000:80
 </code></pre>
-<aside class="notice">
-  The above command includes <code>--skip.streaming=true</code> indicating that the Streaming
-  configurations should be excluded. Refer to details in <a href="https://github.com/oracle-quickstart/oci-cloudnative/blob/master/deploy/complete/helm-chart/mushop/values.yaml">values.yaml</a> for information on connecting to the Streaming service
-</aside>
+<blockquote>
+<p>Using <code>port-forward</code> connecting <a href="http://localhost:8000">localhost:8000</a> to the <code>edge</code> service</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>kubectl get svc mushop-setup-nginx-ingress-controller <span class="se">\</span>
+  --namespace mushop-setup
+</code></pre>
+<blockquote>
+<p>Locating <code>EXTERNAL-IP</code> for Ingress Controller. <strong>NOTE</strong> this will be
+<a href="https://localhost">localhost</a> on local clusters.</p>
+</blockquote></li>
+</ol>
 <h1 id='extras'>Extras</h1><h2 id='prometheus-and-grafana-monitoring'>Prometheus and Grafana Monitoring</h2>
 <p>Prometheus and Grafana are installed part of the <a href="#setup"><code>setup</code></a> umbrella helm chart.
 Revisit the application charts and connect to some Grafana dashboards:</p>
