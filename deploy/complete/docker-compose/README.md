@@ -29,7 +29,9 @@ mocked in the default configuration
 
 ## Connecting to Oracle Cloud Infrastructure Services when running locally
 
-Where relevant, you can configure the container images to leverage cloud services as well. For instance, you can configure the locally runnin application to read and write data on to an Oracle ATP database.
+Where relevant, you can configure the container images to leverage cloud services as well. 
+For instance, you can configure the locally running application to read and write data on 
+to an Oracle ATP database.
 
 ### Prerequisites
 
