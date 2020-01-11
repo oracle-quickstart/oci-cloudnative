@@ -90,7 +90,7 @@ services:
       - reschedule=on-node-failure
       - OADB_USER=catalogue_user
       - OADB_PW
-      - OADB_SERVICE=mcatalogue_tp
+      - OADB_SERVICE=mock
 
   # OCI Carts service
   carts:
