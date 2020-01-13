@@ -17,6 +17,7 @@ export * from './catalog';
 export * from './cart';
 export * from './order';
 export * from './about';
+export * from './components/beta';
 export * from './components/chart';
 export * from './components/debug';
 export * from './components/form';
