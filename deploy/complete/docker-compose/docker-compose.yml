@@ -88,7 +88,7 @@ services:
     read_only: true
     environment:
       - reschedule=on-node-failure
-      - OADB_USER=catalogue_user
+      - OADB_USER
       - OADB_PW
       - OADB_SERVICE=mock
 
@@ -107,7 +107,7 @@ services:
     tmpfs:
       - /tmp:rw,noexec,nosuid
     environment:
-      - OADB_USER=carts_user
+      - OADB_USER
       - OADB_PW
       - OADB_SERVICE=mock
       - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
@@ -127,7 +127,7 @@ services:
     tmpfs:
       - /tmp:rw,noexec,nosuid
     environment:
-      - OADB_USER=orders_user
+      - OADB_USER
       - OADB_PW
       - OADB_SERVICE=mock
       - JAVA_OPTS=-Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
@@ -192,6 +192,6 @@ services:
       - NET_BIND_SERVICE
     read_only: true
     environment:
-      - OADB_USER=userdb_admin
+      - OADB_USER
       - OADB_PW
       - OADB_SERVICE=mock
