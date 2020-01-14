@@ -17,6 +17,7 @@ var express = require("express")
   , user = require("./api/user")
   , metrics = require("./api/metrics")
   , health = require("./api/health")
+  , newsletter = require("./api/newsletter")
   , app = express();
 
 app.use(helpers.rewriteSlash);
@@ -40,6 +41,7 @@ api.use(cart);
 api.use(catalogue);
 api.use(orders);
 api.use(user);
+api.use(newsletter);
 // mount to app
 app.use(api); // back-compat with weave
 app.use('/api', api); // expose services as `/api/{service}`
