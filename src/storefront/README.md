@@ -73,8 +73,19 @@ make down
 
 ## Build
 
+Standard build
+
 ```shell
 docker build -t mushop/storefront .
+```
+
+The storefront also supports **BETA** build option where an override to the 
+service semver can be provided as a build argument. When the supplied version 
+matches `/beta/i`, a banner is shown in the storefront UI. This is used for the
+purpose of demonstrating service mesh
+
+```shell
+docker build --build-arg version=2.x-beta -t mushop/storefront .
 ```
 
 ## Copyright and Credits

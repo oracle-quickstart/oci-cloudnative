@@ -10,13 +10,6 @@
       Made with ♥ by Oracle A-Team
 ########################################
 
-Summary:
-  Name: {{ .Release.Name }}
-  Chart: {{ .Chart.Name }}
-  Version: {{ .Chart.Version }}
-  Namespace: {{ .Release.Namespace }}
-  Revision: {{ .Release.Revision }}
-
 {{- if .Values.grafana.enabled }}
 
 ## Grafana
@@ -47,10 +40,10 @@ resource in this namespace.
 
 - Locate the ingress controller EXTERNAL-IP address
 
-  kubectl get svc -n {{ .Release.Namespace }} {{ .Release.Name }}-nginx-ingress
+  kubectl get svc -n {{ .Release.Namespace }} {{ .Release.Name }}-nginx-ingress-controller
 
 {{- end }}
 
 ## Uninstalling the Chart:
 
-  helm delete --purge {{ .Release.Name }}
+  helm delete {{ .Release.Name }}

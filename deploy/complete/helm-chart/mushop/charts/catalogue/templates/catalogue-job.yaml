@@ -1,9 +1,9 @@
 {{- $usesOsb := (index (.Values.global | default .Values) "osb").atp | default .Values.osb.atp -}}
-{{- if or $usesOsb .Values.secrets.oadbAdminPassword }}
+{{- if or $usesOsb .Values.oadbAdminSecret .Values.global.oadbAdminSecret .Values.secrets.oadbAdminPassword  }}
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "catalogue.fullname" . }}-{{ .Values.image.tag }}-init
+  name: {{ include "catalogue.fullname" . }}-init-{{ .Release.Revision }}
   labels: {{ include "catalogue.labels" . | nindent 4 }}
 spec:
   ttlSecondsAfterFinished: 120

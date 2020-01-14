@@ -38,7 +38,6 @@ Common labels
 app.kubernetes.io/name: {{ include "api.name" . }}
 helm.sh/chart: {{ include "api.chart" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-layer: client
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}

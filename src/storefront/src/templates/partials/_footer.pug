@@ -12,9 +12,10 @@ section.uk-section.uk-section-secondary.uk-section-xsmall.uk-light
       div
         a.uk-logo(href="index.html" mu-route)
           img(src="images/logo-inverse.png" alt=shopInfo.storeLogoText)
-          //- img(uk-svg src="images/logo-inverse.svg" alt=shopInfo.storeLogoText)
-          //- include _logo-inverse.pug
-        p.uk-text-small Specialty products that every cat deserves, especially yours.
+        .uk-margin-xsmall.uk-text-muted.uk-text-xsmall.uk-grid.uk-grid-small
+          .version= "v" + VERSION
+          .timestamp= TIMESTAMP
+        p.uk-margin-xsmall.uk-text-small Specialty products that every cool cat deserves.
 
       div
         nav.uk-grid-small.uk-child-width-1-2(uk-grid)
@@ -62,6 +63,7 @@ section.uk-section.uk-section-secondary.uk-section-xsmall.uk-light
           |Made with
           +icon('heart', '0.75')(class="uk-margin-xsmall-left uk-margin-xsmall-right")
           |by Oracle A-Team
+          
 
     
     //- copyright

@@ -8,7 +8,7 @@ const webpack = require('webpack');
 const pkg = require('./package.json');
 const buildDir = path.resolve(__dirname, 'build');
 
-const { NODE_ENV } = process.env;
+const { NODE_ENV, VERSION } = process.env;
 
 /**
  * This config is extended by gulp
@@ -49,9 +49,8 @@ module.exports = {
       banner: `Copyright © ${new Date().getFullYear()}, Oracle and/or its affiliates. All rights reserved.\nThe Universal Permissive License (UPL), Version 1.0`
     }),
     new webpack.DefinePlugin({
-      VERSION: JSON.stringify(pkg.version),
+      VERSION: JSON.stringify(VERSION || pkg.version),
       PRODUCTION: JSON.stringify(NODE_ENV === 'production'),
-      TIMESTAMP: JSON.stringify(Date.now()),
     }),
   ],
 };

@@ -1,9 +1,9 @@
 {{- $usesOsb := (index (.Values.global | default .Values) "osb").atp | default .Values.osb.atp -}}
-
+{{- if or $usesOsb .Values.oadbAdminSecret .Values.global.oadbAdminSecret .Values.secrets.oadbAdminPassword  }}
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "user.fullname" . }}-{{ .Values.image.tag }}-init
+  name: {{ include "user.fullname" . }}-init-{{ .Release.Revision }}
   labels: {{ include "user.labels" . | nindent 4 }}
 spec:
   ttlSecondsAfterFinished: 120
@@ -17,7 +17,6 @@ spec:
       initContainers:
         {{- include "user.init.wallet" . | nindent 8 }}
         # DbTools Init
-        {{- if or $usesOsb .Values.secrets.oadbAdminPassword }}
         - name: init
           image: "{{ .Values.dbtools.repository }}:{{ .Values.dbtools.tag }}"
           imagePullPolicy: {{ .Values.dbtools.pullPolicy }}
@@ -30,7 +29,6 @@ spec:
           volumeMounts:
             {{- include "user.mount.wallet" . | nindent 12 }}
             {{- include "user.mount.initdb" . | nindent 12 }}
-        {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -39,3 +37,4 @@ spec:
           env: {{- include "user.oadb.connection" . | nindent 12 }}
           volumeMounts: {{- include "user.mount.wallet" . | nindent 12 }}
       volumes: {{- include "user.volumes" . | nindent 8 }}
+{{ end }}

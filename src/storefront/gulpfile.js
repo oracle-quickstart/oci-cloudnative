@@ -34,16 +34,19 @@ const scriptBanner = [
   '*/'
 ].join('\n');
 
-// load ci version
-const VERSION = fs.readFileSync(path.join(__dirname, 'VERSION')).toString();
+// load env
 
-// HTML
+// load ci version
+const VERSION = process.env.VERSION || fs.readFileSync(path.join(__dirname, 'VERSION')).toString();
+
+// Static HTML build
 const pugOpt = {
   basedir: 'src/templates',
   doctype: 'html',
   pretty: true,
   locals: {
-    version: VERSION,
+    VERSION,
+    TIMESTAMP: new Date().toISOString().split('.').shift(),
   }
 };
 
@@ -51,14 +54,14 @@ gulp.task('html:pages', function() {
   return gulp.src('src/templates/pages/**/*.pug')
     .pipe(pug(pugOpt))
     .pipe(gulp.dest(opt.buildDir))
-    .pipe(sync.stream())
+    .pipe(sync.stream({ once: true }))
 });
 
 gulp.task('html:views', function() {
   return gulp.src('src/templates/views/**/*.pug')
     .pipe(pug(pugOpt))
     .pipe(gulp.dest(`${opt.buildDir}/views`))
-    .pipe(sync.stream())
+    .pipe(sync.stream({ once: true }))
 });
 
 gulp.task('html', gulp.parallel('html:pages', 'html:views'));

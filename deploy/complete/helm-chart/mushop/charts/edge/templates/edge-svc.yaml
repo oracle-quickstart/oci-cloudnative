@@ -9,7 +9,6 @@ spec:
   selector:
     app.kubernetes.io/name: {{ include "edge-router.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-    layer: client
   ports:
     - port: {{ .Values.service.port }}
       targetPort: 8080

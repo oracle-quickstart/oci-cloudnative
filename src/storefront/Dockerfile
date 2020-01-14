@@ -2,6 +2,7 @@
 # Copyright (c) 2019, Oracle and/or its affiliates. All rights reserved.
 # The Universal Permissive License (UPL), Version 1.0
 #
+ARG version
 
 ###############################
 #    Build stage (node/npm)   #
@@ -35,6 +36,8 @@ WORKDIR /usr/src/app
 COPY src src
 COPY *.js* ./
 COPY VERSION VERSION
+ARG version
+ENV VERSION ${version}
 
 ENV NODE_ENV "production"
 RUN npm run build
