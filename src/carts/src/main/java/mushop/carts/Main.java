@@ -5,6 +5,7 @@ import io.helidon.health.HealthSupport;
 import io.helidon.health.checks.HealthChecks;
 import io.helidon.media.jsonb.server.JsonBindingSupport;
 import io.helidon.metrics.MetricsSupport;
+import io.helidon.webserver.accesslog.AccessLogSupport;
 import io.helidon.webserver.Routing;
 import io.helidon.webserver.Routing.Builder;
 import io.helidon.webserver.ServerConfiguration;
@@ -39,6 +40,7 @@ public class Main {
                 .build();
         
         Builder routes = Routing.builder()
+                      .register(AccessLogSupport.create(config.get("server.access-log")))
                       .register(JsonBindingSupport.create())
                       .register(MetricsSupport.create())    // "/metrics" 
                       .register(health)                     // "/health"
