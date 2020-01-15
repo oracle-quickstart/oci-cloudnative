@@ -170,10 +170,10 @@ block default
 
         div.uk-margin
           //- form
-          div.uk-grid-small.uk-flex-center(uk-grid)
+          div.uk-grid-small.uk-flex-center(mu-newsletter-subscription uk-grid)
             div(class="uk-width-1-1 uk-width-medium@s")
               div.uk-inline.uk-width-1-1
                 span.uk-form-icon(uk-icon="mail")
                 input.uk-input(type="email" placeholder="Your email" required)
             div
-              button.uk-button.uk-button-primary(mu onclick="this.mu.ui.notification('Subscribed email!', 'success')") subscribe
+              button.uk-button.uk-button-primary(mu-click="subscribe") subscribe

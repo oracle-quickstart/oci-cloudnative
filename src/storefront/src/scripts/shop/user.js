@@ -409,7 +409,6 @@ export class UserConsent extends MuMx.compose(null, ViewTemplateMixin) {
   onMount() {
     super.onMount();
     if (!this.consented()) {
-      console.log('alskdjf');
       this.render({
         consent: this.accept.bind(this),
       });
