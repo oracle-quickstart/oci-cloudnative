@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.logging.Level;
+import java.util.concurrent.*;
 
 import io.helidon.common.http.Http;
 import io.helidon.common.http.Http.RequestMethod;
@@ -27,17 +29,22 @@ public class CartService implements Service {
     /** @see https://github.com/oracle/helidon/issues/1172 */
     private static final Set<RequestMethod> PATCH = Collections.singleton(Http.RequestMethod.create("PATCH"));
 
-    private CartRepository carts;
+    private Future<CartRepository> carts;
 
     public CartService(Config config) {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+
         String dbName = config.get("OADB_SERVICE").asString().get();
-        log.info("Connecting to "+dbName);
+        log.info("Connecting to " + dbName);
         if (MOCKDB.equalsIgnoreCase(dbName)) {
-            carts = new CartRepositoryMemoryImpl();
-            log.warning("Connected to a Mock Database. Data is not persisted.");
+            log.warning("Connecting to a Mock Database. Data is not persisted.");
+            carts = executorService.submit(() -> {
+                return new CartRepositoryMemoryImpl();
+            });
         } else {
-                carts = new CartRepositoryDatabaseImpl(config);
-                log.info("Connected to "+dbName);
+            carts = executorService.submit(() -> {
+                return new CartRepositoryDatabaseImpl(config);
+            });
         }
     }
 
@@ -45,7 +52,8 @@ public class CartService implements Service {
     public void update(Rules rules) {
         rules.get("/{cartId}/items", this::getCartItems)
             .delete("/{cartId}", this::deleteCart)
-            .delete("/{cartId}/items/{itemId}", this::deleteCartItem).post("/{cartId}", this::postCart)
+            .delete("/{cartId}/items/{itemId}", this::deleteCartItem)
+            .post("/{cartId}", this::postCart)
             .anyOf(PATCH, "/{cartId}/items", this::updateCartItem);
     }
 
@@ -58,7 +66,7 @@ public class CartService implements Service {
         Cart result = null;
         try {
             String cartId = request.path().param("cartId");
-            result = carts.getById(cartId);
+            result = carts.get().getById(cartId);
             if (result == null) {
                 response.status(404).send();
                 return;
@@ -77,7 +85,7 @@ public class CartService implements Service {
      */
     public void deleteCart(ServerRequest request, ServerResponse response) {
         try {
-            if (carts.deleteCart(request.path().param("cartId"))) {
+            if (carts.get().deleteCart(request.path().param("cartId"))) {
                 response.status(200).send();
             } else {
                 response.status(404).send();
@@ -98,12 +106,12 @@ public class CartService implements Service {
         String cartId = request.path().param("cartId");
         String itemId = request.path().param("itemId");
         try {
-            Cart cart = carts.getById(cartId);
+            Cart cart = carts.get().getById(cartId);
             if (cart == null || !cart.removeItem(itemId)) {
                 response.status(404).send();
                 return;
             }
-            carts.save(cart);
+            carts.get().save(cart);
             response.status(200).send();
         } catch (Exception e) {
             e.printStackTrace();
@@ -124,16 +132,21 @@ public class CartService implements Service {
 
         try {
             request.content().as(Cart.class).thenAccept(newCart -> {
-                Cart cart = carts.getById(cartId);
-                if (cart == null) {
+                try {
+                    Cart cart = carts.get().getById(cartId);
+                    if (cart == null) {
 
-                    newCart.setId(cartId);
-                    carts.save(newCart);
-                    response.status(201).send(); // created
-                } else {
-                    cart.merge(newCart);
-                    carts.save(cart);
-                    response.status(200).send(); // ok
+                        newCart.setId(cartId);
+                        carts.get().save(newCart);
+                        response.status(201).send(); // created
+                    } else {
+                        cart.merge(newCart);
+                        carts.get().save(cart);
+                        response.status(200).send(); // ok
+                    }
+                } catch (Exception e) {
+                    sendError(response, e.getMessage());
+                    return;
                 }
             });
         } catch (Exception e) {
@@ -151,19 +164,24 @@ public class CartService implements Service {
         String cartId = request.path().param("cartId");
         try {
             request.content().as(Item.class).thenAccept(qItem -> {
-                Cart cart = carts.getById(cartId);
-                if (cart == null) {
+                try {
+                    Cart cart = carts.get().getById(cartId);
+                    if (cart == null) {
+                        response.status(404).send();
+                        return;
+                    }
+                    for (Item item : cart.getItems()) {
+                        if (item.getItemId().equals(qItem.getItemId())) {
+                            item.setQuantity(qItem.getQuantity());
+                            carts.get().save(cart);
+                            response.status(200).send();
+                        }
+                    }
                     response.status(404).send();
+                } catch (Exception e) {
+                    sendError(response, e.getMessage());
                     return;
                 }
-                for (Item item : cart.getItems()) {
-                    if (item.getItemId().equals(qItem.getItemId())) {
-                        item.setQuantity(qItem.getQuantity());
-                        carts.save(cart);
-                        response.status(200).send();
-                    }
-                }
-                response.status(404).send();
             });
         } catch (Exception e) {
             sendError(response, e.getMessage());
@@ -177,8 +195,13 @@ public class CartService implements Service {
         response.status(400).send(error);
     }
 
-    public boolean healthCheck(){
-        return carts.healthCheck();
+    public boolean healthCheck() {
+        try {
+            return carts.get().healthCheck();
+        } catch (Exception e) {
+            log.log(Level.SEVERE,"DB health-check failed." ,e);
+            return false;
+        }
     }
-    
+
 }
