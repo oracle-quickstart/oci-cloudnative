@@ -197,7 +197,8 @@ public class CartService implements Service {
 
     public boolean healthCheck() {
         try {
-            return carts.get().healthCheck();
+            
+            return carts.isDone() ? carts.get(500,TimeUnit.MILLISECONDS).healthCheck() : false;
         } catch (Exception e) {
             log.log(Level.SEVERE,"DB health-check failed." ,e);
             return false;
