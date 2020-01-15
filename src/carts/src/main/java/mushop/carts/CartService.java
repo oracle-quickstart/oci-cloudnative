@@ -34,14 +34,10 @@ public class CartService implements Service {
         log.info("Connecting to "+dbName);
         if (MOCKDB.equalsIgnoreCase(dbName)) {
             carts = new CartRepositoryMemoryImpl();
+            log.warning("Connected to a Mock Database. Data is not persisted.");
         } else {
-            try {
                 carts = new CartRepositoryDatabaseImpl(config);
                 log.info("Connected to "+dbName);
-            }catch(RuntimeException ex){
-                carts = new CartRepositoryMemoryImpl();
-                log.warning("Connecting to "+dbName+" failed. Falling back to mock DB.");
-            }
         }
     }
 
