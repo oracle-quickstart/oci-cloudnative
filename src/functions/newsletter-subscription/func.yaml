@@ -1,0 +1,6 @@
+schema_version: 20180708
+name: newsletter-subscription
+version: 0.1.0
+runtime: docker
+entrypoint: node func.js
+timeout: 120

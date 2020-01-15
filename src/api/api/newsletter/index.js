@@ -17,6 +17,13 @@
         if (!email) {
             return next(helpers.createError('Email was not provided', 400));
         }
+
+        if (!endpoints.newsletterSubscribeUrl) {
+            // Since we don't require the URL to be set, just respond with a mock 200.
+            helpers.respondSuccessBody(res, {'messageId': 'mock-message-id'});
+            return;
+        }
+
         try {
             // Invoke the newsletter-subscribe function through the API Gateway
             const { status } = await axios.post(endpoints.newsletterSubscribeUrl, { email });

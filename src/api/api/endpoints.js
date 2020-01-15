@@ -22,7 +22,7 @@
   const cartsUrl = getEnvVar(services.CARTS, !config.mockMode('carts'));
   const ordersUrl = getEnvVar(services.ORDERS, !config.mockMode('orders'));
   const usersUrl = getEnvVar(services.USERS, !config.mockMode('users'));
-  const newsletterSubscribeUrl = getEnvVar(services.NEWSLETTER_SUBSCRIBE, !config.mockMode('newsletter'));
+  const newsletterSubscribeUrl = getEnvVar(services.NEWSLETTER_SUBSCRIBE, false);
 
   module.exports = {
     getEnvVar, // for testing

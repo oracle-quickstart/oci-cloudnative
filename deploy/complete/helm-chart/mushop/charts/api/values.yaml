@@ -8,6 +8,7 @@ image:
 env:
   sessionRedis: session
   mediaUrl:
+  newsletterSubscribeUrl:
 
 resources:
   limits:

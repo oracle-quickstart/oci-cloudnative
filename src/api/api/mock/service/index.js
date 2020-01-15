@@ -6,12 +6,10 @@ const MockCatalogueService = require('./catalogue');
 const MockCartsService = require('./carts');
 const MockOrdersService = require('./orders');
 const MockUsersService = require('./users');
-const MockNewsletterFunction = require('./newsletter');
 
 module.exports = {
   MockCatalogueService,
   MockCartsService,
   MockOrdersService,
   MockUsersService,
-  MockNewsletterFunction,
 };
