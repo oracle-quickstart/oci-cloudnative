@@ -3,6 +3,8 @@ package mushop.carts;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
+
 
 import javax.json.Json;
 import javax.json.bind.Jsonb;
@@ -36,6 +38,8 @@ public class CartRepositoryDatabaseImpl implements CartRepository {
     
     /** Used to automatically convert a Cart object to and from JSON */
     private Jsonb jsonb;
+
+    private final static Logger log = Logger.getLogger(CartService.class.getName());
     
     public CartRepositoryDatabaseImpl(Config config) {
         try {
@@ -139,6 +143,19 @@ public class CartRepositoryDatabaseImpl implements CartRepository {
             return result;
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean healthCheck(){
+        try (Connection con = pool.getConnection()) {
+            OracleDatabase db = SODA.getDatabase(con);
+            OracleCollection col = db.openCollection(collectionName);
+            String name = col.admin().getName();
+            return name == null ? false : true;
+        } catch (Exception e) {
+            log.severe("Could not fetch metadata for collection "+collectionName);
+            return false;
         }
     }
     

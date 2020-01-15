@@ -176,5 +176,9 @@ public class CartService implements Service {
         error.put("errorMessage", message);
         response.status(400).send(error);
     }
+
+    public boolean healthCheck(){
+        return carts.healthCheck();
+    }
     
 }

@@ -56,4 +56,9 @@ public class CartRepositoryMemoryImpl implements CartRepository {
         return result;
     }
 
+    @Override
+    public boolean healthCheck(){
+        return true;
+    }
+
 }
