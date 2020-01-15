@@ -3,6 +3,7 @@ package mushop.carts;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -154,7 +155,7 @@ public class CartRepositoryDatabaseImpl implements CartRepository {
             String name = col.admin().getName();
             return name == null ? false : true;
         } catch (Exception e) {
-            log.severe("Could not fetch metadata for collection "+collectionName);
+            log.log(Level.SEVERE,"DB health-check failed." ,e);
             return false;
         }
     }

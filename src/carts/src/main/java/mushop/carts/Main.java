@@ -3,6 +3,8 @@ package mushop.carts;
 import io.helidon.config.Config;
 import io.helidon.health.HealthSupport;
 import io.helidon.health.checks.HealthChecks;
+import org.eclipse.microprofile.health.HealthCheck;
+import org.eclipse.microprofile.health.HealthCheckResponse;
 import io.helidon.media.jsonb.server.JsonBindingSupport;
 import io.helidon.metrics.MetricsSupport;
 import io.helidon.webserver.accesslog.AccessLogSupport;
@@ -34,9 +36,15 @@ public class Main {
         ServerConfiguration serverConfig = ServerConfiguration.create(config.get("server"));
 
         CartService cartService = new CartService(config);
+
+        HealthCheck dbHealth = () -> HealthCheckResponse
+                .named("dbHealth")
+                .state(cartService.healthCheck())
+                .build();
         
         HealthSupport health = HealthSupport.builder()
                 .addLiveness(HealthChecks.healthChecks())
+                .addLiveness(dbHealth)
                 .build();
         
         Builder routes = Routing.builder()
