@@ -141,8 +141,6 @@ public class CartService implements Service {
                         carts.get().save(newCart);
                         response.status(201).send(); // created
                     } else {
-                        log.info("Existing Cart" + cart);
-                        log.info("New Cart" + newCart);
                         cart.merge(newCart);
                         carts.get().save(cart);
                         response.status(200).send(); // ok
