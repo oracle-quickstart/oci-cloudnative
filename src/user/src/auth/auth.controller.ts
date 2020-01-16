@@ -1,4 +1,4 @@
-import { Controller, Request, Post, UseGuards, UseInterceptors, Body } from '@nestjs/common';
+import { Controller, Request, Post, UseGuards, UseInterceptors, Body, HttpException, HttpStatus } from '@nestjs/common';
 import { ParsedRequest, CrudRequest, CrudRequestInterceptor } from '@nestjsx/crud';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -27,7 +27,14 @@ export class AuthController {
    */
   @UseInterceptors(CrudRequestInterceptor)
   @Post(ROUTE.REGISTER)
-  register(@ParsedRequest() req: CrudRequest, @Body() dto: User) {
+  async register(@ParsedRequest() req: CrudRequest, @Body() dto: User) {
+    const exist = await this.service.findByUsername(dto.username);
+    if (exist) {
+      throw new HttpException({
+        status: HttpStatus.CONFLICT,
+        error: 'Username already exists',
+      }, 409);
+    }
     return this.service.createOne(req, User.hashPassword(dto))
       .then(user => this.service.filterDTO(user));
   }

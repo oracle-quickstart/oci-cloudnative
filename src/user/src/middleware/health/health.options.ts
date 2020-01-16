@@ -15,7 +15,7 @@ export class TerminusOptionsService implements TerminusOptionsFactory {
       healthIndicators: [
         async () => this.conf.mockDb() ?
           ({ [HEALTH_DB]: { status: 'ok' } }) :
-          this.orm.pingCheck(HEALTH_DB, { timeout: 1e3 }),
+          this.orm.pingCheck(HEALTH_DB, { timeout: 2e3 }),
       ],
     };
     // return options

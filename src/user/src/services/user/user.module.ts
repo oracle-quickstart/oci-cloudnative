@@ -17,10 +17,11 @@ import { AddressService } from './address/address.service';
 import { UserCard } from './card/card.entity';
 import { CardService } from './card/card.service';
 
+// Provide extra features for MockDb mode
 const features: any[] = [User, UserAddress, UserCard];
-const featureProviders: Provider[] = features.map(f => {
-  return AppConfig.common().mockDb() && MockRepository.forEntity(f);
-}).filter(p => !!p);
+const featureProviders: Provider[] = features
+  .map(f => AppConfig.common().mockDb() && MockRepository.forEntity(f))
+  .filter(p => !!p);
 
 /**
  * User Module with ORM services

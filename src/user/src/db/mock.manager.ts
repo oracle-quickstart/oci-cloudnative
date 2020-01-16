@@ -5,11 +5,23 @@ import { ObjectType, ObjectLiteral, EntityManager, SelectQueryBuilder } from 'ty
 import { MockQueryBuilder } from './mock.querybuilder';
 import uuid = require('uuid/v4');
 
-type Entity = ObjectLiteral & {
+type DTO = ObjectLiteral & {
   id: string;
 };
 
 type FilterCb<T> = (row: T) => boolean;
+
+export function toEqFilter<T extends DTO>(where: Partial<T>): FilterCb<T> {
+  return (row: T) =>
+    Object.keys(where).reduce((test, key) => test && where[key] === row[key], true);
+}
+
+export function pick<T extends DTO, K extends keyof T>(picks: K[], row: T): Pick<T, K> {
+  if (row && picks) {
+    return Object.assign({}, ...picks.map(key => ({[key]: row[key]})));
+  }
+  return row;
+}
 
 // tslint:disable-next-line:no-empty-interface
 export interface MockEntityManager extends EntityManager { }
@@ -21,7 +33,7 @@ export class MockEntityManager implements Partial<EntityManager> {
   public static manager(): MockEntityManager {
     return this.instance;
   }
-  public static manage(target: ObjectType<Entity>, alias: string) {
+  public static manage(target: ObjectType<DTO>, alias: string) {
     const { stores, aliases } = this.instance;
     if (!stores.has(target)) {
       stores.set(target, new MockDb(alias));
@@ -30,7 +42,7 @@ export class MockEntityManager implements Partial<EntityManager> {
     return this.instance;
   }
 
-  private aliases = new Map<string, ObjectType<Entity>>();
+  private aliases = new Map<string, ObjectType<DTO>>();
   private stores = new Map<any, MockDb<any>>();
   private logger = new Logger(this.constructor.name);
   private getStore(target: any): MockDb<any> {
@@ -42,48 +54,43 @@ export class MockEntityManager implements Partial<EntityManager> {
    * @param target
    * @param alias
    */
-  createQueryBuilder<T extends ObjectType<Entity>= any>(target: T, alias?: string): SelectQueryBuilder<any> {
+  createQueryBuilder<T extends ObjectType<DTO>= any>(target: T, alias?: string): SelectQueryBuilder<any> {
     return MockQueryBuilder.create(target, alias, this as EntityManager);
   }
 
-  async save<T extends ObjectType<Entity>= any>(target: T, entities: any): Promise<any> {
+  async save<T extends ObjectType<DTO>= any>(target: T, entities: any): Promise<any> {
     const db = this.getStore(target);
     const results = [].concat(entities)
-      .map((r: Entity) => db.upsert(db.create(r)));
+      .map((r: DTO) => db.upsert(db.create(r)));
     this.logger.debug(`Saved ${results.length}`);
     return Array.isArray(entities) ? results : results.shift();
   }
 
-  async find<T extends ObjectType<Entity>= any>(target: T, conditions: any): Promise<T[]> {
-    const { where = {}, limit = 0, offset = 0, fields } = conditions;
-    this.logger.debug(where);
+  async remove<T extends ObjectType<DTO>= any>(target: T, entities: any): Promise<any> {
     const db = this.getStore(target);
-    return db.find(this.toEqFilter(where), limit, offset)
-      .map(this.pick.bind(this, fields));
+    const ids = [].concat(entities)
+      .map((row: DTO) => row.id);
+    return db.delete((row: DTO) => ids.includes(row.id));
   }
 
-  async findOne<K extends Entity, T extends ObjectType<K>= any>(target: T, conditions?: any): Promise<any> {
+  async find<T extends ObjectType<DTO>= any>(target: T, conditions: any): Promise<T[]> {
+    const { where = {}, limit = 0, offset = 0, fields } = conditions;
+    const db = this.getStore(target);
+    return db.find(toEqFilter(where), limit, offset)
+      .map(pick.bind(null, fields));
+  }
+
+  async findOne<T extends DTO, K extends ObjectType<T>= any>(target: K, conditions?: any): Promise<Partial<T>> {
+    this.logger.debug('FIND ONE');
     const db = this.getStore(target);
     if (typeof conditions === 'string') {
       return db.findById(conditions);
     } else if (typeof conditions === 'object') {
       const { where = {}, fields } = conditions;
       this.logger.debug(where);
-      const result = db.first(this.toEqFilter(where as Partial<T>));
-      return this.pick<K>(fields, result);
+      const result = db.first(toEqFilter(where as Partial<T>));
+      return pick<T, keyof T>(fields, result);
     }
-  }
-
-  private toEqFilter<T extends Entity>(where: Partial<T>): FilterCb<T> {
-    return (row: T) =>
-      Object.keys(where).reduce((test, key) => test && where[key] === row[key], true);
-  }
-
-  private pick<T extends Entity>(pick: string[], row: T): Partial<T> {
-    if (row && pick) {
-      return Object.assign({}, ...pick.map(key => ({[key]: row[key]})) );
-    }
-    return row;
   }
 
 }
@@ -91,7 +98,7 @@ export class MockEntityManager implements Partial<EntityManager> {
 /**
  * In-memory database
  */
-export class MockDb<T extends Entity> {
+export class MockDb<T extends DTO> {
   private logger = new Logger(this.constructor.name);
   private collection: T[] = [];
   constructor(public alias: string) {

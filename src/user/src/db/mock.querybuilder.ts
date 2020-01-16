@@ -35,7 +35,7 @@ export class MockQueryBuilder extends SelectQueryBuilder<any> {
    * Called by @Crud list
    */
   async getMany() {
-    this.logger.debug('getMany');
+    this.logger.debug('GET MANY');
     const options = this.toMockOptions();
     this.logger.debug(options);
     return await this.manager.find(this.entity, options);
@@ -45,6 +45,7 @@ export class MockQueryBuilder extends SelectQueryBuilder<any> {
    * Called by @Crud get
    */
   async getOne() {
+    this.logger.debug('GET ONE');
     const options = this.toMockOptions();
     return await this.manager.findOne(this.entity, options);
   }
@@ -65,11 +66,6 @@ export class MockQueryBuilder extends SelectQueryBuilder<any> {
       return { [field]: parameters[param] };
     }));
 
-    return {
-      fields,
-      limit,
-      offset,
-      where,
-    };
+    return { fields, limit, offset, where };
   }
 }

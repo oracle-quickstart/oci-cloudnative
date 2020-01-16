@@ -1,8 +1,6 @@
-
-// tslint:disable-max-classes-per-file
-import { Provider } from '@nestjs/common';
+import { Provider, Logger } from '@nestjs/common';
 import { getRepositoryToken, getEntityManagerToken } from '@nestjs/typeorm';
-import { Repository, EntityRepository, ObjectLiteral, EntityManager, getCustomRepository } from 'typeorm';
+import { Repository, EntityRepository, ObjectLiteral, EntityManager, getCustomRepository, ObjectType } from 'typeorm';
 import { MockEntityManager } from './mock.manager';
 
 /**
@@ -10,7 +8,9 @@ import { MockEntityManager } from './mock.manager';
  */
 export class MockRepository extends Repository<any> {
 
-  public static forEntity<T extends ObjectLiteral>(entity: T): Provider {
+  private static logger = new Logger(MockRepository.name);
+
+  public static forEntity<T extends ObjectType<any>>(entity: T): Provider {
     return {
       provide: getRepositoryToken(entity as any),
       inject: [getEntityManagerToken()],
@@ -18,7 +18,8 @@ export class MockRepository extends Repository<any> {
     };
   }
 
-  private static factory<T extends ObjectLiteral>(manager: EntityManager, entity: T) {
+  private static factory<T extends ObjectType<any>>(manager: EntityManager, entity: T) {
+    this.logger.warn(`Create mock repository for '${entity.name}'`);
     // tslint:disable-next-line:max-classes-per-file
     @EntityRepository(entity as any)
     class EntityRepo extends MockRepository { }
@@ -28,7 +29,7 @@ export class MockRepository extends Repository<any> {
   /**
    * overload the readonly Repository.manager property
    */
-  public set manager(m: MockEntityManager) { /* */ }
+  public set manager(m: MockEntityManager) { /* noop */ }
   public get manager(): MockEntityManager {
     return MockEntityManager.manage(this.metadata.target as any, this.metadata.name);
   }
