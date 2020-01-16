@@ -133,8 +133,8 @@ by this service.
 | `/customers[/:id]` | CRUD endpoints for **customer** | `GET`, `POST`, `PATCH`, `PUT`, `DELETE` |
 | `/customers/:userId/cards[/:id]`, | CRUD endpoints for customer **cards** | `GET`, `POST`, `PATCH`, `PUT`, `DELETE` |
 | `/customers/:userId/addresses[/:id]`, | CRUD endpoints for customer **addresses** | `GET`, `POST`, `PATCH`, `PUT`, `DELETE` |
-| `/cards[/:id]`, | Read endpoint for **cards** | `GET` |
-| `/addresses[/:id]`, | Read endpoint for **addresses** | `GET` |
+| `/cards/:id`, | Read endpoint for **cards** | `GET` |
+| `/addresses/:id`, | Read endpoint for **addresses** | `GET` |
 
 ### Other Endpoints
 

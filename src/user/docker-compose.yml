@@ -17,6 +17,7 @@ services:
     read_only: false
     volumes:
       - ./Wallet_Creds:/usr/lib/oracle/19.3/client64/lib/network/admin/:ro
+      - ./node_modules/@nestjs:/usr/src/app/node_modules/@nestjs
       - ./src:/usr/src/app/src
     environment:
       - reschedule=on-node-failure

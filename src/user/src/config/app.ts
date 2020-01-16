@@ -40,4 +40,12 @@ export class AppConfig {
     };
   }
 
+  /**
+   * check if should use mock (memory) db
+   */
+  public mockDb(): boolean {
+    // tslint:disable-next-line:triple-equals
+    return this.dbConfig().OADB_SERVICE == 'mock';
+  }
+
 }

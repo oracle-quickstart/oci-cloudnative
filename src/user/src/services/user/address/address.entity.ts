@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
 } from 'typeorm';
-import { Length, IsNotEmpty } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 import { User } from '../user.entity';
 
 /**
