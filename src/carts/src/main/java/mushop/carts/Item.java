@@ -6,18 +6,18 @@ import java.util.UUID;
 public class Item {
 
     private String id;
-    
+
     private String itemId;
-    
+
     private int quantity;
-    
+
     private BigDecimal unitPrice;
 
     public Item() {
         this.id = UUID.randomUUID().toString();
         this.quantity = 1;
     }
-    
+
     public String getId() {
         return id;
     }
@@ -79,7 +79,5 @@ public class Item {
     public String toString() {
         return "Item [id=" + id + ", itemId=" + itemId + ", quantity=" + quantity + ", unitPrice=" + unitPrice + "]";
     }
-
-    
 
 }

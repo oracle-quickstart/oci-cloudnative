@@ -72,7 +72,7 @@ public class CartService implements Service {
                 return;
             }
         } catch (Exception e) {
-            log.log(Level.SEVERE,"getCartItems failed." ,e);
+            log.log(Level.SEVERE, "getCartItems failed.", e);
             sendError(response, e.getMessage());
             return;
         }
@@ -92,7 +92,7 @@ public class CartService implements Service {
                 response.status(404).send();
             }
         } catch (Exception e) {
-            log.log(Level.SEVERE,"deleteCart failed." ,e);
+            log.log(Level.SEVERE, "deleteCart failed.", e);
             sendError(response, e.getMessage());
             return;
         }
@@ -116,7 +116,7 @@ public class CartService implements Service {
             carts.get().save(cart);
             response.status(200).send();
         } catch (Exception e) {
-            log.log(Level.SEVERE,"deleteCartItem failed." ,e);
+            log.log(Level.SEVERE, "deleteCartItem failed.", e);
             sendError(response, e.getMessage());
             return;
         }
@@ -141,20 +141,20 @@ public class CartService implements Service {
                         carts.get().save(newCart);
                         response.status(201).send(); // created
                     } else {
-                        log.info("Existing Cart"+cart);
-                        log.info("New Cart"+newCart);
+                        log.info("Existing Cart" + cart);
+                        log.info("New Cart" + newCart);
                         cart.merge(newCart);
                         carts.get().save(cart);
                         response.status(200).send(); // ok
                     }
                 } catch (Exception e) {
-                    log.log(Level.SEVERE,"postCart failed." ,e);
+                    log.log(Level.SEVERE, "postCart failed.", e);
                     sendError(response, e.getMessage());
                     return;
                 }
             });
         } catch (Exception e) {
-            log.log(Level.SEVERE,"postCart failed." ,e);
+            log.log(Level.SEVERE, "postCart failed.", e);
             sendError(response, e.getMessage());
             return;
         }
@@ -190,7 +190,7 @@ public class CartService implements Service {
                 }
             });
         } catch (Exception e) {
-            log.log(Level.SEVERE,"updateCartItem failed." ,e);
+            log.log(Level.SEVERE, "updateCartItem failed.", e);
             sendError(response, e.getMessage());
             return;
         }
@@ -204,10 +204,10 @@ public class CartService implements Service {
 
     public boolean healthCheck() {
         try {
-            
-            return carts.isDone() ? carts.get(500,TimeUnit.MILLISECONDS).healthCheck() : false;
+
+            return carts.isDone() ? carts.get(500, TimeUnit.MILLISECONDS).healthCheck() : false;
         } catch (Exception e) {
-            log.log(Level.SEVERE,"DB health-check failed." ,e);
+            log.log(Level.SEVERE, "DB health-check failed.", e);
             return false;
         }
     }

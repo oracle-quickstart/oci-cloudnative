@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 import javax.json.Json;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
@@ -22,26 +21,26 @@ import oracle.ucp.jdbc.PoolDataSource;
 import oracle.ucp.jdbc.PoolDataSourceFactory;
 
 /**
- * Implements CartRepository using Oracle Database JSON collections.
- * SODA is the simple CRUD-based API that allows the application to 
- * interact with document collections in the autonomous database.
+ * Implements CartRepository using Oracle Database JSON collections. SODA is the
+ * simple CRUD-based API that allows the application to interact with document
+ * collections in the autonomous database.
  */
 public class CartRepositoryDatabaseImpl implements CartRepository {
 
     /** Factory for SODA (simple oracle document access) api */
-    private static final OracleRDBMSClient SODA = new OracleRDBMSClient(); 
-    
+    private static final OracleRDBMSClient SODA = new OracleRDBMSClient();
+
     /** The name of the backing collection */
-    private final String collectionName;    
-    
+    private final String collectionName;
+
     /** Pool of reusable database connections */
     protected PoolDataSource pool;
-    
+
     /** Used to automatically convert a Cart object to and from JSON */
     private Jsonb jsonb;
 
     private final static Logger log = Logger.getLogger(CartService.class.getName());
-    
+
     public CartRepositoryDatabaseImpl(Config config) {
         try {
             System.setProperty("oracle.jdbc.fanEnabled", "false");
@@ -67,12 +66,12 @@ public class CartRepositoryDatabaseImpl implements CartRepository {
                     OracleDocument collMeta = SODA.createMetadataBuilder().keyColumnAssignmentMethod("client").build();
                     col = db.admin().createCollection(collectionName, collMeta);
                 }
-                log.info("Connected to "+dbName);
+                log.info("Connected to " + dbName);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        
+
         jsonb = JsonbBuilder.create();
     }
 
@@ -99,20 +98,18 @@ public class CartRepositoryDatabaseImpl implements CartRepository {
             throw new RuntimeException(e);
         }
     }
-    
+
     @Override
     public List<Cart> getByCustomerId(String custId) {
         if (custId == null) {
             throw new IllegalArgumentException("The customer id must be specified");
         }
         // Create query by example like {"customerId" : "123"}
-        String filter  = Json.createObjectBuilder()
-              .add("customerId", custId)
-              .build().toString();
-        
+        String filter = Json.createObjectBuilder().add("customerId", custId).build().toString();
+
         return getCarts(filter);
     }
-    
+
     @Override
     public void save(Cart cart) {
         try (Connection con = pool.getConnection()) {
@@ -124,18 +121,16 @@ public class CartRepositoryDatabaseImpl implements CartRepository {
             throw new RuntimeException(e);
         }
     }
-    
+
     /** Selects carts based on a "query by example" */
     private List<Cart> getCarts(String filter) {
         try (Connection con = pool.getConnection()) {
             OracleDatabase db = SODA.getDatabase(con);
             OracleCollection col = db.openCollection(collectionName);
             OracleDocument filterDoc = db.createDocumentFromString(filter);
-            
-            OracleCursor carts = col.find()
-                    .filter(filterDoc)
-                    .getCursor();
-            
+
+            OracleCursor carts = col.find().filter(filterDoc).getCursor();
+
             List<Cart> result = new ArrayList<Cart>();
             while (carts.hasNext()) {
                 OracleDocument doc = carts.next();
@@ -149,16 +144,16 @@ public class CartRepositoryDatabaseImpl implements CartRepository {
     }
 
     @Override
-    public boolean healthCheck(){
+    public boolean healthCheck() {
         try (Connection con = pool.getConnection()) {
             OracleDatabase db = SODA.getDatabase(con);
             OracleCollection col = db.openCollection(collectionName);
             String name = col.admin().getName();
-            return name != null ;
+            return name != null;
         } catch (Exception e) {
-            log.log(Level.SEVERE,"DB health-check failed." ,e);
+            log.log(Level.SEVERE, "DB health-check failed.", e);
             return false;
         }
     }
-    
+
 }

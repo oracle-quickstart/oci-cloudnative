@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Implements the CartRepository in-memory. 
+ * Implements the CartRepository in-memory.
  */
 public class CartRepositoryMemoryImpl implements CartRepository {
 
@@ -13,7 +13,7 @@ public class CartRepositoryMemoryImpl implements CartRepository {
 
     @Override
     public void save(Cart cart) {
-        for (int i=0; i < carts.size(); i++) {
+        for (int i = 0; i < carts.size(); i++) {
             if (carts.get(i).getId().equals(cart.getId())) {
                 carts.set(i, cart);
                 return;
@@ -25,7 +25,7 @@ public class CartRepositoryMemoryImpl implements CartRepository {
     @Override
     public Cart getById(String id) {
         for (Cart c : carts) {
-            if (c.getId().equals(id)) { 
+            if (c.getId().equals(id)) {
                 return c;
             }
         }
@@ -44,7 +44,7 @@ public class CartRepositoryMemoryImpl implements CartRepository {
         }
         return false;
     }
-    
+
     @Override
     public List<Cart> getByCustomerId(String custId) {
         List<Cart> result = new ArrayList<Cart>();
@@ -57,7 +57,7 @@ public class CartRepositoryMemoryImpl implements CartRepository {
     }
 
     @Override
-    public boolean healthCheck(){
+    public boolean healthCheck() {
         return true;
     }
 

@@ -8,15 +8,15 @@ import java.util.UUID;
 public class Cart {
 
     private String id;
-    
-    private String customerId; 
+
+    private String customerId;
 
     private List<Item> items = new ArrayList<Item>();
 
     public Cart() {
         id = UUID.randomUUID().toString();
     }
-    
+
     public Cart(String cartId) {
         this.id = cartId;
     }
@@ -32,7 +32,7 @@ public class Cart {
     public List<Item> getItems() {
         return items;
     }
-    
+
     public void setId(String id) {
         this.id = id;
     }
@@ -53,22 +53,21 @@ public class Cart {
         this.customerId = cart.getCustomerId();
         List<Item> existingItems = new ArrayList<Item>(this.items);
         cart.items.forEach((item) -> {
-            if(existingItems.contains(item)){
+            if (existingItems.contains(item)) {
                 existingItems.forEach((existing) -> {
-                    if(existing.equals(item)){
-                        existing.setQuantity(existing.getQuantity()+1);
+                    if (existing.equals(item)) {
+                        existing.setQuantity(existing.getQuantity() + 1);
                     }
                 });
-            }else{
+            } else {
                 this.items.add(item);
-            } 
-        }); 
+            }
+        });
     }
 
     @Override
     public String toString() {
         return "Cart [customerId=" + customerId + ", id=" + id + ", items=" + items + "]";
     }
-    
-    
+
 }
