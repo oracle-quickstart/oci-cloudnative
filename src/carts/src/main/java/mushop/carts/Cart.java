@@ -50,19 +50,19 @@ public class Cart {
     }
 
     public void merge(Cart cart) {
-        this.customerId = cart.getCustomerId();
-        List<Item> existingItems = new ArrayList<Item>(this.items);
-        cart.items.forEach((item) -> {
-            if (existingItems.contains(item)) {
-                existingItems.forEach((existing) -> {
-                    if (existing.equals(item)) {
-                        existing.setQuantity(existing.getQuantity() + item.getQuantity());
-                    }
-                });
-            } else {
-                this.items.add(item);
+        for (Item item : cart.items) {
+            mergeItem(item);
+        }
+    }
+
+    private void mergeItem(Item item) {
+        for (Item existing : items) {
+            if (existing.getItemId().equals(item.getItemId())) {
+                existing.setQuantity(existing.getQuantity() + item.getQuantity());
+                return;
             }
-        });
+        }
+        items.add(item);
     }
 
     @Override
