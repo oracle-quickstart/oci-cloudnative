@@ -41,32 +41,32 @@ fdk.handle(function (input) {
         return { 'error': 'email not provided' };
     }
 
-    const { user, pass, host, port, approvedSender } = process.env;
-    if (!user) {
+    const { SMTP_USER, SMTP_PASSWORD, SMTP_HOST, SMTP_PORT, APPROVED_SENDER_EMAIL } = process.env;
+    if (!SMTP_USER) {
         return retError('SMTP_USER environment variable not set');
     }
 
-    if (!pass) {
+    if (!SMTP_PASSWORD) {
         return retError('SMTP_PASSWORD environment variable not set');
     }
 
-    if (!host) {
+    if (!SMTP_HOST) {
         return retError('SMTP_HOST environment variable not set');
     }
 
-    if (!port) {
+    if (!SMTP_PORT) {
         return retError('SMTP_PORT environment variable not set');
     }
 
-    if (!approvedSender) {
+    if (!APPROVED_SENDER_EMAIL) {
         return retError('APPROVED_SENDER_EMAIL environment variable not set');
     }
 
     return sendMail(input.email, {
-        host,
-        port,
-        user,
-        pass,
-        approvedSender
+        host: SMTP_HOST,
+        port: SMTP_PORT,
+        user: SMTP_USER,
+        pass: SMTP_PASSWORD,
+        approvedSender: APPROVED_SENDER_EMAIL,
     });
 });
