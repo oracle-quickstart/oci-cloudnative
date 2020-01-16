@@ -42,6 +42,8 @@ spec:
             value: http://{{ .Release.Name }}-user
           - name: STATIC_MEDIA_URL
             value: "{{ .Values.env.mediaUrl }}"
+          - name: NEWSLETTER_SUBSCRIBE_URL
+            value: "{{ .Values.env.newsletterSubscribeUrl }}"
           livenessProbe:
             httpGet:
               path: /health

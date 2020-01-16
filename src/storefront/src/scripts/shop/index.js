@@ -21,3 +21,4 @@ export * from './components/beta';
 export * from './components/chart';
 export * from './components/debug';
 export * from './components/form';
+export * from './components/newsletter';

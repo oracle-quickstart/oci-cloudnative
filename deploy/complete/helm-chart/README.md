@@ -176,6 +176,20 @@ These services are configured using kubernetes secrets.
 
     > **NOTE:** If it's desired to connect a separate databases for a given service, you can specify values specific for each service, such as `carts.oadbAdminSecret`, `carts.oadbWalletSecret`... 
 
+#### Configuring Functions
+
+If you want to configure and use the functions/API Gateway functionality, make sure you create and deploy the function and the API Gateway by following the instructions in the `src/functions/newsletter-subscription` folder.
+
+To configure the `api` chart to use the newsletter subscribe function, add the following snippet to the values file you are planning on deploying:
+```
+api:
+  env:
+    newsletterSubscribeUrl: https://[API_GATEWAY_URL]
+```
+
+Replace the `API_GATEWAY_URL` with an actual URL you got when you deployed your API gateway instance.
+
+
 ### Dev installation
 
 The default chart installation creates an Ingress resource for development (i.e. simple Ingress, without the DNS and need for Prod/Staging secrets).

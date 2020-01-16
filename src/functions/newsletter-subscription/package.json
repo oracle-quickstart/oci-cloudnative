@@ -1,0 +1,12 @@
+{
+    "name": "newsletter-subscription",
+    "version": "0.1.0",
+    "description": "MuShop Newsletter Subscription",
+    "main": "func.js",
+    "author": "",
+    "dependencies": {
+      "@fnproject/fdk": "0.0.15",
+      "nodemailer": "^6.4.2"
+    }
+  }
+  
