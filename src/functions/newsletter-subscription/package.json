@@ -4,7 +4,6 @@
     "description": "MuShop Newsletter Subscription",
     "main": "func.js",
     "author": "",
-    "license": "Apache-2.0",
     "dependencies": {
       "@fnproject/fdk": "0.0.15",
       "nodemailer": "^6.4.2"

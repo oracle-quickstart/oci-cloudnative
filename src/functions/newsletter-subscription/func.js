@@ -41,12 +41,7 @@ fdk.handle(function (input) {
         return { 'error': 'email not provided' };
     }
 
-    const user = process.env.SMTP_USER;
-    const pass = process.env.SMTP_PASSWORD;
-    const host = process.env.SMTP_HOST;
-    const port = process.env.SMTP_PORT;
-    const approvedSender = process.env.APPROVED_SENDER_EMAIL;
-
+    const { user, pass, host, port, approvedSender } = process.env;
     if (!user) {
         return retError('SMTP_USER environment variable not set');
     }
