@@ -180,7 +180,7 @@ public class CartService implements Service {
                             item.setQuantity(qItem.getQuantity());
                             carts.get().save(cart);
                             response.status(200).send();
-                            break;
+                            return;
                         }
                     }
                     response.status(404).send();

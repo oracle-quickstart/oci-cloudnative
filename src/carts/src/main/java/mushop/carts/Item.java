@@ -60,18 +60,23 @@ public class Item {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Item other = (Item) obj;
         if (itemId == null) {
-            if (other.itemId != null)
+            if (other.itemId != null) {
                 return false;
-        } else if (!itemId.equals(other.itemId))
+            }
+        } else if (!itemId.equals(other.itemId)) {
             return false;
+        }
         return true;
     }
 

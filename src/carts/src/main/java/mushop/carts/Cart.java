@@ -56,7 +56,7 @@ public class Cart {
             if (existingItems.contains(item)) {
                 existingItems.forEach((existing) -> {
                     if (existing.equals(item)) {
-                        existing.setQuantity(existing.getQuantity() + 1);
+                        existing.setQuantity(existing.getQuantity() + item.getQuantity());
                     }
                 });
             } else {
