@@ -1,5 +1,9 @@
-import { Module } from '@nestjs/common';
+import { Module, Provider } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+// config
+import { AppConfig } from '../../config/app';
+import { MockRepository } from '../../db/mock.repository';
 
 // User
 import { User } from './user.entity';
@@ -13,12 +17,17 @@ import { AddressService } from './address/address.service';
 import { UserCard } from './card/card.entity';
 import { CardService } from './card/card.service';
 
+const features: any[] = [User, UserAddress, UserCard];
+const featureProviders: Provider[] = features.map(f => {
+  return AppConfig.common().mockDb() && MockRepository.forEntity(f);
+}).filter(p => !!p);
+
 /**
  * User Module with ORM services
  */
 @Module({
-  imports: [TypeOrmModule.forFeature([User, UserAddress, UserCard])],
+  imports: [TypeOrmModule.forFeature(features)],
+  providers: [...featureProviders, UserService, AddressService, CardService],
   exports: [UserService, AddressService, CardService],
-  providers: [UserService, AddressService, CardService],
 })
 export class UserModule { }
