@@ -1,6 +1,7 @@
 package mushop.carts;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,9 +51,24 @@ public class Cart {
 
     public void merge(Cart cart) {
         this.customerId = cart.getCustomerId();
-        for (Item item : cart.items) {
-            items.add(item);
-        }
+        List<Item> existingItems = new ArrayList<Item>(this.items);
+        cart.items.forEach((item) -> {
+            if(existingItems.contains(item)){
+                existingItems.forEach((existing) -> {
+                    if(existing.equals(item)){
+                        existing.setQuantity(existing.getQuantity()+1);
+                    }
+                });
+            }else{
+                this.items.add(item);
+            } 
+        }); 
     }
+
+    @Override
+    public String toString() {
+        return "Cart [customerId=" + customerId + ", id=" + id + ", items=" + items + "]";
+    }
+    
     
 }

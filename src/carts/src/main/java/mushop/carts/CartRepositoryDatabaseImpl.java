@@ -67,6 +67,7 @@ public class CartRepositoryDatabaseImpl implements CartRepository {
                     OracleDocument collMeta = SODA.createMetadataBuilder().keyColumnAssignmentMethod("client").build();
                     col = db.admin().createCollection(collectionName, collMeta);
                 }
+                log.info("Connected to "+dbName);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -153,7 +154,7 @@ public class CartRepositoryDatabaseImpl implements CartRepository {
             OracleDatabase db = SODA.getDatabase(con);
             OracleCollection col = db.openCollection(collectionName);
             String name = col.admin().getName();
-            return name == null ? false : true;
+            return name != null ;
         } catch (Exception e) {
             log.log(Level.SEVERE,"DB health-check failed." ,e);
             return false;

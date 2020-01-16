@@ -72,6 +72,7 @@ public class CartService implements Service {
                 return;
             }
         } catch (Exception e) {
+            log.log(Level.SEVERE,"getCartItems failed." ,e);
             sendError(response, e.getMessage());
             return;
         }
@@ -91,6 +92,7 @@ public class CartService implements Service {
                 response.status(404).send();
             }
         } catch (Exception e) {
+            log.log(Level.SEVERE,"deleteCart failed." ,e);
             sendError(response, e.getMessage());
             return;
         }
@@ -114,7 +116,7 @@ public class CartService implements Service {
             carts.get().save(cart);
             response.status(200).send();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.log(Level.SEVERE,"deleteCartItem failed." ,e);
             sendError(response, e.getMessage());
             return;
         }
@@ -135,21 +137,24 @@ public class CartService implements Service {
                 try {
                     Cart cart = carts.get().getById(cartId);
                     if (cart == null) {
-
                         newCart.setId(cartId);
                         carts.get().save(newCart);
                         response.status(201).send(); // created
                     } else {
+                        log.info("Existing Cart"+cart);
+                        log.info("New Cart"+newCart);
                         cart.merge(newCart);
                         carts.get().save(cart);
                         response.status(200).send(); // ok
                     }
                 } catch (Exception e) {
+                    log.log(Level.SEVERE,"postCart failed." ,e);
                     sendError(response, e.getMessage());
                     return;
                 }
             });
         } catch (Exception e) {
+            log.log(Level.SEVERE,"postCart failed." ,e);
             sendError(response, e.getMessage());
             return;
         }
@@ -175,6 +180,7 @@ public class CartService implements Service {
                             item.setQuantity(qItem.getQuantity());
                             carts.get().save(cart);
                             response.status(200).send();
+                            break;
                         }
                     }
                     response.status(404).send();
@@ -184,6 +190,7 @@ public class CartService implements Service {
                 }
             });
         } catch (Exception e) {
+            log.log(Level.SEVERE,"updateCartItem failed." ,e);
             sendError(response, e.getMessage());
             return;
         }
