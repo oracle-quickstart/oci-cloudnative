@@ -7,7 +7,7 @@ services:
     hostname: edge-router
     restart: always
     ports:
-      - "80:8080"
+      - "81:8080"
     cap_drop:
       - all
     cap_add:
@@ -18,7 +18,7 @@ services:
 
   # Storefront application middleware
   api:
-    image: iad.ocir.io/oracle/ateam/mushop-api:2.0.1
+    image: iad.ocir.io/oracle/ateam/mushop-api:2.1.0
     hostname: api
     restart: always
     cap_drop:
@@ -36,6 +36,8 @@ services:
       - CARTS_URL=http://carts
       - ORDERS_URL=http://orders
       - USERS_URL=http://user
+      - STATIC_MEDIA_URL
+      - NEWSLETTER_SUBSCRIBE_URL
       - MOCK_MODE=users,catalogue
       - DEBUG=true
 
@@ -60,7 +62,7 @@ services:
 
   # Storefront backend API service
   storefront:
-    image: iad.ocir.io/oracle/ateam/mushop-storefront:2.0.0
+    image: iad.ocir.io/oracle/ateam/mushop-storefront:2.1.0
     hostname: storefront
     restart: always
     cap_drop:
@@ -94,7 +96,7 @@ services:
 
   # OCI Carts service
   carts:
-    image: iad.ocir.io/oracle/ateam/mushop-carts:1.1.0
+    image: iad.ocir.io/oracle/ateam/mushop-carts:1.2.0
     ports:
       - 8086:80
     hostname: carts
@@ -114,7 +116,7 @@ services:
 
   # OCI Orders service
   orders:
-    image: iad.ocir.io/oracle/ateam/mushop-orders:1.0.3
+    image: iad.ocir.io/oracle/ateam/mushop-orders:1.1.0
     ports:
       - 8085:80
     hostname: orders
@@ -183,7 +185,7 @@ services:
     read_only: true
 
   user:
-    image: iad.ocir.io/oracle/ateam/mushop-user:1.0.0
+    image: iad.ocir.io/oracle/ateam/mushop-user:1.1.0
     hostname: user
     restart: always
     cap_drop:
@@ -192,6 +194,7 @@ services:
       - NET_BIND_SERVICE
     read_only: true
     environment:
-      - OADB_USER
-      - OADB_PW
+      - PORT=80
+      - OADB_USER=mock
+      - OADB_PW=mock
       - OADB_SERVICE=mock

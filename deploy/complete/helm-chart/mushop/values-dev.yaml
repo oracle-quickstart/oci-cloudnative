@@ -9,6 +9,11 @@ global:
 ingress:
   enabled: true
 
+api:
+  env:
+    mediaUrl:                 # Object Storage URL for catalog image assets
+    newsletterSubscribeUrl:   # Newsletter subscription endpoint (https://[API_GATEWAY_URL]/newsletter/subscribe)
+
 carts:
   secrets:
     oadbAdminPassword:    # ADMIN password entered when provisioning ATP database
