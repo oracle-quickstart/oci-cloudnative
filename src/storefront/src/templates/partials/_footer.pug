@@ -52,11 +52,11 @@ section.uk-section.uk-section-secondary.uk-section-xsmall.uk-light
               span= shopInfo.openingHours
 
       div
-        form.uk-form-stacked
+        form.uk-form-stacked(mu-newsletter-subscription)
           label
             div.uk-form-label.uk-text-muted Subscribe for updates
             div.uk-inline.uk-width-1-1
-              a.uk-form-icon.uk-form-icon-flip(uk-icon="mail" mu onclick="this.mu.ui.notification('Subscribed email!', 'success')")
+              a.uk-form-icon.uk-form-icon-flip(uk-icon="mail" mu-click="subscribe")
               input.uk-input(type="email" placeholder="Your email" required)
 
         div.uk-margin-small.uk-text-muted.uk-text-small

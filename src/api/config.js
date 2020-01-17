@@ -20,6 +20,7 @@
     CARTS: 'CARTS_URL',
     ORDERS: 'ORDERS_URL',
     USERS: 'USERS_URL',
+    NEWSLETTER_SUBSCRIBE: 'NEWSLETTER_SUBSCRIBE_URL',
   };
 
   const settingKeyMap = {

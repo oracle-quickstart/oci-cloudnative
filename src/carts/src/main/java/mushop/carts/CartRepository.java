@@ -27,6 +27,12 @@ public interface CartRepository {
      * Selects carts that have the same customer id
      */
     List<Cart> getByCustomerId(String custId);
+
+    /**
+     * Check the connection to the database
+     * @return boolean true if connected to a database, false if not. 
+     */
+    boolean healthCheck();
     
 }
 
