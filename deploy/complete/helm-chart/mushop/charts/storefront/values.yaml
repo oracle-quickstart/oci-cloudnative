@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: iad.ocir.io/oracle/ateam/mushop-storefront
-  tag: 2.0.2
+  tag: 2.1.0
   pullPolicy: IfNotPresent
 
 resources:
