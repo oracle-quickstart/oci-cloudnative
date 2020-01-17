@@ -17,10 +17,11 @@ RUN mvn install:install-file -Dfile=/tmp/orajsoda-${SODA_VERSION}.jar -DgroupId=
 
 # Create source folder
 RUN mkdir -p /usr/src/app
-COPY src     /usr/src/app/src
 COPY pom.xml /usr/src/app/
 WORKDIR      /usr/src/app/
+RUN mvn dependency:go-offline -B
 
+COPY src     /usr/src/app/src
 RUN mvn package
 
 # ------------

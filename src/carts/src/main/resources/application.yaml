@@ -1,6 +1,11 @@
 
 # The name of the JSON document collection to store the carts in. 
-OADB_CARTS_COLLECTION=cart
+OADB_CARTS_COLLECTION: cart
 
 # The autonomous database service name (or "Mock" for in-memory without a database)
-OADB_SERVICE=mock
+OADB_SERVICE: mock
+
+server:
+  port: 80
+  access-log:
+    format: "%h %l %u %t %r %s %b %{Referer}i"
