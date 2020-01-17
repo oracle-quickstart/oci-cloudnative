@@ -50,6 +50,7 @@ public class Cart {
     }
 
     public void merge(Cart cart) {
+        this.customerId = cart.getCustomerId();
         for (Item item : cart.items) {
             mergeItem(item);
         }
