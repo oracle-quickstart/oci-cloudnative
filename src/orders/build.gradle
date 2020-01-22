@@ -35,7 +35,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
 
-	runtimeOnly 'com.oracle.jdbc:ojdbc8:19.3'
+	runtimeOnly 'com.oracle.ojdbc:ojdbc8:19.3.0.0'
 	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'com.h2database:h2'
