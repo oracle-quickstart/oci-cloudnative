@@ -1,0 +1,5 @@
+profile: service
+defaultPackage: mushop
+---
+testFramework: spock
+sourceLanguage: java
