@@ -1,3 +1,9 @@
 micronaut:
   application:
     name: fulfillment
+
+mushop:
+  orderupdates:
+    host: localhost
+    port: 4222
+    subject: mushop-orders
