@@ -1,3 +1,50 @@
+ARG APPLICATION_NAME="fulfillment"
+ARG VERSION="0.0.1-SNAPSHOT"
+
+# ------------
+# Stage 1 : Setup the build environment
+FROM maven:3.6-jdk-8 as buildenv
+ARG GRADLE_VERSION=5.5.1
+ENV GRADLE_HOME /opt/gradle
+
+# create source folder
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+# Get Gradle.
+ADD https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip /tmp/gradle.zip
+RUN echo 'Installing Gradle' && \
+    unzip /tmp/gradle.zip && \
+    rm /tmp/gradle.zip && \
+    mv "gradle-${GRADLE_VERSION}" "${GRADLE_HOME}/" && \
+    ln --symbolic "${GRADLE_HOME}/bin/gradle" /usr/bin/gradle && \
+    echo "Testing Gradle installation" && \
+    gradle --version
+COPY settings.gradle /usr/src/app
+RUN gradle --refresh-dependencies
+
+# copy buildscript and cache all dependencies
+COPY build.gradle /usr/src/app
+COPY gradle.properties /usr/src/app
+RUN gradle --refresh-dependencies
+#
+# ------------
+
+# ------------
+# Stage 2 : Build the application
+#
+FROM buildenv as appbuild
+ARG APPLICATION_NAME
+ARG VERSION
+
+# Copy the source code.
+# This layer is recreated only when there are actual source chnages
+COPY src /usr/src/app/src
+
+# Install the application
+RUN gradle clean assemble
+RUN ls -ltr /usr/src/app/build/libs
+
 FROM oracle/graalvm-ce:19.3.0-java8 as graalvm
 #FROM oracle/graalvm-ce:19.3.0-java11 as graalvm # For JDK 11
 COPY . /home/app/fulfillment
