@@ -292,6 +292,7 @@ pre {
     img {
       flex-shrink: 0;
       max-width: $contrib-avatar-size;
+      max-height: $contrib-avatar-size;
       margin: 0 $main-padding 0 0;
     }
   }
