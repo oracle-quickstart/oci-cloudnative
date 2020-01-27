@@ -269,9 +269,19 @@ The SMTP credentails (host, port, username and password) and the approved sender
 
 Each function needs to live inside of an application. You can create a new application either through the console, API or the Fn CLI. An application has a name (e.g. `mushop-app`) and the VCN and a subnet in which to run the functions. The one guideline here is to pick the subnets that are in the same region as the Docker registry you specified in your context YAML earlier - check these [docs](https://docs.cloud.oracle.com/iaas/Content/Functions/Tasks/functionscreatingapps.htm) for more information.
 
+The first step you need to do is to ensure your tenancy is configured for function development. You can follow the [Configuring Your Tenancy for Function Development](https://docs.cloud.oracle.com/iaas/Content/Functions/Tasks/functionsconfiguringtenancies.htm) documentation.
+
+As a next step you will need to install the [Fn CLI](https://github.com/fnproject/cli). If on a Mac and you're using [Brew](https://brew.sh), you can run:
+
+```shell
+brew install fn
+```
+
+Finally, you will need configure the Fn CLI - you can follow [these instructions](https://docs.cloud.oracle.com/iaas/Content/Functions/Tasks/functionscreatefncontext.htm) that will guide you through creating a context file and configuring it with an image registry.
+
 To create an application using Fn CLI, run:
 
-```
+```shell
  fn create app [APP_NAME] --annotation oracle.com/oci/subnetIds='["ocid1.subnet.oc1.iad...."]'
 ```
 
@@ -281,7 +291,7 @@ To create an application using Fn CLI, run:
 
 To deploy a function to an app, you can run the following command within the function folder (`/src/functions/newsletter-subscription`):
 
-```
+```shell
 fn deploy --app [APP_NAME]
 ```
 >Note: use `fn -v deploy --app [APP_NAME]` to get verbose output in case you're running into issues.
@@ -294,7 +304,7 @@ Once you've successfully deployed the function, you can use the Fn CLI to add co
 
 Run the following commands to configure SMTP settings and the approved sender (replace the values):
 
-```
+```shell
 fn config function mushop-app newsletter-subscription SMTP_USER <smtp_username>
 fn config function mushop-app newsletter-subscription SMTP_PASSWORD <smtp_password>
 fn config function mushop-app newsletter-subscription SMTP_HOST <smtp_host>
@@ -337,7 +347,7 @@ The quickest way to create a gateway is through the OCI console:
 
 When deployment completes, navigate to it to get the URL for the gateway. Click the **Show** link next to the **Endpoint** label to reveal the full URL for the deployment. It should look like this:
 
-```
+```text
 https://aaaaaaaaa.apigateway.us-ashburn-1.oci.customer-oci.com/newsletter
 ```
 
