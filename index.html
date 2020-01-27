@@ -253,6 +253,9 @@
                     <a href="#provisioning" class="toc-h2 toc-link" data-title="Provisioning">Provisioning</a>
                   </li>
                   <li>
+                    <a href="#api-gateway-oci-functions-and-email-delivery" class="toc-h2 toc-link" data-title="API Gateway, OCI Functions and Email Delivery">API Gateway, OCI Functions and Email Delivery</a>
+                  </li>
+                  <li>
                     <a href="#deployment" class="toc-h2 toc-link" data-title="Deployment">Deployment</a>
                   </li>
               </ul>
@@ -353,6 +356,10 @@ development with Oracle Cloud Infrastructure.</p>
 </tr>
 </thead><tbody>
 <tr>
+<td><a href="https://www.oracle.com/cloud/integration/api-platform-cloud/">API Gateway</a></td>
+<td>Fully managed gateway for governed HTTP/S interfaces</td>
+</tr>
+<tr>
 <td><a href="https://www.oracle.com/cloud/compute/container-engine-kubernetes.html">Container Engine for Kubernetes</a></td>
 <td>Enterprise-grade Kubernetes on Oracle Cloud</td>
 </tr>
@@ -361,12 +368,12 @@ development with Oracle Cloud Infrastructure.</p>
 <td>Highly available service to distribute container images</td>
 </tr>
 <tr>
-<td><a href="https://www.oracle.com/cloud/systems-management/resource-manager/">Resource Manager</a></td>
-<td>Infrastructure as code with Terraform</td>
+<td><a href="https://www.oracle.com/cloud/networking/email-delivery.html">Email Delivery</a></td>
+<td>Enables sending emails</td>
 </tr>
 <tr>
-<td><a href="https://www.oracle.com/big-data/streaming/">Streaming</a></td>
-<td>Large scale data collection and processing</td>
+<td><a href="https://www.oracle.com/cloud-native/functions/">Functions</a></td>
+<td>Scalable, multitenant serverless functions</td>
 </tr>
 <tr>
 <td><a href="https://www.oracle.com/cloud/systems-management/monitoring/">Monitoring</a></td>
@@ -377,6 +384,14 @@ development with Oracle Cloud Infrastructure.</p>
 <td>Provisioning cloud resources within Kubernetes</td>
 </tr>
 <tr>
+<td><a href="https://www.oracle.com/cloud/systems-management/resource-manager/">Resource Manager</a></td>
+<td>Infrastructure as code with Terraform</td>
+</tr>
+<tr>
+<td><a href="https://www.oracle.com/big-data/streaming/">Streaming</a></td>
+<td>Large scale data collection and processing</td>
+</tr>
+<tr>
 <td><em>Others coming soon</em></td>
 <td>-</td>
 </tr>
@@ -385,16 +400,8 @@ development with Oracle Cloud Infrastructure.</p>
 <td>Trigger actions in response to infrastructure changes</td>
 </tr>
 <tr>
-<td><a href="https://www.oracle.com/cloud-native/functions/">Functions</a></td>
-<td>Scalable, multitenant serverless functions</td>
-</tr>
-<tr>
 <td><a href="https://www.oracle.com/cloud/systems-management/notifications/">Notifications</a></td>
 <td>Broadcast messages to distributed systems</td>
-</tr>
-<tr>
-<td><a href="https://www.oracle.com/cloud/integration/api-platform-cloud/">API Gateway</a></td>
-<td>Fully managed gateway for governed HTTP/S interfaces</td>
 </tr>
 <tr>
 <td><a href="https://go.oracle.com/LP=78019?elqCampaignId=179851">Logging</a></td>
@@ -412,8 +419,6 @@ development with Oracle Cloud Infrastructure.</p>
 </ul>
 
 <!-- - [Health Checks](https://www.oracle.com/cloud/networking/health-checks.html) -->
-
-<!-- - [Email Delivery](https://www.oracle.com/cloud/networking/email-delivery.html) -->
 <h3 id='mushop-services'>MuShop Services</h3>
 <table><thead>
 <tr>
@@ -440,6 +445,12 @@ development with Oracle Cloud Infrastructure.</p>
 <td>Go</td>
 <td>Autonomous DB (ATP)</td>
 <td>Product catalogue</td>
+</tr>
+<tr>
+<td><code>src/functions/newsletter-subscription</code></td>
+<td>Node.js</td>
+<td>Functions</td>
+<td>Newsletter subscription</td>
 </tr>
 <tr>
 <td><code>src/orders</code></td>
@@ -925,6 +936,108 @@ values as described <a href="#provisioning">above</a></p></li>
 </code></pre><pre class="highlight plaintext"><code>kubectl get servicebindings -A
 </code></pre></li>
 </ol>
+<h2 id='api-gateway-oci-functions-and-email-delivery'>API Gateway, OCI Functions and Email Delivery</h2>
+<p>Note that this is optional. If you don&#39;t want to configure Email Delivery and deploy an API Gateway and the function, skip to the <a href="#deployment">Deployment</a> section. </p>
+<h3 id='configure-email-delivery'>Configure Email Delivery</h3>
+<p>If you are planning to use the API gateway and Oracle Functions, to send emails using OCI Email Delivery you need to configure an approved sender first.</p>
+
+<ol>
+<li>From the OCI console, click <strong>Email Delivery</strong> -&gt; <strong>Email Approved Sender</strong></li>
+<li>Click the <strong>Create Approved Sender</strong></li>
+<li>Enter the email address, for example: <code>mushop@example.com</code></li>
+<li>Click <strong>Create Approved Sender</strong></li>
+</ol>
+
+<blockquote>
+<p>Note: if you have your own domain, you can enter a different address (e.g.<code>mushop@[yourdomain.com]</code>) and also configure SPF record for the sender. This involves adding a DNS record to your domain. You can follow <a href="https://docs.cloud.oracle.com/iaas/Content/Email/Tasks/configurespf.htm">these</a> instructions to set up SPF.</p>
+</blockquote>
+
+<p>Next, you need to generate the SMTP credentials that will allow you to log in to the SMTP server and send the email. Follow the <a href="https://docs.cloud.oracle.com/iaas/Content/Email/Tasks/generatesmtpcredentials.htm">Generate SMTP Credentails for a User</a> to get the SMTP host, port, username and password.</p>
+
+<p>The SMTP credentails (host, port, username and password) and the approved sender email address (e.g. <code>mushop@example.com</code>) will be provided to the function as configuration values later, so make sure you save these values somewhere.</p>
+<h3 id='configure-function-application'>Configure function application</h3>
+<p>Each function needs to live inside of an application. You can create a new application either through the console, API or the Fn CLI. An application has a name (e.g. <code>mushop-app</code>) and the VCN and a subnet in which to run the functions. The one guideline here is to pick the subnets that are in the same region as the Docker registry you specified in your context YAML earlier - check these <a href="https://docs.cloud.oracle.com/iaas/Content/Functions/Tasks/functionscreatingapps.htm">docs</a> for more information.</p>
+
+<p>The first step you need to do is to ensure your tenancy is configured for function development. You can follow the <a href="https://docs.cloud.oracle.com/iaas/Content/Functions/Tasks/functionsconfiguringtenancies.htm">Configuring Your Tenancy for Function Development</a> documentation.</p>
+
+<p>As a next step you will need to install the <a href="https://github.com/fnproject/cli">Fn CLI</a>. If on a Mac and you&#39;re using <a href="https://brew.sh">Brew</a>, you can run:</p>
+<pre class="highlight shell tab-shell"><code>brew install fn
+</code></pre>
+<p>Finally, you will need configure the Fn CLI - you can follow <a href="https://docs.cloud.oracle.com/iaas/Content/Functions/Tasks/functionscreatefncontext.htm">these instructions</a> that will guide you through creating a context file and configuring it with an image registry.</p>
+
+<p>To create an application using Fn CLI, run:</p>
+<pre class="highlight shell tab-shell"><code> fn create app <span class="o">[</span>APP_NAME] --annotation oracle.com/oci/subnetIds<span class="o">=</span><span class="s1">'["ocid1.subnet.oc1.iad...."]'</span>
+</code></pre>
+<blockquote>
+<p>Note: make sure you replace <code>APP_NAME</code> and the <code>ocid1.subnet</code> with actual values</p>
+</blockquote>
+<h3 id='deploy-and-configure-the-function'>Deploy and configure the function</h3>
+<p>To deploy a function to an app, you can run the following command within the function folder (<code>/src/functions/newsletter-subscription</code>):</p>
+<pre class="highlight shell tab-shell"><code>fn deploy --app <span class="o">[</span>APP_NAME]
+</code></pre>
+<blockquote>
+<p>Note: use <code>fn -v deploy --app [APP_NAME]</code> to get verbose output in case you&#39;re running into issues.</p>
+</blockquote>
+
+<p>In the remainder of the document, we will use <code>mushop-app</code> for the application name.</p>
+
+<p>You need to provide additional configuration (SMTP credentails) for the function to work properly and be able to send emails.</p>
+
+<p>Once you&#39;ve successfully deployed the function, you can use the Fn CLI to add configuration values (note that you can also do the same through the Console UI).</p>
+
+<p>Run the following commands to configure SMTP settings and the approved sender (replace the values):</p>
+<pre class="highlight shell tab-shell"><code>fn config <span class="k">function </span>mushop-app newsletter-subscription SMTP_USER &lt;smtp_username&gt;
+fn config <span class="k">function </span>mushop-app newsletter-subscription SMTP_PASSWORD &lt;smtp_password&gt;
+fn config <span class="k">function </span>mushop-app newsletter-subscription SMTP_HOST &lt;smtp_host&gt;
+fn config <span class="k">function </span>mushop-app newsletter-subscription SMTP_PORT &lt;smtp_port&gt;
+fn config <span class="k">function </span>mushop-app newsletter-subscription APPROVED_SENDER_EMAIL &lt;approved_sender_email&gt;
+</code></pre><h3 id='creating-an-api-gateway'>Creating an API gateway</h3>
+<p>You will be using an <a href="https://docs.cloud.oracle.com/iaas/Content/APIGateway/Concepts/apigatewayoverview.htm">API Gateway</a> to access the functions. To prepare your tenancy for using the gateway, check the <a href="https://docs.cloud.oracle.com/iaas/Content/APIGateway/Concepts/apigatewayprerequisites.htm">Preparing for API Gateway</a> documentation.</p>
+
+<p>The quickest way to create a gateway is through the OCI console:</p>
+
+<ol>
+<li>Click <strong>Developer Services</strong> -&gt; <strong>API Gateway</strong> from the sidebar on the left</li>
+<li>Click the <strong>Create Gateway</strong> button</li>
+<li>Enter the following values (you can use a different name if you&#39;d like):
+
+<ul>
+<li>Name: <strong>mushop-gateway</strong></li>
+<li>Type: <strong>Public</strong></li>
+<li>Virtual Cloud Network: <em>Pick one from the dropdown</em></li>
+<li>Subnet: <em>Pick the subnet from the dropdown</em></li>
+</ul></li>
+<li>Click <strong>Create</strong></li>
+<li>When gateway is created, click the <strong>Deployments</strong> link from the sidebar on the left</li>
+<li>Under the <strong>Deployments</strong>, click the <strong>Create Deployment</strong> button</li>
+<li>Make sure <strong>From Scratch</strong> option is selected at the top and enter the following values (you can leave the other values as they are - i.e. no need to enable CORS, Authentication or Rate Limiting):
+
+<ul>
+<li>Name: <strong>newsletter-subscription</strong></li>
+<li>Path prefix: <strong>/newsletter</strong></li>
+<li>Compartment: <Pick your compartment></li>
+<li>Execution log: <strong>Enabled</strong></li>
+<li>Log level: <strong>Error</strong></li>
+</ul></li>
+<li>Click <strong>Next</strong> to define the route</li>
+<li>Enter the following values for <strong>Route 1</strong>:
+
+<ul>
+<li>Path: <strong>/subscribe</strong></li>
+<li>Methods: <strong>POST</strong></li>
+<li>Type: <strong>Oracle Functions</strong></li>
+<li>Application: <strong>mushop-app</strong> (or other, if you used a different name)</li>
+<li>Function name: <strong>newsletter-subscription</strong></li>
+</ul></li>
+<li>Click the <strong>Show Route Logging Policies</strong> link and enable <strong>Execution Log</strong></li>
+<li>Click <strong>Next</strong> and review the deployment</li>
+<li>Click <strong>Create</strong> to create the gateway deployment</li>
+</ol>
+
+<p>When deployment completes, navigate to it to get the URL for the gateway. Click the <strong>Show</strong> link next to the <strong>Endpoint</strong> label to reveal the full URL for the deployment. It should look like this:</p>
+<pre class="highlight plaintext"><code>https://aaaaaaaaa.apigateway.us-ashburn-1.oci.customer-oci.com/newsletter
+</code></pre>
+<p>You will use this URL in <code>values-dev.yaml</code> when creating the deployment. </p>
 <h2 id='deployment'>Deployment</h2>
 <p>Having completed the <a href="#provisioning">provisioning</a> steps above, the <code>mushop</code> deployment
 helm chart is installed using settings to leverage cloud backing services.</p>
@@ -945,6 +1058,11 @@ helm chart is installed using settings to leverage cloud backing services.</p>
 <aside class="notice">
 Database secrets (<code>oadb*</code>) may be omitted if using the automated service broker approach.
 </aside></li>
+<li><p><strong>Optional</strong>: If you configured the Email Delivery, API gateway and the function, add the following snippet to the <code>values-dev.yaml</code> file:</p>
+<pre class="highlight yaml tab-yaml"><code><span class="na">api</span><span class="pi">:</span>
+  <span class="na">env</span><span class="pi">:</span>
+    <span class="na">newsletterSubscribeUrl</span><span class="pi">:</span> <span class="s">https://[API_GATEWAY_URL]</span>
+</code></pre></li>
 <li><p>Install the <a href="https://github.com/oracle-quickstart/oci-cloudnative/tree/master/deploy/complete/helm-chart/mushop"><code>mushop</code></a> application helm chart using the <code>myvalues.yaml</code> created above:</p>
 
 <ul>
