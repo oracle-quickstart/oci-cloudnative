@@ -265,7 +265,7 @@ Next, you need to generate the SMTP credentials that will allow you to log in to
 
 The SMTP credentails (host, port, username and password) and the approved sender email address (e.g. `mushop@example.com`) will be provided to the function as configuration values later, so make sure you save these values somewhere.
 
-### Configure function applicaiton
+### Configure function application
 
 Each function needs to live inside of an application. You can create a new application either through the console, API or the Fn CLI. An application has a name (e.g. `mushop-app`) and the VCN and a subnet in which to run the functions. The one guideline here is to pick the subnets that are in the same region as the Docker registry you specified in your context YAML earlier - check these [docs](https://docs.cloud.oracle.com/iaas/Content/Functions/Tasks/functionscreatingapps.htm) for more information.
 
