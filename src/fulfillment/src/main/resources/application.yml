@@ -1,9 +1,11 @@
 micronaut:
   application:
     name: fulfillment
+  server:
+    port: 8099
 
 mushop:
   orderupdates:
-    host: localhost
+    host: ${nats.host:localhost}
     port: 4222
     subject: mushop-orders
