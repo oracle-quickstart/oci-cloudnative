@@ -1,5 +1,6 @@
 package mushop.orders.controllers;
 
+import mushop.orders.services.MessagingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,9 @@ public class OrdersController {
 
     @Autowired
     private AsyncGetService asyncGetService;
+
+    @Autowired
+    private MessagingService messagingService;
 
     @Autowired
     private CustomerOrderRepository customerOrderRepository;
@@ -104,9 +108,9 @@ public class OrdersController {
 
             // Ship
             String customerId = parseId(customerFuture.get(timeout, TimeUnit.SECONDS).getId());
-            Future<Shipment> shipmentFuture = asyncGetService.postResource(config.getShippingUri(), new Shipment
-                    (customerId), new ParameterizedTypeReference<Shipment>() {
-            });
+//            Future<Shipment> shipmentFuture = asyncGetService.postResource(config.getShippingUri(), new Shipment
+//                    (customerId), new ParameterizedTypeReference<Shipment>() {
+//            });
 
             CustomerOrder order = new CustomerOrder(
                     null,
@@ -114,13 +118,15 @@ public class OrdersController {
                     addressFuture.get(timeout, TimeUnit.SECONDS),
                     cardFuture.get(timeout, TimeUnit.SECONDS),
                     itemsFuture.get(timeout, TimeUnit.SECONDS),
-                    shipmentFuture.get(timeout, TimeUnit.SECONDS),
+                    null,
                     Calendar.getInstance().getTime(),
                     amount);
             LOG.debug("Received data: " + order.toString());
 
             CustomerOrder savedOrder = customerOrderRepository.save(order);
             LOG.debug("Saved order: " + savedOrder);
+
+            messagingService.dispatchToFulfillment(order);
 
             return savedOrder;
         } catch (TimeoutException e) {
