@@ -3,6 +3,7 @@ package mushop;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.context.annotation.Value;
+import io.micronaut.core.annotation.Introspected;
 import io.micronaut.discovery.event.ServiceStartedEvent;
 import io.micronaut.runtime.event.annotation.EventListener;
 import io.micronaut.scheduling.annotation.Async;
@@ -20,6 +21,7 @@ import java.util.UUID;
 import java.util.concurrent.Executors;
 
 @Singleton
+@Introspected
 public class FulfillmentService {
     private Connection nc;
     private final ObjectMapper objectMapper = new ObjectMapper();
