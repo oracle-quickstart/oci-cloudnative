@@ -38,10 +38,10 @@ FROM oracle/graalvm-ce:19.3.1-java8 as graalvm
 COPY --from=appbuild /usr/src/app/build /home/app/fulfillment
 WORKDIR /home/app/fulfillment/
 RUN gu install native-image
-RUN native-image --no-server --static -cp libs/fulfillment-*-all.jar
+RUN native-image --no-server -cp libs/fulfillment-*-all.jar
 
 # Step 4 : Build the final application image
-FROM frolvlad/alpine-glibc
+FROM oracle/graalvm-ce:19.3.1-java8
 EXPOSE 8080
 COPY --from=graalvm /home/app/fulfillment/fulfillment /app/fulfillment
 ENTRYPOINT ["/app/fulfillment", "-Djava.library.path=/app"]
