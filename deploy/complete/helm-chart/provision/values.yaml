@@ -8,6 +8,8 @@ global:
     compartmentId:
     # Service instance name
     instanceName: mushop
+    # OSB Namespace
+    namespace: mushop-utilities
   services:
     - catalogue
     - carts
