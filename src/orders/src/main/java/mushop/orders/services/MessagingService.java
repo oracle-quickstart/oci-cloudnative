@@ -17,6 +17,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 @Service
 public class MessagingService {
@@ -26,28 +29,44 @@ public class MessagingService {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private Connection nc;
     private final String MUSHOP_ORDERS_SUBJECT;
+    private final String MUSHOP_SHIPMENTS_SUBJECT;
     private final String NATS_URL;
 
-    public MessagingService(@Value("nats://${mushop.orderupdates.host}:${mushop.orderupdates.port}") String NATS_URL,
-                            @Value("${mushop.orderupdates.subject}") String MUSHOP_ORDERS_SUBJECT) {
+    public MessagingService(@Value("nats://${mushop.messaging.host}:${mushop.messaging.port}") String NATS_URL,
+                            @Value("${mushop.messaging.subjects.orders}") String MUSHOP_ORDERS_SUBJECT,
+                            @Value("${mushop.messaging.subjects.shipments}") String MUSHOP_SHIPMENTS_SUBJECT) throws InterruptedException {
         this.MUSHOP_ORDERS_SUBJECT = MUSHOP_ORDERS_SUBJECT;
+        this.MUSHOP_SHIPMENTS_SUBJECT = MUSHOP_SHIPMENTS_SUBJECT;
         this.NATS_URL = NATS_URL;
-        try {
-            LOG.info("Connecting to NATS {} and subscribing to subject {}", NATS_URL, MUSHOP_ORDERS_SUBJECT);
-            nc = Nats.connect(this.NATS_URL);
-            Dispatcher d = nc.createDispatcher((msg) -> {
-                try {
-                    handleMessage(msg);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            d.subscribe(this.MUSHOP_ORDERS_SUBJECT);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        LOG.info("Connecting to NATS {} and subscribing to subject {}", this.NATS_URL, this.MUSHOP_ORDERS_SUBJECT);
+        boolean connected = false;
+        while (!connected) {
+            try {
+                Future<Boolean> result = Executors.newSingleThreadExecutor().submit(() -> {
+                    try {
+                        nc = Nats.connect(this.NATS_URL);
+                        Dispatcher d = nc.createDispatcher((msg) -> {
+                            try {
+                                handleMessage(msg);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                        d.subscribe(this.MUSHOP_ORDERS_SUBJECT);
+                        return Boolean.TRUE;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        LOG.error("Connection failed due to {}. Retrying in 5s", e.getMessage());
+                        Thread.sleep(5000l);
+                        return Boolean.FALSE;
+                    }
+                });
+                connected = result.get();
+            }  catch (ExecutionException e) {
+                e.printStackTrace();
+            }
         }
+        LOG.info("Connected to NATS {} and subscribed to subject {}", this.NATS_URL, this.MUSHOP_ORDERS_SUBJECT);
 
     }
 
@@ -55,7 +74,7 @@ public class MessagingService {
         LOG.debug("Preparing order for fulfillment {}", order);
         String msg = objectMapper.writeValueAsString(order);
         LOG.info("Sending order over to fulfillment {}", msg);
-        nc.publish(this.MUSHOP_ORDERS_SUBJECT,msg.getBytes(StandardCharsets.UTF_8));
+        nc.publish(this.MUSHOP_ORDERS_SUBJECT, msg.getBytes(StandardCharsets.UTF_8));
     }
 
     private void handleMessage(Message message) throws IOException {
