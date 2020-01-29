@@ -5,7 +5,9 @@ micronaut:
     port: 8099
 
 mushop:
-  orderupdates:
+  messaging:
     host: ${nats.host:localhost}
     port: 4222
-    subject: mushop-orders
+    subjects:
+      orders: mushop-orders
+      shipments: mushop-shipments
