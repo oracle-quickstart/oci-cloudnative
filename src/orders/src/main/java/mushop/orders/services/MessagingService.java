@@ -7,9 +7,11 @@ import io.nats.client.Dispatcher;
 import io.nats.client.Message;
 import io.nats.client.Nats;
 import mushop.orders.entities.CustomerOrder;
+import mushop.orders.repositories.CustomerOrderRepository;
 import mushop.orders.values.OrderUpdate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,8 @@ import java.nio.charset.StandardCharsets;
 
 @Service
 public class MessagingService {
+    @Autowired
+    private CustomerOrderRepository customerOrderRepository;
     private final Logger LOG = LoggerFactory.getLogger(getClass());
     private final ObjectMapper objectMapper = new ObjectMapper();
     private Connection nc;
@@ -47,16 +51,20 @@ public class MessagingService {
 
     }
 
-    public void dispatchToFulfillment(CustomerOrder order) throws JsonProcessingException {
+    public void dispatchToFulfillment(OrderUpdate order) throws JsonProcessingException {
         LOG.debug("Preparing order for fulfillment {}", order);
         String msg = objectMapper.writeValueAsString(order);
         LOG.info("Sending order over to fulfillment {}", msg);
+        nc.publish(this.MUSHOP_ORDERS_SUBJECT,msg.getBytes(StandardCharsets.UTF_8));
     }
 
     private void handleMessage(Message message) throws IOException {
         String response = new String(message.getData(), StandardCharsets.UTF_8);
         OrderUpdate update = objectMapper.readValue(message.getData(), OrderUpdate.class);
         LOG.info("got message {} on the mushop orders subject", update);
+        CustomerOrder order = customerOrderRepository.findById(update.getOrderId()).get();
+        order.setShipment(update.getShipment());
+        customerOrderRepository.save(order);
     }
 
 

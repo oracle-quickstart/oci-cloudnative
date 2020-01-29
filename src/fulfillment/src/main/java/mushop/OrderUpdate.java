@@ -1,22 +1,22 @@
 package mushop;
 
 public class OrderUpdate {
-    private String orderId;
+    private Long orderId;
     private Shipment Shipment;
 
     public OrderUpdate() {
     }
 
-    public OrderUpdate(String orderId, mushop.Shipment shipment) {
+    public OrderUpdate(Long orderId, mushop.Shipment shipment) {
         this.orderId = orderId;
         Shipment = shipment;
     }
 
-    public String getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(String orderId) {
+    public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 

@@ -1,6 +1,7 @@
 package mushop.orders.controllers;
 
 import mushop.orders.services.MessagingService;
+import mushop.orders.values.OrderUpdate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,8 +126,8 @@ public class OrdersController {
 
             CustomerOrder savedOrder = customerOrderRepository.save(order);
             LOG.debug("Saved order: " + savedOrder);
-
-            messagingService.dispatchToFulfillment(order);
+            OrderUpdate update = new OrderUpdate(savedOrder.getId(),null);
+            messagingService.dispatchToFulfillment(update);
 
             return savedOrder;
         } catch (TimeoutException e) {
