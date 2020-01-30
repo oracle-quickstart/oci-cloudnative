@@ -84,10 +84,11 @@ public class FulfillmentService {
     private void fulfillOrder(OrderUpdate order) {
         Executors.newSingleThreadExecutor().submit(() -> {
             try {
-                Thread.sleep(5000l);
+                Thread.sleep(10000l);
                 Shipment shipment = new Shipment(UUID.randomUUID().toString(), "Shipped");
                 order.setShipment(shipment);
                 String msg = objectMapper.writeValueAsString(order);
+                LOG.info("Sending shipment update {}",msg);
                 nc.publish(MUSHOP_SHIPMENTS_SUBJECT, msg.getBytes(StandardCharsets.UTF_8));
             } catch (InterruptedException e) {
                 e.printStackTrace();
