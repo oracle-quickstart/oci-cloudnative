@@ -52,7 +52,7 @@ public class MessagingService {
                                 e.printStackTrace();
                             }
                         });
-                        d.subscribe(this.MUSHOP_ORDERS_SUBJECT);
+                        d.subscribe(this.MUSHOP_SHIPMENTS_SUBJECT);
                         return Boolean.TRUE;
                     } catch (IOException e) {
                         e.printStackTrace();
