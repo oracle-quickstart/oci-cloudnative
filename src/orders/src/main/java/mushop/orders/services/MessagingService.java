@@ -46,11 +46,7 @@ public class MessagingService {
                     try {
                         nc = Nats.connect(this.NATS_URL);
                         Dispatcher d = nc.createDispatcher((msg) -> {
-                            try {
-                                handleMessage(msg);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                            handleMessage(msg);
                         });
                         d.subscribe(this.MUSHOP_SHIPMENTS_SUBJECT);
                         return Boolean.TRUE;
@@ -71,19 +67,29 @@ public class MessagingService {
     }
 
     public void dispatchToFulfillment(OrderUpdate order) throws JsonProcessingException {
-        LOG.debug("Preparing order for fulfillment {}", order);
+        LOG.info("Preparing order for fulfillment {}", order.getOrderId());
         String msg = objectMapper.writeValueAsString(order);
-        LOG.info("Sending order over to fulfillment {}", msg);
+        LOG.debug("Sending order over to fulfillment {}", order);
         nc.publish(this.MUSHOP_ORDERS_SUBJECT, msg.getBytes(StandardCharsets.UTF_8));
     }
 
-    private void handleMessage(Message message) throws IOException {
+    private void handleMessage(Message message) {
         String response = new String(message.getData(), StandardCharsets.UTF_8);
-        OrderUpdate update = objectMapper.readValue(message.getData(), OrderUpdate.class);
-        LOG.info("Got Shipment update {}", update);
-        CustomerOrder order = customerOrderRepository.findById(update.getOrderId()).get();
-        order.setShipment(update.getShipment());
-        customerOrderRepository.save(order);
+        try {
+            final OrderUpdate update = objectMapper.readValue(message.getData(), OrderUpdate.class);
+            customerOrderRepository.findById(update.getOrderId()).
+                    ifPresent((order) -> {
+                                LOG.debug("Updating order {}", order);
+                                order.setShipment(update.getShipment());
+                                customerOrderRepository.save(order);
+                                LOG.info("order {} is now {}", order.getId(), update.getShipment().getName());
+                            }
+                    );
+
+        } catch (IOException e) {
+            LOG.error("Failed reading shipping message");
+            e.printStackTrace();
+        }
     }
 
 
