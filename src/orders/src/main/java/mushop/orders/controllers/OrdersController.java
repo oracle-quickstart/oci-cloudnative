@@ -1,31 +1,23 @@
 package mushop.orders.controllers;
 
+import mushop.orders.config.OrdersConfigurationProperties;
+import mushop.orders.entities.*;
+import mushop.orders.repositories.CustomerOrderRepository;
+import mushop.orders.resources.NewOrderResource;
+import mushop.orders.services.AsyncGetService;
 import mushop.orders.services.MessagingService;
 import mushop.orders.values.OrderUpdate;
+import mushop.orders.values.PaymentRequest;
+import mushop.orders.values.PaymentResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.mvc.TypeReferences;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import mushop.orders.config.OrdersConfigurationProperties;
-import mushop.orders.entities.Address;
-import mushop.orders.entities.Card;
-import mushop.orders.entities.Customer;
-import mushop.orders.entities.CustomerOrder;
-import mushop.orders.entities.Item;
-import mushop.orders.entities.Shipment;
-import mushop.orders.repositories.CustomerOrderRepository;
-import mushop.orders.resources.NewOrderResource;
-import mushop.orders.services.AsyncGetService;
-import mushop.orders.values.PaymentRequest;
-import mushop.orders.values.PaymentResponse;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -34,8 +26,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 @RepositoryRestController

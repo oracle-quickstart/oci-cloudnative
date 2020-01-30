@@ -1,16 +1,10 @@
 package mushop.orders.controllers;
 
+import mushop.orders.entities.HealthCheck;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import mushop.orders.entities.HealthCheck;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class HealthCheckController {

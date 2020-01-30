@@ -18,7 +18,6 @@ import javax.inject.Singleton;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -66,7 +65,7 @@ public class FulfillmentService {
                     }
                 });
                 connected = result.get();
-            }  catch (ExecutionException e) {
+            } catch (ExecutionException e) {
                 e.printStackTrace();
             }
         }
@@ -88,7 +87,7 @@ public class FulfillmentService {
                 Shipment shipment = new Shipment(UUID.randomUUID().toString(), "Shipped");
                 order.setShipment(shipment);
                 String msg = objectMapper.writeValueAsString(order);
-                LOG.info("Sending shipment update {}",msg);
+                LOG.info("Sending shipment update {}", msg);
                 nc.publish(MUSHOP_SHIPMENTS_SUBJECT, msg.getBytes(StandardCharsets.UTF_8));
             } catch (InterruptedException e) {
                 e.printStackTrace();
