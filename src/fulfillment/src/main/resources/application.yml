@@ -8,6 +8,7 @@ mushop:
   messaging:
     host: ${nats.host:localhost}
     port: 4222
+    simulation-delay: ${simulation.delay:8000}
     subjects:
       orders: mushop-orders
       shipments: mushop-shipments

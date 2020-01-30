@@ -34,6 +34,8 @@ public class FulfillmentService {
     private String MUSHOP_ORDERS_SUBJECT;
     @Value("${mushop.messaging.subjects.shipments}")
     private String MUSHOP_SHIPMENTS_SUBJECT;
+    @Value("${mushop.messaging.simulation-delay}")
+    private Long simulationDelay;
 
     public FulfillmentService() {
     }
@@ -83,7 +85,7 @@ public class FulfillmentService {
     private void fulfillOrder(OrderUpdate order) {
         Executors.newSingleThreadExecutor().submit(() -> {
             try {
-                Thread.sleep(10000l);
+                Thread.sleep(simulationDelay);
                 Shipment shipment = new Shipment(UUID.randomUUID().toString(), "Shipped");
                 order.setShipment(shipment);
                 String msg = objectMapper.writeValueAsString(order);
