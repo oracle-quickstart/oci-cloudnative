@@ -63,12 +63,10 @@ public class OrdersController {
     @ResponseBody
     CustomerOrder newOrder(@RequestBody NewOrderResource item) {
         try {
-
             if (item.address == null || item.customer == null || item.card == null || item.items == null) {
                 throw new InvalidOrderException("Invalid order request. Order requires customer, address, card and items.");
             }
-
-
+            LOG.info("Creating order {}", item);
             LOG.debug("Starting calls");
             Future<Address> addressFuture = asyncGetService.getObject(item.address, new ParameterizedTypeReference<Address>() {
             });
@@ -78,12 +76,10 @@ public class OrdersController {
             });
             Future<List<Item>> itemsFuture = asyncGetService.getDataList(item.items, new
                     ParameterizedTypeReference<List<Item>>() {
-            });
-//            Future<Customer> custFut = asyncGetService.getCustomer(item.customer);
-//            Customer cust = custFut.get(timeout, TimeUnit.SECONDS);
-//            LOG.debug("Customer : "+cust);
+                    });
             LOG.debug("End of calls.");
 
+            //Calculate total
             float amount = calculateTotal(itemsFuture.get(timeout, TimeUnit.SECONDS));
 
             // Call payment service to make sure they've paid
@@ -107,12 +103,7 @@ public class OrdersController {
                 throw new PaymentDeclinedException(paymentResponse.getMessage());
             }
 
-            // Ship
-            String customerId = parseId(customerFuture.get(timeout, TimeUnit.SECONDS).getId());
-//            Future<Shipment> shipmentFuture = asyncGetService.postResource(config.getShippingUri(), new Shipment
-//                    (customerId), new ParameterizedTypeReference<Shipment>() {
-//            });
-
+            //Persist
             CustomerOrder order = new CustomerOrder(
                     null,
                     customerFuture.get(timeout, TimeUnit.SECONDS),
@@ -126,9 +117,8 @@ public class OrdersController {
 
             CustomerOrder savedOrder = customerOrderRepository.save(order);
             LOG.debug("Saved order: " + savedOrder);
-            OrderUpdate update = new OrderUpdate(savedOrder.getId(),null);
+            OrderUpdate update = new OrderUpdate(savedOrder.getId(), null);
             messagingService.dispatchToFulfillment(update);
-
             return savedOrder;
         } catch (TimeoutException e) {
             throw new IllegalStateException("Unable to create order due to timeout from one of the services.", e);
@@ -137,14 +127,6 @@ public class OrdersController {
         }
     }
 
-    private String parseId(String href) {
-        Pattern idPattern = Pattern.compile("[\\w-]+$");
-        Matcher matcher = idPattern.matcher(href);
-        if (!matcher.find()) {
-            throw new IllegalStateException("Could not parse user ID from: " + href);
-        }
-        return matcher.group(0);
-    }
 
 //    TODO: Add link to shipping
 //    @RequestMapping(method = RequestMethod.GET, value = "/orders")

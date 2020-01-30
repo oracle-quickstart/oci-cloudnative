@@ -62,7 +62,7 @@ public class MessagingService {
                     }
                 });
                 connected = result.get();
-            }  catch (ExecutionException e) {
+            } catch (ExecutionException e) {
                 e.printStackTrace();
             }
         }
@@ -80,7 +80,7 @@ public class MessagingService {
     private void handleMessage(Message message) throws IOException {
         String response = new String(message.getData(), StandardCharsets.UTF_8);
         OrderUpdate update = objectMapper.readValue(message.getData(), OrderUpdate.class);
-        LOG.info("got message {} on the mushop orders subject", update);
+        LOG.info("Got Shipment update {}", update);
         CustomerOrder order = customerOrderRepository.findById(update.getOrderId()).get();
         order.setShipment(update.getShipment());
         customerOrderRepository.save(order);
