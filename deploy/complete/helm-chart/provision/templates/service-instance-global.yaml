@@ -53,6 +53,6 @@ spec:
   parameters:
     name: {{ (printf "MuShop %s Catalogue Bucket" (randAlphaNum 4)) | quote }}
     compartmentId: {{ required "Value .global.osb.compartmentId is required!" .Values.global.osb.compartmentId | quote }}
-    namespace: ociateam
+    namespace: {{ required "Value .global.osb.objectstoragenamespace is required!" .Values.global.osb.objectstoragenamespace | quote }}
     publicAccessType: "ObjectReadWithoutList"
 {{ end }}
