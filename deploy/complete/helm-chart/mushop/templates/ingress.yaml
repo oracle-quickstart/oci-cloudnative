@@ -8,7 +8,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     {{- if .Values.ingress.tls }}
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
     cert-manager.io/cluster-issuer: {{ include "mushop.fullname" . }}-{{ .Values.ingress.clusterIssuer }}
     cert-manager.io/acme-challenge-type: http01
     {{- end }}
