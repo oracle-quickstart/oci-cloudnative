@@ -2,6 +2,7 @@
     "CN": "etcd server",
     "hosts": [
         "*.etcd-cluster.mushop-services.svc",
+        "etcd-cluster-client",
         "127.0.0.1",
         "localhost"
     ],
