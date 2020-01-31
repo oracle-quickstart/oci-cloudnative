@@ -5,7 +5,12 @@ const axios = require('axios');
 
 require('dotenv').config();
 
-const { BUCKET_PAR = '' } = process.env;
+const { BUCKET_PAR } = process.env;
+if (!BUCKET_PAR) {
+  console.log('BUCKET_PAR not provided, exiting with nothing to do');
+  process.exit(0);
+}
+
 const config = require('./config.json');
 
 const metaHeaders = Object.assign({}, ...Object.keys(config.headers)

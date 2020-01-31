@@ -2,7 +2,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "api.name" -}}
+{{- define "assets.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -11,7 +11,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "api.fullname" -}}
+{{- define "assets.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -27,16 +27,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "api.chart" -}}
+{{- define "assets.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
 Common labels
 */}}
-{{- define "api.labels" -}}
-app.kubernetes.io/name: {{ include "api.name" . }}
-helm.sh/chart: {{ include "api.chart" . }}
+{{- define "assets.labels" -}}
+app.kubernetes.io/name: {{ include "assets.name" . }}
+helm.sh/chart: {{ include "assets.chart" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
@@ -44,16 +44,13 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
-{{/* STATIC IMAGE MEDIA */}}
-{{- define "api.env.media" -}}
+{{/* OOS BUCKET PAR */}}
+{{- define "assets.env.par" -}}
 {{- $globalOsb := index (.Values.global | default .) "osb" -}}
 {{- $usesOsbBucket := (index .Values.global "osb").objectstorage  -}}
 {{- $secretPrefix := (and $globalOsb.objectstorage ($globalOsb.instanceName | default "mushop")) | default .Release.Name -}}
 {{- $PARSecret := (and $usesOsbBucket (printf "%s-bucket-par-binding" $secretPrefix)) | default .Values.global.oosBucketParSecret | default (printf "%s-bucket-par" $secretPrefix) -}}
-- name: STATIC_MEDIA_URL
-  {{- if .Values.env.mediaUrl }}
-  value: {{ .Values.env.mediaUrl }}
-  {{- else }}
+- name: BUCKET_PAR
   valueFrom:
     secretKeyRef:
       {{- if $usesOsbBucket }}
@@ -63,5 +60,4 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
       name: {{ $PARSecret }}
       key: parUri
       {{- end -}}
-  {{- end -}}
 {{- end -}}

@@ -1,7 +1,7 @@
 ###############################
 #    Build stage (node/npm)   #
 ###############################
-FROM node:10-alpine
+FROM node:10-alpine as builder
 
 RUN apk update && apk add --no-cache \
     autoconf \
@@ -21,17 +21,32 @@ RUN npm config set loglevel warn \
 # install dependencies
 COPY package.json /tmp/package.json
 RUN cd /tmp && npm install
-RUN mkdir -p /usr/src/app && cp -a /tmp/node_modules /usr/src/app/
+RUN mkdir -p /src && cp -a /tmp/node_modules /src
 RUN rm -rf /tmp/node_modules
 
 # copy source and build
-WORKDIR /usr/src/app
+WORKDIR /src
 COPY . .
 RUN npm run build
+RUN npm prune --production
+
+############################
+# Runtime container (node) #
+############################
+FROM node:10-alpine
+WORKDIR /app
+
+COPY --from=builder /src/*js* /app/
+COPY --from=builder /src/dist /app/dist
+COPY --from=builder /src/node_modules /app/node_modules
 
 # Object Storage PAR
 ARG BUCKET_PAR
 ENV BUCKET_PAR ${BUCKET_PAR}
 
+# service port
+ENV PORT 3000
+EXPOSE 3000
+
 # optimize and deploy
-CMD [ "npm", "run", "deploy" ]
+CMD [ "node", "index.js" ]

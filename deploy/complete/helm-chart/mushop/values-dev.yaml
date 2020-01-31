@@ -1,8 +1,10 @@
 global:
   ociAuthSecret: oci-credentials        # OCI authentication credentials secret name
+  ossStreamSecret: oss-connection       # Previously created streaming secret name
   oadbAdminSecret: oadb-admin           # Name of DB Admin secret created earlier
   oadbWalletSecret: oadb-wallet         # Name of wallet secret created earlier
   oadbConnectionSecret: oadb-connection # Name of connection secret created earlier
+  oosBucketParSecret: oos-bucket-par    # Object storage bucket PAR secret name (optional)
   mock:
     service: "false"
 
