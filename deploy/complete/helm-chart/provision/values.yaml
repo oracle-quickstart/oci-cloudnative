@@ -3,13 +3,11 @@ global:
     # Set to true to create a global ATP instance
     atp: true
     # Service broker name (used in the service URL)
-    name: oci-service-broker
+    name: mushop-osb
     port: 8080
     compartmentId:
     # Service instance name
     instanceName: mushop
-    # OSB Namespace
-    namespace: mushop-utilities
   services:
     - catalogue
     - carts

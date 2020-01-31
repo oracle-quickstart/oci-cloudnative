@@ -11,7 +11,7 @@ global:
     atp: true
     oss: true
     objectstorage: true
-    objectstoragenamespace: ociateam
+    objectstoragenamespace: ocitenancyname
     
 ingress:
   enabled: true
