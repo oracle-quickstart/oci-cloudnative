@@ -7,7 +7,7 @@ global:
   mock:
     service: "false"
   osb:
-    instanceName: mushopstage
+    instanceName: mushop
     atp: true
     oss: true
     objectstorage: true
