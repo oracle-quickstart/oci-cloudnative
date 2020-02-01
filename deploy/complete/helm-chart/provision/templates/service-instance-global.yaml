@@ -23,3 +23,36 @@ spec:
         name: {{ .Values.global.osb.instanceName }}-oadb-connection
         key: oadb_db_osb
 {{ end }}
+{{ if .Values.global.osb.oss }}
+---
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceInstance
+metadata:
+  name: {{ .Values.global.osb.instanceName }}-oss
+  labels:
+{{ include "provision.labels" . | indent 4 }}
+spec:
+  clusterServiceClassExternalName: oss-service
+  clusterServicePlanExternalName: standard
+  parameters:
+    name: {{ (printf "MuShop %s Streaming" (randAlphaNum 4)) | quote }}
+    compartmentId: {{ required "Value .global.osb.compartmentId is required!" .Values.global.osb.compartmentId | quote }}
+    partitions: 1
+{{ end }}
+{{ if .Values.global.osb.objectstorage }}
+---
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceInstance
+metadata:
+  name: {{ .Values.global.osb.instanceName }}-objectstorage
+  labels:
+{{ include "provision.labels" . | indent 4 }}
+spec:
+  clusterServiceClassExternalName: object-store-service
+  clusterServicePlanExternalName: standard
+  parameters:
+    name: {{ (printf "MuShop %s Catalogue Bucket" (randAlphaNum 4)) | quote }}
+    compartmentId: {{ required "Value .global.osb.compartmentId is required!" .Values.global.osb.compartmentId | quote }}
+    namespace: {{ required "Value .global.osb.objectstoragenamespace is required!" .Values.global.osb.objectstoragenamespace | quote }}
+    publicAccessType: "ObjectReadWithoutList"
+{{ end }}
