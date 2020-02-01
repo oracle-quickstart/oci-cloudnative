@@ -51,7 +51,7 @@ spec:
   clusterServiceClassExternalName: object-store-service
   clusterServicePlanExternalName: standard
   parameters:
-    name: {{ (printf "MuShop %s Catalogue Bucket" (randAlphaNum 4)) | quote }}
+    name: {{ (printf "MuShop_%s_Catalogue_Bucket" (randAlphaNum 4)) | quote }}
     compartmentId: {{ required "Value .global.osb.compartmentId is required!" .Values.global.osb.compartmentId | quote }}
     namespace: {{ required "Value .global.osb.objectstoragenamespace is required!" .Values.global.osb.objectstoragenamespace | quote }}
     publicAccessType: "ObjectReadWithoutList"
