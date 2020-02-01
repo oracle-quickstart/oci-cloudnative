@@ -2,6 +2,12 @@ global:
   osb:
     # Set to true to create a global ATP instance
     atp: true
+    # Set to true to create a streaming service instance
+    oss: true
+    # Set to true to create a bucket on the object storage service instance
+    objectstorage: true
+    # Set object storage namespace, usualy the tenancy name or ocid.
+    objectstoragenamespace: ocitenancyname
     # Service broker name (used in the service URL)
     name: mushop-osb
     port: 8080
