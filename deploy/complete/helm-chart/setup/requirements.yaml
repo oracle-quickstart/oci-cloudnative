@@ -1,28 +1,26 @@
 dependencies:
   # Prometheus
   - name: prometheus
-    version: 9.7.4
+    version: 10.3.1
     condition: prometheus.enabled
     repository: https://kubernetes-charts.storage.googleapis.com
   # Grafana
   - name: grafana
-    version: 4.3.0
+    version: 4.4.0
     condition: grafana.enabled
     repository: https://kubernetes-charts.storage.googleapis.com
   # HPA Metrics
   - name: metrics-server
-    version: 2.8.9
+    version: 2.9.0
     condition: metrics-server.enabled
     repository: https://kubernetes-charts.storage.googleapis.com
   # Ingress Controller
   - name: nginx-ingress
-    version: 1.28.0
+    version: 1.29.5
     condition: nginx-ingress.enabled
     repository: https://kubernetes-charts.storage.googleapis.com
   # Service Catalog
   - name: catalog
-    version: 0.2.1
+    version: 0.3.0-beta.2
     condition: catalog.enabled
     repository: https://svc-catalog-charts.storage.googleapis.com 
-
-    ## TODO (peterj, 07/15/2019): OCI service broker should be here once they have a repo where the chart can be downloaded from

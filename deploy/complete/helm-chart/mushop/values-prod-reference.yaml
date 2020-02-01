@@ -4,7 +4,15 @@ global:
   oadbAdminSecret: oadb-admin           # Name of DB Admin secret created earlier
   oadbWalletSecret: oadb-wallet         # Name of wallet secret created earlier
   oadbConnectionSecret: oadb-connection # Name of connection secret created earlier
-
+  mock:
+    service: "false"
+  osb:
+    instanceName: mushop
+    atp: true
+    oss: true
+    objectstorage: true
+    objectstoragenamespace: ocitenancyname
+    
 ingress:
   enabled: true
 

@@ -1,18 +1,18 @@
 dependencies:
 - name: prometheus
   repository: https://kubernetes-charts.storage.googleapis.com
-  version: 9.7.4
+  version: 10.3.1
 - name: grafana
   repository: https://kubernetes-charts.storage.googleapis.com
-  version: 4.3.0
+  version: 4.4.0
 - name: metrics-server
   repository: https://kubernetes-charts.storage.googleapis.com
-  version: 2.8.9
+  version: 2.9.0
 - name: nginx-ingress
   repository: https://kubernetes-charts.storage.googleapis.com
-  version: 1.28.0
+  version: 1.29.5
 - name: catalog
   repository: https://svc-catalog-charts.storage.googleapis.com
-  version: 0.2.1
-digest: sha256:86b0b346c76637cd1d3434dcda195d926e005e9fb8b36e9bb17b40841e2152b9
-generated: "2020-01-08T09:17:36.495999-07:00"
+  version: 0.3.0-beta.2
+digest: sha256:1761841d7b0c7134eb99a97742a6189b5c272b00ae4f1a9f9d82c20458759c0d
+generated: "2020-01-27T10:57:04.141816-06:00"
