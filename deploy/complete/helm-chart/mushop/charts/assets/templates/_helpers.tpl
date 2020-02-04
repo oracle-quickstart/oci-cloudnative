@@ -48,16 +48,24 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- define "assets.env.par" -}}
 {{- $globalOsb := index (.Values.global | default .) "osb" -}}
 {{- $usesOsbBucket := (index .Values.global "osb").objectstorage  -}}
-{{- $secretPrefix := (and $globalOsb.objectstorage ($globalOsb.instanceName | default "mushop")) | default .Release.Name -}}
-{{- $PARSecret := (and $usesOsbBucket (printf "%s-bucket-par-binding" $secretPrefix)) | default .Values.global.oosBucketParSecret | default (printf "%s-bucket-par" $secretPrefix) -}}
+{{- $bindingSecret := printf "%s-bucket-par-binding" ($globalOsb.instanceName | default "mushop") -}}
+{{- $bucketSecret := .Values.global.oosBucketSecret | default (printf "%s-bucket" .Release.Name) -}}
+{{- $credentialSecret := .Values.ociAuthSecret | default .Values.global.ociAuthSecret }}
+- name: REGION
+  valueFrom:
+    secretKeyRef:
+      name: {{ $credentialSecret }}
+      key: region
+      optional: true
 - name: BUCKET_PAR
   valueFrom:
     secretKeyRef:
       {{- if $usesOsbBucket }}
-      name: {{ $PARSecret }}
+      name: {{ $bindingSecret }}
       key: preAuthAccessUri
       {{- else }}
-      name: {{ $PARSecret }}
-      key: parUri
+      name: {{ $bucketSecret }}
+      key: parUrl
+      optional: true
       {{- end -}}
 {{- end -}}

@@ -43,25 +43,3 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
-
-{{/* STATIC IMAGE MEDIA */}}
-{{- define "api.env.media" -}}
-{{- $globalOsb := index (.Values.global | default .) "osb" -}}
-{{- $usesOsbBucket := (index .Values.global "osb").objectstorage  -}}
-{{- $secretPrefix := (and $globalOsb.objectstorage ($globalOsb.instanceName | default "mushop")) | default .Release.Name -}}
-{{- $PARSecret := (and $usesOsbBucket (printf "%s-bucket-par-binding" $secretPrefix)) | default .Values.global.oosBucketParSecret | default (printf "%s-bucket-par" $secretPrefix) -}}
-- name: STATIC_MEDIA_URL
-  {{- if .Values.env.mediaUrl }}
-  value: {{ .Values.env.mediaUrl }}
-  {{- else }}
-  valueFrom:
-    secretKeyRef:
-      {{- if $usesOsbBucket }}
-      name: {{ $PARSecret }}
-      key: preAuthAccessUri
-      {{- else }}
-      name: {{ $PARSecret }}
-      key: parUri
-      {{- end -}}
-  {{- end -}}
-{{- end -}}

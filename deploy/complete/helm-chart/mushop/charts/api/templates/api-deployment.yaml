@@ -40,9 +40,10 @@ spec:
             value: http://{{ .Release.Name }}-carts
           - name: USERS_URL
             value: http://{{ .Release.Name }}-user
+          - name: STATIC_MEDIA_URL
+            value: {{ .Values.env.mediaUrl }}
           - name: NEWSLETTER_SUBSCRIBE_URL
             value: "{{ .Values.env.newsletterSubscribeUrl }}"
-          {{- include "api.env.media" . | nindent 10 }}
           livenessProbe:
             httpGet:
               path: /health

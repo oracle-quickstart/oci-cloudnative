@@ -7,6 +7,7 @@ metadata:
   labels: {{ include "user.labels" . | nindent 4 }}
 spec:
   ttlSecondsAfterFinished: 120
+  backoffLimit: 1
   template:
     metadata:
       labels:

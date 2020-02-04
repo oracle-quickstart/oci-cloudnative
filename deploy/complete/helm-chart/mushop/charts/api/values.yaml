@@ -6,8 +6,7 @@ image:
   pullPolicy: IfNotPresent
 
 env:
-  sessionRedis: session
-  mediaUrl:
+  mediaUrl: /assets
   newsletterSubscribeUrl:
 
 resources:

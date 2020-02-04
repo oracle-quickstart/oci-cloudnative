@@ -8,7 +8,7 @@ global:
   oadbAdminSecret:
   oadbWalletSecret:
   oadbConnectionSecret:
-  oosBucketParSecret:
+  oosBucketSecret:
 
 # Depending on the scenario, certain resources might need to be skipped.
 # For example, --set skip.streaming=true to disable required streaming secrets
@@ -61,4 +61,7 @@ secrets:
     streamName:
     streamId:
   bucket:
+    region:
+    name:
+    namespace:
     par:
