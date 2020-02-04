@@ -451,8 +451,8 @@ directly to the `edge` service resource:
     > Using `port-forward` connecting [localhost:8000](http://localhost:8000) to the `edge` service
 
     ```shell
-    kubectl get svc mushop-setup-nginx-ingress-controller \
-      --namespace mushop-setup
+    kubectl get svc mushop-utility-nginx-ingress-controller \
+      --namespace mushop-utilities
     ```
 
     > Locating `EXTERNAL-IP` for Ingress Controller. **NOTE** this will be

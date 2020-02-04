@@ -14,9 +14,11 @@ depending on the actions performed for setup and deployment of MuShop.
     ```
 
     ```text
-    NAME          REVISION        UPDATED                         STATUS          CHART                   APP VERSION     NAMESPACE
-    mushop-setup  1               Tue Nov 12 06:12:45 2019        DEPLOYED        mushop-setup-0.0.1      1.0             mushop-setup
-    mushop        1               Wed Nov 13 20:23:28 2019        DEPLOYED        mushop-0.1.0            1.0             mushop
+    NAME                    NAMESPACE               REVISION        UPDATED                                 STATUS          CHART                           APP VERSION   
+    mushop                  mushop                  1               2020-01-31 21:14:48.511917 -0600 CST    deployed        mushop-0.1.0                    1.0         
+    mushop-osb              mushop-utilities        1               2020-01-31 20:46:30.565257 -0600 CST    deployed        oci-service-broker-1.3.3                   
+    mushop-provision        mushop                  1               2020-01-31 21:01:54.086599 -0600 CST    deployed        mushop-provision-0.1.0          0.1.0      
+    mushop-utility          mushop-utilities        1               2020-01-31 20:32:05.864769 -0600 CST    deployed        mushop-setup-0.0.1              1.0  
     ```
 
 - Remove the application from Kubernetes where `--name mushop` was used during install:
@@ -29,12 +31,32 @@ depending on the actions performed for setup and deployment of MuShop.
     helm delete mushop
     ```
 
-- Remove the `setup` cluster dependency installation:
+- If used OCI Service broker, remove the `provision` dependency installation, including ATP Bindings (Wallet, password) and instances:
 
     ```shell--helm2
-    helm delete --purge mushop-setup
+    helm delete --purge mushop-provision
     ```
 
     ```shell--helm3
-    helm delete mushop-setup
+    helm delete mushop-provision
+    ```
+
+- If used OCI Service broker, remove the `osb` installation,:
+
+    ```shell--helm2
+    helm delete --purge mushop-osb
+    ```
+
+    ```shell--helm3
+    helm delete mushop-osb
+    ```
+
+- Remove the `setup` cluster dependency installation:
+
+    ```shell--helm2
+    helm delete --purge mushop-utility
+    ```
+
+    ```shell--helm3
+    helm delete mushop-utility
     ```
