@@ -165,6 +165,17 @@ Follow the steps outlined below to provision and configure the cluster with clou
       --from-literal=streamName='<STREAM_NAME>'
     ```
 
+1. **Optional**: Provision an Object Storage Bucket, and create a Pre-Authenticated Request for the bucket. With the information, create a secret called `oos-bucket` as follows:
+
+    ```shell
+    kubectl create secret generic oos-bucket \
+      --namespace mushop \
+      --from-literal=region=<BUCKET_REGION> \
+      --from-literal=name=<BUCKET_NAME> \
+      --from-literal=namespace=<TENANCY_NAME> \
+      --from-literal=parUrl=<PRE_AUTHENTICATED_REQUEST_URL>
+    ```
+
 1. Verify the secrets are created and available in the `mushop` namespace:
 
     ```shell
