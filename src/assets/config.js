@@ -5,10 +5,12 @@ const { BUCKET_PAR, REGION } = process.env;
 function getParUrl() {
   const parReg = /\/p\/([\w-]+)\/n\/([\w-]+)\/b\/([\w-]+)\/o\/$/;
   let par = parReg.test(BUCKET_PAR) && BUCKET_PAR;
-  if (par && !/^https:\/\//.test(par) && REGION) {
-    par = `https://objectstorage.${REGION}.oraclecloud.com${par}`;
+  if (par) {
+    if (!/^https:\/\//.test(par)) {
+      par = REGION ? `https://objectstorage.${REGION}.oraclecloud.com${par}` : null;
+    }
+    return par;
   }
-  return par;
 }
 
 function getBucketUrl() {

@@ -16,12 +16,12 @@ http.createServer((req, res) => {
     res.write('OK');
     res.end();
   } else if (req.url === '/config') { // asset configuration
-    res.write(config.bucketUrl);
+    res.write(config.bucketUrl || '');
     res.end();
   } else { // serve static
     req.addListener('end', () => files.serve(req, res))
       .resume();
   }
 }).listen(port, () => {
-  console.log(`Serving assets on :${port}`);
+  console.log(`Serving assets on :${port}`, config);
 });
