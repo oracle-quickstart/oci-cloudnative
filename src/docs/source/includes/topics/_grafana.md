@@ -18,7 +18,7 @@ Revisit the application charts and connect to some Grafana dashboards:
 1. Get the Grafana outputs from the `mushop-utility` (setup chart) installation:
 
     ```text
-    helm status status mushop-utility --namespace mushop-utilities
+    helm status mushop-utility --namespace mushop-utilities
 
     ## Grafana...
     ```

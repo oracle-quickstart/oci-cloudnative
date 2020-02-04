@@ -211,7 +211,7 @@ values as described [above](#provisioning)
 1. Deploy the OCI service broker on your cluster. This is done with the [Oracle OCI Service Broker](https://github.com/oracle/oci-service-broker) helm chart:
 
     ```shell--helm2
-    helm install https://github.com/oracle/oci-service-broker/releases/download/v1.3.2/oci-service-broker-1.3.3.tgz \
+    helm install https://github.com/oracle/oci-service-broker/releases/download/v1.3.3/oci-service-broker-1.3.3.tgz \
       --namespace mushop-utilities \
       --name mushop-osb \
       --set ociCredentials.secretName=oci-credentials \
@@ -220,7 +220,7 @@ values as described [above](#provisioning)
     ```
 
     ```shell--helm3
-    helm install mushop-osb https://github.com/oracle/oci-service-broker/releases/download/v1.3.2/oci-service-broker-1.3.3.tgz \
+    helm install mushop-osb https://github.com/oracle/oci-service-broker/releases/download/v1.3.3/oci-service-broker-1.3.3.tgz \
       --namespace mushop-utilities \
       --set ociCredentials.secretName=oci-credentials \
       --set storage.etcd.useEmbedded=true \
