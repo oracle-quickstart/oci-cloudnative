@@ -37,12 +37,12 @@ entryPoint = "http"
       entrypoints = ["http"]
       [frontends.api.routes.test1]
         rule = "PathPrefix:/api/"
-    [frontends.web1]
-      backend = "web1"
-      entrypoints = ["http"]
     [frontends.assets1]
       backend = "assets1"
       entrypoints = ["http"]
       [frontends.assets1.routes.test1]
         rule = "PathPrefixStrip:/assets/"
+    [frontends.web1]
+      backend = "web1"
+      entrypoints = ["http"]
 
