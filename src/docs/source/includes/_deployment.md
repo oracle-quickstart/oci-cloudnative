@@ -107,7 +107,7 @@ values:
 
 ```shell
 kubectl create secret generic oci-credentials \
-  --namespace mushop \
+  --namespace mushop-utilities \
   --from-literal=tenancy=<TENANCY_OCID> \
   --from-literal=user=<USER_OCID> \
   --from-literal=region=<USER_OCI_REGION> \
@@ -165,6 +165,16 @@ Follow the steps outlined below to provision and configure the cluster with clou
       --from-literal=streamName='<STREAM_NAME>'
     ```
 
+    Copy the oci-credentials to the mushop namespace for Streaming usage:
+
+    ```shell
+    kubectl get secret oci-credentials \
+      --namespace=mushop-utilities \
+      --export \
+      -o yaml | kubectl apply \
+      --namespace=mushop -f -
+    ```
+
 1. Verify the secrets are created and available in the `mushop` namespace:
 
     ```shell
@@ -201,17 +211,17 @@ values as described [above](#provisioning)
 1. Deploy the OCI service broker on your cluster. This is done with the [Oracle OCI Service Broker](https://github.com/oracle/oci-service-broker) helm chart:
 
     ```shell--helm2
-    helm install https://github.com/oracle/oci-service-broker/releases/download/v1.3.2/oci-service-broker-1.3.2.tgz \
-      --namespace mushop \
-      --name oci-service-broker \
+    helm install https://github.com/oracle/oci-service-broker/releases/download/v1.3.2/oci-service-broker-1.3.3.tgz \
+      --namespace mushop-utilities \
+      --name mushop-osb \
       --set ociCredentials.secretName=oci-credentials \
       --set storage.etcd.useEmbedded=true \
       --set tls.enabled=false
     ```
 
     ```shell--helm3
-    helm install oci-service-broker https://github.com/oracle/oci-service-broker/releases/download/v1.3.2/oci-service-broker-1.3.2.tgz \
-      --namespace mushop \
+    helm install mushop-osb https://github.com/oracle/oci-service-broker/releases/download/v1.3.2/oci-service-broker-1.3.3.tgz \
+      --namespace mushop-utilities \
       --set ociCredentials.secretName=oci-credentials \
       --set storage.etcd.useEmbedded=true \
       --set tls.enabled=false
