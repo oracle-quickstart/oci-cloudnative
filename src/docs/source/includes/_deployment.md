@@ -221,14 +221,14 @@ values as described [above](#provisioning)
     ```shell--helm2
     helm install https://github.com/oracle/oci-service-broker/releases/download/v1.3.3/oci-service-broker-1.3.3.tgz \
       --namespace mushop-utilities \
-      --name mushop-osb \
+      --name oci-broker \
       --set ociCredentials.secretName=oci-credentials \
       --set storage.etcd.useEmbedded=true \
       --set tls.enabled=false
     ```
 
     ```shell--helm3
-    helm install mushop-osb https://github.com/oracle/oci-service-broker/releases/download/v1.3.3/oci-service-broker-1.3.3.tgz \
+    helm install oci-broker https://github.com/oracle/oci-service-broker/releases/download/v1.3.3/oci-service-broker-1.3.3.tgz \
       --namespace mushop-utilities \
       --set ociCredentials.secretName=oci-credentials \
       --set storage.etcd.useEmbedded=true \
