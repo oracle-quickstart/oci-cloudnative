@@ -1,8 +1,10 @@
 global:
   ociAuthSecret: oci-credentials        # OCI authentication credentials secret name
+  ossStreamSecret: oss-connection       # Previously created streaming secret name
   oadbAdminSecret: oadb-admin           # Name of DB Admin secret created earlier
   oadbWalletSecret: oadb-wallet         # Name of wallet secret created earlier
   oadbConnectionSecret: oadb-connection # Name of connection secret created earlier
+  oosBucketSecret: oos-bucket           # Object storage bucket secret name (optional)
   mock:
     service: "false"
 
@@ -11,7 +13,7 @@ ingress:
 
 api:
   env:
-    mediaUrl:                 # Object Storage URL for catalog image assets
+    mediaUrl:                 # URL for catalog image assets
     newsletterSubscribeUrl:   # Newsletter subscription endpoint (https://[API_GATEWAY_URL]/newsletter/subscribe)
 
 carts:

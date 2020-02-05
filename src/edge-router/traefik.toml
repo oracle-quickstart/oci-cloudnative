@@ -24,6 +24,12 @@ entryPoint = "http"
         method = "wrr"
       [backends.web1.servers.server1]
         url = "http://storefront:8080"
+    # media
+    [backends.assets1]
+      [backends.assets1.loadbalancer]
+        method = "wrr"
+      [backends.assets1.servers.server1]
+        url = "http://assets:3000"
 
   [frontends]
     [frontends.api]
@@ -31,6 +37,11 @@ entryPoint = "http"
       entrypoints = ["http"]
       [frontends.api.routes.test1]
         rule = "PathPrefix:/api/"
+    [frontends.assets1]
+      backend = "assets1"
+      entrypoints = ["http"]
+      [frontends.assets1.routes.test1]
+        rule = "PathPrefixStrip:/assets/"
     [frontends.web1]
       backend = "web1"
       entrypoints = ["http"]

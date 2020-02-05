@@ -1,9 +1,9 @@
-version: "2"
+version: "3"
 
 services:
   # Edge router application entrypoint
   edge-router:
-    image: iad.ocir.io/oracle/ateam/mushop-edge-router:1
+    image: iad.ocir.io/oracle/ateam/mushop-edge-router:1.1.0
     hostname: edge-router
     restart: always
     ports:
@@ -27,7 +27,7 @@ services:
       - NET_BIND_SERVICE
     read_only: true
     ports:
-      - "8080:3000"
+      - "8080:80"
     environment:
       - reschedule=on-node-failure
       - PORT=3000
@@ -36,10 +36,26 @@ services:
       - CARTS_URL=http://carts
       - ORDERS_URL=http://orders
       - USERS_URL=http://user
-      - STATIC_MEDIA_URL
+      - STATIC_MEDIA_URL=${STATIC_MEDIA_URL:-/assets}
       - NEWSLETTER_SUBSCRIBE_URL
       - MOCK_MODE=users,catalogue
       - DEBUG=true
+
+  # Static media assets
+  assets:
+    image: iad.ocir.io/oracle/ateam/mushop-assets:1.0.0
+    hostname: assets
+    restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: true
+    environment:
+      - reschedule=on-node-failure
+      - PORT=3000
+      - BUCKET_PAR
+      - REGION
 
   # Redis session DB
   session-db:

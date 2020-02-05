@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "api.fullname" . }}
+  name: {{ include "assets.fullname" . }}
   labels:
-{{ include "api.labels" . | indent 4 }}
+{{ include "assets.labels" . | indent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: {{ .Chart.Name }}
       version: {{ .Values.image.tag | quote }}
-      app.kubernetes.io/name: {{ include "api.name" . }}
+      app.kubernetes.io/name: {{ include "assets.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
         app: {{ .Chart.Name }}
         version: {{ .Values.image.tag | quote }}
-        app.kubernetes.io/name: {{ include "api.name" . }}
+        app.kubernetes.io/name: {{ include "assets.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       containers:
@@ -27,23 +27,6 @@ spec:
           ports:
             - name: http
               containerPort: 3000
-          env:
-          - name: MOCK_MODE
-            value: "{{ .Values.global.mock.service }}"
-          - name: SESSION_REDIS
-            value: {{ .Release.Name }}-session
-          - name: CATALOGUE_URL
-            value: http://{{ .Release.Name }}-catalogue
-          - name: ORDERS_URL
-            value: http://{{ .Release.Name }}-orders
-          - name: CARTS_URL
-            value: http://{{ .Release.Name }}-carts
-          - name: USERS_URL
-            value: http://{{ .Release.Name }}-user
-          - name: STATIC_MEDIA_URL
-            value: {{ .Values.env.mediaUrl }}
-          - name: NEWSLETTER_SUBSCRIBE_URL
-            value: "{{ .Values.env.newsletterSubscribeUrl }}"
           livenessProbe:
             httpGet:
               path: /health
