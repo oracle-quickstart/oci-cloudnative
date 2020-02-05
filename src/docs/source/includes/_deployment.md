@@ -103,11 +103,11 @@ encouraged to explore each approach.
 
 In all cases, begin by adding tenancy credentials to manage and
 connect services from within the cluster. Create a secret containing these
-values: 
+values:
 
 ```shell
 kubectl create secret generic oci-credentials \
-  --namespace mushop-utilities \
+  --namespace mushop \
   --from-literal=tenancy=<TENANCY_OCID> \
   --from-literal=user=<USER_OCID> \
   --from-literal=region=<USER_OCI_REGION> \
@@ -165,16 +165,6 @@ Follow the steps outlined below to provision and configure the cluster with clou
       --from-literal=streamName='<STREAM_NAME>'
     ```
 
-1. Copy the `oci-credentials` secret to the `mushop` namespace for connecting services:
-
-    ```shell
-    kubectl get secret oci-credentials \
-      --namespace=mushop-utilities \
-      --export \
-      -o yaml | kubectl apply \
-      --namespace=mushop -f -
-    ```
-
 1. **Optional**: Provision an Object Storage Bucket, and create a Pre-Authenticated Request for the bucket. With the information, create a secret called `oos-bucket` as follows:
 
     ```shell
@@ -217,7 +207,16 @@ dir deploy/complete/helm-chart
 
 1. The Service Broker for Kubernetes requires access credentials to provision and
 manage services from within the cluster. Create a secret containing these
-values as described [above](#provisioning)
+values as described [above](#provisioning). Alternatively, copy the `oci-credentials`
+secret to the `mushop-utilities` namespace:
+
+    ```shell
+    kubectl get secret oci-credentials \
+      --namespace=mushop \
+      --export \
+      -o yaml | kubectl apply \
+      --namespace=mushop-utilities -f -
+    ```
 
 1. Deploy the OCI service broker on your cluster. This is done with the [Oracle OCI Service Broker](https://github.com/oracle/oci-service-broker) helm chart:
 
