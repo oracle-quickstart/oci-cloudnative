@@ -826,9 +826,9 @@ encouraged to explore each approach.</p>
 
 <p>In all cases, begin by adding tenancy credentials to manage and
 connect services from within the cluster. Create a secret containing these
-values: </p>
+values:</p>
 <pre class="highlight shell tab-shell"><code>kubectl create secret generic oci-credentials <span class="se">\</span>
-  --namespace mushop-utilities <span class="se">\</span>
+  --namespace mushop <span class="se">\</span>
   --from-literal<span class="o">=</span><span class="nv">tenancy</span><span class="o">=</span>&lt;TENANCY_OCID&gt; <span class="se">\</span>
   --from-literal<span class="o">=</span><span class="nv">user</span><span class="o">=</span>&lt;USER_OCID&gt; <span class="se">\</span>
   --from-literal<span class="o">=</span><span class="nv">region</span><span class="o">=</span>&lt;USER_OCI_REGION&gt; <span class="se">\</span>
@@ -881,13 +881,14 @@ values: </p>
   --from-literal<span class="o">=</span><span class="nv">region</span><span class="o">=</span><span class="s1">'&lt;REGION_NAME&gt;'</span> <span class="se">\</span>
   --from-literal<span class="o">=</span><span class="nv">streamId</span><span class="o">=</span><span class="s1">'&lt;STREAM_OCID&gt;'</span> <span class="se">\</span>
   --from-literal<span class="o">=</span><span class="nv">streamName</span><span class="o">=</span><span class="s1">'&lt;STREAM_NAME&gt;'</span>
-</code></pre>
-<p>Copy the oci-credentials to the mushop namespace for Streaming usage:</p>
-<pre class="highlight shell tab-shell"><code>kubectl get secret oci-credentials <span class="se">\</span>
-  --namespace<span class="o">=</span>mushop-utilities <span class="se">\</span>
-  --export <span class="se">\</span>
-  -o yaml | kubectl apply <span class="se">\</span>
-  --namespace<span class="o">=</span>mushop -f -
+</code></pre></li>
+<li><p><strong>Optional</strong>: Provision an Object Storage Bucket, and create a Pre-Authenticated Request for the bucket. With the information, create a secret called <code>oos-bucket</code> as follows:</p>
+<pre class="highlight shell tab-shell"><code>kubectl create secret generic oos-bucket <span class="se">\</span>
+  --namespace mushop <span class="se">\</span>
+  --from-literal<span class="o">=</span><span class="nv">region</span><span class="o">=</span>&lt;BUCKET_REGION&gt; <span class="se">\</span>
+  --from-literal<span class="o">=</span><span class="nv">name</span><span class="o">=</span>&lt;BUCKET_NAME&gt; <span class="se">\</span>
+  --from-literal<span class="o">=</span><span class="nv">namespace</span><span class="o">=</span>&lt;TENANCY_NAME&gt; <span class="se">\</span>
+  --from-literal<span class="o">=</span><span class="nv">parUrl</span><span class="o">=</span>&lt;PRE_AUTHENTICATED_REQUEST_URL&gt;
 </code></pre></li>
 <li><p>Verify the secrets are created and available in the <code>mushop</code> namespace:</p>
 <pre class="highlight shell tab-shell"><code>kubectl get secret --namespace mushop
@@ -909,7 +910,14 @@ for <em>provisioning</em> Oracle Cloud Infrastructure services. This implementat
 <ol>
 <li><p>The Service Broker for Kubernetes requires access credentials to provision and
 manage services from within the cluster. Create a secret containing these
-values as described <a href="#provisioning">above</a></p></li>
+values as described <a href="#provisioning">above</a>. Alternatively, copy the <code>oci-credentials</code>
+secret to the <code>mushop-utilities</code> namespace:</p>
+<pre class="highlight shell tab-shell"><code>kubectl get secret oci-credentials <span class="se">\</span>
+  --namespace<span class="o">=</span>mushop <span class="se">\</span>
+  --export <span class="se">\</span>
+  -o yaml | kubectl apply <span class="se">\</span>
+  --namespace<span class="o">=</span>mushop-utilities -f -
+</code></pre></li>
 <li><p>Deploy the OCI service broker on your cluster. This is done with the <a href="https://github.com/oracle/oci-service-broker">Oracle OCI Service Broker</a> helm chart:</p>
 <pre class="highlight shell tab-shell--helm2"><code>helm install https://github.com/oracle/oci-service-broker/releases/download/v1.3.3/oci-service-broker-1.3.3.tgz <span class="se">\</span>
   --namespace mushop-utilities <span class="se">\</span>
@@ -1068,9 +1076,10 @@ helm chart is installed using settings to leverage cloud backing services.</p>
   <span class="na">oadbAdminSecret</span><span class="pi">:</span> <span class="s">oadb-admin</span>           <span class="c1"># Name of DB Admin secret</span>
   <span class="na">oadbWalletSecret</span><span class="pi">:</span> <span class="s">oadb-wallet</span>         <span class="c1"># Name of Wallet secret</span>
   <span class="na">oadbConnectionSecret</span><span class="pi">:</span> <span class="s">oadb-connection</span> <span class="c1"># Name of DB Connection secret</span>
+  <span class="na">oosBucketSecret</span><span class="pi">:</span> <span class="s">oos-bucket</span>           <span class="c1"># Object storage bucket secret name (optional)</span>
 </code></pre>
 <blockquote>
-<p><strong>NOTE:</strong> If it&#39;s desired to connect a separate databases for a given service, you can specify values specific for each service, such as <code>carts.oadbAdminSecret</code>, <code>carts.oadbWalletSecret</code>... </p>
+<p><strong>NOTE:</strong> If it&#39;s desired to connect a separate databases for a given service, you can specify values specific for each service, such as <code>carts.oadbAdminSecret</code>, <code>carts.oadbWalletSecret</code>...</p>
 </blockquote>
 
 <aside class="notice">
