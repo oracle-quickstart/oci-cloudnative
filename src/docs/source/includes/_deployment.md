@@ -210,6 +210,14 @@ values as described [above](#provisioning)
 
 1. Deploy the OCI service broker on your cluster. This is done with the [Oracle OCI Service Broker](https://github.com/oracle/oci-service-broker) helm chart:
 
+  <aside class="warning">
+    That warning is valid in case you want to change the namespace suggested on the docs.
+    For the mushop deployment using helm, the OCI Service Broker should be installed 
+    on the same namespace used by the setup chart. For convenience, the documentation
+    commands defaults both the setup and OCI Service Broker charts to use 
+    the <b>mushop-utilities</b> namespace. 
+  </aside>
+
     ```shell--helm2
     helm install https://github.com/oracle/oci-service-broker/releases/download/v1.3.3/oci-service-broker-1.3.3.tgz \
       --namespace mushop-utilities \
@@ -461,7 +469,7 @@ directly to the `edge` service resource:
     > Using `port-forward` connecting [localhost:8000](http://localhost:8000) to the `edge` service
 
     ```shell
-    kubectl get svc mushop-utility-nginx-ingress-controller \
+    kubectl get svc mushop-utils-nginx-ingress-controller \
       --namespace mushop-utilities
     ```
 
