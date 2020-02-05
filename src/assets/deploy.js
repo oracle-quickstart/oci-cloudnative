@@ -3,13 +3,12 @@ const path = require('path');
 const mime = require('mime');
 const axios = require('axios');
 
-require('dotenv').config();
-
-const { BUCKET_PAR = '' } = process.env;
-const config = require('./config.json');
-
-const metaHeaders = Object.assign({}, ...Object.keys(config.headers)
-  .map(k => ({[`opc-meta-${k}`]: config.headers[k]})));
+const config = require('./config');
+// determine if pushing to bucket is intended
+if (!config.rawParUrl) {
+  console.log('PAR not provided, exiting with nothing to do');
+  process.exit(0);
+}
 
 const putImage = (dir, img) => {
   const mType = mime.getType(img);
@@ -17,20 +16,18 @@ const putImage = (dir, img) => {
   const fname = img;
   return axios({
     data,
-    baseURL: BUCKET_PAR,
+    baseURL: config.parUrl,
     url: fname,
     method: 'PUT',
     headers: {
-      ...metaHeaders,
       'Content-Type': mType,
     }
   })
-  .then(() => console.log(`PUT success: ${img}`))
-  .catch(e => console.error(e));
+  .then(() => console.log(`PUT Success: ${img}`))
+  .catch(e => console.error(e.toString()));
 };
 
-const parReg = /\/p\/([\w-]+)\/n\/([\w-]+)\/b\/([\w-]+)\/o\/$/;
-if (parReg.test(BUCKET_PAR)) {
+if (config.parUrl) {
   const dist = path.join(__dirname, config.dist);
   if (fs.existsSync(dist)) {
     const files = fs.readdirSync(dist);

@@ -67,24 +67,24 @@ From `deploy/complete/helm-chart` directory:
 
     ```shell--helm2
     helm install setup \
-      --name mushop-setup \
-      --namespace mushop-setup
+      --name mushop-utils \
+      --namespace mushop-utilities
     ```
 
     ```shell--helm3
-    kubectl create ns mushop-setup
+    kubectl create ns mushop-utilities
     ```
 
     ```shell--helm3
-    helm install mushop-setup setup \
-      --namespace mushop-setup
+    helm install mushop-utils setup \
+      --namespace mushop-utilities
     ```
 
 1. **NOTE** the public `EXTERNAL-IP` assigned to the ingress controller load balancer:
 
     ```shell
-    kubectl get svc mushop-setup-nginx-ingress-controller \
-      --namespace mushop-setup
+    kubectl get svc mushop-utils-nginx-ingress-controller \
+      --namespace mushop-utilities
     ```
 
 ### Deploy MuShop
@@ -129,8 +129,8 @@ directly to the `edge` service resource:
     > Using `port-forward` connecting [localhost:8000](http://localhost:8000) to the `edge` service
 
     ```shell
-    kubectl get svc mushop-setup-nginx-ingress-controller \
-      --namespace mushop-setup
+    kubectl get svc mushop-utils-nginx-ingress-controller \
+      --namespace mushop-utilities
     ```
 
     > Locating `EXTERNAL-IP` for Ingress Controller. **NOTE** this will be

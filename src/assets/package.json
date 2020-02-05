@@ -14,7 +14,8 @@
   "dependencies": {
     "axios": "^0.19.0",
     "dotenv": "^8.1.0",
-    "mime": "^2.4.4"
+    "mime": "^2.4.4",
+    "node-static": "^0.7.11"
   },
   "devDependencies": {
     "imagemin": "^7.0.0",

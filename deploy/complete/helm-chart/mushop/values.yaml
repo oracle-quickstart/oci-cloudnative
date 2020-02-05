@@ -8,6 +8,7 @@ global:
   oadbAdminSecret:
   oadbWalletSecret:
   oadbConnectionSecret:
+  oosBucketSecret:
 
 # Depending on the scenario, certain resources might need to be skipped.
 # For example, --set skip.streaming=true to disable required streaming secrets
@@ -18,6 +19,9 @@ ingress:
   enabled: true
 
 api:
+  enabled: true
+
+assets:
   enabled: true
 
 carts:
@@ -56,3 +60,8 @@ secrets:
     compartmentId:
     streamName:
     streamId:
+  bucket:
+    region:
+    name:
+    namespace:
+    par:

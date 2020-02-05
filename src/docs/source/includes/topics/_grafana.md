@@ -6,19 +6,19 @@ Revisit the application charts and connect to some Grafana dashboards:
 1. List helm releases:
 
     ```text
-    helm list
+    helm list --all-namespaces
     ```
 
     ```text
-    NAME          REVISION        UPDATED                         STATUS          CHART                   APP VERSION     NAMESPACE
-    mushop-setup  1               Tue Nov 12 06:12:45 2019        DEPLOYED        mushop-setup-0.0.1      1.0             mushop-setup
-    mushop        1               Wed Nov 13 20:23:28 2019        DEPLOYED        mushop-0.1.0            1.0             mushop
+    NAME                    NAMESPACE               REVISION        UPDATED                                 STATUS          CHART                           APP VERSION
+    mushop                  mushop                  1               2020-01-31 21:14:48.511917 -0600 CST    deployed        mushop-0.1.0                    1.0         
+    mushop-utils          mushop-utilities        1               2020-01-31 20:32:05.864769 -0600 CST    deployed        mushop-setup-0.0.1              1.0          
     ```
 
-1. Get the Grafana outputs from the `mushop-setup` installation:
+1. Get the Grafana outputs from the `mushop-utils` (setup chart) installation:
 
     ```text
-    helm status mushop-setup
+    helm status mushop-utils --namespace mushop-utilities
 
     ## Grafana...
     ```
@@ -26,15 +26,15 @@ Revisit the application charts and connect to some Grafana dashboards:
 1. Get the auto-generated Grafana `admin` password:
 
     ```text
-    kubectl get secret -n mushop-setup mushop-setup-grafana \
-      -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+    kubectl get secret -n mushop-utilities mushop-utils-grafana \
+     -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
     ```
 
 1. Connect to the [dashboard](http://localhost:3000) with `admin`/`<password>`:
 
     ```text
-    kubectl port-forward -n mushop-setup \
-      svc/mushop-setup-grafana 3000:80
+    kubectl port-forward -n mushop-utilities \
+      svc/mushop-utils-grafana 3000:80
     ```
 
 1. Import [dashboards](https://grafana.com/grafana/dashboards) from Grafana:
