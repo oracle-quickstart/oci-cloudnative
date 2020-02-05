@@ -910,35 +910,31 @@ for <em>provisioning</em> Oracle Cloud Infrastructure services. This implementat
 <li><p>The Service Broker for Kubernetes requires access credentials to provision and
 manage services from within the cluster. Create a secret containing these
 values as described <a href="#provisioning">above</a></p></li>
-<li><p>Deploy the OCI service broker on your cluster. This is done with the <a href="https://github.com/oracle/oci-service-broker">Oracle OCI Service Broker</a> helm chart:</p></li>
+<li><p>Deploy the OCI service broker on your cluster. This is done with the <a href="https://github.com/oracle/oci-service-broker">Oracle OCI Service Broker</a> helm chart:</p>
+<pre class="highlight shell tab-shell--helm2"><code>helm install https://github.com/oracle/oci-service-broker/releases/download/v1.3.3/oci-service-broker-1.3.3.tgz <span class="se">\</span>
+  --namespace mushop-utilities <span class="se">\</span>
+  --name oci-broker <span class="se">\</span>
+  --set ociCredentials.secretName<span class="o">=</span>oci-credentials <span class="se">\</span>
+  --set storage.etcd.useEmbedded<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+  --set tls.enabled<span class="o">=</span><span class="nb">false</span>
+</code></pre><pre class="highlight shell tab-shell--helm3"><code>helm install oci-broker https://github.com/oracle/oci-service-broker/releases/download/v1.3.3/oci-service-broker-1.3.3.tgz <span class="se">\</span>
+  --namespace mushop-utilities <span class="se">\</span>
+  --set ociCredentials.secretName<span class="o">=</span>oci-credentials <span class="se">\</span>
+  --set storage.etcd.useEmbedded<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+  --set tls.enabled<span class="o">=</span><span class="nb">false</span>
+</code></pre>
+<blockquote>
+<p>The above command will deploy the OCI Service Broker using an embedded etcd instance. It is not recommended to deploy the OCI Service Broker using an embedded etcd instance and tls disabled in production environments, instead a separate etcd cluster should be setup and used by the OCI Service Broker.</p>
+</blockquote></li>
 </ol>
 
 <p><aside class="warning">
-    That warning is valid in case you want to change the namespace suggested on the docs.
+    That warning is valid in case you want to change the namespace suggested on the docs.<br/>
     For the mushop deployment using helm, the OCI Service Broker should be installed 
     on the same namespace used by the setup chart. For convenience, the documentation
     commands defaults both the setup and OCI Service Broker charts to use 
     the <b>mushop-utilities</b> namespace. 
   </aside></p>
-
-<p><code>shell--helm2
-    helm install https://github.com/oracle/oci-service-broker/releases/download/v1.3.3/oci-service-broker-1.3.3.tgz \
-      --namespace mushop-utilities \
-      --name oci-broker \
-      --set ociCredentials.secretName=oci-credentials \
-      --set storage.etcd.useEmbedded=true \
-      --set tls.enabled=false
-</code></p>
-
-<p><code>shell--helm3
-    helm install oci-broker https://github.com/oracle/oci-service-broker/releases/download/v1.3.3/oci-service-broker-1.3.3.tgz \
-      --namespace mushop-utilities \
-      --set ociCredentials.secretName=oci-credentials \
-      --set storage.etcd.useEmbedded=true \
-      --set tls.enabled=false
-</code></p>
-
-<p>&gt; The above command will deploy the OCI Service Broker using an embedded etcd instance. It is not recommended to deploy the OCI Service Broker using an embedded etcd instance and tls disabled in production environments, instead a separate etcd cluster should be setup and used by the OCI Service Broker.</p>
 
 <ol>
 <li><p>Next connect Service Catalog with the OCI Service Broker implementation and create an ATP service instance by installing the included <code>provision</code> chart:</p>
