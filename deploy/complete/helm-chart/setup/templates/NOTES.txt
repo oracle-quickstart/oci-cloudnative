@@ -46,4 +46,4 @@ resource in this namespace.
 
 ## Uninstalling the Chart:
 
-  helm delete {{ .Release.Name }}
+  helm delete {{ .Release.Name }} -n {{ .Release.Namespace }}

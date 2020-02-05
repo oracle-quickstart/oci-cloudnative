@@ -2,6 +2,9 @@ dependencies:
   - name: api
     version: 0.1.0
     condition: api.enabled
+  - name: assets
+    version: 0.1.0
+    condition: assets.enabled
   - name: carts
     version: 0.1.0	
     condition: carts.enabled	
