@@ -129,3 +129,23 @@ resource "oci_objectstorage_object_lifecycle_policy" "mushop_deploy_assets_lifec
   }
   depends_on = ["oci_identity_policy.mushop_allow_object_storage_lifecycle","oci_objectstorage_object.mushop_wallet"]
 }
+
+# Static assets bucket
+resource "oci_objectstorage_bucket" "mushop_media" {
+  #Required
+  compartment_id = var.compartment_ocid
+  name           = "mushop-media-${random_id.mushop_id.dec}"
+  namespace      = data.oci_objectstorage_namespace.user_namespace.namespace
+  freeform_tags  = local.common_tags
+  access_type    = "ObjectReadWithoutList"
+}
+
+# Static assets PAR
+resource "oci_objectstorage_preauthrequest" "mushop_media_preauth" {
+  #Required
+  access_type  = "AnyObjectWrite"
+  bucket       = oci_objectstorage_bucket.mushop_media.name
+  name         = "mushop_assets_preauth"
+  namespace    = data.oci_objectstorage_namespace.user_namespace.namespace
+  time_expires = timeadd(timestamp(), "72h")
+}

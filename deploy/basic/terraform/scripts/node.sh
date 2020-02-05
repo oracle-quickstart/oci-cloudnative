@@ -50,6 +50,8 @@ APACHE_CONF_URI=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -
 ENTRYPOINT_URI=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".entrypoint_par")
 MUSHOP_APP_URI=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".mushop_app_par")
 WALLET_URI=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".wallet_par")
+ASSETS_PAR=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".assets_par")
+ASSETS_URL=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".assets_url")
 
 # get artifacts from object storage
 get_object /root/wallet.64 $${WALLET_URI}
@@ -72,9 +74,18 @@ tar zxvf /root/mushop-bin.tar.gz -C /
 get_object /root/entrypoint.sh $${ENTRYPOINT_URI}
 chmod +x /root/entrypoint.sh
 
+# Install node services
+cd /app/api && npm ci --production
+cd /app/assets && npm ci --production
+
+# Deploy assets
+export BUCKET_PAR=$${ASSETS_PAR}
+cd /app/assets && node deploy.js
+
 # Setup app variables
 export OADB_USER=catalogue_user
 export OADB_PW=default_Password1
 export OADB_SERVICE=$${ATP_DB_NAME}_tp
+export STATIC_MEDIA_URL=$${ASSETS_URL}
 cd /root
 /root/entrypoint.sh >/root/mushop.log 2>&1 &

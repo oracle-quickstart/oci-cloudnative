@@ -63,6 +63,36 @@ RUN rm -rf test scripts node_modules
 #    ----- API Gateway -----  #
 
 ###############################
+#  ----- Image Assets -----   #
+###############################
+FROM node:10-alpine as assets-builder
+
+RUN apk update && apk add --no-cache \
+    autoconf \
+    automake \
+    bash \
+    g++ \
+    libtool \
+    libc6-compat \
+    libjpeg-turbo-dev \
+    libpng-dev \
+    make \
+    nasm
+
+COPY src/assets/package.json /tmp/package.json
+COPY src/assets/package-lock.json /tmp/package-lock.json
+RUN cd /tmp && npm ci
+RUN mkdir -p /app/assets && cp -a /tmp/node_modules /app/assets/
+RUN rm -rf /tmp/node_modules
+
+WORKDIR /app/assets
+COPY src/assets/. .
+
+RUN npm run build
+RUN rm -rf node_modules products hero *.md
+#  ----- Image Assets -----   #
+
+###############################
 #    ------ Catalogue ------  #
 #    Build stage (Go Build)   #
 ###############################
@@ -121,16 +151,15 @@ FROM base
 ARG oracleClientVersion
 ARG nodeVersion
 WORKDIR /
-# Support for Offline local image. Online image on OCI Object Storage
-COPY src/catalogue/images/ images/
 
 # Copy Services apps
 COPY --from=storefront-builder /app/storefront/build /app/storefront
 COPY --from=api-builder /app/api /app/api
+COPY --from=assets-builder /app/assets /app/assets
 COPY --from=catalogue-builder /catalogue /app/catalogue/catalogue
 
 # Create zip package of the Apps and local images
-RUN mkdir /package && GZIP=-9 tar cvzf /package/mushop-basic.tar.gz /app /images
+RUN mkdir /package && GZIP=-9 tar cvzf /package/mushop-basic.tar.gz /app
 
 # Create ORM package
 COPY deploy/basic/terraform /basic
