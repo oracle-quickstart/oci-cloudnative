@@ -107,7 +107,7 @@ values:
 
 ```shell
 kubectl create secret generic oci-credentials \
-  --namespace mushop \
+  --namespace mushop-utilities \
   --from-literal=tenancy=<TENANCY_OCID> \
   --from-literal=user=<USER_OCID> \
   --from-literal=region=<USER_OCI_REGION> \
@@ -165,6 +165,16 @@ Follow the steps outlined below to provision and configure the cluster with clou
       --from-literal=streamName='<STREAM_NAME>'
     ```
 
+    Copy the oci-credentials to the mushop namespace for Streaming usage:
+
+    ```shell
+    kubectl get secret oci-credentials \
+      --namespace=mushop-utilities \
+      --export \
+      -o yaml | kubectl apply \
+      --namespace=mushop -f -
+    ```
+
 1. **Optional**: Provision an Object Storage Bucket, and create a Pre-Authenticated Request for the bucket. With the information, create a secret called `oos-bucket` as follows:
 
     ```shell
@@ -212,17 +222,17 @@ values as described [above](#provisioning)
 1. Deploy the OCI service broker on your cluster. This is done with the [Oracle OCI Service Broker](https://github.com/oracle/oci-service-broker) helm chart:
 
     ```shell--helm2
-    helm install https://github.com/oracle/oci-service-broker/releases/download/v1.3.2/oci-service-broker-1.3.2.tgz \
-      --namespace mushop \
-      --name oci-service-broker \
+    helm install https://github.com/oracle/oci-service-broker/releases/download/v1.3.3/oci-service-broker-1.3.3.tgz \
+      --namespace mushop-utilities \
+      --name oci-broker \
       --set ociCredentials.secretName=oci-credentials \
       --set storage.etcd.useEmbedded=true \
       --set tls.enabled=false
     ```
 
     ```shell--helm3
-    helm install oci-service-broker https://github.com/oracle/oci-service-broker/releases/download/v1.3.2/oci-service-broker-1.3.2.tgz \
-      --namespace mushop \
+    helm install oci-broker https://github.com/oracle/oci-service-broker/releases/download/v1.3.3/oci-service-broker-1.3.3.tgz \
+      --namespace mushop-utilities \
       --set ociCredentials.secretName=oci-credentials \
       --set storage.etcd.useEmbedded=true \
       --set tls.enabled=false
@@ -230,6 +240,14 @@ values as described [above](#provisioning)
 
     > The above command will deploy the OCI Service Broker using an embedded etcd instance. It is not recommended to deploy the OCI Service Broker using an embedded etcd instance and tls disabled in production environments, instead a separate etcd cluster should be setup and used by the OCI Service Broker.
 
+  <aside class="warning">
+    That warning is valid in case you want to change the namespace suggested on the docs.<br/>
+    For the mushop deployment using helm, the OCI Service Broker should be installed 
+    on the same namespace used by the setup chart. For convenience, the documentation
+    commands defaults both the setup and OCI Service Broker charts to use 
+    the <b>mushop-utilities</b> namespace. 
+  </aside>
+  
 1. Next connect Service Catalog with the OCI Service Broker implementation and create an ATP service instance by installing the included `provision` chart:
 
     ```shell--helm2
@@ -463,8 +481,8 @@ directly to the `edge` service resource:
     > Using `port-forward` connecting [localhost:8000](http://localhost:8000) to the `edge` service
 
     ```shell
-    kubectl get svc mushop-setup-nginx-ingress-controller \
-      --namespace mushop-setup
+    kubectl get svc mushop-utils-nginx-ingress-controller \
+      --namespace mushop-utilities
     ```
 
     > Locating `EXTERNAL-IP` for Ingress Controller. **NOTE** this will be
