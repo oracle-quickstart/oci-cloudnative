@@ -165,7 +165,7 @@ Follow the steps outlined below to provision and configure the cluster with clou
       --from-literal=streamName='<STREAM_NAME>'
     ```
 
-    Copy the oci-credentials to the mushop namespace for Streaming usage:
+1. Copy the `oci-credentials` secret to the `mushop` namespace for connecting services:
 
     ```shell
     kubectl get secret oci-credentials \
