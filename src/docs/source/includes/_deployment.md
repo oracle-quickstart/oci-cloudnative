@@ -378,9 +378,10 @@ helm chart is installed using settings to leverage cloud backing services.
       oadbAdminSecret: oadb-admin           # Name of DB Admin secret
       oadbWalletSecret: oadb-wallet         # Name of Wallet secret
       oadbConnectionSecret: oadb-connection # Name of DB Connection secret
+      oosBucketSecret: oos-bucket           # Object storage bucket secret name (optional)
     ```
 
-    > **NOTE:** If it's desired to connect a separate databases for a given service, you can specify values specific for each service, such as `carts.oadbAdminSecret`, `carts.oadbWalletSecret`... 
+    > **NOTE:** If it's desired to connect a separate databases for a given service, you can specify values specific for each service, such as `carts.oadbAdminSecret`, `carts.oadbWalletSecret`...
 
     <aside class="notice">
     Database secrets (<code>oadb*</code>) may be omitted if using the automated service broker approach.

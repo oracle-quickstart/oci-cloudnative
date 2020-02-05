@@ -87,6 +87,7 @@ RUN rm -rf /tmp/node_modules
 
 WORKDIR /app/assets
 COPY src/assets/. .
+RUN rm -rf /app/assets/hero
 
 RUN npm run build
 RUN rm -rf node_modules products hero *.md
