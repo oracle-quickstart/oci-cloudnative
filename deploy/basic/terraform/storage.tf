@@ -147,5 +147,5 @@ resource "oci_objectstorage_preauthrequest" "mushop_media_preauth" {
   bucket       = oci_objectstorage_bucket.mushop_media.name
   name         = "mushop_assets_preauth"
   namespace    = data.oci_objectstorage_namespace.user_namespace.namespace
-  time_expires = timeadd(timestamp(), "72h")
+  time_expires = timeadd(timestamp(), "30m")
 }
