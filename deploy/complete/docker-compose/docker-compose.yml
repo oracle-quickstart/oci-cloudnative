@@ -38,7 +38,7 @@ services:
       - USERS_URL=http://user
       - STATIC_MEDIA_URL
       - NEWSLETTER_SUBSCRIBE_URL
-      - MOCK_MODE=users,catalogue
+      - MOCK_MODE=catalogue
       - DEBUG=true
 
   # Redis session DB
@@ -116,7 +116,7 @@ services:
 
   # OCI Orders service
   orders:
-    image: iad.ocir.io/oracle/ateam/mushop-orders:1.1.0
+    image: iad.ocir.io/oracle/ateam/mushop-orders:2.0.0
     ports:
       - 8085:80
     hostname: orders
@@ -129,50 +129,11 @@ services:
     tmpfs:
       - /tmp:rw,noexec,nosuid
     environment:
+      - NATS_HOST=nats
       - OADB_USER
       - OADB_PW
       - OADB_SERVICE=mock
-      - JAVA_OPTS=-Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
-
-  # Shipping service
-  shipping:
-    image: iad.ocir.io/oracle/ateam/mushop-shipping:1.0.0
-    hostname: shipping
-    restart: always
-    cap_drop:
-      - all
-    cap_add:
-      - NET_BIND_SERVICE
-    read_only: true
-    tmpfs:
-      - /tmp:rw,noexec,nosuid
-    environment:
-      - reschedule:on-node-failure
-      - OCI_TENANT_ID
-      - OCI_COMPARTMENT_ID
-      - OCI_REGION
-      - OCI_USER_ID
-      - OCI_FINGERPRINT
-      - OCI_API_KEY
-
-  # OCI Stream
-  stream:
-    image: iad.ocir.io/oracle/ateam/mushop-stream:1.0.0
-    hostname: stream
-    restart: always
-    cap_drop:
-      - all
-    cap_add:
-      - NET_BIND_SERVICE
-    read_only: true
-    environment:
-      - reschedule:on-node-failure
-      - OCI_TENANT_ID
-      - OCI_COMPARTMENT_ID
-      - OCI_REGION
-      - OCI_USER_ID
-      - OCI_FINGERPRINT
-      - OCI_API_KEY
+      - JAVA_OPTS=-Xms32m -Xmx256m -XX:+UseG1GC  -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
 
   payment:
     image: iad.ocir.io/oracle/ateam/mushop-payment:0.0.1
@@ -198,3 +159,40 @@ services:
       - OADB_USER=mock
       - OADB_PW=mock
       - OADB_SERVICE=mock
+
+  nats:
+    image: nats:2.1.2
+    ports:
+      - 4222:4222
+      - 6222:6222
+      - 8222:8222
+    hostname: nats
+    restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: true
+    environment:
+      - PORT=80
+      - OADB_USER=mock
+      - OADB_PW=mock
+      - OADB_SERVICE=mock
+
+# Fulfillment service
+  fulfillment:
+    image: iad.ocir.io/oracle/ateam/mushop-fulfillment:1.0.0
+    hostname: fulfillment
+    restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid
+    environment:
+      - reschedule:on-node-failure
+      - NATS_HOST=nats
+      - SIMULATION_DELAY=10000
+
