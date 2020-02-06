@@ -12,11 +12,11 @@ import (
 )
 
 var (
-	s1 = Product{ID: "1", Brand: "name1", Title: "title1", Description: "description1", Weight: "1oz", ProductSize: "1x1", Colors: "red", Price: 1.1, Qty: 1, ImageURL: []string{"ImageUrl_11", "ImageUrl_21"}, ImageURL_1: "ImageUrl_11", ImageURL_2: "ImageUrl_21", Categories: []string{"odd", "prime"}, CategoryString: "odd,prime"}
-	s2 = Product{ID: "2", Brand: "name2", Title: "title2", Description: "description2", Weight: "2oz", ProductSize: "2x2", Colors: "green", Price: 1.2, Qty: 2, ImageURL: []string{"ImageUrl_12", "ImageUrl_22"}, ImageURL_1: "ImageUrl_12", ImageURL_2: "ImageUrl_22", Categories: []string{"even", "prime"}, CategoryString: "even,prime"}
-	s3 = Product{ID: "3", Brand: "name3", Title: "title3", Description: "description3", Weight: "3oz", ProductSize: "3x3", Colors: "blue", Price: 1.3, Qty: 3, ImageURL: []string{"ImageUrl_13", "ImageUrl_23"}, ImageURL_1: "ImageUrl_13", ImageURL_2: "ImageUrl_23", Categories: []string{"odd", "prime"}, CategoryString: "odd,prime"}
-	s4 = Product{ID: "4", Brand: "name4", Title: "title4", Description: "description4", Weight: "4oz", ProductSize: "4x4", Colors: "gray", Price: 1.4, Qty: 4, ImageURL: []string{"ImageUrl_14", "ImageUrl_24"}, ImageURL_1: "ImageUrl_14", ImageURL_2: "ImageUrl_24", Categories: []string{"even"}, CategoryString: "even"}
-	s5 = Product{ID: "5", Brand: "name5", Title: "title5", Description: "description5", Weight: "5oz", ProductSize: "5x5", Colors: "black", Price: 1.5, Qty: 5, ImageURL: []string{"ImageUrl_15", "ImageUrl_25"}, ImageURL_1: "ImageUrl_15", ImageURL_2: "ImageUrl_25", Categories: []string{"odd", "prime"}, CategoryString: "odd,prime"}
+	s1 = Product{ID: "1", Brand: "brand1", Title: "title1", Description: "description1", Weight: "1oz", ProductSize: "1x1", Colors: "red", Price: 1.1, Qty: 1, ImageURL: []string{"ImageUrl_11", "ImageUrl_21"}, ImageURL1: "ImageUrl_11", ImageURL2: "ImageUrl_21", Categories: []string{"odd", "prime"}, CategoryString: "odd,prime"}
+	s2 = Product{ID: "2", Brand: "brand2", Title: "title2", Description: "description2", Weight: "2oz", ProductSize: "2x2", Colors: "green", Price: 1.2, Qty: 2, ImageURL: []string{"ImageUrl_12", "ImageUrl_22"}, ImageURL1: "ImageUrl_12", ImageURL2: "ImageUrl_22", Categories: []string{"even", "prime"}, CategoryString: "even,prime"}
+	s3 = Product{ID: "3", Brand: "brand3", Title: "title3", Description: "description3", Weight: "3oz", ProductSize: "3x3", Colors: "blue", Price: 1.3, Qty: 3, ImageURL: []string{"ImageUrl_13", "ImageUrl_23"}, ImageURL1: "ImageUrl_13", ImageURL2: "ImageUrl_23", Categories: []string{"odd", "prime"}, CategoryString: "odd,prime"}
+	s4 = Product{ID: "4", Brand: "brand4", Title: "title4", Description: "description4", Weight: "4oz", ProductSize: "4x4", Colors: "gray", Price: 1.4, Qty: 4, ImageURL: []string{"ImageUrl_14", "ImageUrl_24"}, ImageURL1: "ImageUrl_14", ImageURL2: "ImageUrl_24", Categories: []string{"even"}, CategoryString: "even"}
+	s5 = Product{ID: "5", Brand: "brand5", Title: "title5", Description: "description5", Weight: "5oz", ProductSize: "5x5", Colors: "black", Price: 1.5, Qty: 5, ImageURL: []string{"ImageUrl_15", "ImageUrl_25"}, ImageURL1: "ImageUrl_15", ImageURL2: "ImageUrl_25", Categories: []string{"odd", "prime"}, CategoryString: "odd,prime"}
 
 	products   = []Product{s1, s2, s3, s4, s5}
 	categories = []string{"odd", "even", "prime"}
@@ -130,7 +130,7 @@ func TestCatalogueServiceCount(t *testing.T) {
 		have, err := s.Count(testcase.categories)
 		if err != nil {
 			t.Errorf(
-				"Count(%v): returned error %s",
+				"Count(%v): (%s) returned error %s",
 				testcase.categories, err.Error(),
 				err.Error(),
 			)
