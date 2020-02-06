@@ -157,7 +157,7 @@ func TestCatalogueServiceGet(t *testing.T) {
 
 	// Test Case 2
 	mock.ExpectQuery("SELECT *").WillReturnRows(sqlmock.NewRows(cols).
-		AddRow(s3.ID, s3.Title, s3.Brand, s3.Description, s3.Weight, s3.ProductSize, s3.Colors, s3.Price, s3.Qty, s3.ImageURL[0], s3.ImageURL[1], strings.Join(s3.Categories, ",")))
+		AddRow(s3.ID, s3.Brand, s3.Title, s3.Description, s3.Weight, s3.ProductSize, s3.Colors, s3.Price, s3.Qty, s3.ImageURL[0], s3.ImageURL[1], strings.Join(s3.Categories, ",")))
 
 	s := NewCatalogueService(sqlxDB, logger)
 	{
