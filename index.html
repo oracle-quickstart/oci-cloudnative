@@ -953,10 +953,7 @@ secret to the <code>mushop-utilities</code> namespace:</p>
 </code></pre><pre class="highlight shell tab-shell--helm3"><code>helm install mushop-provision provision <span class="se">\</span>
   --namespace mushop <span class="se">\</span>
   --set global.osb.compartmentId<span class="o">=</span>&lt;compartmentId&gt;
-</code></pre>
-<blockquote>
-<p>Note that the <code>oci-credentials</code> secret was created <a href="#provisioning">previously</a></p>
-</blockquote></li>
+</code></pre></li>
 <li><p>It will take a few minutes for the ATP database to provision, and the Wallet binding to become available. Verify <code>serviceinstances</code> and <code>servicebindings</code> are <strong>READY</strong>:</p>
 <pre class="highlight plaintext"><code>kubectl get serviceinstances -A
 </code></pre><pre class="highlight plaintext"><code>kubectl get servicebindings -A
