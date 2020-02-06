@@ -2,7 +2,7 @@
 apiVersion: servicecatalog.k8s.io/v1beta1
 kind: ClusterServiceBroker
 metadata:
-  name: {{.Values.global.osb.name}}
+  name: oci-cluster-service-broker
   annotations:
     "helm.sh/resource-policy": keep
   labels:
