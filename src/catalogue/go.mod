@@ -3,6 +3,7 @@ module mushop/catalogue
 go 1.13
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.4.1
 	github.com/Shopify/sarama v1.23.1 // indirect
 	github.com/afex/hystrix-go v0.0.0-20180502004556-fa1af6a1f4f5 // indirect
 	github.com/apache/thrift v0.12.0 // indirect
