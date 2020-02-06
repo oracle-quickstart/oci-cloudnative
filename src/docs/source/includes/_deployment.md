@@ -376,7 +376,7 @@ The quickest way to create a gateway is through the OCI console:
 When deployment completes, navigate to it to get the URL for the gateway. Click the **Show** link next to the **Endpoint** label to reveal the full URL for the deployment. It should look like this:
 
 ```text
-https://aaaaaaaaa.apigateway.us-ashburn-1.oci.customer-oci.com/newsletter
+https://aaaaaaaaa.apigateway.us-ashburn-1.oci.customer-oci.com/newsletter/subscribe
 ```
 
 You will use this URL in `values-dev.yaml` when creating the deployment. 
