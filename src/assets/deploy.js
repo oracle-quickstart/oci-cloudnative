@@ -21,6 +21,7 @@ const putImage = (dir, img) => {
     method: 'PUT',
     headers: {
       'Content-Type': mType,
+      'Cache-Control': `max-age=${config.cache.maxAge}, public, no-transform`,
     }
   })
   .then(() => console.log(`PUT Success: ${img}`))

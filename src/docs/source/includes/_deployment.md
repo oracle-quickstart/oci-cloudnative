@@ -262,8 +262,6 @@ secret to the `mushop-utilities` namespace:
       --set global.osb.compartmentId=<compartmentId>
     ```
 
-    > Note that the `oci-credentials` secret was created [previously](#provisioning)
-
 1. It will take a few minutes for the ATP database to provision, and the Wallet binding to become available. Verify `serviceinstances` and `servicebindings` are **READY**:
 
     ```text

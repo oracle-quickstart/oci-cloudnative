@@ -156,7 +156,6 @@ WORKDIR /
 # Copy Services apps
 COPY --from=storefront-builder /app/storefront/build /app/storefront
 COPY --from=api-builder /app/api /app/api
-COPY --from=assets-builder /app/assets /app/assets
 COPY --from=catalogue-builder /catalogue /app/catalogue/catalogue
 
 # Create zip package of the Apps and local images
@@ -167,6 +166,7 @@ COPY deploy/basic/terraform /basic
 COPY src/catalogue/dbdata/atp_mushop_catalogue.sql /basic/scripts
 COPY deploy/basic/httpd.conf /basic/scripts
 COPY deploy/basic/entrypoint.sh /basic/scripts
+COPY --from=assets-builder /app/assets/dist /basic/images
 RUN cp /package/mushop-basic.tar.gz /basic/scripts && \
     cd /basic && zip -r /package/mushop-basic-stack.zip .
 

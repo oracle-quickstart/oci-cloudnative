@@ -36,4 +36,6 @@ metadata:
 spec:
   instanceRef:
     name: {{ .Values.global.osb.instanceName }}-objectstorage
+  parameters:
+    generatePreAuth: true
 {{ end }}
