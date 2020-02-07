@@ -1,15 +1,15 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: grafana-ingress
+  name: grafana
   annotations:
-    ingress.kubernetes.io/ssl-redirect: "true"
     kubernetes.io/ingress.class: nginx
-    kubernetes.io/tls-acme: "true"
-    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    cert-manager.io/acme-challenge-type: http01
 spec:
   tls:
-  - secretName: mushop-tls-grafana
+  - secretName: mushop-grafana-tls
     hosts:
     - grafana.mushop.ateam.cloud
   rules:
@@ -18,5 +18,5 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: mu-setup-grafana
+          serviceName: mushop-utils-grafana
           servicePort: 80
