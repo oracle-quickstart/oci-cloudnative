@@ -14,7 +14,7 @@ prometheus:
 # https://github.com/helm/charts/blob/master/stable/grafana/README.md
 grafana:
   enabled: true
-  # plugins: [ 'oci-datasource' ]
+  plugins: [ 'oci-datasource' ]
   sidecar:
     datasources:
       enabled: true
