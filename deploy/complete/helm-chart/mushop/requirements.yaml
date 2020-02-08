@@ -23,15 +23,16 @@ dependencies:
   - name: session	
     version: 0.1.0	
     condition: session.enabled	
-  - name: shipping	
-    version: 0.1.0	
-    condition: shipping.enabled	
   - name: storefront	
     version: 0.1.0	
     condition: storefront.enabled	
-  - name: stream	
-    version: 0.1.0	
-    condition: stream.enabled	
   - name: user	
     version: 0.1.0	
     condition: user.enabled
+  # - name: fulfillment	
+  #   version: 0.1.0	
+  #   condition: fulfillment.enabled	
+  - name: nats	
+    version: 0.1.0	
+    condition: orders.enabled
+    

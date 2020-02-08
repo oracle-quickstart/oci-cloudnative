@@ -34,6 +34,8 @@ spec:
               value: {{ .Values.env.zipkin }}
             - name: JAVA_OPTS
               value: {{ .Values.env.javaOpts }}
+            - name: NATS_HOST
+              value: "{{ .Release.Name }}-{{ .Values.env.natsHost }}"
             - name: TNS_ADMIN
               value: {{ .Values.env.tnsAdmin }}
             {{- include "orders.oadb.connection" . | nindent 12 }}
