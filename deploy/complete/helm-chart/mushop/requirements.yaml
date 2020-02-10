@@ -25,13 +25,15 @@ dependencies:
     condition: session.enabled	
   - name: shipping	
     version: 0.1.0	
-    condition: shipping.enabled	
+    tags:
+      - streaming
   - name: storefront	
     version: 0.1.0	
     condition: storefront.enabled	
   - name: stream	
     version: 0.1.0	
-    condition: stream.enabled	
+    tags:
+      - streaming
   - name: user	
     version: 0.1.0	
     condition: user.enabled
