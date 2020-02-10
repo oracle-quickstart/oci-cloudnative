@@ -51,12 +51,14 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- $bindingSecret := printf "%s-bucket-par-binding" ($globalOsb.instanceName | default "mushop") -}}
 {{- $bucketSecret := .Values.global.oosBucketSecret | default (printf "%s-bucket" .Release.Name) -}}
 {{- $credentialSecret := .Values.ociAuthSecret | default .Values.global.ociAuthSecret }}
+{{- if $credentialSecret -}}
 - name: REGION
   valueFrom:
     secretKeyRef:
       name: {{ $credentialSecret }}
       key: region
       optional: true
+{{ end }}
 - name: BUCKET_PAR
   valueFrom:
     secretKeyRef:
