@@ -6,7 +6,6 @@ import io.nats.client.Connection;
 import io.nats.client.Dispatcher;
 import io.nats.client.Message;
 import io.nats.client.Nats;
-import mushop.orders.entities.CustomerOrder;
 import mushop.orders.repositories.CustomerOrderRepository;
 import mushop.orders.values.OrderUpdate;
 import org.slf4j.Logger;
@@ -20,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
 
 @Service
 public class MessagingService {
@@ -79,7 +79,7 @@ public class MessagingService {
             final OrderUpdate update = objectMapper.readValue(message.getData(), OrderUpdate.class);
             customerOrderRepository.findById(update.getOrderId()).
                     ifPresent((order) -> {
-                                LOG.debug("Updating order {}", order);
+                                LOG.debug("Updating order {}", order.getId());
                                 order.setShipment(update.getShipment());
                                 customerOrderRepository.save(order);
                                 LOG.info("order {} is now {}", order.getId(), update.getShipment().getName());
