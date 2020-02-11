@@ -14,6 +14,7 @@ spec:
     run: {{ include "stream.name" .}}
   ports:
     - port: {{ .Values.service.port }}
+      name: http
       protocol: TCP
       targetPort: 80
       #nodePort: 30124
