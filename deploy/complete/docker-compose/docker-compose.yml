@@ -149,7 +149,7 @@ services:
       - OADB_USER
       - OADB_PW
       - OADB_SERVICE=mock
-      - JAVA_OPTS=-Xms32m -Xmx256m -XX:+UseG1GC  -Djavax.net.ssl.trustStorePassword=Welcome123 -Djavax.net.ssl.keyStorePassword=Welcome123 -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+      - JAVA_OPTS=-Xms32m -Xmx256m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
 
   payment:
     image: iad.ocir.io/oracle/ateam/mushop-payment:0.0.1
