@@ -34,7 +34,6 @@ RUN gradle clean assemble
 
 # Stage 3 : Build a native image using GraalVM
 FROM oracle/graalvm-ce:19.3.1-java8 as graalvm
-#FROM oracle/graalvm-ce:19.3.0-java11 as graalvm # For JDK 11
 COPY --from=appbuild /usr/src/app/build /home/app/fulfillment
 WORKDIR /home/app/fulfillment/
 RUN gu install native-image

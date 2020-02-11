@@ -17,7 +17,7 @@ docker build -t mushop-fulfillment:latest src/fulfillment
 ``` 
 This is a multi stage that sets-up the the build environment and generates a docker image 
 that runs the application. By default, the application that is built by `gradle` is processed by the 
-graal vm native image builder that compiles the application in to a native binary.
+GraalVM native image builder that compiles the application in to a native binary.
 
 
 > **_NOTE:_** GraalVM's native image build is cpu and memory intensive, and could take a few minutes to complete.
@@ -26,7 +26,7 @@ graal vm native image builder that compiles the application in to a native binar
 ### Building a JVM application
 
 If you would like to build the application as a standard executable jar file, we have 
-provided an alternate `Dockerfile` that will skip the graal vm based native image generation 
+provided an alternate `Dockerfile` that will skip the GraalVM based native image generation 
 and build an image that uses a standard JVM to run the application. This is useful for either comparing 
 GraalVM against the normal JVM execution, as well as for rapid development.
 
@@ -58,11 +58,11 @@ There are a few attributes that are externally configurable. These are
 | NATS_HOST  | The hostname for where NATS is reachable. Defaults to `localhost`  |
 | SIMULATION_DELAY | The artificial time delay between the fulfillment service receiving a message from the orders service and it replying  (for demos). Defaults to 8s. Value is in milliseconds. |
 
-## Micronaut & Graal VM
+## Micronaut & GraalVM
 
 This application also uses the [Micronaut](https://micronaut.io/) - a lightweight framework 
 that is particularly useful for building microservices. This Java application is also compiled 
-in to a native binary using [Graal VM](https://www.graalvm.org/), to make the runtime even 
+in to a native binary using [GraalVM](https://www.graalvm.org/), to make the runtime even 
 more light weight and faster by eliminating the JVM from the runtime. For comparison, the 
 application when running on a JVM takes 2.2 seconds to start up. The same application 
 when compiled with GraalVM in to a native binary starts up in 45 milliseconds.
@@ -70,5 +70,5 @@ when compiled with GraalVM in to a native binary starts up in 45 milliseconds.
 ## Messaging with NATS.io
 
 The messaging system used is [nats.io](https://nats.io). NATS is a production ready messaging 
-system that is extremely light weight. Its also a Cloud Native, a CNCF project with Kubernetes and Prometheus 
+system that is extremely light weight. It's also a cloud-native CNCF project with Kubernetes and Prometheus 
 integrations.
