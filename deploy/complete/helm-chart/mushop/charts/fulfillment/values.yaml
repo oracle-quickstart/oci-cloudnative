@@ -1,0 +1,15 @@
+replicaCount: 1
+
+image:
+  repository: iad.ocir.io/oracle/ateam/mushop-fulfillment
+  tag: 1.0.0
+  pullPolicy: IfNotPresent
+
+osb: {}
+
+env:
+  natsHost: "nats"
+  simulationDelay: 10000
+
+service:
+  port: 80

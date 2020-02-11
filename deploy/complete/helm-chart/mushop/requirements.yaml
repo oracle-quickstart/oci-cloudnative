@@ -29,9 +29,9 @@ dependencies:
   - name: user	
     version: 0.1.0	
     condition: user.enabled
-  # - name: fulfillment	
-  #   version: 0.1.0	
-  #   condition: fulfillment.enabled	
+  - name: fulfillment	
+    version: 0.1.0	
+    condition: fulfillment.enabled	
   - name: nats	
     version: 0.1.0	
     condition: orders.enabled
