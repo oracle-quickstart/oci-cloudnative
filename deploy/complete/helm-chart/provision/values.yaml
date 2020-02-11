@@ -9,7 +9,7 @@ global:
     # Set object storage namespace, usualy the tenancy name or ocid.
     objectstoragenamespace: ocitenancyname
     # Service broker name (used in the service URL)
-    name: mushop-osb
+    name: oci-broker
     port: 8080
     compartmentId:
     # Service instance name

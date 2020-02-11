@@ -1,0 +1,53 @@
+{{- if .Values.global.osb.objectstorage }}
+{{- $credentialSecret := .Values.ociAuthSecret | default .Values.global.ociAuthSecret }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "assets.fullname" . }}-destroy
+  labels: {{ include "assets.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": pre-delete
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  ttlSecondsAfterFinished: 60
+  backoffLimit: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "assets.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: init
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["node", "destroy.js"]
+          env:
+          {{- include "assets.env.par" . | nindent 10 }}
+          - name: TENANCY
+            valueFrom:
+              secretKeyRef:
+                name: {{ $credentialSecret }}
+                key: tenancy
+          - name: USER_ID
+            valueFrom:
+              secretKeyRef:
+                name: {{ $credentialSecret }}
+                key: user
+          - name: PRIVATE_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ $credentialSecret }}
+                key: privatekey
+          - name: FINGERPRINT
+            valueFrom:
+              secretKeyRef:
+                name: {{ $credentialSecret }}
+                key: fingerprint
+          - name: PASSPHRASE
+            valueFrom:
+              secretKeyRef:
+                name: {{ $credentialSecret }}
+                key: passphrase
+{{- end -}}

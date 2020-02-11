@@ -8,7 +8,7 @@ resource "oci_objectstorage_bucket" "mushop" {
   name           = "mushop-${random_id.mushop_id.dec}"
   namespace      = data.oci_objectstorage_namespace.user_namespace.namespace
   freeform_tags  = local.common_tags
-  depends_on = ["oci_identity_policy.mushop_allow_object_storage_lifecycle"]
+  depends_on = [oci_identity_policy.mushop_allow_object_storage_lifecycle]
 }
 
 resource "oci_objectstorage_object" "mushop_wallet" {
@@ -127,7 +127,7 @@ resource "oci_objectstorage_object_lifecycle_policy" "mushop_deploy_assets_lifec
     time_amount = "1"
     time_unit   = "DAYS"
   }
-  depends_on = ["oci_identity_policy.mushop_allow_object_storage_lifecycle","oci_objectstorage_object.mushop_wallet"]
+  depends_on = [oci_identity_policy.mushop_allow_object_storage_lifecycle, oci_objectstorage_object.mushop_wallet]
 }
 
 # Static assets bucket
@@ -143,9 +143,21 @@ resource "oci_objectstorage_bucket" "mushop_media" {
 # Static assets PAR
 resource "oci_objectstorage_preauthrequest" "mushop_media_preauth" {
   #Required
-  access_type  = "AnyObjectWrite"
   bucket       = oci_objectstorage_bucket.mushop_media.name
+  namespace    = oci_objectstorage_bucket.mushop_media.namespace
+  access_type  = "AnyObjectWrite"
   name         = "mushop_assets_preauth"
-  namespace    = data.oci_objectstorage_namespace.user_namespace.namespace
   time_expires = timeadd(timestamp(), "30m")
+}
+
+# Static product media
+resource "oci_objectstorage_object" "mushop_media" {
+  for_each      = fileset("./images", "**")
+  
+  bucket        = oci_objectstorage_bucket.mushop_media.name
+  namespace     = oci_objectstorage_bucket.mushop_media.namespace
+  object        = each.value
+  source        = "./images/${each.value}"
+  content_type  = "image/png"
+  cache_control = "max-age=604800, public, no-transform"
 }

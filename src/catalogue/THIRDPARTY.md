@@ -537,6 +537,15 @@ Licensed under the Apache License, Version 2.0
 
 -------------------------------------------------------
 
+## github.com/DATA-DOG/go-sqlmock v1.4.1 (BSD-3-Clause)
+
+```
+Copyright (c) 2013-2019, DATA-DOG team
+Licensed under the BSD 3-Clause "New" or "Revised" License
+```
+
+-------------------------------------------------------
+
 # Licenses
 
 -------------------------------------------------------
