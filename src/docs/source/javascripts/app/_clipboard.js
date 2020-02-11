@@ -10,7 +10,7 @@ Licensed under the Universal Permissive License v 1.0 as shown at http://oss.ora
   }
 
   function clipboard(link) {
-    var text = this.innerText;
+    var text = this.innerText.trim();
     if (isWin()) { // strip breaks
       text = text.replace(/\s\\\s*\n\s*/g, ' ');
     }
