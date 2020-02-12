@@ -7,8 +7,8 @@ micronaut:
 mushop:
   messaging:
     host: ${nats.host:localhost}
-    port: 4222
+    port: ${nats.port:4222}
     simulation-delay: ${simulation.delay:8000}
     subjects:
-      orders: mushop-orders
-      shipments: mushop-shipments
+      orders: ${orders.new:mushop-orders}
+      shipments: ${orders.shipped:mushop-shipments}

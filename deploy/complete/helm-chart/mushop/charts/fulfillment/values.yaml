@@ -9,6 +9,9 @@ osb: {}
 
 env:
   natsHost: "nats"
+  natsPort: 4222
+  newOrdersSubject: mushop-orders
+  shippedOrdersSubject: mushop-shipments
   simulationDelay: 10000
 
 service:

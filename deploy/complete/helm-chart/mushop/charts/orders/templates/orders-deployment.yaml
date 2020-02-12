@@ -36,6 +36,12 @@ spec:
               value: {{ .Values.env.javaOpts }}
             - name: NATS_HOST
               value: "{{ .Release.Name }}-{{ .Values.env.natsHost }}"
+            - name: NATS_PORT
+              value: "{{ .Values.env.natsPort }}"
+            - name: ORDERS_NEW
+              value: "{{ .Values.env.newOrdersSubject }}"
+            - name: ORDERS_SHIPPED
+              value: "{{ .Values.env.shippedOrdersSubject }}"
             - name: TNS_ADMIN
               value: {{ .Values.env.tnsAdmin }}
             {{- include "orders.oadb.connection" . | nindent 12 }}
