@@ -146,6 +146,9 @@ services:
       - /tmp:rw,noexec,nosuid
     environment:
       - NATS_HOST=nats
+      - NATS_PORT=4222
+      - ORDERS_NEW=mushop-orders
+      - ORDERS_SHIPPED=mushop-shipments
       - OADB_USER
       - OADB_PW
       - OADB_SERVICE=mock
@@ -205,5 +208,8 @@ services:
     environment:
       - reschedule:on-node-failure
       - NATS_HOST=nats
+      - NATS_PORT=4222
+      - ORDERS_NEW=mushop-orders
+      - ORDERS_SHIPPED=mushop-shipments
       - SIMULATION_DELAY=10000
 
