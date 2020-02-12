@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
@@ -25,34 +26,39 @@ import java.util.concurrent.Future;
 public class MessagingService {
     @Autowired
     private CustomerOrderRepository customerOrderRepository;
-    private final Logger LOG = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
     private final ObjectMapper objectMapper = new ObjectMapper();
     private Connection nc;
-    private final String MUSHOP_ORDERS_SUBJECT;
-    private final String MUSHOP_SHIPMENTS_SUBJECT;
-    private final String NATS_URL;
+    private final String mushopOrdersSubject;
+    private final String mushopShipmentsSubject;
+    private final String natsUrl;
+    private ExecutorService messageProcessingPool;
 
-    public MessagingService(@Value("nats://${mushop.messaging.host}:${mushop.messaging.port}") String NATS_URL,
-                            @Value("${mushop.messaging.subjects.orders}") String MUSHOP_ORDERS_SUBJECT,
-                            @Value("${mushop.messaging.subjects.shipments}") String MUSHOP_SHIPMENTS_SUBJECT) throws InterruptedException {
-        this.MUSHOP_ORDERS_SUBJECT = MUSHOP_ORDERS_SUBJECT;
-        this.MUSHOP_SHIPMENTS_SUBJECT = MUSHOP_SHIPMENTS_SUBJECT;
-        this.NATS_URL = NATS_URL;
-        LOG.info("Connecting to NATS {} and subscribing to subject {}", this.NATS_URL, this.MUSHOP_ORDERS_SUBJECT);
+
+    public MessagingService(@Value("nats://${mushop.messaging.host}:${mushop.messaging.port}") String natsUrl,
+                            @Value("${mushop.messaging.subjects.orders}") String mushopOrdersSubject,
+                            @Value("${mushop.messaging.subjects.shipments}") String mushopShipmentsSubject) throws InterruptedException {
+        this.mushopOrdersSubject = mushopOrdersSubject;
+        this.mushopShipmentsSubject = mushopShipmentsSubject;
+        this.messageProcessingPool = Executors.newCachedThreadPool();
+        ExecutorService connectionExecutor = Executors.newSingleThreadExecutor();
+        this.natsUrl = natsUrl;
         boolean connected = false;
         while (!connected) {
             try {
-                Future<Boolean> result = Executors.newSingleThreadExecutor().submit(() -> {
+                Future<Boolean> result = connectionExecutor.submit(() -> {
                     try {
-                        nc = Nats.connect(this.NATS_URL);
+                        log.info("Connecting to {}", this.natsUrl);
+                        nc = Nats.connect(this.natsUrl);
                         Dispatcher d = nc.createDispatcher((msg) -> {
                             handleMessage(msg);
                         });
-                        d.subscribe(this.MUSHOP_SHIPMENTS_SUBJECT);
+                        log.info("subscribing to {}", this.mushopShipmentsSubject);
+                        d.subscribe(this.mushopShipmentsSubject);
                         return Boolean.TRUE;
                     } catch (IOException e) {
                         e.printStackTrace();
-                        LOG.error("Connection failed due to {}. Retrying in 5s", e.getMessage());
+                        log.error("Connection failed due to {}. Retrying in 5s", e.getMessage());
                         Thread.sleep(5000l);
                         return Boolean.FALSE;
                     }
@@ -62,34 +68,36 @@ public class MessagingService {
                 e.printStackTrace();
             }
         }
-        LOG.info("Connected to NATS {} and subscribed to subject {}", this.NATS_URL, this.MUSHOP_ORDERS_SUBJECT);
+        connectionExecutor.shutdown();
+        log.info("Connected to NATS {} and subscribed to subject {}", this.natsUrl, this.mushopShipmentsSubject);
 
     }
 
     public void dispatchToFulfillment(OrderUpdate order) throws JsonProcessingException {
-        LOG.info("Preparing order for fulfillment {}", order.getOrderId());
+        log.info("Preparing order for fulfillment {}", order.getOrderId());
         String msg = objectMapper.writeValueAsString(order);
-        LOG.debug("Sending order over to fulfillment {}", order);
-        nc.publish(this.MUSHOP_ORDERS_SUBJECT, msg.getBytes(StandardCharsets.UTF_8));
+        log.debug("Sending order over to fulfillment {}", order);
+        this.nc.publish(this.mushopOrdersSubject, msg.getBytes(StandardCharsets.UTF_8));
     }
 
     private void handleMessage(Message message) {
-        String response = new String(message.getData(), StandardCharsets.UTF_8);
-        try {
-            final OrderUpdate update = objectMapper.readValue(message.getData(), OrderUpdate.class);
-            customerOrderRepository.findById(update.getOrderId()).
-                    ifPresent((order) -> {
-                                LOG.debug("Updating order {}", order.getId());
-                                order.setShipment(update.getShipment());
-                                customerOrderRepository.save(order);
-                                LOG.info("order {} is now {}", order.getId(), update.getShipment().getName());
-                            }
-                    );
+        messageProcessingPool.submit(() -> {
+            try {
+                final OrderUpdate update = objectMapper.readValue(message.getData(), OrderUpdate.class);
+                customerOrderRepository.findById(update.getOrderId()).
+                        ifPresent((order) -> {
+                                    log.debug("Updating order {}", order.getId());
+                                    order.setShipment(update.getShipment());
+                                    customerOrderRepository.save(order);
+                                    log.info("order {} is now {}", order.getId(), update.getShipment().getName());
+                                }
+                        );
 
-        } catch (IOException e) {
-            LOG.error("Failed reading shipping message");
-            e.printStackTrace();
-        }
+            } catch (IOException e) {
+                log.error("Failed reading shipping message");
+                e.printStackTrace();
+            }
+        });
     }
 
 
