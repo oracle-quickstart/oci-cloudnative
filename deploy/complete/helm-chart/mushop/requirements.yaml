@@ -6,17 +6,20 @@ dependencies:
     version: 0.1.0
     condition: assets.enabled
   - name: carts
-    version: 0.1.0	
-    condition: carts.enabled	
+    version: 0.1.0
+    tags:
+      - atp
   - name: catalogue	
-    version: 0.1.0	
-    condition: catalogue.enabled	
+    version: 0.1.0
+    tags:
+      - atp
   - name: edge	
     version: 0.1.0	
     condition: edge.enabled	
   - name: orders	
-    version: 0.1.0	
-    condition: orders.enabled	
+    version: 0.1.0
+    tags:
+      - atp
   - name: payment	
     version: 0.1.0	
     condition: payment.enabled	
@@ -35,5 +38,6 @@ dependencies:
     tags:
       - streaming
   - name: user	
-    version: 0.1.0	
-    condition: user.enabled
+    version: 0.1.0
+    tags:
+      - atp
