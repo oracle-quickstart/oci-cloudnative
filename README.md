@@ -56,6 +56,23 @@ lb_public_url = http://xxx.xxx.xxx.xxx
 
 > The application is being deployed to the compute instances asynchronously, and it may take a couple of minutes for the URL to serve the application.
 
+### Cleanup
+
+Even though it is Always Free, you will likely want to terminate the demo application
+in your Oracle Cloud Infrastructure tenancy. With the use of Terraform, the [Resource Manager][orm]
+stack is also responsible for terminating the application.
+
+Follow these steps to completely remove all provisioned resources:
+
+1. Return to the Oracle Cloud Infrastructure [Console](https://console.us-ashburn-1.oraclecloud.com/resourcemanager/stacks)
+  > `Home > Solutions & Platform > Resource Manager > Stacks`
+1. Select the stack created previously to open the Stack Details view
+1. From the Stack Details, select `Terraform Actions > Destroy`
+1. Confirm the **Destroy** job when prompted
+  > The job status will be **In Progress** while resources are terminated
+1. Once the destroy job has succeeded, return to the Stack Details page
+1. Click `Delete Stack` and confirm when prompted
+
 #### Topology
 
 The following diagram shows the topology created by this stack.
