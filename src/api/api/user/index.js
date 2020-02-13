@@ -38,7 +38,7 @@
     async function updateCart(req, customerId) {
       const cartId = req.session.cartId;
       if (cartId) {
-          await axios.post(endpoints.cartsUrl + "/" + cartId, {
+          return axios.post(endpoints.cartsUrl + "/" + cartId, {
             customerId: customerId
           });
       }
@@ -119,7 +119,7 @@
     app.post("/register", async (req, res, next) => {
         try {
             const { status, data: user } = await axios.post(endpoints.registerUrl, req.body);
-            await updateCart(req, user.id).catch();
+            await updateCart(req, user.id).catch(() => {/* noop */});
             helpers.setAuthenticated(req, res, user.id)
                    .status(status)
                    .json({ id: user.id });
@@ -137,7 +137,7 @@
                 username,
                 password,
             });
-            await updateCart(req, user.id).catch();
+            await updateCart(req, user.id).catch(() => {/* noop */});
             helpers.setAuthenticated(req, res, user.id)
                    .status(200)
                    .send('OK');

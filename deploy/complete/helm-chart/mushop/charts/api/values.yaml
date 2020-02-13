@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: iad.ocir.io/oracle/ateam/mushop-api
-  tag: 2.1.0
+  tag: 2.1.1
   pullPolicy: IfNotPresent
 
 env:
