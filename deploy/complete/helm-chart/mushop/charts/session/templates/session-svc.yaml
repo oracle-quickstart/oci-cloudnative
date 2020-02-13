@@ -10,3 +10,4 @@ spec:
     app.kubernetes.io/instance: {{ .Release.Name }}
   ports:
     - port: {{ .Values.service.port }}
+      name: http
