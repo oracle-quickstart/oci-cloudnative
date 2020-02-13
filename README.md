@@ -34,7 +34,7 @@ The steps below guide you through deploying the application on your tenancy usin
 4. Configure the stack
    1. **Database Name** - You can choose to provide a database name (optional)
    2. **Node Count** - Select if you want to deploy one or two application instances.
-   3. **Availability Domain**  - Select any availability domain to create the resources. If you run in to service limits, you could try another availability domain.
+   3. **SSH Public Key** - (Optional) Provide a public SSH key if you wish to establish SSH access to the compute node(s).
 5. Review the information and click Create button.
    > The upload can take a few seconds, after which you will be taken to the newly created stack
 6. On Stack details page, click on `Terraform Actions > Apply`
