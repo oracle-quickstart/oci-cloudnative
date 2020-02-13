@@ -33,11 +33,10 @@ dependencies:
     version: 0.1.0
     tags:
       - atp
-      - atp
   - name: fulfillment	
     version: 0.1.0	
     condition: fulfillment.enabled	
   - name: nats	
     version: 0.1.0	
-    condition: orders.enabled
+    condition: nats.enabled
     
