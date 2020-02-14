@@ -21,7 +21,6 @@ var express = require('express'),
     app = express();
 
 app.use(helpers.rewriteSlash);
-app.use(helpers.tracingMiddleware);
 app.use(metrics);
 app.use(health);
 app.use(session(Config.session()));
@@ -42,6 +41,7 @@ api.use(orders);
 api.use(user);
 api.use(newsletter);
 // mount to app
+app.use(helpers.tracingMiddleware);
 app.use(api); // back-compat with weave
 app.use('/api', api); // expose services as `/api/{service}`
 
