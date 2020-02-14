@@ -24,4 +24,3 @@ spec:
       port: {{ .Values.service.port.monitoring }}
       protocol: TCP
       targetPort: 8222
-      #nodePort: 30124

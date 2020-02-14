@@ -2,7 +2,7 @@ micronaut:
   application:
     name: fulfillment
   server:
-    port: 8099
+    port: 80
 
 mushop:
   messaging:

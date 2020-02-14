@@ -41,7 +41,7 @@ RUN native-image --no-server  -cp libs/fulfillment-*-all.jar
 
 # Step 4 : Build the final application image
 FROM oracle/graalvm-ce:19.3.1-java8
-EXPOSE 8080
+EXPOSE 80
 COPY --from=graalvm /home/app/fulfillment/fulfillment /app/fulfillment
 ENTRYPOINT ["/app/fulfillment", "-Djava.library.path=/app"]
 

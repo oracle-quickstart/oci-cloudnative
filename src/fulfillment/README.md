@@ -40,14 +40,14 @@ The fulfillment service is included in the `docker-compose` configuration can si
 To run the container stand-alone, simply run the following command.
 
 ```shell script
-docker run -p 8099:8099  mushop-fulfillment:local
+docker run -p 8087:80  mushop-fulfillment:local
 ``` 
 
 This runs the container locally and exposes the application's api to the docker host's port `8099`.
 You can validate the application state by simply making a health check request to 
 
 ```shell script
-curl localhost:8099/health
+curl localhost:8087/health
 ``` 
 
 ### Application Configuration

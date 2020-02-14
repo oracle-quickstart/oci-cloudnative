@@ -28,7 +28,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 8099
+              containerPort: 80
           env:
             - name: NATS_HOST
               value: "{{ .Release.Name }}-{{ .Values.env.natsHost }}"

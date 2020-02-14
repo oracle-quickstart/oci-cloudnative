@@ -196,6 +196,8 @@ services:
 # Fulfillment service
   fulfillment:
     image: iad.ocir.io/oracle/ateam/mushop-fulfillment:1.0.0
+    ports: 
+      - 8087:80
     hostname: fulfillment
     restart: always
     cap_drop:
