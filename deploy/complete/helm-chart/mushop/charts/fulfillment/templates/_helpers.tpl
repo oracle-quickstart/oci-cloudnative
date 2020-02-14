@@ -2,7 +2,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "stream.name" -}}
+{{- define "fulfillment.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -11,7 +11,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "stream.fullname" -}}
+{{- define "fulfillment.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -27,20 +27,20 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "stream.chart" -}}
+{{- define "fulfillment.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
 Common labels
 */}}
-{{- define "stream.labels" -}}
-app.kubernetes.io/name: {{ include "stream.name" . }}
-helm.sh/chart: {{ include "stream.chart" . }}
+{{- define "fulfillment.labels" -}}
+app.kubernetes.io/name: {{ include "fulfillment.name" . }}
+helm.sh/chart: {{ include "fulfillment.chart" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-run: {{ include "stream.name" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
+run: {{ include "fulfillment.name" . }}
 {{- end -}}

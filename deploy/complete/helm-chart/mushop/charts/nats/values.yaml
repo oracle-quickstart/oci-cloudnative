@@ -1,0 +1,14 @@
+replicaCount: 1
+
+image:
+  repository: nats
+  tag: 2.1.2
+  pullPolicy: IfNotPresent
+
+osb: {}
+
+service:
+  port:
+    client: 4222
+    monitoring: 8222
+    routes: 6222

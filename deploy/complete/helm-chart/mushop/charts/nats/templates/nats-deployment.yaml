@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "nats.fullname" . }}
+  labels:
+{{ include "nats.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+      version: {{ .Values.image.tag | quote }}
+      app.kubernetes.io/name: {{ include "nats.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      run: {{ include "nats.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+        version: {{ .Values.image.tag | quote }}
+        app.kubernetes.io/name: {{ include "nats.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        run: {{ include "nats.name" . }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: client
+              containerPort: 4222
+              protocol: TCP
+            - name: routes
+              containerPort: 6222
+              protocol: TCP
+            - name: monitoring
+              containerPort: 8222
+              protocol: TCP
+          

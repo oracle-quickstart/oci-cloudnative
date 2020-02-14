@@ -15,11 +15,5 @@ orders:
 payment:
   enabled: false
 
-shipping:
-  enabled: false
-
-stream:
-  enabled: false
-
 user:
   enabled: false
