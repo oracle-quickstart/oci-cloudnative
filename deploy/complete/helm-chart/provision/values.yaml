@@ -7,7 +7,7 @@ global:
     # Set to true to create a bucket on the object storage service instance
     objectstorage: true
     # Set object storage namespace, usualy the tenancy name or ocid.
-    objectstoragenamespace: ocitenancyname
+    objectstoragenamespace: 
     # Service broker name (used in the service URL)
     name: oci-broker
     port: 8080
@@ -20,11 +20,12 @@ global:
     - orders
     - user
   # Leave values empty to auto-generate them
-  oadbAdminPassword: 
+  oadbAdminPassword:
   oadbWalletPassword:
   oadbName:
   oadbUser:
   oadbPassword:
+  ossStreamName: 
 
 # Each separate service can get its own ATP created
 # by setting the osb.atp=true and providing the compartmentId
