@@ -27,10 +27,13 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: 4222
+            - name: client
+              containerPort: 4222
               protocol: TCP
-            - containerPort: 6222
+            - name: routes
+              containerPort: 6222
               protocol: TCP
-            - containerPort: 8222
+            - name: monitoring
+              containerPort: 8222
               protocol: TCP
           
