@@ -887,9 +887,12 @@ values:</p>
   --namespace mushop <span class="se">\</span>
   --from-literal<span class="o">=</span><span class="nv">region</span><span class="o">=</span>&lt;BUCKET_REGION&gt; <span class="se">\</span>
   --from-literal<span class="o">=</span><span class="nv">name</span><span class="o">=</span>&lt;BUCKET_NAME&gt; <span class="se">\</span>
-  --from-literal<span class="o">=</span><span class="nv">namespace</span><span class="o">=</span>&lt;TENANCY_NAME&gt; <span class="se">\</span>
+  --from-literal<span class="o">=</span><span class="nv">namespace</span><span class="o">=</span>&lt;OBJECT_STORAGE_NAMESPACE&gt; <span class="se">\</span>
   --from-literal<span class="o">=</span><span class="nv">parUrl</span><span class="o">=</span>&lt;PRE_AUTHENTICATED_REQUEST_URL&gt;
-</code></pre></li>
+</code></pre>
+<blockquote>
+<p><strong>Object Storage Namespace</strong> may be found with the CLI <code>oci os ns get</code> or from the <a href="https://console.us-ashburn-1.oraclecloud.com/a/tenancy">tenancy information page</a></p>
+</blockquote></li>
 <li><p>Verify the secrets are created and available in the <code>mushop</code> namespace:</p>
 <pre class="highlight shell tab-shell"><code>kubectl get secret --namespace mushop
 </code></pre><pre class="highlight plaintext"><code>NAME              TYPE      DATA   AGE
@@ -897,6 +900,7 @@ oadb-admin        Opaque    1      3m
 oadb-connection   Opaque    2      3m
 oadb-wallet       Opaque    7      3m
 oci-credentials   Opaque    6      3m
+oos-bucket        Opaque    4      3m
 oss-connection    Opaque    4      3m
 </code></pre></li>
 </ol>
@@ -949,18 +953,31 @@ secret to the <code>mushop-utilities</code> namespace:</p>
 <pre class="highlight shell tab-shell--helm2"><code>helm install provision <span class="se">\</span>
   --namespace mushop <span class="se">\</span>
   --name mushop-provision <span class="se">\</span>
-  --set global.osb.compartmentId<span class="o">=</span>&lt;compartmentId&gt;
+  --set global.osb.compartmentId<span class="o">=</span>&lt;COMPARTMENT_ID&gt; <span class="se">\</span>
+  --set global.osb.objectstoragenamespace<span class="o">=</span>&lt;OBJECT_STORAGE_NAMESPACE&gt;
 </code></pre><pre class="highlight shell tab-shell--helm3"><code>helm install mushop-provision provision <span class="se">\</span>
   --namespace mushop <span class="se">\</span>
-  --set global.osb.compartmentId<span class="o">=</span>&lt;compartmentId&gt;
-</code></pre></li>
-<li><p>It will take a few minutes for the ATP database to provision, and the Wallet binding to become available. Verify <code>serviceinstances</code> and <code>servicebindings</code> are <strong>READY</strong>:</p>
+  --set global.osb.compartmentId<span class="o">=</span>&lt;COMPARTMENT_ID&gt; <span class="se">\</span>
+  --set global.osb.objectstoragenamespace<span class="o">=</span>&lt;OBJECT_STORAGE_NAMESPACE&gt;
+</code></pre>
+<blockquote>
+<p><strong>Object Storage Namespace</strong> may be found with the CLI <code>oci os ns get</code> or from the <a href="https://console.us-ashburn-1.oraclecloud.com/a/tenancy">tenancy information page</a></p>
+</blockquote></li>
+<li><p>It will take a few minutes for the services database to provision, and the respective bindings to become available. Verify <code>serviceinstances</code> and <code>servicebindings</code> are <strong>READY</strong>:</p>
 <pre class="highlight plaintext"><code>kubectl get serviceinstances -A
 </code></pre><pre class="highlight plaintext"><code>kubectl get servicebindings -A
 </code></pre></li>
+<li><p>A Stream instance will be provisioned by default. One last manual step is required in order to configure the a connection to this service. Create an <code>oss-connection</code> secret containing the Stream connection details:</p>
+<pre class="highlight shell tab-shell"><code>kubectl create secret generic oss-connection <span class="se">\</span>
+  --namespace mushop <span class="se">\</span>
+  --from-literal<span class="o">=</span><span class="nv">compartmentId</span><span class="o">=</span><span class="s1">'&lt;COMPARTMENT_OCID&gt;'</span> <span class="se">\</span>
+  --from-literal<span class="o">=</span><span class="nv">region</span><span class="o">=</span><span class="s1">'&lt;REGION_NAME&gt;'</span> <span class="se">\</span>
+  --from-literal<span class="o">=</span><span class="nv">streamId</span><span class="o">=</span><span class="s1">'&lt;STREAM_OCID&gt;'</span> <span class="se">\</span>
+  --from-literal<span class="o">=</span><span class="nv">streamName</span><span class="o">=</span><span class="s1">'&lt;STREAM_NAME&gt;'</span>
+</code></pre></li>
 </ol>
 <h2 id='api-gateway-oci-functions-and-email-delivery'>API Gateway, OCI Functions and Email Delivery</h2>
-<p>Note that this is optional. If you don&#39;t want to configure Email Delivery and deploy an API Gateway and the function, skip to the <a href="#deployment">Deployment</a> section. </p>
+<p>Note that this is optional. If you don&#39;t want to configure Email Delivery and deploy an API Gateway and the function, skip to the <a href="#deployment">Deployment</a> section.</p>
 <h3 id='configure-email-delivery'>Configure Email Delivery</h3>
 <p>If you are planning to use the API gateway and Oracle Functions, to send emails using OCI Email Delivery you need to configure an approved sender first.</p>
 
