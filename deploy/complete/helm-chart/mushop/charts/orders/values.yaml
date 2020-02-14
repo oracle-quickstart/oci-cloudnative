@@ -20,7 +20,7 @@ secrets:
 
 env:
   zipkin: zipkin.jaeger.svc.cluster.local
-  javaOpts: -Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+  javaOpts: -Xms32m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=INFO  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
   tnsAdmin: "/app/config"
   natsHost: "nats"
   natsPort: 4222
