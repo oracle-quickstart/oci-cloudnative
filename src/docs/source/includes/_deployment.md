@@ -253,16 +253,18 @@ secret to the `mushop-utilities` namespace:
     helm install provision \
       --namespace mushop \
       --name mushop-provision \
-      --set global.osb.compartmentId=<compartmentId>
+      --set global.osb.compartmentId=<COMPARTMENT_ID> \
+      --set global.osb.objectstoragenamespace=<OBJECT_STORAGE_NAMESPACE>
     ```
 
     ```shell--helm3
     helm install mushop-provision provision \
       --namespace mushop \
-      --set global.osb.compartmentId=<compartmentId>
+      --set global.osb.compartmentId=<COMPARTMENT_ID> \
+      --set global.osb.objectstoragenamespace=<OBJECT_STORAGE_NAMESPACE>
     ```
 
-1. It will take a few minutes for the ATP database to provision, and the Wallet binding to become available. Verify `serviceinstances` and `servicebindings` are **READY**:
+1. It will take a few minutes for the services database to provision, and the respective bindings to become available. Verify `serviceinstances` and `servicebindings` are **READY**:
 
     ```text
     kubectl get serviceinstances -A
@@ -272,9 +274,20 @@ secret to the `mushop-utilities` namespace:
     kubectl get servicebindings -A
     ```
 
+1. A Stream instance will be provisioned by default. One last manual step is required in order to configure the a connection to this service. Create an `oss-connection` secret containing the Stream connection details:
+
+    ```shell
+    kubectl create secret generic oss-connection \
+      --namespace mushop \
+      --from-literal=compartmentId='<COMPARTMENT_OCID>' \
+      --from-literal=region='<REGION_NAME>' \
+      --from-literal=streamId='<STREAM_OCID>' \
+      --from-literal=streamName='<STREAM_NAME>'
+    ```
+
 ## API Gateway, OCI Functions and Email Delivery
 
-Note that this is optional. If you don't want to configure Email Delivery and deploy an API Gateway and the function, skip to the [Deployment](#deployment) section. 
+Note that this is optional. If you don't want to configure Email Delivery and deploy an API Gateway and the function, skip to the [Deployment](#deployment) section.
 
 ### Configure Email Delivery
 
