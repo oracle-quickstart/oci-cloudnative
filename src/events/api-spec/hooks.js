@@ -1,18 +1,22 @@
+/**
+ * Copyright © 2020, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
 const hooks = require('hooks');
 
 // Mock connection
 hooks.before("/events > POST", (transaction, done) => {
     transaction.request.headers['Content-Type'] = 'application/json';
     transaction.request.body = JSON.stringify({
-      type: 'client',
+      source: 'client',
       track: 'abcxyz',
       events: [{
-        type: 'view',
-        details: {
+        type: 'pageView',
+        detail: {
           page: 'product',
-          id: 'MU-US-001',
+          productId: 'product-001',
         }
-      }],
+      }]
     });
     done();
 });
