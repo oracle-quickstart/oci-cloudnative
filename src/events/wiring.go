@@ -9,6 +9,8 @@ import (
 
 	stdopentracing "github.com/opentracing/opentracing-go"
 	"github.com/prometheus/client_golang/prometheus"
+
+	"github.com/oracle/oci-go-sdk/common"
 )
 
 var (
@@ -24,8 +26,12 @@ func init() {
 }
 
 // WireUp the service to the provided context
-func WireUp(ctx context.Context, tracer stdopentracing.Tracer, serviceName string) (http.Handler, log.Logger) {
-	// Log domain.
+func WireUp(
+	ctx context.Context,
+	tracer stdopentracing.Tracer,
+	provider common.ConfigurationProvider,
+	serviceName string) (http.Handler, log.Logger) {
+	// Logging
 	var logger log.Logger
 	{
 		logger = log.NewLogfmtLogger(os.Stderr)
@@ -33,27 +39,21 @@ func WireUp(ctx context.Context, tracer stdopentracing.Tracer, serviceName strin
 		logger = log.With(logger, "caller", log.DefaultCaller)
 	}
 
-	// Service domain.
+	// Streaming configurations
+	client, _ := GetStreamClient(provider)
+	streamID := GetStreamID()
+
+	// Service domain
 	var service Service
 	{
-		service = NewEventsService(logger)
+		service = NewEventsService(ctx, client, streamID, logger)
 		service = LoggingMiddleware(logger)(service)
 	}
 
-	// Endpoint domain.
+	// Endpoint domain
 	endpoints := MakeEndpoints(service, tracer)
 
 	router := MakeHTTPHandler(ctx, endpoints, logger, tracer)
-
-	// httpMiddleware := []middleware.Interface{
-	// 	middleware.Instrument{
-	// 		Duration:     HTTPLatency,
-	// 		RouteMatcher: router,
-	// 	},
-	// }
-
-	// // Handler
-	// handler := middleware.Merge(httpMiddleware...).Wrap(router)
 
 	return router, logger
 }

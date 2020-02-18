@@ -1,10 +1,13 @@
 package events
 
 import (
-	"errors"
+	"encoding/json"
 	"time"
 
 	"github.com/go-kit/kit/log"
+	"golang.org/x/net/context"
+
+	"github.com/oracle/oci-go-sdk/streaming"
 )
 
 // Middleware decorates a service.
@@ -16,8 +19,8 @@ type Service interface {
 }
 
 type EventsReceived struct {
-	Received bool   `json:"received"`
-	Message  string `json:"message"`
+	Received bool `json:"received"`
+	Length   int  `json:"events"`
 }
 
 type Event struct {
@@ -38,32 +41,77 @@ type Health struct {
 }
 
 // NewEventsService returns a simple implementation of the Service interface
-func NewEventsService(logger log.Logger) Service {
-	return &service{}
+func NewEventsService(
+	ctx context.Context,
+	client streaming.StreamClient,
+	streamID string,
+	logger log.Logger) Service {
+
+	return &service{
+		ctx:      ctx,
+		client:   client,
+		streamID: streamID,
+		logger:   logger,
+	}
 }
 
 type service struct {
+	ctx      context.Context
+	client   streaming.StreamClient
+	streamID string
+	logger   log.Logger
 }
 
 func (s *service) EventsReceiver(source string, track string, events []Event) (EventsReceived, error) {
-	// if amount == 0 {
-	// 	return Authorisation{}, ErrInvalidPaymentAmount
-	// }
-	// if amount < 0 {
-	// 	return Authorisation{}, ErrInvalidPaymentAmount
-	// }
+
+	numEvents := len(events)
+	s.logger.Log(
+		"source", source,
+		"track", track,
+		"length", numEvents,
+	)
+
+	var err error
 	received := false
-	message := "Events failed"
-	// if amount <= s.declineOverAmount {
-	// 	authorised = true
-	// 	message = "Events accepted"
-	// } else {
-	// 	message = fmt.Sprintf("Payment declined: amount exceeds %.2f", s.declineOverAmount)
-	// }
+
+	if numEvents > 0 {
+
+		// construct messages
+		var messages []streaming.PutMessagesDetailsEntry
+
+		for _, evt := range events {
+			msg := EventRecord{
+				Source: source,
+				Track:  track,
+			}
+			msg.Type = evt.Type
+			msg.Detail = evt.Detail
+
+			data, _ := json.Marshal(msg)
+			// append value
+			messages = append(messages, streaming.PutMessagesDetailsEntry{
+				Key:   nil,
+				Value: data,
+			})
+		}
+
+		// construct request
+		messagesRequest := streaming.PutMessagesRequest{
+			StreamId: &s.streamID,
+			PutMessagesDetails: streaming.PutMessagesDetails{
+				Messages: messages,
+			},
+		}
+		// make request
+		_, err = s.client.PutMessages(s.ctx, messagesRequest)
+		if err == nil {
+			received = true
+		}
+	}
 	return EventsReceived{
 		Received: received,
-		Message:  message,
-	}, nil
+		Length:   numEvents,
+	}, err
 }
 
 func (s *service) Health() []Health {
@@ -72,5 +120,3 @@ func (s *service) Health() []Health {
 	health = append(health, app)
 	return health
 }
-
-var ErrInvalidEvent = errors.New("Invalid event")

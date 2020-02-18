@@ -26,6 +26,7 @@ func (mw loggingMiddleware) EventsReceiver(source string, track string, events [
 		mw.logger.Log(
 			"method", "EventsReceiver",
 			"result", received.Received,
+			"source", source,
 			"length", len(events),
 			"took", time.Since(begin),
 		)

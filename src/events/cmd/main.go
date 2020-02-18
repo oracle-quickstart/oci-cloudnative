@@ -26,7 +26,6 @@ func main() {
 	var (
 		port = flag.String("port", "8080", "Port to bind HTTP listener")
 		zipk = flag.String("zipkin", os.Getenv("ZIPKIN"), "Zipkin address")
-		// declineAmount = flag.Float64("decline", 105, "Decline payments over certain amount")
 	)
 	flag.Parse()
 	var tracer stdopentracing.Tracer
@@ -76,8 +75,13 @@ func main() {
 	errc := make(chan error)
 	ctx := context.Background()
 
-	// wire services
-	handler, logger := events.WireUp(ctx, tracer, ServiceName)
+	// connect service
+	provider, err := events.EnvironmentConfigurationProvider()
+	handler, logger := events.WireUp(ctx, tracer, provider, ServiceName)
+	if err != nil {
+		logger.Log("error", err)
+		os.Exit(1)
+	}
 
 	// Create and launch the HTTP server.
 	go func() {

@@ -75,7 +75,7 @@ func decodeEventsRequest(_ context.Context, r *http.Request) (interface{}, error
 	// If source no present, error
 	if request.Source == "" {
 		return nil, &UnmarshalKeyError{
-			Key:  "amount",
+			Key:  "source",
 			JSON: bodyString,
 		}
 	}
