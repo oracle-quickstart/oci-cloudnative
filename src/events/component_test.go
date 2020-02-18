@@ -15,14 +15,17 @@ import (
 func TestComponent(t *testing.T) {
 
 	ctx := context.Background()
+	provider, _ := EnvironmentConfigurationProvider()
 
-	handler, logger := WireUp(ctx, opentracing.GlobalTracer(), "test")
+	handler, logger := WireUp(ctx, opentracing.GlobalTracer(), provider, "test")
 
 	ts := httptest.NewServer(handler)
 	defer ts.Close()
 
-	var request EventsRequest
-	request.Amount = 9.99
+	request := EventsRequest{
+		Source: "test",
+		Track:  "xyx",
+	}
 	requestBytes, err := json.Marshal(request)
 	if err != nil {
 		t.Fatal("ERROR", err)
