@@ -66,7 +66,7 @@
    * Inject tracing headers into outgoing requests
    */
   helpers.tracingMiddleware = function (req, res, next) {
-    axios.defaults.headers.common = this.getTracingHeaders(req);
+    axios.defaults.headers.common = helpers.getTracingHeaders(req);
     next();
   };
 
