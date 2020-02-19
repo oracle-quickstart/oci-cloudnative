@@ -26,7 +26,9 @@ jobs:
               # we need to strip the "VERSION" from that to get the folder only
               folder=${versionFilePath%"/VERSION"}
 
-              IMAGE_NAME=$(cut -d "=" -f 2 <<< "$folder")
+              # Get the folder name and prefix it with "mushop"
+              # E.g. "mushop-api", "mushop-fulfillment"
+              IMAGE_NAME="mushop-$(cut -d "/" -f 2 <<< "$folder")"
 
               tmpTag="image-$RANDOM"
               docker build $folder --file $folder/Dockerfile --tag $tmpTag
