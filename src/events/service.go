@@ -28,6 +28,7 @@ type EventsReceived struct {
 }
 
 type Event struct {
+	Time   string      `json:"time"`
 	Type   string      `json:"type"`
 	Detail interface{} `json:"detail"`
 }
@@ -88,15 +89,18 @@ func (s *service) EventsReceiver(source string, track string, events []Event) (E
 				Source: source,
 				Track:  track,
 			}
+			msg.Time = evt.Time
 			msg.Type = evt.Type
 			msg.Detail = evt.Detail
 
-			data, _ := json.Marshal(msg)
-			// append value
-			messages = append(messages, streaming.PutMessagesDetailsEntry{
-				Key:   nil,
-				Value: data,
-			})
+			data, e := json.Marshal(msg)
+			if e == nil {
+				// append value
+				messages = append(messages, streaming.PutMessagesDetailsEntry{
+					Key:   nil,
+					Value: data,
+				})
+			}
 		}
 
 		// construct request
