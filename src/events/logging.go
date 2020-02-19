@@ -25,7 +25,7 @@ type loggingMiddleware struct {
 	logger log.Logger
 }
 
-func (mw loggingMiddleware) EventsReceiver(source string, track string, events []Event) (received EventsReceived, err error) {
+func (mw loggingMiddleware) PostEvents(source string, track string, events []Event) (received EventsReceived, err error) {
 	defer func(begin time.Time) {
 		mw.logger.Log(
 			"method", "EventsReceiver",
@@ -35,7 +35,7 @@ func (mw loggingMiddleware) EventsReceiver(source string, track string, events [
 			"took", time.Since(begin),
 		)
 	}(time.Now())
-	return mw.next.EventsReceiver(source, track, events)
+	return mw.next.PostEvents(source, track, events)
 }
 
 func (mw loggingMiddleware) Health() (health []Health) {

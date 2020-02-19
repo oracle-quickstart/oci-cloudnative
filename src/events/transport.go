@@ -23,7 +23,7 @@ import (
 )
 
 // Mounts the endpoints into a REST HTTP handler.
-func MakeHTTPHandler(ctx context.Context, e Endpoints, logger log.Logger, tracer stdopentracing.Tracer) *mux.Router {
+func MakeHTTPHandler(ctx context.Context, endpoints Endpoints, logger log.Logger, tracer stdopentracing.Tracer) *mux.Router {
 	r := mux.NewRouter().StrictSlash(false)
 	options := []httptransport.ServerOption{
 		httptransport.ServerErrorLogger(logger),
@@ -31,13 +31,13 @@ func MakeHTTPHandler(ctx context.Context, e Endpoints, logger log.Logger, tracer
 	}
 
 	r.Methods("POST").Path("/events").Handler(httptransport.NewServer(
-		circuitbreaker.HandyBreaker(breaker.NewBreaker(0.2))(e.EventsEndpoint),
+		circuitbreaker.HandyBreaker(breaker.NewBreaker(0.2))(endpoints.Events),
 		decodeEventsRequest,
 		encodeEventsResponse,
 		append(options, httptransport.ServerBefore(opentracing.ContextToHTTP(tracer, logger)))...,
 	))
 	r.Methods("GET").Path("/health").Handler(httptransport.NewServer(
-		circuitbreaker.HandyBreaker(breaker.NewBreaker(0.2))(e.HealthEndpoint),
+		circuitbreaker.HandyBreaker(breaker.NewBreaker(0.2))(endpoints.Health),
 		decodeHealthRequest,
 		encodeHealthResponse,
 		append(options, httptransport.ServerBefore(opentracing.ContextToHTTP(tracer, logger)))...,

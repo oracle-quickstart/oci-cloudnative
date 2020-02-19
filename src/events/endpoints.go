@@ -13,16 +13,16 @@ import (
 
 // Endpoints collects the endpoints that comprise the Service.
 type Endpoints struct {
-	EventsEndpoint endpoint.Endpoint
-	HealthEndpoint endpoint.Endpoint
+	Events endpoint.Endpoint
+	Health endpoint.Endpoint
 }
 
 // MakeEndpoints returns an Endpoints structure, where each endpoint is
 // backed by the given service.
 func MakeEndpoints(s Service, tracer stdopentracing.Tracer) Endpoints {
 	return Endpoints{
-		EventsEndpoint: opentracing.TraceServer(tracer, "POST /events")(MakeEventsEndpoint(s)),
-		HealthEndpoint: opentracing.TraceServer(tracer, "GET /health")(MakeHealthEndpoint(s)),
+		Events: opentracing.TraceServer(tracer, "POST /events")(MakeEventsEndpoint(s)),
+		Health: opentracing.TraceServer(tracer, "GET /health")(MakeHealthEndpoint(s)),
 	}
 }
 
@@ -34,7 +34,7 @@ func MakeEventsEndpoint(s Service) endpoint.Endpoint {
 		span.SetTag("service", "events")
 		defer span.Finish()
 		req := request.(EventsRequest)
-		received, err := s.EventsReceiver(req.Source, req.Track, req.Events)
+		received, err := s.PostEvents(req.Source, req.Track, req.Events)
 		return EventsResponse{EventsReceived: received, Err: err}, nil
 	}
 }

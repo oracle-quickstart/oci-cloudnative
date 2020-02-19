@@ -18,8 +18,8 @@ import (
 type Middleware func(Service) Service
 
 type Service interface {
-	EventsReceiver(source string, track string, events []Event) (EventsReceived, error) // POST /events
-	Health() []Health                                                                   // GET /health
+	PostEvents(source string, track string, events []Event) (EventsReceived, error) // POST /events
+	Health() []Health                                                               // GET /health
 }
 
 type EventsReceived struct {
@@ -67,7 +67,7 @@ type service struct {
 	logger   log.Logger
 }
 
-func (s *service) EventsReceiver(source string, track string, events []Event) (EventsReceived, error) {
+func (s *service) PostEvents(source string, track string, events []Event) (EventsReceived, error) {
 
 	numEvents := len(events)
 	s.logger.Log(
