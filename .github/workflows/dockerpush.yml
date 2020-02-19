@@ -1,0 +1,42 @@
+name: Build and push Docker images
+
+on:
+  push:
+    paths:
+      # Match any VERSION file under /src folder
+      - 'src/**/VERSION'
+env:
+  DOCKER_REGISTRY_URL: iad.ocir.io
+  REPOSITORY: oracle/mushop
+jobs:
+  push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+            fetch-depth: 0
+      - name: Log into registry
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login $DOCKER_REGISTRY_URL -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+      - name: Build and push the images
+        run: |
+            for versionFilePath in $(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep "VERSION");
+            do
+              # versionFilePath contains the full path to the VERSION file (e.g. src/api/VERSION)
+              # we need to strip the "VERSION" from that to get the folder only
+              folder=${versionFilePath%"/VERSION"}
+
+              IMAGE_NAME=$(cut -d "=" -f 2 <<< "$folder")
+
+              tmpTag="image-$RANDOM"
+              docker build $folder --file $folder/Dockerfile --tag $tmpTag
+
+              IMAGE_ID=$DOCKER_REGISTRY_URL/$REPOSITORY/$IMAGE_NAME
+              VERSION=$(cat $versionFilePath)
+
+              echo IMAGE_ID=$IMAGE_ID
+              echo VERSION=$VERSION
+
+              docker tag $tmpTag $IMAGE_ID:$VERSION
+              docker push $IMAGE_ID:$VERSION
+            done;
