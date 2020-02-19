@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "nats.fullname" . }}
+  annotations:
+    prometheus.io/path: "/prometheus"
+  labels:
+{{ include "nats.labels" . | indent 4 }}
+spec:
+  selector:
+    app.kubernetes.io/name: {{ include "nats.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    run: {{ include "nats.name" .}}
+  ports:
+    - name: client
+      port: {{ .Values.service.port.client }}
+      protocol: TCP
+      targetPort: 4222
+    - name: routes
+      port: {{ .Values.service.port.routes }}
+      protocol: TCP
+      targetPort: 6222
+    - name: monitoring
+      port: {{ .Values.service.port.monitoring }}
+      protocol: TCP
+      targetPort: 8222

@@ -1,29 +1,27 @@
-package mushop.orders.controllers;
+/**
+ ** Copyright © 2020, Oracle and/or its affiliates. All rights reserved.
+ ** Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
+ **/
+package  mushop.orders.controllers;
 
+import mushop.orders.config.OrdersConfigurationProperties;
+import mushop.orders.entities.*;
+import mushop.orders.repositories.CustomerOrderRepository;
+import mushop.orders.resources.NewOrderResource;
+import mushop.orders.services.AsyncGetService;
+import mushop.orders.services.MessagingService;
+import mushop.orders.values.OrderUpdate;
+import mushop.orders.values.PaymentRequest;
+import mushop.orders.values.PaymentResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.mvc.TypeReferences;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import mushop.orders.config.OrdersConfigurationProperties;
-import mushop.orders.entities.Address;
-import mushop.orders.entities.Card;
-import mushop.orders.entities.Customer;
-import mushop.orders.entities.CustomerOrder;
-import mushop.orders.entities.Item;
-import mushop.orders.entities.Shipment;
-import mushop.orders.repositories.CustomerOrderRepository;
-import mushop.orders.resources.NewOrderResource;
-import mushop.orders.services.AsyncGetService;
-import mushop.orders.values.PaymentRequest;
-import mushop.orders.values.PaymentResponse;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -32,8 +30,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 @RepositoryRestController
@@ -47,6 +43,9 @@ public class OrdersController {
     private AsyncGetService asyncGetService;
 
     @Autowired
+    private MessagingService messagingService;
+
+    @Autowired
     private CustomerOrderRepository customerOrderRepository;
 
     @Value(value = "${http.timeout:5}")
@@ -58,12 +57,10 @@ public class OrdersController {
     @ResponseBody
     CustomerOrder newOrder(@RequestBody NewOrderResource item) {
         try {
-
             if (item.address == null || item.customer == null || item.card == null || item.items == null) {
                 throw new InvalidOrderException("Invalid order request. Order requires customer, address, card and items.");
             }
-
-
+            LOG.info("Creating order {}", item);
             LOG.debug("Starting calls");
             Future<Address> addressFuture = asyncGetService.getObject(item.address, new ParameterizedTypeReference<Address>() {
             });
@@ -73,12 +70,10 @@ public class OrdersController {
             });
             Future<List<Item>> itemsFuture = asyncGetService.getDataList(item.items, new
                     ParameterizedTypeReference<List<Item>>() {
-            });
-//            Future<Customer> custFut = asyncGetService.getCustomer(item.customer);
-//            Customer cust = custFut.get(timeout, TimeUnit.SECONDS);
-//            LOG.debug("Customer : "+cust);
+                    });
             LOG.debug("End of calls.");
 
+            //Calculate total
             float amount = calculateTotal(itemsFuture.get(timeout, TimeUnit.SECONDS));
 
             // Call payment service to make sure they've paid
@@ -102,26 +97,22 @@ public class OrdersController {
                 throw new PaymentDeclinedException(paymentResponse.getMessage());
             }
 
-            // Ship
-            String customerId = parseId(customerFuture.get(timeout, TimeUnit.SECONDS).getId());
-            Future<Shipment> shipmentFuture = asyncGetService.postResource(config.getShippingUri(), new Shipment
-                    (customerId), new ParameterizedTypeReference<Shipment>() {
-            });
-
+            //Persist
             CustomerOrder order = new CustomerOrder(
                     null,
                     customerFuture.get(timeout, TimeUnit.SECONDS),
                     addressFuture.get(timeout, TimeUnit.SECONDS),
                     cardFuture.get(timeout, TimeUnit.SECONDS),
                     itemsFuture.get(timeout, TimeUnit.SECONDS),
-                    shipmentFuture.get(timeout, TimeUnit.SECONDS),
+                    null,
                     Calendar.getInstance().getTime(),
                     amount);
             LOG.debug("Received data: " + order.toString());
 
             CustomerOrder savedOrder = customerOrderRepository.save(order);
             LOG.debug("Saved order: " + savedOrder);
-
+            OrderUpdate update = new OrderUpdate(savedOrder.getId(), null);
+            messagingService.dispatchToFulfillment(update);
             return savedOrder;
         } catch (TimeoutException e) {
             throw new IllegalStateException("Unable to create order due to timeout from one of the services.", e);
@@ -130,14 +121,6 @@ public class OrdersController {
         }
     }
 
-    private String parseId(String href) {
-        Pattern idPattern = Pattern.compile("[\\w-]+$");
-        Matcher matcher = idPattern.matcher(href);
-        if (!matcher.find()) {
-            throw new IllegalStateException("Could not parse user ID from: " + href);
-        }
-        return matcher.group(0);
-    }
 
 //    TODO: Add link to shipping
 //    @RequestMapping(method = RequestMethod.GET, value = "/orders")

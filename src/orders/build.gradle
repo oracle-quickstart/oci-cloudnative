@@ -34,6 +34,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
+	implementation 'io.nats:jnats:2.6.6'
 
 	runtimeOnly 'com.oracle.ojdbc:ojdbc8:19.3.0.0'
 	

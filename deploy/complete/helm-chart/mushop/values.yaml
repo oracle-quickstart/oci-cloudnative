@@ -43,13 +43,13 @@ payment:
 session:
   enabled: true
 
-shipping:
-  enabled: true
-
 storefront:
   enabled: true
 
-stream:
+fulfillment:
+  enabled: true
+
+nats:
   enabled: true
 
 user:

@@ -1,0 +1,18 @@
+replicaCount: 1
+
+image:
+  repository: iad.ocir.io/oracle/ateam/mushop-fulfillment
+  tag: 1.0.0
+  pullPolicy: IfNotPresent
+
+osb: {}
+
+env:
+  natsHost: "nats"
+  natsPort: 4222
+  newOrdersSubject: mushop-orders
+  shippedOrdersSubject: mushop-shipments
+  simulationDelay: 10000
+
+service:
+  port: 80

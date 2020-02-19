@@ -18,6 +18,7 @@ bin/
 **/.project
 **/.classpath
 installs/
+**/.idea/**
 
 # Log file
 *.log

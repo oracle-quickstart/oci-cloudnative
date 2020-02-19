@@ -1,11 +1,12 @@
-package mushop.orders.services;
+/**
+ ** Copyright © 2020, Oracle and/or its affiliates. All rights reserved.
+ ** Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
+ **/
+package  mushop.orders.services;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import mushop.orders.config.RestProxyTemplate;
-import mushop.orders.entities.Customer;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
