@@ -2,14 +2,29 @@
  * Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
  * The Universal Permissive License (UPL), Version 1.0
  */
-(function (){
+(function () {
   'use strict';
 
   const axios = require('axios');
-  const ulid = require("ulid");
+  const ulid = require('ulid');
   const helpers = {};
 
-  const [ COOKIE_NAME, COOKIE_TTL ] = [ 'logged_in', 3.6e6 ];
+  const [COOKIE_NAME, COOKIE_TTL] = ['logged_in', 3.6e6];
+
+  const traceHeaders = [
+    // Tracing headers
+    'x-request-id',
+    'x-b3-traceid',
+    'x-b3-spanid',
+    'x-b3-parentspanid',
+    'x-b3-sampled',
+    'x-b3-flags',
+    'x-ot-span-context',
+
+    // Additional headers to pass: can be used for traffic routing later
+    'x-user',
+    'user-agent',
+  ];
 
   /* Public: errorHandler is a middleware that handles your errors
    *
@@ -18,12 +33,12 @@
    * var app = express();
    * app.use(helpers.errorHandler);
    * */
-  helpers.errorHandler = function(err, req, res, next) {
+  helpers.errorHandler = function (err, req, res, next) {
     const { response } = err;
     const status = (response && response.status) || err.status || 500;
     const ret = {
       message: response ? response.statusText : err.message,
-      error:   err.toString(),
+      error: err.toString(),
     };
     res.status(status).json(ret);
   };
@@ -31,7 +46,7 @@
   /**
    * Error with status code
    */
-  helpers.createError = function(err, status) {
+  helpers.createError = function (err, status) {
     const e = err instanceof Error ? err : new Error(err);
     e.status = status;
     return e;
@@ -40,15 +55,23 @@
   /**
    * handle session logic
    */
-  helpers.sessionMiddleware = function(req, res, next) {
+  helpers.sessionMiddleware = function (req, res, next) {
     if (!helpers.isLoggedIn(req)) {
       req.session.customerId = null;
     }
     next();
   };
 
+  /**
+   * Inject tracing headers into outgoing requests
+   */
+  helpers.tracingMiddleware = function (req, res, next) {
+    axios.defaults.headers.common = this.getTracingHeaders(req);
+    next();
+  };
+
   /* Responds with the given body and status 200 OK  */
-  helpers.respondSuccessBody = function(res, body) {
+  helpers.respondSuccessBody = function (res, body) {
     helpers.respondStatusBody(res, 200, body);
   };
 
@@ -58,21 +81,20 @@
    * statusCode - the HTTP status code to set to the response
    * body       - (string) the body to yield to the response
    */
-  helpers.respondStatusBody = function(res, statusCode, body) {
+  helpers.respondStatusBody = function (res, statusCode, body) {
     res.status(statusCode).send(body);
   };
 
   /* Responds with the given statusCode */
-  helpers.respondStatus = function(res, statusCode) {
+  helpers.respondStatus = function (res, statusCode) {
     res.status(statusCode).send();
   };
 
   /* Rewrites and redirects any url that doesn't end with a slash. */
-  helpers.rewriteSlash = function(req, res, next) {
-   if(req.url.substr(-1) == '/' && req.url.length > 1)
-       res.redirect(301, req.url.slice(0, -1));
-   else
-       next();
+  helpers.rewriteSlash = function (req, res, next) {
+    if (req.url.substr(-1) == '/' && req.url.length > 1)
+      res.redirect(301, req.url.slice(0, -1));
+    else next();
   };
 
   /* Public: performs an HTTP GET request to the given URL
@@ -91,9 +113,10 @@
    *   });
    * });
    */
-  helpers.simpleHttpRequest = function(url, res, next) {
-    return axios.get(url)
-      .then(({status, data}) => res.status(status).json(data))
+  helpers.simpleHttpRequest = function (url, res, next) {
+    return axios
+      .get(url)
+      .then(({ status, data }) => res.status(status).json(data))
       .catch(next);
   };
 
@@ -101,7 +124,7 @@
    * Get unique cart identifier for the session
    * @param {object} req - express request
    */
-  helpers.getCartId = function(req) {
+  helpers.getCartId = function (req) {
     var cartId = req.session.cartId || ulid.ulid();
     req.session.cartId = cartId;
     return cartId;
@@ -110,12 +133,12 @@
   /**
    * Check for authenticated user
    */
-  helpers.isLoggedIn = function(req) {
+  helpers.isLoggedIn = function (req) {
     const { [COOKIE_NAME]: logged_in } = req.cookies;
     return !!logged_in;
   };
 
-  helpers.setAuthenticated = function(req, res, userId) {
+  helpers.setAuthenticated = function (req, res, userId) {
     if (userId) {
       const sessionId = req.session.id;
       req.session.customerId = userId;
@@ -130,13 +153,13 @@
   };
 
   /* TODO: Add documentation */
-  helpers.getCustomerId = function(req) {
+  helpers.getCustomerId = function (req) {
     // Check if logged in. Get customer Id
     const { id, customerId } = req.session;
 
     if (!helpers.isLoggedIn(req)) {
       if (!id) {
-        throw new Error("User not logged in.");
+        throw new Error('User not logged in.');
       }
       // Use Session ID instead
       return id;
@@ -144,5 +167,18 @@
 
     return customerId;
   };
+
+  /* Get tracing context headers from the request */
+  helpers.getTracingHeaders = function (req) {
+    var headers = {};
+    for (var i = 0; i < traceHeaders.length; i++) {
+      const traceHeader = traceHeaders[i];
+      const value = req.get(traceHeader);
+      if (value) {
+        headers[traceHeader] = value;
+      }
+    }
+    return headers;
+  };
   module.exports = helpers;
-}());
+})();
