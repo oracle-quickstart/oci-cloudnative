@@ -19,3 +19,7 @@ OCI Cloud resources are being provisioned, and should become available soon:
 Once they show STATUS:Ready, their respective service binding(s) will begin:
 
   kubectl get servicebindings --namespace {{.Release.Namespace}} --watch
+
+## Uninstalling the Chart:
+
+  helm delete {{.Release.Name}} --namespace {{.Release.Namespace}}

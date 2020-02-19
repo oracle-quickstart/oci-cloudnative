@@ -8,7 +8,7 @@ global:
 
 api:
   env:
-    mediaUrl:                 # URL for catalog image assets
+    mediaUrl:                 # URL for catalog image assets (https://objectstorage.[REGION].oraclecloud.com/n/[NAMESPACE]/b/[BUCKET_NAME]/o/)
     newsletterSubscribeUrl:   # Newsletter subscription endpoint (https://[API_GATEWAY_URL]/newsletter/subscribe)
 
 carts:
