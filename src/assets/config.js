@@ -1,3 +1,7 @@
+/**
+ * Copyright © 2020, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
 require('dotenv').config();
 
 const { BUCKET_PAR, REGION } = process.env;
@@ -19,6 +23,7 @@ function getBucketUrl() {
 }
 
 module.exports = {
+  env: process.env,
   dist: 'dist',
   rawParUrl: BUCKET_PAR,
   parUrl: getParUrl(),

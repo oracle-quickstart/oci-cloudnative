@@ -44,7 +44,7 @@ describe('Carts', () => {
     mock.service()
       .get(`/catalogue/${item.id}`)
       .reply(200, {id: item.id, price: 100})
-      .post(`/carts/${cart}/items`)
+      .post(`/carts/${cart}`)
       .reply(201);
 
     mock.app()

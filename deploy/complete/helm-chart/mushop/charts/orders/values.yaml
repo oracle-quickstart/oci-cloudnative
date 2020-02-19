@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: iad.ocir.io/oracle/ateam/mushop-orders
-  tag: 1.1.0
+  tag: 2.0.0
   pullPolicy: IfNotPresent
 
 dbtools:
@@ -20,7 +20,11 @@ secrets:
 
 env:
   zipkin: zipkin.jaeger.svc.cluster.local
-  javaOpts: -Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+  javaOpts: -Xms32m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=INFO  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
   tnsAdmin: "/app/config"
+  natsHost: "nats"
+  natsPort: 4222
+  newOrdersSubject: mushop-orders
+  shippedOrdersSubject: mushop-shipments
 service:
   port: 80

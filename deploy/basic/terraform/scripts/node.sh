@@ -76,11 +76,6 @@ chmod +x /root/entrypoint.sh
 
 # Install node services
 cd /app/api && npm ci --production
-cd /app/assets && npm ci --production
-
-# Deploy assets
-export BUCKET_PAR=$${ASSETS_PAR}
-cd /app/assets && node deploy.js
 
 # Setup app variables
 export OADB_USER=catalogue_user

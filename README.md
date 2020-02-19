@@ -27,14 +27,14 @@ The repository contains the application code as well as the [Terraform][tf] code
 
 The steps below guide you through deploying the application on your tenancy using the OCI Resource Manager.
 
-1. Download the latest [`mushop-basic-stack-v1.0.3.zip`](../../releases/download/v1.0.3/mushop-basic-stack-v1.0.3.zip) file.
+1. Download the latest [`mushop-basic-stack-v1.1.0.zip`](../../releases/download/v1.1.0/mushop-basic-stack-v1.1.0.zip) file.
 2. [Login](https://console.us-ashburn-1.oraclecloud.com/resourcemanager/stacks/create) to Oracle Cloud Infrastructure to import the stack
     > `Home > Solutions & Platform > Resource Manager > Stacks > Create Stack`
-3. Upload the `mushop-basic-stack-v1.0.3.zip` file that was downloaded earlier, and provide a name and description for the stack
+3. Upload the `mushop-basic-stack-v1.1.0.zip` file that was downloaded earlier, and provide a name and description for the stack
 4. Configure the stack
    1. **Database Name** - You can choose to provide a database name (optional)
    2. **Node Count** - Select if you want to deploy one or two application instances.
-   3. **Availability Domain**  - Select any availability domain to create the resources. If you run in to service limits, you could try another availability domain.
+   3. **SSH Public Key** - (Optional) Provide a public SSH key if you wish to establish SSH access to the compute node(s).
 5. Review the information and click Create button.
    > The upload can take a few seconds, after which you will be taken to the newly created stack
 6. On Stack details page, click on `Terraform Actions > Apply`
@@ -55,6 +55,23 @@ lb_public_url = http://xxx.xxx.xxx.xxx
 ```
 
 > The application is being deployed to the compute instances asynchronously, and it may take a couple of minutes for the URL to serve the application.
+
+### Cleanup
+
+Even though it is Always Free, you will likely want to terminate the demo application
+in your Oracle Cloud Infrastructure tenancy. With the use of Terraform, the [Resource Manager][orm]
+stack is also responsible for terminating the application.
+
+Follow these steps to completely remove all provisioned resources:
+
+1. Return to the Oracle Cloud Infrastructure [Console](https://console.us-ashburn-1.oraclecloud.com/resourcemanager/stacks)
+  > `Home > Solutions & Platform > Resource Manager > Stacks`
+1. Select the stack created previously to open the Stack Details view
+1. From the Stack Details, select `Terraform Actions > Destroy`
+1. Confirm the **Destroy** job when prompted
+  > The job status will be **In Progress** while resources are terminated
+1. Once the destroy job has succeeded, return to the Stack Details page
+1. Click `Delete Stack` and confirm when prompted
 
 #### Topology
 

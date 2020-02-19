@@ -172,9 +172,11 @@ Follow the steps outlined below to provision and configure the cluster with clou
       --namespace mushop \
       --from-literal=region=<BUCKET_REGION> \
       --from-literal=name=<BUCKET_NAME> \
-      --from-literal=namespace=<TENANCY_NAME> \
+      --from-literal=namespace=<OBJECT_STORAGE_NAMESPACE> \
       --from-literal=parUrl=<PRE_AUTHENTICATED_REQUEST_URL>
     ```
+
+    > **Object Storage Namespace** may be found with the CLI `oci os ns get` or from the [tenancy information page](https://console.us-ashburn-1.oraclecloud.com/a/tenancy)
 
 1. Verify the secrets are created and available in the `mushop` namespace:
 
@@ -188,6 +190,7 @@ Follow the steps outlined below to provision and configure the cluster with clou
     oadb-connection   Opaque    2      3m
     oadb-wallet       Opaque    7      3m
     oci-credentials   Opaque    6      3m
+    oos-bucket        Opaque    4      3m
     oss-connection    Opaque    4      3m
     ```
 
@@ -253,18 +256,20 @@ secret to the `mushop-utilities` namespace:
     helm install provision \
       --namespace mushop \
       --name mushop-provision \
-      --set global.osb.compartmentId=<compartmentId>
+      --set global.osb.compartmentId=<COMPARTMENT_ID> \
+      --set global.osb.objectstoragenamespace=<OBJECT_STORAGE_NAMESPACE>
     ```
 
     ```shell--helm3
     helm install mushop-provision provision \
       --namespace mushop \
-      --set global.osb.compartmentId=<compartmentId>
+      --set global.osb.compartmentId=<COMPARTMENT_ID> \
+      --set global.osb.objectstoragenamespace=<OBJECT_STORAGE_NAMESPACE>
     ```
 
-    > Note that the `oci-credentials` secret was created [previously](#provisioning)
+    > **Object Storage Namespace** may be found with the CLI `oci os ns get` or from the [tenancy information page](https://console.us-ashburn-1.oraclecloud.com/a/tenancy)
 
-1. It will take a few minutes for the ATP database to provision, and the Wallet binding to become available. Verify `serviceinstances` and `servicebindings` are **READY**:
+1. It will take a few minutes for the services database to provision, and the respective bindings to become available. Verify `serviceinstances` and `servicebindings` are **READY**:
 
     ```text
     kubectl get serviceinstances -A
@@ -274,9 +279,20 @@ secret to the `mushop-utilities` namespace:
     kubectl get servicebindings -A
     ```
 
+1. A Stream instance will be provisioned by default. One last manual step is required in order to configure the a connection to this service. Create an `oss-connection` secret containing the Stream connection details:
+
+    ```shell
+    kubectl create secret generic oss-connection \
+      --namespace mushop \
+      --from-literal=compartmentId='<COMPARTMENT_OCID>' \
+      --from-literal=region='<REGION_NAME>' \
+      --from-literal=streamId='<STREAM_OCID>' \
+      --from-literal=streamName='<STREAM_NAME>'
+    ```
+
 ## API Gateway, OCI Functions and Email Delivery
 
-Note that this is optional. If you don't want to configure Email Delivery and deploy an API Gateway and the function, skip to the [Deployment](#deployment) section. 
+Note that this is optional. If you don't want to configure Email Delivery and deploy an API Gateway and the function, skip to the [Deployment](#deployment) section.
 
 ### Configure Email Delivery
 
@@ -376,7 +392,7 @@ The quickest way to create a gateway is through the OCI console:
 When deployment completes, navigate to it to get the URL for the gateway. Click the **Show** link next to the **Endpoint** label to reveal the full URL for the deployment. It should look like this:
 
 ```text
-https://aaaaaaaaa.apigateway.us-ashburn-1.oci.customer-oci.com/newsletter
+https://aaaaaaaaa.apigateway.us-ashburn-1.oci.customer-oci.com/newsletter/subscribe
 ```
 
 You will use this URL in `values-dev.yaml` when creating the deployment. 

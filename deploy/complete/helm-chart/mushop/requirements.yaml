@@ -6,32 +6,37 @@ dependencies:
     version: 0.1.0
     condition: assets.enabled
   - name: carts
-    version: 0.1.0	
-    condition: carts.enabled	
+    version: 0.1.0
+    tags:
+      - atp
   - name: catalogue	
-    version: 0.1.0	
-    condition: catalogue.enabled	
+    version: 0.1.0
+    tags:
+      - atp
   - name: edge	
     version: 0.1.0	
     condition: edge.enabled	
   - name: orders	
-    version: 0.1.0	
-    condition: orders.enabled	
+    version: 0.1.0
+    tags:
+      - atp
   - name: payment	
     version: 0.1.0	
     condition: payment.enabled	
   - name: session	
     version: 0.1.0	
     condition: session.enabled	
-  - name: shipping	
-    version: 0.1.0	
-    condition: shipping.enabled	
   - name: storefront	
     version: 0.1.0	
     condition: storefront.enabled	
-  - name: stream	
-    version: 0.1.0	
-    condition: stream.enabled	
   - name: user	
+    version: 0.1.0
+    tags:
+      - atp
+  - name: fulfillment	
     version: 0.1.0	
-    condition: user.enabled
+    condition: fulfillment.enabled	
+  - name: nats	
+    version: 0.1.0	
+    condition: nats.enabled
+    

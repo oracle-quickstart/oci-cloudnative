@@ -1,0 +1,14 @@
+micronaut:
+  application:
+    name: fulfillment
+  server:
+    port: 80
+
+mushop:
+  messaging:
+    host: ${nats.host:localhost}
+    port: ${nats.port:4222}
+    simulation-delay: ${simulation.delay:8000}
+    subjects:
+      orders: ${orders.new:mushop-orders}
+      shipments: ${orders.shipped:mushop-shipments}

@@ -1,3 +1,7 @@
+#
+# Copyright (c) 2020, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0
+#
 ###############################
 #    Build stage (node/npm)   #
 ###############################
@@ -34,9 +38,10 @@ RUN npm prune --production
 # Runtime container (node) #
 ############################
 FROM node:10-alpine
-WORKDIR /app
 
+WORKDIR /app
 COPY --from=builder /src/*js* /app/
+COPY --from=builder /src/lib /app/lib
 COPY --from=builder /src/dist /app/dist
 COPY --from=builder /src/node_modules /app/node_modules
 
