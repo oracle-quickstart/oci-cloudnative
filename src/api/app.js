@@ -13,6 +13,7 @@ var express = require("express")
   , cart = require("./api/cart")
   , catalogue = require("./api/catalogue")
   , config = require("./api/config")
+  , events = require("./api/events")
   , orders = require("./api/orders")
   , user = require("./api/user")
   , metrics = require("./api/metrics")
@@ -39,6 +40,7 @@ api.use(mock.layer());
 api.use(config);
 api.use(cart);
 api.use(catalogue);
+api.use(events);
 api.use(orders);
 api.use(user);
 api.use(newsletter);

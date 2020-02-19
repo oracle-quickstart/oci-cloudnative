@@ -9,77 +9,63 @@ services:
 
   # OCI Catalog service
   catalogue:
-    image: iad.ocir.io/oracle/ateam/mushop-catalogue:1.1
+    image: iad.ocir.io/oracle/ateam/mushop-catalogue:1.2
     hostname: catalogue
     restart: always
     environment:
       - reschedule=on-node-failure
-      - OADB_USER=catalogue_user
-      - OADB_PW=${CATALOGUE_OADB_PW}
-      - OADB_SERVICE=mcatalogue_tp
+      - OADB_SERVICE=mock
+
+  assets:
+    image: iad.ocir.io/oracle/ateam/mushop-assets:1.0.0
+    hostname: assets
+    restart: always
+    environment:
+      - reschedule=on-node-failure
 
   carts:
-    image: iad.ocir.io/oracle/ateam/mushop-carts:1.0.1
+    image: iad.ocir.io/oracle/ateam/mushop-carts:1.2.0
     hostname: carts
     restart: always
     environment:
       - reschedule:on-node-failure
-      - ATP_TRUST_PASS
-      - ATP_KEY_PASS
-      - OADB_USER=carts_user
-      - OADB_PW=${CARTS_OADB_PW}
-      - OADB_SERVICE=mcarts_tp
+      - OADB_SERVICE=mock
       - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
   
   orders:
-    image: iad.ocir.io/oracle/ateam/mushop-orders:1.0.1
+    image: iad.ocir.io/oracle/ateam/mushop-orders:1.1.0
     hostname: orders
     restart: always
     environment:
       - reschedule:on-node-failure
-      - ATP_TRUST_PASS
-      - ATP_KEY_PASS
-      - OADB_USER=orders_user
-      - OADB_PW=${ORDERS_OADB_PW}
-      - OADB_SERVICE=morders_tp
+      - OADB_SERVICE=mock
       - JAVA_OPTS=-Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
 
-  shipping:
-    image: iad.ocir.io/oracle/ateam/mushop-shipping:1.0.0
-    hostname: payment
-    restart: always
-    environment:
-      - reschedule:on-node-failure
-      - OCI_TENANT_ID
-      - OCI_COMPARTMENT_ID
-      - OCI_USER_ID
-      - OCI_REGION
-      - OCI_FINGERPRINT
-      - OCI_API_KEY
-
-  stream:
-    image: iad.ocir.io/oracle/ateam/mushop-stream:1.0.0
-    hostname: payment
-    restart: always
-    environment:
-      - reschedule:on-node-failure
-      - OCI_TENANT_ID
-      - OCI_COMPARTMENT_ID
-      - OCI_USER_ID
-      - OCI_REGION
-      - OCI_FINGERPRINT
-      - OCI_API_KEY
-
-  payment:
-    image: iad.ocir.io/oracle/ateam/mushop-payment:0.0.1
-    hostname: payment
-    restart: always
-    environment:
-      - reschedule:on-node-failure
-
   user:
-    image: iad.ocir.io/oracle/ateam/mushop-user:1.0.0
+    image: iad.ocir.io/oracle/ateam/mushop-user:1.1.0
     hostname: user
     restart: always
     environment:
       - reschedule:on-node-failure
+      - PORT=80
+      - OADB_USER=mock
+      - OADB_PW=mock
+      - OADB_SERVICE=mock
+
+  events:
+    image: mushop/events
+    hostname: events
+    restart: always
+    environment:
+      - reschedule:on-node-failure
+      # API signing params
+      - TENANCY
+      - USER_ID
+      - PRIVATE_KEY
+      - FINGERPRINT
+      - PASSPHRASE
+      # Endpoint resolution
+      - REGION
+      - STREAM_ID
+      - MESSAGES_ENDPOINT
+      

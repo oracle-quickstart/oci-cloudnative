@@ -12,6 +12,8 @@
     , helpers   = require("../../helpers")
     , app       = express.Router()
 
+  const tracker = common.getSvcTracker('orders');
+
   app.get("/orders", function (req, res, next) {
 
     if (!helpers.isLoggedIn(req)) {
@@ -69,8 +71,9 @@
         address: address,
         card: card,
       };
-      await axios.post(endpoints.ordersUrl + '/orders', order)
-        .then(({data, status}) => res.status(status).json(data));
+      const { data, status } = await axios.post(endpoints.ordersUrl + '/orders', order);
+      await tracker(req, 'create:order', data);
+      res.status(status).json(data);
 
     } catch (e) {
       next(e);

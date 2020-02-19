@@ -6,7 +6,8 @@
   'use strict';
 
   const axios = require('axios');
-  const ulid = require("ulid");
+  const ulid = require('ulid');
+  const endpoints = require('../api/endpoints');
   const helpers = {};
 
   const [ COOKIE_NAME, COOKIE_TTL ] = [ 'logged_in', 3.6e6 ];
@@ -144,5 +145,30 @@
 
     return customerId;
   };
+
+  /**
+   * get/create a tracking identifier for the session
+   */
+  helpers.getTrackingId = function(req) {
+    req.session.trackId = req.session.trackId || ulid.ulid();
+    return req.session.trackId;
+  };
+
+  /**
+   * event tracking function
+   */
+  helpers.trackEvents = async function (req, payload) {
+    const { eventsUrl } = endpoints;
+    if (!!eventsUrl) {
+      // tracking id
+      payload.track = payload.track || helpers.getTrackingId(req);
+      // ensure timestamp
+      (payload.events || [])
+        .forEach(evt => evt.time = evt.time || new Date().toISOString());
+      
+      return await axios.post(eventsUrl, payload);
+    }
+  };
+
   module.exports = helpers;
 }());

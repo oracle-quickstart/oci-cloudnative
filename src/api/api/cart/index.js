@@ -12,6 +12,8 @@
     , common = require("../common")
     , app       = express.Router()
 
+  const tracker = common.getSvcTracker('cart');
+
   // List items in cart for current logged in user.
   app.get("/cart", function (req, res, next) {
     const cartId = helpers.getCartId(req);
@@ -27,6 +29,7 @@
 
     axios.delete(endpoints.cartsUrl + "/" + cartId)
       .then(({ status }) => helpers.respondStatus(res, status))
+      .then(() => tracker(req, 'delete', {cart: cartId}))
       .catch(next);
   });
 
@@ -37,6 +40,7 @@
 
     axios.delete(endpoints.cartsUrl + "/" + cartId + "/items/" + id)
       .then(({ status }) => helpers.respondStatus(res, status))
+      .then(() => tracker(req, 'delete:item', {item: id}))
       .catch(next);
   });
 
@@ -60,10 +64,12 @@
           unitPrice: product.price,
         }]
       });
+
       // verify created
       if (status !== 201 && status != 200) {
         return next(helpers.createError("Unable to add to cart. Status code: " + status, status));
       }
+      await tracker(req, 'add:item', {item: item.id, price: product.price})
       helpers.respondStatus(res, status);
     } catch (e) {
       next(e);
@@ -97,6 +103,7 @@
       if (status !== 202) {
         return next(helpers.createError("Unable to update cart. Status code: " + status, status));
       }
+      await tracker(req, 'update:item', {item: item.id, quantity: item.quantity})
       helpers.respondStatus(res, status);
     } catch (e) {
       next(e);

@@ -14,6 +14,8 @@
       , helpers = require("../../helpers")
       , mock = require("../../helpers/mock");
 
+    const tracker = common.getSvcTracker('user');
+
     function profile(req, res) {
         common.getCustomer(req)
             .then(u => (u ? res.json(u) : Promise.reject('not authorized')))
@@ -71,6 +73,7 @@
     app.post("/address", function(req, res, next) {
         axios.post(resourceUri(req, 'addresses'), req.body)
             .then(({ status, data }) => res.status(status).json(data))
+            .then(() => tracker(req, 'create:address'))
             .catch(next);
     });
 
@@ -92,6 +95,7 @@
     app.post("/card", function(req, res, next) {
         axios.post(resourceUri(req, 'cards'), req.body)
             .then(({ status, data }) => res.status(status).json(data))
+            .then(() => tracker(req, 'create:card'))
             .catch(next);
     });
 
@@ -106,6 +110,7 @@
     app.delete("/addresses/:id", function(req, res, next) {
         axios.delete(resourceUri(req, 'addresses') + "/" + req.params.id)
             .then(({ status, data }) => res.status(status).json(data))
+            .then(() => tracker(req, 'delete:address'))
             .catch(next);
     });
 
@@ -113,6 +118,7 @@
     app.delete("/cards/:id", function(req, res, next) {
         axios.delete(resourceUri(req, 'cards') + "/" + req.params.id)
             .then(({ status, data }) => res.status(status).json(data))
+            .then(() => tracker(req, 'delete:card'))
             .catch(next);
     });
 
@@ -120,6 +126,7 @@
         try {
             const { status, data: user } = await axios.post(endpoints.registerUrl, req.body);
             await updateCart(req, user.id).catch(() => {/* noop */});
+            await tracker(req, 'register', { id: user.id });
             helpers.setAuthenticated(req, res, user.id)
                    .status(status)
                    .json({ id: user.id });
@@ -138,6 +145,7 @@
                 password,
             });
             await updateCart(req, user.id).catch(() => {/* noop */});
+            await tracker(req, 'login', { id: user.id });
             helpers.setAuthenticated(req, res, user.id)
                    .status(200)
                    .send('OK');
@@ -146,7 +154,8 @@
         }
     });
 
-    app.get('/logout', (req, res) => {
+    app.get('/logout', async (req, res) => {
+        await tracker(req, 'logout', { id: helpers.getCustomerId(req) });
         helpers.setAuthenticated(req, res, false)
             .send();
     });
