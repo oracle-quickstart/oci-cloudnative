@@ -29,7 +29,7 @@ func (mw loggingMiddleware) PostEvents(source string, track string, events []Eve
 	defer func(begin time.Time) {
 		mw.logger.Log(
 			"method", "EventsReceiver",
-			"result", received.Received,
+			"result", received.Success,
 			"source", source,
 			"length", len(events),
 			"took", time.Since(begin),

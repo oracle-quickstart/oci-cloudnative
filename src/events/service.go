@@ -6,6 +6,7 @@ package events
 
 import (
 	"encoding/json"
+	"errors"
 	"time"
 
 	"github.com/go-kit/kit/log"
@@ -23,8 +24,8 @@ type Service interface {
 }
 
 type EventsReceived struct {
-	Received bool `json:"received"`
-	Length   int  `json:"events"`
+	Success bool `json:"success"`
+	Length  int  `json:"events"`
 }
 
 type Event struct {
@@ -77,48 +78,54 @@ func (s *service) PostEvents(source string, track string, events []Event) (Event
 	)
 
 	var err error
-	received := false
+	success := false
 
-	if numEvents > 0 {
+	if numEvents == 0 {
+		err = errors.New("no events received")
+		return EventsReceived{
+			Success: success,
+			Length:  numEvents,
+		}, err
+	}
 
-		// construct messages
-		var messages []streaming.PutMessagesDetailsEntry
+	// construct messages
+	var messages []streaming.PutMessagesDetailsEntry
 
-		for _, evt := range events {
-			msg := EventRecord{
-				Source: source,
-				Track:  track,
-			}
-			msg.Time = evt.Time
-			msg.Type = evt.Type
-			msg.Detail = evt.Detail
-
-			data, e := json.Marshal(msg)
-			if e == nil {
-				// append value
-				messages = append(messages, streaming.PutMessagesDetailsEntry{
-					Key:   nil,
-					Value: data,
-				})
-			}
+	for _, evt := range events {
+		msg := EventRecord{
+			Source: source,
+			Track:  track,
 		}
+		msg.Time = evt.Time
+		msg.Type = evt.Type
+		msg.Detail = evt.Detail
 
-		// construct request
-		messagesRequest := streaming.PutMessagesRequest{
-			StreamId: &s.streamID,
-			PutMessagesDetails: streaming.PutMessagesDetails{
-				Messages: messages,
-			},
-		}
-		// make request
-		_, err = s.client.PutMessages(s.ctx, messagesRequest)
-		if err == nil {
-			received = true
+		data, e := json.Marshal(msg)
+		if e == nil {
+			// append value
+			messages = append(messages, streaming.PutMessagesDetailsEntry{
+				Key:   nil,
+				Value: data,
+			})
 		}
 	}
+
+	// construct request
+	messagesRequest := streaming.PutMessagesRequest{
+		StreamId: &s.streamID,
+		PutMessagesDetails: streaming.PutMessagesDetails{
+			Messages: messages,
+		},
+	}
+	// make request
+	_, err = s.client.PutMessages(s.ctx, messagesRequest)
+	if err == nil {
+		success = true
+	}
+
 	return EventsReceived{
-		Received: received,
-		Length:   numEvents,
+		Success: success,
+		Length:  numEvents,
 	}, err
 }
 

@@ -43,12 +43,12 @@ func TestComponent(t *testing.T) {
 	var response EventsReceived
 	json.Unmarshal(greeting, &response)
 
-	logger.Log("Received", response.Received)
+	logger.Log("Success", response.Success)
 
 	expected := true
-	if response.Received != expected {
+	if response.Success != expected {
 		t.Errorf("Events returned unexpected result: got %v expected %v",
-			response.Received, expected)
+			response.Success, expected)
 	}
 
 }
