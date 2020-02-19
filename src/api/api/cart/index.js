@@ -100,7 +100,7 @@
       });
 
       // verify accepted
-      if (status !== 202) {
+      if (status !== 202 && status !== 200) {
         return next(helpers.createError("Unable to update cart. Status code: " + status, status));
       }
       await tracker(req, 'update:item', {item: item.id, quantity: item.quantity})
