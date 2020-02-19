@@ -1,6 +1,6 @@
 {
   "name": "mushop-storefront-api",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "API layer for microservices demo application",
   "main": "server.js",
   "scripts": {

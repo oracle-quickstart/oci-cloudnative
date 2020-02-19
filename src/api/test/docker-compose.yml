@@ -53,7 +53,7 @@ services:
       - OADB_SERVICE=mock
 
   events:
-    image: mushop/events
+    image: iad.ocir.io/oracle/ateam/mushop-events:0.0.1
     hostname: events
     restart: always
     environment:
