@@ -1,15 +1,10 @@
 global:
   ociAuthSecret: oci-credentials        # OCI authentication credentials secret name
   ossStreamSecret: oss-connection       # Previously created streaming secret name
-  oadbAdminSecret: oadb-admin           # Name of DB Admin secret created earlier
-  oadbWalletSecret: oadb-wallet         # Name of wallet secret created earlier
-  oadbConnectionSecret: oadb-connection # Name of connection secret created earlier
+  oadbAdminSecret: oadb-admin           # Name of DB Admin secret created separately
+  oadbWalletSecret: oadb-wallet         # Name of wallet secret created separately
+  oadbConnectionSecret: oadb-connection # Name of connection secret created separately
   oosBucketSecret: oos-bucket           # Object storage bucket secret name (optional)
-  mock:
-    service: "false"
-
-ingress:
-  enabled: true
 
 api:
   env:
@@ -48,6 +43,5 @@ user:
  
 secrets:
   streams:
-    streamId:
-    streamName:
-    compartmentId: 
+    streamId:             # Stream OCID
+    messageEndpoint:      # Stream messages endpoint URL 

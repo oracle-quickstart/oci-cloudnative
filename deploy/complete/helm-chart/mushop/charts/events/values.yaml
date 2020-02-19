@@ -1,21 +1,19 @@
 replicaCount: 1
 
 image:
-  repository: iad.ocir.io/oracle/ateam/mushop-api
-  tag: 2.2.0
+  repository: iad.ocir.io/oracle/ateam/mushop-events
+  tag: 0.0.1
   pullPolicy: IfNotPresent
 
-env:
-  mediaUrl: /assets
-  newsletterSubscribeUrl:
+osb: {}
 
 resources:
   limits:
-    cpu: 300m
-    memory: 300Mi
+    cpu: 200m
+    memory: 128Mi
   requests:
     cpu: 100m
-    memory: 100Mi
+    memory: 64Mi
 
 securityContext:
   runAsNonRoot: true
