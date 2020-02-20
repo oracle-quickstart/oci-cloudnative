@@ -195,7 +195,7 @@ services:
 
 # Fulfillment service
   fulfillment:
-    image: iad.ocir.io/oracle/ateam/mushop-fulfillment:1.0.0
+    image: iad.ocir.io/oracle/ateam/mushop-fulfillment:1.0.1
     ports: 
       - 8087:80
     hostname: fulfillment
