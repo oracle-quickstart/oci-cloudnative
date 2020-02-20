@@ -435,6 +435,12 @@ development with Oracle Cloud Infrastructure.</p>
 <td>Storefront API</td>
 </tr>
 <tr>
+<td><code>src/assets</code></td>
+<td>Node.js</td>
+<td>Object Storage</td>
+<td>Product images</td>
+</tr>
+<tr>
 <td><code>src/carts</code></td>
 <td>Java</td>
 <td>Autonomous DB (ATP)</td>
@@ -445,6 +451,30 @@ development with Oracle Cloud Infrastructure.</p>
 <td>Go</td>
 <td>Autonomous DB (ATP)</td>
 <td>Product catalogue</td>
+</tr>
+<tr>
+<td><code>src/dbtools</code></td>
+<td>Linux</td>
+<td>Autonomous DB (ATP)</td>
+<td>Database schema initializations</td>
+</tr>
+<tr>
+<td><code>src/edge-router</code></td>
+<td>traefik</td>
+<td></td>
+<td>Request routing</td>
+</tr>
+<tr>
+<td><code>src/events</code></td>
+<td>Go</td>
+<td>Streaming</td>
+<td>Application event data collection</td>
+</tr>
+<tr>
+<td><code>src/fulfillment</code></td>
+<td>Java</td>
+<td></td>
+<td>Order processing</td>
 </tr>
 <tr>
 <td><code>src/functions/newsletter-subscription</code></td>
@@ -463,24 +493,6 @@ development with Oracle Cloud Infrastructure.</p>
 <td>Go</td>
 <td></td>
 <td>Payment processing</td>
-</tr>
-<tr>
-<td><code>src/router</code></td>
-<td>traefik</td>
-<td></td>
-<td>Request routing</td>
-</tr>
-<tr>
-<td><code>src/shipping</code></td>
-<td>Java</td>
-<td>Streaming</td>
-<td>Shipping producer</td>
-</tr>
-<tr>
-<td><code>src/stream</code></td>
-<td>Java</td>
-<td>Streaming</td>
-<td>Shipping fulfillment</td>
 </tr>
 <tr>
 <td><code>src/storefront</code></td>
@@ -877,12 +889,10 @@ values:</p>
 <li><p>Provision a Streaming instance from the Oracle Cloud Infrastructure <a href="https://console.us-phoenix-1.oraclecloud.com/storage/streaming">Console</a>, and make note of the created Stream <code>OCID</code> value. Then create an <code>oss-connection</code> secret containing the Stream connection details.</p>
 <pre class="highlight shell tab-shell"><code>kubectl create secret generic oss-connection <span class="se">\</span>
   --namespace mushop <span class="se">\</span>
-  --from-literal<span class="o">=</span><span class="nv">compartmentId</span><span class="o">=</span><span class="s1">'&lt;COMPARTMENT_OCID&gt;'</span> <span class="se">\</span>
-  --from-literal<span class="o">=</span><span class="nv">region</span><span class="o">=</span><span class="s1">'&lt;REGION_NAME&gt;'</span> <span class="se">\</span>
   --from-literal<span class="o">=</span><span class="nv">streamId</span><span class="o">=</span><span class="s1">'&lt;STREAM_OCID&gt;'</span> <span class="se">\</span>
-  --from-literal<span class="o">=</span><span class="nv">streamName</span><span class="o">=</span><span class="s1">'&lt;STREAM_NAME&gt;'</span>
+  --from-literal<span class="o">=</span><span class="nv">messageEndpoint</span><span class="o">=</span><span class="s1">'&lt;MESSAGE_ENDPOINT_URL&gt;'</span>
 </code></pre></li>
-<li><p><strong>Optional</strong>: Provision an Object Storage Bucket, and create a Pre-Authenticated Request for the bucket. With the information, create a secret called <code>oos-bucket</code> as follows:</p>
+<li><p><strong>Optional</strong>: Provision a <strong>Public</strong> Object Storage Bucket, and create a Pre-Authenticated Request for the bucket. With the information, create a secret called <code>oos-bucket</code> as follows:</p>
 <pre class="highlight shell tab-shell"><code>kubectl create secret generic oos-bucket <span class="se">\</span>
   --namespace mushop <span class="se">\</span>
   --from-literal<span class="o">=</span><span class="nv">region</span><span class="o">=</span>&lt;BUCKET_REGION&gt; <span class="se">\</span>
@@ -901,7 +911,7 @@ oadb-connection   Opaque    2      3m
 oadb-wallet       Opaque    7      3m
 oci-credentials   Opaque    6      3m
 oos-bucket        Opaque    4      3m
-oss-connection    Opaque    4      3m
+oss-connection    Opaque    2      3m
 </code></pre></li>
 </ol>
 <h3 id='using-service-broker'>Using Service Broker</h3>
@@ -941,15 +951,14 @@ secret to the <code>mushop-utilities</code> namespace:</p>
 </ol>
 
 <p><aside class="warning">
-    That warning is valid in case you want to change the namespace suggested on the docs.<br/>
-    For the mushop deployment using helm, the OCI Service Broker should be installed 
-    on the same namespace used by the setup chart. For convenience, the documentation
-    commands defaults both the setup and OCI Service Broker charts to use 
-    the <b>mushop-utilities</b> namespace. 
+    For the mushop <code>helm</code> deployment, the OCI Service Broker <b>MUST</b> be installed
+    on the same namespace used by the <code>setup</code> chart. For convenience, the documentation
+    commands defaults both the <code>setup</code> and OCI Service Broker charts to use
+    the <code>mushop-utilities</code> namespace.
   </aside></p>
 
 <ol>
-<li><p>Next connect Service Catalog with the OCI Service Broker implementation and create an ATP service instance by installing the included <code>provision</code> chart:</p>
+<li><p>Next utilize the OCI Service Broker implementation to provision services by installing the included <code>provision</code> chart:</p>
 <pre class="highlight shell tab-shell--helm2"><code>helm install provision <span class="se">\</span>
   --namespace mushop <span class="se">\</span>
   --name mushop-provision <span class="se">\</span>
@@ -965,19 +974,22 @@ secret to the <code>mushop-utilities</code> namespace:</p>
 </blockquote></li>
 <li><p>It will take a few minutes for the services database to provision, and the respective bindings to become available. Verify <code>serviceinstances</code> and <code>servicebindings</code> are <strong>READY</strong>:</p>
 <pre class="highlight plaintext"><code>kubectl get serviceinstances -A
+</code></pre><pre class="highlight plaintext"><code>NAME                   CLASS                                      PLAN       STATUS   AGE
+mushop-atp             ClusterServiceClass/atp-service            standard   Ready    1d
+mushop-objectstorage   ClusterServiceClass/object-store-service   standard   Ready    1d
+mushop-oss             ClusterServiceClass/oss-service            standard   Ready    1d
 </code></pre><pre class="highlight plaintext"><code>kubectl get servicebindings -A
-</code></pre></li>
-<li><p>A Stream instance will be provisioned by default. One last manual step is required in order to configure the a connection to this service. Create an <code>oss-connection</code> secret containing the Stream connection details:</p>
-<pre class="highlight shell tab-shell"><code>kubectl create secret generic oss-connection <span class="se">\</span>
-  --namespace mushop <span class="se">\</span>
-  --from-literal<span class="o">=</span><span class="nv">compartmentId</span><span class="o">=</span><span class="s1">'&lt;COMPARTMENT_OCID&gt;'</span> <span class="se">\</span>
-  --from-literal<span class="o">=</span><span class="nv">region</span><span class="o">=</span><span class="s1">'&lt;REGION_NAME&gt;'</span> <span class="se">\</span>
-  --from-literal<span class="o">=</span><span class="nv">streamId</span><span class="o">=</span><span class="s1">'&lt;STREAM_OCID&gt;'</span> <span class="se">\</span>
-  --from-literal<span class="o">=</span><span class="nv">streamName</span><span class="o">=</span><span class="s1">'&lt;STREAM_NAME&gt;'</span>
+</code></pre><pre class="highlight plaintext"><code>NAME                         SERVICE-INSTANCE       SECRET-NAME                  STATUS   AGE
+mushop-bucket-par-binding    mushop-objectstorage   mushop-bucket-par-binding    Ready    1d
+mushop-oadb-wallet-binding   mushop-atp             mushop-oadb-wallet-binding   Ready    1d
+mushop-oss-binding           mushop-oss             mushop-oss-binding           Ready    1d
 </code></pre></li>
 </ol>
 <h2 id='api-gateway-oci-functions-and-email-delivery'>API Gateway, OCI Functions and Email Delivery</h2>
-<p>Note that this is optional. If you don&#39;t want to configure Email Delivery and deploy an API Gateway and the function, skip to the <a href="#deployment">Deployment</a> section.</p>
+<aside class="notice">
+  Note that this is <b>OPTIONAL</b>. If you don't want to configure Email Delivery and deploy a function with API Gateway, skip to the
+  <a href="#deployment">Deployment</a> section.
+</aside>
 <h3 id='configure-email-delivery'>Configure Email Delivery</h3>
 <p>If you are planning to use the API gateway and Oracle Functions, to send emails using OCI Email Delivery you need to configure an approved sender first.</p>
 
@@ -1097,11 +1109,17 @@ helm chart is installed using settings to leverage cloud backing services.</p>
 </blockquote>
 
 <aside class="notice">
-Database secrets (<code>oadb*</code>) may be omitted if using the automated service broker approach.
+Database (<code>oadb-*</code>), stream (<code>oss-*</code>), and bucket (<code>oos-*</code>) secrets  may be omitted if using the automated service broker approach.
 </aside></li>
-<li><p><strong>Optional</strong>: If you configured the Email Delivery, API gateway and the function, add the following snippet to the <code>values-dev.yaml</code> file:</p>
+<li><p><strong>Optional</strong>: If an Object Storage bucket is provisioned, you can configure the <code>api</code> environment to use the object URL prefix in <code>myvalues.yaml</code>:</p>
 <pre class="highlight yaml tab-yaml"><code><span class="na">api</span><span class="pi">:</span>
   <span class="na">env</span><span class="pi">:</span>
+    <span class="na">mediaUrl</span><span class="pi">:</span> <span class="c1"># https://objectstorage.[REGION].oraclecloud.com/n/[NAMESPACE]/b/[BUCKET_NAME]/o/</span>
+</code></pre></li>
+<li><p><strong>Optional</strong>: If you configured the Email Delivery, API gateway and the function, add the following snippet to your <code>myvalues.yaml</code> file:</p>
+<pre class="highlight yaml tab-yaml"><code><span class="na">api</span><span class="pi">:</span>
+  <span class="na">env</span><span class="pi">:</span>
+    <span class="na">mediaUrl</span><span class="pi">:</span> <span class="c1"># ...</span>
     <span class="na">newsletterSubscribeUrl</span><span class="pi">:</span> <span class="s">https://[API_GATEWAY_URL]</span>
 </code></pre></li>
 <li><p>Install the <a href="https://github.com/oracle-quickstart/oci-cloudnative/tree/master/deploy/complete/helm-chart/mushop"><code>mushop</code></a> application helm chart using the <code>myvalues.yaml</code> created above:</p>
@@ -1111,41 +1129,48 @@ Database secrets (<code>oadb*</code>) may be omitted if using the automated serv
 <pre class="highlight shell tab-shell--helm2"><code>helm install ./mushop <span class="se">\</span>
   --name mushop <span class="se">\</span>
   --namespace mushop <span class="se">\</span>
-  --values path/to/myvalues.yaml
+  --values myvalues.yaml
 </code></pre><pre class="highlight shell tab-shell--helm3"><code>helm install mushop ./mushop <span class="se">\</span>
   --namespace mushop <span class="se">\</span>
-  --values path/to/myvalues.yaml
+  --values myvalues.yaml
 </code></pre></li>
 <li><p><strong>OPTION 2:</strong> When using <strong>OCI Service Broker</strong> (<code>provision</code> chart):</p>
 <pre class="highlight shell tab-shell--helm2"><code>helm install ./mushop <span class="se">\</span>
   --name mushop <span class="se">\</span>
   --namespace mushop <span class="se">\</span>
   --set global.osb.atp<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
-  --values path/to/myvalues.yaml
+  --set global.osb.oss<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+  --set global.osb.objectstorage<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+  --values myvalues.yaml
 </code></pre><pre class="highlight shell tab-shell--helm3"><code>helm install mushop ./mushop <span class="se">\</span>
   --namespace mushop <span class="se">\</span>
   --set global.osb.atp<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
-  --values path/to/myvalues.yaml
+  --set global.osb.oss<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+  --set global.osb.objectstorage<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+  --values myvalues.yaml
 </code></pre></li>
 </ul></li>
-<li><p>Wait for deployment pods to become <strong>READY</strong> and init pods to show <strong>COMPLETE</strong>:</p>
+<li><p>Wait for deployment pods to be <strong>RUNNING</strong> and init pods to show <strong>COMPLETED</strong>:</p>
 <pre class="highlight shell tab-shell"><code>kubectl get pods --watch
-</code></pre><pre class="highlight plaintext"><code>NAME                                                     READY   STATUS      RESTARTS   AGE
-mushop-api-75cd7f4f47-2wzpw                              1/1     Running     0          7m55s
-mushop-carts-56c9f548b5-5rxkz                            1/1     Running     0          7m57s
-mushop-carts-init-1-jprv6                                0/1     Completed   0          7m57s
-mushop-catalogue-85cbfb949b-mcjt9                        1/1     Running     0          7m50s
-mushop-catalogue-init-1-cppf9                            0/1     Completed   0          7m57s
-mushop-edge-7959d6b6f8-vkhgm                             1/1     Running     0          7m55s
-mushop-orders-6586dcb898-qkncx                           1/1     Running     0          7m49s
-mushop-orders-init-1-s4hq7                               0/1     Completed   0          7m57s
-mushop-payment-c7dccd8cc-p7jjq                           1/1     Running     0          7m57s
-mushop-session-5ff4c9557f-df4hh                          1/1     Running     0          7m57s
-mushop-shipping-5db9b4c9ff-wxzbp                         1/1     Running     0          7m55s
-mushop-storefront-f5f988cb-ql8bd                         1/1     Running     0          7m57s
-mushop-stream-6fc9d4749c-sfn2h                           1/1     Running     0          7m50s
-mushop-user-65858dd6cd-d5bjs                             1/1     Running     0          7m57s
-mushop-user-init-1-nsx7p                                 0/1     Completed   0          7m57s
+</code></pre><pre class="highlight plaintext"><code>NAME                                  READY   STATUS      RESTARTS   AGE
+mushop-api-769c4d9fd8-hp7mc           1/1     Running     0          31s
+mushop-assets-dd5756599-pxngg         1/1     Running     0          33s
+mushop-assets-deploy-1-n2bk6          0/1     Completed   0          33s
+mushop-carts-6f5db9565f-4w65t         1/1     Running     0          33s
+mushop-carts-init-1-dcs82             0/1     Completed   0          33s
+mushop-catalogue-76977479fd-thdq4     1/1     Running     0          32s
+mushop-catalogue-init-1-twx9x         0/1     Completed   0          33s
+mushop-edge-648c989cd4-6g9dk          1/1     Running     0          32s
+mushop-events-569f4744c9-l7pqt        1/1     Running     0          30s
+mushop-fulfillment-85489cd99b-lzwqp   1/1     Running     0          30s
+mushop-nats-84dc5db659-7rpbl          1/1     Running     0          32s
+mushop-orders-6dcc7bbbb6-658tq        1/1     Running     0          33s
+mushop-orders-init-1-tm8ls            0/1     Completed   0          33s
+mushop-payment-c7dccd8cc-t9wmj        1/1     Running     0          33s
+mushop-session-5ff4c9557f-dmbq8       1/1     Running     0          33s
+mushop-storefront-8656597656-lgdlk    1/1     Running     0          33s
+mushop-user-54f4978d68-qhr7n          0/1     Running     0          31s
+mushop-user-init-1-8k62c              0/1     Completed   0          33s
 </code></pre></li>
 <li><p>Open a browser with the <code>EXTERNAL-IP</code> created during setup, <strong>OR</strong> <code>port-forward</code>
 directly to the <code>edge</code> service resource:</p>
@@ -1172,8 +1197,8 @@ Revisit the application charts and connect to some Grafana dashboards:</p>
 <li><p>List helm releases:</p>
 <pre class="highlight plaintext"><code>helm list --all-namespaces
 </code></pre><pre class="highlight plaintext"><code>NAME                    NAMESPACE               REVISION        UPDATED                                 STATUS          CHART                           APP VERSION
-mushop                  mushop                  1               2020-01-31 21:14:48.511917 -0600 CST    deployed        mushop-0.1.0                    1.0         
-mushop-utils          mushop-utilities        1               2020-01-31 20:32:05.864769 -0600 CST    deployed        mushop-setup-0.0.1              1.0          
+mushop                  mushop                  1               2020-01-31 21:14:48.511917 -0600 CST    deployed        mushop-0.1.0                    1.0
+mushop-utils            mushop-utilities        1               2020-01-31 20:32:05.864769 -0600 CST    deployed        mushop-setup-0.0.1              1.0
 </code></pre></li>
 <li><p>Get the Grafana outputs from the <code>mushop-utils</code> (setup chart) installation:</p>
 <pre class="highlight plaintext"><code>helm status mushop-utils --namespace mushop-utilities
@@ -1211,23 +1236,23 @@ depending on the actions performed for setup and deployment of MuShop.</p>
 mushop                  mushop                  1               2020-01-31 21:14:48.511917 -0600 CST    deployed        mushop-0.1.0                    1.0         
 oci-broker              mushop-utilities        1               2020-01-31 20:46:30.565257 -0600 CST    deployed        oci-service-broker-1.3.3                   
 mushop-provision        mushop                  1               2020-01-31 21:01:54.086599 -0600 CST    deployed        mushop-provision-0.1.0          0.1.0      
-mushop-utils          mushop-utilities        1               2020-01-31 20:32:05.864769 -0600 CST    deployed        mushop-setup-0.0.1              1.0  
+mushop-utils            mushop-utilities        1               2020-01-31 20:32:05.864769 -0600 CST    deployed        mushop-setup-0.0.1              1.0  
 </code></pre></li>
 <li><p>Remove the application from Kubernetes where <code>--name mushop</code> was used during install:</p>
 <pre class="highlight shell tab-shell--helm2"><code>helm delete --purge mushop
-</code></pre><pre class="highlight shell tab-shell--helm3"><code>helm delete mushop
+</code></pre><pre class="highlight shell tab-shell--helm3"><code>helm delete mushop -n mushop
 </code></pre></li>
 <li><p>If used OCI Service broker, remove the <code>provision</code> dependency installation, including ATP Bindings (Wallet, password) and instances:</p>
 <pre class="highlight shell tab-shell--helm2"><code>helm delete --purge mushop-provision
-</code></pre><pre class="highlight shell tab-shell--helm3"><code>helm delete mushop-provision
+</code></pre><pre class="highlight shell tab-shell--helm3"><code>helm delete mushop-provision -n mushop
 </code></pre></li>
 <li><p>If used OCI Service broker, remove the <code>osb</code> installation,:</p>
 <pre class="highlight shell tab-shell--helm2"><code>helm delete --purge oci-broker
-</code></pre><pre class="highlight shell tab-shell--helm3"><code>helm delete oci-broker
+</code></pre><pre class="highlight shell tab-shell--helm3"><code>helm delete oci-broker -n mushop-utilities
 </code></pre></li>
 <li><p>Remove the <code>setup</code> cluster dependency installation:</p>
 <pre class="highlight shell tab-shell--helm2"><code>helm delete --purge mushop-utils
-</code></pre><pre class="highlight shell tab-shell--helm3"><code>helm delete mushop-utils
+</code></pre><pre class="highlight shell tab-shell--helm3"><code>helm delete mushop-utils -n mushop-utilities
 </code></pre></li>
 </ul>
 <h1 id='acknowledgements'>Acknowledgements</h1><h2 id='community'>Community</h2>
