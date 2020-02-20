@@ -2,6 +2,8 @@ name: Build and push Docker images
 
 on:
   push:
+    branches:
+      - master
     paths:
       # Match any VERSION file under /src folder
       - 'src/**/VERSION'
@@ -17,7 +19,7 @@ jobs:
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login ${{ secrets.DOCKER_REGISTRY_URL }} -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
       - name: Build and push the images
         run: |
-            for versionFilePath in $(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep "VERSION");
+            for versionFilePath in $(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} ${{ github.event.before }} | grep "VERSION");
             do
               # versionFilePath contains the full path to the VERSION file (e.g. src/api/VERSION)
               # we need to strip the "VERSION" from that to get the folder only
