@@ -5,9 +5,6 @@ on:
     paths:
       # Match any VERSION file under /src folder
       - 'src/**/VERSION'
-env:
-  DOCKER_REGISTRY_URL: iad.ocir.io
-  REPOSITORY: oracle/mushop
 jobs:
   push:
     runs-on: ubuntu-latest
@@ -17,7 +14,7 @@ jobs:
         with:
             fetch-depth: 0
       - name: Log into registry
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login $DOCKER_REGISTRY_URL -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login ${{ secrets.DOCKER_REGISTRY_URL }} -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
       - name: Build and push the images
         run: |
             for versionFilePath in $(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep "VERSION");
@@ -33,7 +30,7 @@ jobs:
               tmpTag="image-$RANDOM"
               docker build $folder --file $folder/Dockerfile --tag $tmpTag
 
-              IMAGE_ID=$DOCKER_REGISTRY_URL/$REPOSITORY/$IMAGE_NAME
+              IMAGE_ID=${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.REPOSITORY }}/$IMAGE_NAME
               VERSION=$(cat $versionFilePath)
 
               echo IMAGE_ID=$IMAGE_ID
