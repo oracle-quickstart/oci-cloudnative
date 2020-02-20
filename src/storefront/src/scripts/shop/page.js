@@ -41,6 +41,7 @@ const authPage = 'auth';
 const errPage = 'error';
 const nfPage = '404';
 const restricted = ['customer', 'personal', 'settings', 'orders', 'checkout'];
+const embedded = ['services'];
 
 export class PageController {
   constructor(document) {
@@ -108,12 +109,16 @@ export class PageController {
     }
   }
 
+  isEmbedded() {
+    return !!embedded.filter(p => this.router().is(p)).length;
+  }
+
   router() {
     return this.mu.router;
   }
 
   setPage(page) {
-    this.document.title = `MuShop::${this.pageName(page)}`;
+    this.document.title = `MuShop ${this.pageName(page)}`;
     this.emit('page', page);
     this.emit(page);
   }

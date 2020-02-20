@@ -22,8 +22,10 @@ export class UserController {
     this.on('user.profile', p => this.context.set('global.profile', p));
     // initialize user when ready
     this.mu.on('ready', () => {
-      this.getUser()
-        .then(() => this.context.emit('user.ctx.ready'));
+      // suppress initial profile call for embedded content
+      return !this.mu.page.isEmbedded() &&
+        this.getUser()
+          .then(() => this.context.emit('user.ctx.ready'));
     });
   }
 
@@ -63,8 +65,6 @@ export class UserController {
   }
 
   getUser() {
-    // NOTE: the customers service reads from the session cookie and therefore the {id} param is ignored
-    // const id = this._user ? this._user.id : 'id';
     return this.mu.http.get(`/profile`)
       .then(res => this._getRes(res, this._setUser))
       .catch(e => this._userError(e))
