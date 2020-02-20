@@ -30,7 +30,7 @@ jobs:
               tmpTag="image-$RANDOM"
               docker build $folder --file $folder/Dockerfile --tag $tmpTag
 
-              IMAGE_ID=${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.REPOSITORY }}/$IMAGE_NAME
+              IMAGE_ID=${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPOSITORY }}/$IMAGE_NAME
               VERSION=$(cat $versionFilePath)
 
               echo IMAGE_ID=$IMAGE_ID
