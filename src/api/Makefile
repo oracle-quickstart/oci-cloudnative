@@ -7,6 +7,7 @@
 
 IMAGE=mushop-dev-api
 CONTAINER=api
+PROJECT=mutest
 
 include $(wildcard .env)
 
@@ -14,7 +15,7 @@ include $(wildcard .env)
 
 up: image server
 
-down: kill-server 
+down: kill-server kill-services
 
 dev: clean image server
 
@@ -40,6 +41,7 @@ server: kill-server
 		-e CARTS_URL=http://carts \
 		-e ORDERS_URL=http://orders \
 		-e USERS_URL=http://user \
+		-e EVENTS_URL=http://events \
 		-e NODE_ENV=development \
 		-e PORT=3000            \
 		-p 8080:3000            \
@@ -84,3 +86,8 @@ test: image
 
 kill-server:
 	@if [ $$(docker ps -a -q -f name=$(CONTAINER) | wc -l) -ge 1 ]; then docker rm -f $$(docker ps -a -q -f name=$(CONTAINER)); fi
+
+services:
+	@docker-compose -p $(PROJECT) -f test/docker-compose.yml up -d
+kill-services:
+	@docker-compose -p $(PROJECT) -f test/docker-compose.yml down

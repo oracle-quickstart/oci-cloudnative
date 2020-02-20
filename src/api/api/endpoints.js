@@ -22,6 +22,7 @@
   const cartsUrl = getEnvVar(services.CARTS, !config.mockMode('carts'));
   const ordersUrl = getEnvVar(services.ORDERS, !config.mockMode('orders'));
   const usersUrl = getEnvVar(services.USERS, !config.mockMode('users'));
+  const eventsUrl = getEnvVar(services.EVENTS, false);
   const newsletterSubscribeUrl = getEnvVar(services.NEWSLETTER_SUBSCRIBE, false);
 
   module.exports = {
@@ -30,6 +31,7 @@
     ordersUrl,
     cartsUrl: `${cartsUrl}/carts`,
     customersUrl: `${usersUrl}/customers`,
+    eventsUrl: `${eventsUrl}/events`,
     loginUrl:  `${usersUrl}/login`,
     registerUrl:  `${usersUrl}/register`,
     newsletterSubscribeUrl,

@@ -25,4 +25,11 @@ module.exports = {
     return await axios.get(`${endpoints.cartsUrl}/${id}/items`)
       .then(({ data }) => data)
   },
+
+  getSvcTracker: source => {
+    return (req, type, detail = {}) =>
+      helpers.trackEvents(req, { source, events: [{type, detail}] })
+        .catch(() => { /* noop */ });
+  },
+
 };

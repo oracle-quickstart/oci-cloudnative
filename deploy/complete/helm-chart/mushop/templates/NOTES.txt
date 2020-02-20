@@ -59,6 +59,6 @@ machine:
 
 ## Uninstalling the Chart:
 
-  helm delete {{ .Release.Name }}
+  helm delete {{ .Release.Name }} -n {{ .Release.Namespace }}
 
 {{ end }}

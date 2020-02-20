@@ -159,13 +159,11 @@ Follow the steps outlined below to provision and configure the cluster with clou
     ```shell
     kubectl create secret generic oss-connection \
       --namespace mushop \
-      --from-literal=compartmentId='<COMPARTMENT_OCID>' \
-      --from-literal=region='<REGION_NAME>' \
       --from-literal=streamId='<STREAM_OCID>' \
-      --from-literal=streamName='<STREAM_NAME>'
+      --from-literal=messageEndpoint='<MESSAGE_ENDPOINT_URL>'
     ```
 
-1. **Optional**: Provision an Object Storage Bucket, and create a Pre-Authenticated Request for the bucket. With the information, create a secret called `oos-bucket` as follows:
+1. **Optional**: Provision a **Public** Object Storage Bucket, and create a Pre-Authenticated Request for the bucket. With the information, create a secret called `oos-bucket` as follows:
 
     ```shell
     kubectl create secret generic oos-bucket \
@@ -191,7 +189,7 @@ Follow the steps outlined below to provision and configure the cluster with clou
     oadb-wallet       Opaque    7      3m
     oci-credentials   Opaque    6      3m
     oos-bucket        Opaque    4      3m
-    oss-connection    Opaque    4      3m
+    oss-connection    Opaque    2      3m
     ```
 
 ### Using Service Broker
@@ -243,14 +241,13 @@ secret to the `mushop-utilities` namespace:
     > The above command will deploy the OCI Service Broker using an embedded etcd instance. It is not recommended to deploy the OCI Service Broker using an embedded etcd instance and tls disabled in production environments, instead a separate etcd cluster should be setup and used by the OCI Service Broker.
 
   <aside class="warning">
-    That warning is valid in case you want to change the namespace suggested on the docs.<br/>
-    For the mushop deployment using helm, the OCI Service Broker should be installed 
-    on the same namespace used by the setup chart. For convenience, the documentation
-    commands defaults both the setup and OCI Service Broker charts to use 
-    the <b>mushop-utilities</b> namespace. 
+    For the mushop <code>helm</code> deployment, the OCI Service Broker <b>MUST</b> be installed
+    on the same namespace used by the <code>setup</code> chart. For convenience, the documentation
+    commands defaults both the <code>setup</code> and OCI Service Broker charts to use
+    the <code>mushop-utilities</code> namespace.
   </aside>
   
-1. Next connect Service Catalog with the OCI Service Broker implementation and create an ATP service instance by installing the included `provision` chart:
+1. Next utilize the OCI Service Broker implementation to provision services by installing the included `provision` chart:
 
     ```shell--helm2
     helm install provision \
@@ -276,23 +273,29 @@ secret to the `mushop-utilities` namespace:
     ```
 
     ```text
+    NAME                   CLASS                                      PLAN       STATUS   AGE
+    mushop-atp             ClusterServiceClass/atp-service            standard   Ready    1d
+    mushop-objectstorage   ClusterServiceClass/object-store-service   standard   Ready    1d
+    mushop-oss             ClusterServiceClass/oss-service            standard   Ready    1d
+    ```
+
+    ```text
     kubectl get servicebindings -A
     ```
 
-1. A Stream instance will be provisioned by default. One last manual step is required in order to configure the a connection to this service. Create an `oss-connection` secret containing the Stream connection details:
-
-    ```shell
-    kubectl create secret generic oss-connection \
-      --namespace mushop \
-      --from-literal=compartmentId='<COMPARTMENT_OCID>' \
-      --from-literal=region='<REGION_NAME>' \
-      --from-literal=streamId='<STREAM_OCID>' \
-      --from-literal=streamName='<STREAM_NAME>'
+    ```text
+    NAME                         SERVICE-INSTANCE       SECRET-NAME                  STATUS   AGE
+    mushop-bucket-par-binding    mushop-objectstorage   mushop-bucket-par-binding    Ready    1d
+    mushop-oadb-wallet-binding   mushop-atp             mushop-oadb-wallet-binding   Ready    1d
+    mushop-oss-binding           mushop-oss             mushop-oss-binding           Ready    1d
     ```
 
 ## API Gateway, OCI Functions and Email Delivery
 
-Note that this is optional. If you don't want to configure Email Delivery and deploy an API Gateway and the function, skip to the [Deployment](#deployment) section.
+<aside class="notice">
+  Note that this is <b>OPTIONAL</b>. If you don't want to configure Email Delivery and deploy a function with API Gateway, skip to the
+  <a href="#deployment">Deployment</a> section.
+</aside>
 
 ### Configure Email Delivery
 
@@ -417,14 +420,23 @@ helm chart is installed using settings to leverage cloud backing services.
     > **NOTE:** If it's desired to connect a separate databases for a given service, you can specify values specific for each service, such as `carts.oadbAdminSecret`, `carts.oadbWalletSecret`...
 
     <aside class="notice">
-    Database secrets (<code>oadb*</code>) may be omitted if using the automated service broker approach.
+    Database (<code>oadb-*</code>), stream (<code>oss-*</code>), and bucket (<code>oos-*</code>) secrets  may be omitted if using the automated service broker approach.
     </aside>
 
-1. **Optional**: If you configured the Email Delivery, API gateway and the function, add the following snippet to the `values-dev.yaml` file:
+1. **Optional**: If an Object Storage bucket is provisioned, you can configure the `api` environment to use the object URL prefix in `myvalues.yaml`:
 
     ```yaml
     api:
       env:
+        mediaUrl: # https://objectstorage.[REGION].oraclecloud.com/n/[NAMESPACE]/b/[BUCKET_NAME]/o/
+    ```
+
+1. **Optional**: If you configured the Email Delivery, API gateway and the function, add the following snippet to your `myvalues.yaml` file:
+
+    ```yaml
+    api:
+      env:
+        mediaUrl: # ...
         newsletterSubscribeUrl: https://[API_GATEWAY_URL]
     ```
 
@@ -435,13 +447,13 @@ helm chart is installed using settings to leverage cloud backing services.
         helm install ./mushop \
           --name mushop \
           --namespace mushop \
-          --values path/to/myvalues.yaml
+          --values myvalues.yaml
         ```
 
         ```shell--helm3
         helm install mushop ./mushop \
           --namespace mushop \
-          --values path/to/myvalues.yaml
+          --values myvalues.yaml
         ```
     - **OPTION 2:** When using **OCI Service Broker** (`provision` chart):
 
@@ -450,38 +462,45 @@ helm chart is installed using settings to leverage cloud backing services.
           --name mushop \
           --namespace mushop \
           --set global.osb.atp=true \
-          --values path/to/myvalues.yaml
+          --set global.osb.oss=true \
+          --set global.osb.objectstorage=true \
+          --values myvalues.yaml
         ```
 
         ```shell--helm3
         helm install mushop ./mushop \
           --namespace mushop \
           --set global.osb.atp=true \
-          --values path/to/myvalues.yaml
+          --set global.osb.oss=true \
+          --set global.osb.objectstorage=true \
+          --values myvalues.yaml
         ```
-1. Wait for deployment pods to become **READY** and init pods to show **COMPLETE**:
+1. Wait for deployment pods to be **RUNNING** and init pods to show **COMPLETED**:
 
     ```shell
     kubectl get pods --watch
     ```
 
     ```text
-    NAME                                                     READY   STATUS      RESTARTS   AGE
-    mushop-api-75cd7f4f47-2wzpw                              1/1     Running     0          7m55s
-    mushop-carts-56c9f548b5-5rxkz                            1/1     Running     0          7m57s
-    mushop-carts-init-1-jprv6                                0/1     Completed   0          7m57s
-    mushop-catalogue-85cbfb949b-mcjt9                        1/1     Running     0          7m50s
-    mushop-catalogue-init-1-cppf9                            0/1     Completed   0          7m57s
-    mushop-edge-7959d6b6f8-vkhgm                             1/1     Running     0          7m55s
-    mushop-orders-6586dcb898-qkncx                           1/1     Running     0          7m49s
-    mushop-orders-init-1-s4hq7                               0/1     Completed   0          7m57s
-    mushop-payment-c7dccd8cc-p7jjq                           1/1     Running     0          7m57s
-    mushop-session-5ff4c9557f-df4hh                          1/1     Running     0          7m57s
-    mushop-shipping-5db9b4c9ff-wxzbp                         1/1     Running     0          7m55s
-    mushop-storefront-f5f988cb-ql8bd                         1/1     Running     0          7m57s
-    mushop-stream-6fc9d4749c-sfn2h                           1/1     Running     0          7m50s
-    mushop-user-65858dd6cd-d5bjs                             1/1     Running     0          7m57s
-    mushop-user-init-1-nsx7p                                 0/1     Completed   0          7m57s
+    NAME                                  READY   STATUS      RESTARTS   AGE
+    mushop-api-769c4d9fd8-hp7mc           1/1     Running     0          31s
+    mushop-assets-dd5756599-pxngg         1/1     Running     0          33s
+    mushop-assets-deploy-1-n2bk6          0/1     Completed   0          33s
+    mushop-carts-6f5db9565f-4w65t         1/1     Running     0          33s
+    mushop-carts-init-1-dcs82             0/1     Completed   0          33s
+    mushop-catalogue-76977479fd-thdq4     1/1     Running     0          32s
+    mushop-catalogue-init-1-twx9x         0/1     Completed   0          33s
+    mushop-edge-648c989cd4-6g9dk          1/1     Running     0          32s
+    mushop-events-569f4744c9-l7pqt        1/1     Running     0          30s
+    mushop-fulfillment-85489cd99b-lzwqp   1/1     Running     0          30s
+    mushop-nats-84dc5db659-7rpbl          1/1     Running     0          32s
+    mushop-orders-6dcc7bbbb6-658tq        1/1     Running     0          33s
+    mushop-orders-init-1-tm8ls            0/1     Completed   0          33s
+    mushop-payment-c7dccd8cc-t9wmj        1/1     Running     0          33s
+    mushop-session-5ff4c9557f-dmbq8       1/1     Running     0          33s
+    mushop-storefront-8656597656-lgdlk    1/1     Running     0          33s
+    mushop-user-54f4978d68-qhr7n          0/1     Running     0          31s
+    mushop-user-init-1-8k62c              0/1     Completed   0          33s
     ```
 
 1. Open a browser with the `EXTERNAL-IP` created during setup, **OR** `port-forward`

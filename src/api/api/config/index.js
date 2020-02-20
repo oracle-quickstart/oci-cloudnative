@@ -4,6 +4,7 @@
  */
 const router = require('express').Router();
 const config = require('../../config');
+const helpers = require('../../helpers');
 const mock = require('../mock');
 
 // kv pairs of services in mock mode
@@ -23,7 +24,10 @@ const client = {
   mockMode,
 };
 
-// Basic app config runtime
-router.get('/config', (req, res) => res.json(client));
+// Basic app runtime config
+router.get('/config', (req, res) => res.json({
+  ...client,
+  trackId: helpers.getTrackingId(req),
+}));
 
 module.exports = router;

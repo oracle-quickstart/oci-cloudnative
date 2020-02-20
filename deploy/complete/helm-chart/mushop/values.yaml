@@ -34,6 +34,9 @@ catalogue:
 edge:
   enabled: true
 
+events:
+  enabled: true
+
 orders:
   enabled: true
 
@@ -57,10 +60,8 @@ user:
 
 secrets:
   streams:
-    region:
-    compartmentId:
-    streamName:
-    streamId:
+    streamId: 
+    messageEndpoint: 
   bucket:
     region:
     name:

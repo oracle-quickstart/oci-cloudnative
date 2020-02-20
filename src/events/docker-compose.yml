@@ -1,0 +1,35 @@
+#
+# Copyright (c) 2020, Oracle and/or its affiliates. All rights reserved.
+# Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
+# 
+version: "3"
+
+services:
+  events:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: mushop/events
+    hostname: events
+    restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: true
+    ports:
+      - "8080:80"
+    environment: 
+      - reschedule=on-node-failure
+      # API signing params
+      - TENANCY
+      - USER_ID
+      - PRIVATE_KEY
+      - FINGERPRINT
+      - PASSPHRASE
+      # Endpoint resolution
+      - REGION
+      - STREAM_ID
+      - MESSAGES_ENDPOINT
+      # Other optional
+      - OCI_GO_SDK_DEBUG

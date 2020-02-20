@@ -1,0 +1,82 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "",
+    "title": "Events",
+    "description": "Events service spec"
+  },
+  "host": "events",
+  "basePath": "/",
+  "securityDefinitions": {},
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json; charset=utf-8"
+  ],
+  "produces": [
+    "application/json; charset=utf-8"
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "description": "",
+        "operationId": "/health > GET",
+        "produces": [
+          "application/json; charset=utf-8"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/health"
+            }
+          }
+        }
+      }
+    },
+    "/events": {
+      "post": {
+        "description": "Submit events",
+        "operationId": "/events > POST",
+        "produces": [
+          "application/json; charset=utf-8"
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "health": {
+      "title": "Health",
+      "type": "object",
+      "properties": {
+        "health": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "service": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "time": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "health"
+      ]
+    }
+  }
+}
