@@ -30,6 +30,8 @@ In addition to these Cloud Native topics, MuShop demonstrates the use of several
 
 ### MuShop Services
 
+![services](images/mushop.services.png "MuShop Services")
+
 | Service | Technology  | Cloud Services | Description |
 | --- | --- | --- | --- |
 | `src/api` | Node.js   | | Storefront API |
