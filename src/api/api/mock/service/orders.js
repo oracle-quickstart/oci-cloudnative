@@ -2,7 +2,6 @@
  * Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
  * The Universal Permissive License (UPL), Version 1.0
  */
-const axios = require("axios")
 const { MockServiceAbstract } = require('./abstract');
 const { MockDb } = require('../db');
 const common = require('../../common');
@@ -61,7 +60,7 @@ module.exports = class MockOrdersService extends MockServiceAbstract {
       
       try {
         const cartId = helpers.getCartId(req);  
-        const cartItems = await common.getCartItems(cartId);
+        const cartItems = await common.getCartItems(req, cartId);
         // load customer & links
         const customer = await common.getCustomer(req);
 
@@ -69,7 +68,7 @@ module.exports = class MockOrdersService extends MockServiceAbstract {
         const [ address, card ] = await Promise.all(['addresses', 'cards']
           .map(ref => {
             // resolve each to a single result
-            return axios.get(endpoints.customersUrl + '/' + customer.id + '/' + ref)
+            return req.svcClient().get(endpoints.customersUrl + '/' + customer.id + '/' + ref)
               .then(({ data }) => data)
               .then(list => list && list.length && list.pop());
           }));

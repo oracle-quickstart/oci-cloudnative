@@ -63,14 +63,6 @@
     next();
   };
 
-  /**
-   * Inject tracing headers into outgoing requests
-   */
-  helpers.tracingMiddleware = function (req, res, next) {
-    axios.defaults.headers.common = helpers.getTracingHeaders(req);
-    next();
-  };
-
   /* Responds with the given body and status 200 OK  */
   helpers.respondSuccessBody = function (res, body) {
     helpers.respondStatusBody(res, 200, body);
@@ -96,29 +88,6 @@
     if (req.url.substr(-1) == '/' && req.url.length > 1)
       res.redirect(301, req.url.slice(0, -1));
     else next();
-  };
-
-  /* Public: performs an HTTP GET request to the given URL
-   *
-   * url  - the URL where the external service can be reached out
-   * res  - the response object where the external service's output will be yield
-   * next - callback to be invoked in case of error. If there actually is an error
-   *        this function will be called, passing the error object as an argument
-   *
-   * Examples:
-   *
-   * app.get("/users", function(req, res) {
-   *   helpers.simpleHttpRequest("http://api.example.org/users", res, function(err) {
-   *     res.send({ error: err });
-   *     res.end();
-   *   });
-   * });
-   */
-  helpers.simpleHttpRequest = function (url, res, next) {
-    return axios
-      .get(url)
-      .then(({ status, data }) => res.status(status).json(data))
-      .catch(next);
   };
 
   /**
@@ -170,6 +139,41 @@
   };
 
   /**
+   * provide http client getter that returns an axios instance
+   * with tracing and tracking interceptors
+   */
+  helpers.svcClientMiddleware = function(req, res, next) {
+
+    // create passthrough tracing headers
+    const headers = Object.assign({}, ...traceHeaders
+      .filter(h => req.get(h))
+      .map(h => ({[h]: req.get(h)})));
+
+    /**
+     * http client getter resolves an instance with track method
+     */
+    req.svcClient = (trackEvent) => {
+      // create client
+      const client = req._svcClient = req._svcClient || axios.create({ headers });
+      if (trackEvent) {
+        // add tracking interceptor
+        const intercept = client.interceptors.response.use(
+          async response => { await tracker(trackEvent, response.data); return response; },
+          async err => { await tracker(trackEvent + ':error', { status: err.response.status, ...err.response.data }); throw err; },
+        );
+        // track and eject intercept
+        const tracker = (type, detail) => {
+          client.interceptors.response.eject(intercept); // clear the interceptor
+          return helpers.trackEvents(req, { events: [{type, detail}] });
+        };
+      }
+      return client;
+    };
+    
+    next();
+  };
+
+  /**
    * get/create a tracking identifier for the session
    */
   helpers.getTrackingId = function(req) {
@@ -183,27 +187,17 @@
   helpers.trackEvents = async function (req, payload) {
     const { eventsUrl } = endpoints;
     if (!!eventsUrl) {
+      payload.source = payload.source || 'api';
       // tracking id
       payload.track = payload.track || helpers.getTrackingId(req);
       // ensure timestamp
       (payload.events || [])
         .forEach(evt => evt.time = evt.time || new Date().toISOString());
       
-      return await axios.post(eventsUrl, payload);
+      return await req.svcClient()
+        .post(eventsUrl, payload)
+        .catch(() => {/* always noop */});
     }
-  };
-
-  /* Get tracing context headers from the request */
-  helpers.getTracingHeaders = function (req) {
-    var headers = {};
-    for (var i = 0; i < traceHeaders.length; i++) {
-      const traceHeader = traceHeaders[i];
-      const value = req.get(traceHeader);
-      if (value) {
-        headers[traceHeader] = value;
-      }
-    }
-    return headers;
   };
   module.exports = helpers;
 })();

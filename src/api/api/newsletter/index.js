@@ -5,11 +5,10 @@
 (function () {
     'use strict';
 
-    const axios = require("axios")
-        , express = require("express")
-        , helpers = require("../../helpers")
-        , endpoints = require("../endpoints")
-        , app = express.Router()
+    const express = require("express"),
+        helpers = require("../../helpers"),
+        endpoints = require("../endpoints"),
+        app = express.Router();
 
     // Subscribe the email address to the newsletter
     app.post('/newsletter', async (req, res, next) => {
@@ -26,7 +25,7 @@
 
         try {
             // Invoke the newsletter-subscribe function through the API Gateway
-            const { status } = await axios.post(endpoints.newsletterSubscribeUrl, { email });
+            const { status } = await req.svcClient('subscribe:newsletter').post(endpoints.newsletterSubscribeUrl, { email });
             if (status !== 200) {
                 return next(helpers.createError(`Unable to sign up for newsletter. Status code: ${status}`), status)
             }

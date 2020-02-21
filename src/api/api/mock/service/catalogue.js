@@ -23,7 +23,7 @@ module.exports = class MockCatalogueService extends MockServiceAbstract {
     this.categories = new MockDb(require('../data/mock_categories.json'));
 
     // replace method in common
-    this.replaceCommon('getProduct', async sku => this.products.findById(sku));
+    this.replaceCommon('getProduct', async (_, sku) => this.products.findById(sku));
   }
 
   /**

@@ -6,15 +6,12 @@
     'use strict';
 
 
-    const axios = require("axios")
-      , express = require("express")
-      , app = express.Router()
-      , common    = require("../common")
-      , endpoints = require("../endpoints")
-      , helpers = require("../../helpers")
-      , mock = require("../../helpers/mock");
-
-    const tracker = common.getSvcTracker('user');
+    const express = require("express"),
+          app = express.Router(),
+          common    = require("../common"),
+          endpoints = require("../endpoints"),
+          helpers = require("../../helpers"),
+          mock = require("../../helpers/mock");
 
     function profile(req, res) {
         common.getCustomer(req)
@@ -40,9 +37,9 @@
     async function updateCart(req, customerId) {
       const cartId = req.session.cartId;
       if (cartId) {
-          return axios.post(endpoints.cartsUrl + "/" + cartId, {
-            customerId: customerId
-          });
+        return req.svcClient('update:cart').post(endpoints.cartsUrl + "/" + cartId, {
+          customerId: customerId
+        }).catch(() => { /* noop */ });
       }
     }
 
@@ -71,62 +68,57 @@
 
     // Create an address
     app.post("/address", function(req, res, next) {
-        axios.post(resourceUri(req, 'addresses'), req.body)
-            .then(({ status, data }) => res.status(status).json(data))
-            .then(() => tracker(req, 'create:address'))
-            .catch(next);
+      req.svcClient('create:address').post(resourceUri(req, 'addresses'), req.body)
+        .then(({ status, data }) => res.status(status).json(data))
+        .catch(next);
     });
 
     // get a single address
     app.get("/address", function(req, res, next) {
-        axios.get(resourceUri(req, 'addresses'))
-            .then(({ data }) => res.json(data.pop()))
-            .catch(next);
+      req.svcClient('get:address').get(resourceUri(req, 'addresses'))
+        .then(({ data }) => res.json(data.pop()))
+        .catch(next);
     });
 
     // Fetch a single card for the user
     app.get("/card", function(req, res, next) {
-        axios.get(resourceUri(req, 'cards'))
-            .then(({ data }) => res.json(data.pop()))
-            .catch(next);
+      req.svcClient('get:card').get(resourceUri(req, 'cards'))
+        .then(({ data }) => res.json(data.pop()))
+        .catch(next);
     });
 
     // create a stored card
     app.post("/card", function(req, res, next) {
-        axios.post(resourceUri(req, 'cards'), req.body)
-            .then(({ status, data }) => res.status(status).json(data))
-            .then(() => tracker(req, 'create:card'))
-            .catch(next);
+      req.svcClient('create:card').post(resourceUri(req, 'cards'), req.body)
+        .then(({ status, data }) => res.status(status).json(data))
+        .catch(next);
     });
 
     // Delete Customer
     app.delete("/customers/:id", function(req, res, next) {
-        axios.delete(endpoints.customersUrl + "/" + req.params.id)
-            .then(({ status, data }) => res.status(status).json(data))
-            .catch(next);
+      req.svcClient('delete:customer').delete(endpoints.customersUrl + "/" + req.params.id)
+        .then(({ status, data }) => res.status(status).json(data))
+        .catch(next);
     });
 
     // Delete Address
     app.delete("/addresses/:id", function(req, res, next) {
-        axios.delete(resourceUri(req, 'addresses') + "/" + req.params.id)
-            .then(({ status, data }) => res.status(status).json(data))
-            .then(() => tracker(req, 'delete:address'))
-            .catch(next);
+      req.svcClient('delete:address').delete(resourceUri(req, 'addresses') + "/" + req.params.id)
+        .then(({ status, data }) => res.status(status).json(data))
+        .catch(next);
     });
 
     // Delete Card
     app.delete("/cards/:id", function(req, res, next) {
-        axios.delete(resourceUri(req, 'cards') + "/" + req.params.id)
-            .then(({ status, data }) => res.status(status).json(data))
-            .then(() => tracker(req, 'delete:card'))
-            .catch(next);
+      req.svcClient('delete:card').delete(resourceUri(req, 'cards') + "/" + req.params.id)
+        .then(({ status, data }) => res.status(status).json(data))
+        .catch(next);
     });
 
     app.post("/register", async (req, res, next) => {
         try {
-            const { status, data: user } = await axios.post(endpoints.registerUrl, req.body);
-            await updateCart(req, user.id).catch(() => {/* noop */});
-            await tracker(req, 'register', { id: user.id });
+            const { status, data: user } = await req.svcClient('user:register').post(endpoints.registerUrl, req.body);
+            await updateCart(req, user.id);
             helpers.setAuthenticated(req, res, user.id)
                    .status(status)
                    .json({ id: user.id });
@@ -140,12 +132,11 @@
             // client uses basic-auth
             const auth = req.get('authorization');
             const [username, password] = Buffer.from(auth.replace(/^\w+\s/, ''), 'base64').toString('utf8').split(':');
-            const { data: user } = await axios.post(endpoints.loginUrl, {
+            const { data: user } = await req.svcClient('user:login').post(endpoints.loginUrl, {
                 username,
                 password,
             });
-            await updateCart(req, user.id).catch(() => {/* noop */});
-            await tracker(req, 'login', { id: user.id });
+            await updateCart(req, user.id);
             helpers.setAuthenticated(req, res, user.id)
                    .status(200)
                    .send('OK');
@@ -155,7 +146,7 @@
     });
 
     app.get('/logout', async (req, res) => {
-        await tracker(req, 'logout', { id: helpers.getCustomerId(req) });
+        await helpers.trackEvents(req, { events: [{type: 'user:logout'}]});
         helpers.setAuthenticated(req, res, false)
             .send();
     });

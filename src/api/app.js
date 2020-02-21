@@ -43,7 +43,7 @@ api.use(orders);
 api.use(user);
 api.use(newsletter);
 // mount to app
-app.use(helpers.tracingMiddleware);
+app.use(helpers.svcClientMiddleware);
 app.use(api); // back-compat with weave
 app.use('/api', api); // expose services as `/api/{service}`
 
