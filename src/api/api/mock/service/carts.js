@@ -23,7 +23,7 @@ module.exports = class MockCartsService extends MockServiceAbstract {
     this.carts = new MockDb();
 
     // replace method in common
-    this.replaceCommon('getCartItems', async id => this.getCart(id).items.all());
+    this.replaceCommon('getCartItems', async (_, id) => this.getCart(id).items.all());
   }
 
   /**
@@ -41,7 +41,7 @@ module.exports = class MockCartsService extends MockServiceAbstract {
       const { id, quantity } = req.body;
       const { id: cartId, items } = this.getCartForReq(req);
       try {
-        const product = await common.getProduct(id);
+        const product = await common.getProduct(req, id);
         const item = items.first(row => id === row.itemId) || MockDb.record();
         items.upsert(item.id, {
           ...item,
@@ -60,7 +60,7 @@ module.exports = class MockCartsService extends MockServiceAbstract {
       const { id, quantity } = req.body;
       const { id: cartId, items } = this.getCartForReq(req);
       try {
-        const product = await common.getProduct(id);
+        const product = await common.getProduct(req, id);
         const item = items.first(row => id === row.itemId) || MockDb.record();
         items.upsert(item.id, {
           ...item,

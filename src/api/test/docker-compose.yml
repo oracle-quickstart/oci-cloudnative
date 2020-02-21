@@ -31,15 +31,29 @@ services:
       - reschedule:on-node-failure
       - OADB_SERVICE=mock
       - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+
+  payment:
+    image: iad.ocir.io/oracle/ateam/mushop-payment:0.0.1
+    hostname: payment
+    restart: always
   
   orders:
-    image: iad.ocir.io/oracle/ateam/mushop-orders:1.1.0
+    image: iad.ocir.io/oracle/ateam/mushop-orders:2.0.0
     hostname: orders
     restart: always
     environment:
       - reschedule:on-node-failure
       - OADB_SERVICE=mock
+      - NATS_HOST=nats
+      - NATS_PORT=4222
+      - ORDERS_NEW=mushop-orders
+      - ORDERS_SHIPPED=mushop-shipments
       - JAVA_OPTS=-Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+
+  nats:
+    image: nats:2.1.2
+    hostname: nats
+    restart: always
 
   user:
     image: iad.ocir.io/oracle/ateam/mushop-user:1.1.0

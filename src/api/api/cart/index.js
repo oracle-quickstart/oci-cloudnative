@@ -5,31 +5,27 @@
 (function (){
   'use strict';
 
-  const axios = require("axios")
-    , express   = require("express")
-    , helpers   = require("../../helpers")
-    , endpoints = require("../endpoints")
-    , common = require("../common")
-    , app       = express.Router()
-
-  const tracker = common.getSvcTracker('cart');
+  const express   = require("express"),
+        helpers   = require("../../helpers"),
+        endpoints = require("../endpoints"),
+        common = require("../common"),
+        app       = express.Router();
 
   // List items in cart for current logged in user.
   app.get("/cart", function (req, res, next) {
     const cartId = helpers.getCartId(req);
 
-    common.getCartItems(cartId)
+    common.getCartItems(req, cartId)
       .then(data => res.json(data))
-      .catch(next);
+      .catch(() => res.json([]));
   });
 
   // Delete cart
   app.delete("/cart", function (req, res, next) {
     const cartId = helpers.getCartId(req);
 
-    axios.delete(endpoints.cartsUrl + "/" + cartId)
+    req.svcClient('delete:cart').delete(endpoints.cartsUrl + "/" + cartId)
       .then(({ status }) => helpers.respondStatus(res, status))
-      .then(() => tracker(req, 'delete', {cart: cartId}))
       .catch(next);
   });
 
@@ -38,9 +34,8 @@
     const cartId = helpers.getCartId(req);
     const { id } = req.params;
 
-    axios.delete(endpoints.cartsUrl + "/" + cartId + "/items/" + id)
+    req.svcClient('delete:cartItem').delete(endpoints.cartsUrl + "/" + cartId + "/items/" + id)
       .then(({ status }) => helpers.respondStatus(res, status))
-      .then(() => tracker(req, 'delete:item', {item: id}))
       .catch(next);
   });
 
@@ -54,10 +49,10 @@
     }
     try {
       // lookup product information
-      const product = await common.getProduct(item.id);
+      const product = await common.getProduct(req, item.id);
       // post to cart items with default quantity
 
-      const { status } = await axios.post(endpoints.cartsUrl + "/" + cartId, {
+      const { status } = await req.svcClient('cart:addItem').post(endpoints.cartsUrl + "/" + cartId, {
         customerId: helpers.isLoggedIn(req) ? req.session.customerId : null,
         items: [{
           itemId: product.id,
@@ -69,7 +64,6 @@
       if (status !== 201 && status != 200) {
         return next(helpers.createError("Unable to add to cart. Status code: " + status, status));
       }
-      await tracker(req, 'add:item', {item: item.id, price: product.price})
       helpers.respondStatus(res, status);
     } catch (e) {
       next(e);
@@ -91,19 +85,19 @@
 
     try {
       // lookup product information
-      const product = await common.getProduct(item.id);
+      const product = await common.getProduct(req, item.id);
       // patch cart
-      const { status } = await axios.patch(endpoints.cartsUrl + "/" + cartId + "/items", {
-        itemId: product.id,
-        unitPrice: product.price,
-        quantity: ~~item.quantity,
-      });
+      const { status } = await req.svcClient('update:cartItem')
+        .patch(endpoints.cartsUrl + "/" + cartId + "/items", {
+          itemId: product.id,
+          unitPrice: product.price,
+          quantity: ~~item.quantity,
+        });
 
       // verify accepted
       if (status !== 202 && status !== 200) {
         return next(helpers.createError("Unable to update cart. Status code: " + status, status));
       }
-      await tracker(req, 'update:item', {item: item.id, quantity: item.quantity})
       helpers.respondStatus(res, status);
     } catch (e) {
       next(e);

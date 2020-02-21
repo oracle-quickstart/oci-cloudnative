@@ -42,6 +42,7 @@ server: kill-server
 		-e ORDERS_URL=http://orders \
 		-e USERS_URL=http://user \
 		-e EVENTS_URL=http://events \
+		-e MOCK_MODE=$(MOCK_MODE) \
 		-e NODE_ENV=development \
 		-e PORT=3000            \
 		-p 8080:3000            \
