@@ -28,16 +28,30 @@ jobs:
               # Get the folder name and prefix it with "mushop"
               # E.g. "mushop-api", "mushop-fulfillment"
               IMAGE_NAME="mushop-$(cut -d "/" -f 2 <<< "$folder")"
-
-              tmpTag="image-$RANDOM"
-              docker build $folder --file $folder/Dockerfile --tag $tmpTag
-
-              IMAGE_ID=${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPOSITORY }}/$IMAGE_NAME
               VERSION=$(cat $versionFilePath)
 
-              echo IMAGE_ID=$IMAGE_ID
-              echo VERSION=$VERSION
+              SEMREG='[^0-9]*\([0-9]*\)[.]\([0-9]*\)[.]\([0-9]*\)\([0-9A-Za-z-]*\)'
+              SEM=`echo $VERSION | sed -e "s#^v##"`
+              TAGS=$SEM
+              MAJOR=`echo $SEM | sed -e "s#$SEMREG#\1#"`
+              MINOR=`echo $SEM | sed -e "s#$SEMREG#\2#"`
+              PATCH=`echo $SEM | sed -e "s#$SEMREG#\3#"`
+              SPECIAL=`echo $SEM | sed -e "s#$SEMREG#\4#"`
+              # add semantic tags
+              if [ "$MAJOR" != "$SEM" ] && [ -z "$SPECIAL" ]; then
+                  TAGS="$SEM $MAJOR.$MINOR $MAJOR latest"
+                  if [ -n "$SPECIAL" ]; then
+                      TAGS="$MAJOR.$MINOR.$PATCH $TAGS"
+                  fi
+              fi
 
-              docker tag $tmpTag $IMAGE_ID:$VERSION
-              docker push $IMAGE_ID:$VERSION
+              tmpImage="image-$RANDOM"
+              docker build $folder --file $folder/Dockerfile --tag $tmpImage
+              IMAGE_ID=${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPOSITORY }}/$IMAGE_NAME
+
+              for tag in $TAGS; do
+                echo -e "\nTagging and pushing: ${IMAGE_ID}:${tag}"
+                docker tag $tmpImage $IMAGE_ID:$tag
+                docker push $IMAGE_ID:$tag
+              done
             done;
