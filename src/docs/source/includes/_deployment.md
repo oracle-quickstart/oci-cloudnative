@@ -478,7 +478,7 @@ helm chart is installed using settings to leverage cloud backing services.
 1. Wait for deployment pods to be **RUNNING** and init pods to show **COMPLETED**:
 
     ```shell
-    kubectl get pods --watch
+    kubectl get pods -n mushop --watch
     ```
 
     ```text
