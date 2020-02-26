@@ -1153,7 +1153,7 @@ Database (<code>oadb-*</code>), stream (<code>oss-*</code>), and bucket (<code>o
 </code></pre></li>
 </ul></li>
 <li><p>Wait for deployment pods to be <strong>RUNNING</strong> and init pods to show <strong>COMPLETED</strong>:</p>
-<pre class="highlight shell tab-shell"><code>kubectl get pods --watch
+<pre class="highlight shell tab-shell"><code>kubectl get pods -n mushop --watch
 </code></pre><pre class="highlight plaintext"><code>NAME                                  READY   STATUS      RESTARTS   AGE
 mushop-api-769c4d9fd8-hp7mc           1/1     Running     0          31s
 mushop-assets-dd5756599-pxngg         1/1     Running     0          33s
