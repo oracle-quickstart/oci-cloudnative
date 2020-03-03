@@ -22,6 +22,7 @@ env:
   zipkin: zipkin.jaeger.svc.cluster.local
   javaOpts: -Xms32m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=INFO  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
   tnsAdmin: "/app/config"
+  javaOpts: -Xms32m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=INFO  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false -Doracle.jdbc.fanEnabled=false
   natsHost: "nats"
   natsPort: 4222
   newOrdersSubject: mushop-orders
