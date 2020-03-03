@@ -30,16 +30,20 @@ In addition to these Cloud Native topics, MuShop demonstrates the use of several
 
 ### MuShop Services
 
+![services](images/mushop.services.png "MuShop Services")
+
 | Service | Technology  | Cloud Services | Description |
 | --- | --- | --- | --- |
 | `src/api` | Node.js   | | Storefront API |
+| `src/assets` | Node.js   | Object Storage | Product images |
 | `src/carts` | Java | Autonomous DB (ATP) | Shopping cart |
 | `src/catalogue` | Go | Autonomous DB (ATP) | Product catalogue |
+| `src/dbtools` | Linux | Autonomous DB (ATP) | Database schema initializations |
+| `src/edge-router` | traefik  |  | Request routing |
+| `src/events` | Go | Streaming | Application event data collection |
+| `src/fulfillment` | Java |  | Order processing |
 | `src/functions/newsletter-subscription` | Node.js | Functions | Newsletter subscription |
 | `src/orders` | Java | Autonomous DB (ATP)   | Customer orders |
 | `src/payments` | Go | | Payment processing |
-| `src/router` | traefik  |  | Request routing |
-| `src/shipping` | Java | Streaming | Shipping producer |
-| `src/stream` | Java | Streaming | Shipping fulfillment |
 | `src/storefront` | JavaScript  |  | Store UI |
 | `src/user` | TypeScript | Autonomous DB (ATP)  | Customer accounts, AuthN |

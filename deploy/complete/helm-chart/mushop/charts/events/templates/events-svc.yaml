@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "events.fullname" . }}
+  labels:
+{{ include "events.labels" . | indent 4 }}
+spec:
+  selector:
+    app.kubernetes.io/name: {{ include "events.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+  ports:
+    - port: {{ .Values.service.port }}
+      name: http
+      targetPort: 8080

@@ -14,7 +14,7 @@ const nodeMax = (list, prop) => list.reduce((last, item) => Math.max(last, item[
 const toSymbol = icon => icon ? `image://${icon}` : 'circle';
 
 const [SYMBOL_SVC, SYMBOL_TECH] = [40, 80];
-const [AXIS_TOP] = [50];
+const [AXIS_TOP, AXIS_LEFT] = [65, 55];
 
 // create ids
 createIds(toArray(ServiceType));
@@ -39,12 +39,16 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
     return this.context.get('basic');
   }
 
+  offsetTop() {
+    return ~~this._ctxProp('offset-top');
+  }
+
   chartData() {
 
-    const gridDim = 10 + SYMBOL_SVC;
+    // const gridDim = 10 + SYMBOL_SVC;
 
-    const col = n => n * gridDim;
-    const row = n => n * gridDim;
+    const col = n => n;
+    const row = n => n;
     const setCord = (svc, x, y, ...rest) => Object.assign(svc, { x, y }, ...rest);
 
     const isBasic = this.isBasic();
@@ -59,37 +63,45 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
       // basic coordinates
       setCord(data.LB, col(0), row(0.5));
       
-      setCord(data.API, col(1), row(0.75));
-      setCord(data.STORE, col(1), row(0.25));
-      setCord(data.CATALOG, col(2), row(0.5));
+      setCord(data.API, col(1), row(0.25));
+      setCord(data.STORE, col(1), row(0.75));
+      setCord(data.CATALOG, col(2), row(0.25));
 
-      setCord(data.ATP, col(3), row(0.25));
+      setCord(data.ATP, col(2.9), row(.25));
       setCord(data.BUCKET, col(3), row(1));
     } else {
       // full system coordinates
       setCord(data.DNS, col(1), row(0.05));
       setCord(data.WAF, col(2), row(0.05));
-      setCord(data.LB, col(3.1), row(0.05));
+      setCord(data.LB, col(3), row(0.05));
 
-      setCord(data.BUCKET, col(7), row(0));
-      setCord(data.ATP, col(5), row(0));
-      setCord(data.STREAMING, col(6), row(0), { label: { offset: [0, 10] }});
+      setCord(data.BUCKET, col(4.5), row(0));
+      setCord(data.STREAMING, col(5.5), row(0), { label: { offset: [0, 10] }});
+      setCord(data.ATP, col(7.5), row(0));
 
-      setCord(data.INGRESS, col(3.1), row(1));
-      setCord(data.EDGE_ROUTER, col(2), row(1));
-      setCord(data.STORE, col(1), row(2));
-      setCord(data.API, col(3), row(2));
-      setCord(data.SESSION, col(4), row(3));
+      setCord(data.INGRESS, col(1), row(1));
+      setCord(data.EDGE_ROUTER, col(1.5), row(2));
 
-      setCord(data.CATALOG, col(6), row(1), skew.go);
-      setCord(data.CART, col(6), row(3), skew.java);
-      setCord(data.ORDERS, col(7), row(2), skew.java);
+      setCord(data.STORE, col(2), row(2.5));
+      setCord(data.ASSETS, col(2), row(1.5));
+      setCord(data.API, col(2.5), row(2));
 
-      setCord(data.SHIPPING, col(7), row(1), skew.java);
-      setCord(data.STREAM, col(8), row(1), skew.java);
-      setCord(data.PAYMENT, col(8), row(2), skew.go);
+      setCord(data.EVENTS, col(3.5), row(1), skew.go);
+      setCord(data.SESSION, col(3.5), row(3));
 
-      setCord(data.USER, col(6), row(2));
+      setCord(data.CATALOG, col(5), row(2), skew.go);
+      setCord(data.CART, col(5), row(3), skew.java);
+
+      setCord(data.ORDERS, col(6), row(2), skew.java);
+      setCord(data.NATS, col(7), row(2));
+      setCord(data.FULFILLMENT, col(7), row(1));
+
+      setCord(data.APIGW, col(6.5), row(0));
+      setCord(data.SUBSCRIBE, col(8), row(1));
+      setCord(data.EMAIL, col(8), row(2));
+
+      setCord(data.PAYMENT, col(7), row(3), skew.go);
+      setCord(data.USER, col(5), row(1));
     }
 
     const nodes = toArray(data)
@@ -104,13 +116,18 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
   }
 
   serviceSeries(data, links, categories) {
+    // positioning adjustments
+    const topAxis = (this.offsetTop() + AXIS_TOP) * (this.isBasic() ? 2 : 1);
     return {
       data,
       links,
       categories,
       type: 'graph',
       layout: 'none',
-      top: AXIS_TOP * (this.isBasic() ? 2 : 1),
+      top: topAxis ,
+      left: AXIS_LEFT,
+      right: AXIS_LEFT,
+      // bottom: AXIS_BOTTOM,
       roam: false,
       focusNodeAdjacency: true,
       itemStyle: {
@@ -122,7 +139,7 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
         }
       },
       symbolKeepAspect: true,
-      edgeSymbol: ['none', 'arrow'],
+      edgeSymbol: ['none', 'circle'],
       edgeSymbolSize: [10, 10],
       label: {
         show: true,
@@ -136,7 +153,8 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
       lineStyle: {
         color: 'target',
         opacity: 0.3,
-        curveness: 0.15
+        curveness: 0.2,
+        width: 2,
       },
       emphasis: {
         lineStyle: {
@@ -166,7 +184,6 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
     return {
       type: 'custom',
       data: techs,
-      // top: AXIS_TOP,
       left: 0,
       symbolSize: SYMBOL_TECH,
       symbolKeepAspect: true,
@@ -206,7 +223,8 @@ export class MuServiceChart extends MuMx.compose(null, ViewTemplateMixin) {
   chartOptions(data, links, categories) {
     return {
       tooltip: {
-        formatter: p => p.dataType === 'node' ? `${p.data.tech.name}: ${p.name} (${p.data.type.name})` : '',
+        formatter: p => p.dataType === 'node' ? 
+          (p.data.tech.name + ': ' + (p.data.type.name !== p.name ? `${p.name} (${p.data.type.name})` : p.name)) : '',
       },
       legend: [{
         top: 0,

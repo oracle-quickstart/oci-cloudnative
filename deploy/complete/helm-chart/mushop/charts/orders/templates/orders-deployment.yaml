@@ -8,7 +8,6 @@ spec:
   selector:
     matchLabels:
       app: {{ .Chart.Name }}
-      version: {{ .Values.image.tag | quote }}
       app.kubernetes.io/name: {{ include "orders.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:

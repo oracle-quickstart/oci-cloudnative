@@ -78,7 +78,7 @@ services:
 
   # Storefront backend API service
   storefront:
-    image: iad.ocir.io/oracle/ateam/mushop-storefront:2.1.0
+    image: iad.ocir.io/oracle/ateam/mushop-storefront:2.1.1
     hostname: storefront
     restart: always
     cap_drop:
@@ -195,7 +195,7 @@ services:
 
 # Fulfillment service
   fulfillment:
-    image: iad.ocir.io/oracle/ateam/mushop-fulfillment:1.0.0
+    image: iad.ocir.io/oracle/ateam/mushop-fulfillment:1.0.1
     ports: 
       - 8087:80
     hostname: fulfillment

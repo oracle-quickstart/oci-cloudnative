@@ -9,7 +9,6 @@ spec:
   selector:
     matchLabels:
       app: {{ .Chart.Name }}
-      version: {{ .Values.image.tag | quote }}
       app.kubernetes.io/name: {{ include "api.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
@@ -40,6 +39,8 @@ spec:
             value: http://{{ .Release.Name }}-carts
           - name: USERS_URL
             value: http://{{ .Release.Name }}-user
+          - name: EVENTS_URL
+            value: http://{{ .Release.Name }}-events
           - name: STATIC_MEDIA_URL
             value: {{ .Values.env.mediaUrl }}
           - name: NEWSLETTER_SUBSCRIBE_URL

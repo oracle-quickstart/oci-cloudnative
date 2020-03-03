@@ -40,6 +40,9 @@ main {
   }
   &.embedded {
     margin: 0!important;
+    figure {
+      margin: 0;
+    }
   }
 
   + footer {
@@ -431,14 +434,18 @@ main {
 
   &.mu-tech-edge {
     bottom: auto;
-    height: 15%;
-    top: 33px;
-    right: 68%;
+    height: 20%;
+    right: 60%;
+    top: 40px;
+    @media (min-width: @breakpoint-medium) {
+      right: 64%;
+      height: 14.5%;
+    }
   }
 
   &.mu-tech-compute {
     top: 18%;
-    bottom: 18%;
+    bottom: 10%;
     left: 20%;
     right: 20%;
     height: auto;
@@ -457,11 +464,18 @@ main {
     border-color: @color-blue;
     top: 32%;
     height: auto;
+    right: 10%;
     @media (min-width: @breakpoint-medium) {
-      top: 24%;
+      top: 26%;
     }
     img {
       margin: @global-small-margin;
+    }
+    .k8s-tools {
+      img {
+        max-height: 40px;
+        margin: @global-xsmall-margin;
+      }
     }
   }
 

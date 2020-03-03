@@ -11,8 +11,8 @@ Revisit the application charts and connect to some Grafana dashboards:
 
     ```text
     NAME                    NAMESPACE               REVISION        UPDATED                                 STATUS          CHART                           APP VERSION
-    mushop                  mushop                  1               2020-01-31 21:14:48.511917 -0600 CST    deployed        mushop-0.1.0                    1.0         
-    mushop-utils          mushop-utilities        1               2020-01-31 20:32:05.864769 -0600 CST    deployed        mushop-setup-0.0.1              1.0          
+    mushop                  mushop                  1               2020-01-31 21:14:48.511917 -0600 CST    deployed        mushop-0.1.0                    1.0
+    mushop-utils            mushop-utilities        1               2020-01-31 20:32:05.864769 -0600 CST    deployed        mushop-setup-0.0.1              1.0
     ```
 
 1. Get the Grafana outputs from the `mushop-utils` (setup chart) installation:

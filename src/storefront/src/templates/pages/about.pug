@@ -32,11 +32,15 @@ block article
             | with <b>Oracle Cloud Infrastructure</b>. Below is a view of the holistic 
             | application architecture and services.
           //- full service diagram
-          div.tm-ratio.tm-ratio-2-1
+          div.tm-ratio.tm-ratio-16-9
             div.mu-tech.mu-tech-oci.uk-animation-fade(mu-tech-box="OCI" mu-hide="hide.oci")
               img.mu-tech-img.uk-position-top-right(uk-img data-src="images/tech/oci.png")
             div.mu-tech.mu-tech-oke.uk-animation-fade(mu-tech-box="OKE" mu-hide="hide.oke")
               img.mu-tech-img.uk-position-bottom-left(uk-img data-src="images/tech/k8s.png")
+            //-   div(class="k8s-tools uk-position-bottom-right uk-visible@s")
+            //-     img.mu-tech-img(uk-img data-src="images/tech/osbroker.png" title="Open Service Broker")
+            //-     img.mu-tech-img(uk-img data-src="images/tech/prometheus.png" title="Prometheus")
+            //-     img.mu-tech-img(uk-img data-src="images/tech/grafana.png" title="Grafana")
             div.mu-tech.mu-tech-edge.uk-animation-fade(mu-tech-box="EDGE" mu-hide="hide.edge")
             figure(mu-chart options="services.chart" onInit="initChart")
         
@@ -86,7 +90,7 @@ block article
                     td(mu-html="svc.name")
                     td(mu-html="svc.type.name")
                     td(mu-html="svc.techref.name")
-                    td ...
+                    td(mu-html="svc.desc")
             
             li
               table(class="uk-table " +
@@ -96,20 +100,15 @@ block article
                 "uk-table-striped")
                 tbody
                   tr
-                    th Subscribe
-                    td Email subscriptions are mocked, and no emails will be sent to addresses entered on the site
-                    td.uk-text-muted
-                      span.uk-label.uk-label-warning mock
-                  tr
                     th CMS
                     td A CMS system is intentionally omitted from the demo app
                     td.uk-text-muted
                       +icon('ban')
                   tr
-                    th Search
-                    td Search/Filter functionality has been limited to the client only
-                    td
-                      span.uk-label.uk-label-warning client-side
+                    th Administration
+                    td A store administration console is not available
+                    td.uk-text-muted
+                      +icon('ban')
                   tr
                     th Reviews
                     td Reviews are a normal part of eCommerce, but removed here for simplicity
