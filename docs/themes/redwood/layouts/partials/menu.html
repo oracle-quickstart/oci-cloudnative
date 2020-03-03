@@ -1,0 +1,132 @@
+<!-- top nav -->
+<div class="uk-navbar-container uk-hidden@s">
+  <div class="">
+    <nav role="navigation" class="uk-light uk-navbar" uk-navbar>
+      <div class="uk-navbar-left">
+        <a href="{{ .Site.BaseURL }}" class="uk-navbar-item uk-logo">
+          <img src="{{ printf "images/%s" .Site.Params.logo | relURL }}" alt="{{ .Site.Title }}">
+        </a>
+      </div>
+      <div class="uk-navbar-right">
+        <a class="uk-navbar-toggle" uk-navbar-toggle-icon uk-toggle="target: #navigation"></a>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<!-- begin main grid -->
+<div class="uk-grid">
+  <!-- left nav -->
+  {{ $navWidths := "uk-width-1-1 uk-width-1-4@s uk-width-1-5@m uk-width-1-6@xl"}}
+  <aside
+    id="navigation"
+    class="rw-sidebar-left uk-offcanvas {{ $navWidths }} uk-light uk-padding-remove"
+    uk-offcanvas="overlay: true;">
+    <div class="uk-offcanvas-bar uk-padding-small">
+      <!-- content -->
+      {{ $currentNode := . }}
+      <section>
+        <div class="uk-margin-bottom uk-visible@s">
+          <a href="{{ .Site.BaseURL }}" class="uk-logo">
+            <img src="{{ printf "images/%s" .Site.Params.logo | relURL }}" alt="{{ .Site.Title }}">
+          </a>
+        </div>
+        <div class="uk-margin-bottom">
+          {{ partial "search.html" . }}
+        </div>
+        <ul class="uk-nav uk-nav-primary" uk-nav="multiple: true; toggle: > a .uk-icon">
+          <li class="uk-nav-divider"></li>
+          {{ range .Site.Home.Sections.ByWeight }}
+            {{ template "tree-nav" dict "sect" . "currentnode" $currentNode }}
+          {{ end }}
+          <li class="uk-nav-divider"></li>
+        </ul>
+      </section>
+      <!-- shortcuts -->
+      <section>
+        <ul class="uk-nav uk-nav-default" uk-nav>
+          <li class="uk-nav-header">{{ T "menu-shortcuts-title" }}</li>
+          {{ with .Site.Menus.shortcuts }}
+          {{ range sort . "Weight"}}
+          <li>
+            <a title="{{ safeHTML .Name }}" href="{{ .URL | absLangURL }}" class="uk-text-truncate">
+              {{ .Pre }}
+              <span class="uk-text-middle">{{ safeHTML .Name }}</span>
+              {{ .Post }}
+            </a>
+          </li>
+          {{ end }}
+          {{ end }}
+          {{ if and (or .IsPage .IsSection) .Site.Params.editURL }}
+            {{ $File := .File }}
+            {{ $Site := .Site }}
+            {{with $File.Path }}
+            <li>
+              <a title='{{T "edit-this-page"}}' href="{{ $Site.Params.editURL }}{{ replace $File.Dir "\\" "/" }}{{ $File.LogicalName }}" target="blank">
+                <span uk-icon="pencil"></span>
+                <span class="uk-text-middle">{{T "edit-this-page"}}</span>
+              </a>
+            </li>
+            {{ end }}
+          {{ end }}
+        </ul>
+      </section>
+      <section class="uk-position-bottom uk-padding-small uk-text-small uk-section-secondary">
+        <hr>
+        {{ partial "menu-footer.html" . }}
+      </section>
+    </div>
+  </aside>
+  <!-- spacer -->
+  <div class="{{ $navWidths }} uk-margin-medium-left uk-visible@s"></div>
+
+<!-- templates -->
+{{ define "tree-nav" }}
+{{ $currentNode := .currentnode }}
+{{ with .sect }}
+  {{ if and .IsSection ((not .Params.hidden) or $.showhidden) }}
+  {{ $numberOfPages := (add (len .Pages) (len .Sections)) }}
+  {{ $isParent := gt $numberOfPages 0 }}
+  <li data-nav-id="{{ .RelPermalink }}" title="{{ .Title }}" class="dd-item
+    {{- if $isParent }} uk-parent{{ end -}}
+    {{- if .IsAncestor $currentNode }} uk-open{{ end -}}
+    {{- if eq .File.UniqueID $currentNode.File.UniqueID}} uk-active{{ end -}}
+    {{- if .Params.alwaysopen }} uk-parent{{ end -}}">
+    <a href="{{ .RelPermalink }}" class="uk-text-truncate">
+      <span class="uk-flex uk-flex-between uk-flex-middle">
+        <span>{{ safeHTML .Params.Pre }}{{ or .Params.menuTitle .LinkTitle .Title }}{{ safeHTML .Params.Post }}</span>
+        {{- if $isParent -}}
+        <span uk-icon="icon: triangle-right; ratio: 1.5"></span>
+        {{- end }}
+      </span>
+    </a>
+    
+    {{ if $isParent }}
+    <ul class="uk-nav-sub">
+      {{ $currentNode.Scratch.Set "pages" .Pages }}
+      {{ if .Sections}}
+        {{ $currentNode.Scratch.Set "pages" (.Pages | union .Sections) }}
+      {{end}}
+      {{ $pages := ($currentNode.Scratch.Get "pages") }}
+      
+      {{ range $pages.ByWeight }}
+        {{ if and .Params.hidden (not $.showhidden) }} 
+        {{else}}
+        {{ template "tree-nav" dict "sect" . "currentnode" $currentNode }}
+        {{end}}
+      {{ end }}
+    </ul>
+  {{ end }}
+  </li>
+  {{ else }}
+    {{ if not .Params.Hidden }}
+    <li data-nav-id="{{.RelPermalink}}" title="{{.Title}}" class="dd-item {{if eq .File.UniqueID $currentNode.File.UniqueID}}uk-active{{end}}">
+      <a href="{{ .RelPermalink}}" class="uk-text-truncate">
+      {{ safeHTML .Params.Pre }}{{or .Params.menuTitle .LinkTitle .Title}}{{ safeHTML .Params.Post }}
+      </a>
+    </li>
+    {{ end }}
+  {{ end }}
+
+ {{ end }}
+{{ end }}

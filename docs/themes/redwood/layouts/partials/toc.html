@@ -1,0 +1,8 @@
+{{ $toc := (and (not .Params.disableToc) (not .Params.chapter)) }}
+{{ if $toc }}
+<aside id="">
+  <nav role="navigation" class="uk-offcanvas-bar">
+    {{ .TableOfContents }}
+  </nav>
+</aside>
+{{ end }}

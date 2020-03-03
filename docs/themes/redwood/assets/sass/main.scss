@@ -1,0 +1,64 @@
+/**
+ * Copyright © 2020, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
+
+// Customized uikit
+@import "uikit/uikit";
+@import "variables";
+
+// Nav
+.uk-navbar {
+  .uk-logo img {
+    max-height: $navbar-nav-item-height - 10;
+  }
+}
+
+// Headings
+h1 {
+  margin-top: $global-medium-margin;
+}
+// h2, h3 {
+//   font-family: $rw-secondary-font-family;
+// }
+
+// Side nav
+.rw-sidebar-left {
+  @media screen and (min-width: $breakpoint-small) {
+    display: block;
+    .uk-offcanvas-bar {
+      left: 0;
+      width: 100%;
+      transform: none;
+      padding-bottom: $global-xlarge-margin;
+    }
+  }
+}
+
+// Extra features
+//...
+
+// Navigation
+.uk-nav {
+  .uk-open {
+    .uk-icon {
+      transform: rotate(90deg);
+    }
+  }
+}
+
+// heading accents
+[class*="rw-accent"] {
+  &:after {
+    content: '';
+    display: block;
+    width: $global-medium-margin;
+    height: 6px;
+    margin: $global-margin 0;
+    background: $o-red;
+  }
+  &.rw-accent-yellow:after { background: $o-yellow; }
+  &.rw-accent-orange:after { background: $o-orange; }
+  &.rw-accent-green:after { background: $o-green; }
+  &.rw-accent-blue:after { background: $o-blue; }
+}

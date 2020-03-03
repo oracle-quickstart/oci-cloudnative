@@ -2,10 +2,10 @@
 # See https://github.com/gohugoio/hugoThemes#themetoml for an example
 
 name = "Redwood"
-license = "MIT"
-licenselink = "https://github.com/yourname/yourtheme/blob/master/LICENSE"
+license = "UPL-1.0"
+licenselink = "https://github.com/oracle-quickstart/oci-cloudnative/blob/master/docs/themes/redwood/LICENSE"
 description = ""
-homepage = "http://example.com/"
+homepage = "https://oracle-quickstart.github.io/oci-cloudnative/"
 tags = []
 features = []
 min_version = "0.41"

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="{{ .Page.Language | default "en" }}">
+  {{ partial "head.html" . }}
+  <body class="" data-url="{{ .RelPermalink }}">
+    
+      {{ partial "menu.html" . }}
+
+      <div class="uk-width-expand">
+        {{ partial "header.html" . }}
+        <main>
+          {{ partial "toc.html" . }}
+          
+          {{if and (not .IsHome) (not .Params.chapter) }}
+            <h1 class="rw-accent">{{ if eq .Kind "taxonomy" }}{{ .Kind }} :: {{ end }}{{ .Title }}</h1>
+          {{end}}

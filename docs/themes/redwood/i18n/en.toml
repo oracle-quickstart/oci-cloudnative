@@ -1,0 +1,17 @@
+[search-placeholder]
+other = "Search..."
+
+[title-error]
+other = "Error"
+
+[message-404]
+other = "Woops. Looks like this page doesn't exist ¯\\_(ツ)_/¯."
+
+[go-to-homepage]
+other = "Go to homepage"
+
+[edit-this-page]
+other = "Edit this page"
+
+[menu-shortcuts-title]
+other = "More"
