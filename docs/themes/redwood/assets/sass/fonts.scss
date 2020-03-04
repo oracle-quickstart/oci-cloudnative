@@ -7,7 +7,7 @@ $o-sans: "OracleSans";
 @font-face {
   font-display: fallback;
   font-family: $o-sans;
-  src: url("fonts/OracleSans_Lt.woff2") format("woff2"), url("fonts/OracleSans_Lt.woff") format("woff"), url("fonts/OracleSans_Lt.ttf") format("truetype");
+  src: url("OracleSans_Lt.woff2") format("woff2"), url("OracleSans_Lt.woff") format("woff"), url("OracleSans_Lt.ttf") format("truetype");
   font-weight: 200;
   font-style: normal
 }
@@ -15,7 +15,7 @@ $o-sans: "OracleSans";
 @font-face {
   font-display: fallback;
   font-family: $o-sans;
-  src: url("fonts/OracleSans_LtIt.woff2") format("woff2"), url("fonts/OracleSans_LtIt.woff") format("woff"), url("fonts/OracleSans_LtIt.ttf") format("truetype");
+  src: url("OracleSans_LtIt.woff2") format("woff2"), url("OracleSans_LtIt.woff") format("woff"), url("OracleSans_LtIt.ttf") format("truetype");
   font-weight: 200;
   font-style: italic
 }
@@ -23,7 +23,7 @@ $o-sans: "OracleSans";
 @font-face {
   font-display: fallback;
   font-family: $o-sans;
-  src: url("fonts/OracleSans_Rg.woff2") format("woff2"), url("fonts/OracleSans_Rg.woff") format("woff"), url("fonts/OracleSans_Rg.ttf") format("truetype");
+  src: url("OracleSans_Rg.woff2") format("woff2"), url("OracleSans_Rg.woff") format("woff"), url("OracleSans_Rg.ttf") format("truetype");
   font-weight: 400;
   font-style: normal
 }
@@ -31,7 +31,7 @@ $o-sans: "OracleSans";
 @font-face {
   font-display: fallback;
   font-family: $o-sans;
-  src: url("fonts/OracleSans_It.woff2") format("woff2"), url("fonts/OracleSans_It.woff") format("woff"), url("fonts/OracleSans_It.ttf") format("truetype");
+  src: url("OracleSans_It.woff2") format("woff2"), url("OracleSans_It.woff") format("woff"), url("OracleSans_It.ttf") format("truetype");
   font-weight: 400;
   font-style: italic
 }
@@ -39,7 +39,7 @@ $o-sans: "OracleSans";
 @font-face {
   font-display: fallback;
   font-family: $o-sans;
-  src: url("fonts/OracleSans_SBd.woff2") format("woff2"), url("fonts/OracleSans_SBd.woff") format("woff"), url("fonts/OracleSans_SBd.ttf") format("truetype");
+  src: url("OracleSans_SBd.woff2") format("woff2"), url("OracleSans_SBd.woff") format("woff"), url("OracleSans_SBd.ttf") format("truetype");
   font-weight: 500;
   font-style: normal
 }
@@ -47,7 +47,7 @@ $o-sans: "OracleSans";
 @font-face {
   font-display: fallback;
   font-family: $o-sans;
-  src: url("fonts/OracleSans_SBdIt.woff2") format("woff2"), url("fonts/OracleSans_SBdIt.woff") format("woff"), url("fonts/OracleSans_SBdIt.ttf") format("truetype");
+  src: url("OracleSans_SBdIt.woff2") format("woff2"), url("OracleSans_SBdIt.woff") format("woff"), url("OracleSans_SBdIt.ttf") format("truetype");
   font-weight: 500;
   font-style: italic
 }
@@ -55,7 +55,7 @@ $o-sans: "OracleSans";
 @font-face {
   font-display: fallback;
   font-family: $o-sans;
-  src: url("fonts/OracleSans_Bd.woff2") format("woff2"), url("fonts/OracleSans_Bd.woff") format("woff"), url("fonts/OracleSans_Bd.ttf") format("truetype");
+  src: url("OracleSans_Bd.woff2") format("woff2"), url("OracleSans_Bd.woff") format("woff"), url("OracleSans_Bd.ttf") format("truetype");
   font-weight: 700;
   font-style: normal
 }
@@ -63,7 +63,7 @@ $o-sans: "OracleSans";
 @font-face {
   font-display: fallback;
   font-family: $o-sans;
-  src: url("fonts/OracleSans_BdIt.woff2") format("woff2"), url("fonts/OracleSans_BdIt.woff") format("woff"), url("fonts/OracleSans_BdIt.ttf") format("truetype");
+  src: url("OracleSans_BdIt.woff2") format("woff2"), url("OracleSans_BdIt.woff") format("woff"), url("OracleSans_BdIt.ttf") format("truetype");
   font-weight: 700;
   font-style: italic
 }
@@ -71,7 +71,7 @@ $o-sans: "OracleSans";
 @font-face {
   font-display: fallback;
   font-family: $o-sans;
-  src: url("fonts/OracleSans_XBd.woff2") format("woff2"), url("fonts/OracleSans_XBd.woff") format("woff"), url("fonts/OracleSans_XBd.ttf") format("truetype");
+  src: url("OracleSans_XBd.woff2") format("woff2"), url("OracleSans_XBd.woff") format("woff"), url("OracleSans_XBd.ttf") format("truetype");
   font-weight: 800;
   font-style: normal
 }
@@ -79,7 +79,7 @@ $o-sans: "OracleSans";
 @font-face {
   font-display: fallback;
   font-family: $o-sans;
-  src: url("fonts/OracleSans_XBdIt.woff2") format("woff2"), url("fonts/OracleSans_XBdIt.woff") format("woff"), url("fonts/OracleSans_XBdIt.ttf") format("truetype");
+  src: url("OracleSans_XBdIt.woff2") format("woff2"), url("OracleSans_XBdIt.woff") format("woff"), url("OracleSans_XBdIt.ttf") format("truetype");
   font-weight: 800;
   font-style: italic
 }
@@ -87,7 +87,7 @@ $o-sans: "OracleSans";
 @font-face {
   font-display: fallback;
   font-family: "Oracle Sans Condensed";
-  src: url("fonts/OracleSans_Bd.woff2") format("woff2"), url("fonts/OracleSans_Bd.woff") format("woff"), url("fonts/OracleSans_Bd.ttf") format("truetype");
+  src: url("OracleSans_Bd.woff2") format("woff2"), url("OracleSans_Bd.woff") format("woff"), url("OracleSans_Bd.ttf") format("truetype");
   font-weight: 500;
   font-style: normal
 }

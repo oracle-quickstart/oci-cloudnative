@@ -4,7 +4,7 @@
  */
 
 // Customized uikit
-@import "uikit/uikit";
+@import "uk/uikit";
 @import "variables";
 
 // Nav
@@ -30,8 +30,11 @@ h1 {
       left: 0;
       width: 100%;
       transform: none;
-      padding-bottom: $global-xlarge-margin;
     }
+  }
+  // hidden spacer
+  + * {
+    margin-left: $global-gutter;
   }
 }
 
@@ -61,4 +64,32 @@ h1 {
   &.rw-accent-orange:after { background: $o-orange; }
   &.rw-accent-green:after { background: $o-green; }
   &.rw-accent-blue:after { background: $o-blue; }
+}
+
+// Text
+.force-nowrap, .force-nowrap * {
+  white-space: nowrap!important;
+}
+
+// Search
+.rw-search-dropdown {
+  .highlight {
+    text-decoration: underline dotted;
+    -webkit-text-decoration-style: dotted;
+  }
+  .uk-text-muted {
+    color: $inverse-global-subtext-color !important;
+  }
+  .suggestion {
+    cursor: pointer;
+    a {
+      color: inherit;
+    }
+  }
+  [class*="rw-accent"] {
+    &:after {
+      height: 3px;
+      margin: $global-small-margin 0;
+    }
+  }
 }

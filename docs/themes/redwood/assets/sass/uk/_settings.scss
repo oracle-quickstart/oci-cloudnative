@@ -56,6 +56,7 @@ $global-danger-background:                       $o-red;
 $inverse-global-color:                           $global-inverse-color;
 $inverse-global-emphasis-color:                  lighten($global-inverse-color, 20%);
 $inverse-global-muted-color:                     darken($global-inverse-color, 20%);
+$inverse-global-subtext-color:                   rgba($global-inverse-color, 0.7);
 $inverse-global-inverse-color:                   $global-color;
 $inverse-global-primary-background:              $global-primary-background;
 $inverse-global-secondary-background:            $global-secondary-background;
@@ -79,6 +80,9 @@ $navbar-nav-item-color:           $global-inverse-color;
 $inverse-navbar-nav-item-color:   $global-inverse-color;
 
 // Nav
+// $inverse-nav-default-item-color:        rgba($global-inverse-color, .8);
+// $inverse-nav-default-item-hover-color:  $inverse-global-emphasis-color;
+$inverse-nav-primary-item-color:        $inverse-global-color;
 $inverse-nav-primary-item-hover-color:  $inverse-global-emphasis-color;
 
 

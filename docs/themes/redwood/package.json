@@ -4,11 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "assets": "cp -r node_modules assets/js/",
+    "postinstall": "npm run assets"
   },
   "author": "Oracle",
   "license": "UPL-1.0",
   "dependencies": {
-    "uikit": "^3.3.3"
+    "autocomplete.js": "^0.37.1",
+    "lunr": "^2.3.8",
+    "mermaid": "^8.4.8",
+    "uikit": "^3.3.3",
+    "whatwg-fetch": "^3.0.0"
   }
 }

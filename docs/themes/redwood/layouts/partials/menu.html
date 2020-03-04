@@ -17,7 +17,7 @@
 <!-- begin main grid -->
 <div class="uk-grid">
   <!-- left nav -->
-  {{ $navWidths := "uk-width-1-1 uk-width-1-4@s uk-width-1-5@m uk-width-1-6@xl"}}
+  {{ $navWidths := "uk-width-1-1 uk-width-1-3@s uk-width-1-4@m uk-width-1-5@l uk-width-1-6@xl"}}
   <aside
     id="navigation"
     class="rw-sidebar-left uk-offcanvas {{ $navWidths }} uk-light uk-padding-remove"
@@ -55,12 +55,12 @@
               {{ .Post }}
             </a>
           </li>
-          {{ end }}
-          {{ end }}
-          {{ if and (or .IsPage .IsSection) .Site.Params.editURL }}
-            {{ $File := .File }}
-            {{ $Site := .Site }}
-            {{with $File.Path }}
+          {{- end -}}
+          {{- end -}}
+          {{- if and (or .IsPage .IsSection) .Site.Params.editURL -}}
+            {{- $File := .File -}}
+            {{- $Site := .Site -}}
+            {{- with $File.Path }}
             <li>
               <a title='{{T "edit-this-page"}}' href="{{ $Site.Params.editURL }}{{ replace $File.Dir "\\" "/" }}{{ $File.LogicalName }}" target="blank">
                 <span uk-icon="pencil"></span>
@@ -71,14 +71,14 @@
           {{ end }}
         </ul>
       </section>
-      <section class="uk-position-bottom uk-padding-small uk-text-small uk-section-secondary">
+      <section class="uk-text-small uk-text-lighter uk-margin-top">
         <hr>
         {{ partial "menu-footer.html" . }}
       </section>
     </div>
   </aside>
   <!-- spacer -->
-  <div class="{{ $navWidths }} uk-margin-medium-left uk-visible@s"></div>
+  <div class="{{ $navWidths }} uk-visible@s"></div>
 
 <!-- templates -->
 {{ define "tree-nav" }}

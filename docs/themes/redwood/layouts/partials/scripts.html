@@ -1,3 +1,14 @@
-<script src="https://cdn.jsdelivr.net/npm/uikit@3.3.3/dist/js/uikit.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/uikit@3.3.3/dist/js/uikit-icons.min.js"></script>
-{{ partial "custom-scripts.html" }}
+{{/* JS asset bundling @see data/config/scripts.yaml */}}
+{{- $deps := $.Site.Data.config.scripts -}}
+{{- range $deps.scripts -}}
+{{- $name := .name -}}
+
+  {{- $.Scratch.Set $name slice -}}
+  {{- range .include -}}
+    {{- $.Scratch.Add $name (resources.Get (printf "js/%s" . )) -}}
+  {{- end -}}
+
+  {{- $js := $.Scratch.Get $name | resources.Concat (printf "js/%s.js" $name) | minify | fingerprint -}}
+  <script src="{{ $js.Permalink }}" {{ if .async}} async{{ end }}></script>
+{{- end -}}
+{{ partial "custom-scripts.html" . -}}
