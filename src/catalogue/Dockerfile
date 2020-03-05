@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2019, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2020, Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -7,7 +7,7 @@
 ARG clientVersion=19.3
 
 ##### Go Builder image
-FROM golang:1.13 AS go-builder
+FROM golang:1.14 AS go-builder
 WORKDIR /go/src/mushop/catalogue
 
 # Support for Offline local image. Online image on OCI Object Storage
@@ -19,9 +19,7 @@ COPY *.go /go/src/mushop/catalogue/
 COPY go.mod /go/src/mushop/catalogue/
 
 # Build Catalogue service
-RUN GO111MODULE=on GOARCH=amd64 GOOS=linux \
-  go build -a \
-  -installsuffix cgo \
+RUN go build -a \
   -o /app mushop/catalogue/cmd/cataloguesvc
 
 ##### Base image with Oracle Instant Client Basic Lite
