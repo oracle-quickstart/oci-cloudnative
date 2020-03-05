@@ -19,7 +19,8 @@ COPY *.go /go/src/mushop/catalogue/
 COPY go.mod /go/src/mushop/catalogue/
 
 # Build Catalogue service
-RUN go build -a \
+RUN GOARCH=amd64 GOOS=linux \
+  go build -a \
   -o /app mushop/catalogue/cmd/cataloguesvc
 
 ##### Base image with Oracle Instant Client Basic Lite
