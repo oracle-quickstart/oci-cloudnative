@@ -5,11 +5,11 @@
     
       {{ partial "menu.html" . }}
 
-      <div class="uk-width-expand uk-margin-medium-left uk-margin-medium-right uk-margin-remove-left@s uk-margin-remove-right@s">
-        {{ partial "header.html" . }}
-        <main>
+      <div class="uk-width-expand uk-margin-medium-left uk-margin-remove-left@s">
+        <div class="uk-grid uk-margin-medium-right" uk-grid>
           {{ partial "toc.html" . }}
-          
-          {{if and (not .IsHome) (not .Params.chapter) }}
-            <h1 class="rw-accent">{{ if eq .Kind "taxonomy" }}{{ .Kind }} :: {{ end }}{{ .Title }}</h1>
-          {{end}}
+          <main class="uk-width-expand uk-margin-medium-bottom">
+            {{ partial "header.html" . }}
+            {{if and (not .IsHome) (not .Params.chapter) }}
+              <h1 class="rw-accent">{{ if eq .Kind "taxonomy" }}{{ .Kind }} :: {{ end }}{{ .Title }}</h1>
+            {{end}}

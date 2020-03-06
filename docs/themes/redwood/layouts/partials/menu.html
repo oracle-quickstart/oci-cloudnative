@@ -4,7 +4,10 @@
     <nav role="navigation" class="uk-light uk-navbar" uk-navbar>
       <div class="uk-navbar-left">
         <a href="{{ .Site.BaseURL }}" class="uk-navbar-item uk-logo">
-          <img src="{{ printf "images/%s" .Site.Params.logo | relURL }}" alt="{{ .Site.Title }}">
+          <img
+            alt="{{ .Site.Title }}"
+            class="uk-width-small"
+            src="{{ .Site.Params.logo | default "images/oracle.svg" | relURL }}">
         </a>
       </div>
       <div class="uk-navbar-right">
@@ -20,7 +23,7 @@
   {{ $navWidths := "uk-width-1-1 uk-width-1-3@s uk-width-1-4@m uk-width-1-5@l uk-width-1-6@xl"}}
   <aside
     id="navigation"
-    class="rw-sidebar-left uk-offcanvas {{ $navWidths }} uk-light uk-padding-remove"
+    class="rw-sidebar uk-offcanvas {{ $navWidths }} uk-light uk-padding-remove"
     uk-offcanvas="overlay: true;">
     <div class="uk-offcanvas-bar uk-padding-small">
       <!-- content -->
@@ -28,7 +31,7 @@
       <section>
         <div class="uk-margin-bottom uk-visible@s">
           <a href="{{ .Site.BaseURL }}" class="uk-logo">
-            <img src="{{ printf "images/%s" .Site.Params.logo | relURL }}" alt="{{ .Site.Title }}">
+            <img src="{{ .Site.Params.logo | default "images/oracle.svg" | relURL }}" alt="{{ .Site.Title }}">
           </a>
         </div>
         <div class="uk-margin-bottom">
@@ -70,6 +73,9 @@
             {{ end }}
           {{ end }}
         </ul>
+      </section>
+      <section>
+        {{ partial "menu-settings" . }}
       </section>
       <section class="uk-text-small uk-text-lighter uk-margin-top">
         <hr>

@@ -2,7 +2,8 @@
 
   var _lunrIdx;
   function getLunrIdx(cb) {
-    return _lunrIdx ? cb(_lunrIdx) : fetch('index.json').then(function(response) {
+    var idx = win.Site.RelURL + '/index.json';
+    return _lunrIdx ? cb(_lunrIdx) : fetch(idx).then(function(response) {
         return response.ok ? response.json() : [];
       }).then(function(pages) {
         var idx = lunr(function() {
@@ -33,7 +34,7 @@
 
   // init autocomplete
   autocomplete('#search', {
-    // debug: true,
+    debug: true,
     hint: false,
     clearOnSelected: true,
     appendTo: '#search-results',
@@ -90,7 +91,7 @@
       }
     }
   }]).on('autocomplete:selected', function(e, sugg) {
-    
+    console.log('wwwaaa');
   });
   
   

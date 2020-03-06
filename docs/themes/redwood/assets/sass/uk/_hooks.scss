@@ -2,3 +2,16 @@
  * Copyright © 2020, Oracle and/or its affiliates. All rights reserved.
  * The Universal Permissive License (UPL), Version 1.0
  */
+
+ @mixin hook-base-code() {
+   padding: 2px 6px;
+   background: rgba($o-beige, 0.4);
+   border-radius: 2px;
+ }
+
+ @mixin hook-base-blockquote() {
+  color: $global-muted-color;
+  li & {
+    margin: $global-small-margin 0 !important;
+  }
+ }

@@ -1,3 +1,21 @@
+<script type="text/javascript">
+  (function(w, s) {
+    Object.assign(s, {
+      BaseURL: '{{ .Site.BaseURL }}',
+      RelURL: '{{ .Site.BaseURL | relURL }}',
+      cssConfig: {
+        table: 'uk-table uk-table-small uk-table-striped',
+        '#TableOfContents > ul': 'uk-nav uk-nav-default uk-nav-parent-icon',
+        '#TableOfContents > ul ul': 'uk-nav-sub',
+      },
+      uikit: {
+        '#TableOfContents > ul': ['scrollspyNav', { closest: 'li' }],
+        '#TableOfContents a': ['scroll', { duration: 200 }],
+      }
+    });
+  })(window, window.Site = window.Site || {});
+</script>
+
 {{/* JS asset bundling @see data/config/scripts.yaml */}}
 {{- $deps := $.Site.Data.config.scripts -}}
 {{- range $deps.scripts -}}

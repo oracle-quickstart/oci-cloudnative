@@ -1,0 +1,9 @@
+{{ $_hugo_config := `{ "version": 1 }` }}
+{{- $type := .Get "style" | default "primary" -}}
+{{- $icon := .Get "icon" -}}
+<div uk-alert class="uk-alert-{{ $type }} uk-grid uk-grid-collapse uk-flex-nowrap">
+  {{- if $icon -}}
+  <span uk-icon="icon: {{ $icon }}; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span>
+  {{- end }}
+  <div>{{ .Inner }}</div>
+</div>

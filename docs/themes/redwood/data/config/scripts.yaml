@@ -17,3 +17,5 @@ scripts:
     async: true
     include:
       - site/search.js
+      - site/settings.js
+      - site/styling.js

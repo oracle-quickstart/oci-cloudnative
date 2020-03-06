@@ -1,8 +1,8 @@
-{{ $toc := (and (not .Params.disableToc) (not .Params.chapter)) }}
+{{ $toc := (and (not .Params.disableToc) (not .Params.chapter) (not .IsHome)) }}
 {{ if $toc }}
-<aside id="">
-  <nav role="navigation" class="uk-nav" >
-  {{ .TableOfContents }}
-  </nav>
-</aside>
+<div class="uk-flex-last uk-width-1-4 uk-visible@l">
+  <aside id="toc-nav" uk-sticky="offset: 40">
+    {{ .TableOfContents }}
+  </aside>
+</div>
 {{ end }}

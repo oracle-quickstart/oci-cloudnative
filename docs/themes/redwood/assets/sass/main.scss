@@ -23,7 +23,11 @@ h1 {
 // }
 
 // Side nav
-.rw-sidebar-left {
+.rw-sidebar {
+  border-right: $global-border-width solid transparent;
+  .uk-light & {
+    border-right: $global-border-width solid darken($o-darktheme-bg, 10%);
+  }
   @media screen and (min-width: $breakpoint-small) {
     display: block;
     .uk-offcanvas-bar {
@@ -38,14 +42,43 @@ h1 {
   }
 }
 
+// --------------
 // Extra features
-//...
+// --------------
 
 // Navigation
 .uk-nav {
   .uk-open {
     .uk-icon {
       transform: rotate(90deg);
+    }
+  }
+  &.uk-nav-default {
+    li.uk-active > a {
+      position: relative;
+      &:before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        margin-top: -$global-border-width;
+        left: -$global-margin;
+        width: $global-small-margin;
+        border-top: ($global-border-width * 2) solid $o-orange;
+      }
+    }
+  }
+}
+
+// Table 
+.uk-table {
+  .uk-light & {
+    th {
+      color: $inverse-table-header-cell-color;
+    }
+    &.uk-table-striped {
+      tbody tr:nth-of-type(odd) {
+        background: $inverse-table-striped-row-background;
+      }
     }
   }
 }
@@ -81,8 +114,9 @@ h1 {
     color: $inverse-global-subtext-color !important;
   }
   .suggestion {
-    cursor: pointer;
+    // cursor: pointer;
     a {
+      display: block;
       color: inherit;
     }
   }
