@@ -4,7 +4,7 @@ toggles:
     label: menu-settings-os
     icon: desktop
     options:
-      - label: MacOS
+      - label: Mac
         toggle: os-macos
         active: true
       - label: Linux

@@ -1,8 +1,12 @@
 ---
 title: "Always Free"
 date: 2020-03-06T12:28:12-07:00
-draft: true
+draft: false
 weight: 10
+tags:
+  - free
+  - terraform
+  - atp
 ---
 
 ## Basic Deployment
