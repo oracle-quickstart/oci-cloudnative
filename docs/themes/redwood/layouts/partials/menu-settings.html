@@ -1,30 +1,17 @@
 <ul id="rw-settings" class="uk-nav uk-nav-default" uk-nav>
   <li class="uk-nav-divider"></li>
   <li class="uk-nav-header">{{ T "menu-settings-title" }}</li>
-  <!-- <li class="uk-grid uk-flex-middle uk-flex-nowrap uk-text-nowrap">
-    <div class="uk-text-muted uk-width-expand">
-      <span uk-icon="paint-bucket"></span>
-      <span class="uk-visible@m">{{ T "menu-settings-theme" }}</span>
-    </div>
-    <div class="uk-button-group uk-dark rw-setting"
-      setting="theme"
-      target="html" >
-      <button class="uk-button uk-button-small uk-button-default uk-active" >
-        {{ T "menu-settings-theme-light" }}
-      </button>
-      <button class="uk-button uk-button-small uk-button-secondary uk-flex-right" toggle="uk-light uk-background-secondary">
-        {{ T "menu-settings-theme-dark" }}
-      </button>
-    </div>
-  </li>
-  {{ partial "custom-settings.html" }}
-</ul> -->
-{{ template "tpl-setting" (dict "setting" "theme" "target" "html" "label" "menu-settings-theme" "icon" "paint-bucket" "options" (slice (dict "label" "menu-settings-theme-light" "button" "default" "active" true) (dict "label" "menu-settings-theme-dark" "button" "secondary" "toggle" "uk-light uk-background-secondary"))  ) }}
-{{/* Configured: @see data/config/settings.yaml */}}
-{{- $settings := $.Site.Data.config.settings -}}
-{{- range $settings.toggles -}}
-{{ template "tpl-setting" . }}
-{{- end -}}
+  {{ template "tpl-setting" (dict "setting" "theme" "target" "html" "label" "menu-settings-theme" "icon" "paint-bucket" "options" (slice (dict "label" "menu-settings-theme-light" "button" "default" "active" true) (dict "label" "menu-settings-theme-dark" "button" "secondary" "toggle" "uk-light uk-background-secondary"))  ) }}
+
+  {{/* Configured: @see data/config/settings.yaml */}}
+  {{- $settings := $.Site.Data.config.settings -}}
+  {{- if $settings -}}
+  {{- range $settings.toggles -}}
+  {{ template "tpl-setting" . }}
+  {{- end -}}
+  {{- end -}}
+</ul>
+
 
 {{ define "tpl-setting" }}
 {{- $setting := .setting -}}

@@ -4,7 +4,12 @@
 pre, .chroma {
   color: $rw-syntax-color;
   background-color: $rw-syntax-background;
-  padding: $rw-syntax-padding;
+  overflow: initial;
+  code {
+    overflow: auto;
+    display: block;
+    padding: $rw-syntax-padding;
+  }
 }
 /* Error */ .chroma .err { color: $o-red; background-color: $o-white }
 /* LineTableTD */ .chroma .lntd { vertical-align: top; padding: 0; margin: 0; border: 0; }

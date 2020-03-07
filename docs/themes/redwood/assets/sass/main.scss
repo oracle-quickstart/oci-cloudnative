@@ -168,7 +168,7 @@ pre {
     display: none;
     color: $rw-syntax-color;
     padding: $rw-syntax-padding;
-    background: $rw-syntax-background;
+    background: rgba($rw-syntax-background, 0.5);
     position: absolute;
     top: 0; 
     right: 0;
