@@ -1,0 +1,22 @@
+{
+  "name": "mushop-docs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "mushop-docs-theme": "file:themes/redwood"
+  },
+  "devDependencies": {
+    "hugo-bin": "^0.54.0",
+    "rimraf": "^3.0.2"
+  },
+  "scripts": {
+    "clean": "rimraf public",
+    "prebuild": "npm run clean && npm run index",
+    "build": "hugo -D",
+    "index": "node idx.js",
+    "start": "hugo server -D --disableFastRender"
+  },
+  "author": "Oracle",
+  "license": "UPL-1.0"
+}
