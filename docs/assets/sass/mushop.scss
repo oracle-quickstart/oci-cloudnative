@@ -1,0 +1,25 @@
+@import "config";
+
+.mu-contributors {
+  [class*=dependabot] {
+    display: none;
+  }
+  img {
+    flex-shrink: 0;
+    max-width: $contrib-avatar-size;
+    max-height: $contrib-avatar-size;
+    margin: 0 $global-margin 0 0;
+  }
+}
+
+// language settings
+pre {
+  code {
+    &[class*="macos"], &[class*="win"], &[class*="linux"] {
+      display: none;
+    }
+    .os-macos & { &[class*="macos"] { display: block; } }
+    .os-linux & { &[class*="linux"] { display: block; } }
+    .os-windows & { &[class*="win"] { display: block; } }
+  }
+}
