@@ -65,26 +65,20 @@ $inverse-global-inverse-color:                   $global-color;
 $inverse-global-primary-background:              $global-primary-background;
 $inverse-global-secondary-background:            $global-secondary-background;
 $inverse-global-muted-background:                rgba($global-inverse-color, 0.1);
-// $inverse-global-muted-background:                $o-darktheme-bg;
 $inverse-global-border:                          rgba($global-inverse-color, 0.2);
 
 
 // Base
 $base-selection-background:       $o-grey-lt;
 $base-blockquote-font-size:       0.9rem;
-// $base-blockquote-margin-vertical: 10px;
 $inverse-base-link-color:         $o-inverse-emphasis;
 $inverse-base-link-hover-color:   $o-inverse-emphasis;
 $base-em-color:                   $o-brown;
 
-//
 // Typography
-//
 $global-font-family: "OracleSans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", sans-serif;
 
-//
 // Navbar
-//
 $navbar-nav-item-height:          60px;
 $navbar-background:               $o-brown;
 $navbar-nav-item-color:           $global-inverse-color;
@@ -112,6 +106,9 @@ $inverse-button-secondary-active-color:       $inverse-global-color;
 $inverse-button-secondary-background:         $o-brown;
 $inverse-button-secondary-hover-background:   $o-brown-dk;
 $inverse-button-secondary-active-background:  $inverse-global-primary-background;
+
+// Label
+$inverse-label-color:                         $inverse-global-color;
 
 // Code
 $base-code-color:           $o-brown-lt;

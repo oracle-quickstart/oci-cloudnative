@@ -6,10 +6,11 @@
       {{ partial "menu.html" . }}
 
       <div class="uk-width-expand uk-margin-medium-left uk-margin-remove-left@s">
-        <div class="uk-grid uk-margin-medium-right" uk-grid>
-          {{ partial "toc.html" . }}
-          <main class="uk-width-expand uk-margin-medium-bottom">
-            {{ partial "header.html" . }}
-            {{if and (not .IsHome) (not .Params.chapter) }}
-              <h1 class="rw-accent">{{ if eq .Kind "taxonomy" }}{{ .Kind }} :: {{ end }}{{ .Title }}</h1>
-            {{end}}
+        <div class="uk-margin-medium-right">
+          <div class="uk-grid" uk-grid>
+            {{ partial "toc.html" . }}
+            <main class="uk-width-expand uk-margin-medium-bottom">
+              {{if and (not .IsHome) (not .Params.chapter) }}
+                <h1 class="rw-accent">{{ if eq .Kind "taxonomy" }}{{ .Kind }} :: {{ end }}{{ .Title }}</h1>
+              {{end}}
+              {{ partial "header.html" . }}

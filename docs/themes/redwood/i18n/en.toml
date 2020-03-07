@@ -7,6 +7,9 @@ other = "Error"
 [message-404]
 other = "Woops. Looks like this page doesn't exist ¯\\_(ツ)_/¯."
 
+[home]
+other = "Home"
+
 [go-to-homepage]
 other = "Go to homepage"
 

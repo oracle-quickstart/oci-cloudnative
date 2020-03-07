@@ -20,8 +20,8 @@
 {{- $icon := .icon -}}
 <li class="uk-grid uk-grid-small uk-flex-middle uk-flex-nowrap uk-text-nowrap">
   <div class="uk-text-muted uk-width-expand">
-    <span uk-icon="{{ $icon }}"></span>
-    <span class="uk-visible@m">{{ T $label | default $label }}</span>
+    <span class="uk-visible@l" uk-icon="{{ $icon }}"></span>
+    <span>{{ T $label | default $label }}</span>
   </div>
   <div class="uk-button-group rw-setting"
     setting="{{ $setting }}"
