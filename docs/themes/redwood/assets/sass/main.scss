@@ -3,14 +3,32 @@
  * The Universal Permissive License (UPL), Version 1.0
  */
 
-// Customized uikit
-@import "uk/uikit";
+
+@import "uk/uikit"; // Customized uikit
+@import "syntax";   // chroma
 @import "variables";
+
+// Main
+main { 
+  > p {
+    img {
+      display: block;
+      margin: 0 auto;
+    }
+  }
+}
 
 // Nav
 .uk-navbar {
   .uk-logo img {
     max-height: $navbar-nav-item-height - 10;
+  }
+}
+
+// Button Group
+.uk-button-group {
+  .uk-button + .uk-button {
+    border-left: 1px solid $o-brown-dk;
   }
 }
 
@@ -40,11 +58,26 @@ h1 {
   + * {
     margin-left: $global-gutter;
   }
+
 }
 
 // --------------
 // Extra features
 // --------------
+
+// Theme
+.no-dark {
+  display: block;
+  .uk-light & {
+    display: none;
+  }
+}
+.no-light {
+  display: none;
+  .uk-light & {
+    display: block;
+  }
+}
 
 // Navigation
 .uk-nav {
@@ -126,4 +159,20 @@ h1 {
       margin: $global-small-margin 0;
     }
   }
+}
+
+// Code / Clipboard
+pre {
+  position: relative;
+  a.copier {
+    display: none;
+    color: $rw-syntax-color;
+    padding: $rw-syntax-padding;
+    background: $rw-syntax-background;
+    position: absolute;
+    top: 0; 
+    right: 0;
+  }
+  &:hover a.copier { display: block; }
+
 }

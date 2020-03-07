@@ -91,7 +91,7 @@
       }
     }
   }]).on('autocomplete:selected', function(e, sugg) {
-    console.log('wwwaaa');
+    console.log('ac:selected');
   });
   
   

@@ -9,13 +9,17 @@ $o-white:      #fcfbfa;
 $o-black:      #100f0e;
 $o-neutral:    #312d2a;
 $o-yellow:     #e5b757;
+$o-mauve:      #713a47;
 $o-orange:     #d8974d;
 $o-green:      #6b8f63;
+$o-ocean:      #2c5967;
 $o-blue:       #41727e;
 $o-teal:       #41817e;
 $o-beige:      #a79f88;
 $o-slate:      #869e9e;
 $o-grey:       #8B8580;
+$o-grey-lt:    #cbc5bf;
+$o-grey-dk:    #67605b;
 $o-muted:      #79726d;
 
 $o-brown:      #403c38;
@@ -66,8 +70,9 @@ $inverse-global-border:                          rgba($global-inverse-color, 0.2
 
 
 // Base
-$base-selection-background:       $o-grey;
-$base-blockquote-font-size:       $global-font-size;
+$base-selection-background:       $o-grey-lt;
+$base-blockquote-font-size:       0.9rem;
+// $base-blockquote-margin-vertical: 10px;
 $inverse-base-link-color:         $o-inverse-emphasis;
 $inverse-base-link-hover-color:   $o-inverse-emphasis;
 $base-em-color:                   $o-brown;
@@ -91,6 +96,9 @@ $inverse-nav-primary-item-hover-color:    $inverse-global-color;
 $inverse-nav-primary-item-active-color:   $inverse-global-emphasis-color;
 
 // Button
+$button-small-padding-horizontal:           10px;
+$button-small-line-height:                  25px;
+
 $inverse-button-default-color:              $global-color;
 $inverse-button-default-hover-color:        $global-color;
 $inverse-button-default-active-color:       $inverse-global-color;

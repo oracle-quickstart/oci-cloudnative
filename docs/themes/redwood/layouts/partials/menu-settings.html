@@ -1,7 +1,7 @@
 <ul id="rw-settings" class="uk-nav uk-nav-default" uk-nav>
   <li class="uk-nav-divider"></li>
   <li class="uk-nav-header">{{ T "menu-settings-title" }}</li>
-  <li class="uk-grid uk-flex-middle uk-flex-nowrap uk-text-nowrap">
+  <!-- <li class="uk-grid uk-flex-middle uk-flex-nowrap uk-text-nowrap">
     <div class="uk-text-muted uk-width-expand">
       <span uk-icon="paint-bucket"></span>
       <span class="uk-visible@m">{{ T "menu-settings-theme" }}</span>
@@ -18,4 +18,33 @@
     </div>
   </li>
   {{ partial "custom-settings.html" }}
-</ul>
+</ul> -->
+{{ template "tpl-setting" (dict "setting" "theme" "target" "html" "label" "menu-settings-theme" "icon" "paint-bucket" "options" (slice (dict "label" "menu-settings-theme-light" "button" "default" "active" true) (dict "label" "menu-settings-theme-dark" "button" "secondary" "toggle" "uk-light uk-background-secondary"))  ) }}
+{{/* Configured: @see data/config/settings.yaml */}}
+{{- $settings := $.Site.Data.config.settings -}}
+{{- range $settings.toggles -}}
+{{ template "tpl-setting" . }}
+{{- end -}}
+
+{{ define "tpl-setting" }}
+{{- $setting := .setting -}}
+{{- $target := .target -}}
+{{- $label := .label -}}
+{{- $icon := .icon -}}
+<li class="uk-grid uk-grid-small uk-flex-middle uk-flex-nowrap uk-text-nowrap">
+  <div class="uk-text-muted uk-width-expand">
+    <span uk-icon="{{ $icon }}"></span>
+    <span class="uk-visible@m">{{ T $label | default $label }}</span>
+  </div>
+  <div class="uk-button-group rw-setting"
+    setting="{{ $setting }}"
+    target="{{ $target }}" >
+    {{- range .options -}}
+    <button class="uk-button uk-button-small uk-button-{{ .button | default "secondary"}}
+    {{ and .active "uk-active" }}" toggle="{{ .toggle }}" >
+      {{ T .label | default .label }}
+    </button>
+    {{- end -}}
+  </div>
+</li>
+{{ end }}

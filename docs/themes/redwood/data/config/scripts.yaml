@@ -19,3 +19,4 @@ scripts:
       - site/search.js
       - site/settings.js
       - site/styling.js
+      - site/clipboard.js

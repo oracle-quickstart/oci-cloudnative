@@ -1,0 +1,22 @@
+{{ $_hugo_config := `{ "version": 1 }` }}
+{{- $options := .Get "options" }}
+{{- $extras := .Get "classes" }}
+{{- $gutter := .Get "gutter" | default "small" -}}
+{{- $width := .Get "width" -}}
+{{- $bp := .Get "breakpoint" | default "m" -}}
+{{- $divider := and (.Get "divider") "uk-grid-divider" -}}
+{{- $horizontal := and (.Get "x") (printf "uk-flex-%s"  (.Get "x")) -}}
+{{- $vertical := and (.Get "y") (printf "uk-flex-%s"  (.Get "y")) -}}
+
+<div uk-grid="{{ $options }}" class="uk-grid uk-grid-{{ $gutter }}
+{{ $extras }}
+{{- if $width }}
+uk-child-width-1-1
+uk-child-width-{{ $width }}@{{ $bp }}
+{{ end }}
+{{ $divider }}
+{{ $horizontal }}
+{{ $vertical }}
+">
+  {{ .Inner }}
+</div>
