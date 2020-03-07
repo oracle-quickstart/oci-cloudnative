@@ -1,0 +1,13 @@
+toggles: 
+  - setting: platform
+    target: html
+    label: menu-settings-os
+    icon: desktop
+    options:
+      - label: MacOS
+        toggle: os-macos
+        active: true
+      - label: Linux
+        toggle: os-linux
+      - label: Windows
+        toggle: os-windows
