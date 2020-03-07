@@ -1,3 +1,66 @@
-baseURL = "http://example.org/"
+baseURL = "https://oracle-quickstart.github.io/oci-cloudnative/"
 languageCode = "en-us"
-title = "My New Hugo Site"
+title = "MuShop"
+theme = "redwood"
+
+[params]
+editURL = "https://github.com/oracle-quickstart/oci-cloudnative/tree/master/docs/content/"
+showVisitedLinks = false
+author = "Oracle A-Team"
+organization = "Oracle"
+description = "Oracle Cloud Native Workshop"
+disableSearch = false
+disableCacheBusting = false
+disableLanguageSwitchingButton = true
+disableShortcutsTitle = false
+disableInlineCopyToClipBoard = true
+ghrepo = "https://github.com/oracle-quickstart/oci-cloudnative"
+branch = "master"
+logo = "images/logo.dark.png"
+
+[markup]
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = false
+    noClasses = false
+    style = "native"
+    tabWidth = 2
+
+  [markup.goldmark.renderer]
+    unsafe= true
+
+[menu]
+
+[[menu.shortcuts]]
+name = "More Information"
+pre = "<span uk-icon='icon: code; ratio: 1.25'></span>"
+url = "/resources"
+weight = 10
+
+[[menu.shortcuts]]
+name = "Acknowledgements"
+pre = "<span uk-icon='icon: users; ratio: 1.25'></span>"
+url = "/acknowledgements"
+weight = 20
+
+[[menu.shortcuts]]
+name = "Tags"
+pre = "<span uk-icon='icon: tag; ratio: 1.25'></span>"
+url = "/tags"
+weight = 30
+
+[[menu.shortcuts]]
+name = "GitHub Source"
+pre = "<span uk-icon='icon: github; ratio: 1.25'></span>"
+url = "https://github.com/oracle-quickstart/oci-cloudnative"
+weight = 40
+
+[[menu.shortcuts]]
+name = "Report Issue"
+pre = "<span uk-icon='icon: warning; ratio: 1.25'></span>"
+url = "https://github.com/oracle-quickstart/oci-cloudnative/issues"
+weight = 50
+
+[outputs]
+home = [ "HTML", "JSON"]
+page = [ "HTML" ]
