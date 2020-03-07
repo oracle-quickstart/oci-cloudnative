@@ -2,3 +2,5 @@ public
 node_modules
 themes/*
 !themes/redwood
+resources/_gen/*
+static/index.json
