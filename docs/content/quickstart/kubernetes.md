@@ -111,7 +111,7 @@ From `deploy/complete/helm-chart` directory:
     ```
 
     ```shell--helm3
-    helm install mushop ./mushop \
+    helm install mushop mushop \
       --namespace mushop \
       --set global.mock.service="all"
     ```

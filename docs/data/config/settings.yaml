@@ -5,9 +5,19 @@ toggles:
     icon: desktop
     options:
       - label: Mac
-        toggle: os-macos
+        toggle: stg-os-macos
         active: true
       - label: Linux
-        toggle: os-linux
+        toggle: stg-os-linux
       - label: Windows
-        toggle: os-windows
+        toggle: stg-os-windows
+
+  - setting: helm
+    target: html
+    label: Helm
+    options:
+      - label: 3.x
+        toggle: stg-helm-3
+        active: true
+      - label: 2.x
+        toggle: stg-helm-2

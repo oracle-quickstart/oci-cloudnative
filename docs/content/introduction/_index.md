@@ -45,6 +45,7 @@ In addition to these Cloud Native topics, MuShop demonstrates the use of several
 
 ![services](images/mushop.services.png "MuShop Services")
 
+{{% wrapper "uk-overflow-auto" %}}
 | Service | Technology  | Cloud Services | Description |
 | --- | --- | --- | --- |
 | `src/api` | Node.js   | | Storefront API |
@@ -60,3 +61,4 @@ In addition to these Cloud Native topics, MuShop demonstrates the use of several
 | `src/payments` | Go | | Payment processing |
 | `src/storefront` | JavaScript  |  | Store UI |
 | `src/user` | TypeScript | Autonomous DB (ATP)  | Customer accounts, AuthN |
+{{% /wrapper %}}

@@ -15,11 +15,16 @@
 // language settings
 pre {
   code {
-    &[class*="macos"], &[class*="win"], &[class*="linux"] {
+    // denoted syntax languages like ```shell--helm2 ...
+    &[class*="macos"], &[class*="win"], &[class*="linux"], // OS
+    &[class*="helm3"], &[class*="helm2"] { // helm
       display: none;
     }
-    .os-macos & { &[class*="macos"] { display: block; } }
-    .os-linux & { &[class*="linux"] { display: block; } }
-    .os-windows & { &[class*="win"] { display: block; } }
+    // toggles on html element
+    .stg-os-macos & { &[class*="macos"] { display: block; } }
+    .stg-os-linux & { &[class*="linux"] { display: block; } }
+    .stg-os-windows & { &[class*="win"] { display: block; } }
+    .stg-helm-2 & { &[class*="helm2"] { display: block; } }
+    .stg-helm-3 & { &[class*="helm3"] { display: block; } }
   }
 }
