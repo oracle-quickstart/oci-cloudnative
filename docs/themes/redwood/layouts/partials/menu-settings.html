@@ -1,7 +1,7 @@
 <ul id="rw-settings" class="uk-nav uk-nav-default" uk-nav>
   <li class="uk-nav-divider"></li>
   <li class="uk-nav-header">{{ T "menu-settings-title" }}</li>
-  {{ template "tpl-setting" (dict "setting" "theme" "target" "html" "label" "menu-settings-theme" "icon" "paint-bucket" "options" (slice (dict "label" "menu-settings-theme-light" "button" "default" "active" true) (dict "label" "menu-settings-theme-dark" "button" "secondary" "toggle" "uk-light uk-background-secondary"))  ) }}
+  {{ template "tpl-setting" (dict "setting" "theme" "target" "html, #content" "label" "menu-settings-theme" "icon" "paint-bucket" "options" (slice (dict "label" "menu-settings-theme-light" "button" "default" "active" true "toggle" "uk-background-default") (dict "label" "menu-settings-theme-dark" "button" "secondary" "toggle" "uk-light uk-background-secondary"))  ) }}
 
   {{/* Configured: @see data/config/settings.yaml */}}
   {{- $settings := $.Site.Data.config.settings -}}
@@ -20,7 +20,7 @@
 {{- $icon := .icon -}}
 <li class="uk-grid uk-grid-small uk-flex-middle uk-flex-nowrap uk-text-nowrap">
   <div class="uk-text-muted uk-width-expand">
-    <span class="uk-visible@l" uk-icon="{{ $icon }}"></span>
+    <!-- <span class="uk-visible@l" uk-icon="{{ $icon }}"></span> -->
     <span>{{ T $label | default $label }}</span>
   </div>
   <div class="uk-button-group rw-setting"

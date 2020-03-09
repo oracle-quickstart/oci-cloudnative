@@ -1,24 +1,29 @@
 {{ $currentNode := . }}
 <footer>
     <!-- Navigation chevrons -->
-    {{$showPrevNext := (and (not .Params.disableNextPrev) (not .Site.Params.disableNextPrev))}}
+    {{$showPrevNext := (and (not .Params.disableBackNext) (not .Site.Params.disableBackNext))}}
     {{if $showPrevNext}}
+      {{- $iconRatio := "2.5" -}}
       {{ template "menu-pagination" dict "menu" .Site.Home "currentnode" $currentNode }}
-      <div class="uk-grid uk-flex-between">
-      {{with ($.Scratch.Get "prevPage")}}
-        <div>
-          <a class="uk-slidenav-large" uk-slidenav-previous
-            href="{{.RelPermalink}}" title="{{.Title}}"></a>
-        </div>
-      {{end}}
-      {{with ($.Scratch.Get "nextPage")}}
-        <div>
-          <a class="uk-slidenav-large" uk-slidenav-next
-          href="{{.RelPermalink}}" title="{{.Title}}"></a>
-        </div>
-      {{end}}
+      <div class="uk-text-small">
+      {{- if not .Params.disableBack -}}
+        {{- with ($.Scratch.Get "prevPage") }}
+        <a href="{{ .RelPermalink }}" title="{{ .Title }}" class="rw-page-prev uk-flex uk-flex-left uk-flex-middle uk-text-truncate">
+          <span uk-icon="icon: chevron-left; ratio: {{ $iconRatio }}" class="uk-margin-small-right uk-flex-none"></span>
+          <label class="uk-visible@m">{{ .Title }}</label>
+        </a>
+        {{- end -}}
+      {{- end -}}
+      {{- if not .Params.disableNext -}}
+        {{- with ($.Scratch.Get "nextPage") }}
+        <a href="{{ .RelPermalink }}" title="{{ .Title }}" class="rw-page-next uk-flex uk-flex-right uk-flex-middle uk-flex-last uk-text-truncate">
+          <label class="uk-visible@m">{{ .Title }}</label>
+          <span uk-icon="icon: chevron-right; ratio: {{ $iconRatio }}" class="uk-margin-small-left uk-flex-none"></span>
+        </a>
+        {{- end -}}
+      {{- end -}}
       </div>
-    {{end}}
+    {{- end -}}
   {{ partial "custom-footer.html" . }}
 </footer>
 

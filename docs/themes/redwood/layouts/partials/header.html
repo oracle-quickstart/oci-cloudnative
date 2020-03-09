@@ -1,7 +1,7 @@
 <header>
   {{$crumbs := (and (not .Params.disableBreadcrumb) (not .Site.Params.disableBreadcrumb))}}
   {{if $crumbs}}
-    <ul class="uk-breadcrumb uk-margin-top uk-margin-remove-bottom">
+    <ul class="uk-breadcrumb uk-margin-top uk-text-small">
     {{ template "breadcrumb" dict "page" . "value" (printf "<li>%s</li>" .Title) "level" 0 }}
     </ul>
   {{- end -}}
