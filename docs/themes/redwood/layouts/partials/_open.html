@@ -12,5 +12,6 @@
             <main class="uk-width-expand">
               {{ partial "header.html" . }}
               {{if and (not .IsHome) (not .Params.chapter) }}
-                <h1 class="rw-accent">{{ if eq .Kind "taxonomy" }}{{ .Kind }} :: {{ end }}{{ .Title }}</h1>
+                <h1 class="rw-accent">{{ .Title }}</h1>
               {{end}}
+              

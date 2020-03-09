@@ -3,6 +3,10 @@
  * The Universal Permissive License (UPL), Version 1.0
  */
 
+@mixin hook-base-pre() {
+
+}
+
 @mixin hook-base-code() {
   padding: 2px 6px;
   background: rgba($o-beige, 0.4);
@@ -12,8 +16,11 @@
 
 @mixin hook-base-blockquote() {
   color: $global-muted-color;
-  li & {
+  * + & {
     margin: $global-small-margin 0 !important;
+  }
+  p + &, pre + &, .highlight + & {
+    margin-top: -$global-small-margin !important;
   }
 }
 
@@ -21,5 +28,11 @@
   &:hover {
     color: $label-color;
     text-decoration: none;
+  }
+}
+
+@mixin hook-alert() {
+  a {
+    color: $global-emphasis-color;
   }
 }

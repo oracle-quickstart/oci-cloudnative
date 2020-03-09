@@ -3,11 +3,12 @@
     {{ .Content }}
   {{ end }}
 
-  {{ if or (eq .Kind "taxonomy") (eq .Kind "taxonomyTerm") }}
-  <ul>
+  {{ if or .Params.showChildren (eq .Kind "taxonomy") (eq .Kind "taxonomyTerm") }}
+  {{- $listType := (and .Params.orderedChildren "ol") | default "ul" -}}
+  {{ printf "<%s>" $listType | safeHTML }}
     {{ range .Pages }}
       <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
     {{ end }}
-  </ul>
+  {{ printf "</%s>" $listType | safeHTML }}
   {{ end }}
 {{ partial "_close.html" . }}

@@ -93,18 +93,18 @@
   {{ if and .IsSection ((not .Params.hidden) or $.showhidden) }}
   {{ $numberOfPages := (add (len .Pages) (len .Sections)) }}
   {{ $isParent := gt $numberOfPages 0 }}
-  <li data-nav-id="{{ .RelPermalink }}" title="{{ .Title }}" class="dd-item
+  <li data-nav-id="{{ .RelPermalink }}" title="{{ .Title }}" class="
     {{- if $isParent }} uk-parent{{ end -}}
     {{- if .IsAncestor $currentNode }} uk-open{{ end -}}
     {{- if eq .File.UniqueID $currentNode.File.UniqueID}} uk-active{{ end -}}
     {{- if .Params.alwaysopen }} uk-parent{{ end -}}">
-    <a href="{{ .RelPermalink }}" class="uk-text-truncate">
-      <span class="uk-flex uk-flex-between uk-flex-middle">
-        <span>{{ safeHTML .Params.Pre }}{{ or .Params.menuTitle .LinkTitle .Title }}{{ safeHTML .Params.Post }}</span>
+    <a href="{{ .RelPermalink }}">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">{{ safeHTML .Params.Pre }}{{ or .Params.menuTitle .LinkTitle .Title }}{{ safeHTML .Params.Post }}</div>
         {{- if $isParent -}}
-        <span uk-icon="icon: triangle-right; ratio: 1.5"></span>
+        <span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
         {{- end }}
-      </span>
+      </div>
     </a>
     
     {{ if $isParent }}
@@ -126,9 +126,9 @@
   </li>
   {{ else }}
     {{ if not .Params.Hidden }}
-    <li data-nav-id="{{.RelPermalink}}" title="{{.Title}}" class="dd-item {{if eq .File.UniqueID $currentNode.File.UniqueID}}uk-active{{end}}">
+    <li data-nav-id="{{.RelPermalink}}" title="{{.Title}}" class="{{if eq .File.UniqueID $currentNode.File.UniqueID}}uk-active{{end}}">
       <a href="{{ .RelPermalink}}" class="uk-text-truncate">
-      {{ safeHTML .Params.Pre }}{{or .Params.menuTitle .LinkTitle .Title}}{{ safeHTML .Params.Post }}
+        {{ safeHTML .Params.Pre }}{{or .Params.menuTitle .LinkTitle .Title}}{{ safeHTML .Params.Post }}
       </a>
     </li>
     {{ end }}
