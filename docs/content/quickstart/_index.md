@@ -1,7 +1,11 @@
 ---
 title: "Getting Started"
 date: 2020-03-05T15:34:14-07:00
-weight: 0
+weight: 1
+draft: false
+tags:
+  - Quickstart
+  - Source code
 ---
 
 This project supports deployment modes for the purposes of demonstrating

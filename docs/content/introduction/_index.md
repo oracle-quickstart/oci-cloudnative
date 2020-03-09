@@ -6,14 +6,14 @@ weight: -100
 
 ## Goals
 
-- Explore cloud native services offered by Oracle Cloud Infrastructure
+- Explore [cloud native](https://www.oracle.com/cloud/cloud-native/) services offered by Oracle Cloud Infrastructure
 - Build and deploy microservices with [Container Engine for Kubernetes](https://www.oracle.com/cloud/compute/container-engine-kubernetes.html) (OKE)
-- Experience Oracle Cloud services integrated into a single project
-- Provide reference implementations and sample code for real-world development
+- Experience Oracle Cloud services integrated within a single microservices project
+- Provide reference implementations and sample code for _real-world_ application development
 
 ## Cloud Services
 
-The MuShop application highlights several topics related to [Cloud Native](https://www.oracle.com/cloud/cloud-native/) application
+The MuShop application highlights several topics related to cloud native application
 development with Oracle Cloud Infrastructure.
 
 | Cloud Service | Description |

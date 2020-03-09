@@ -4,9 +4,10 @@ date: 2020-03-06T12:28:12-07:00
 draft: false
 weight: 10
 tags:
-  - free
-  - terraform
-  - atp
+  - Free
+  - Terraform
+  - Resource Manager
+  - ATP
 ---
 
 ## Basic Deployment

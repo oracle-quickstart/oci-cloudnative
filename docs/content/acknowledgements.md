@@ -1,6 +1,7 @@
 ---
 title: "Acknowledgements"
 disableToc: true
+disablePrevNext: true
 ---
 
 ## Community
