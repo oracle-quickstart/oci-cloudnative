@@ -41,7 +41,7 @@ depending on the actions performed for setup and deployment of MuShop.
     helm delete mushop-provision -n mushop
     ```
 
-- If used OCI Service broker, remove the `osb` installation,:
+- If used OCI Service broker, remove the `osb` installation:
 
     ```shell--helm2
     helm delete --purge oci-broker
@@ -60,3 +60,10 @@ depending on the actions performed for setup and deployment of MuShop.
     ```shell--helm3
     helm delete mushop-utils -n mushop-utilities
     ```
+
+- If you installed Istio service mesh, uninstall it:
+
+    ```shell
+    istioctl manifest generate --set profile=demo | kubectl delete -f -
+    ```
+

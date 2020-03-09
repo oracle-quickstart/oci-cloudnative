@@ -186,4 +186,4 @@ istioctl dashboard kiali
 
 1. You should see a service graph that looks similar to the figure below;
 
-![Kiali - service graph](images/mesh/sm-kiali-graph)
+![Kiali - service graph](../../images/mesh/sm-kiali-graph.png)
