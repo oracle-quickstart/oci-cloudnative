@@ -37,6 +37,7 @@ includes:
   - deployment
   - topics
   - topics/grafana
+  - topics/istio
   - cleanup
   - acknowledgements
 
