@@ -72,7 +72,7 @@ ol > li > ul { margin-bottom: $base-margin-vertical; }
   }
   @media screen and (min-width: $breakpoint-small) {
     display: block;
-    z-index: $global-z-index + 2;
+    z-index: $rw-main-zindex + 2;
     .uk-offcanvas-bar {
       left: 0;
       width: 100%;
@@ -89,7 +89,7 @@ ol > li > ul { margin-bottom: $base-margin-vertical; }
 #content {
   // for body content overlay of footer
   position: relative;
-  z-index: $global-z-index + 1;
+  z-index: $rw-main-zindex + 1;
   margin-bottom: $global-large-margin;
   
 }
