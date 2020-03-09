@@ -2581,6 +2581,15 @@ Licensed under the Apache License, Version 2.0
 
 -------------------------------------------------------
 
+## github.com/godror/godror v0.12.1 (UPL-1.0)
+
+```
+Copyright 2019, 2020 The Godror Authors
+Licensed under Universal Permissive License, Version 1.0
+```
+
+-------------------------------------------------------
+
 ## github.com/opentracing/opentracing-go v1.1.0 (Apache 2.0)
 
 ```
@@ -2635,7 +2644,7 @@ Licensed under the MIT license
 
 -------------------------------------------------------
 
-## github.com/weaveworks/common	v0.0.0-20190822150010-afb9996716e4 (Apache 2.0)
+## github.com/weaveworks/common v0.0.0-20200206153930-760e36ae819a (Apache 2.0)
 
 ```
 Copyright 2014-2016 Weaveworks Ltd.
@@ -2674,7 +2683,7 @@ Licensed under the MIT license
 
 -------------------------------------------------------
 
-## github.com/apache/thrift	v0.12.0 (Apache 2.0)
+## github.com/apache/thrift v0.13.0 (Apache 2.0)
 
 ```
 Copyright (c) 2007 Thomas Porschberg <thomas@randspringer.de>
@@ -2747,7 +2756,7 @@ Licensed under the Apache License, Version 2.0
 
 -------------------------------------------------------
 
-## github.com/gogo/protobuf	v1.3.0 (Other)
+## github.com/gogo/protobuf	v1.3.4 (Other)
 
 ```
 https://github.com/gogo/protobuf/blob/master/LICENSE
@@ -2954,7 +2963,7 @@ Licensed under the MIT license
 
 -------------------------------------------------------
 
-## github.com/streadway/handy v0.0.0-20190108123426-d5acb3125c2a (Other)
+## github.com/streadway/handy v0.0.0-20200128134331-0f66f006fb2e (Other)
 
 ```
 https://github.com/streadway/handy/blob/master/README.md
@@ -3008,7 +3017,7 @@ Licensed under the BSD 3-Clause "New" or "Revised" License
 
 -------------------------------------------------------
 
-## golang.org/x/net	v0.0.0-20190827160401-ba9fcec4b297 (BSD-3-Clause)
+## golang.org/x/net v0.0.0-20200301022130-244492dfa37a (BSD-3-Clause)
 
 ```
 Copyright (c) 2009 The Go Authors
