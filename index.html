@@ -266,6 +266,9 @@
                   <li>
                     <a href="#prometheus-and-grafana-monitoring" class="toc-h2 toc-link" data-title="Prometheus and Grafana Monitoring">Prometheus and Grafana Monitoring</a>
                   </li>
+                  <li>
+                    <a href="#istio-service-mesh" class="toc-h2 toc-link" data-title="Istio Service Mesh">Istio Service Mesh</a>
+                  </li>
               </ul>
           </li>
           <li>
@@ -1153,7 +1156,7 @@ Database (<code>oadb-*</code>), stream (<code>oss-*</code>), and bucket (<code>o
 </code></pre></li>
 </ul></li>
 <li><p>Wait for deployment pods to be <strong>RUNNING</strong> and init pods to show <strong>COMPLETED</strong>:</p>
-<pre class="highlight shell tab-shell"><code>kubectl get pods -n mushop --watch
+<pre class="highlight shell tab-shell"><code>kubectl get pods --namespace mushop --watch
 </code></pre><pre class="highlight plaintext"><code>NAME                                  READY   STATUS      RESTARTS   AGE
 mushop-api-769c4d9fd8-hp7mc           1/1     Running     0          31s
 mushop-assets-dd5756599-pxngg         1/1     Running     0          33s
@@ -1174,8 +1177,15 @@ mushop-storefront-8656597656-lgdlk    1/1     Running     0          33s
 mushop-user-54f4978d68-qhr7n          0/1     Running     0          31s
 mushop-user-init-1-8k62c              0/1     Completed   0          33s
 </code></pre></li>
-<li><p>Open a browser with the <code>EXTERNAL-IP</code> created during setup, <strong>OR</strong> <code>port-forward</code>
-directly to the <code>edge</code> service resource:</p>
+</ol>
+
+<blockquote>
+<p>Note: if you installed Istio service mesh, you should see <code>2/2</code> in the <code>READY</code> column and <code>1/2</code> for the init pods and the assets deploy pod. The reason you see <code>2/2</code> is because Istio injects a sidecar proxy container into each pod.</p>
+</blockquote>
+
+<ol>
+<li><p>Open a browser with the <code>EXTERNAL-IP</code> created during setup
+<strong>OR</strong> <code>port-forward</code> directly to the <code>edge</code> service resource <strong>OR</strong> use the <code>EXTERNAL-IP</code> of the Istio ingress gateway (if you installed Istio service mesh):</p>
 <pre class="highlight shell tab-shell"><code>kubectl port-forward <span class="se">\</span>
   --namespace mushop <span class="se">\</span>
   svc/edge 8000:80
@@ -1188,6 +1198,13 @@ directly to the <code>edge</code> service resource:</p>
 </code></pre>
 <blockquote>
 <p>Locating <code>EXTERNAL-IP</code> for Ingress Controller. <strong>NOTE</strong> this will be
+<a href="https://localhost">localhost</a> on local clusters.</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>kubectl get svc istio-ingressgateway <span class="se">\</span>
+  --namespace istio-system
+</code></pre>
+<blockquote>
+<p>Locating <code>EXTERNAL-IP</code> for Istio Ingress Gateway. <strong>NOTE</strong> this will be
 <a href="https://localhost">localhost</a> on local clusters.</p>
 </blockquote></li>
 </ol>
@@ -1226,6 +1243,229 @@ mushop-utils            mushop-utilities        1               2020-01-31 20:32
 <aside class="notice">
   Many community dashboards exist, those above are some basic recommendations
 </aside>
+<h2 id='istio-service-mesh'>Istio Service Mesh</h2>
+<aside class="notice">
+  Note that this is <b>OPTIONAL</b>. If you don't want to install Istio service mesh, skip to the
+  <a href="#deployment">Deployment</a> section. Additionally, you don't need to install Grafana and Prometheus from the setup chart as they are already included in the Istio installation.
+</aside>
+
+<p>In this section you can install and configure Istio service mesh. The mesh needs to be installed before you deploy Mushop for the service mesh proxies to get injected next to each Mushop service. </p>
+
+<p>These sidecar proxies intercept the traffic between services and collect data on all requests as well as allow scenarios such as traffic routing and failure injection.</p>
+<h3 id='download-and-install-istio'>Download and install Istio</h3>
+<ol>
+<li>Download the latest Istio release (<code>1.4.6</code> at the time of writing this):</li>
+</ol>
+<pre class="highlight shell tab-shell"><code>curl -L https://istio.io/downloadIstio | sh -
+</code></pre>
+<ol>
+<li>Go to the <code>istio-1.4.6</code> folder and add the <code>istioctl</code> to your path:</li>
+</ol>
+<pre class="highlight shell tab-shell"><code><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PWD</span>/bin:<span class="nv">$PATH</span>
+</code></pre>
+<p>Before you continue with Istio installation, run the <code>verify-install</code> command to make sure Istio can be installed on your cluster:</p>
+<pre class="highlight shell tab-shell"><code><span class="gp">$ </span>istioctl verify-install
+...
+Install Pre-Check passed! The cluster is ready <span class="k">for </span>Istio installation.
+</code></pre>
+<p>If you get the <code>Pre-Check passed</code> message, you can continue. </p>
+
+<ol>
+<li>Install the Istio <code>demo</code> profile:</li>
+</ol>
+<pre class="highlight shell tab-shell"><code>istioctl manifest apply --set <span class="nv">profile</span><span class="o">=</span>demo
+</code></pre>
+<aside class="notice">
+  Istio supports different installation profiles such as <i>default</i>, <i>demo</i>, <i>minimal</i>, <i>sds</i> and <i>remote</i>. In this lab we will be using the <i>demo</i> installation as it contains all components and it is designed to showcase Istio functionality. Note that <i>demo</i> profile is <b>not</b> an appropriate installation for production.
+</aside>
+
+<p>The output of the above command should look something like this:</p>
+<pre class="highlight plaintext"><code>$ istioctl manifest apply --set profile=demo
+- Applying manifest for component Base...
+✔ Finished applying manifest for component Base.
+- Applying manifest for component EgressGateway...
+- Applying manifest for component Prometheus...
+- Applying manifest for component Pilot...
+- Applying manifest for component Tracing...
+- Applying manifest for component Citadel...
+- Applying manifest for component Injector...
+- Applying manifest for component Galley...
+- Applying manifest for component Kiali...
+- Applying manifest for component IngressGateway...
+- Applying manifest for component Policy...
+- Applying manifest for component Telemetry...
+- Applying manifest for component Grafana...
+✔ Finished applying manifest for component Galley.
+✔ Finished applying manifest for component Kiali.
+✔ Finished applying manifest for component Injector.
+✔ Finished applying manifest for component Prometheus.
+✔ Finished applying manifest for component Citadel.
+✔ Finished applying manifest for component Pilot.
+✔ Finished applying manifest for component Policy.
+✔ Finished applying manifest for component IngressGateway.
+✔ Finished applying manifest for component Tracing.
+✔ Finished applying manifest for component EgressGateway.
+✔ Finished applying manifest for component Telemetry.
+✔ Finished applying manifest for component Grafana.
+
+
+✔ Installation complete
+</code></pre>
+<p>You also need to run <code>kubectl get pods -n istio-system</code> and ensure all pods are in the running state (the value of the <code>STATUS</code> column for each pod should be <code>Running</code>)</p>
+
+<p>Before continuing with the Mushop deployment, you also need to label the <code>mushop</code> namespace in order for Istio to automatically inject the Envoy sidecar proxy next to each Mushop service.</p>
+
+<ol>
+<li>Create the <code>mushop</code> namespace:</li>
+</ol>
+<pre class="highlight shell tab-shell"><code>kubectl create ns mushop
+</code></pre>
+<ol>
+<li>Label the namespace with <code>istio-injection=enabled</code>:</li>
+</ol>
+<pre class="highlight shell tab-shell"><code>kubectl label namespace mushop istio-injection<span class="o">=</span>enabled
+</code></pre>
+<ol>
+<li>Follow the instructions for <a href="#deployment">deploying Mushop</a>. </li>
+</ol>
+<h3 id='creating-istio-resources'>Creating Istio resources</h3>
+<p>In order to configure the traffic routing and the ingress gateway, you will need to deploy a Gateway resource and a VirtualService resource.</p>
+
+<ol>
+<li>Deploy a Gateway resource:</li>
+</ol>
+
+<p>MacOS:</p>
+<pre class="highlight shell tab-shell"><code>cat <span class="sh">&lt;&lt; EOF | kubectl apply -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: gateway
+  namespace: mushop
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - '*'
+EOF
+</span></code></pre>
+<p>Windows:</p>
+<pre class="highlight shell tab-shell"><code><span class="s2">"apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: gateway
+  namespace: mushop
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - '*'"</span> | kubectl apply -f -
+</code></pre>
+<ol>
+<li>Deploy a VirtualService:</li>
+</ol>
+
+<p>MacOS:</p>
+<pre class="highlight shell tab-shell"><code>cat <span class="sh">&lt;&lt;EOF | kubectl apply -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: edge
+  namespace: mushop
+spec:
+  hosts:
+    - '*'
+  gateways:
+    - gateway
+  http:
+  - match:
+    - uri:
+        prefix: /api
+    route:
+    - destination:
+        host: mushop-api.mushop.svc.cluster.local
+  - match:
+    - uri:
+        prefix: /assets
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: mushop-assets.mushop.svc.cluster.local
+  - route:
+    - destination:
+        host: mushop-storefront.mushop.svc.cluster.local
+        port:
+          number: 80
+EOF
+</span></code></pre>
+<p>Windows:</p>
+<pre class="highlight shell tab-shell"><code><span class="s2">"apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: edge
+  namespace: mushop
+spec:
+  hosts:
+    - '*'
+  gateways:
+    - gateway
+  http:
+  - match:
+    - uri:
+        prefix: /api
+    route:
+    - destination:
+        host: mushop-api.mushop.svc.cluster.local
+  - match:
+    - uri:
+        prefix: /assets
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: mushop-assets.mushop.svc.cluster.local
+  - route:
+    - destination:
+        host: mushop-storefront.mushop.svc.cluster.local
+        port:
+          number: 80"</span> | kubectl apply -f -
+</code></pre>
+<ol>
+<li><p>Open a browser with the <code>EXTERNAL-IP</code> of the Instio ingress gateway:</p>
+<pre class="highlight shell tab-shell"><code>kubectl get svc istio-ingressgateway <span class="se">\</span>
+  --namespace istio-system
+</code></pre>
+<blockquote>
+<p>Locating <code>EXTERNAL-IP</code> for Istio Ingress Gateway. <strong>NOTE</strong> this will be
+<a href="https://localhost">localhost</a> on local clusters.</p>
+</blockquote></li>
+</ol>
+<h3 id='kiali-dashboard'>Kiali Dashboard</h3>
+<p>Kiali is a service mesh observability tool that allows you to understand the structure of your service mesh, visualize the service inside the mesh and provides the health of the mesh. Additionally, you can view detailed metrics using Grafana integration and distribute tracing with Jaeger integration.</p>
+
+<ol>
+<li>From the terminal, open Kiali dashboard</li>
+</ol>
+<pre class="highlight shell tab-shell"><code>istioctl dashboard kiali
+</code></pre>
+<ol>
+<li><p>Click the <strong>Graph</strong> option from the sidebar.</p></li>
+<li><p>From the dropdown select the <em>mushop</em> namespace.</p></li>
+<li><p>You should see a service graph that looks similar to the figure below;</p></li>
+</ol>
+
+<p><img src="images/mesh/sm-kiali-graph-02a3896e.png" alt="Kiali - service graph" /></p>
 <h1 id='cleanup'>Cleanup</h1>
 <p>The following list represents cleanup operations, which may vary
 depending on the actions performed for setup and deployment of MuShop.</p>
@@ -1248,13 +1488,16 @@ mushop-utils            mushop-utilities        1               2020-01-31 20:32
 <pre class="highlight shell tab-shell--helm2"><code>helm delete --purge mushop-provision
 </code></pre><pre class="highlight shell tab-shell--helm3"><code>helm delete mushop-provision -n mushop
 </code></pre></li>
-<li><p>If used OCI Service broker, remove the <code>osb</code> installation,:</p>
+<li><p>If used OCI Service broker, remove the <code>osb</code> installation:</p>
 <pre class="highlight shell tab-shell--helm2"><code>helm delete --purge oci-broker
 </code></pre><pre class="highlight shell tab-shell--helm3"><code>helm delete oci-broker -n mushop-utilities
 </code></pre></li>
 <li><p>Remove the <code>setup</code> cluster dependency installation:</p>
 <pre class="highlight shell tab-shell--helm2"><code>helm delete --purge mushop-utils
 </code></pre><pre class="highlight shell tab-shell--helm3"><code>helm delete mushop-utils -n mushop-utilities
+</code></pre></li>
+<li><p>If you installed Istio service mesh, uninstall it:</p>
+<pre class="highlight shell tab-shell"><code>istioctl manifest generate --set <span class="nv">profile</span><span class="o">=</span>demo | kubectl delete -f -
 </code></pre></li>
 </ul>
 <h1 id='acknowledgements'>Acknowledgements</h1><h2 id='community'>Community</h2>
