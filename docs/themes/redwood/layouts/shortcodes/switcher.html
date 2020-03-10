@@ -1,0 +1,16 @@
+{{- $params := .Params -}}
+{{- $uid := index (shuffle (seq 0 300)) 0 -}}
+{{- $content := .Inner | markdownify }}
+
+<div uk-grid>
+  <div class="uk-width-auto@m">
+    <ul class="uk-tab-left" uk-tab="connect: #switcher-{{ $uid }}">
+      {{- range $params -}}
+      <li><a href="#">{{ . }}</a></li>
+      {{- end -}}
+    </ul>
+  </div>
+  <div class="uk-width-expand@m">
+    {{ trim $content "\n" | replaceRE "^<ul>" (printf "<ul id='switcher-%d' class='uk-switcher'>" $uid) | safeHTML }}
+  </div>
+</div>

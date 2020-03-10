@@ -18,8 +18,8 @@
 {{- $target := .target -}}
 {{- $label := .label -}}
 {{- $icon := .icon -}}
-<li class="uk-grid uk-grid-small uk-flex-middle uk-flex-nowrap uk-text-nowrap">
-  <div class="uk-text-muted uk-width-expand">
+<li class="uk-grid uk-grid-small uk-flex-middle uk-flex-between uk-flex-nowrap uk-text-nowrap">
+  <div class="uk-text-muted uk-width-1-4">
     <!-- <span class="uk-visible@l" uk-icon="{{ $icon }}"></span> -->
     <span>{{ T $label | default $label }}</span>
   </div>
