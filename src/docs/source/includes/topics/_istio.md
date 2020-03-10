@@ -95,13 +95,15 @@ kubectl create ns mushop
 kubectl label namespace mushop istio-injection=enabled
 ```
 
-1. Follow the instructions for <a href="#deployment">deploying Mushop</a>. 
+1. Follow the instructions for [deploying Mushop](#deployment). 
 
 ### Creating Istio resources
 
 In order to configure the traffic routing and the ingress gateway, you will need to deploy a Gateway resource and a VirtualService resource.
 
 1. Deploy a Gateway resource:
+
+MacOS:
 
 ```shell
 cat << EOF | kubectl apply -f -
@@ -123,7 +125,29 @@ spec:
 EOF
 ```
 
+Windows:
+
+```shell
+"apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: gateway
+  namespace: mushop
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - '*'" | kubectl apply -f -
+```
+
 1. Deploy a VirtualService:
+
+MacOS:
 
 ```shell
 cat <<EOF | kubectl apply -f -
@@ -159,6 +183,42 @@ spec:
           number: 80
 EOF
 ```
+
+Windows:
+
+```shell
+"apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: edge
+  namespace: mushop
+spec:
+  hosts:
+    - '*'
+  gateways:
+    - gateway
+  http:
+  - match:
+    - uri:
+        prefix: /api
+    route:
+    - destination:
+        host: mushop-api.mushop.svc.cluster.local
+  - match:
+    - uri:
+        prefix: /assets
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: mushop-assets.mushop.svc.cluster.local
+  - route:
+    - destination:
+        host: mushop-storefront.mushop.svc.cluster.local
+        port:
+          number: 80" | kubectl apply -f -
+```
+
 
 1. Open a browser with the `EXTERNAL-IP` of the Instio ingress gateway:
 

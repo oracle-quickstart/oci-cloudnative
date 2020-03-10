@@ -503,7 +503,7 @@ helm chart is installed using settings to leverage cloud backing services.
     mushop-user-init-1-8k62c              0/1     Completed   0          33s
     ```
 
->Note: if you installed Istio service mesh, you should see `2/2` in the `READY` column and `1/2` for the init pods and the assets deploy pod.
+>Note: if you installed Istio service mesh, you should see `2/2` in the `READY` column and `1/2` for the init pods and the assets deploy pod. The reason you see `2/2` is because Istio injects a sidecar proxy container into each pod.
 
 1. Open a browser with the `EXTERNAL-IP` created during setup
 **OR** `port-forward` directly to the `edge` service resource **OR** use the `EXTERNAL-IP` of the Istio ingress gateway (if you installed Istio service mesh):
