@@ -1,22 +1,20 @@
 {{ $_hugo_config := `{ "version": 1 }` }}
 {{- $options := .Get "options" }}
-{{- $extras := .Get "classes" }}
+{{- $class := .Get "class" }}
 {{- $gutter := .Get "gutter" | default "small" -}}
-{{- $width := .Get "width" -}}
+{{- $width := .Get "col" -}}
 {{- $bp := .Get "breakpoint" | default "m" -}}
-{{- $divider := and (.Get "divider") "uk-grid-divider" -}}
 {{- $horizontal := and (.Get "x") (printf "uk-flex-%s"  (.Get "x")) -}}
 {{- $vertical := and (.Get "y") (printf "uk-flex-%s"  (.Get "y")) -}}
+{{- $widths := and $width (printf "uk-child-width-1-1 uk-child-width-%s@%s" $width $bp) | default "" -}}
 
-<div uk-grid="{{ $options }}" class="uk-grid uk-grid-{{ $gutter }}
-{{ $extras }}
-{{- if $width }}
-uk-child-width-1-1
-uk-child-width-{{ $width }}@{{ $bp }}
-{{ end }}
-{{ $divider }}
-{{ $horizontal }}
-{{ $vertical }}
-">
-  {{ .Inner }}
-</div>
+{{- $content := trim (.Inner | markdownify) "\n" -}}
+{{- $classes := printf "uk-grid uk-grid-%s %s %s %s %s" $gutter $class $widths $horizontal $vertical -}}
+
+{{ if hasPrefix $content "<ul>" }}
+  {{ $content | replaceRE "^<ul>" (printf `<ul uk-grid="%s" class="%s">` $options $classes) | safeHTML }}
+{{- else -}}
+  <div uk-grid="{{- $options -}}" class="{{- $classes -}}">
+    {{ $content | safeHTML }}
+  </div>
+{{- end -}}

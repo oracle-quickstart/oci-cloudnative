@@ -125,7 +125,7 @@
   {{ end }}
   </li>
   {{ else }}
-    {{ if not .Params.Hidden }}
+    {{ if not .Params.hidden }}
     <li data-nav-id="{{.RelPermalink}}" title="{{.Title}}" class="{{if eq .File.UniqueID $currentNode.File.UniqueID}}uk-active{{end}}">
       <a href="{{ .RelPermalink}}" class="uk-text-truncate">
         {{ safeHTML .Params.Pre }}{{or .Params.menuTitle .LinkTitle .Title}}{{ safeHTML .Params.Post }}

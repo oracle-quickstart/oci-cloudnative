@@ -12,6 +12,7 @@ scripts:
     async: true
     include:
       - node_modules/mermaid/dist/mermaid.min.js
+      - site/mermaid.js
 
   - name: site
     async: true

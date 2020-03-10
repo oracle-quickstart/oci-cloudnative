@@ -1,10 +1,10 @@
 {{- $params := .Params -}}
 {{- $uid := index (shuffle (seq 0 300)) 0 -}}
-{{- $content := .Inner | markdownify }}
+{{- $content := .Inner | markdownify -}}
 
-<div uk-grid>
+<div uk-grid class="uk-margin-bottom">
   <div class="uk-width-auto@m">
-    <ul class="uk-tab-left" uk-tab="connect: #switcher-{{ $uid }}">
+    <ul class="uk-tab-left uk-text-large" uk-tab="connect: #switcher-{{ $uid }}">
       {{- range $params -}}
       <li><a href="#">{{ . }}</a></li>
       {{- end -}}

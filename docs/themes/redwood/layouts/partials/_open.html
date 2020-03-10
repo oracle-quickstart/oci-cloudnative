@@ -11,7 +11,5 @@
             {{ partial "toc.html" . }}
             <main class="uk-width-expand">
               {{ partial "header.html" . }}
-              {{if and (not .IsHome) (not .Params.chapter) }}
-                <h1 class="rw-accent">{{ .Title }}</h1>
-              {{end}}
+              <h1 class="rw-accent">{{ .Title }}</h1>
               
