@@ -3,6 +3,10 @@ title: "Cleanup"
 date: 2020-03-09T16:06:00-06:00
 weight: 1000
 disablePrevNext: true
+tags:
+  - Cleanup
+  - Destroy
+  - Deprovision
 ---
 
 The following list represents cleanup operations, which may vary
@@ -46,7 +50,11 @@ depending on the actions performed for setup and deployment of MuShop.
     helm delete mushop-provision -n mushop
     ```
 
-- If used OCI Service broker, remove the `osb` installation,:
+    {{% alert icon="info" %}}
+After delete, `kubectl get serviceinstances -A` will show resources that are deprovisioning
+    {{% /alert %}}
+
+- If used OCI Service broker, remove the `oci-broker` installation:
 
     ```shell--helm2
     helm delete --purge oci-broker
