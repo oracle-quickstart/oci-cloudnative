@@ -90,8 +90,9 @@ ol > li > ul { margin-bottom: $base-margin-vertical; }
   // for body content overlay of footer
   position: relative;
   z-index: $rw-main-zindex + 1;
+  padding-bottom: $global-gutter;
   margin-bottom: $global-large-margin;
-  
+  border-bottom: $global-border-width solid $global-border;
 }
 
 // Navigation

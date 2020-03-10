@@ -8,7 +8,7 @@
 {{- $vertical := and (.Get "y") (printf "uk-flex-%s"  (.Get "y")) -}}
 {{- $widths := and $width (printf "uk-child-width-1-1 uk-child-width-%s@%s" $width $bp) | default "" -}}
 
-{{- $content := trim (.Inner | markdownify) "\n" -}}
+{{- $content := trim (.Inner | markdownify) "\n " -}}
 {{- $classes := printf "uk-grid uk-grid-%s %s %s %s %s" $gutter $class $widths $horizontal $vertical -}}
 
 {{ if hasPrefix $content "<ul>" }}

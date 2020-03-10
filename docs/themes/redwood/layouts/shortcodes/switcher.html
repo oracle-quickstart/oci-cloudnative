@@ -11,6 +11,6 @@
     </ul>
   </div>
   <div class="uk-width-expand@m">
-    {{ trim $content "\n" | replaceRE "^<ul>" (printf "<ul id='switcher-%d' class='uk-switcher'>" $uid) | safeHTML }}
+    {{ trim $content "\n " | replaceRE "^<ul>" (printf "<ul id='switcher-%d' class='uk-switcher'>" $uid) | safeHTML }}
   </div>
 </div>

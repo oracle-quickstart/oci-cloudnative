@@ -116,15 +116,15 @@ $base-code-color:           $global-color;
 $inverse-base-code-color:   $inverse-global-inverse-color;
 
 // Alert
-$alert-primary-background:  lighten($global-primary-background, 5%);
+$alert-primary-background:  lighten($global-primary-background,3%);
 $alert-primary-color:       $o-white;
 
-$alert-success-background:  lighten($global-success-background, 5%);
+$alert-success-background:  lighten($global-success-background, 3%);
 $alert-success-color:       $o-white;
 
-$alert-warning-background:  lighten($global-warning-background, 5%);
+$alert-warning-background:  lighten($global-warning-background, 0%);
 $alert-warning-color:       $o-white;
 
-$alert-danger-background:   lighten($global-danger-background, 5%);
+$alert-danger-background:   lighten($global-danger-background, 3%);
 $alert-danger-color:        $o-white;
 
