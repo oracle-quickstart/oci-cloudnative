@@ -27,3 +27,12 @@ disablePrevNext: true
   - [Autonomous Transaction Processing](https://github.com/oracle/oci-service-broker/blob/master/charts/oci-service-broker/docs/atp.md#autonomous-transaction-processing-service)
   - [Autonomous Data Warehouse](https://github.com/oracle/oci-service-broker/blob/master/charts/oci-service-broker/docs/adw.md#autonomous-data-warehouse-service)
   - [Streaming service](https://github.com/oracle/oci-service-broker/blob/master/charts/oci-service-broker/docs/oss.md#oracle-streaming-oci-service-broker)
+
+{{< switcher "One" "Two" "Three" >}}
+- Tab one content
+    ```ts
+    const foo: string = 'blah blah';
+    ```
+- Tab two content
+- Tab three content
+{{< /switcher >}}

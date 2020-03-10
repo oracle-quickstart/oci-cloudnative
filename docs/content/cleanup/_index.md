@@ -5,7 +5,7 @@ weight: 1000
 disablePrevNext: true
 tags:
   - Cleanup
-  - Destroy
+  - Uninstall
   - Deprovision
 ---
 

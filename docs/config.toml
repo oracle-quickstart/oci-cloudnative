@@ -9,16 +9,15 @@ showVisitedLinks = false
 author = "Oracle A-Team"
 organization = "Oracle"
 description = "Oracle Cloud Native Workshop"
-disableSearch = false
-disableCacheBusting = false
-disableLanguageSwitchingButton = true
-disableShortcutsTitle = false
-disableInlineCopyToClipBoard = true
+keywords = ["Kubernetes", "OCI", "OKE", "Microservices"]
 ghrepo = "https://github.com/oracle-quickstart/oci-cloudnative"
 branch = "master"
 logo = "images/logo.dark.png"
 
 [markup]
+  [markup.tableOfContents]
+    startLevel = 1
+    endLevel = 4
   [markup.highlight]
     codeFences = true
     guessSyntax = false
@@ -33,7 +32,7 @@ logo = "images/logo.dark.png"
 
 [[menu.shortcuts]]
 name = "More Information"
-pre = "<span uk-icon='icon: code; ratio: 1.25'></span>"
+pre = "<span uk-icon='icon: info; ratio: 1.25'></span>"
 url = "/resources"
 weight = 10
 
