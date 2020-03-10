@@ -74,9 +74,9 @@ then a Group with specific Policies must be created, and the User added as a mem
     ```
 
     {{% alert style="danger" icon="warning" %}}
-This policy is intentionally broad for the sake of simplicity,
-and is **not** recommended in most real-world use cases.
-Refer to the [Documentation](https://docs.cloud.oracle.com/iaas/Content/Identity/Concepts/overview.htm#three) for more on this topic.
+    This policy is intentionally broad for the sake of simplicity,
+    and is **not** recommended in most real-world use cases.
+    Refer to the [Documentation](https://docs.cloud.oracle.com/iaas/Content/Identity/Concepts/overview.htm#three) for more on this topic.
     {{% /alert %}}
 
 ### Service Limits
@@ -93,5 +93,5 @@ tenancy. Check minimum resource availability as follows:
 | Streaming | Partition Count | `>=1` |
 
 {{% alert style="primary" icon="info" %}}
-  This does not include requirements in cases where OKE is used.
+This does not include requirements in cases where OKE is used.
 {{% /alert %}}

@@ -51,7 +51,7 @@ depending on the actions performed for setup and deployment of MuShop.
     ```
 
     {{% alert icon="info" %}}
-After delete, `kubectl get serviceinstances -A` will show resources that are deprovisioning
+    After delete, `kubectl get serviceinstances -A` will show resources that are deprovisioning
     {{% /alert %}}
 
 - If used OCI Service broker, remove the `oci-broker` installation:
@@ -62,6 +62,12 @@ After delete, `kubectl get serviceinstances -A` will show resources that are dep
 
     ```shell--helm3
     helm delete oci-broker -n mushop-utilities
+    ```
+
+- Uninstall Istio service mesh _(if applicable)_:
+
+    ```shell
+    istioctl manifest generate --set profile=demo | kubectl delete -f -
     ```
 
 - Remove the `setup` cluster dependency installation:

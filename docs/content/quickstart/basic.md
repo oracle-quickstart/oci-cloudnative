@@ -44,9 +44,9 @@ These steps outline the **Basic** deployment using Resource Manager:
 1. On Stack details page, select `Terraform Actions > Apply`
 
 {{% alert icon="info" %}}
-  The application is deployed to the compute instances **asynchronously**.
-  It may take a few minutes for the public URL to serve the application. If
-  the stack is applied successfully but the application returns a
-  **503 Bad Gateway** message, then wait a few moments and reload
-  until the application comes online.
+The application is deployed to the compute instances **asynchronously**.
+It may take a few minutes for the public URL to serve the application. If
+the stack is applied successfully but the application returns a
+**503 Bad Gateway** message, then wait a few moments and reload
+until the application comes online.
 {{% /alert %}}

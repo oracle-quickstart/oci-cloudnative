@@ -1,7 +1,7 @@
 ---
 title: "Monitoring"
 date: 2020-03-09T16:05:08-06:00
-weight: 50
+weight: 40
 ---
 
 ## Prometheus and Grafana
@@ -51,7 +51,7 @@ Revisit the application charts and connect to some Grafana dashboards:
     - [Kubernetes Cluster](https://grafana.com/grafana/dashboards/6417)
     - [Kubernetes Pods](https://grafana.com/grafana/dashboards/6336)
 
-{{% alert style="primary" icon="info" %}}
-  Many community dashboards exist, those above are some basic recommendations
-{{% /alert %}}
+    {{% alert style="primary" icon="info" %}}
+    Many community dashboards exist, those above are some basic recommendations
+    {{% /alert %}}
 
