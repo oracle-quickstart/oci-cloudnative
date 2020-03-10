@@ -71,16 +71,6 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
     secretKeyRef:
       name: {{ $connectionSecret }}
       key: oadb_service
-- name: ATP_TRUST_PASS
-  valueFrom:
-    secretKeyRef:
-      name: {{ $connectionSecret }}
-      key: oadb_wallet_pw
-- name: ATP_KEY_PASS
-  valueFrom:
-    secretKeyRef:
-      name: {{ $connectionSecret }}
-      key: oadb_wallet_pw
 {{- end -}}
 
 {{/* OADB ADMIN environment */}}
@@ -101,19 +91,6 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 # for init container
 - name: wallet
   mountPath: /usr/lib/oracle/19.3/client64/lib/network/admin/
-  readOnly: true
-# for runtime
-- mountPath: {{ .Values.env.tnsAdmin }}/keystore.jks
-  subPath: keystore.jks
-  name: wallet
-  readOnly: true
-- mountPath: {{ .Values.env.tnsAdmin }}/truststore.jks
-  subPath: truststore.jks
-  name: wallet
-  readOnly: true
-- mountPath: {{ .Values.env.tnsAdmin }}/tnsnames.ora
-  subPath: tnsnames.ora
-  name: wallet
   readOnly: true
 {{- end -}}
 

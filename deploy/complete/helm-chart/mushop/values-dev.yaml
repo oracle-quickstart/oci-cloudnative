@@ -6,6 +6,10 @@ global:
   oadbConnectionSecret: oadb-connection # Name of connection secret created separately
   oosBucketSecret: oos-bucket           # Object storage bucket secret name (optional)
 
+ingress:
+  hosts: # Configure ingress to support host-specific routing
+    # - yourname.mushop.com 
+
 api:
   env:
     mediaUrl:                 # URL for catalog image assets (https://objectstorage.[REGION].oraclecloud.com/n/[NAMESPACE]/b/[BUCKET_NAME]/o/)
