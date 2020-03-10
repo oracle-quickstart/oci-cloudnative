@@ -1,4 +1,4 @@
-{{ $showToc := (and (not .Params.disableToc) (not .Params.chapter) (not .IsHome)) }}
+{{ $showToc := (and (not .Params.disableToc) (not .IsHome)) }}
 {{ if $showToc }}
 <div class="uk-flex-last uk-width-1-4 uk-visible@l">
   <aside id="toc-nav" uk-sticky="offset: 40">

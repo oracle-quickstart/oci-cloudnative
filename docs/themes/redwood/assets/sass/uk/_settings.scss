@@ -112,8 +112,8 @@ $inverse-button-secondary-active-background:  $inverse-global-primary-background
 $inverse-label-color:                         $inverse-global-color;
 
 // Code
-$base-code-color:           $o-brown-lt;
-$inverse-base-code-color:   $inverse-global-muted-color;
+$base-code-color:           $global-color;
+$inverse-base-code-color:   $inverse-global-inverse-color;
 
 // Alert
 $alert-primary-background:  lighten($global-primary-background, 5%);
