@@ -22,6 +22,6 @@ jobs:
     - name: Build Hugo Docs
       run: |
           cd docs
-          npm ci
+          cd themes/redwood && npm ci && cd ../..
           hugo -D
           ls -al public
