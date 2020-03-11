@@ -26,6 +26,8 @@ Project documentation built with [Hugo](https://gohugo.io/) and customized [UIki
 In general, the content management follows all the standard features of Hugo.
 
 - [Hugo Content Management](https://gohugo.io/content-management/)
+- [Hugo Shortcodes](https://gohugo.io/content-management/shortcodes)
+- [Cross Referencing](https://gohugo.io/content-management/cross-references/)
 
 ### Start hugo server
 
@@ -107,7 +109,8 @@ The Hugo documentation theme is custom-built with [UIkit](https://getuikit.com/d
 
 ### Shortcode Components
 
-Add panache to the documentation using these custom shortcodes
+Add panache to the documentation using these custom shortcodes directly within
+markdown documents.
 
 #### Alert
 
