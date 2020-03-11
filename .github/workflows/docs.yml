@@ -25,7 +25,7 @@ jobs:
       run: |
           cd docs
           npm ci
-          npm run build
+          hugo -D
     - name: Publish to Github Pages
       uses: peaceiris/actions-gh-pages@v2
       env:

@@ -23,5 +23,5 @@ jobs:
       run: |
           cd docs
           npm ci
-          npm run build
+          hugo -D
           ls -al public
