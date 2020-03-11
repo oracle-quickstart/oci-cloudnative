@@ -8,7 +8,7 @@
   .uk-background-muted {
     color: $global-color;
   }
-  .uk-background-secondary .uk-background-secondary {
+  .uk-background-secondary :not([id=content]).uk-background-secondary {
     background: $inverse-global-muted-background;
   }
 }
