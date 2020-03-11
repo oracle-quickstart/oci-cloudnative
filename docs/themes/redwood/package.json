@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "assets": "cp -r node_modules assets/js/",
-    "postinstall": "npm run assets"
+    "postinstall": "cp -r node_modules assets/js/"
   },
   "author": "Oracle",
   "license": "UPL-1.0",

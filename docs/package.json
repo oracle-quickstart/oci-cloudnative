@@ -11,6 +11,7 @@
     "rimraf": "^3.0.2"
   },
   "scripts": {
+    "postinstall": "cp -r node_modules assets/js/",
     "clean": "rimraf public",
     "prebuild": "npm run clean",
     "build": "hugo -D",
