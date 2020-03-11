@@ -4,10 +4,10 @@ Project documentation built with [Hugo](https://gohugo.io/) and customized [UIki
 
 ## Setup
 
-1. Install documentation dependencies:
+1. Install documentation theme:
 
     ```sh
-    npm install
+    make theme
     ```
 
 1. Install [`hugo` CLI](https://gohugo.io/getting-started/installing/):
@@ -25,7 +25,7 @@ In general, the content management follows all the standard features of Hugo.
 ### Start hugo server
 
 ```sh
-npm start
+make dev
 ```
 
 Or with `hugo`:
