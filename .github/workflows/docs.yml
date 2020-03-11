@@ -5,7 +5,7 @@ on:
     branches: 
     - master
     paths:
-    - 'docs/**'
+    - 'src/docs/**'
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -23,11 +23,11 @@ jobs:
         extended: true
     - name: Build Hugo Docs
       run: |
-          cd docs
+          cd src/docs
           make build
     - name: Publish to Github Pages
       uses: peaceiris/actions-gh-pages@v2
       env:
         ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
         PUBLISH_BRANCH: gh-pages
-        PUBLISH_DIR: docs/public
+        PUBLISH_DIR: src/docs/public
