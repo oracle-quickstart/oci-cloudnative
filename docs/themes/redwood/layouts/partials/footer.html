@@ -5,7 +5,7 @@
     {{if $showPrevNext}}
       {{- $iconRatio := "2.5" -}}
       {{ template "menu-pagination" dict "menu" .Site.Home "currentnode" $currentNode }}
-      <div class="uk-text-small">
+      <div>
       {{- if not (or .IsSection .Params.disableBack) -}}
         {{- with ($.Scratch.Get "prevPage") }}
         <a href="{{ .RelPermalink }}" title="{{ .Title }}" class="rw-page-prev uk-flex uk-flex-left uk-flex-middle uk-text-truncate">

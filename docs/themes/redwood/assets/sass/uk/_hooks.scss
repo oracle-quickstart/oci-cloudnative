@@ -3,6 +3,13 @@
  * The Universal Permissive License (UPL), Version 1.0
  */
 
+// Background
+@mixin hook-background-misc() {
+  .uk-background-muted {
+    color: $global-color;
+  }
+}
+
 // Code
 @mixin hook-base-pre() {
 
@@ -43,6 +50,14 @@
     color: inherit;
     font-weight: 400;
     opacity: 0.7;
+  }
+}
+
+// Cards
+
+@mixin hook-card-secondary() {
+  .uk-background-secondary & {
+    background: $inverse-global-muted-background;
   }
 }
 
