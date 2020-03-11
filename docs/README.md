@@ -1,8 +1,14 @@
 # MuShop Docs
 
-Project documentation built with [Hugo](https://gohugo.io/) and customized [UIkit](https://getuikit.com) theme.
+## Looking for the Docs?
 
-## Setup
+See [https://oracle-quickstart.github.io/oci-cloudnative/](https://oracle-quickstart.github.io/oci-cloudnative/)
+
+## Developing the Docs
+
+Project documentation is built with [Hugo](https://gohugo.io/) and customized [UIkit](https://getuikit.com) theme.
+
+### Setup
 
 1. Install documentation theme:
 
@@ -16,13 +22,13 @@ Project documentation built with [Hugo](https://gohugo.io/) and customized [UIki
     brew install hugo
     ```
 
-## Development
+### Development
 
 In general, the content management follows all the standard features of Hugo.
 
 - [Hugo Content Management](https://gohugo.io/content-management/)
 
-### Start hugo server
+#### Start hugo server
 
 ```sh
 make dev
@@ -34,6 +40,6 @@ Or with `hugo`:
 hugo server --buildDrafts
 ```
 
-## Usage
+### Usage
 
 Open [http://localhost:3131/oci-coudnative/usage](http://localhost:3131/oci-coudnative/usage)
