@@ -1,0 +1,4 @@
+{{ $_hugo_config := `{ "version": 1 }` }}
+{{- $w := .Get 0 -}}
+{{- $bp := .Get 1 | default "s" -}}
+<div class="uk-margin-auto uk-width-1-1 uk-width-{{ $w }}@{{ $bp }}">{{ .Inner }}</div>

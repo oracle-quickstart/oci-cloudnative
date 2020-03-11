@@ -1,0 +1,40 @@
+#
+# Copyright (c) 2020, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0
+#
+[search-placeholder]
+other = "Search..."
+
+[title-error]
+other = "Error"
+
+[message-404]
+other = "Whoops. Looks like this page doesn't exist ¯\\_(ツ)_/¯"
+
+[home]
+other = "Home"
+
+[go-to-homepage]
+other = "Go to homepage"
+
+[edit-this-page]
+other = "Edit this page"
+
+[table-of-contents]
+other = "Table of Contents"
+
+[menu-shortcuts-title]
+other = "More"
+
+[menu-settings-title]
+other = "Settings"
+
+[menu-settings-theme]
+other = "Theme"
+
+[menu-settings-theme-dark]
+other = "Dark"
+
+[menu-settings-theme-light]
+other = "Light"
+

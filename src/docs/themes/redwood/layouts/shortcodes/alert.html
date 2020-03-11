@@ -1,0 +1,6 @@
+<div uk-alert class="uk-alert-{{ .Get "style" | default "default" }} uk-grid uk-grid-collapse uk-flex-nowrap {{ .Get "class" }}">
+  {{- with .Get "icon" -}}<span uk-icon="icon: {{ . }}; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span>{{- end -}}
+  {{- with . -}}<div class="uk-width-expand">
+    {{ .Inner -}}
+  </div>{{- end -}}
+</div>

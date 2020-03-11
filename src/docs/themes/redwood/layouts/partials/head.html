@@ -1,0 +1,15 @@
+<head>
+  <meta charset="utf-8">
+  <title>{{ .Title }} :: {{ .Site.Title }}</title>
+  
+  {{ partial "meta.html" . }}
+  {{ partial "favicon.html" . }}
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  {{- $options := (dict "outputStyle" "compressed" "enableSourceMap" true "includePaths" (slice "node_modules" "themes/redwood/node_modules")) -}}
+  {{- $main := resources.Get "sass/main.scss" | toCSS $options | minify | fingerprint }}
+  <link rel="stylesheet" type="text/css" href="{{ $main.Permalink }}" integrity="{{ $main.Data.Integrity }}">
+  {{- $fonts := resources.Get "sass/fonts.scss" | toCSS (dict "targetPath" "fonts/fonts.css") | minify | fingerprint }}
+  <link rel="stylesheet" type="text/css" href="{{ $fonts.Permalink }}" integrity="{{ $fonts.Data.Integrity }}">
+  {{ partial "custom-head.html" . }}
+</head>

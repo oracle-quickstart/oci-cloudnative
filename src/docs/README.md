@@ -1,34 +1,45 @@
 # MuShop Docs
 
-This documentation is based on the
-[slate](https://github.com/slatedocs/slate) documentation framework, and adapted for use in docker.
+## Looking for the Docs?
 
-## Development
+See [https://oracle-quickstart.github.io/oci-cloudnative/](https://oracle-quickstart.github.io/oci-cloudnative/)
 
-```shell
-docker-compose up
-```
+## Developing the Docs
 
-## Build
+Project documentation is built with [Hugo](https://gohugo.io/) and customized [UIkit](https://getuikit.com) theme.
 
-1. Build the docker image `mushop/docs`
+### Setup
 
-    ```shell
-    docker build -t mushop/docs .
+1. Install documentation theme:
+
+    ```sh
+    make theme
     ```
 
-1. Transfer build outputs to `build` working directory
+1. Install [`hugo` CLI](https://gohugo.io/getting-started/installing/):
 
-    ```shell
-    docker run --rm -v $(pwd):/transfer --entrypoint mv \
-      mushop/docs:latest \
-      build /transfer
+    ```sh
+    brew install hugo
     ```
 
-## Deploy
+### Development
 
-After build, deploy to origin `gh-pages` branch as follows:
+In general, the content management follows all the standard features of Hugo.
 
-```shell
-./deploy.sh --push-only
+- [Hugo Content Management](https://gohugo.io/content-management/)
+
+#### Start hugo server
+
+```sh
+make dev
 ```
+
+Or with `hugo`:
+
+```sh
+hugo server --buildDrafts
+```
+
+### Usage
+
+Open [http://localhost:3131/oci-coudnative/usage](http://localhost:3131/oci-coudnative/usage)

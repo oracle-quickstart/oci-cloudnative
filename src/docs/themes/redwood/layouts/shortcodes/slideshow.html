@@ -1,0 +1,13 @@
+{{- $options := .Get "options" | default "animation: slide; finite: true" -}}
+<div uk-slideshow="{{ $options }}">
+  <div class="uk-position-relative uk-visible-toggle {{ .Get "class" }}" tabindex="-1">
+    <ul class="uk-slideshow-items" {{ .Get "attrs"}}>
+      {{- safeHTML .Inner -}}
+    </ul>
+    <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>
+    <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slideshow-item="next"></a>
+  </div>
+  {{ with .Get "dotnav" }}
+  <ul class="uk-slideshow-nav uk-dotnav uk-flex-center uk-margin"></ul>
+  {{ end }}
+</div>

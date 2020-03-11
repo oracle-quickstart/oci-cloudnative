@@ -1,0 +1,10 @@
+{{ $showToc := (and (not .Params.disableToc) (not .IsHome)) }}
+{{ if $showToc }}
+<div class="uk-flex-last uk-width-1-4 uk-visible@l">
+  <aside id="toc-nav" uk-sticky="offset: 40">
+    {{ .TableOfContents }}
+    <hr/>
+    {{ partial "tags.html" . }}
+  </aside>
+</div>
+{{ end }}

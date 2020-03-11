@@ -1,0 +1,3 @@
+  {{- $options := (dict "outputStyle" "compressed" "enableSourceMap" true "includePaths" (slice "node_modules" "themes" "themes/redwood/node_modules")) -}}
+  {{- $style := resources.Get "sass/mushop.scss" | toCSS $options | minify | fingerprint -}}
+  <link rel="stylesheet" type="text/css" href="{{ $style.Permalink }}" integrity="{{ $style.Data.Integrity }}">

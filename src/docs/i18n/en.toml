@@ -2,9 +2,5 @@
 # Copyright (c) 2020, Oracle and/or its affiliates. All rights reserved.
 # The Universal Permissive License (UPL), Version 1.0
 #
-public
-node_modules
-themes/*
-!themes/redwood
-resources/_gen/*
-static/index.json
+[menu-settings-os]
+other = "OS"

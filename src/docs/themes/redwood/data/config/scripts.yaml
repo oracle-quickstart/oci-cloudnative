@@ -1,0 +1,27 @@
+#
+# Copyright (c) 2020, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0
+#
+scripts:
+  - name: vendor
+    async: false
+    include:
+      - node_modules/whatwg-fetch/dist/fetch.umd.js
+      - node_modules/uikit/dist/js/uikit.min.js
+      - node_modules/uikit/dist/js/uikit-icons.min.js
+      - node_modules/autocomplete.js/dist/autocomplete.min.js
+      - node_modules/lunr/lunr.min.js
+
+  - name: extras
+    async: true
+    include:
+      - node_modules/mermaid/dist/mermaid.min.js
+      - site/mermaid.js
+
+  - name: site
+    async: true
+    include:
+      - site/search.js
+      - site/settings.js
+      - site/styling.js
+      - site/clipboard.js

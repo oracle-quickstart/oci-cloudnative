@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="{{ .Page.Language | default "en" }}">
+  {{ partial "head.html" . }}
+  <body class="" data-url="{{ .RelPermalink }}">
+    
+      {{ partial "menu.html" . }}
+
+      <div class="uk-width-expand uk-margin-medium-left uk-margin-remove-left@s">
+        <div class="uk-margin-medium-right">
+          <div id="content" class="uk-grid" uk-grid>
+            {{ partial "toc.html" . }}
+            <main class="uk-width-expand">
+              {{ partial "header.html" . }}
+              <h1 class="rw-accent">{{ .Title }}</h1>
+              

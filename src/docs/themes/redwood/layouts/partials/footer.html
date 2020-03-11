@@ -1,0 +1,56 @@
+{{ $currentNode := . }}
+<footer>
+    <!-- Navigation chevrons -->
+    {{$showPrevNext := (and (or .IsHome .IsPage .IsSection) (not .Params.disablePrevNext) (not .Site.Params.disablePrevNext))}}
+    {{if $showPrevNext}}
+      {{- $iconRatio := "2.5" -}}
+      {{ template "menu-pagination" dict "menu" .Site.Home "currentnode" $currentNode }}
+      <div>
+      {{- if not (or .IsSection .Params.disableBack) -}}
+        {{- with ($.Scratch.Get "prevPage") }}
+        <a href="{{ .RelPermalink }}" title="{{ .Title }}" class="rw-page-prev uk-flex uk-flex-left uk-flex-middle uk-text-truncate">
+          <span uk-icon="icon: chevron-left; ratio: {{ $iconRatio }}" class="uk-margin-small-right uk-flex-none"></span>
+          <label class="uk-visible@m">{{ .Title }}</label>
+        </a>
+        {{- end -}}
+      {{- end -}}
+      {{- if not .Params.disableNext -}}
+        {{- with ($.Scratch.Get "nextPage") }}
+        <a href="{{ .RelPermalink }}" title="{{ .Title }}" class="rw-page-next uk-flex uk-flex-right uk-flex-middle uk-flex-last uk-text-truncate">
+          <label class="uk-visible@m">{{ .Title }}</label>
+          <span uk-icon="icon: chevron-right; ratio: {{ $iconRatio }}" class="uk-margin-small-left uk-flex-none"></span>
+        </a>
+        {{- end -}}
+      {{- end -}}
+      </div>
+    {{- end -}}
+  {{ partial "custom-footer.html" . }}
+</footer>
+
+{{ define "menu-pagination" }}
+{{$currentNode := .currentnode }}
+{{ if ne .menu.Params.hidden true}}
+  {{if hasPrefix $currentNode.RelPermalink .menu.RelPermalink }}
+    {{ $currentNode.Scratch.Set "NextPageOK" "OK" }}
+    {{ $currentNode.Scratch.Set "prevPage" ($currentNode.Scratch.Get "prevPageTmp") }}
+  {{else}}
+    {{if eq ($currentNode.Scratch.Get "NextPageOK") "OK"}}
+      {{ $currentNode.Scratch.Set "NextPageOK" nil }}
+      {{ $currentNode.Scratch.Set "nextPage" .menu }}
+    {{end}}
+  {{end}}
+
+  {{ $currentNode.Scratch.Set "prevPageTmp" .menu }}
+  {{ $currentNode.Scratch.Set "pages" .menu.Pages }}
+  {{ if .menu.IsHome}}
+    {{ $currentNode.Scratch.Set "pages" .menu.Sections }}
+  {{ else if .menu.Sections}}
+    {{ $currentNode.Scratch.Set "pages" (.menu.Pages | union .menu.Sections) }}
+  {{end}}
+
+  {{ $pages := ($currentNode.Scratch.Get "pages") }}
+  {{ range $pages.ByWeight  }}
+    {{ template "menu-pagination" dict "menu" . "currentnode" $currentNode }}
+  {{end}}
+{{ end }}
+{{ end }}

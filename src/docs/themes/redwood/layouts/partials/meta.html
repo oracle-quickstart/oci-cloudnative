@@ -1,0 +1,7 @@
+<meta name="application-name" content="{{ .Site.Title }}"/>
+<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ with .Site.Params.description }}{{ . }}{{ end }}{{ end }}">
+<meta name="keywords" content="{{ delimit (.Keywords | default .Site.Params.keywords) "," }}">
+<!-- og tags -->
+<meta property="og:title" content="{{ .Site.Title }} - {{ .Page.Title }}" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="{{ .Page.Permalink }}" />

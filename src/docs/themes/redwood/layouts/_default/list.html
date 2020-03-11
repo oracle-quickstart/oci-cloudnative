@@ -1,0 +1,14 @@
+{{ partial "_open.html" . }}
+  {{ if eq .Kind "section" }}
+    {{ .Content }}
+  {{ end }}
+
+  {{ if or .Params.showChildren (eq .Kind "taxonomy") (eq .Kind "taxonomyTerm") }}
+  {{- $listType := (and .Params.orderedChildren "ol") | default "ul" -}}
+  {{ printf "<%s>" $listType | safeHTML }}
+    {{ range .Pages }}
+      <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+    {{ end }}
+  {{ printf "</%s>" $listType | safeHTML }}
+  {{ end }}
+{{ partial "_close.html" . }}
