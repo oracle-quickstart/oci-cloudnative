@@ -22,8 +22,6 @@ jobs:
     - name: Build Hugo Docs
       run: |
           cd docs
-          node -v
-          npm -v
           npm ci
           hugo -D
           ls -al public
