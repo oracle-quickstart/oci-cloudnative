@@ -7,11 +7,13 @@ THEME=themes/redwood
 
 dev: theme up
 
-build: theme
-	@hugo -D
+build: theme hugo
 
 theme:
 	cd $(THEME) && npm install
+
+hugo:
+	@hugo -D
 
 up:
 	@hugo server -D --disableFastRender
