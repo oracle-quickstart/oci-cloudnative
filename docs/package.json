@@ -12,9 +12,8 @@
   },
   "scripts": {
     "clean": "rimraf public",
-    "prebuild": "npm run clean && npm run index",
+    "prebuild": "npm run clean",
     "build": "hugo -D",
-    "index": "node idx.js",
     "start": "hugo server -D --disableFastRender"
   },
   "author": "Oracle",
