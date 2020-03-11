@@ -278,7 +278,7 @@ Card body
 > Applies automatic overflow to the contents. Useful with [aspect ratio](#aspect-ratio) and `table` contents
 
 {{% grid col="1-2" y="top" %}}
-```markdown
+```text
 {{%/* overflow */%}}
 Something very tall or wide
 {{%/* /overflow */%}}
@@ -293,6 +293,47 @@ Something very wide
 |--|--|
 | `[class]` | CSS class string to apply to wrapper `<div>` element |
 | `[attr]` | Attributes to apply to wrapper `<div>` element |
+
+---
+
+#### Slideshow
+
+> Display list items as a slideshow
+
+{{% grid col="1-2" y="top" %}}
+
+```html
+{{%/* slideshow dotnav=true */%}}
+{{%/* list/item "uk-background-secondary uk-light uk-padding" */%}}
+Slide one `markdown` CONTENT
+{{%/* /list/item */%}}
+<li class="uk-background-primary uk-light uk-padding">
+  Slide two HTML content
+</li>
+{{%/* /slideshow */%}}
+```
+
+{{% slideshow dotnav=true class="uk-light" %}}
+{{% list/item "uk-background-secondary uk-padding" %}}
+  Slide one `markdown` content
+{{% /list/item %}}
+
+<li class="uk-background-primary uk-padding">
+  Slide two HTML content
+</li>
+{{% /slideshow %}}
+{{% /grid %}}
+
+| Options | |
+|--|--|
+| `options` | See [options](https://getuikit.com/docs/slideshow#component-options) |
+| `class` | CSS class(es) to add to the slideshow items container |
+| `attrs` | DOM attributes to add to the `ul` items wrapper |
+| `dotnav` | Bool to include dotnav below slideshow |
+
+{{% alert style="warning" icon="warning" %}}
+Slideshow items must be `<li>` type. Refer to [usage](https://getuikit.com/docs/slideshow#usage) for specific decorations for the desired presentation
+{{% /alert %}}
 
 ---
 
@@ -386,9 +427,9 @@ Light Panel
 
 ### Shortcode Extras
 
-#### Mermaid
+#### Diagrams
 
-> SVG diagrams from [mermaid](https://mermaid-js.github.io/mermaid/#/)
+> Markdownish SVG diagrams from [mermaid](https://mermaid-js.github.io/mermaid/#/)
 
 {{% grid col="1-2" y="top" %}}
 ```markdown
@@ -413,6 +454,6 @@ graph TD
 
 | Options | |
 |--|--|
-| `class` | Additional classes |
+| `class` | Additional classes on the wrapper element |
 
 ---
