@@ -184,7 +184,7 @@ Content with aspect ratio of `2-1`
 {{% grid col="1-2" y="top" %}}
 ```markdown
 {{%/* grid col="1-2" */%}}
-{{%/* card style="primary" title="Primary" */%}}
+{{%/* card style="primary" title="Primary" hover=true */%}}
 Card body
 {{%/* /card */%}}
 {{%/* card style="secondary" title="Secondary" */%}}
@@ -195,7 +195,7 @@ Card body
 
 {{% wrapper %}}
 {{% grid col="1-2" %}}
-{{% card style="primary" title="Primary" %}}
+{{% card style="primary" title="Primary" hover=true %}}
 Card body
 {{% /card %}}
 {{% card style="secondary" title="Secondary" %}}
@@ -389,7 +389,7 @@ Light Panel
 
 {{% grid col="1-2" y="top" %}}
 ```markdown
-{{</* mermaid */>}}
+{{</* mermaid class="uk-text-center" */>}}
 graph TD
   A[Hard edge] -->|Link text| B(Round edge)
   B --> C{Decision}
@@ -398,11 +398,18 @@ graph TD
 {{</* /mermaid */>}}
 ```
 
-{{< mermaid >}}
+{{< mermaid class="uk-text-center">}}
 graph TD
   A[Hard edge] -->|Link text| B(Round edge)
   B --> C{Decision}
   C -->|One| D[Result one]
   C -->|Two| E[Result two]
 {{< /mermaid >}}
+
 {{% /grid %}}
+
+| Options | |
+|--|--|
+| `class` | Additional classes |
+
+---
