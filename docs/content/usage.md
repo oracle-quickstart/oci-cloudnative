@@ -105,7 +105,7 @@ The Hugo documentation theme is custom-built with [UIkit](https://getuikit.com/d
       ```
     ```
 
-### Shortcodes
+### Shortcode Components
 
 Add panache to the documentation using these custom shortcodes
 
@@ -113,60 +113,115 @@ Add panache to the documentation using these custom shortcodes
 
 > Displays an alert style block. Specify icon from the UIkit [icon library](https://getuikit.com/docs/icon#library)
 
-`alert <style="(default|primary|success|warning|danger)"> <icon="">`
+{{% grid col="1-2" y="top" %}}
 
 ```markdown
-{{%/* alert style="success" icon="check" */%}}
-Alert content to `process` as markdown
+{{%/* alert style="primary" icon="info" */%}}
+Alert content `processed` as **markdown**
 {{%/* /alert */%}}
 ```
 
-{{% alert style="success" icon="check" %}}
-Alert content to `process` as markdown
+{{% wrapper %}}
+{{% alert style="primary" icon="info" %}}
+Alert content `processed` as **markdown**
 {{% /alert %}}
+{{% alert style="success" icon="check" %}}
+Alert content `processed` as **markdown**
+{{% /alert %}}
+{{% alert style="warning" icon="warning" %}}
+Alert content `processed` as **markdown**
+{{% /alert %}}
+{{% alert style="danger" icon="ban" %}}
+Alert content `processed` as **markdown**
+{{% /alert %}}
+{{% /wrapper %}}
+
+{{% /grid %}}
+
+| Options | |
+|--|--|
+| `style` |  `default|primary|success|warning|danger` |
+| `icon` | Icon from [library](https://getuikit.com/docs/icon#library) |
+| `class` | Additional classes |
+
+---
 
 #### Aspect Ratio
 
 > Fix the enclosed content to an aspect ratio.
 
-`aspect <ratio="(1-1|3-2|4-3|16-9|2-1)"> [class="..."]`
-
-{{% aspect ratio="2-1" class="uk-margin-bottom" %}}
-{{% wrapper "uk-background-primary uk-light uk-padding-small" %}}
-Content with aspect ratio of `2-1`
-{{% /wrapper %}}
-{{% /aspect %}}
+{{% grid col="1-2" y="top" %}}
 
 ```markdown
-{{%/* aspect ratio="2-1" class="uk-margin-bottom" */%}}
-{{%/* wrapper "uk-background-primary uk-light uk-padding-small" */%}}
+{{%/* aspect ratio="2-1" */%}}
+{{%/* wrapper "uk-background-muted uk-padding-small" */%}}
 Content with aspect ratio of `2-1`
 {{%/* /wrapper */%}}
 {{%/* /aspect */%}}
 ```
 
+{{% wrapper %}}
+{{% aspect ratio="2-1" %}}
+{{% wrapper "uk-background-muted uk-padding-small" %}}
+Content with aspect ratio of `2-1`
+{{% /wrapper %}}
+{{% /aspect %}}
+{{% /wrapper %}}
+
+{{% /grid %}}
+
+| Options | |
+|--|--|
+| `ratio` |  `1-1|3-2|4-3|16-9|2-1` |
+| `class` | Additional classes |
+
+---
+
+#### Card
+
+> Display content as cards - usually in a grid
+
+{{% grid col="1-2" y="top" %}}
+```markdown
+{{%/* grid col="1-2" */%}}
+{{%/* card style="primary" title="Primary" */%}}
+Card body
+{{%/* /card */%}}
+{{%/* card style="secondary" title="Secondary" */%}}
+Card body
+{{%/* /card */%}}
+{{%/* /grid */%}}
+```
+
+{{% wrapper %}}
+{{% grid col="1-2" %}}
+{{% card style="primary" title="Primary" %}}
+Card body
+{{% /card %}}
+{{% card style="secondary" title="Secondary" %}}
+Card body
+{{% /card %}}
+{{% /grid %}}
+{{% /wrapper %}}
+
+{{% /grid %}}
+
+| Options | |
+|--|--|
+| `style` |  `default|primary|secondary` |
+| `size` |  `small|large` |
+| `hover` | Add hover styling |
+| `title` | Card title |
+| `width` | Width ratio accodring to [width](https://getuikit.com/docs/width) |
+| `class` | Additional classes |
+
+---
+
 #### Grid
 
 > Add a grid of inner contents using [grid](https://getuikit.com/docs/grid) and [flex](https://getuikit.com/docs/flex)
 
-`grid [...]`
-
-Supports the following options:
-
-- `options`: See [docs](https://getuikit.com/docs/grid#component-options)
-- `class`: Any classes to add to the grid wrapper
-- `col`: Child element column [width](https://getuikit.com/docs/width)
-- `breakpoint`: `(s|m|l|xl)` breakpoint at which the child element width becomes grid vs stacked. Default `m`
-- `gutter`: `(small|medium|large|collapse)` gutter settings (optional)
-- `x`: horizontal flex alignment see [here](https://getuikit.com/docs/flex#horizontal-alignment)
-- `y`: vertical flex alignment see [here](https://getuikit.com/docs/flex#vertical-alignment)
-
-{{% grid col="1-3" %}}
-- **Example**
-- Item one
-- Item two
-{{% /grid %}}
-
+{{% grid col="1-2" y="top" %}}
 ```markdown
 {{%/* grid col="1-3" */%}}
 - **Example**
@@ -175,33 +230,74 @@ Supports the following options:
 {{%/* /grid */%}}
 ```
 
+{{% wrapper %}}
+{{% grid col="1-3" %}}
+- **Example**
+- Item one
+- Item two
+{{% /grid %}}
+{{% /wrapper %}}
+{{% /grid %}}
+
+| Options | |
+|--|--|
+| `gutter` | `small|medium|large|collapse` gutter settings (optional) |
+| `class` | Any classes to add to the grid wrapper |
+| `col` | Child element column [width](https://getuikit.com/docs/width) |
+| `breakpoint` | `(s|m|l|xl)` breakpoint at which the child element width becomes grid vs stacked. Default `m` |
+| `x` | horizontal flex alignment see [here](https://getuikit.com/docs/flex#horizontal-alignment) |
+| `y` | vertical flex alignment see [here](https://getuikit.com/docs/flex#vertical-alignment) |
+| `options` | See [docs](https://getuikit.com/docs/grid#component-options) |
+
+---
+
 #### Icon
 
 > Add any icon from the [library](https://getuikit.com/docs/icon#library)
 
-`icon <name> [ratio]`
-
-{{< icon "bookmark" "3.5" >}}
-
+{{% grid col="1-2" y="top" %}}
 ```text
-{{</* icon "bookmark" "3.5" */>}}
+{{</* icon "bookmark" "2.5" */>}}
 ```
+
+{{< icon "bookmark" "2.5" >}}
+{{% /grid %}}
+
+| Options | |
+|--|--|
+| `icon` | Icon name |
+| `ratio` | Size proportion |
+
+---
+
+#### Overflow
+
+> Applies automatic overflow to the contents. Useful with [aspect ratio](#aspect-ratio) and `table` contents
+
+{{% grid col="1-2" y="top" %}}
+```markdown
+{{%/* overflow */%}}
+Something very tall or wide
+{{%/* /overflow */%}}
+```
+
+{{% overflow %}}
+Something very wide
+{{% /overflow %}}
+{{% /grid %}}
+
+| Arguments | |
+|--|--|
+| `[class]` | CSS class string to apply to wrapper `<div>` element |
+| `[attr]` | Attributes to apply to wrapper `<div>` element |
+
+---
 
 #### Switcher
 
 > Create a left-tab switcher component
 
-`switcher <...tabs>`
-
-{{< switcher "One" "Two" "Three" >}}
-- Tab one content
-    ```ts
-    const foo: string = 'blah blah';
-    ```
-- Tab two content
-- Tab three content
-{{< /switcher >}}
-
+{{% grid col="1-2" y="top" %}}
 ```markdown
 {{</* switcher "One" "Two" "Three" */>}}
 - Tab one content
@@ -213,62 +309,100 @@ Supports the following options:
 {{</* /switcher */>}}
 ```
 
+{{< switcher "One" "Two" "Three" >}}
+- Tab one content
+    ```ts
+    const foo: string = 'blah blah';
+    ```
+- Tab two content
+- Tab three content
+{{< /switcher >}}
+{{% /grid %}}
+
+| Arguments | |
+|--|--|
+| `<...tabs>` | Switcher tab names |
+
+---
+
 #### Width
 
 > Specify inner width after breakpoint according to the [docs](https://getuikit.com/docs/width)
 
 `width <width> [breakpoint]`
 
-{{% width "1-3" "s" %}}
-{{% alert style="danger" %}}
-![image](../images/oracle.svg)
-{{% /alert %}}
-{{% /width %}}
+{{% grid col="1-2" y="top" %}}
 
 ```markdown
-{{%/* width "1-3" "s" */%}}
+{{%/* width "1-2" "s" */%}}
 {{%/* alert style="danger" */%}}
 ![image](../images/oracle.svg)
 {{%/* /alert */%}}
 {{%/* /width */%}}
 ```
+{{% wrapper %}}
+{{% width "1-2" "s" %}}
+{{% alert style="danger" %}}
+![image](../images/oracle.svg)
+{{% /alert %}}
+{{% /width %}}
+{{% /wrapper %}}
+{{% /grid %}}
+
+| Arguments | |
+|--|--|
+| `<width>` | Content width ratio |
+| `[breakpoint]` | `s|m|l|xl` Size at which the width should apply |
+
+---
 
 #### Wrapper
 
 > Wraps inner content with any `div` and specified classes. Useful for specifying markup with other UIkit features
 
-`wrapper [classes]`
-
-{{% wrapper "uk-width-1-4@s uk-light uk-background-primary uk-panel uk-padding uk-margin-bottom" %}}
-Light Panel
-{{% /wrapper %}}
-
+{{% grid col="1-2" y="top" %}}
 ```markdown
-{{%/* wrapper "uk-width-1-4@s uk-light uk-background-primary uk-panel uk-padding uk-margin-bottom" */%}}
+{{%/* wrapper "uk-light uk-background-primary uk-panel uk-padding" */%}}
 Light Panel
 {{%/* /wrapper */%}}
 ```
+
+{{% wrapper %}}
+{{% wrapper "uk-light uk-background-primary uk-panel uk-padding" %}}
+Light Panel
+{{% /wrapper %}}
+{{% /wrapper %}}
+{{% /grid %}}
+
+| Arguments | |
+|--|--|
+| `[class]` | CSS class string to apply to wrapper `<div>` element |
+| `[attr]` | Attributes to apply to wrapper `<div>` element |
+
+---
+
+### Shortcode Extras
 
 #### Mermaid
 
 > SVG diagrams from [mermaid](https://mermaid-js.github.io/mermaid/#/)
 
-`mermaid`
-
-{{< mermaid >}}
-graph LR
-  A[Hard edge] -->|Link text| B(Round edge)
-  B --> C{Decision}
-  C -->|One| D[Result one]
-  C -->|Two| E[Result two]
-{{< /mermaid >}}
-
+{{% grid col="1-2" y="top" %}}
 ```markdown
 {{</* mermaid */>}}
-graph LR
+graph TD
   A[Hard edge] -->|Link text| B(Round edge)
   B --> C{Decision}
   C -->|One| D[Result one]
   C -->|Two| E[Result two]
 {{</* /mermaid */>}}
 ```
+
+{{< mermaid >}}
+graph TD
+  A[Hard edge] -->|Link text| B(Round edge)
+  B --> C{Decision}
+  C -->|One| D[Result one]
+  C -->|Two| E[Result two]
+{{< /mermaid >}}
+{{% /grid %}}
