@@ -61,6 +61,7 @@ EXPOSE 80
 WORKDIR /app
 ENV APPLICATION_NAME=${APPLICATION_NAME}
 ENV VERSION=${VERSION}
+ENV TNS_ADMIN=/usr/lib/oracle/19.3/client64/lib/network/admin/
 ENTRYPOINT java $JAVA_OPTS -jar /app/${APPLICATION_NAME}-${VERSION}.jar --port=80
 #
 # ------------
