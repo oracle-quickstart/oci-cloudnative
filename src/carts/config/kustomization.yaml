@@ -1,5 +1,0 @@
-secretGenerator:
-- name: db-certs-carts
-  files:
-  - keystore.jks
-  - truststore.jks

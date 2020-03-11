@@ -31,7 +31,6 @@ FROM openjdk:8-jre-slim
 ARG APPLICATION_NAME
 ARG VERSION
 
-COPY ./config /app/config
 COPY --from=appbuild /usr/src/app/target/${APPLICATION_NAME}-${VERSION}.jar /app/${APPLICATION_NAME}-${VERSION}.jar
 COPY --from=appbuild /usr/src/app/target/libs /app/libs
 EXPOSE 80

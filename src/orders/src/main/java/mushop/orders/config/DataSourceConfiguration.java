@@ -39,7 +39,7 @@ public class DataSourceConfiguration {
             dataSourceBuilder.username("SA");
             dataSourceBuilder.password("");
         }else{
-            dataSourceBuilder.driverClassName("oracle.jdbc.driver.OracleDriver");
+            dataSourceBuilder.driverClassName("oracle.jdbc.OracleDriver");
             dataSourceBuilder.url("jdbc:oracle:thin:@"+db_Name+"?TNS_ADMIN=${TNS_ADMIN}");
             dataSourceBuilder.username(db_user);
             dataSourceBuilder.password(db_pass);

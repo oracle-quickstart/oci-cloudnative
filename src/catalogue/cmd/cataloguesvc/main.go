@@ -1,5 +1,5 @@
 /*
-** Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+** Copyright © 2020, Oracle and/or its affiliates. All rights reserved.
 ** Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 */
 
@@ -27,7 +27,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/weaveworks/common/middleware"
-	_ "gopkg.in/goracle.v2"
+	_ "github.com/godror/godror"
 )
 
 const (
@@ -109,7 +109,7 @@ func main() {
 	}
 
 	// Data domain.
-	db, err := sqlx.Open("goracle", *connectString)
+	db, err := sqlx.Open("godror", *connectString)
 	if err != nil {
 		logger.Log("err", err)
 		os.Exit(1)

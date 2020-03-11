@@ -222,7 +222,7 @@ secret to the `mushop-utilities` namespace:
 1. Deploy the OCI service broker on your cluster. This is done with the [Oracle OCI Service Broker](https://github.com/oracle/oci-service-broker) helm chart:
 
     ```shell--helm2
-    helm install https://github.com/oracle/oci-service-broker/releases/download/v1.3.3/oci-service-broker-1.3.3.tgz \
+    helm install https://github.com/oracle/oci-service-broker/releases/download/v1.4.0/oci-service-broker-1.4.0.tgz \
       --namespace mushop-utilities \
       --name oci-broker \
       --set ociCredentials.secretName=oci-credentials \
@@ -231,7 +231,7 @@ secret to the `mushop-utilities` namespace:
     ```
 
     ```shell--helm3
-    helm install oci-broker https://github.com/oracle/oci-service-broker/releases/download/v1.3.3/oci-service-broker-1.3.3.tgz \
+    helm install oci-broker https://github.com/oracle/oci-service-broker/releases/download/v1.4.0/oci-service-broker-1.4.0.tgz \
       --namespace mushop-utilities \
       --set ociCredentials.secretName=oci-credentials \
       --set storage.etcd.useEmbedded=true \
@@ -478,7 +478,7 @@ helm chart is installed using settings to leverage cloud backing services.
 1. Wait for deployment pods to be **RUNNING** and init pods to show **COMPLETED**:
 
     ```shell
-    kubectl get pods -n mushop --watch
+    kubectl get pods --namespace mushop --watch
     ```
 
     ```text
@@ -503,8 +503,10 @@ helm chart is installed using settings to leverage cloud backing services.
     mushop-user-init-1-8k62c              0/1     Completed   0          33s
     ```
 
-1. Open a browser with the `EXTERNAL-IP` created during setup, **OR** `port-forward`
-directly to the `edge` service resource:
+>Note: if you installed Istio service mesh, you should see `2/2` in the `READY` column and `1/2` for the init pods and the assets deploy pod. The reason you see `2/2` is because Istio injects a sidecar proxy container into each pod.
+
+1. Open a browser with the `EXTERNAL-IP` created during setup
+**OR** `port-forward` directly to the `edge` service resource **OR** use the `EXTERNAL-IP` of the Istio ingress gateway (if you installed Istio service mesh):
 
     ```shell
     kubectl port-forward \
@@ -521,3 +523,12 @@ directly to the `edge` service resource:
 
     > Locating `EXTERNAL-IP` for Ingress Controller. **NOTE** this will be
     [localhost](https://localhost) on local clusters.
+
+    ```shell
+    kubectl get svc istio-ingressgateway \
+      --namespace istio-system
+    ```
+
+    > Locating `EXTERNAL-IP` for Istio Ingress Gateway. **NOTE** this will be
+    [localhost](https://localhost) on local clusters.
+
