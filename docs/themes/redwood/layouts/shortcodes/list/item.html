@@ -1,0 +1,5 @@
+{{- with . -}}
+<li class="{{ .Get 0 }}" {{ with .Get 1 }}{{ . }}{{ end }}>
+  {{- .Inner -}}
+</li>
+{{- end -}}

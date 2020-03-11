@@ -8,6 +8,9 @@
   .uk-background-muted {
     color: $global-color;
   }
+  .uk-background-secondary .uk-background-secondary {
+    background: $inverse-global-muted-background;
+  }
 }
 
 // Code

@@ -1,3 +1,7 @@
+/**
+ * Copyright © 2020, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
 @import "variables";
 
 /* Background */
@@ -17,13 +21,13 @@ pre, .chroma {
 /* LineHighlight */ .chroma .hl { display: block; width: 100%;background-color: $o-white }
 /* LineNumbersTable */ .chroma .lnt { margin-right: 0.4em; padding: 0 0.4em 0 0.4em;color: $o-muted }
 /* LineNumbers */ .chroma .ln { margin-right: 0.4em; padding: 0 0.4em 0 0.4em;color: $o-muted }
-/* Keyword */ .chroma .k { color: $o-green; font-weight: bold }
-/* KeywordConstant */ .chroma .kc { color: $o-green; font-weight: bold }
+/* Keyword */ .chroma .k { color: lighten($o-green, 5%); font-weight: bold }
+/* KeywordConstant */ .chroma .kc { color: $o-teal; font-weight: bold }
 /* KeywordDeclaration */ .chroma .kd { color: $o-green; font-weight: bold }
 /* KeywordNamespace */ .chroma .kn { color: $o-green; font-weight: bold }
 /* KeywordPseudo */ .chroma .kp { color: $o-green }
 /* KeywordReserved */ .chroma .kr { color: $o-green; font-weight: bold }
-/* KeywordType */ .chroma .kt { color: $o-green; font-weight: bold }
+/* KeywordType */ .chroma .kt { color: $o-teal; font-weight: bold }
 /* NameAttribute */ .chroma .na { color: $o-grey-lt }
 /* NameBuiltin */ .chroma .nb { color: $o-teal }
 /* NameClass */ .chroma .nc { color: $o-slate; text-decoration: underline }

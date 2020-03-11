@@ -1,3 +1,7 @@
+#
+# Copyright (c) 2020, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0
+#
 [search-placeholder]
 other = "Search..."
 
@@ -5,7 +9,7 @@ other = "Search..."
 other = "Error"
 
 [message-404]
-other = "Woops. Looks like this page doesn't exist ¯\\_(ツ)_/¯."
+other = "Whoops. Looks like this page doesn't exist ¯\\_(ツ)_/¯"
 
 [home]
 other = "Home"
