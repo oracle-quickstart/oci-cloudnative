@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-	<meta name="generator" content="Hugo 0.66.0" />
   <meta charset="utf-8">
-  <title>Cloud Native on Oracle Cloud Infrastructure :: MuShop</title>
+  <title>Getting Started :: MuShop</title>
   
   <meta name="application-name" content="MuShop"/>
 <meta name="description" content="Oracle Cloud Native Workshop">
 <meta name="keywords" content="Kubernetes,OCI,OKE,Microservices">
 
-<meta property="og:title" content="MuShop - Cloud Native on Oracle Cloud Infrastructure" />
+<meta property="og:title" content="MuShop - Getting Started" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://oracle-quickstart.github.io/oci-cloudnative/" />
+<meta property="og:url" content="https://oracle-quickstart.github.io/oci-cloudnative/quickstart/" />
     <link rel="apple-touch-icon" sizes="180x180" href="/oci-cloudnative/icons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/oci-cloudnative/icons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/oci-cloudnative/icons/favicon-16x16.png">
@@ -25,7 +24,7 @@
   <link rel="stylesheet" type="text/css" href="https://oracle-quickstart.github.io/oci-cloudnative/sass/mushop.min.c31ca585e7b3a90dfeb2fd0ac2d7d93ff0af82ea19b0cab20c8539d987761606.css" integrity="sha256-wxylheezqQ3&#43;sv0KwtfZP/CvguoZsMqyDIU52Yd2FgY=">
 </head>
 
-  <body class="" data-url="/oci-cloudnative/">
+  <body class="" data-url="/oci-cloudnative/quickstart/">
     
       
 <div class="uk-navbar-container uk-hidden@s">
@@ -99,7 +98,7 @@
   
   
   
-  <li data-nav-id="/oci-cloudnative/quickstart/" title="Getting Started" class=" uk-parent">
+  <li data-nav-id="/oci-cloudnative/quickstart/" title="Getting Started" class=" uk-parent uk-open uk-active">
     <a href="/oci-cloudnative/quickstart/">
       <div class="uk-flex uk-flex-between uk-flex-middle">
         <div class="uk-text-truncate">Getting Started</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
@@ -367,6 +366,14 @@
               
             </a>
           </li>
+            <li>
+              <a title='Edit this page' href="https://github.com/oracle-quickstart/oci-cloudnative/tree/master/docs/content/quickstart/_index.md" target="blank">
+                <span uk-icon="pencil"></span>
+                <span class="uk-text-middle">Edit this page</span>
+              </a>
+            </li>
+            
+          
         </ul>
       </section>
       <section>
@@ -450,46 +457,110 @@
           <div id="content" class="uk-grid" uk-grid>
             
 
+<div class="uk-flex-last uk-width-1-4 uk-visible@l">
+  <aside id="toc-nav" uk-sticky="offset: 40">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#clone-repository">Clone Repository</a></li>
+        <li><a href="#structure">Structure</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    <hr/>
+    
+  <div>
+    
+    <a class="uk-label" href="/oci-cloudnative/tags/quickstart">
+      <span uk-icon="tag"></span>
+      Quickstart
+    </a>
+    
+    <a class="uk-label" href="/oci-cloudnative/tags/source-code">
+      <span uk-icon="tag"></span>
+      Source code
+    </a>
+    
+  </div>
+
+  </aside>
+</div>
+
 
             <main class="uk-width-expand">
               <header>
   
-  </header>
+  
+    <ul class="uk-breadcrumb uk-margin-top uk-text-small">
+    
+  <li><a href='/oci-cloudnative/'>Home</a></li> <li>Getting Started</li>
+    </ul></header>
 
 
 
-              <h1 class="rw-accent">Cloud Native on Oracle Cloud Infrastructure</h1>
+              <h1 class="rw-accent">Getting Started</h1>
               
-   
-    <h2 id="mushop">MuShop</h2>
-<p>MuShop is a microservices demo application <strong>purpose-built</strong> to showcase
-interoperable <a href="https://www.oracle.com/cloud/cloud-native/">Cloud Native</a> services on
-<a href="https://www.oracle.com/cloud/">Oracle Cloud Infrastructure</a>, and to demonstrate
-a number of cloud native methodologies.</p>
-<p>The premise of MuShop is an e-commerce website offering a variety of cat
-products. It represents a polyglot microservice application, with <strong>actual use case</strong>
-scenarios for many Oracle Cloud Infrastructure services.</p>
-<p>Each microservice in MuShop is designed to highlight its own, or common high-level
-subject in Oracle Cloud Infrastructure, using the context of the overall demo application.</p>
+  
+    <p>This project supports deployment modes for the purposes of demonstrating
+different functionality on Oracle Cloud Infrastructure. While the source code
+is identical across these options, certain services are omitted in the <code>basic</code>
+deployment.</p>
 <table>
 <thead>
 <tr>
-<th><img src="images/intro/mushop.home.png" alt="mushop"></th>
-<th><img src="images/intro/mushop.about.png" alt="services"></th>
+<th><a href="basic">Basic: <code>deploy/basic</code></a></th>
+<th><a href="kubernetes">Cloud Native: <code>deploy/complete</code></a></th>
 </tr>
 </thead>
+<tbody>
+<tr>
+<td>Simplified runtime utilizing <strong>only</strong> <a href="https://www.oracle.com/cloud/free/">Always Free</a> resources deployed with <a href="https://www.oracle.com/cloud/systems-management/resource-manager/">Resource Manager</a></td>
+<td>Full-featured <a href="https://kubernetes.io/">Kubernetes</a> microservices deployment showcasing Oracle <a href="https://www.oracle.com/cloud/cloud-native/">Cloud Native</a> technologies and backing services</td>
+</tr>
+</tbody>
 </table>
-<div uk-grid="" class="uk-grid uk-grid-small   uk-flex-center uk-flex-middle"><p><strong>Micro</strong>services <span uk-icon="icon: arrow-right; ratio: 1.5" class="uk-text-muted uk-flex-none"></span></p>
-<p>μ <span uk-icon="icon: arrow-right; ratio: 1.5" class="uk-text-muted uk-flex-none"></span></p>
-<p>Mu <span uk-icon="icon: arrow-right; ratio: 1.5" class="uk-text-muted uk-flex-none"></span></p>
-<p>Meow <span uk-icon="icon: arrow-right; ratio: 1.5" class="uk-text-muted uk-flex-none"></span></p>
-<span class="uk-width-1-5 uk-flex-none">
-  <img uk-img data-src="images/logo.light.png" class="no-dark" />
-  <img uk-img data-src="images/logo.dark.png" class="no-light" />
-</span></div>
-<hr>
-<div class="uk-margin-auto uk-width-1-1 uk-width-1-2@s"><p><img src="images/intro/cloudnative.png" alt="Mushop cloud native"></p>
-</div>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">mushop
+└── deploy
+    ├── basic
+    └── complete
+</code></pre></div><h2 id="clone-repository">Clone Repository</h2>
+<p>Each topic in this material references the source code, which should be
+cloned to a personal workspace.</p>
+<pre><code class="language-shell--macos-linux" data-lang="shell--macos-linux">git clone https://github.com/oracle-quickstart/oci-cloudnative.git mushop
+cd mushop
+</code></pre><pre><code class="language-shell--win" data-lang="shell--win">git clone https://github.com/oracle-quickstart/oci-cloudnative.git
+dir mushop
+</code></pre><h2 id="structure">Structure</h2>
+<p>The source code will look something like the following:</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">#&gt; mushop
+├── deploy
+│   ├── basic
+│   └── complete
+│       ├── docker-compose
+│       ├── helm-chart
+│       └── kubernetes
+└── src
+    ├── api
+    ├── assets
+    ├── carts
+    ├── catalogue
+    ├── edge-router
+    ├── events
+    ├── fulfillment
+    ├── dbtools
+    ├── load
+    ├── orders
+    ├── payment
+    ├── storefront
+    └── user
+</code></pre></div><ul>
+<li><code>deploy</code>: Collection of application deployment resources.</li>
+<li><code>src</code>: Individual service source code, Dockerfiles, etc.</li>
+</ul>
+
+  
 
   
 
@@ -539,6 +610,7 @@ subject in Oracle Cloud Infrastructure, using the context of the overall demo ap
 
   
     
+    
   
 
   
@@ -551,6 +623,9 @@ subject in Oracle Cloud Infrastructure, using the context of the overall demo ap
 
 
   
+    
+      
+      
     
   
 
@@ -713,8 +788,8 @@ subject in Oracle Cloud Infrastructure, using the context of the overall demo ap
 
 
       <div>
-        <a href="/oci-cloudnative/introduction/" title="Introduction" class="rw-page-next uk-flex uk-flex-right uk-flex-middle uk-flex-last uk-text-truncate">
-          <label class="uk-visible@m">Introduction</label>
+        <a href="/oci-cloudnative/quickstart/basic/" title="Always Free" class="rw-page-next uk-flex uk-flex-right uk-flex-middle uk-flex-last uk-text-truncate">
+          <label class="uk-visible@m">Always Free</label>
           <span uk-icon="icon: chevron-right; ratio: 2.5" class="uk-margin-small-left uk-flex-none"></span>
         </a></div>
 </footer>

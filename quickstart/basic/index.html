@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-	<meta name="generator" content="Hugo 0.66.0" />
   <meta charset="utf-8">
-  <title>Cloud Native on Oracle Cloud Infrastructure :: MuShop</title>
+  <title>Always Free :: MuShop</title>
   
   <meta name="application-name" content="MuShop"/>
 <meta name="description" content="Oracle Cloud Native Workshop">
 <meta name="keywords" content="Kubernetes,OCI,OKE,Microservices">
 
-<meta property="og:title" content="MuShop - Cloud Native on Oracle Cloud Infrastructure" />
+<meta property="og:title" content="MuShop - Always Free" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://oracle-quickstart.github.io/oci-cloudnative/" />
+<meta property="og:url" content="https://oracle-quickstart.github.io/oci-cloudnative/quickstart/basic/" />
     <link rel="apple-touch-icon" sizes="180x180" href="/oci-cloudnative/icons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/oci-cloudnative/icons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/oci-cloudnative/icons/favicon-16x16.png">
@@ -25,7 +24,7 @@
   <link rel="stylesheet" type="text/css" href="https://oracle-quickstart.github.io/oci-cloudnative/sass/mushop.min.c31ca585e7b3a90dfeb2fd0ac2d7d93ff0af82ea19b0cab20c8539d987761606.css" integrity="sha256-wxylheezqQ3&#43;sv0KwtfZP/CvguoZsMqyDIU52Yd2FgY=">
 </head>
 
-  <body class="" data-url="/oci-cloudnative/">
+  <body class="" data-url="/oci-cloudnative/quickstart/basic/">
     
       
 <div class="uk-navbar-container uk-hidden@s">
@@ -99,7 +98,7 @@
   
   
   
-  <li data-nav-id="/oci-cloudnative/quickstart/" title="Getting Started" class=" uk-parent">
+  <li data-nav-id="/oci-cloudnative/quickstart/" title="Getting Started" class=" uk-parent uk-open">
     <a href="/oci-cloudnative/quickstart/">
       <div class="uk-flex uk-flex-between uk-flex-middle">
         <div class="uk-text-truncate">Getting Started</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
@@ -119,7 +118,7 @@
 
   
     
-    <li data-nav-id="/oci-cloudnative/quickstart/basic/" title="Always Free" class="">
+    <li data-nav-id="/oci-cloudnative/quickstart/basic/" title="Always Free" class="uk-active">
       <a href="/oci-cloudnative/quickstart/basic/" class="uk-text-truncate">
         Always Free
       </a>
@@ -367,6 +366,14 @@
               
             </a>
           </li>
+            <li>
+              <a title='Edit this page' href="https://github.com/oracle-quickstart/oci-cloudnative/tree/master/docs/content/quickstart/basic.md" target="blank">
+                <span uk-icon="pencil"></span>
+                <span class="uk-text-middle">Edit this page</span>
+              </a>
+            </li>
+            
+          
         </ul>
       </section>
       <section>
@@ -450,48 +457,104 @@
           <div id="content" class="uk-grid" uk-grid>
             
 
+<div class="uk-flex-last uk-width-1-4 uk-visible@l">
+  <aside id="toc-nav" uk-sticky="offset: 40">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#basic-deployment">Basic Deployment</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    <hr/>
+    
+  <div>
+    
+    <a class="uk-label" href="/oci-cloudnative/tags/free">
+      <span uk-icon="tag"></span>
+      Free
+    </a>
+    
+    <a class="uk-label" href="/oci-cloudnative/tags/terraform">
+      <span uk-icon="tag"></span>
+      Terraform
+    </a>
+    
+    <a class="uk-label" href="/oci-cloudnative/tags/resource-manager">
+      <span uk-icon="tag"></span>
+      Resource Manager
+    </a>
+    
+    <a class="uk-label" href="/oci-cloudnative/tags/atp">
+      <span uk-icon="tag"></span>
+      ATP
+    </a>
+    
+  </div>
+
+  </aside>
+</div>
+
 
             <main class="uk-width-expand">
               <header>
   
-  </header>
-
-
-
-              <h1 class="rw-accent">Cloud Native on Oracle Cloud Infrastructure</h1>
-              
-   
-    <h2 id="mushop">MuShop</h2>
-<p>MuShop is a microservices demo application <strong>purpose-built</strong> to showcase
-interoperable <a href="https://www.oracle.com/cloud/cloud-native/">Cloud Native</a> services on
-<a href="https://www.oracle.com/cloud/">Oracle Cloud Infrastructure</a>, and to demonstrate
-a number of cloud native methodologies.</p>
-<p>The premise of MuShop is an e-commerce website offering a variety of cat
-products. It represents a polyglot microservice application, with <strong>actual use case</strong>
-scenarios for many Oracle Cloud Infrastructure services.</p>
-<p>Each microservice in MuShop is designed to highlight its own, or common high-level
-subject in Oracle Cloud Infrastructure, using the context of the overall demo application.</p>
-<table>
-<thead>
-<tr>
-<th><img src="images/intro/mushop.home.png" alt="mushop"></th>
-<th><img src="images/intro/mushop.about.png" alt="services"></th>
-</tr>
-</thead>
-</table>
-<div uk-grid="" class="uk-grid uk-grid-small   uk-flex-center uk-flex-middle"><p><strong>Micro</strong>services <span uk-icon="icon: arrow-right; ratio: 1.5" class="uk-text-muted uk-flex-none"></span></p>
-<p>μ <span uk-icon="icon: arrow-right; ratio: 1.5" class="uk-text-muted uk-flex-none"></span></p>
-<p>Mu <span uk-icon="icon: arrow-right; ratio: 1.5" class="uk-text-muted uk-flex-none"></span></p>
-<p>Meow <span uk-icon="icon: arrow-right; ratio: 1.5" class="uk-text-muted uk-flex-none"></span></p>
-<span class="uk-width-1-5 uk-flex-none">
-  <img uk-img data-src="images/logo.light.png" class="no-dark" />
-  <img uk-img data-src="images/logo.dark.png" class="no-light" />
-</span></div>
-<hr>
-<div class="uk-margin-auto uk-width-1-1 uk-width-1-2@s"><p><img src="images/intro/cloudnative.png" alt="Mushop cloud native"></p>
-</div>
-
   
+    <ul class="uk-breadcrumb uk-margin-top uk-text-small">
+    
+  
+  <li><a href='/oci-cloudnative/'>Home</a></li> <li><a href='/oci-cloudnative/quickstart/'>Getting Started</a></li> <li>Always Free</li>
+    </ul></header>
+
+
+
+              <h1 class="rw-accent">Always Free</h1>
+              
+  <h2 id="basic-deployment">Basic Deployment</h2>
+<p>This deployment is designed to run on Oracle Cloud Infrastructure using
+only <strong>Always Free</strong> resources. It uses MuShop source code and the Oracle Cloud Infrastructure
+<a href="https://www.terraform.io/docs/providers/oci/index.html">Terraform Provider</a> to
+produce a <a href="https://docs.cloud.oracle.com/iaas/Content/ResourceManager/Concepts/resourcemanager.htm">Resource Manager</a> stack,
+that <em>provisions</em> all required resources and <em>configures</em> the application on
+those resources.</p>
+<pre><code class="language-shell--linux-macos" data-lang="shell--linux-macos">cd deploy/basic
+</code></pre><pre><code class="language-shell--win" data-lang="shell--win">dir deploy/basic
+</code></pre><blockquote>
+<p>Source directory for basic deployment build/configuration</p>
+</blockquote>
+<p>These steps outline the <strong>Basic</strong> deployment using Resource Manager:</p>
+<ol>
+<li>Download the latest <a href="https://github.com/oracle-quickstart/oci-cloudnative/releases"><code>mushop-basic-stack-v1.x.x.zip</code></a> file.</li>
+<li><a href="https://console.us-ashburn-1.oraclecloud.com/resourcemanager/stacks/create">Login</a> to the console to import the stack.
+<blockquote>
+<p>Home &gt; Solutions &amp; Platform &gt; Resource Manager &gt; Stacks &gt; Create Stack</p>
+</blockquote>
+</li>
+<li>Upload the <code>mushop-basic-stack-v1.x.x.zip</code> file that was downloaded earlier, and provide a name and description for the stack.</li>
+<li>Specify configuration options:
+<ol>
+<li><strong>Database Name</strong> - You can choose to provide a database name (optional)</li>
+<li><strong>Node Count</strong> - Select if you want to deploy one or two application instances.</li>
+<li><strong>SSH Public Key</strong> - (Optional) Provide a public SSH key if you wish to establish SSH access to the compute node(s).</li>
+</ol>
+</li>
+<li>Review the information and click <code>Create</code> button.
+<blockquote>
+<p>The upload can take a few seconds, after which you will be taken to the newly created stack</p>
+</blockquote>
+</li>
+<li>On Stack details page, select <code>Terraform Actions &gt; Apply</code></li>
+</ol>
+<div uk-alert class="uk-alert-default uk-grid uk-grid-collapse uk-flex-nowrap "><span uk-icon="icon: info; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span><div class="uk-width-expand">
+<p>The application is deployed to the compute instances <strong>asynchronously</strong>.
+It may take a few minutes for the public URL to serve the application. If
+the stack is applied successfully but the application returns a
+<strong>503 Bad Gateway</strong> message, then wait a few moments and reload
+until the application comes online.</p>
+</div></div>
+
 
             </main>
           </div> 
@@ -539,6 +602,7 @@ subject in Oracle Cloud Infrastructure, using the context of the overall demo ap
 
   
     
+    
   
 
   
@@ -552,6 +616,7 @@ subject in Oracle Cloud Infrastructure, using the context of the overall demo ap
 
   
     
+    
   
 
   
@@ -567,6 +632,9 @@ subject in Oracle Cloud Infrastructure, using the context of the overall demo ap
 
 
   
+    
+      
+      
     
   
 
@@ -713,8 +781,12 @@ subject in Oracle Cloud Infrastructure, using the context of the overall demo ap
 
 
       <div>
-        <a href="/oci-cloudnative/introduction/" title="Introduction" class="rw-page-next uk-flex uk-flex-right uk-flex-middle uk-flex-last uk-text-truncate">
-          <label class="uk-visible@m">Introduction</label>
+        <a href="/oci-cloudnative/quickstart/" title="Getting Started" class="rw-page-prev uk-flex uk-flex-left uk-flex-middle uk-text-truncate">
+          <span uk-icon="icon: chevron-left; ratio: 2.5" class="uk-margin-small-right uk-flex-none"></span>
+          <label class="uk-visible@m">Getting Started</label>
+        </a>
+        <a href="/oci-cloudnative/quickstart/kubernetes/" title="Kubernetes Deployment" class="rw-page-next uk-flex uk-flex-right uk-flex-middle uk-flex-last uk-text-truncate">
+          <label class="uk-visible@m">Kubernetes Deployment</label>
           <span uk-icon="icon: chevron-right; ratio: 2.5" class="uk-margin-small-left uk-flex-none"></span>
         </a></div>
 </footer>

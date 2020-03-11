@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Deployment :: MuShop</title>
+  
+  <meta name="application-name" content="MuShop"/>
+<meta name="description" content="Oracle Cloud Native Workshop">
+<meta name="keywords" content="Kubernetes,OCI,OKE,Microservices">
+
+<meta property="og:title" content="MuShop - Deployment" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://oracle-quickstart.github.io/oci-cloudnative/cloud/deployment/" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/oci-cloudnative/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/oci-cloudnative/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/oci-cloudnative/icons/favicon-16x16.png">
+  <link rel="manifest" href="/oci-cloudnative/icons/site.webmanifest">
+  <link rel="mask-icon" href="/oci-cloudnative/icons/safari-pinned-tab.svg" color="#41727e">
+  <meta name="msapplication-TileColor" content="#c74634">
+  <meta name="theme-color" content="#fcfbfa">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="stylesheet" type="text/css" href="https://oracle-quickstart.github.io/oci-cloudnative/sass/main.min.365ea5fa4265a610e97e182317dae7344e4af5ad652875ab7e436469f523e6d7.css" integrity="sha256-Nl6l&#43;kJlphDpfhgjF9rnNE5K9a1lKHWrfkNkafUj5tc=">
+  <link rel="stylesheet" type="text/css" href="https://oracle-quickstart.github.io/oci-cloudnative/fonts/fonts.min.58744946497c59fa8a6ac77636ea480457079e54512cf3dcb552592b56503cc1.css" integrity="sha256-WHRJRkl8WfqKasd2NupIBFcHnlRRLPPctVJZK1ZQPME=">
+  <link rel="stylesheet" type="text/css" href="https://oracle-quickstart.github.io/oci-cloudnative/sass/mushop.min.c31ca585e7b3a90dfeb2fd0ac2d7d93ff0af82ea19b0cab20c8539d987761606.css" integrity="sha256-wxylheezqQ3&#43;sv0KwtfZP/CvguoZsMqyDIU52Yd2FgY=">
+</head>
+
+  <body class="" data-url="/oci-cloudnative/cloud/deployment/">
+    
+      
+<div class="uk-navbar-container uk-hidden@s">
+  <div class="">
+    <nav role="navigation" class="uk-light uk-navbar" uk-navbar>
+      <div class="uk-navbar-left">
+        <a href="https://oracle-quickstart.github.io/oci-cloudnative/" class="uk-navbar-item uk-logo">
+          <img
+            alt="MuShop"
+            class="uk-width-small"
+            src="/oci-cloudnative/images/logo.dark.png">
+        </a>
+      </div>
+      <div class="uk-navbar-right">
+        <a class="uk-navbar-toggle" uk-navbar-toggle-icon uk-toggle="target: #navigation"></a>
+      </div>
+    </nav>
+  </div>
+</div>
+
+
+<div class="uk-grid">
+  
+  
+  <aside
+    id="navigation"
+    class="rw-sidebar uk-offcanvas uk-width-1-1 uk-width-1-3@s uk-width-1-4@m uk-width-1-5@l uk-width-1-6@xl uk-light uk-padding-remove"
+    uk-offcanvas="overlay: true;">
+    <div class="uk-offcanvas-bar uk-padding-small">
+      
+      
+      <section>
+        <div class="uk-margin-bottom uk-visible@s">
+          <a href="https://oracle-quickstart.github.io/oci-cloudnative/" class="uk-logo">
+            <img src="/oci-cloudnative/images/logo.dark.png" alt="MuShop">
+          </a>
+        </div>
+        <div class="uk-margin-bottom">
+          <form class="uk-search uk-search-default uk-width-expand">
+  <span class="uk-search-icon-flip" uk-search-icon></span>
+  <input id="search" class="uk-search-input uk-width-expand" type="search" placeholder="Search...">
+</form>
+<div id="search-results" class="uk-background-primary uk-text-small"></div>
+        </div>
+        <ul class="uk-nav uk-nav-primary" uk-nav="multiple: true; toggle: > a .uk-icon">
+          <li class="uk-nav-divider"></li>
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/oci-cloudnative/introduction/" title="Introduction" class="">
+    <a href="/oci-cloudnative/introduction/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Introduction</div>
+      </div>
+    </a>
+    
+    
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/oci-cloudnative/quickstart/" title="Getting Started" class=" uk-parent">
+    <a href="/oci-cloudnative/quickstart/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Getting Started</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
+      </div>
+    </a>
+    
+    
+    <ul class="uk-nav-sub">
+      
+      
+      
+      
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/quickstart/basic/" title="Always Free" class="">
+      <a href="/oci-cloudnative/quickstart/basic/" class="uk-text-truncate">
+        Always Free
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/quickstart/kubernetes/" title="Kubernetes Deployment" class="">
+      <a href="/oci-cloudnative/quickstart/kubernetes/" class="uk-text-truncate">
+        Kubernetes Deployment
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+    </ul>
+  
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/oci-cloudnative/cloud/" title="Cloud Infrastructure" class=" uk-parent uk-open">
+    <a href="/oci-cloudnative/cloud/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Cloud Infrastructure</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
+      </div>
+    </a>
+    
+    
+    <ul class="uk-nav-sub">
+      
+      
+      
+      
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/cloud/prerequisites/" title="Prerequisites" class="">
+      <a href="/oci-cloudnative/cloud/prerequisites/" class="uk-text-truncate">
+        Prerequisites
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/cloud/setup/" title="Setup" class="">
+      <a href="/oci-cloudnative/cloud/setup/" class="uk-text-truncate">
+        Setup
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/cloud/deployment/" title="Deployment" class="uk-active">
+      <a href="/oci-cloudnative/cloud/deployment/" class="uk-text-truncate">
+        Deployment
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+    </ul>
+  
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/oci-cloudnative/extras/" title="Extras" class=" uk-parent">
+    <a href="/oci-cloudnative/extras/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Extras</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
+      </div>
+    </a>
+    
+    
+    <ul class="uk-nav-sub">
+      
+      
+      
+      
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/extras/monitoring/" title="Monitoring" class="">
+      <a href="/oci-cloudnative/extras/monitoring/" class="uk-text-truncate">
+        Monitoring
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/extras/istio/" title="Istio Service Mesh" class="">
+      <a href="/oci-cloudnative/extras/istio/" class="uk-text-truncate">
+        Istio Service Mesh
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+    </ul>
+  
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/oci-cloudnative/cleanup/" title="Cleanup" class="">
+    <a href="/oci-cloudnative/cleanup/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Cleanup</div>
+      </div>
+    </a>
+    
+    
+  </li>
+  
+
+ 
+
+          
+          <li class="uk-nav-divider"></li>
+        </ul>
+      </section>
+      
+      <section>
+        <ul class="uk-nav uk-nav-default" uk-nav>
+          <li class="uk-nav-header">More</li>
+          
+          
+          <li>
+            <a title="More Information" href="https://oracle-quickstart.github.io/oci-cloudnative/resources" class="uk-text-truncate">
+              <span uk-icon='icon: info; ratio: 1.25'></span>
+              <span class="uk-text-middle">More Information</span>
+              
+            </a>
+          </li>
+          <li>
+            <a title="Acknowledgements" href="https://oracle-quickstart.github.io/oci-cloudnative/acknowledgements" class="uk-text-truncate">
+              <span uk-icon='icon: users; ratio: 1.25'></span>
+              <span class="uk-text-middle">Acknowledgements</span>
+              
+            </a>
+          </li>
+          <li>
+            <a title="Tags" href="https://oracle-quickstart.github.io/oci-cloudnative/tags" class="uk-text-truncate">
+              <span uk-icon='icon: tag; ratio: 1.25'></span>
+              <span class="uk-text-middle">Tags</span>
+              
+            </a>
+          </li>
+          <li>
+            <a title="GitHub Source" href="https://github.com/oracle-quickstart/oci-cloudnative" class="uk-text-truncate">
+              <span uk-icon='icon: github; ratio: 1.25'></span>
+              <span class="uk-text-middle">GitHub Source</span>
+              
+            </a>
+          </li>
+          <li>
+            <a title="Report Issue" href="https://github.com/oracle-quickstart/oci-cloudnative/issues" class="uk-text-truncate">
+              <span uk-icon='icon: warning; ratio: 1.25'></span>
+              <span class="uk-text-middle">Report Issue</span>
+              
+            </a>
+          </li>
+            <li>
+              <a title='Edit this page' href="https://github.com/oracle-quickstart/oci-cloudnative/tree/master/docs/content/cloud/deployment.md" target="blank">
+                <span uk-icon="pencil"></span>
+                <span class="uk-text-middle">Edit this page</span>
+              </a>
+            </li>
+            
+          
+        </ul>
+      </section>
+      <section>
+        <ul id="rw-settings" class="uk-nav uk-nav-default" uk-nav>
+  <li class="uk-nav-divider"></li>
+  <li class="uk-nav-header">Settings</li>
+  <li class="uk-grid uk-grid-small uk-flex-middle uk-flex-between uk-flex-nowrap uk-text-nowrap">
+  <div class="uk-text-muted uk-width-1-4">
+    
+    <span>Theme</span>
+  </div>
+  <div class="uk-button-group rw-setting"
+    setting="theme"
+    target="html, #content" ><button class="uk-button uk-button-small uk-button-default
+    uk-active" toggle="uk-background-default" >
+      Light
+    </button><button class="uk-button uk-button-small uk-button-secondary
+    " toggle="uk-light uk-background-secondary" >
+      Dark
+    </button></div>
+</li>
+
+
+  <li class="uk-grid uk-grid-small uk-flex-middle uk-flex-between uk-flex-nowrap uk-text-nowrap">
+  <div class="uk-text-muted uk-width-1-4">
+    
+    <span>OS</span>
+  </div>
+  <div class="uk-button-group rw-setting"
+    setting="platform"
+    target="html" ><button class="uk-button uk-button-small uk-button-secondary
+    uk-active" toggle="stg-os-macos" >
+      Mac
+    </button><button class="uk-button uk-button-small uk-button-secondary
+    " toggle="stg-os-linux" >
+      Linux
+    </button><button class="uk-button uk-button-small uk-button-secondary
+    " toggle="stg-os-windows" >
+      Windows
+    </button></div>
+</li>
+<li class="uk-grid uk-grid-small uk-flex-middle uk-flex-between uk-flex-nowrap uk-text-nowrap">
+  <div class="uk-text-muted uk-width-1-4">
+    
+    <span>Helm</span>
+  </div>
+  <div class="uk-button-group rw-setting"
+    setting="helm"
+    target="html" ><button class="uk-button uk-button-small uk-button-secondary
+    uk-active" toggle="stg-helm-3" >
+      3.x
+    </button><button class="uk-button uk-button-small uk-button-secondary
+    " toggle="stg-helm-2" >
+      2.x
+    </button></div>
+</li>
+</ul>
+
+
+
+      </section>
+      <section class="uk-text-small uk-text-lighter uk-margin-top">
+        <hr>
+        <div class="uk-text-muted">
+  <div class="uk-margin-small">
+    Made with <span uk-icon="icon: heart; ratio: 0.75"></span> by Oracle A-Team
+  </div>
+  Copyright © 2020 Oracle and/or its affiliates. All rights reserved.
+</div>
+      </section>
+    </div>
+  </aside>
+  
+  <div class="uk-width-1-1 uk-width-1-3@s uk-width-1-4@m uk-width-1-5@l uk-width-1-6@xl uk-visible@s"></div>
+
+
+
+
+      <div class="uk-width-expand uk-margin-medium-left uk-margin-remove-left@s">
+        <div class="uk-margin-medium-right">
+          <div id="content" class="uk-grid" uk-grid>
+            
+
+<div class="uk-flex-last uk-width-1-4 uk-visible@l">
+  <aside id="toc-nav" uk-sticky="offset: 40">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#provisioning">Provisioning</a>
+          <ul>
+            <li><a href="#manual-steps">Manual Steps</a>
+              <ul>
+                <li><a href="#atp-database">ATP Database</a></li>
+                <li><a href="#streaming-service">Streaming Service</a></li>
+                <li><a href="#object-storage">Object Storage</a></li>
+                <li><a href="#verify">Verify</a></li>
+              </ul>
+            </li>
+            <li><a href="#using-service-broker">Using Service Broker</a></li>
+          </ul>
+        </li>
+        <li><a href="#api-gateway-oci-functions-and-email-delivery">API Gateway, OCI Functions and Email Delivery</a>
+          <ul>
+            <li><a href="#configure-email-delivery">Configure Email Delivery</a></li>
+            <li><a href="#configure-function-application">Configure function application</a></li>
+            <li><a href="#deploy-and-configure-the-function">Deploy and configure the function</a></li>
+            <li><a href="#creating-an-api-gateway">Creating an API gateway</a></li>
+          </ul>
+        </li>
+        <li><a href="#deployment">Deployment</a>
+          <ul>
+            <li><a href="#configuration">Configuration</a></li>
+            <li><a href="#installation">Installation</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    <hr/>
+    
+  <div>
+    
+    <a class="uk-label" href="/oci-cloudnative/tags/kubernetes">
+      <span uk-icon="tag"></span>
+      Kubernetes
+    </a>
+    
+    <a class="uk-label" href="/oci-cloudnative/tags/helm">
+      <span uk-icon="tag"></span>
+      Helm
+    </a>
+    
+    <a class="uk-label" href="/oci-cloudnative/tags/service-broker">
+      <span uk-icon="tag"></span>
+      Service Broker
+    </a>
+    
+    <a class="uk-label" href="/oci-cloudnative/tags/provision">
+      <span uk-icon="tag"></span>
+      Provision
+    </a>
+    
+    <a class="uk-label" href="/oci-cloudnative/tags/serverless">
+      <span uk-icon="tag"></span>
+      Serverless
+    </a>
+    
+    <a class="uk-label" href="/oci-cloudnative/tags/secrets">
+      <span uk-icon="tag"></span>
+      Secrets
+    </a>
+    
+  </div>
+
+  </aside>
+</div>
+
+
+            <main class="uk-width-expand">
+              <header>
+  
+  
+    <ul class="uk-breadcrumb uk-margin-top uk-text-small">
+    
+  
+  <li><a href='/oci-cloudnative/'>Home</a></li> <li><a href='/oci-cloudnative/cloud/'>Cloud Infrastructure</a></li> <li>Deployment</li>
+    </ul></header>
+
+
+
+              <h1 class="rw-accent">Deployment</h1>
+              
+  <h2 id="provisioning">Provisioning</h2>
+<p>Deploying the full application requires cloud backing services from Oracle Cloud Infrastructure.
+Provisioning these services may be done manually of course, but can also be done <em>automatically</em>
+through the use of <a href="https://github.com/oracle/oci-service-broker">OCI Service Broker</a>. You are
+encouraged to explore each approach.</p>
+<table>
+<thead>
+<tr>
+<th><a href="#manual-steps">Manual</a></th>
+<th><a href="#using-service-broker">Automated</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Provides steps for provisioning and connecting cloud services to the application</td>
+<td>Uses OCI Service Broker to <em>provision</em> <strong>and</strong> <em>connect</em> the Autonomous Transaction Processing database</td>
+</tr>
+</tbody>
+</table>
+<p>In all cases, begin by adding tenancy credentials to manage and
+connect services from within the cluster. Create a secret containing these
+values:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">kubectl create secret generic oci-credentials <span class="se">\
+</span><span class="se"></span>  --namespace mushop <span class="se">\
+</span><span class="se"></span>  --from-literal<span class="o">=</span><span class="nv">tenancy</span><span class="o">=</span>&lt;TENANCY_OCID&gt; <span class="se">\
+</span><span class="se"></span>  --from-literal<span class="o">=</span><span class="nv">user</span><span class="o">=</span>&lt;USER_OCID&gt; <span class="se">\
+</span><span class="se"></span>  --from-literal<span class="o">=</span><span class="nv">region</span><span class="o">=</span>&lt;USER_OCI_REGION&gt; <span class="se">\
+</span><span class="se"></span>  --from-literal<span class="o">=</span><span class="nv">fingerprint</span><span class="o">=</span>&lt;PUBLIC_API_KEY_FINGERPRINT&gt; <span class="se">\
+</span><span class="se"></span>  --from-literal<span class="o">=</span><span class="nv">passphrase</span><span class="o">=</span>&lt;PRIVATE_API_KEY_PASSPHRASE&gt; <span class="se">\
+</span><span class="se"></span>  --from-file<span class="o">=</span><span class="nv">privatekey</span><span class="o">=</span>&lt;PATH_OF_PRIVATE_API_KEY&gt;
+</code></pre></div><blockquote>
+<p><strong>NOTE:</strong> The passphrase entry is <strong>required</strong>. If you do not have passphrase for your key, just leave empty.</p>
+</blockquote>
+<h3 id="manual-steps">Manual Steps</h3>
+<p>Follow the steps outlined below to provision and configure the cluster with cloud service connection details.</p>
+<h4 id="atp-database">ATP Database</h4>
+<ol>
+<li>
+<p>Provision an Autonomous Transaction Processing (ATP) database. The default options will work well, as will an <strong>Always Free</strong> shape if available. Once <strong>RUNNING</strong> download the DB Connection Wallet and configure secrets as follows:</p>
+<ul>
+<li>
+<p>Create <code>oadb-admin</code> secret containing the database administrator password. Used once for schema initializations.</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">kubectl create secret generic oadb-admin <span class="se">\
+</span><span class="se"></span>  --namespace mushop <span class="se">\
+</span><span class="se"></span>  --from-literal<span class="o">=</span><span class="nv">oadb_admin_pw</span><span class="o">=</span><span class="s1">&#39;&lt;DB_ADMIN_PASSWORD&gt;&#39;</span>
+</code></pre></div></li>
+<li>
+<p>Create <code>oadb-wallet</code> secret with the Wallet <em>contents</em> using the downloaded <code>Wallet_*.zip</code>. The extracted <code>Wallet_*</code> directory is specified as the secret file path. Each file will become a key name in the secret data.</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">kubectl create secret generic oadb-wallet <span class="se">\
+</span><span class="se"></span>  --namespace mushop <span class="se">\
+</span><span class="se"></span>  --from-file<span class="o">=</span>&lt;PATH_TO_EXTRACTED_WALLET_FOLDER&gt;
+</code></pre></div></li>
+<li>
+<p>Create <code>oadb-connection</code> secret with the Wallet <strong>password</strong> and the service <strong>TNS name</strong> to use for connections.</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">kubectl create secret generic oadb-connection <span class="se">\
+</span><span class="se"></span>  --namespace mushop <span class="se">\
+</span><span class="se"></span>  --from-literal<span class="o">=</span><span class="nv">oadb_wallet_pw</span><span class="o">=</span><span class="s1">&#39;&lt;DB_WALLET_PASSWORD&gt;&#39;</span> <span class="se">\
+</span><span class="se"></span>  --from-literal<span class="o">=</span><span class="nv">oadb_service</span><span class="o">=</span><span class="s1">&#39;&lt;DB_TNS_NAME&gt;&#39;</span>
+</code></pre></div><blockquote>
+<p>Each database has 5 unique TNS Names displayed when the Wallet is downloaded. For a database named <code>mushopdb</code> an example would be <code>mushopdb_TP</code>.</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Optional</strong>: Instead of creating a shared database for the entire application, you may establish full separation of services by provisioning <em>individual</em> ATP instances for each service that requires a database. To do so, repeat the previous steps for each database,and give each secret a unique name, for example: <code>carts-oadb-admin</code>, <code>carts-oadb-connection</code>, <code>carts-oadb-wallet</code>.</p>
+<ul>
+<li><code>carts</code></li>
+<li><code>catalogue</code></li>
+<li><code>orders</code></li>
+<li><code>user</code></li>
+</ul>
+</li>
+</ol>
+<h4 id="streaming-service">Streaming Service</h4>
+<ol>
+<li>
+<p>Provision a Streaming instance from the Oracle Cloud Infrastructure <a href="https://console.us-phoenix-1.oraclecloud.com/storage/streaming">Console</a>, and make note of the created Stream <code>OCID</code> value. Then create an <code>oss-connection</code> secret containing the Stream connection details.</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">kubectl create secret generic oss-connection <span class="se">\
+</span><span class="se"></span>  --namespace mushop <span class="se">\
+</span><span class="se"></span>  --from-literal<span class="o">=</span><span class="nv">streamId</span><span class="o">=</span><span class="s1">&#39;&lt;STREAM_OCID&gt;&#39;</span> <span class="se">\
+</span><span class="se"></span>  --from-literal<span class="o">=</span><span class="nv">messageEndpoint</span><span class="o">=</span><span class="s1">&#39;&lt;MESSAGE_ENDPOINT_URL&gt;&#39;</span>
+</code></pre></div></li>
+</ol>
+<h4 id="object-storage">Object Storage</h4>
+<ol>
+<li>
+<p><strong>Optional</strong>: Provision a <strong>Public</strong> Object Storage Bucket, and create a Pre-Authenticated Request for the bucket. With the information, create a secret called <code>oos-bucket</code> as follows:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">kubectl create secret generic oos-bucket <span class="se">\
+</span><span class="se"></span>  --namespace mushop <span class="se">\
+</span><span class="se"></span>  --from-literal<span class="o">=</span><span class="nv">region</span><span class="o">=</span>&lt;BUCKET_REGION&gt; <span class="se">\
+</span><span class="se"></span>  --from-literal<span class="o">=</span><span class="nv">name</span><span class="o">=</span>&lt;BUCKET_NAME&gt; <span class="se">\
+</span><span class="se"></span>  --from-literal<span class="o">=</span><span class="nv">namespace</span><span class="o">=</span>&lt;OBJECT_STORAGE_NAMESPACE&gt; <span class="se">\
+</span><span class="se"></span>  --from-literal<span class="o">=</span><span class="nv">parUrl</span><span class="o">=</span>&lt;PRE_AUTHENTICATED_REQUEST_URL&gt;
+</code></pre></div><blockquote>
+<p><strong>Object Storage Namespace</strong> may be found with the CLI <code>oci os ns get</code> or from the <a href="https://console.us-ashburn-1.oraclecloud.com/a/tenancy">tenancy information page</a></p>
+</blockquote>
+</li>
+</ol>
+<h4 id="verify">Verify</h4>
+<ol>
+<li>
+<p>Verify the secrets are created and available in the <code>mushop</code> namespace:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">kubectl get secret --namespace mushop
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">NAME              TYPE      DATA   AGE
+oadb-admin        Opaque    1      3m
+oadb-connection   Opaque    2      3m
+oadb-wallet       Opaque    7      3m
+oci-credentials   Opaque    6      3m
+oos-bucket        Opaque    4      3m
+oss-connection    Opaque    2      3m
+</code></pre></div></li>
+</ol>
+<h3 id="using-service-broker">Using Service Broker</h3>
+<p>As an alternative to manually provisioning, the included <a href="https://github.com/oracle-quickstart/oci-cloudnative/tree/master/deploy/complete/helm-chart/provision"><code>provision</code></a>
+chart is an application of the open-source <a href="https://github.com/oracle/oci-service-broker">OCI Service Broker</a>
+for <em>provisioning</em> Oracle Cloud Infrastructure services. This implementation utilizes <a href="https://github.com/openservicebrokerapi/servicebroker/blob/v2.14/spec.md">Open Service Broker</a> in Oracle Container Engine for Kubernetes or in other Kubernetes clusters.</p>
+<pre><code class="language-shell--linux-macos" data-lang="shell--linux-macos">cd deploy/complete/helm-chart
+</code></pre><pre><code class="language-shell--win" data-lang="shell--win">dir deploy/complete/helm-chart
+</code></pre><ol>
+<li>
+<p>The Service Broker for Kubernetes requires access credentials to provision and
+manage services from within the cluster. Create a secret containing these
+values as described <a href="#provisioning">above</a>. Alternatively, copy the <code>oci-credentials</code>
+secret to the <code>mushop-utilities</code> namespace:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">kubectl get secret oci-credentials <span class="se">\
+</span><span class="se"></span>  --namespace<span class="o">=</span>mushop <span class="se">\
+</span><span class="se"></span>  --export <span class="se">\
+</span><span class="se"></span>  -o yaml <span class="p">|</span> kubectl apply <span class="se">\
+</span><span class="se"></span>  --namespace<span class="o">=</span>mushop-utilities -f -
+</code></pre></div></li>
+<li>
+<p>Deploy the OCI service broker on your cluster. This is done with the <a href="https://github.com/oracle/oci-service-broker">Oracle OCI Service Broker</a> helm chart:</p>
+<pre><code class="language-shell--helm2" data-lang="shell--helm2">helm install https://github.com/oracle/oci-service-broker/releases/download/v1.3.3/oci-service-broker-1.3.3.tgz \
+  --namespace mushop-utilities \
+  --name oci-broker \
+  --set ociCredentials.secretName=oci-credentials \
+  --set storage.etcd.useEmbedded=true \
+  --set tls.enabled=false
+</code></pre><pre><code class="language-shell--helm3" data-lang="shell--helm3">helm install oci-broker https://github.com/oracle/oci-service-broker/releases/download/v1.3.3/oci-service-broker-1.3.3.tgz \
+  --namespace mushop-utilities \
+  --set ociCredentials.secretName=oci-credentials \
+  --set storage.etcd.useEmbedded=true \
+  --set tls.enabled=false
+</code></pre><blockquote>
+<p>The above command will deploy the OCI Service Broker using an embedded etcd instance. It is not recommended to deploy the OCI Service Broker using an embedded etcd instance and tls disabled in production environments, instead a separate etcd cluster should be setup and used by the OCI Service Broker.</p>
+</blockquote>
+ <div uk-alert class="uk-alert-danger uk-grid uk-grid-collapse uk-flex-nowrap "><span uk-icon="icon: warning; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span><div class="uk-width-expand">
+<p>For the mushop <code>helm</code> deployment, the OCI Service Broker <strong>MUST</strong> be installed
+on the same namespace used by the <code>setup</code> chart. For convenience, the documentation
+commands defaults both the <code>setup</code> and OCI Service Broker charts to use
+the <code>mushop-utilities</code> namespace.</p>
+ </div></div>
+</li>
+<li>
+<p>Next utilize the OCI Service Broker implementation to provision services by installing the included <code>provision</code> chart:</p>
+<pre><code class="language-shell--helm2" data-lang="shell--helm2">helm install provision \
+  --namespace mushop \
+  --name mushop-provision \
+  --set global.osb.compartmentId=&lt;COMPARTMENT_ID&gt; \
+  --set global.osb.objectstoragenamespace=&lt;OBJECT_STORAGE_NAMESPACE&gt;
+</code></pre><pre><code class="language-shell--helm3" data-lang="shell--helm3">helm install mushop-provision provision \
+  --namespace mushop \
+  --set global.osb.compartmentId=&lt;COMPARTMENT_ID&gt; \
+  --set global.osb.objectstoragenamespace=&lt;OBJECT_STORAGE_NAMESPACE&gt;
+</code></pre><blockquote>
+<p><strong>Object Storage Namespace</strong> may be found with the CLI <code>oci os ns get</code> or from the <a href="https://console.us-ashburn-1.oraclecloud.com/a/tenancy">tenancy information page</a></p>
+</blockquote>
+</li>
+<li>
+<p>It will take a few minutes for the services database to provision, and the respective bindings to become available. Verify <code>serviceinstances</code> and <code>servicebindings</code> are <strong>READY</strong>:</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">kubectl get serviceinstances -A
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">NAME                   CLASS                                      PLAN       STATUS   AGE
+mushop-atp             ClusterServiceClass/atp-service            standard   Ready    1d
+mushop-objectstorage   ClusterServiceClass/object-store-service   standard   Ready    1d
+mushop-oss             ClusterServiceClass/oss-service            standard   Ready    1d
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">kubectl get servicebindings -A
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">NAME                         SERVICE-INSTANCE       SECRET-NAME                  STATUS   AGE
+mushop-bucket-par-binding    mushop-objectstorage   mushop-bucket-par-binding    Ready    1d
+mushop-oadb-wallet-binding   mushop-atp             mushop-oadb-wallet-binding   Ready    1d
+mushop-oss-binding           mushop-oss             mushop-oss-binding           Ready    1d
+</code></pre></div></li>
+</ol>
+<h2 id="api-gateway-oci-functions-and-email-delivery">API Gateway, OCI Functions and Email Delivery</h2>
+<div uk-alert class="uk-alert-primary uk-grid uk-grid-collapse uk-flex-nowrap "><span uk-icon="icon: info; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span><div class="uk-width-expand">
+<p>Note that this is <strong>OPTIONAL</strong>. If you don&rsquo;t want to configure Email Delivery and deploy a function with API Gateway, skip to the <a href="#deployment">deployment</a> section.</p>
+</div></div>
+<h3 id="configure-email-delivery">Configure Email Delivery</h3>
+<p>If you are planning to use the API gateway and Oracle Functions, to send emails using OCI Email Delivery you need to configure an approved sender first.</p>
+<ol>
+<li>From the OCI console, click <strong>Email Delivery</strong> -&gt; <strong>Email Approved Sender</strong></li>
+<li>Click the <strong>Create Approved Sender</strong></li>
+<li>Enter the email address, for example: <code>mushop@example.com</code></li>
+<li>Click <strong>Create Approved Sender</strong></li>
+</ol>
+<blockquote>
+<p>Note: if you have your own domain, you can enter a different address (e.g.<code>mushop@[yourdomain.com]</code>) and also configure SPF record for the sender. This involves adding a DNS record to your domain. You can follow <a href="https://docs.cloud.oracle.com/iaas/Content/Email/Tasks/configurespf.htm">these</a> instructions to set up SPF.</p>
+</blockquote>
+<p>Next, you need to generate the SMTP credentials that will allow you to log in to the SMTP server and send the email. Follow the <a href="https://docs.cloud.oracle.com/iaas/Content/Email/Tasks/generatesmtpcredentials.htm">Generate SMTP Credentails for a User</a> to get the SMTP host, port, username and password.</p>
+<p>The SMTP credentails (host, port, username and password) and the approved sender email address (e.g. <code>mushop@example.com</code>) will be provided to the function as configuration values later, so make sure you save these values somewhere.</p>
+<h3 id="configure-function-application">Configure function application</h3>
+<p>Each function needs to live inside of an application. You can create a new application either through the console, API or the Fn CLI. An application has a name (e.g. <code>mushop-app</code>) and the VCN and a subnet in which to run the functions. The one guideline here is to pick the subnets that are in the same region as the Docker registry you specified in your context YAML earlier - check these <a href="https://docs.cloud.oracle.com/iaas/Content/Functions/Tasks/functionscreatingapps.htm">docs</a> for more information.</p>
+<p>The first step you need to do is to ensure your tenancy is configured for function development. You can follow the <a href="https://docs.cloud.oracle.com/iaas/Content/Functions/Tasks/functionsconfiguringtenancies.htm">Configuring Your Tenancy for Function Development</a> documentation.</p>
+<p>As a next step you will need to install the <a href="https://github.com/fnproject/cli">Fn CLI</a>. If on a Mac and you&rsquo;re using <a href="https://brew.sh">Brew</a>, you can run:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">brew install fn
+</code></pre></div><p>Finally, you will need configure the Fn CLI - you can follow <a href="https://docs.cloud.oracle.com/iaas/Content/Functions/Tasks/functionscreatefncontext.htm">these instructions</a> that will guide you through creating a context file and configuring it with an image registry.</p>
+<p>To create an application using Fn CLI, run:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"> fn create app <span class="o">[</span>APP_NAME<span class="o">]</span> --annotation oracle.com/oci/subnetIds<span class="o">=</span><span class="s1">&#39;[&#34;ocid1.subnet.oc1.iad....&#34;]&#39;</span>
+</code></pre></div><blockquote>
+<p>Note: make sure you replace <code>APP_NAME</code> and the <code>ocid1.subnet</code> with actual values</p>
+</blockquote>
+<h3 id="deploy-and-configure-the-function">Deploy and configure the function</h3>
+<p>To deploy a function to an app, you can run the following command within the function folder (<code>/src/functions/newsletter-subscription</code>):</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">fn deploy --app <span class="o">[</span>APP_NAME<span class="o">]</span>
+</code></pre></div><blockquote>
+<p>Note: use <code>fn -v deploy --app [APP_NAME]</code> to get verbose output in case you&rsquo;re running into issues.</p>
+</blockquote>
+<p>In the remainder of the document, we will use <code>mushop-app</code> for the application name.</p>
+<p>You need to provide additional configuration (SMTP credentails) for the function to work properly and be able to send emails.</p>
+<p>Once you&rsquo;ve successfully deployed the function, you can use the Fn CLI to add configuration values (note that you can also do the same through the Console UI).</p>
+<p>Run the following commands to configure SMTP settings and the approved sender (replace the values):</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">fn config function mushop-app newsletter-subscription SMTP_USER &lt;smtp_username&gt;
+fn config function mushop-app newsletter-subscription SMTP_PASSWORD &lt;smtp_password&gt;
+fn config function mushop-app newsletter-subscription SMTP_HOST &lt;smtp_host&gt;
+fn config function mushop-app newsletter-subscription SMTP_PORT &lt;smtp_port&gt;
+fn config function mushop-app newsletter-subscription APPROVED_SENDER_EMAIL &lt;approved_sender_email&gt;
+</code></pre></div><h3 id="creating-an-api-gateway">Creating an API gateway</h3>
+<p>You will be using an <a href="https://docs.cloud.oracle.com/iaas/Content/APIGateway/Concepts/apigatewayoverview.htm">API Gateway</a> to access the functions. To prepare your tenancy for using the gateway, check the <a href="https://docs.cloud.oracle.com/iaas/Content/APIGateway/Concepts/apigatewayprerequisites.htm">Preparing for API Gateway</a> documentation.</p>
+<p>The quickest way to create a gateway is through the OCI console:</p>
+<ol>
+<li>Click <strong>Developer Services</strong> -&gt; <strong>API Gateway</strong> from the sidebar on the left</li>
+<li>Click the <strong>Create Gateway</strong> button</li>
+<li>Enter the following values (you can use a different name if you&rsquo;d like):
+<ul>
+<li>Name: <strong>mushop-gateway</strong></li>
+<li>Type: <strong>Public</strong></li>
+<li>Virtual Cloud Network: <em>Pick one from the dropdown</em></li>
+<li>Subnet: <em>Pick the subnet from the dropdown</em></li>
+</ul>
+</li>
+<li>Click <strong>Create</strong></li>
+<li>When gateway is created, click the <strong>Deployments</strong> link from the sidebar on the left</li>
+<li>Under the <strong>Deployments</strong>, click the <strong>Create Deployment</strong> button</li>
+<li>Make sure <strong>From Scratch</strong> option is selected at the top and enter the following values (you can leave the other values as they are - i.e. no need to enable CORS, Authentication or Rate Limiting):
+<ul>
+<li>Name: <strong>newsletter-subscription</strong></li>
+<li>Path prefix: <strong>/newsletter</strong></li>
+<li>Compartment: <Pick your compartment></li>
+<li>Execution log: <strong>Enabled</strong></li>
+<li>Log level: <strong>Error</strong></li>
+</ul>
+</li>
+<li>Click <strong>Next</strong> to define the route</li>
+<li>Enter the following values for <strong>Route 1</strong>:
+<ul>
+<li>Path: <strong>/subscribe</strong></li>
+<li>Methods: <strong>POST</strong></li>
+<li>Type: <strong>Oracle Functions</strong></li>
+<li>Application: <strong>mushop-app</strong> (or other, if you used a different name)</li>
+<li>Function name: <strong>newsletter-subscription</strong></li>
+</ul>
+</li>
+<li>Click the <strong>Show Route Logging Policies</strong> link and enable <strong>Execution Log</strong></li>
+<li>Click <strong>Next</strong> and review the deployment</li>
+<li>Click <strong>Create</strong> to create the gateway deployment</li>
+</ol>
+<p>When deployment completes, navigate to it to get the URL for the gateway. Click the <strong>Show</strong> link next to the <strong>Endpoint</strong> label to reveal the full URL for the deployment. It should look like this:</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">https://aaaaaaaaa.apigateway.us-ashburn-1.oci.customer-oci.com/newsletter/subscribe
+</code></pre></div><p>You will use this URL in <code>values-dev.yaml</code> when creating the deployment.</p>
+<h2 id="deployment">Deployment</h2>
+<p>Having completed the <a href="#provisioning">provisioning</a> steps above, the <code>mushop</code> deployment
+helm chart is installed using settings to leverage cloud backing services.</p>
+<h3 id="configuration">Configuration</h3>
+<ol>
+<li>
+<p>Make a copy of the <a href="https://github.com/oracle-quickstart/oci-cloudnative/blob/master/deploy/complete/helm-chart/mushop/values-dev.yaml"><code>values-dev.yaml</code></a> file and store somewhere on your machine as <code>myvalues.yaml</code>. Then complete the missing values (e.g. secret names) like the following:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">global</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">ociAuthSecret</span><span class="p">:</span><span class="w"> </span>oci-credentials<span class="w">        </span><span class="c"># OCI authentication credentials secret</span><span class="w">
+</span><span class="w">  </span><span class="k">ossStreamSecret</span><span class="p">:</span><span class="w"> </span>oss-connection<span class="w">       </span><span class="c"># Name of Stream connection secret</span><span class="w">
+</span><span class="w">  </span><span class="k">oadbAdminSecret</span><span class="p">:</span><span class="w"> </span>oadb-admin<span class="w">           </span><span class="c"># Name of DB Admin secret</span><span class="w">
+</span><span class="w">  </span><span class="k">oadbWalletSecret</span><span class="p">:</span><span class="w"> </span>oadb-wallet<span class="w">         </span><span class="c"># Name of Wallet secret</span><span class="w">
+</span><span class="w">  </span><span class="k">oadbConnectionSecret</span><span class="p">:</span><span class="w"> </span>oadb-connection<span class="w"> </span><span class="c"># Name of DB Connection secret</span><span class="w">
+</span><span class="w">  </span><span class="k">oosBucketSecret</span><span class="p">:</span><span class="w"> </span>oos-bucket<span class="w">           </span><span class="c"># Object storage bucket secret name (optional)</span><span class="w">
+</span></code></pre></div><blockquote>
+<p><strong>NOTE:</strong> If it&rsquo;s desired to connect a separate databases for a given service, you can specify values specific for each service, such as <code>carts.oadbAdminSecret</code>, <code>carts.oadbWalletSecret</code>&hellip;</p>
+</blockquote>
+ <div uk-alert class="uk-alert-primary uk-grid uk-grid-collapse uk-flex-nowrap "><span uk-icon="icon: info; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span><div class="uk-width-expand">
+<p>Database (<code>oadb-*</code>), stream (<code>oss-*</code>), and bucket (<code>oos-*</code>) secrets
+may be omitted if using the automated service broker approach.</p>
+ </div></div>
+</li>
+<li>
+<p><strong>Optional</strong>: If an Object Storage bucket is provisioned, you can configure the <code>api</code> environment to use the object URL prefix in <code>myvalues.yaml</code>:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">api</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">env</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="k">mediaUrl</span><span class="p">:</span><span class="w"> </span><span class="c"># https://objectstorage.[REGION].oraclecloud.com/n/[NAMESPACE]/b/[BUCKET_NAME]/o/</span><span class="w">
+</span></code></pre></div></li>
+<li>
+<p><strong>Optional</strong>: If you configured the Email Delivery, API gateway and the function, add the following snippet to your <code>myvalues.yaml</code> file:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">api</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">env</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="k">mediaUrl</span><span class="p">:</span><span class="w"> </span><span class="c"># ...</span><span class="w">
+</span><span class="w">    </span><span class="k">newsletterSubscribeUrl</span><span class="p">:</span><span class="w"> </span>https<span class="p">:</span>//<span class="p">[</span>API_GATEWAY_URL<span class="p">]</span><span class="w">
+</span></code></pre></div></li>
+</ol>
+<h3 id="installation">Installation</h3>
+<ol>
+<li>
+<p>Install the <a href="https://github.com/oracle-quickstart/oci-cloudnative/tree/master/deploy/complete/helm-chart/mushop"><code>mushop</code></a> application helm chart using the <code>myvalues.yaml</code> created above:</p>
+<ul>
+<li>
+<p><strong>OPTION 1:</strong> With cloud services provisioned <strong>manually</strong>:</p>
+<pre><code class="language-shell--helm2" data-lang="shell--helm2">helm install ./mushop \
+  --name mushop \
+  --namespace mushop \
+  --values myvalues.yaml
+</code></pre><pre><code class="language-shell--helm3" data-lang="shell--helm3">helm install mushop ./mushop \
+  --namespace mushop \
+  --values myvalues.yaml
+</code></pre></li>
+<li>
+<p><strong>OPTION 2:</strong> When using <strong>OCI Service Broker</strong> (<code>provision</code> chart):</p>
+<pre><code class="language-shell--helm2" data-lang="shell--helm2">helm install ./mushop \
+  --name mushop \
+  --namespace mushop \
+  --set global.osb.atp=true \
+  --set global.osb.oss=true \
+  --set global.osb.objectstorage=true \
+  --values myvalues.yaml
+</code></pre><pre><code class="language-shell--helm3" data-lang="shell--helm3">helm install mushop ./mushop \
+  --namespace mushop \
+  --set global.osb.atp=true \
+  --set global.osb.oss=true \
+  --set global.osb.objectstorage=true \
+  --values myvalues.yaml
+</code></pre></li>
+</ul>
+</li>
+<li>
+<p>Wait for deployment pods to be <strong>RUNNING</strong> and init pods to show <strong>COMPLETED</strong>:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">kubectl get pods --namespace mushop --watch
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">NAME                                  READY   STATUS      RESTARTS   AGE
+mushop-api-769c4d9fd8-hp7mc           1/1     Running     0          31s
+mushop-assets-dd5756599-pxngg         1/1     Running     0          33s
+mushop-assets-deploy-1-n2bk6          0/1     Completed   0          33s
+mushop-carts-6f5db9565f-4w65t         1/1     Running     0          33s
+mushop-carts-init-1-dcs82             0/1     Completed   0          33s
+mushop-catalogue-76977479fd-thdq4     1/1     Running     0          32s
+mushop-catalogue-init-1-twx9x         0/1     Completed   0          33s
+mushop-edge-648c989cd4-6g9dk          1/1     Running     0          32s
+mushop-events-569f4744c9-l7pqt        1/1     Running     0          30s
+mushop-fulfillment-85489cd99b-lzwqp   1/1     Running     0          30s
+mushop-nats-84dc5db659-7rpbl          1/1     Running     0          32s
+mushop-orders-6dcc7bbbb6-658tq        1/1     Running     0          33s
+mushop-orders-init-1-tm8ls            0/1     Completed   0          33s
+mushop-payment-c7dccd8cc-t9wmj        1/1     Running     0          33s
+mushop-session-5ff4c9557f-dmbq8       1/1     Running     0          33s
+mushop-storefront-8656597656-lgdlk    1/1     Running     0          33s
+mushop-user-54f4978d68-qhr7n          0/1     Running     0          31s
+mushop-user-init-1-8k62c              0/1     Completed   0          33s
+</code></pre></div><blockquote>
+<p>Note: if you installed Istio service mesh, you should see <code>2/2</code> in the <code>READY</code> column and <code>1/2</code> for the init pods and the assets deploy pod. The reason you see <code>2/2</code> is because Istio injects a sidecar proxy container into each pod.</p>
+</blockquote>
+</li>
+<li>
+<p>Open a browser with the <code>EXTERNAL-IP</code> created during setup, <strong>OR</strong> <code>port-forward</code>
+directly to the <code>edge</code> service resource:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">kubectl port-forward <span class="se">\
+</span><span class="se"></span>  --namespace mushop <span class="se">\
+</span><span class="se"></span>  svc/edge 8000:80
+</code></pre></div><blockquote>
+<p>Using <code>port-forward</code> connecting <a href="http://localhost:8000">localhost:8000</a> to the <code>edge</code> service</p>
+</blockquote>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">kubectl get svc mushop-utils-nginx-ingress-controller <span class="se">\
+</span><span class="se"></span>  --namespace mushop-utilities
+</code></pre></div><blockquote>
+<p>Locating <code>EXTERNAL-IP</code> for Ingress Controller. <strong>NOTE</strong> this will be
+<a href="https://localhost">localhost</a> on local clusters.</p>
+</blockquote>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">kubectl get svc istio-ingressgateway <span class="se">\
+</span><span class="se"></span>  --namespace istio-system
+</code></pre></div><blockquote>
+<p>Locating <code>EXTERNAL-IP</code> for Istio Ingress Gateway. <strong>NOTE</strong> this will be
+<a href="https://localhost">localhost</a> on local clusters.</p>
+</blockquote>
+</li>
+</ol>
+
+
+            </main>
+          </div> 
+          
+<footer>
+    
+    
+    
+
+
+  
+    
+    
+  
+
+  
+  
+  
+    
+  
+
+  
+  
+    
+
+
+  
+    
+      
+      
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+
+
+  
+    
+
+
+  
+    
+    
+  
+
+  
+  
+  
+
+  
+  
+    
+
+
+  
+    
+      
+      
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+
+
+  
+    
+
+
+  
+    
+      
+      
+    
+  
+
+  
+  
+  
+
+  
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+
+
+      <div>
+        <a href="/oci-cloudnative/cloud/setup/" title="Setup" class="rw-page-prev uk-flex uk-flex-left uk-flex-middle uk-text-truncate">
+          <span uk-icon="icon: chevron-left; ratio: 2.5" class="uk-margin-small-right uk-flex-none"></span>
+          <label class="uk-visible@m">Setup</label>
+        </a>
+        <a href="/oci-cloudnative/extras/" title="Extras" class="rw-page-next uk-flex uk-flex-right uk-flex-middle uk-flex-last uk-text-truncate">
+          <label class="uk-visible@m">Extras</label>
+          <span uk-icon="icon: chevron-right; ratio: 2.5" class="uk-margin-small-left uk-flex-none"></span>
+        </a></div>
+</footer>
+
+
+        </div> 
+      </div> 
+    </div> 
+    <script type="text/javascript">
+  (function(w, s) {
+    Object.assign(s, {
+      BaseURL: 'https:\/\/oracle-quickstart.github.io\/oci-cloudnative\/',
+      RelURL: '\/oci-cloudnative',
+      cssConfig: {
+        table: 'uk-table uk-table-small uk-table-striped',
+        '#TableOfContents > ul': 'uk-nav uk-nav-default uk-nav-parent-icon',
+        '#TableOfContents > ul ul': 'uk-nav-sub',
+      },
+      uikit: {
+        '#TableOfContents > ul': ['scrollspyNav', { closest: 'li', offset: 10 }],
+        
+      }
+    });
+  })(window, window.Site = window.Site || {});
+</script>
+
+<script src="https://oracle-quickstart.github.io/oci-cloudnative/js/vendor.min.a006043ab5cd331e53cb8de3dd96832ba0dfc932bfbba4bb8b3c5172454cb642.js" ></script><script src="https://oracle-quickstart.github.io/oci-cloudnative/js/extras.min.9bf9f2a01e7cae8e8e4e8ee771bdca09d6d04b4265a0f9af5ce83a213b0961d2.js"  async></script><script src="https://oracle-quickstart.github.io/oci-cloudnative/js/site.min.85ed2af337afee36aa93f07cac7fb2f54c7f3f62b046f5632316f5fd49271dcb.js"  async></script>
+  </body>
+</html>

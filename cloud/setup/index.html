@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-	<meta name="generator" content="Hugo 0.66.0" />
   <meta charset="utf-8">
-  <title>Cloud Native on Oracle Cloud Infrastructure :: MuShop</title>
+  <title>Setup :: MuShop</title>
   
   <meta name="application-name" content="MuShop"/>
 <meta name="description" content="Oracle Cloud Native Workshop">
 <meta name="keywords" content="Kubernetes,OCI,OKE,Microservices">
 
-<meta property="og:title" content="MuShop - Cloud Native on Oracle Cloud Infrastructure" />
+<meta property="og:title" content="MuShop - Setup" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://oracle-quickstart.github.io/oci-cloudnative/" />
+<meta property="og:url" content="https://oracle-quickstart.github.io/oci-cloudnative/cloud/setup/" />
     <link rel="apple-touch-icon" sizes="180x180" href="/oci-cloudnative/icons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/oci-cloudnative/icons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/oci-cloudnative/icons/favicon-16x16.png">
@@ -25,7 +24,7 @@
   <link rel="stylesheet" type="text/css" href="https://oracle-quickstart.github.io/oci-cloudnative/sass/mushop.min.c31ca585e7b3a90dfeb2fd0ac2d7d93ff0af82ea19b0cab20c8539d987761606.css" integrity="sha256-wxylheezqQ3&#43;sv0KwtfZP/CvguoZsMqyDIU52Yd2FgY=">
 </head>
 
-  <body class="" data-url="/oci-cloudnative/">
+  <body class="" data-url="/oci-cloudnative/cloud/setup/">
     
       
 <div class="uk-navbar-container uk-hidden@s">
@@ -163,7 +162,7 @@
   
   
   
-  <li data-nav-id="/oci-cloudnative/cloud/" title="Cloud Infrastructure" class=" uk-parent">
+  <li data-nav-id="/oci-cloudnative/cloud/" title="Cloud Infrastructure" class=" uk-parent uk-open">
     <a href="/oci-cloudnative/cloud/">
       <div class="uk-flex uk-flex-between uk-flex-middle">
         <div class="uk-text-truncate">Cloud Infrastructure</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
@@ -201,7 +200,7 @@
 
   
     
-    <li data-nav-id="/oci-cloudnative/cloud/setup/" title="Setup" class="">
+    <li data-nav-id="/oci-cloudnative/cloud/setup/" title="Setup" class="uk-active">
       <a href="/oci-cloudnative/cloud/setup/" class="uk-text-truncate">
         Setup
       </a>
@@ -367,6 +366,14 @@
               
             </a>
           </li>
+            <li>
+              <a title='Edit this page' href="https://github.com/oracle-quickstart/oci-cloudnative/tree/master/docs/content/cloud/setup.md" target="blank">
+                <span uk-icon="pencil"></span>
+                <span class="uk-text-middle">Edit this page</span>
+              </a>
+            </li>
+            
+          
         </ul>
       </section>
       <section>
@@ -450,48 +457,118 @@
           <div id="content" class="uk-grid" uk-grid>
             
 
+<div class="uk-flex-last uk-width-1-4 uk-visible@l">
+  <aside id="toc-nav" uk-sticky="offset: 40">
+    <nav id="TableOfContents"></nav>
+    <hr/>
+    
+  <div>
+    
+    <a class="uk-label" href="/oci-cloudnative/tags/setup">
+      <span uk-icon="tag"></span>
+      Setup
+    </a>
+    
+    <a class="uk-label" href="/oci-cloudnative/tags/kubernetes">
+      <span uk-icon="tag"></span>
+      Kubernetes
+    </a>
+    
+    <a class="uk-label" href="/oci-cloudnative/tags/helm">
+      <span uk-icon="tag"></span>
+      Helm
+    </a>
+    
+  </div>
+
+  </aside>
+</div>
+
 
             <main class="uk-width-expand">
               <header>
   
-  </header>
+  
+    <ul class="uk-breadcrumb uk-margin-top uk-text-small">
+    
+  
+  <li><a href='/oci-cloudnative/'>Home</a></li> <li><a href='/oci-cloudnative/cloud/'>Cloud Infrastructure</a></li> <li>Setup</li>
+    </ul></header>
 
 
 
-              <h1 class="rw-accent">Cloud Native on Oracle Cloud Infrastructure</h1>
+              <h1 class="rw-accent">Setup</h1>
               
-   
-    <h2 id="mushop">MuShop</h2>
-<p>MuShop is a microservices demo application <strong>purpose-built</strong> to showcase
-interoperable <a href="https://www.oracle.com/cloud/cloud-native/">Cloud Native</a> services on
-<a href="https://www.oracle.com/cloud/">Oracle Cloud Infrastructure</a>, and to demonstrate
-a number of cloud native methodologies.</p>
-<p>The premise of MuShop is an e-commerce website offering a variety of cat
-products. It represents a polyglot microservice application, with <strong>actual use case</strong>
-scenarios for many Oracle Cloud Infrastructure services.</p>
-<p>Each microservice in MuShop is designed to highlight its own, or common high-level
-subject in Oracle Cloud Infrastructure, using the context of the overall demo application.</p>
+  <p>MuShop provides an umbrella helm chart called <code>setup</code>, which includes several
+<em>recommended</em> installations on the cluster. These represent common 3rd party
+services, which integrate with Oracle Cloud Infrastructure or enable certain
+application features.</p>
 <table>
 <thead>
 <tr>
-<th><img src="images/intro/mushop.home.png" alt="mushop"></th>
-<th><img src="images/intro/mushop.about.png" alt="services"></th>
+<th>Chart</th>
+<th>Purpose</th>
+<th>Option</th>
 </tr>
 </thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/helm/charts/blob/master/stable/prometheus/README.md">Prometheus</a></td>
+<td>Service metrics aggregation</td>
+<td><code>prometheus.enabled</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/helm/charts/blob/master/stable/grafana/README.md">Grafana</a></td>
+<td>Infrastructure/service visualization dashboards</td>
+<td><code>grafana.enabled</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/helm/charts/blob/master/stable/metrics-server/README.md">Metrics Server</a></td>
+<td>Support for Horizontal Pod Autoscaling</td>
+<td><code>metrics-server.enabled</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/helm/charts/blob/master/stable/nginx-ingress/README.md">Nginx Ingress</a></td>
+<td>Ingress controller and public Load Balancer</td>
+<td><code>nginx-ingress.enabled</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md">Service Catalog</a></td>
+<td>Service Catalog chart utilized by Oracle Service Broker</td>
+<td><code>catalog.enabled</code></td>
+</tr>
+</tbody>
 </table>
-<div uk-grid="" class="uk-grid uk-grid-small   uk-flex-center uk-flex-middle"><p><strong>Micro</strong>services <span uk-icon="icon: arrow-right; ratio: 1.5" class="uk-text-muted uk-flex-none"></span></p>
-<p>μ <span uk-icon="icon: arrow-right; ratio: 1.5" class="uk-text-muted uk-flex-none"></span></p>
-<p>Mu <span uk-icon="icon: arrow-right; ratio: 1.5" class="uk-text-muted uk-flex-none"></span></p>
-<p>Meow <span uk-icon="icon: arrow-right; ratio: 1.5" class="uk-text-muted uk-flex-none"></span></p>
-<span class="uk-width-1-5 uk-flex-none">
-  <img uk-img data-src="images/logo.light.png" class="no-dark" />
-  <img uk-img data-src="images/logo.dark.png" class="no-light" />
-</span></div>
-<hr>
-<div class="uk-margin-auto uk-width-1-1 uk-width-1-2@s"><p><img src="images/intro/cloudnative.png" alt="Mushop cloud native"></p>
-</div>
+<blockquote>
+<p>Dependencies installed with <code>setup</code> chart. <strong>NOTE</strong> as these are very common installations, each may be disabled as needed to resolve conflicts.</p>
+</blockquote>
+<p>From <code>deploy/complete/helm-chart</code> directory:</p>
+<ol>
+<li>
+<p>Add required helm repositories:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">helm repo add svc-cat https://svc-catalog-charts.storage.googleapis.com
+helm repo add stable https://kubernetes-charts.storage.googleapis.com
+</code></pre></div></li>
+<li>
+<p>Install chart dependencies:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">helm dependency update setup
+</code></pre></div></li>
+<li>
+<p>Install <code>setup</code> chart:</p>
+<pre><code class="language-shell--helm2" data-lang="shell--helm2">helm install setup \
+  --name mushop-utils \
+  --namespace mushop-utilities
+</code></pre><pre><code class="language-shell--helm3" data-lang="shell--helm3">kubectl create ns mushop-utilities
+</code></pre><pre><code class="language-shell--helm3" data-lang="shell--helm3">helm install mushop-utils setup \
+  --namespace mushop-utilities
+</code></pre></li>
+<li>
+<p><strong>NOTE</strong> the public <code>EXTERNAL-IP</code> assigned to the ingress controller load balancer:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">kubectl get svc mushop-utils-nginx-ingress-controller <span class="se">\
+</span><span class="se"></span>  --namespace mushop-utilities
+</code></pre></div></li>
+</ol>
 
-  
 
             </main>
           </div> 
@@ -587,6 +664,7 @@ subject in Oracle Cloud Infrastructure, using the context of the overall demo ap
 
   
     
+    
   
 
   
@@ -600,21 +678,8 @@ subject in Oracle Cloud Infrastructure, using the context of the overall demo ap
 
   
     
-  
-
-  
-  
-  
-
-  
-  
-
-
-  
-    
-
-
-  
+      
+      
     
   
 
@@ -631,6 +696,26 @@ subject in Oracle Cloud Infrastructure, using the context of the overall demo ap
 
 
   
+    
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+      
+      
     
   
 
@@ -713,8 +798,12 @@ subject in Oracle Cloud Infrastructure, using the context of the overall demo ap
 
 
       <div>
-        <a href="/oci-cloudnative/introduction/" title="Introduction" class="rw-page-next uk-flex uk-flex-right uk-flex-middle uk-flex-last uk-text-truncate">
-          <label class="uk-visible@m">Introduction</label>
+        <a href="/oci-cloudnative/cloud/prerequisites/" title="Prerequisites" class="rw-page-prev uk-flex uk-flex-left uk-flex-middle uk-text-truncate">
+          <span uk-icon="icon: chevron-left; ratio: 2.5" class="uk-margin-small-right uk-flex-none"></span>
+          <label class="uk-visible@m">Prerequisites</label>
+        </a>
+        <a href="/oci-cloudnative/cloud/deployment/" title="Deployment" class="rw-page-next uk-flex uk-flex-right uk-flex-middle uk-flex-last uk-text-truncate">
+          <label class="uk-visible@m">Deployment</label>
           <span uk-icon="icon: chevron-right; ratio: 2.5" class="uk-margin-small-left uk-flex-none"></span>
         </a></div>
 </footer>

@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>MuShop Docs :: MuShop</title>
+  
+  <meta name="application-name" content="MuShop"/>
+<meta name="description" content="Oracle Cloud Native Workshop">
+<meta name="keywords" content="Kubernetes,OCI,OKE,Microservices">
+
+<meta property="og:title" content="MuShop - MuShop Docs" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://oracle-quickstart.github.io/oci-cloudnative/usage/" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/oci-cloudnative/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/oci-cloudnative/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/oci-cloudnative/icons/favicon-16x16.png">
+  <link rel="manifest" href="/oci-cloudnative/icons/site.webmanifest">
+  <link rel="mask-icon" href="/oci-cloudnative/icons/safari-pinned-tab.svg" color="#41727e">
+  <meta name="msapplication-TileColor" content="#c74634">
+  <meta name="theme-color" content="#fcfbfa">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="stylesheet" type="text/css" href="https://oracle-quickstart.github.io/oci-cloudnative/sass/main.min.365ea5fa4265a610e97e182317dae7344e4af5ad652875ab7e436469f523e6d7.css" integrity="sha256-Nl6l&#43;kJlphDpfhgjF9rnNE5K9a1lKHWrfkNkafUj5tc=">
+  <link rel="stylesheet" type="text/css" href="https://oracle-quickstart.github.io/oci-cloudnative/fonts/fonts.min.58744946497c59fa8a6ac77636ea480457079e54512cf3dcb552592b56503cc1.css" integrity="sha256-WHRJRkl8WfqKasd2NupIBFcHnlRRLPPctVJZK1ZQPME=">
+  <link rel="stylesheet" type="text/css" href="https://oracle-quickstart.github.io/oci-cloudnative/sass/mushop.min.c31ca585e7b3a90dfeb2fd0ac2d7d93ff0af82ea19b0cab20c8539d987761606.css" integrity="sha256-wxylheezqQ3&#43;sv0KwtfZP/CvguoZsMqyDIU52Yd2FgY=">
+</head>
+
+  <body class="" data-url="/oci-cloudnative/usage/">
+    
+      
+<div class="uk-navbar-container uk-hidden@s">
+  <div class="">
+    <nav role="navigation" class="uk-light uk-navbar" uk-navbar>
+      <div class="uk-navbar-left">
+        <a href="https://oracle-quickstart.github.io/oci-cloudnative/" class="uk-navbar-item uk-logo">
+          <img
+            alt="MuShop"
+            class="uk-width-small"
+            src="/oci-cloudnative/images/logo.dark.png">
+        </a>
+      </div>
+      <div class="uk-navbar-right">
+        <a class="uk-navbar-toggle" uk-navbar-toggle-icon uk-toggle="target: #navigation"></a>
+      </div>
+    </nav>
+  </div>
+</div>
+
+
+<div class="uk-grid">
+  
+  
+  <aside
+    id="navigation"
+    class="rw-sidebar uk-offcanvas uk-width-1-1 uk-width-1-3@s uk-width-1-4@m uk-width-1-5@l uk-width-1-6@xl uk-light uk-padding-remove"
+    uk-offcanvas="overlay: true;">
+    <div class="uk-offcanvas-bar uk-padding-small">
+      
+      
+      <section>
+        <div class="uk-margin-bottom uk-visible@s">
+          <a href="https://oracle-quickstart.github.io/oci-cloudnative/" class="uk-logo">
+            <img src="/oci-cloudnative/images/logo.dark.png" alt="MuShop">
+          </a>
+        </div>
+        <div class="uk-margin-bottom">
+          <form class="uk-search uk-search-default uk-width-expand">
+  <span class="uk-search-icon-flip" uk-search-icon></span>
+  <input id="search" class="uk-search-input uk-width-expand" type="search" placeholder="Search...">
+</form>
+<div id="search-results" class="uk-background-primary uk-text-small"></div>
+        </div>
+        <ul class="uk-nav uk-nav-primary" uk-nav="multiple: true; toggle: > a .uk-icon">
+          <li class="uk-nav-divider"></li>
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/oci-cloudnative/introduction/" title="Introduction" class="">
+    <a href="/oci-cloudnative/introduction/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Introduction</div>
+      </div>
+    </a>
+    
+    
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/oci-cloudnative/quickstart/" title="Getting Started" class=" uk-parent">
+    <a href="/oci-cloudnative/quickstart/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Getting Started</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
+      </div>
+    </a>
+    
+    
+    <ul class="uk-nav-sub">
+      
+      
+      
+      
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/quickstart/basic/" title="Always Free" class="">
+      <a href="/oci-cloudnative/quickstart/basic/" class="uk-text-truncate">
+        Always Free
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/quickstart/kubernetes/" title="Kubernetes Deployment" class="">
+      <a href="/oci-cloudnative/quickstart/kubernetes/" class="uk-text-truncate">
+        Kubernetes Deployment
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+    </ul>
+  
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/oci-cloudnative/cloud/" title="Cloud Infrastructure" class=" uk-parent">
+    <a href="/oci-cloudnative/cloud/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Cloud Infrastructure</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
+      </div>
+    </a>
+    
+    
+    <ul class="uk-nav-sub">
+      
+      
+      
+      
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/cloud/prerequisites/" title="Prerequisites" class="">
+      <a href="/oci-cloudnative/cloud/prerequisites/" class="uk-text-truncate">
+        Prerequisites
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/cloud/setup/" title="Setup" class="">
+      <a href="/oci-cloudnative/cloud/setup/" class="uk-text-truncate">
+        Setup
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/cloud/deployment/" title="Deployment" class="">
+      <a href="/oci-cloudnative/cloud/deployment/" class="uk-text-truncate">
+        Deployment
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+    </ul>
+  
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/oci-cloudnative/extras/" title="Extras" class=" uk-parent">
+    <a href="/oci-cloudnative/extras/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Extras</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
+      </div>
+    </a>
+    
+    
+    <ul class="uk-nav-sub">
+      
+      
+      
+      
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/extras/monitoring/" title="Monitoring" class="">
+      <a href="/oci-cloudnative/extras/monitoring/" class="uk-text-truncate">
+        Monitoring
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/extras/istio/" title="Istio Service Mesh" class="">
+      <a href="/oci-cloudnative/extras/istio/" class="uk-text-truncate">
+        Istio Service Mesh
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+    </ul>
+  
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/oci-cloudnative/cleanup/" title="Cleanup" class="">
+    <a href="/oci-cloudnative/cleanup/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Cleanup</div>
+      </div>
+    </a>
+    
+    
+  </li>
+  
+
+ 
+
+          
+          <li class="uk-nav-divider"></li>
+        </ul>
+      </section>
+      
+      <section>
+        <ul class="uk-nav uk-nav-default" uk-nav>
+          <li class="uk-nav-header">More</li>
+          
+          
+          <li>
+            <a title="More Information" href="https://oracle-quickstart.github.io/oci-cloudnative/resources" class="uk-text-truncate">
+              <span uk-icon='icon: info; ratio: 1.25'></span>
+              <span class="uk-text-middle">More Information</span>
+              
+            </a>
+          </li>
+          <li>
+            <a title="Acknowledgements" href="https://oracle-quickstart.github.io/oci-cloudnative/acknowledgements" class="uk-text-truncate">
+              <span uk-icon='icon: users; ratio: 1.25'></span>
+              <span class="uk-text-middle">Acknowledgements</span>
+              
+            </a>
+          </li>
+          <li>
+            <a title="Tags" href="https://oracle-quickstart.github.io/oci-cloudnative/tags" class="uk-text-truncate">
+              <span uk-icon='icon: tag; ratio: 1.25'></span>
+              <span class="uk-text-middle">Tags</span>
+              
+            </a>
+          </li>
+          <li>
+            <a title="GitHub Source" href="https://github.com/oracle-quickstart/oci-cloudnative" class="uk-text-truncate">
+              <span uk-icon='icon: github; ratio: 1.25'></span>
+              <span class="uk-text-middle">GitHub Source</span>
+              
+            </a>
+          </li>
+          <li>
+            <a title="Report Issue" href="https://github.com/oracle-quickstart/oci-cloudnative/issues" class="uk-text-truncate">
+              <span uk-icon='icon: warning; ratio: 1.25'></span>
+              <span class="uk-text-middle">Report Issue</span>
+              
+            </a>
+          </li>
+            <li>
+              <a title='Edit this page' href="https://github.com/oracle-quickstart/oci-cloudnative/tree/master/docs/content//usage.md" target="blank">
+                <span uk-icon="pencil"></span>
+                <span class="uk-text-middle">Edit this page</span>
+              </a>
+            </li>
+            
+          
+        </ul>
+      </section>
+      <section>
+        <ul id="rw-settings" class="uk-nav uk-nav-default" uk-nav>
+  <li class="uk-nav-divider"></li>
+  <li class="uk-nav-header">Settings</li>
+  <li class="uk-grid uk-grid-small uk-flex-middle uk-flex-between uk-flex-nowrap uk-text-nowrap">
+  <div class="uk-text-muted uk-width-1-4">
+    
+    <span>Theme</span>
+  </div>
+  <div class="uk-button-group rw-setting"
+    setting="theme"
+    target="html, #content" ><button class="uk-button uk-button-small uk-button-default
+    uk-active" toggle="uk-background-default" >
+      Light
+    </button><button class="uk-button uk-button-small uk-button-secondary
+    " toggle="uk-light uk-background-secondary" >
+      Dark
+    </button></div>
+</li>
+
+
+  <li class="uk-grid uk-grid-small uk-flex-middle uk-flex-between uk-flex-nowrap uk-text-nowrap">
+  <div class="uk-text-muted uk-width-1-4">
+    
+    <span>OS</span>
+  </div>
+  <div class="uk-button-group rw-setting"
+    setting="platform"
+    target="html" ><button class="uk-button uk-button-small uk-button-secondary
+    uk-active" toggle="stg-os-macos" >
+      Mac
+    </button><button class="uk-button uk-button-small uk-button-secondary
+    " toggle="stg-os-linux" >
+      Linux
+    </button><button class="uk-button uk-button-small uk-button-secondary
+    " toggle="stg-os-windows" >
+      Windows
+    </button></div>
+</li>
+<li class="uk-grid uk-grid-small uk-flex-middle uk-flex-between uk-flex-nowrap uk-text-nowrap">
+  <div class="uk-text-muted uk-width-1-4">
+    
+    <span>Helm</span>
+  </div>
+  <div class="uk-button-group rw-setting"
+    setting="helm"
+    target="html" ><button class="uk-button uk-button-small uk-button-secondary
+    uk-active" toggle="stg-helm-3" >
+      3.x
+    </button><button class="uk-button uk-button-small uk-button-secondary
+    " toggle="stg-helm-2" >
+      2.x
+    </button></div>
+</li>
+</ul>
+
+
+
+      </section>
+      <section class="uk-text-small uk-text-lighter uk-margin-top">
+        <hr>
+        <div class="uk-text-muted">
+  <div class="uk-margin-small">
+    Made with <span uk-icon="icon: heart; ratio: 0.75"></span> by Oracle A-Team
+  </div>
+  Copyright © 2020 Oracle and/or its affiliates. All rights reserved.
+</div>
+      </section>
+    </div>
+  </aside>
+  
+  <div class="uk-width-1-1 uk-width-1-3@s uk-width-1-4@m uk-width-1-5@l uk-width-1-6@xl uk-visible@s"></div>
+
+
+
+
+      <div class="uk-width-expand uk-margin-medium-left uk-margin-remove-left@s">
+        <div class="uk-margin-medium-right">
+          <div id="content" class="uk-grid" uk-grid>
+            
+
+<div class="uk-flex-last uk-width-1-4 uk-visible@l">
+  <aside id="toc-nav" uk-sticky="offset: 40">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#setup">Setup</a></li>
+        <li><a href="#development">Development</a>
+          <ul>
+            <li><a href="#start-hugo-server">Start hugo server</a></li>
+            <li><a href="#add-content">Add Content</a></li>
+          </ul>
+        </li>
+        <li><a href="#features">Features</a>
+          <ul>
+            <li><a href="#code-settings">Code Settings</a></li>
+            <li><a href="#shortcode-components">Shortcode Components</a>
+              <ul>
+                <li><a href="#alert">Alert</a></li>
+                <li><a href="#aspect-ratio">Aspect Ratio</a></li>
+                <li><a href="#card">Card</a></li>
+                <li><a href="#grid">Grid</a></li>
+                <li><a href="#icon">Icon</a></li>
+                <li><a href="#overflow">Overflow</a></li>
+                <li><a href="#slideshow">Slideshow</a></li>
+                <li><a href="#switcher">Switcher</a></li>
+                <li><a href="#width">Width</a></li>
+                <li><a href="#wrapper">Wrapper</a></li>
+              </ul>
+            </li>
+            <li><a href="#shortcode-extras">Shortcode Extras</a>
+              <ul>
+                <li><a href="#diagrams">Diagrams</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    <hr/>
+    
+  </aside>
+</div>
+
+
+            <main class="uk-width-expand">
+              <header>
+  
+  
+    <ul class="uk-breadcrumb uk-margin-top uk-text-small">
+    
+  <li><a href='/oci-cloudnative/'>Home</a></li> <li>MuShop Docs</li>
+    </ul></header>
+
+
+
+              <h1 class="rw-accent">MuShop Docs</h1>
+              
+  <p>Project documentation built with <a href="https://gohugo.io/">Hugo</a> and customized <a href="https://getuikit.com">UIkit</a> theme.</p>
+<h2 id="setup">Setup</h2>
+<ol>
+<li>
+<p>Install documentation theme:</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">make theme
+</code></pre></div></li>
+<li>
+<p>Install <a href="https://gohugo.io/getting-started/installing/"><code>hugo</code> CLI</a>:</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">brew install hugo
+</code></pre></div></li>
+</ol>
+<h2 id="development">Development</h2>
+<p>In general, the content management follows all the standard features of Hugo.</p>
+<ul>
+<li><a href="https://gohugo.io/content-management/">Hugo Content Management</a></li>
+<li><a href="https://gohugo.io/content-management/shortcodes">Hugo Shortcodes</a></li>
+<li><a href="https://gohugo.io/content-management/cross-references/">Cross Referencing</a></li>
+</ul>
+<h3 id="start-hugo-server">Start hugo server</h3>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">make up
+</code></pre></div><p>Or with <code>hugo</code>:</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">hugo server --buildDrafts
+</code></pre></div><h3 id="add-content">Add Content</h3>
+<ol>
+<li>
+<p>Create content as follows:</p>
+<ul>
+<li>Create a new section: <code>hugo new &lt;section&gt;/_index.md</code></li>
+<li>Create a new lab topic: <code>hugo new labs/&lt;topic&gt;/_index.md</code></li>
+<li>Create a new lab page: <code>hugo new labs/&lt;topic&gt;/&lt;page&gt;.md</code></li>
+</ul>
+</li>
+<li>
+<p>Edit <a href="https://gohugo.io/content-management/front-matter/">front matter</a></p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">---<span class="w">
+</span><span class="w"></span><span class="k">title</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;My New Content&#34;</span><span class="w">
+</span><span class="w"></span><span class="k">description</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;short description of content&#34;</span><span class="w">
+</span><span class="w"></span><span class="k">draft</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="w"></span><span class="k">hidden</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="w"></span><span class="k">weight</span><span class="p">:</span><span class="w"> </span><span class="m">20</span><span class="w"> </span><span class="c"># ordering by weight</span><span class="w">
+</span><span class="w"></span><span class="k">keywords</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span>- one<span class="w">
+</span><span class="w">  </span>- two<span class="w">
+</span><span class="w"></span><span class="k">tags</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span>- advanced<span class="w">
+</span><span class="w">  </span>- oke<span class="w">
+</span><span class="w"></span><span class="c">###### Custom ######</span><span class="w">
+</span><span class="w"></span><span class="c"># breadcrumbs</span><span class="w">
+</span><span class="w"></span><span class="k">disableBreadcrumb</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="w"></span><span class="c"># footer navigation</span><span class="w">
+</span><span class="w"></span><span class="k">disablePrevNext</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="w"></span><span class="k">disablePrev</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="w"></span><span class="k">disableNext</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="w"></span><span class="c"># section options</span><span class="w">
+</span><span class="w"></span><span class="k">showChildren</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="c"># lists child pages of the section/_index.md</span><span class="w">
+</span><span class="w"></span><span class="k">orderedChildren</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="c"># use ordered list for child pages</span><span class="w">
+</span><span class="w"></span>---<span class="w">
+</span></code></pre></div></li>
+</ol>
+<h2 id="features">Features</h2>
+<p>The Hugo documentation theme is custom-built with <a href="https://getuikit.com/docs/">UIkit</a> components (just like MuShop storefront).</p>
+<h3 id="code-settings">Code Settings</h3>
+<ul>
+<li>
+<p><strong>Helm</strong>: Displays code blocks specific to helm version</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">  ```shell--helm2
+  helm install ./mushop --name mymushop
+  ```
+
+  ```shell--helm3
+  helm install mymushop ./mushop
+  ```
+</code></pre></div></li>
+<li>
+<p><strong>OS</strong>: Displays code blocks specific to os</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">  ```shell--linux-macos
+  export MUSHOP_NAMESPACE=mushop
+  ```
+
+  ```shell--win
+  set MUSHOP_NAMESPACE=mushop
+  ```
+</code></pre></div></li>
+</ul>
+<h3 id="shortcode-components">Shortcode Components</h3>
+<p>Add panache to the documentation using these custom shortcodes directly within
+markdown documents.</p>
+<h4 id="alert">Alert</h4>
+<blockquote>
+<p>Displays an alert style block. Specify icon from the UIkit <a href="https://getuikit.com/docs/icon#library">icon library</a></p>
+</blockquote>
+<div uk-grid="" class="uk-grid uk-grid-small  uk-child-width-1-1 uk-child-width-1-2@m  uk-flex-top"><div class="highlight"><pre class="chroma"><code class="language-markdown" data-lang="markdown">{{% alert style=&#34;primary&#34; icon=&#34;info&#34; %}}
+Alert content <span class="sb">`processed`</span> as <span class="gs">**markdown**</span>
+{{% /alert %}}
+</code></pre></div><div class="" >
+  <div uk-alert class="uk-alert-primary uk-grid uk-grid-collapse uk-flex-nowrap "><span uk-icon="icon: info; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span><div class="uk-width-expand">
+    <p>Alert content <code>processed</code> as <strong>markdown</strong></p>
+</div></div>
+<div uk-alert class="uk-alert-success uk-grid uk-grid-collapse uk-flex-nowrap "><span uk-icon="icon: check; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span><div class="uk-width-expand">
+    <p>Alert content <code>processed</code> as <strong>markdown</strong></p>
+</div></div>
+<div uk-alert class="uk-alert-warning uk-grid uk-grid-collapse uk-flex-nowrap "><span uk-icon="icon: warning; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span><div class="uk-width-expand">
+    <p>Alert content <code>processed</code> as <strong>markdown</strong></p>
+</div></div>
+<div uk-alert class="uk-alert-danger uk-grid uk-grid-collapse uk-flex-nowrap "><span uk-icon="icon: ban; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span><div class="uk-width-expand">
+    <p>Alert content <code>processed</code> as <strong>markdown</strong></p>
+</div></div>
+</div></div>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>style</code></td>
+<td><code>default|primary|success|warning|danger</code></td>
+</tr>
+<tr>
+<td><code>icon</code></td>
+<td>Icon from <a href="https://getuikit.com/docs/icon#library">library</a></td>
+</tr>
+<tr>
+<td><code>class</code></td>
+<td>Additional classes</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="aspect-ratio">Aspect Ratio</h4>
+<blockquote>
+<p>Fix the enclosed content to an aspect ratio.</p>
+</blockquote>
+<div uk-grid="" class="uk-grid uk-grid-small  uk-child-width-1-1 uk-child-width-1-2@m  uk-flex-top"><div class="highlight"><pre class="chroma"><code class="language-markdown" data-lang="markdown">{{% aspect ratio=&#34;2-1&#34; %}}
+{{% wrapper &#34;uk-background-muted uk-padding-small&#34; %}}
+Content with aspect ratio of <span class="sb">`2-1`</span>
+{{% /wrapper %}}
+{{% /aspect %}}
+</code></pre></div><div class="" >
+  <div class="rw-aspect rw-aspect-2-1 "><div class="uk-background-muted uk-padding-small" >
+  <p>Content with aspect ratio of <code>2-1</code></p>
+</div>
+</div>
+</div></div>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ratio</code></td>
+<td><code>1-1|3-2|4-3|16-9|2-1</code></td>
+</tr>
+<tr>
+<td><code>class</code></td>
+<td>Additional classes</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="card">Card</h4>
+<blockquote>
+<p>Display content as cards - usually in a grid</p>
+</blockquote>
+<div uk-grid="" class="uk-grid uk-grid-small  uk-child-width-1-1 uk-child-width-1-2@m  uk-flex-top"><div class="highlight"><pre class="chroma"><code class="language-markdown" data-lang="markdown">{{% grid col=&#34;1-2&#34; %}}
+{{% card style=&#34;primary&#34; title=&#34;Primary&#34; hover=true %}}
+Card body
+{{% /card %}}
+{{% card style=&#34;secondary&#34; title=&#34;Secondary&#34; %}}
+Card body
+{{% /card %}}
+{{% /grid %}}
+</code></pre></div><div class="" >
+  <div uk-grid="" class="uk-grid uk-grid-small  uk-child-width-1-1 uk-child-width-1-2@m  "><div class="">
+  <div class="uk-card uk-card-body uk-card-hover uk-card-primary uk-card- ">
+    <h3 class="uk-card-title">Primary</h3>
+    <p>Card body</p>
+  </div>
+</div>
+<div class="">
+  <div class="uk-card uk-card-body  uk-card-secondary uk-card- ">
+    <h3 class="uk-card-title">Secondary</h3>
+    <p>Card body</p>
+  </div>
+</div></div>
+</div></div>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>style</code></td>
+<td><code>default|primary|secondary</code></td>
+</tr>
+<tr>
+<td><code>size</code></td>
+<td><code>small|large</code></td>
+</tr>
+<tr>
+<td><code>hover</code></td>
+<td>Add hover styling</td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td>Card title</td>
+</tr>
+<tr>
+<td><code>width</code></td>
+<td>Width ratio accodring to <a href="https://getuikit.com/docs/width">width</a></td>
+</tr>
+<tr>
+<td><code>class</code></td>
+<td>Additional classes</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="grid">Grid</h4>
+<blockquote>
+<p>Add a grid of inner contents using <a href="https://getuikit.com/docs/grid">grid</a> and <a href="https://getuikit.com/docs/flex">flex</a></p>
+</blockquote>
+<div uk-grid="" class="uk-grid uk-grid-small  uk-child-width-1-1 uk-child-width-1-2@m  uk-flex-top"><div class="highlight"><pre class="chroma"><code class="language-markdown" data-lang="markdown">{{% grid col=&#34;1-3&#34; %}}
+<span class="k">-</span> **Example**
+<span class="k">-</span> Item one
+<span class="k">-</span> Item two
+{{% /grid %}}
+</code></pre></div><div class="" >
+  <ul uk-grid="" class="uk-grid uk-grid-small  uk-child-width-1-1 uk-child-width-1-3@m  ">
+<li><strong>Example</strong></li>
+<li>Item one</li>
+<li>Item two</li>
+</ul>
+</div></div>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>gutter</code></td>
+<td><code>small|medium|large|collapse</code> gutter settings (optional)</td>
+</tr>
+<tr>
+<td><code>class</code></td>
+<td>Any classes to add to the grid wrapper</td>
+</tr>
+<tr>
+<td><code>col</code></td>
+<td>Child element column <a href="https://getuikit.com/docs/width">width</a></td>
+</tr>
+<tr>
+<td><code>breakpoint</code></td>
+<td><code>(s|m|l|xl)</code> breakpoint at which the child element width becomes grid vs stacked. Default <code>m</code></td>
+</tr>
+<tr>
+<td><code>x</code></td>
+<td>horizontal flex alignment see <a href="https://getuikit.com/docs/flex#horizontal-alignment">here</a></td>
+</tr>
+<tr>
+<td><code>y</code></td>
+<td>vertical flex alignment see <a href="https://getuikit.com/docs/flex#vertical-alignment">here</a></td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td>See <a href="https://getuikit.com/docs/grid#component-options">docs</a></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="icon">Icon</h4>
+<blockquote>
+<p>Add any icon from the <a href="https://getuikit.com/docs/icon#library">library</a></p>
+</blockquote>
+<div uk-grid="" class="uk-grid uk-grid-small  uk-child-width-1-1 uk-child-width-1-2@m  uk-flex-top"><div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">{{&lt; icon &#34;bookmark&#34; &#34;2.5&#34; &gt;}}
+</code></pre></div><p><span uk-icon="icon: bookmark; ratio: 2.5"></span></p></div>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>icon</code></td>
+<td>Icon name</td>
+</tr>
+<tr>
+<td><code>ratio</code></td>
+<td>Size proportion</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="overflow">Overflow</h4>
+<blockquote>
+<p>Applies automatic overflow to the contents. Useful with <a href="#aspect-ratio">aspect ratio</a> and <code>table</code> contents</p>
+</blockquote>
+<div uk-grid="" class="uk-grid uk-grid-small  uk-child-width-1-1 uk-child-width-1-2@m  uk-flex-top"><div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">{{% overflow %}}
+Something very tall or wide
+{{% /overflow %}}
+</code></pre></div><div class="uk-overflow-auto " >
+  <p>Something very wide</p>
+</div></div>
+<table>
+<thead>
+<tr>
+<th>Arguments</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[class]</code></td>
+<td>CSS class string to apply to wrapper <code>&lt;div&gt;</code> element</td>
+</tr>
+<tr>
+<td><code>[attr]</code></td>
+<td>Attributes to apply to wrapper <code>&lt;div&gt;</code> element</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="slideshow">Slideshow</h4>
+<blockquote>
+<p>Display list items as a slideshow</p>
+</blockquote>
+<div uk-grid="" class="uk-grid uk-grid-small  uk-child-width-1-1 uk-child-width-1-2@m  uk-flex-top"><div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">{{% slideshow dotnav=true %}}
+{{% list/item &#34;uk-background-secondary uk-light uk-padding&#34; %}}
+Slide one `markdown` CONTENT
+{{% /list/item %}}
+<span class="p">&lt;</span><span class="nt">li</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;uk-background-primary uk-light uk-padding&#34;</span><span class="p">&gt;</span>
+  Slide two HTML content
+<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+{{% /slideshow %}}
+</code></pre></div><div uk-slideshow="animation: slide; finite: true">
+  <div class="uk-position-relative uk-visible-toggle uk-light" tabindex="-1">
+    <ul class="uk-slideshow-items" ZgotmplZ><li class="uk-background-secondary uk-padding" ><p>Slide one <code>markdown</code> content</p>
+</li>
+<li class="uk-background-primary uk-padding">
+  Slide two HTML content
+</li>
+</ul>
+    <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>
+    <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slideshow-item="next"></a>
+  </div>
+  <ul class="uk-slideshow-nav uk-dotnav uk-flex-center uk-margin"></ul>
+</div></div>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>options</code></td>
+<td>See <a href="https://getuikit.com/docs/slideshow#component-options">options</a></td>
+</tr>
+<tr>
+<td><code>class</code></td>
+<td>CSS class(es) to add to the slideshow items container</td>
+</tr>
+<tr>
+<td><code>attrs</code></td>
+<td>DOM attributes to add to the <code>ul</code> items wrapper</td>
+</tr>
+<tr>
+<td><code>dotnav</code></td>
+<td>Bool to include dotnav below slideshow</td>
+</tr>
+</tbody>
+</table>
+<div uk-alert class="uk-alert-warning uk-grid uk-grid-collapse uk-flex-nowrap "><span uk-icon="icon: warning; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span><div class="uk-width-expand">
+<p>Slideshow items must be <code>&lt;li&gt;</code> type. Refer to <a href="https://getuikit.com/docs/slideshow#usage">usage</a> for specific decorations for the desired presentation</p>
+</div></div>
+<hr>
+<h4 id="switcher">Switcher</h4>
+<blockquote>
+<p>Create a left-tab switcher component</p>
+</blockquote>
+<div uk-grid="" class="uk-grid uk-grid-small  uk-child-width-1-1 uk-child-width-1-2@m  uk-flex-top"><div class="highlight"><pre class="chroma"><code class="language-markdown" data-lang="markdown">{{&lt; switcher &#34;One&#34; &#34;Two&#34; &#34;Three&#34; &gt;}}
+<span class="k">-</span> Tab one content
+    ```ts
+    const foo: string = &#39;blah blah&#39;;
+    ```
+<span class="k">-</span> Tab two content
+<span class="k">-</span> Tab three content
+{{&lt; /switcher &gt;}}
+</code></pre></div><div uk-grid class="uk-margin-bottom">
+  <div class="uk-width-auto@m">
+    <ul class="uk-tab-left uk-text-large" uk-tab="connect: #switcher-255"><li><a href="#">One</a></li><li><a href="#">Two</a></li><li><a href="#">Three</a></li></ul>
+  </div>
+  <div class="uk-width-expand@m">
+    <ul id='switcher-255' class='uk-switcher'>
+<li>Tab one content
+<div class="highlight"><pre class="chroma"><code class="language-ts" data-lang="ts"><span class="kr">const</span> <span class="nx">foo</span>: <span class="kt">string</span> <span class="o">=</span> <span class="s1">&#39;blah blah&#39;</span><span class="p">;</span>
+</code></pre></div></li>
+<li>Tab two content</li>
+<li>Tab three content</li>
+</ul>
+  </div>
+</div></div>
+<table>
+<thead>
+<tr>
+<th>Arguments</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;...tabs&gt;</code></td>
+<td>Switcher tab names</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="width">Width</h4>
+<blockquote>
+<p>Specify inner width after breakpoint according to the <a href="https://getuikit.com/docs/width">docs</a></p>
+</blockquote>
+<p><code>width &lt;width&gt; [breakpoint]</code></p>
+<div uk-grid="" class="uk-grid uk-grid-small  uk-child-width-1-1 uk-child-width-1-2@m  uk-flex-top"><div class="highlight"><pre class="chroma"><code class="language-markdown" data-lang="markdown">{{% width &#34;1-2&#34; &#34;s&#34; %}}
+{{% alert style=&#34;danger&#34; %}}
+![<span class="nt">image</span>](<span class="na">../images/oracle.svg</span>)
+{{% /alert %}}
+{{% /width %}}
+</code></pre></div><div class="" >
+  <div class="uk-margin-auto uk-width-1-1 uk-width-1-2@s"><div uk-alert class="uk-alert-danger uk-grid uk-grid-collapse uk-flex-nowrap "><div class="uk-width-expand">
+    <p><img src="../images/oracle.svg" alt="image"></p>
+</div></div>
+</div>
+</div></div>
+<table>
+<thead>
+<tr>
+<th>Arguments</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;width&gt;</code></td>
+<td>Content width ratio</td>
+</tr>
+<tr>
+<td><code>[breakpoint]</code></td>
+<td><code>s|m|l|xl</code> Size at which the width should apply</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="wrapper">Wrapper</h4>
+<blockquote>
+<p>Wraps inner content with any <code>div</code> and specified classes. Useful for specifying markup with other UIkit features</p>
+</blockquote>
+<div uk-grid="" class="uk-grid uk-grid-small  uk-child-width-1-1 uk-child-width-1-2@m  uk-flex-top"><div class="highlight"><pre class="chroma"><code class="language-markdown" data-lang="markdown">{{% wrapper &#34;uk-light uk-background-primary uk-panel uk-padding&#34; %}}
+Light Panel
+{{% /wrapper %}}
+</code></pre></div><div class="" >
+  <div class="uk-light uk-background-primary uk-panel uk-padding" >
+  <p>Light Panel</p>
+</div>
+</div></div>
+<table>
+<thead>
+<tr>
+<th>Arguments</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[class]</code></td>
+<td>CSS class string to apply to wrapper <code>&lt;div&gt;</code> element</td>
+</tr>
+<tr>
+<td><code>[attr]</code></td>
+<td>Attributes to apply to wrapper <code>&lt;div&gt;</code> element</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="shortcode-extras">Shortcode Extras</h3>
+<h4 id="diagrams">Diagrams</h4>
+<blockquote>
+<p>Markdownish SVG diagrams from <a href="https://mermaid-js.github.io/mermaid/#/">mermaid</a></p>
+</blockquote>
+<div uk-grid="" class="uk-grid uk-grid-small  uk-child-width-1-1 uk-child-width-1-2@m  uk-flex-top"><div class="highlight"><pre class="chroma"><code class="language-markdown" data-lang="markdown">{{&lt; mermaid class=&#34;uk-text-center&#34; &gt;}}
+graph TD
+  A[Hard edge] --&gt;|Link text| B(Round edge)
+  B --&gt; C{Decision}
+  C --&gt;|One| D[Result one]
+  C --&gt;|Two| E[Result two]
+{{&lt; /mermaid &gt;}}
+</code></pre></div><div class="mermaid uk-text-center">
+graph TD
+  A[Hard edge] -->|Link text| B(Round edge)
+  B --> C{Decision}
+  C -->|One| D[Result one]
+  C -->|Two| E[Result two]
+</div></div>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>class</code></td>
+<td>Additional classes on the wrapper element</td>
+</tr>
+</tbody>
+</table>
+<hr>
+
+
+            </main>
+          </div> 
+          
+<footer>
+    
+    
+    
+
+
+  
+    
+    
+  
+
+  
+  
+  
+    
+  
+
+  
+  
+    
+
+
+  
+    
+      
+      
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+
+
+      <div>
+        <a href="/oci-cloudnative/introduction/" title="Introduction" class="rw-page-next uk-flex uk-flex-right uk-flex-middle uk-flex-last uk-text-truncate">
+          <label class="uk-visible@m">Introduction</label>
+          <span uk-icon="icon: chevron-right; ratio: 2.5" class="uk-margin-small-left uk-flex-none"></span>
+        </a></div>
+</footer>
+
+
+        </div> 
+      </div> 
+    </div> 
+    <script type="text/javascript">
+  (function(w, s) {
+    Object.assign(s, {
+      BaseURL: 'https:\/\/oracle-quickstart.github.io\/oci-cloudnative\/',
+      RelURL: '\/oci-cloudnative',
+      cssConfig: {
+        table: 'uk-table uk-table-small uk-table-striped',
+        '#TableOfContents > ul': 'uk-nav uk-nav-default uk-nav-parent-icon',
+        '#TableOfContents > ul ul': 'uk-nav-sub',
+      },
+      uikit: {
+        '#TableOfContents > ul': ['scrollspyNav', { closest: 'li', offset: 10 }],
+        
+      }
+    });
+  })(window, window.Site = window.Site || {});
+</script>
+
+<script src="https://oracle-quickstart.github.io/oci-cloudnative/js/vendor.min.a006043ab5cd331e53cb8de3dd96832ba0dfc932bfbba4bb8b3c5172454cb642.js" ></script><script src="https://oracle-quickstart.github.io/oci-cloudnative/js/extras.min.9bf9f2a01e7cae8e8e4e8ee771bdca09d6d04b4265a0f9af5ce83a213b0961d2.js"  async></script><script src="https://oracle-quickstart.github.io/oci-cloudnative/js/site.min.85ed2af337afee36aa93f07cac7fb2f54c7f3f62b046f5632316f5fd49271dcb.js"  async></script>
+  </body>
+</html>

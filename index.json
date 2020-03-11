@@ -1,0 +1,369 @@
+[
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/introduction/",
+  "title": "Introduction",
+  "section": "introduction",
+	"tags": [],
+	"description": "",
+	"content": "Goals  Explore cloud native services offered by Oracle Cloud Infrastructure Build and deploy microservices with Container Engine for Kubernetes (OKE) Experience Oracle Cloud services integrated within a single microservices project Provide reference implementations and sample code for real-world application development  Cloud Services The MuShop application highlights several topics related to cloud native application development with Oracle Cloud Infrastructure.\n   Cloud Service Description     API Gateway Fully managed gateway for governed HTTP/S interfaces   Container Engine for Kubernetes Enterprise-grade Kubernetes on Oracle Cloud   Container Registry Highly available service to distribute container images   Email Delivery Enables sending emails   Functions Scalable, multitenant serverless functions   Monitoring Integrated metrics from all resources and services   Open Service Broker Provisioning cloud resources within Kubernetes   Resource Manager Infrastructure as code with Terraform   Streaming Large scale data collection and processing   Others coming soon -   Events Trigger actions in response to infrastructure changes   Notifications Broadcast messages to distributed systems   Logging Single pane of glass for resources and applications    In addition to these Cloud Native topics, MuShop demonstrates the use of several backing services available on Oracle Cloud Infrastructure.\n Autonomous Transaction Processing Database Object Storage Web Application Firewall  MuShop Services    Service Technology Cloud Services Description     src/api Node.js  Storefront API   src/assets Node.js Object Storage Product images   src/carts Java Autonomous DB (ATP) Shopping cart   src/catalogue Go Autonomous DB (ATP) Product catalogue   src/dbtools Linux Autonomous DB (ATP) Database schema initializations   src/edge-router traefik  Request routing   src/events Go Streaming Application event data collection   src/fulfillment Java  Order processing   src/functions/newsletter-subscription Node.js Functions Newsletter subscription   src/orders Java Autonomous DB (ATP) Customer orders   src/payments Go  Payment processing   src/storefront JavaScript  Store UI   src/user TypeScript Autonomous DB (ATP) Customer accounts, AuthN    "
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/cloud/prerequisites/",
+  "title": "Prerequisites",
+  "section": "cloud",
+	"tags": ["Region", "Compartment", "Policies", "API Key"],
+	"description": "",
+	"content": "In order connect the MuShop application with services in Oracle Cloud Infrastructure, several configurations are necessary. These tenancy configurations will be used to properly provision and/or connect cloud services: Create a file with the following information to simplify lookups later:\nregion:# Region where resources will be provisioned (ex us-phoenix-1)tenancy:# Tenancy OCID valueuser:# API User OCID valuecompartment:# Compartment OCID valuekey:# Private API Key file path (ex /Users/jdoe/.oci/oci_key.pem)fingerprint:# Public API Key fingerprint (ex 43:65:2c...)Compartment Depending on the tenancy and your level of access, you may want (or need) to create a Compartment dedicated to this application and the resources allocated.\n  Open Console and navigate to Compartments\n Governance and Admininstration » Identity » Compartments » Create Compartment\n   Specify metadata for the Compartment, and make note of the OCID\n  API User You will need a User with API Key access in your tenancy. This can be your personal user account, or a virtual user specific to usage of this application.\n  Open Console and navigate to Users\n Governance and Admininstration » Identity » Users\n   Select or create the user you wish to use\n  If necessary, follow these instructions to create an API key\n  Make note of the following items:\n User OCID API Key Fingerprint    User Policies If your configured User (with API Key) is not a member of the Administrators Group, then a Group with specific Policies must be created, and the User added as a member.\n  Open Console and navigate to Groups\n Governance and Admininstration » Identity » Groups » Create Group\n   Specify metadata for the Group, and make note of the NAME\n  Click the Add User to Group button and select your API User\n  Create a Policy with the folliwing statement:\n Governance and Admininstration » Identity » Policies » Create Policy\n Allow group \u0026lt;GroupName\u0026gt; to manage all-resources in compartment \u0026lt;CompartmentName\u0026gt;  This policy is intentionally broad for the sake of simplicity, and is not recommended in most real-world use cases. Refer to the Documentation for more on this topic.\n   Service Limits Deploying the full application requires services from Oracle Cloud Infrastructure. Use of these services will be subject to Service Limits in your tenancy. Check minimum resource availability as follows:\n Check limits in the Console: Governance and Admininstration » Governance » Limits, Quotas, and Usage\n    Service Resource Requirement     Autonomous Transaction Processing Database OCPU Count \u0026gt;=1   Streaming Partition Count \u0026gt;=1    This does not include requirements in cases where OKE is used.\n "
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/quickstart/",
+  "title": "Getting Started",
+  "section": "quickstart",
+	"tags": ["Quickstart", "Source code"],
+	"description": "",
+	"content": "This project supports deployment modes for the purposes of demonstrating different functionality on Oracle Cloud Infrastructure. While the source code is identical across these options, certain services are omitted in the basic deployment.\n   Basic: deploy/basic Cloud Native: deploy/complete     Simplified runtime utilizing only Always Free resources deployed with Resource Manager Full-featured Kubernetes microservices deployment showcasing Oracle Cloud Native technologies and backing services    mushop └── deploy ├── basic └── complete Clone Repository Each topic in this material references the source code, which should be cloned to a personal workspace.\ngit clone https://github.com/oracle-quickstart/oci-cloudnative.git mushop cd mushop git clone https://github.com/oracle-quickstart/oci-cloudnative.git dir mushop Structure The source code will look something like the following:\n#\u0026gt; mushop ├── deploy │ ├── basic │ └── complete │ ├── docker-compose │ ├── helm-chart │ └── kubernetes └── src ├── api ├── assets ├── carts ├── catalogue ├── edge-router ├── events ├── fulfillment ├── dbtools ├── load ├── orders ├── payment ├── storefront └── user  deploy: Collection of application deployment resources. src: Individual service source code, Dockerfiles, etc.  "
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/cloud/setup/",
+  "title": "Setup",
+  "section": "cloud",
+	"tags": ["Setup", "Kubernetes", "Helm"],
+	"description": "",
+	"content": "MuShop provides an umbrella helm chart called setup, which includes several recommended installations on the cluster. These represent common 3rd party services, which integrate with Oracle Cloud Infrastructure or enable certain application features.\n   Chart Purpose Option     Prometheus Service metrics aggregation prometheus.enabled   Grafana Infrastructure/service visualization dashboards grafana.enabled   Metrics Server Support for Horizontal Pod Autoscaling metrics-server.enabled   Nginx Ingress Ingress controller and public Load Balancer nginx-ingress.enabled   Service Catalog Service Catalog chart utilized by Oracle Service Broker catalog.enabled     Dependencies installed with setup chart. NOTE as these are very common installations, each may be disabled as needed to resolve conflicts.\n From deploy/complete/helm-chart directory:\n  Add required helm repositories:\nhelm repo add svc-cat https://svc-catalog-charts.storage.googleapis.com helm repo add stable https://kubernetes-charts.storage.googleapis.com   Install chart dependencies:\nhelm dependency update setup   Install setup chart:\nhelm install setup \\ --name mushop-utils \\ --namespace mushop-utilities kubectl create ns mushop-utilities helm install mushop-utils setup \\ --namespace mushop-utilities   NOTE the public EXTERNAL-IP assigned to the ingress controller load balancer:\nkubectl get svc mushop-utils-nginx-ingress-controller \\  --namespace mushop-utilities   "
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/quickstart/basic/",
+  "title": "Always Free",
+  "section": "quickstart",
+	"tags": ["Free", "Terraform", "Resource Manager", "ATP"],
+	"description": "",
+	"content": "Basic Deployment This deployment is designed to run on Oracle Cloud Infrastructure using only Always Free resources. It uses MuShop source code and the Oracle Cloud Infrastructure Terraform Provider to produce a Resource Manager stack, that provisions all required resources and configures the application on those resources.\ncd deploy/basic dir deploy/basic  Source directory for basic deployment build/configuration\n These steps outline the Basic deployment using Resource Manager:\n Download the latest mushop-basic-stack-v1.x.x.zip file. Login to the console to import the stack.  Home \u0026gt; Solutions \u0026amp; Platform \u0026gt; Resource Manager \u0026gt; Stacks \u0026gt; Create Stack\n  Upload the mushop-basic-stack-v1.x.x.zip file that was downloaded earlier, and provide a name and description for the stack. Specify configuration options:  Database Name - You can choose to provide a database name (optional) Node Count - Select if you want to deploy one or two application instances. SSH Public Key - (Optional) Provide a public SSH key if you wish to establish SSH access to the compute node(s).   Review the information and click Create button.  The upload can take a few seconds, after which you will be taken to the newly created stack\n  On Stack details page, select Terraform Actions \u0026gt; Apply  The application is deployed to the compute instances asynchronously. It may take a few minutes for the public URL to serve the application. If the stack is applied successfully but the application returns a 503 Bad Gateway message, then wait a few moments and reload until the application comes online.\n "
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/quickstart/kubernetes/",
+  "title": "Kubernetes Deployment",
+  "section": "quickstart",
+	"tags": ["Kubernetes", "OKE", "Setup", "Mock Mode"],
+	"description": "",
+	"content": "This deployment option utilizes helm for configuration and installation onto a Kubernetes cluster. It is recommended to use an Oracle Container Engine for Kubernetes cluster, however other standard Kubernetes clusters will also work.\ncd deploy/complete/helm-chart dir deploy/complete/helm-chart  Path for Cloud Native deployment configurations using helm\n Deploying the complete MuShop application with backing services from Oracle Cloud Infrastructure involves the use of the following helm charts:\n setup: Installs umbrella chart dependencies on the cluster (optional) provision: Provisions OCI resources integrated with Service Broker (optional) mushop: Deploys the MuShop application runtime  To get started, create a namespace for the application and its associative deployments:\nkubectl create ns mushop  Setup MuShop provides an umbrella helm chart called setup, which includes several recommended installations on the cluster. These represent common 3rd party services, which integrate with Oracle Cloud Infrastructure or enable certain application features.\n   Chart Purpose Option     Prometheus Service metrics aggregation prometheus.enabled   Grafana Infrastructure/service visualization dashboards grafana.enabled   Metrics Server Support for Horizontal Pod Autoscaling metrics-server.enabled   Nginx Ingress Ingress controller and public Load Balancer nginx-ingress.enabled   Service Catalog Service Catalog chart utilized by Oracle Service Broker catalog.enabled     Dependencies installed with setup chart. NOTE as these are very common installations, each may be disabled as needed to resolve conflicts.\n From deploy/complete/helm-chart directory:\n  Add required helm repositories:\nhelm repo add svc-cat https://svc-catalog-charts.storage.googleapis.com helm repo add stable https://kubernetes-charts.storage.googleapis.com   Install chart dependencies:\nhelm dependency update setup   Install setup chart:\nhelm install setup \\ --name mushop-utils \\ --namespace mushop-utilities kubectl create ns mushop-utilities helm install mushop-utils setup \\ --namespace mushop-utilities   NOTE the public EXTERNAL-IP assigned to the ingress controller load balancer:\nkubectl get svc mushop-utils-nginx-ingress-controller \\  --namespace mushop-utilities   Deploy MuShop To get started with the simplest installation, MuShop supports a mock mode deployment option where cloud backing services are disconnected or mocked, yet the application remains fully functional. This is useful for development, testing, and cases where cloud connectivity is not available.\nFrom deploy/complete/helm-chart directory:\n  Deploy \u0026ldquo;mock mode\u0026rdquo; with helm:\nhelm install mushop \\ --name mushop \\ --namespace mushop \\ --set global.mock.service=\u0026quot;all\u0026quot; helm install mushop mushop \\ --namespace mushop \\ --set global.mock.service=\u0026quot;all\u0026quot;   Wait for services to be Ready:\nkubectl get pod --watch --namespace mushop   Open a browser with the EXTERNAL-IP created during setup, OR port-forward directly to the edge service resource:\nkubectl port-forward \\  --namespace mushop \\  svc/edge 8000:80  Using port-forward connecting localhost:8000 to the edge service\n kubectl get svc mushop-utils-nginx-ingress-controller \\  --namespace mushop-utilities  Locating EXTERNAL-IP for Ingress Controller. NOTE this will be localhost on local clusters.\n   It may take a few moments to download all the application images. It is also normal for some pods to show errors in mock mode.  "
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/extras/monitoring/",
+  "title": "Monitoring",
+  "section": "extras",
+	"tags": [],
+	"description": "",
+	"content": "Prometheus and Grafana Prometheus and Grafana are installed part of the setup umbrella helm chart. Revisit the application charts and connect to some Grafana dashboards:\n  List helm releases:\nhelm list --all-namespaces NAME NAMESPACE REVISION UPDATED STATUS CHART APP VERSION mushop mushop 1 2020-01-31 21:14:48.511917 -0600 CST deployed mushop-0.1.0 1.0 mushop-utils mushop-utilities 1 2020-01-31 20:32:05.864769 -0600 CST deployed mushop-setup-0.0.1 1.0   Get the Grafana outputs from the mushop-utils (setup chart) installation:\nhelm status mushop-utils --namespace mushop-utilities ## Grafana... # ...   Get the auto-generated Grafana admin password:\nkubectl get secret -n mushop-utilities mushop-utils-grafana \\ -o jsonpath=\u0026#34;{.data.admin-password}\u0026#34; | base64 --decode ; echo   Connect to the dashboard with admin/\u0026lt;password\u0026gt;:\nkubectl port-forward -n mushop-utilities \\ svc/mushop-utils-grafana 3000:80  The Grafana dashboard will be accessible on http://localhost:3000\n   Import dashboards from Grafana:\n Kubernetes Cluster Kubernetes Pods  Many community dashboards exist, those above are some basic recommendations\n   "
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/cloud/deployment/",
+  "title": "Deployment",
+  "section": "cloud",
+	"tags": ["Kubernetes", "Helm", "Service Broker", "Provision", "Serverless", "Secrets"],
+	"description": "",
+	"content": "Provisioning Deploying the full application requires cloud backing services from Oracle Cloud Infrastructure. Provisioning these services may be done manually of course, but can also be done automatically through the use of OCI Service Broker. You are encouraged to explore each approach.\n   Manual Automated     Provides steps for provisioning and connecting cloud services to the application Uses OCI Service Broker to provision and connect the Autonomous Transaction Processing database    In all cases, begin by adding tenancy credentials to manage and connect services from within the cluster. Create a secret containing these values:\nkubectl create secret generic oci-credentials \\  --namespace mushop \\  --from-literal=tenancy=\u0026lt;TENANCY_OCID\u0026gt; \\  --from-literal=user=\u0026lt;USER_OCID\u0026gt; \\  --from-literal=region=\u0026lt;USER_OCI_REGION\u0026gt; \\  --from-literal=fingerprint=\u0026lt;PUBLIC_API_KEY_FINGERPRINT\u0026gt; \\  --from-literal=passphrase=\u0026lt;PRIVATE_API_KEY_PASSPHRASE\u0026gt; \\  --from-file=privatekey=\u0026lt;PATH_OF_PRIVATE_API_KEY\u0026gt;  NOTE: The passphrase entry is required. If you do not have passphrase for your key, just leave empty.\n Manual Steps Follow the steps outlined below to provision and configure the cluster with cloud service connection details.\nATP Database   Provision an Autonomous Transaction Processing (ATP) database. The default options will work well, as will an Always Free shape if available. Once RUNNING download the DB Connection Wallet and configure secrets as follows:\n  Create oadb-admin secret containing the database administrator password. Used once for schema initializations.\nkubectl create secret generic oadb-admin \\  --namespace mushop \\  --from-literal=oadb_admin_pw=\u0026#39;\u0026lt;DB_ADMIN_PASSWORD\u0026gt;\u0026#39;   Create oadb-wallet secret with the Wallet contents using the downloaded Wallet_*.zip. The extracted Wallet_* directory is specified as the secret file path. Each file will become a key name in the secret data.\nkubectl create secret generic oadb-wallet \\  --namespace mushop \\  --from-file=\u0026lt;PATH_TO_EXTRACTED_WALLET_FOLDER\u0026gt;   Create oadb-connection secret with the Wallet password and the service TNS name to use for connections.\nkubectl create secret generic oadb-connection \\  --namespace mushop \\  --from-literal=oadb_wallet_pw=\u0026#39;\u0026lt;DB_WALLET_PASSWORD\u0026gt;\u0026#39; \\  --from-literal=oadb_service=\u0026#39;\u0026lt;DB_TNS_NAME\u0026gt;\u0026#39;  Each database has 5 unique TNS Names displayed when the Wallet is downloaded. For a database named mushopdb an example would be mushopdb_TP.\n     Optional: Instead of creating a shared database for the entire application, you may establish full separation of services by provisioning individual ATP instances for each service that requires a database. To do so, repeat the previous steps for each database,and give each secret a unique name, for example: carts-oadb-admin, carts-oadb-connection, carts-oadb-wallet.\n carts catalogue orders user    Streaming Service   Provision a Streaming instance from the Oracle Cloud Infrastructure Console, and make note of the created Stream OCID value. Then create an oss-connection secret containing the Stream connection details.\nkubectl create secret generic oss-connection \\  --namespace mushop \\  --from-literal=streamId=\u0026#39;\u0026lt;STREAM_OCID\u0026gt;\u0026#39; \\  --from-literal=messageEndpoint=\u0026#39;\u0026lt;MESSAGE_ENDPOINT_URL\u0026gt;\u0026#39;   Object Storage   Optional: Provision a Public Object Storage Bucket, and create a Pre-Authenticated Request for the bucket. With the information, create a secret called oos-bucket as follows:\nkubectl create secret generic oos-bucket \\  --namespace mushop \\  --from-literal=region=\u0026lt;BUCKET_REGION\u0026gt; \\  --from-literal=name=\u0026lt;BUCKET_NAME\u0026gt; \\  --from-literal=namespace=\u0026lt;OBJECT_STORAGE_NAMESPACE\u0026gt; \\  --from-literal=parUrl=\u0026lt;PRE_AUTHENTICATED_REQUEST_URL\u0026gt;  Object Storage Namespace may be found with the CLI oci os ns get or from the tenancy information page\n   Verify   Verify the secrets are created and available in the mushop namespace:\nkubectl get secret --namespace mushop NAME TYPE DATA AGE oadb-admin Opaque 1 3m oadb-connection Opaque 2 3m oadb-wallet Opaque 7 3m oci-credentials Opaque 6 3m oos-bucket Opaque 4 3m oss-connection Opaque 2 3m   Using Service Broker As an alternative to manually provisioning, the included provision chart is an application of the open-source OCI Service Broker for provisioning Oracle Cloud Infrastructure services. This implementation utilizes Open Service Broker in Oracle Container Engine for Kubernetes or in other Kubernetes clusters.\ncd deploy/complete/helm-chart dir deploy/complete/helm-chart   The Service Broker for Kubernetes requires access credentials to provision and manage services from within the cluster. Create a secret containing these values as described above. Alternatively, copy the oci-credentials secret to the mushop-utilities namespace:\nkubectl get secret oci-credentials \\  --namespace=mushop \\  --export \\  -o yaml | kubectl apply \\  --namespace=mushop-utilities -f -   Deploy the OCI service broker on your cluster. This is done with the Oracle OCI Service Broker helm chart:\nhelm install https://github.com/oracle/oci-service-broker/releases/download/v1.3.3/oci-service-broker-1.3.3.tgz \\ --namespace mushop-utilities \\ --name oci-broker \\ --set ociCredentials.secretName=oci-credentials \\ --set storage.etcd.useEmbedded=true \\ --set tls.enabled=false helm install oci-broker https://github.com/oracle/oci-service-broker/releases/download/v1.3.3/oci-service-broker-1.3.3.tgz \\ --namespace mushop-utilities \\ --set ociCredentials.secretName=oci-credentials \\ --set storage.etcd.useEmbedded=true \\ --set tls.enabled=false  The above command will deploy the OCI Service Broker using an embedded etcd instance. It is not recommended to deploy the OCI Service Broker using an embedded etcd instance and tls disabled in production environments, instead a separate etcd cluster should be setup and used by the OCI Service Broker.\n For the mushop helm deployment, the OCI Service Broker MUST be installed on the same namespace used by the setup chart. For convenience, the documentation commands defaults both the setup and OCI Service Broker charts to use the mushop-utilities namespace.\n   Next utilize the OCI Service Broker implementation to provision services by installing the included provision chart:\nhelm install provision \\ --namespace mushop \\ --name mushop-provision \\ --set global.osb.compartmentId=\u0026lt;COMPARTMENT_ID\u0026gt; \\ --set global.osb.objectstoragenamespace=\u0026lt;OBJECT_STORAGE_NAMESPACE\u0026gt; helm install mushop-provision provision \\ --namespace mushop \\ --set global.osb.compartmentId=\u0026lt;COMPARTMENT_ID\u0026gt; \\ --set global.osb.objectstoragenamespace=\u0026lt;OBJECT_STORAGE_NAMESPACE\u0026gt;  Object Storage Namespace may be found with the CLI oci os ns get or from the tenancy information page\n   It will take a few minutes for the services database to provision, and the respective bindings to become available. Verify serviceinstances and servicebindings are READY:\nkubectl get serviceinstances -A NAME CLASS PLAN STATUS AGE mushop-atp ClusterServiceClass/atp-service standard Ready 1d mushop-objectstorage ClusterServiceClass/object-store-service standard Ready 1d mushop-oss ClusterServiceClass/oss-service standard Ready 1d kubectl get servicebindings -A NAME SERVICE-INSTANCE SECRET-NAME STATUS AGE mushop-bucket-par-binding mushop-objectstorage mushop-bucket-par-binding Ready 1d mushop-oadb-wallet-binding mushop-atp mushop-oadb-wallet-binding Ready 1d mushop-oss-binding mushop-oss mushop-oss-binding Ready 1d   API Gateway, OCI Functions and Email Delivery Note that this is OPTIONAL. If you don\u0026rsquo;t want to configure Email Delivery and deploy a function with API Gateway, skip to the deployment section.\n Configure Email Delivery If you are planning to use the API gateway and Oracle Functions, to send emails using OCI Email Delivery you need to configure an approved sender first.\n From the OCI console, click Email Delivery -\u0026gt; Email Approved Sender Click the Create Approved Sender Enter the email address, for example: mushop@example.com Click Create Approved Sender   Note: if you have your own domain, you can enter a different address (e.g.mushop@[yourdomain.com]) and also configure SPF record for the sender. This involves adding a DNS record to your domain. You can follow these instructions to set up SPF.\n Next, you need to generate the SMTP credentials that will allow you to log in to the SMTP server and send the email. Follow the Generate SMTP Credentails for a User to get the SMTP host, port, username and password.\nThe SMTP credentails (host, port, username and password) and the approved sender email address (e.g. mushop@example.com) will be provided to the function as configuration values later, so make sure you save these values somewhere.\nConfigure function application Each function needs to live inside of an application. You can create a new application either through the console, API or the Fn CLI. An application has a name (e.g. mushop-app) and the VCN and a subnet in which to run the functions. The one guideline here is to pick the subnets that are in the same region as the Docker registry you specified in your context YAML earlier - check these docs for more information.\nThe first step you need to do is to ensure your tenancy is configured for function development. You can follow the Configuring Your Tenancy for Function Development documentation.\nAs a next step you will need to install the Fn CLI. If on a Mac and you\u0026rsquo;re using Brew, you can run:\nbrew install fn Finally, you will need configure the Fn CLI - you can follow these instructions that will guide you through creating a context file and configuring it with an image registry.\nTo create an application using Fn CLI, run:\nfn create app [APP_NAME] --annotation oracle.com/oci/subnetIds=\u0026#39;[\u0026#34;ocid1.subnet.oc1.iad....\u0026#34;]\u0026#39;  Note: make sure you replace APP_NAME and the ocid1.subnet with actual values\n Deploy and configure the function To deploy a function to an app, you can run the following command within the function folder (/src/functions/newsletter-subscription):\nfn deploy --app [APP_NAME]  Note: use fn -v deploy --app [APP_NAME] to get verbose output in case you\u0026rsquo;re running into issues.\n In the remainder of the document, we will use mushop-app for the application name.\nYou need to provide additional configuration (SMTP credentails) for the function to work properly and be able to send emails.\nOnce you\u0026rsquo;ve successfully deployed the function, you can use the Fn CLI to add configuration values (note that you can also do the same through the Console UI).\nRun the following commands to configure SMTP settings and the approved sender (replace the values):\nfn config function mushop-app newsletter-subscription SMTP_USER \u0026lt;smtp_username\u0026gt; fn config function mushop-app newsletter-subscription SMTP_PASSWORD \u0026lt;smtp_password\u0026gt; fn config function mushop-app newsletter-subscription SMTP_HOST \u0026lt;smtp_host\u0026gt; fn config function mushop-app newsletter-subscription SMTP_PORT \u0026lt;smtp_port\u0026gt; fn config function mushop-app newsletter-subscription APPROVED_SENDER_EMAIL \u0026lt;approved_sender_email\u0026gt; Creating an API gateway You will be using an API Gateway to access the functions. To prepare your tenancy for using the gateway, check the Preparing for API Gateway documentation.\nThe quickest way to create a gateway is through the OCI console:\n Click Developer Services -\u0026gt; API Gateway from the sidebar on the left Click the Create Gateway button Enter the following values (you can use a different name if you\u0026rsquo;d like):  Name: mushop-gateway Type: Public Virtual Cloud Network: Pick one from the dropdown Subnet: Pick the subnet from the dropdown   Click Create When gateway is created, click the Deployments link from the sidebar on the left Under the Deployments, click the Create Deployment button Make sure From Scratch option is selected at the top and enter the following values (you can leave the other values as they are - i.e. no need to enable CORS, Authentication or Rate Limiting):  Name: newsletter-subscription Path prefix: /newsletter Compartment:  Execution log: Enabled Log level: Error   Click Next to define the route Enter the following values for Route 1:  Path: /subscribe Methods: POST Type: Oracle Functions Application: mushop-app (or other, if you used a different name) Function name: newsletter-subscription   Click the Show Route Logging Policies link and enable Execution Log Click Next and review the deployment Click Create to create the gateway deployment  When deployment completes, navigate to it to get the URL for the gateway. Click the Show link next to the Endpoint label to reveal the full URL for the deployment. It should look like this:\nhttps://aaaaaaaaa.apigateway.us-ashburn-1.oci.customer-oci.com/newsletter/subscribe You will use this URL in values-dev.yaml when creating the deployment.\nDeployment Having completed the provisioning steps above, the mushop deployment helm chart is installed using settings to leverage cloud backing services.\nConfiguration   Make a copy of the values-dev.yaml file and store somewhere on your machine as myvalues.yaml. Then complete the missing values (e.g. secret names) like the following:\nglobal:ociAuthSecret:oci-credentials# OCI authentication credentials secretossStreamSecret:oss-connection# Name of Stream connection secretoadbAdminSecret:oadb-admin# Name of DB Admin secretoadbWalletSecret:oadb-wallet# Name of Wallet secretoadbConnectionSecret:oadb-connection# Name of DB Connection secretoosBucketSecret:oos-bucket# Object storage bucket secret name (optional) NOTE: If it\u0026rsquo;s desired to connect a separate databases for a given service, you can specify values specific for each service, such as carts.oadbAdminSecret, carts.oadbWalletSecret\u0026hellip;\n Database (oadb-*), stream (oss-*), and bucket (oos-*) secrets may be omitted if using the automated service broker approach.\n   Optional: If an Object Storage bucket is provisioned, you can configure the api environment to use the object URL prefix in myvalues.yaml:\napi:env:mediaUrl:# https://objectstorage.[REGION].oraclecloud.com/n/[NAMESPACE]/b/[BUCKET_NAME]/o/  Optional: If you configured the Email Delivery, API gateway and the function, add the following snippet to your myvalues.yaml file:\napi:env:mediaUrl:# ...newsletterSubscribeUrl:https://[API_GATEWAY_URL]  Installation   Install the mushop application helm chart using the myvalues.yaml created above:\n  OPTION 1: With cloud services provisioned manually:\nhelm install ./mushop \\ --name mushop \\ --namespace mushop \\ --values myvalues.yaml helm install mushop ./mushop \\ --namespace mushop \\ --values myvalues.yaml   OPTION 2: When using OCI Service Broker (provision chart):\nhelm install ./mushop \\ --name mushop \\ --namespace mushop \\ --set global.osb.atp=true \\ --set global.osb.oss=true \\ --set global.osb.objectstorage=true \\ --values myvalues.yaml helm install mushop ./mushop \\ --namespace mushop \\ --set global.osb.atp=true \\ --set global.osb.oss=true \\ --set global.osb.objectstorage=true \\ --values myvalues.yaml     Wait for deployment pods to be RUNNING and init pods to show COMPLETED:\nkubectl get pods --namespace mushop --watch NAME READY STATUS RESTARTS AGE mushop-api-769c4d9fd8-hp7mc 1/1 Running 0 31s mushop-assets-dd5756599-pxngg 1/1 Running 0 33s mushop-assets-deploy-1-n2bk6 0/1 Completed 0 33s mushop-carts-6f5db9565f-4w65t 1/1 Running 0 33s mushop-carts-init-1-dcs82 0/1 Completed 0 33s mushop-catalogue-76977479fd-thdq4 1/1 Running 0 32s mushop-catalogue-init-1-twx9x 0/1 Completed 0 33s mushop-edge-648c989cd4-6g9dk 1/1 Running 0 32s mushop-events-569f4744c9-l7pqt 1/1 Running 0 30s mushop-fulfillment-85489cd99b-lzwqp 1/1 Running 0 30s mushop-nats-84dc5db659-7rpbl 1/1 Running 0 32s mushop-orders-6dcc7bbbb6-658tq 1/1 Running 0 33s mushop-orders-init-1-tm8ls 0/1 Completed 0 33s mushop-payment-c7dccd8cc-t9wmj 1/1 Running 0 33s mushop-session-5ff4c9557f-dmbq8 1/1 Running 0 33s mushop-storefront-8656597656-lgdlk 1/1 Running 0 33s mushop-user-54f4978d68-qhr7n 0/1 Running 0 31s mushop-user-init-1-8k62c 0/1 Completed 0 33s  Note: if you installed Istio service mesh, you should see 2/2 in the READY column and 1/2 for the init pods and the assets deploy pod. The reason you see 2/2 is because Istio injects a sidecar proxy container into each pod.\n   Open a browser with the EXTERNAL-IP created during setup, OR port-forward directly to the edge service resource:\nkubectl port-forward \\  --namespace mushop \\  svc/edge 8000:80  Using port-forward connecting localhost:8000 to the edge service\n kubectl get svc mushop-utils-nginx-ingress-controller \\  --namespace mushop-utilities  Locating EXTERNAL-IP for Ingress Controller. NOTE this will be localhost on local clusters.\n kubectl get svc istio-ingressgateway \\  --namespace istio-system  Locating EXTERNAL-IP for Istio Ingress Gateway. NOTE this will be localhost on local clusters.\n   "
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/extras/istio/",
+  "title": "Istio Service Mesh",
+  "section": "extras",
+	"tags": ["Istio", "Service Mesh", "Kiali"],
+	"description": "",
+	"content": "Note that this is OPTIONAL. If you don\u0026rsquo;t want to install Istio service mesh, skip to the deployment section. Additionally, you don\u0026rsquo;t need to install Grafana and Prometheus from the setup chart as they are already included in the Istio installation.\n In this section you can install and configure Istio service mesh. The mesh needs to be installed before you deploy Mushop for the service mesh proxies to get injected next to each Mushop service.\nThese sidecar proxies intercept the traffic between services and collect data on all requests as well as allow scenarios such as traffic routing and failure injection.\nDownload and install Istio   Download the latest Istio release (1.4.6 at the time of writing this):\ncurl -L https://istio.io/downloadIstio | sh -   Go to the istio-1.4.6 folder and add the istioctl to your path:\nexport PATH=$PWD/bin:$PATH Before you continue with Istio installation, run the verify-install command to make sure Istio can be installed on your cluster:\n$ istioctl verify-install ... Install Pre-Check passed! The cluster is ready for Istio installation. If you get the Pre-Check passed message, you can continue.\n  Install the Istio demo profile:\nistioctl manifest apply --set profile=demo  Istio supports different installation profiles such as default, demo, minimal, sds and remote. In this lab we will be using the demo installation as it contains all components and it is designed to showcase Istio functionality. Note that demo profile is NOT an appropriate installation for production.\n The output of the above command should look something like this:\n$ istioctl manifest apply --set profile=demo - Applying manifest for component Base... ✔ Finished applying manifest for component Base. - Applying manifest for component EgressGateway... - Applying manifest for component Prometheus... - Applying manifest for component Pilot... - Applying manifest for component Tracing... - Applying manifest for component Citadel... - Applying manifest for component Injector... - Applying manifest for component Galley... - Applying manifest for component Kiali... - Applying manifest for component IngressGateway... - Applying manifest for component Policy... - Applying manifest for component Telemetry... - Applying manifest for component Grafana... ✔ Finished applying manifest for component Galley. ✔ Finished applying manifest for component Kiali. ✔ Finished applying manifest for component Injector. ✔ Finished applying manifest for component Prometheus. ✔ Finished applying manifest for component Citadel. ✔ Finished applying manifest for component Pilot. ✔ Finished applying manifest for component Policy. ✔ Finished applying manifest for component IngressGateway. ✔ Finished applying manifest for component Tracing. ✔ Finished applying manifest for component EgressGateway. ✔ Finished applying manifest for component Telemetry. ✔ Finished applying manifest for component Grafana. ✔ Installation complete You also need to run kubectl get pods -n istio-system and ensure all pods are in the running state (the value of the STATUS column for each pod should be Running)\nBefore continuing with the Mushop deployment, you also need to label the mushop namespace in order for Istio to automatically inject the Envoy sidecar proxy next to each Mushop service.\n  Create the mushop namespace:\n  kubectl create ns mushop  Label the namespace with istio-injection=enabled:  kubectl label namespace mushop istio-injection=enabled  Follow the instructions for deploying Mushop.  Creating Istio resources In order to configure the traffic routing and the ingress gateway, you will need to deploy a Gateway resource and a VirtualService resource.\n  Deploy a Gateway resource:\ncat \u0026lt;\u0026lt; EOF | kubectl apply -f - apiVersion: networking.istio.io/v1alpha3 kind: Gateway metadata: name: gateway namespace: mushop spec: selector: istio: ingressgateway servers: - port: number: 80 name: http protocol: HTTP hosts: - '*' EOF \u0026quot;apiVersion: networking.istio.io/v1alpha3 kind: Gateway metadata: name: gateway namespace: mushop spec: selector: istio: ingressgateway servers: - port: number: 80 name: http protocol: HTTP hosts: - '*'\u0026quot; | kubectl apply -f -   Deploy a VirtualService:\ncat \u0026lt;\u0026lt;EOF | kubectl apply -f - apiVersion: networking.istio.io/v1alpha3 kind: VirtualService metadata: name: edge namespace: mushop spec: hosts: - '*' gateways: - gateway http: - match: - uri: prefix: /api route: - destination: host: mushop-api.mushop.svc.cluster.local - match: - uri: prefix: /assets rewrite: uri: / route: - destination: host: mushop-assets.mushop.svc.cluster.local - route: - destination: host: mushop-storefront.mushop.svc.cluster.local port: number: 80 EOF \u0026quot;apiVersion: networking.istio.io/v1alpha3 kind: VirtualService metadata: name: edge namespace: mushop spec: hosts: - '*' gateways: - gateway http: - match: - uri: prefix: /api route: - destination: host: mushop-api.mushop.svc.cluster.local - match: - uri: prefix: /assets rewrite: uri: / route: - destination: host: mushop-assets.mushop.svc.cluster.local - route: - destination: host: mushop-storefront.mushop.svc.cluster.local port: number: 80\u0026quot; | kubectl apply -f -   Open a browser with the EXTERNAL-IP of the Instio ingress gateway:\nkubectl get svc istio-ingressgateway \\  --namespace istio-system  Locating EXTERNAL-IP for Istio Ingress Gateway. NOTE this will be localhost on local clusters.\n   Kiali Dashboard Kiali is a service mesh observability tool that allows you to understand the structure of your service mesh, visualize the service inside the mesh and provides the health of the mesh. Additionally, you can view detailed metrics using Grafana integration and distribute tracing with Jaeger integration.\n  From the terminal, open Kiali dashboard\nistioctl dashboard kiali   Click the Graph option from the sidebar.\n  From the dropdown select the mushop namespace.\n  You should see a service graph that looks similar to the figure below;\n  Cleanup Uninstall Istio by passing the generated manifests into kubectl delete\nistioctl manifest generate --set profile=demo | kubectl delete -f - "
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/cloud/",
+  "title": "Cloud Infrastructure",
+  "section": "cloud",
+	"tags": ["OCI", "Cloud Services", "Deployment"],
+	"description": "",
+	"content": "MuShop is designed to leverage several cloud services available on Oracle Cloud Infrastructure. The following sections will demonstrate how these services can be provisioned, configured, and integrated into the reference demo application.\n  Outline "
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/extras/",
+  "title": "Extras",
+  "section": "extras",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/usage/",
+  "title": "MuShop Docs",
+  "section": "",
+	"tags": [],
+	"description": "",
+	"content": "Project documentation built with Hugo and customized UIkit theme.\nSetup   Install documentation theme:\nmake theme   Install hugo CLI:\nbrew install hugo   Development In general, the content management follows all the standard features of Hugo.\n Hugo Content Management Hugo Shortcodes Cross Referencing  Start hugo server make up Or with hugo:\nhugo server --buildDrafts Add Content   Create content as follows:\n Create a new section: hugo new \u0026lt;section\u0026gt;/_index.md Create a new lab topic: hugo new labs/\u0026lt;topic\u0026gt;/_index.md Create a new lab page: hugo new labs/\u0026lt;topic\u0026gt;/\u0026lt;page\u0026gt;.md    Edit front matter\n---title:\u0026#34;My New Content\u0026#34;description:\u0026#34;short description of content\u0026#34;draft:falsehidden:falseweight:20# ordering by weightkeywords:- one- twotags:- advanced- oke###### Custom ####### breadcrumbsdisableBreadcrumb:false# footer navigationdisablePrevNext:falsedisablePrev:falsedisableNext:false# section optionsshowChildren:false# lists child pages of the section/_index.mdorderedChildren:false# use ordered list for child pages---  Features The Hugo documentation theme is custom-built with UIkit components (just like MuShop storefront).\nCode Settings   Helm: Displays code blocks specific to helm version\n```shell--helm2 helm install ./mushop --name mymushop ``` ```shell--helm3 helm install mymushop ./mushop ```   OS: Displays code blocks specific to os\n```shell--linux-macos export MUSHOP_NAMESPACE=mushop ``` ```shell--win set MUSHOP_NAMESPACE=mushop ```   Shortcode Components Add panache to the documentation using these custom shortcodes directly within markdown documents.\nAlert  Displays an alert style block. Specify icon from the UIkit icon library\n {{% alert style=\u0026#34;primary\u0026#34; icon=\u0026#34;info\u0026#34; %}} Alert content `processed` as **markdown** {{% /alert %}} Alert content processed as markdown\n Alert content processed as markdown\n Alert content processed as markdown\n Alert content processed as markdown\n     Options      style default|primary|success|warning|danger   icon Icon from library   class Additional classes     Aspect Ratio  Fix the enclosed content to an aspect ratio.\n {{% aspect ratio=\u0026#34;2-1\u0026#34; %}} {{% wrapper \u0026#34;uk-background-muted uk-padding-small\u0026#34; %}} Content with aspect ratio of `2-1` {{% /wrapper %}} {{% /aspect %}} Content with aspect ratio of 2-1\n      Options      ratio 1-1|3-2|4-3|16-9|2-1   class Additional classes     Card  Display content as cards - usually in a grid\n {{% grid col=\u0026#34;1-2\u0026#34; %}} {{% card style=\u0026#34;primary\u0026#34; title=\u0026#34;Primary\u0026#34; hover=true %}} Card body {{% /card %}} {{% card style=\u0026#34;secondary\u0026#34; title=\u0026#34;Secondary\u0026#34; %}} Card body {{% /card %}} {{% /grid %}} Primary Card body\n  Secondary Card body\n      Options      style default|primary|secondary   size small|large   hover Add hover styling   title Card title   width Width ratio accodring to width   class Additional classes     Grid  Add a grid of inner contents using grid and flex\n {{% grid col=\u0026#34;1-3\u0026#34; %}} - **Example** - Item one - Item two {{% /grid %}} Example Item one Item two      Options      gutter small|medium|large|collapse gutter settings (optional)   class Any classes to add to the grid wrapper   col Child element column width   breakpoint (s|m|l|xl) breakpoint at which the child element width becomes grid vs stacked. Default m   x horizontal flex alignment see here   y vertical flex alignment see here   options See docs     Icon  Add any icon from the library\n {{\u0026lt; icon \u0026#34;bookmark\u0026#34; \u0026#34;2.5\u0026#34; \u0026gt;}} \n    Options      icon Icon name   ratio Size proportion     Overflow  Applies automatic overflow to the contents. Useful with aspect ratio and table contents\n {{% overflow %}} Something very tall or wide {{% /overflow %}} Something very wide\n    Arguments      [class] CSS class string to apply to wrapper \u0026lt;div\u0026gt; element   [attr] Attributes to apply to wrapper \u0026lt;div\u0026gt; element     Slideshow  Display list items as a slideshow\n {{% slideshow dotnav=true %}} {{% list/item \u0026#34;uk-background-secondary uk-light uk-padding\u0026#34; %}} Slide one `markdown` CONTENT {{% /list/item %}} \u0026lt;li class=\u0026#34;uk-background-primary uk-light uk-padding\u0026#34;\u0026gt; Slide two HTML content \u0026lt;/li\u0026gt; {{% /slideshow %}} Slide one markdown content\n Slide two HTML content           Options      options See options   class CSS class(es) to add to the slideshow items container   attrs DOM attributes to add to the ul items wrapper   dotnav Bool to include dotnav below slideshow    Slideshow items must be \u0026lt;li\u0026gt; type. Refer to usage for specific decorations for the desired presentation\n  Switcher  Create a left-tab switcher component\n {{\u0026lt; switcher \u0026#34;One\u0026#34; \u0026#34;Two\u0026#34; \u0026#34;Three\u0026#34; \u0026gt;}} - Tab one content ```ts const foo: string = \u0026#39;blah blah\u0026#39;; ``` - Tab two content - Tab three content {{\u0026lt; /switcher \u0026gt;}} OneTwoThree  Tab one content const foo: string = \u0026#39;blah blah\u0026#39;;  Tab two content Tab three content       Arguments      \u0026lt;...tabs\u0026gt; Switcher tab names     Width  Specify inner width after breakpoint according to the docs\n width \u0026lt;width\u0026gt; [breakpoint]\n{{% width \u0026#34;1-2\u0026#34; \u0026#34;s\u0026#34; %}} {{% alert style=\u0026#34;danger\u0026#34; %}} ![image](../images/oracle.svg) {{% /alert %}} {{% /width %}}       Arguments      \u0026lt;width\u0026gt; Content width ratio   [breakpoint] s|m|l|xl Size at which the width should apply     Wrapper  Wraps inner content with any div and specified classes. Useful for specifying markup with other UIkit features\n {{% wrapper \u0026#34;uk-light uk-background-primary uk-panel uk-padding\u0026#34; %}} Light Panel {{% /wrapper %}} Light Panel\n     Arguments      [class] CSS class string to apply to wrapper \u0026lt;div\u0026gt; element   [attr] Attributes to apply to wrapper \u0026lt;div\u0026gt; element     Shortcode Extras Diagrams  Markdownish SVG diagrams from mermaid\n {{\u0026lt; mermaid class=\u0026#34;uk-text-center\u0026#34; \u0026gt;}} graph TD A[Hard edge] --\u0026gt;|Link text| B(Round edge) B --\u0026gt; C{Decision} C --\u0026gt;|One| D[Result one] C --\u0026gt;|Two| E[Result two] {{\u0026lt; /mermaid \u0026gt;}} graph TD A[Hard edge] --|Link text| B(Round edge) B -- C{Decision} C --|One| D[Result one] C --|Two| E[Result two]     Options      class Additional classes on the wrapper element     "
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/cleanup/",
+  "title": "Cleanup",
+  "section": "cleanup",
+	"tags": ["Cleanup", "Uninstall", "Deprovision"],
+	"description": "",
+	"content": "The following list represents cleanup operations, which may vary depending on the actions performed for setup and deployment of MuShop.\n  List any helm releases that may have been installed:\nhelm list helm list --all-namespaces NAME NAMESPACE REVISION UPDATED STATUS CHART APP VERSION mushop mushop 1 2020-01-31 21:14:48.511917 -0600 CST deployed mushop-0.1.0 1.0 oci-broker mushop-utilities 1 2020-01-31 20:46:30.565257 -0600 CST deployed oci-service-broker-1.3.3 mushop-provision mushop 1 2020-01-31 21:01:54.086599 -0600 CST deployed mushop-provision-0.1.0 0.1.0 mushop-utils mushop-utilities 1 2020-01-31 20:32:05.864769 -0600 CST deployed mushop-setup-0.0.1 1.0   Remove the application from Kubernetes where --name mushop was used during install:\nhelm delete --purge mushop helm delete mushop -n mushop   If used OCI Service broker, remove the provision dependency installation, including ATP Bindings (Wallet, password) and instances:\nhelm delete --purge mushop-provision helm delete mushop-provision -n mushop  After delete, kubectl get serviceinstances -A will show resources that are deprovisioning\n   If used OCI Service broker, remove the oci-broker installation:\nhelm delete --purge oci-broker helm delete oci-broker -n mushop-utilities   Uninstall Istio service mesh (if applicable):\nistioctl manifest generate --set profile=demo | kubectl delete -f -   Remove the setup cluster dependency installation:\nhelm delete --purge mushop-utils helm delete mushop-utils -n mushop-utilities   "
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/istio/",
+  "title": "Istio",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/kiali/",
+  "title": "Kiali",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/service-mesh/",
+  "title": "Service Mesh",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/",
+  "title": "Tags",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/cleanup/",
+  "title": "Cleanup",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/deprovision/",
+  "title": "Deprovision",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/uninstall/",
+  "title": "Uninstall",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/helm/",
+  "title": "Helm",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/kubernetes/",
+  "title": "Kubernetes",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/setup/",
+  "title": "Setup",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/api-key/",
+  "title": "API Key",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/compartment/",
+  "title": "Compartment",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/policies/",
+  "title": "Policies",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/region/",
+  "title": "Region",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/cloud-services/",
+  "title": "Cloud Services",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/deployment/",
+  "title": "Deployment",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/oci/",
+  "title": "OCI",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/provision/",
+  "title": "Provision",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/secrets/",
+  "title": "Secrets",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/serverless/",
+  "title": "Serverless",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/service-broker/",
+  "title": "Service Broker",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/atp/",
+  "title": "ATP",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/free/",
+  "title": "Free",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/resource-manager/",
+  "title": "Resource Manager",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/terraform/",
+  "title": "Terraform",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/mock-mode/",
+  "title": "Mock Mode",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/oke/",
+  "title": "OKE",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/quickstart/",
+  "title": "Quickstart",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/tags/source-code/",
+  "title": "Source code",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/resources/",
+  "title": "More Resources",
+  "section": "",
+	"tags": [],
+	"description": "",
+	"content": "Oracle Cloud Infrastructure  Sign Up Console REST APIs SDKs CLI Developer Tools Terraform Provider Blogs Stack Overflow  OCI Service Broker  GitHub Repo Installation Services  Object Storage Service Autonomous Transaction Processing Autonomous Data Warehouse Streaming service    OneTwoThree  Tab one content const foo: string = \u0026#39;blah blah\u0026#39;;  Tab two content Tab three content    "
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/",
+  "title": "Cloud Native on Oracle Cloud Infrastructure",
+  "section": "",
+	"tags": [],
+	"description": "",
+	"content": "MuShop MuShop is a microservices demo application purpose-built to showcase interoperable Cloud Native services on Oracle Cloud Infrastructure, and to demonstrate a number of cloud native methodologies.\nThe premise of MuShop is an e-commerce website offering a variety of cat products. It represents a polyglot microservice application, with actual use case scenarios for many Oracle Cloud Infrastructure services.\nEach microservice in MuShop is designed to highlight its own, or common high-level subject in Oracle Cloud Infrastructure, using the context of the overall demo application.\n        Microservices \nμ \nMu \nMeow \n   "
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/acknowledgements/",
+  "title": "Acknowledgements",
+  "section": "",
+	"tags": [],
+	"description": "",
+	"content": "Community This project, and its associative materials utilizes many excellent projects from the open source community. While there are numerous, the following projects deserve some special recognition:\n Sock Shop: Comprehensive microservices demo from Weaveworks Hugo: Documentation tool used to create this documentation Reveal.js: HTML presentation tool used to develop workshop materials Roman Chekurov: Inspiration and basis for MuShop UI  Contributors Thanks to all our contributors for their commitment to open source!\n @mvandervliet 467 contributions     @jeevanjoseph 253 contributions     @junior 201 contributions     @peterj 143 contributions     @juliocamara 50 contributions     @kd7edg 15 contributions     @jjspiegel 11 contributions     @dependabot[bot] 4 contributions     @sumikr 2 contributions     @benofben 1 contributions     @rml1997 1 contributions     "
+},
+{
+	"uri": "https://oracle-quickstart.github.io/oci-cloudnative/categories/",
+  "title": "Categories",
+  "section": "categories",
+	"tags": [],
+	"description": "",
+	"content": ""
+}]

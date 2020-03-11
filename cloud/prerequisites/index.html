@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-	<meta name="generator" content="Hugo 0.66.0" />
   <meta charset="utf-8">
-  <title>Cloud Native on Oracle Cloud Infrastructure :: MuShop</title>
+  <title>Prerequisites :: MuShop</title>
   
   <meta name="application-name" content="MuShop"/>
 <meta name="description" content="Oracle Cloud Native Workshop">
 <meta name="keywords" content="Kubernetes,OCI,OKE,Microservices">
 
-<meta property="og:title" content="MuShop - Cloud Native on Oracle Cloud Infrastructure" />
+<meta property="og:title" content="MuShop - Prerequisites" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://oracle-quickstart.github.io/oci-cloudnative/" />
+<meta property="og:url" content="https://oracle-quickstart.github.io/oci-cloudnative/cloud/prerequisites/" />
     <link rel="apple-touch-icon" sizes="180x180" href="/oci-cloudnative/icons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/oci-cloudnative/icons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/oci-cloudnative/icons/favicon-16x16.png">
@@ -25,7 +24,7 @@
   <link rel="stylesheet" type="text/css" href="https://oracle-quickstart.github.io/oci-cloudnative/sass/mushop.min.c31ca585e7b3a90dfeb2fd0ac2d7d93ff0af82ea19b0cab20c8539d987761606.css" integrity="sha256-wxylheezqQ3&#43;sv0KwtfZP/CvguoZsMqyDIU52Yd2FgY=">
 </head>
 
-  <body class="" data-url="/oci-cloudnative/">
+  <body class="" data-url="/oci-cloudnative/cloud/prerequisites/">
     
       
 <div class="uk-navbar-container uk-hidden@s">
@@ -163,7 +162,7 @@
   
   
   
-  <li data-nav-id="/oci-cloudnative/cloud/" title="Cloud Infrastructure" class=" uk-parent">
+  <li data-nav-id="/oci-cloudnative/cloud/" title="Cloud Infrastructure" class=" uk-parent uk-open">
     <a href="/oci-cloudnative/cloud/">
       <div class="uk-flex uk-flex-between uk-flex-middle">
         <div class="uk-text-truncate">Cloud Infrastructure</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
@@ -183,7 +182,7 @@
 
   
     
-    <li data-nav-id="/oci-cloudnative/cloud/prerequisites/" title="Prerequisites" class="">
+    <li data-nav-id="/oci-cloudnative/cloud/prerequisites/" title="Prerequisites" class="uk-active">
       <a href="/oci-cloudnative/cloud/prerequisites/" class="uk-text-truncate">
         Prerequisites
       </a>
@@ -367,6 +366,14 @@
               
             </a>
           </li>
+            <li>
+              <a title='Edit this page' href="https://github.com/oracle-quickstart/oci-cloudnative/tree/master/docs/content/cloud/prerequisites.md" target="blank">
+                <span uk-icon="pencil"></span>
+                <span class="uk-text-middle">Edit this page</span>
+              </a>
+            </li>
+            
+          
         </ul>
       </section>
       <section>
@@ -450,48 +457,178 @@
           <div id="content" class="uk-grid" uk-grid>
             
 
+<div class="uk-flex-last uk-width-1-4 uk-visible@l">
+  <aside id="toc-nav" uk-sticky="offset: 40">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#compartment">Compartment</a></li>
+            <li><a href="#api-user">API User</a></li>
+            <li><a href="#user-policies">User Policies</a></li>
+            <li><a href="#service-limits">Service Limits</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    <hr/>
+    
+  <div>
+    
+    <a class="uk-label" href="/oci-cloudnative/tags/region">
+      <span uk-icon="tag"></span>
+      Region
+    </a>
+    
+    <a class="uk-label" href="/oci-cloudnative/tags/compartment">
+      <span uk-icon="tag"></span>
+      Compartment
+    </a>
+    
+    <a class="uk-label" href="/oci-cloudnative/tags/policies">
+      <span uk-icon="tag"></span>
+      Policies
+    </a>
+    
+    <a class="uk-label" href="/oci-cloudnative/tags/api-key">
+      <span uk-icon="tag"></span>
+      API Key
+    </a>
+    
+  </div>
+
+  </aside>
+</div>
+
 
             <main class="uk-width-expand">
               <header>
   
-  </header>
+  
+    <ul class="uk-breadcrumb uk-margin-top uk-text-small">
+    
+  
+  <li><a href='/oci-cloudnative/'>Home</a></li> <li><a href='/oci-cloudnative/cloud/'>Cloud Infrastructure</a></li> <li>Prerequisites</li>
+    </ul></header>
 
 
 
-              <h1 class="rw-accent">Cloud Native on Oracle Cloud Infrastructure</h1>
+              <h1 class="rw-accent">Prerequisites</h1>
               
-   
-    <h2 id="mushop">MuShop</h2>
-<p>MuShop is a microservices demo application <strong>purpose-built</strong> to showcase
-interoperable <a href="https://www.oracle.com/cloud/cloud-native/">Cloud Native</a> services on
-<a href="https://www.oracle.com/cloud/">Oracle Cloud Infrastructure</a>, and to demonstrate
-a number of cloud native methodologies.</p>
-<p>The premise of MuShop is an e-commerce website offering a variety of cat
-products. It represents a polyglot microservice application, with <strong>actual use case</strong>
-scenarios for many Oracle Cloud Infrastructure services.</p>
-<p>Each microservice in MuShop is designed to highlight its own, or common high-level
-subject in Oracle Cloud Infrastructure, using the context of the overall demo application.</p>
+  <p>In order connect the MuShop application with services in Oracle Cloud Infrastructure,
+several configurations are necessary. These tenancy configurations will be used to
+properly provision and/or connect cloud services: Create a file with the following
+information to simplify lookups later:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">region</span><span class="p">:</span><span class="w">       </span><span class="c"># Region where resources will be provisioned (ex us-phoenix-1)</span><span class="w">
+</span><span class="w"></span><span class="k">tenancy</span><span class="p">:</span><span class="w">      </span><span class="c"># Tenancy OCID value</span><span class="w">
+</span><span class="w"></span><span class="k">user</span><span class="p">:</span><span class="w">         </span><span class="c"># API User OCID value</span><span class="w">
+</span><span class="w"></span><span class="k">compartment</span><span class="p">:</span><span class="w">  </span><span class="c"># Compartment OCID value</span><span class="w">
+</span><span class="w"></span><span class="k">key</span><span class="p">:</span><span class="w">          </span><span class="c"># Private API Key file path (ex /Users/jdoe/.oci/oci_key.pem)</span><span class="w">
+</span><span class="w"></span><span class="k">fingerprint</span><span class="p">:</span><span class="w">  </span><span class="c"># Public API Key fingerprint (ex 43:65:2c...)</span><span class="w">
+</span></code></pre></div><h3 id="compartment">Compartment</h3>
+<p>Depending on the tenancy and your level of access, you may want (or need) to
+create a Compartment dedicated to this application and the resources allocated.</p>
+<ol>
+<li>
+<p>Open Console and navigate to Compartments</p>
+<blockquote>
+<p>Governance and Admininstration » Identity » Compartments » <code>Create Compartment</code></p>
+</blockquote>
+</li>
+<li>
+<p>Specify metadata for the Compartment, and make note of the <strong>OCID</strong></p>
+</li>
+</ol>
+<h3 id="api-user">API User</h3>
+<p>You will need a User with API Key access in your tenancy.
+This can be your personal user account, or a virtual user specific to usage of
+this application.</p>
+<ol>
+<li>
+<p>Open Console and navigate to Users</p>
+<blockquote>
+<p>Governance and Admininstration » Identity » Users</p>
+</blockquote>
+</li>
+<li>
+<p>Select <em>or create</em> the user you wish to use</p>
+</li>
+<li>
+<p>If necessary, follow these <a href="https://docs.cloud.oracle.com/iaas/Content/Functions/Tasks/functionssetupapikey.htm">instructions</a> to create an API key</p>
+</li>
+<li>
+<p>Make note of the following items:</p>
+<ul>
+<li>User <strong>OCID</strong></li>
+<li>API Key <strong>Fingerprint</strong></li>
+</ul>
+</li>
+</ol>
+<h3 id="user-policies">User Policies</h3>
+<p>If your configured User (with API Key) is <strong>not</strong> a member of the Administrators Group,
+then a Group with specific Policies must be created, and the User added as a member.</p>
+<ol>
+<li>
+<p>Open Console and navigate to Groups</p>
+<blockquote>
+<p>Governance and Admininstration » Identity » Groups » <code>Create Group</code></p>
+</blockquote>
+</li>
+<li>
+<p>Specify metadata for the Group, and make note of the <strong>NAME</strong></p>
+</li>
+<li>
+<p>Click the <code>Add User to Group</code> button and select your API User</p>
+</li>
+<li>
+<p>Create a Policy with the folliwing statement:</p>
+<blockquote>
+<p>Governance and Admininstration » Identity » Policies » <code>Create Policy</code></p>
+</blockquote>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">Allow group &lt;GroupName&gt; to manage all-resources in compartment &lt;CompartmentName&gt;
+</code></pre></div> <div uk-alert class="uk-alert-danger uk-grid uk-grid-collapse uk-flex-nowrap "><span uk-icon="icon: warning; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span><div class="uk-width-expand">
+<p>This policy is intentionally broad for the sake of simplicity,
+and is <strong>not</strong> recommended in most real-world use cases.
+Refer to the <a href="https://docs.cloud.oracle.com/iaas/Content/Identity/Concepts/overview.htm#three">Documentation</a> for more on this topic.</p>
+ </div></div>
+</li>
+</ol>
+<h3 id="service-limits">Service Limits</h3>
+<p>Deploying the full application requires services from Oracle Cloud
+Infrastructure. Use of these services will be subject to Service Limits in your
+tenancy. Check minimum resource availability as follows:</p>
+<blockquote>
+<p>Check limits in the Console: Governance and Admininstration » Governance » Limits, Quotas, and Usage</p>
+</blockquote>
 <table>
 <thead>
 <tr>
-<th><img src="images/intro/mushop.home.png" alt="mushop"></th>
-<th><img src="images/intro/mushop.about.png" alt="services"></th>
+<th>Service</th>
+<th>Resource</th>
+<th>Requirement</th>
 </tr>
 </thead>
+<tbody>
+<tr>
+<td>Autonomous Transaction Processing Database</td>
+<td>OCPU Count</td>
+<td><code>&gt;=1</code></td>
+</tr>
+<tr>
+<td>Streaming</td>
+<td>Partition Count</td>
+<td><code>&gt;=1</code></td>
+</tr>
+</tbody>
 </table>
-<div uk-grid="" class="uk-grid uk-grid-small   uk-flex-center uk-flex-middle"><p><strong>Micro</strong>services <span uk-icon="icon: arrow-right; ratio: 1.5" class="uk-text-muted uk-flex-none"></span></p>
-<p>μ <span uk-icon="icon: arrow-right; ratio: 1.5" class="uk-text-muted uk-flex-none"></span></p>
-<p>Mu <span uk-icon="icon: arrow-right; ratio: 1.5" class="uk-text-muted uk-flex-none"></span></p>
-<p>Meow <span uk-icon="icon: arrow-right; ratio: 1.5" class="uk-text-muted uk-flex-none"></span></p>
-<span class="uk-width-1-5 uk-flex-none">
-  <img uk-img data-src="images/logo.light.png" class="no-dark" />
-  <img uk-img data-src="images/logo.dark.png" class="no-light" />
-</span></div>
-<hr>
-<div class="uk-margin-auto uk-width-1-1 uk-width-1-2@s"><p><img src="images/intro/cloudnative.png" alt="Mushop cloud native"></p>
-</div>
+<div uk-alert class="uk-alert-primary uk-grid uk-grid-collapse uk-flex-nowrap "><span uk-icon="icon: info; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span><div class="uk-width-expand">
+<p>This does not include requirements in cases where OKE is used.</p>
+</div></div>
 
-  
 
             </main>
           </div> 
@@ -587,6 +724,7 @@ subject in Oracle Cloud Infrastructure, using the context of the overall demo ap
 
   
     
+    
   
 
   
@@ -600,6 +738,7 @@ subject in Oracle Cloud Infrastructure, using the context of the overall demo ap
 
   
     
+    
   
 
   
@@ -615,6 +754,9 @@ subject in Oracle Cloud Infrastructure, using the context of the overall demo ap
 
 
   
+    
+      
+      
     
   
 
@@ -713,8 +855,12 @@ subject in Oracle Cloud Infrastructure, using the context of the overall demo ap
 
 
       <div>
-        <a href="/oci-cloudnative/introduction/" title="Introduction" class="rw-page-next uk-flex uk-flex-right uk-flex-middle uk-flex-last uk-text-truncate">
-          <label class="uk-visible@m">Introduction</label>
+        <a href="/oci-cloudnative/cloud/" title="Cloud Infrastructure" class="rw-page-prev uk-flex uk-flex-left uk-flex-middle uk-text-truncate">
+          <span uk-icon="icon: chevron-left; ratio: 2.5" class="uk-margin-small-right uk-flex-none"></span>
+          <label class="uk-visible@m">Cloud Infrastructure</label>
+        </a>
+        <a href="/oci-cloudnative/cloud/setup/" title="Setup" class="rw-page-next uk-flex uk-flex-right uk-flex-middle uk-flex-last uk-text-truncate">
+          <label class="uk-visible@m">Setup</label>
           <span uk-icon="icon: chevron-right; ratio: 2.5" class="uk-margin-small-left uk-flex-none"></span>
         </a></div>
 </footer>

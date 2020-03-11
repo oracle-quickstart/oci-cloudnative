@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-	<meta name="generator" content="Hugo 0.66.0" />
   <meta charset="utf-8">
-  <title>Cloud Native on Oracle Cloud Infrastructure :: MuShop</title>
+  <title>Introduction :: MuShop</title>
   
   <meta name="application-name" content="MuShop"/>
 <meta name="description" content="Oracle Cloud Native Workshop">
 <meta name="keywords" content="Kubernetes,OCI,OKE,Microservices">
 
-<meta property="og:title" content="MuShop - Cloud Native on Oracle Cloud Infrastructure" />
+<meta property="og:title" content="MuShop - Introduction" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://oracle-quickstart.github.io/oci-cloudnative/" />
+<meta property="og:url" content="https://oracle-quickstart.github.io/oci-cloudnative/introduction/" />
     <link rel="apple-touch-icon" sizes="180x180" href="/oci-cloudnative/icons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/oci-cloudnative/icons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/oci-cloudnative/icons/favicon-16x16.png">
@@ -25,7 +24,7 @@
   <link rel="stylesheet" type="text/css" href="https://oracle-quickstart.github.io/oci-cloudnative/sass/mushop.min.c31ca585e7b3a90dfeb2fd0ac2d7d93ff0af82ea19b0cab20c8539d987761606.css" integrity="sha256-wxylheezqQ3&#43;sv0KwtfZP/CvguoZsMqyDIU52Yd2FgY=">
 </head>
 
-  <body class="" data-url="/oci-cloudnative/">
+  <body class="" data-url="/oci-cloudnative/introduction/">
     
       
 <div class="uk-navbar-container uk-hidden@s">
@@ -79,7 +78,7 @@
   
   
   
-  <li data-nav-id="/oci-cloudnative/introduction/" title="Introduction" class="">
+  <li data-nav-id="/oci-cloudnative/introduction/" title="Introduction" class=" uk-open uk-active">
     <a href="/oci-cloudnative/introduction/">
       <div class="uk-flex uk-flex-between uk-flex-middle">
         <div class="uk-text-truncate">Introduction</div>
@@ -367,6 +366,14 @@
               
             </a>
           </li>
+            <li>
+              <a title='Edit this page' href="https://github.com/oracle-quickstart/oci-cloudnative/tree/master/docs/content/introduction/_index.md" target="blank">
+                <span uk-icon="pencil"></span>
+                <span class="uk-text-middle">Edit this page</span>
+              </a>
+            </li>
+            
+          
         </ul>
       </section>
       <section>
@@ -450,46 +457,217 @@
           <div id="content" class="uk-grid" uk-grid>
             
 
+<div class="uk-flex-last uk-width-1-4 uk-visible@l">
+  <aside id="toc-nav" uk-sticky="offset: 40">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#goals">Goals</a></li>
+        <li><a href="#cloud-services">Cloud Services</a>
+          <ul>
+            <li><a href="#mushop-services">MuShop Services</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    <hr/>
+    
+  </aside>
+</div>
+
 
             <main class="uk-width-expand">
               <header>
   
-  </header>
+  
+    <ul class="uk-breadcrumb uk-margin-top uk-text-small">
+    
+  <li><a href='/oci-cloudnative/'>Home</a></li> <li>Introduction</li>
+    </ul></header>
 
 
 
-              <h1 class="rw-accent">Cloud Native on Oracle Cloud Infrastructure</h1>
+              <h1 class="rw-accent">Introduction</h1>
               
-   
-    <h2 id="mushop">MuShop</h2>
-<p>MuShop is a microservices demo application <strong>purpose-built</strong> to showcase
-interoperable <a href="https://www.oracle.com/cloud/cloud-native/">Cloud Native</a> services on
-<a href="https://www.oracle.com/cloud/">Oracle Cloud Infrastructure</a>, and to demonstrate
-a number of cloud native methodologies.</p>
-<p>The premise of MuShop is an e-commerce website offering a variety of cat
-products. It represents a polyglot microservice application, with <strong>actual use case</strong>
-scenarios for many Oracle Cloud Infrastructure services.</p>
-<p>Each microservice in MuShop is designed to highlight its own, or common high-level
-subject in Oracle Cloud Infrastructure, using the context of the overall demo application.</p>
+  
+    <h2 id="goals">Goals</h2>
+<ul>
+<li>Explore <a href="https://www.oracle.com/cloud/cloud-native/">cloud native</a> services offered by Oracle Cloud Infrastructure</li>
+<li>Build and deploy microservices with <a href="https://www.oracle.com/cloud/compute/container-engine-kubernetes.html">Container Engine for Kubernetes</a> (OKE)</li>
+<li>Experience Oracle Cloud services integrated within a single microservices project</li>
+<li>Provide reference implementations and sample code for <em>real-world</em> application development</li>
+</ul>
+<h2 id="cloud-services">Cloud Services</h2>
+<p>The MuShop application highlights several topics related to cloud native application
+development with Oracle Cloud Infrastructure.</p>
 <table>
 <thead>
 <tr>
-<th><img src="images/intro/mushop.home.png" alt="mushop"></th>
-<th><img src="images/intro/mushop.about.png" alt="services"></th>
+<th>Cloud Service</th>
+<th>Description</th>
 </tr>
 </thead>
+<tbody>
+<tr>
+<td><a href="https://www.oracle.com/cloud/integration/api-platform-cloud/">API Gateway</a></td>
+<td>Fully managed gateway for governed HTTP/S interfaces</td>
+</tr>
+<tr>
+<td><a href="https://www.oracle.com/cloud/compute/container-engine-kubernetes.html">Container Engine for Kubernetes</a></td>
+<td>Enterprise-grade Kubernetes on Oracle Cloud</td>
+</tr>
+<tr>
+<td><a href="https://www.oracle.com/cloud/compute/container-registry.html">Container Registry</a></td>
+<td>Highly available service to distribute container images</td>
+</tr>
+<tr>
+<td><a href="https://www.oracle.com/cloud/networking/email-delivery.html">Email Delivery</a></td>
+<td>Enables sending emails</td>
+</tr>
+<tr>
+<td><a href="https://www.oracle.com/cloud-native/functions/">Functions</a></td>
+<td>Scalable, multitenant serverless functions</td>
+</tr>
+<tr>
+<td><a href="https://www.oracle.com/cloud/systems-management/monitoring/">Monitoring</a></td>
+<td>Integrated metrics from all resources and services</td>
+</tr>
+<tr>
+<td><a href="https://github.com/oracle/oci-service-broker">Open Service Broker</a></td>
+<td>Provisioning cloud resources within Kubernetes</td>
+</tr>
+<tr>
+<td><a href="https://www.oracle.com/cloud/systems-management/resource-manager/">Resource Manager</a></td>
+<td>Infrastructure as code with Terraform</td>
+</tr>
+<tr>
+<td><a href="https://www.oracle.com/big-data/streaming/">Streaming</a></td>
+<td>Large scale data collection and processing</td>
+</tr>
+<tr>
+<td><em>Others coming soon</em></td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://www.oracle.com/cloud-native/events-service/">Events</a></td>
+<td>Trigger actions in response to infrastructure changes</td>
+</tr>
+<tr>
+<td><a href="https://www.oracle.com/cloud/systems-management/notifications/">Notifications</a></td>
+<td>Broadcast messages to distributed systems</td>
+</tr>
+<tr>
+<td><a href="https://go.oracle.com/LP=78019?elqCampaignId=179851">Logging</a></td>
+<td>Single pane of glass for resources and applications</td>
+</tr>
+</tbody>
 </table>
-<div uk-grid="" class="uk-grid uk-grid-small   uk-flex-center uk-flex-middle"><p><strong>Micro</strong>services <span uk-icon="icon: arrow-right; ratio: 1.5" class="uk-text-muted uk-flex-none"></span></p>
-<p>μ <span uk-icon="icon: arrow-right; ratio: 1.5" class="uk-text-muted uk-flex-none"></span></p>
-<p>Mu <span uk-icon="icon: arrow-right; ratio: 1.5" class="uk-text-muted uk-flex-none"></span></p>
-<p>Meow <span uk-icon="icon: arrow-right; ratio: 1.5" class="uk-text-muted uk-flex-none"></span></p>
-<span class="uk-width-1-5 uk-flex-none">
-  <img uk-img data-src="images/logo.light.png" class="no-dark" />
-  <img uk-img data-src="images/logo.dark.png" class="no-light" />
-</span></div>
-<hr>
-<div class="uk-margin-auto uk-width-1-1 uk-width-1-2@s"><p><img src="images/intro/cloudnative.png" alt="Mushop cloud native"></p>
+<p>In addition to these Cloud Native topics, MuShop demonstrates the use of several
+<strong>backing services</strong>  available on Oracle Cloud Infrastructure.</p>
+<ul>
+<li><a href="https://www.oracle.com/database/autonomous-transaction-processing.html">Autonomous Transaction Processing Database</a></li>
+<li><a href="https://www.oracle.com/cloud/storage/object-storage.html">Object Storage</a></li>
+<li><a href="https://www.oracle.com/cloud/security/cloud-services/web-application-firewall.html">Web Application Firewall</a></li>
+</ul>
+<!-- - [Health Checks](https://www.oracle.com/cloud/networking/health-checks.html) -->
+<h3 id="mushop-services">MuShop Services</h3>
+<p><img src="images/mushop.services.png" alt="services" title="MuShop Services"></p>
+<div class="uk-overflow-auto " >
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Technology</th>
+<th>Cloud Services</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/api</code></td>
+<td>Node.js</td>
+<td></td>
+<td>Storefront API</td>
+</tr>
+<tr>
+<td><code>src/assets</code></td>
+<td>Node.js</td>
+<td>Object Storage</td>
+<td>Product images</td>
+</tr>
+<tr>
+<td><code>src/carts</code></td>
+<td>Java</td>
+<td>Autonomous DB (ATP)</td>
+<td>Shopping cart</td>
+</tr>
+<tr>
+<td><code>src/catalogue</code></td>
+<td>Go</td>
+<td>Autonomous DB (ATP)</td>
+<td>Product catalogue</td>
+</tr>
+<tr>
+<td><code>src/dbtools</code></td>
+<td>Linux</td>
+<td>Autonomous DB (ATP)</td>
+<td>Database schema initializations</td>
+</tr>
+<tr>
+<td><code>src/edge-router</code></td>
+<td>traefik</td>
+<td></td>
+<td>Request routing</td>
+</tr>
+<tr>
+<td><code>src/events</code></td>
+<td>Go</td>
+<td>Streaming</td>
+<td>Application event data collection</td>
+</tr>
+<tr>
+<td><code>src/fulfillment</code></td>
+<td>Java</td>
+<td></td>
+<td>Order processing</td>
+</tr>
+<tr>
+<td><code>src/functions/newsletter-subscription</code></td>
+<td>Node.js</td>
+<td>Functions</td>
+<td>Newsletter subscription</td>
+</tr>
+<tr>
+<td><code>src/orders</code></td>
+<td>Java</td>
+<td>Autonomous DB (ATP)</td>
+<td>Customer orders</td>
+</tr>
+<tr>
+<td><code>src/payments</code></td>
+<td>Go</td>
+<td></td>
+<td>Payment processing</td>
+</tr>
+<tr>
+<td><code>src/storefront</code></td>
+<td>JavaScript</td>
+<td></td>
+<td>Store UI</td>
+</tr>
+<tr>
+<td><code>src/user</code></td>
+<td>TypeScript</td>
+<td>Autonomous DB (ATP)</td>
+<td>Customer accounts, AuthN</td>
+</tr>
+</tbody>
+</table>
 </div>
+  
 
   
 
@@ -520,8 +698,6 @@ subject in Oracle Cloud Infrastructure, using the context of the overall demo ap
 
   
     
-      
-      
     
   
 
@@ -538,6 +714,9 @@ subject in Oracle Cloud Infrastructure, using the context of the overall demo ap
 
 
   
+    
+      
+      
     
   
 
@@ -713,8 +892,8 @@ subject in Oracle Cloud Infrastructure, using the context of the overall demo ap
 
 
       <div>
-        <a href="/oci-cloudnative/introduction/" title="Introduction" class="rw-page-next uk-flex uk-flex-right uk-flex-middle uk-flex-last uk-text-truncate">
-          <label class="uk-visible@m">Introduction</label>
+        <a href="/oci-cloudnative/quickstart/" title="Getting Started" class="rw-page-next uk-flex uk-flex-right uk-flex-middle uk-flex-last uk-text-truncate">
+          <label class="uk-visible@m">Getting Started</label>
           <span uk-icon="icon: chevron-right; ratio: 2.5" class="uk-margin-small-left uk-flex-none"></span>
         </a></div>
 </footer>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Service Broker on MuShop</title>
+    <link>https://oracle-quickstart.github.io/oci-cloudnative/tags/service-broker/</link>
+    <description>Recent content in Service Broker on MuShop</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 09 Mar 2020 13:32:46 -0600</lastBuildDate>
+    
+	<atom:link href="https://oracle-quickstart.github.io/oci-cloudnative/tags/service-broker/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Deployment</title>
+      <link>https://oracle-quickstart.github.io/oci-cloudnative/cloud/deployment/</link>
+      <pubDate>Mon, 09 Mar 2020 13:32:46 -0600</pubDate>
+      
+      <guid>https://oracle-quickstart.github.io/oci-cloudnative/cloud/deployment/</guid>
+      <description>Provisioning Deploying the full application requires cloud backing services from Oracle Cloud Infrastructure. Provisioning these services may be done manually of course, but can also be done automatically through the use of OCI Service Broker. You are encouraged to explore each approach.
+   Manual Automated     Provides steps for provisioning and connecting cloud services to the application Uses OCI Service Broker to provision and connect the Autonomous Transaction Processing database    In all cases, begin by adding tenancy credentials to manage and connect services from within the cluster.</description>
+    </item>
+    
+  </channel>
+</rss>
