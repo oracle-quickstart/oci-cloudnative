@@ -19,14 +19,13 @@
   <meta name="msapplication-TileColor" content="#c74634">
   <meta name="theme-color" content="#fcfbfa">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <link rel="stylesheet" type="text/css" href="https://oracle-quickstart.github.io/oci-cloudnative/sass/main.min.6ddc28ae9f593234321cd86fe49fcd51b00f7ec16549b0ce3e174c1695827544.css" integrity="sha256-bdworp9ZMjQyHNhv5J/NUbAPfsFlSbDOPhdMFpWCdUQ=">
+  <link rel="stylesheet" type="text/css" href="https://oracle-quickstart.github.io/oci-cloudnative/sass/main.min.a5311c1cb5fb9527f90976caffd8230c6a8d6cb6690b058aba37fdd0d7a66272.css" integrity="sha256-pTEcHLX7lSf5CXbK/9gjDGqNbLZpCwWKujf90NemYnI=">
   <link rel="stylesheet" type="text/css" href="https://oracle-quickstart.github.io/oci-cloudnative/fonts/fonts.min.58744946497c59fa8a6ac77636ea480457079e54512cf3dcb552592b56503cc1.css" integrity="sha256-WHRJRkl8WfqKasd2NupIBFcHnlRRLPPctVJZK1ZQPME=">
   <link rel="stylesheet" type="text/css" href="https://oracle-quickstart.github.io/oci-cloudnative/sass/mushop.min.c31ca585e7b3a90dfeb2fd0ac2d7d93ff0af82ea19b0cab20c8539d987761606.css" integrity="sha256-wxylheezqQ3&#43;sv0KwtfZP/CvguoZsMqyDIU52Yd2FgY=">
 </head>
 
   <body class="" data-url="/oci-cloudnative/404.html">
     
-      
 <div class="uk-navbar-container uk-hidden@s">
   <div class="">
     <nav role="navigation" class="uk-light uk-navbar" uk-navbar>
@@ -328,7 +327,6 @@
       
       <section>
         <ul class="uk-nav uk-nav-default" uk-nav>
-          <li class="uk-nav-header">More</li>
           
           
           <li>
@@ -368,18 +366,17 @@
           </li>
         </ul>
       </section>
-      <section>
+      <section class="uk-margin-top">
+        <hr>
         <ul id="rw-settings" class="uk-nav uk-nav-default" uk-nav>
-  <li class="uk-nav-divider"></li>
-  <li class="uk-nav-header">Settings</li>
   <li class="uk-grid uk-grid-small uk-flex-middle uk-flex-between uk-flex-nowrap uk-text-nowrap">
-  <div class="uk-text-muted uk-width-1-4">
+  <div class="uk-width-1-4">
     
     <span>Theme</span>
   </div>
   <div class="uk-button-group rw-setting"
     setting="theme"
-    target="html, #content" ><button class="uk-button uk-button-small uk-button-default
+    target="html, .content-container" ><button class="uk-button uk-button-small uk-button-secondary
     uk-active" toggle="uk-background-default" >
       Light
     </button><button class="uk-button uk-button-small uk-button-secondary
@@ -390,7 +387,7 @@
 
 
   <li class="uk-grid uk-grid-small uk-flex-middle uk-flex-between uk-flex-nowrap uk-text-nowrap">
-  <div class="uk-text-muted uk-width-1-4">
+  <div class="uk-width-1-4">
     
     <span>OS</span>
   </div>
@@ -408,7 +405,7 @@
     </button></div>
 </li>
 <li class="uk-grid uk-grid-small uk-flex-middle uk-flex-between uk-flex-nowrap uk-text-nowrap">
-  <div class="uk-text-muted uk-width-1-4">
+  <div class="uk-width-1-4">
     
     <span>Helm</span>
   </div>
@@ -443,11 +440,10 @@
 
 
 
-
-      <div class="uk-width-expand uk-margin-medium-left uk-margin-remove-left@s">
-        <div class="uk-margin-medium-right">
-          <div id="content" class="uk-grid" uk-grid>
-            
+    <div class="content-container uk-width-expand">
+      <div class="uk-position-relative">
+        <div id="content" class="uk-grid uk-container-xlarge" uk-grid>
+          
 
 <div class="uk-flex-last uk-width-1-4 uk-visible@l">
   <aside id="toc-nav" uk-sticky="offset: 40">
@@ -458,8 +454,8 @@
 </div>
 
 
-            <main class="uk-width-expand">
-              <header>
+          <main class="uk-width-expand">
+            <header>
   
   
     <ul class="uk-breadcrumb uk-margin-top uk-text-small">
@@ -469,24 +465,34 @@
 
 
 
-              <h1 class="rw-accent">404 Page not found</h1>
+            <h1 class="rw-accent">404 Page not found</h1>
               
 <div class="uk-text-lead">Whoops. Looks like this page doesn&#39;t exist ¯\_(ツ)_/¯</div>
 <a href='/oci-cloudnative/'>Go to homepage</a>
 
             </main>
           </div> 
-          
-<footer>
-    
-    
-    
-</footer>
-
-
         </div> 
       </div> 
     </div> 
+    
+<footer class="uk-position-fixed uk-position-bottom">
+  <div class="uk-grid">
+    
+    
+    <div class="uk-width-1-1 uk-width-1-3@s uk-width-1-4@m uk-width-1-5@l uk-width-1-6@xl uk-visible@s"></div>
+    <div class="uk-width-expand">
+      <div>
+      
+      
+      
+      
+      </div>
+    </div>
+  </div>
+</footer>
+
+
     <script type="text/javascript">
   (function(w, s) {
     Object.assign(s, {
@@ -505,6 +511,6 @@
   })(window, window.Site = window.Site || {});
 </script>
 
-<script src="https://oracle-quickstart.github.io/oci-cloudnative/js/vendor.min.a006043ab5cd331e53cb8de3dd96832ba0dfc932bfbba4bb8b3c5172454cb642.js" ></script><script src="https://oracle-quickstart.github.io/oci-cloudnative/js/extras.min.9bf9f2a01e7cae8e8e4e8ee771bdca09d6d04b4265a0f9af5ce83a213b0961d2.js"  async></script><script src="https://oracle-quickstart.github.io/oci-cloudnative/js/site.min.85ed2af337afee36aa93f07cac7fb2f54c7f3f62b046f5632316f5fd49271dcb.js"  async></script>
+<script src="https://oracle-quickstart.github.io/oci-cloudnative/js/vendor.min.a006043ab5cd331e53cb8de3dd96832ba0dfc932bfbba4bb8b3c5172454cb642.js" ></script><script src="https://oracle-quickstart.github.io/oci-cloudnative/js/extras.min.9bf9f2a01e7cae8e8e4e8ee771bdca09d6d04b4265a0f9af5ce83a213b0961d2.js"  async></script><script src="https://oracle-quickstart.github.io/oci-cloudnative/js/site.min.d7973f1560bba2270850ebebf4e3a2a2e58e84e1f993191030325ddaef76a81c.js"  async></script>
   </body>
 </html>

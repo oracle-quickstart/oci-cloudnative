@@ -57,11 +57,6 @@
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/usage/</loc>
-    <lastmod>2020-03-10T10:02:31-06:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://oracle-quickstart.github.io/oci-cloudnative/cleanup/</loc>
     <lastmod>2020-03-09T16:06:00-06:00</lastmod>
   </url>
@@ -84,6 +79,11 @@
   <url>
     <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://oracle-quickstart.github.io/oci-cloudnative/usage/</loc>
+    <lastmod>2020-03-10T10:02:31-06:00</lastmod>
   </url>
   
   <url>
