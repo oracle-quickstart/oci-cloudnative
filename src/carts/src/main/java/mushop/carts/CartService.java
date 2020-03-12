@@ -29,32 +29,47 @@ public class CartService implements Service {
     /** @see https://github.com/oracle/helidon/issues/1172 */
     private static final Set<RequestMethod> PATCH = Collections.singleton(Http.RequestMethod.create("PATCH"));
 
-    private Future<CartRepository> carts;
+    private CartRepository carts;
 
     public CartService(Config config) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
-
+        Boolean connected = false;
         String dbName = config.get("OADB_SERVICE").asString().get();
-        log.info("Connecting to " + dbName);
         if (MOCKDB.equalsIgnoreCase(dbName)) {
             log.warning("Connecting to a Mock Database. Data is not persisted.");
-            carts = executorService.submit(() -> {
-                return new CartRepositoryMemoryImpl();
-            });
+            carts = new CartRepositoryMemoryImpl();
         } else {
-            carts = executorService.submit(() -> {
-                return new CartRepositoryDatabaseImpl(config);
-            });
+            while (!connected) {
+                try {
+                    Future<Boolean> result = executorService.submit(() -> {
+                        try {
+                            log.info("Connecting to " + dbName);
+                            carts = new CartRepositoryDatabaseImpl(config);
+                            log.info("Connected to " + dbName);
+                            return Boolean.TRUE;
+                        } catch (Exception ex) {
+                            log.warning("Connect failed. Retrying.");
+                            log.log(Level.SEVERE, ex.getMessage(), ex);
+                            Thread.sleep(5000l);
+                            return Boolean.FALSE;
+                        }
+
+                    });
+                    connected = result.get();
+                } catch (Exception e) {
+                    log.log(Level.SEVERE, e.getMessage(), e);
+                }
+
+            }
+
         }
     }
 
     @Override
     public void update(Rules rules) {
-        rules.get("/{cartId}/items", this::getCartItems)
-            .delete("/{cartId}", this::deleteCart)
-            .delete("/{cartId}/items/{itemId}", this::deleteCartItem)
-            .post("/{cartId}", this::postCart)
-            .anyOf(PATCH, "/{cartId}/items", this::updateCartItem);
+        rules.get("/{cartId}/items", this::getCartItems).delete("/{cartId}", this::deleteCart)
+                .delete("/{cartId}/items/{itemId}", this::deleteCartItem).post("/{cartId}", this::postCart)
+                .anyOf(PATCH, "/{cartId}/items", this::updateCartItem);
     }
 
     /**
@@ -66,7 +81,7 @@ public class CartService implements Service {
         Cart result = null;
         try {
             String cartId = request.path().param("cartId");
-            result = carts.get().getById(cartId);
+            result = carts.getById(cartId);
             if (result == null) {
                 response.status(404).send();
                 return;
@@ -86,7 +101,7 @@ public class CartService implements Service {
      */
     public void deleteCart(ServerRequest request, ServerResponse response) {
         try {
-            if (carts.get().deleteCart(request.path().param("cartId"))) {
+            if (carts.deleteCart(request.path().param("cartId"))) {
                 response.status(200).send();
             } else {
                 response.status(404).send();
@@ -108,12 +123,12 @@ public class CartService implements Service {
         String cartId = request.path().param("cartId");
         String itemId = request.path().param("itemId");
         try {
-            Cart cart = carts.get().getById(cartId);
+            Cart cart = carts.getById(cartId);
             if (cart == null || !cart.removeItem(itemId)) {
                 response.status(404).send();
                 return;
             }
-            carts.get().save(cart);
+            carts.save(cart);
             response.status(200).send();
         } catch (Exception e) {
             log.log(Level.SEVERE, "deleteCartItem failed.", e);
@@ -135,14 +150,14 @@ public class CartService implements Service {
         try {
             request.content().as(Cart.class).thenAccept(newCart -> {
                 try {
-                    Cart cart = carts.get().getById(cartId);
+                    Cart cart = carts.getById(cartId);
                     if (cart == null) {
                         newCart.setId(cartId);
-                        carts.get().save(newCart);
+                        carts.save(newCart);
                         response.status(201).send(); // created
                     } else {
                         cart.merge(newCart);
-                        carts.get().save(cart);
+                        carts.save(cart);
                         response.status(200).send(); // ok
                     }
                 } catch (Exception e) {
@@ -168,7 +183,7 @@ public class CartService implements Service {
         try {
             request.content().as(Item.class).thenAccept(qItem -> {
                 try {
-                    Cart cart = carts.get().getById(cartId);
+                    Cart cart = carts.getById(cartId);
                     if (cart == null) {
                         response.status(404).send();
                         return;
@@ -176,7 +191,7 @@ public class CartService implements Service {
                     for (Item item : cart.getItems()) {
                         if (item.getItemId().equals(qItem.getItemId())) {
                             item.setQuantity(qItem.getQuantity());
-                            carts.get().save(cart);
+                            carts.save(cart);
                             response.status(200).send();
                             return;
                         }
@@ -203,7 +218,7 @@ public class CartService implements Service {
     public boolean healthCheck() {
         try {
 
-            return carts.isDone() ? carts.get(500, TimeUnit.MILLISECONDS).healthCheck() : false;
+            return carts == null ? false : carts.healthCheck();
         } catch (Exception e) {
             log.log(Level.SEVERE, "DB health-check failed.", e);
             return false;
