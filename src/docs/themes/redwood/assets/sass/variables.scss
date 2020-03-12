@@ -15,3 +15,9 @@ $rw-syntax-color:             $o-white;
 $rw-syntax-background:        $o-black;
 $rw-syntax-padding:           $padding-small-padding / 2 $padding-small-padding;
 $rw-syntax-clipboard-padding: $padding-small-padding / 2;
+
+// Content
+$rw-content-margin-offset:    $global-margin - $global-gutter;
+
+// Footer
+$rw-prevnext-height:          55px;

@@ -8,7 +8,7 @@
   .uk-background-muted {
     color: $global-color;
   }
-  .uk-background-secondary :not([id=content]).uk-background-secondary {
+  .uk-background-secondary #content .uk-background-secondary {
     background: $inverse-global-muted-background;
   }
 }
@@ -74,7 +74,7 @@ $tab-border-color: rgba($global-muted-color, 0.3) !default;
     content: "";
     position: absolute;
     bottom: 0;
-    left: $global-small-margin;
+    left: $global-margin;
     right: 0;
     border-bottom: $tab-border-width solid $tab-border-color;
   }

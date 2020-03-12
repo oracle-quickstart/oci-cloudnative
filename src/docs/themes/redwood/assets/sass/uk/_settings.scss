@@ -86,9 +86,18 @@ $inverse-navbar-nav-item-color:   $global-inverse-color;
 
 // Nav
 $nav-primary-item-font-size:              1.3rem;
-$inverse-nav-primary-item-color:          $inverse-global-muted-color;
-$inverse-nav-primary-item-hover-color:    $inverse-global-color;
-$inverse-nav-primary-item-active-color:   $inverse-global-emphasis-color;
+// $inverse-nav-primary-item-color:          $inverse-global-muted-color;
+// $inverse-nav-primary-item-hover-color:    $inverse-global-color;
+// $inverse-nav-primary-item-active-color:   $inverse-global-emphasis-color;
+$inverse-nav-default-item-color:          $inverse-global-color;
+$inverse-nav-default-item-hover-color:    $inverse-global-emphasis-color;
+$inverse-nav-default-item-active-color:   $o-inverse-emphasis;
+$inverse-nav-primary-item-color:          $inverse-global-color;
+$inverse-nav-primary-item-hover-color:    $inverse-global-emphasis-color;
+$inverse-nav-primary-item-active-color:   $o-inverse-emphasis;
+$inverse-nav-primary-sublist-item-color:          $inverse-global-color;
+$inverse-nav-primary-sublist-item-hover-color:    $inverse-global-emphasis-color;
+$inverse-nav-primary-sublist-item-active-color:   $o-inverse-emphasis;
 
 // Button
 $button-small-padding-horizontal:           10px;

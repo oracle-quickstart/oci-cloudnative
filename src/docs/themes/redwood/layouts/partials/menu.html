@@ -48,7 +48,6 @@
       <!-- shortcuts -->
       <section>
         <ul class="uk-nav uk-nav-default" uk-nav>
-          <li class="uk-nav-header">{{ T "menu-shortcuts-title" }}</li>
           {{ with .Site.Menus.shortcuts }}
           {{ range sort . "Weight"}}
           <li>
@@ -74,7 +73,8 @@
           {{ end }}
         </ul>
       </section>
-      <section>
+      <section class="uk-margin-top">
+        <hr>
         {{ partial "menu-settings" . }}
       </section>
       <section class="uk-text-small uk-text-lighter uk-margin-top">
