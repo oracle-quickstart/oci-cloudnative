@@ -38,7 +38,6 @@
 
   // init autocomplete
   autocomplete('#search', {
-    debug: true,
     hint: false,
     clearOnSelected: true,
     appendTo: '#search-results',
