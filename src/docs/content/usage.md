@@ -1,8 +1,8 @@
 ---
 title: "MuShop Docs"
 date: 2020-03-10T10:02:31-06:00
-draft: true
-weight: 1000
+draft: false
+hidden: true
 ---
 
 Project documentation built with [Hugo](https://gohugo.io/) and customized [UIkit](https://getuikit.com) theme.
@@ -339,33 +339,37 @@ Slideshow items must be `<li>` type. Refer to [usage](https://getuikit.com/docs/
 
 #### Switcher
 
-> Create a left-tab switcher component
+> Create a tabbed content switcher
 
 {{% grid col="1-2" y="top" %}}
 ```markdown
-{{</* switcher "One" "Two" "Three" */>}}
+{{</* switcher left=true tabs="One|Two|Three" */>}}
 - Tab one content
     ```ts
-    const foo: string = 'blah blah';
+    const foo: string = 'bar';
     ```
 - Tab two content
 - Tab three content
 {{</* /switcher */>}}
 ```
 
-{{< switcher "One" "Two" "Three" >}}
+{{% wrapper %}}
+{{< switcher left=true tabs="One|Two|Three" >}}
 - Tab one content
     ```ts
-    const foo: string = 'blah blah';
+    const foo: string = 'bar';
     ```
 - Tab two content
 - Tab three content
 {{< /switcher >}}
+{{% /wrapper %}}
 {{% /grid %}}
 
-| Arguments | |
+| Options | |
 |--|--|
-| `<...tabs>` | Switcher tab names |
+| `tabs` | Switcher tab names delimited by `|` |
+| `class` | CSS class(es) to add to the slideshow items container |
+| `left` | Set to `true` for tabs on the left |
 
 ---
 
