@@ -1,6 +1,7 @@
 # Application Metadata
 ARG APPLICATION_NAME="orders"
 ARG VERSION="0.0.1-SNAPSHOT"
+ARG clientVersion=19.3
 
 # ------------
 # Stage 1 : Setup the build environment
@@ -52,6 +53,7 @@ RUN ls -ltr /usr/src/app/build/libs
 FROM openjdk:8-jre-slim
 ARG APPLICATION_NAME
 ARG VERSION
+ARG clientVersion
 
 
 # copy the generated application distribution
@@ -61,7 +63,7 @@ EXPOSE 80
 WORKDIR /app
 ENV APPLICATION_NAME=${APPLICATION_NAME}
 ENV VERSION=${VERSION}
-ENV TNS_ADMIN=/usr/lib/oracle/19.3/client64/lib/network/admin/
+ENV TNS_ADMIN=/usr/lib/oracle/${clientVersion}/client64/lib/network/admin/
 ENTRYPOINT java $JAVA_OPTS -jar /app/${APPLICATION_NAME}-${VERSION}.jar --port=80
 #
 # ------------
