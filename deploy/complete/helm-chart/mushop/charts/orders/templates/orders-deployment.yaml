@@ -41,8 +41,6 @@ spec:
               value: "{{ .Values.env.newOrdersSubject }}"
             - name: ORDERS_SHIPPED
               value: "{{ .Values.env.shippedOrdersSubject }}"
-            - name: TNS_ADMIN
-              value: {{ .Values.env.tnsAdmin }}
             {{- include "orders.oadb.connection" . | nindent 12 }}
           volumeMounts:
             - mountPath: /tmp
