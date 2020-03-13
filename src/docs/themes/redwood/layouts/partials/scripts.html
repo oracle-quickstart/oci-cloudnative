@@ -1,0 +1,32 @@
+<script type="text/javascript">
+  (function(w, s) {
+    Object.assign(s, {
+      BaseURL: '{{ .Site.BaseURL }}',
+      RelURL: '{{ .Site.BaseURL | relURL }}',
+      cssConfig: {
+        table: 'uk-table uk-table-small uk-table-striped',
+        '#TableOfContents > ul': 'uk-nav uk-nav-default uk-nav-parent-icon',
+        '#TableOfContents > ul ul': 'uk-nav-sub',
+      },
+      uikit: {
+        '#TableOfContents > ul': ['scrollspyNav', { closest: 'li', offset: 10 }],
+        //'#TableOfContents a': ['scroll', { duration: 200 }],
+      }
+    });
+  })(window, window.Site = window.Site || {});
+</script>
+
+{{/* JS asset bundling @see data/config/scripts.yaml */}}
+{{- $deps := $.Site.Data.config.scripts -}}
+{{- range $deps.scripts -}}
+{{- $name := .name -}}
+
+  {{- $.Scratch.Set $name slice -}}
+  {{- range .include -}}
+    {{- $.Scratch.Add $name (resources.Get (printf "js/%s" . )) -}}
+  {{- end -}}
+
+  {{- $js := $.Scratch.Get $name | resources.Concat (printf "js/%s.js" $name) | minify | fingerprint -}}
+  <script src="{{ $js.Permalink }}" {{ if .async}} async{{ end }}></script>
+{{- end -}}
+{{ partial "custom-scripts.html" . -}}

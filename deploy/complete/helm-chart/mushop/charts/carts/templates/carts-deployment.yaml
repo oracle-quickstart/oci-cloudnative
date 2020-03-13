@@ -33,8 +33,6 @@ spec:
               value: {{ .Values.env.zipkin }}
             - name: JAVA_OPTS
               value: {{ .Values.env.javaOpts }}
-            - name: TNS_ADMIN
-              value: {{ .Values.env.tnsAdmin }}
             {{- include "carts.oadb.connection" . | nindent 12 }}
           volumeMounts:
             - mountPath: /tmp

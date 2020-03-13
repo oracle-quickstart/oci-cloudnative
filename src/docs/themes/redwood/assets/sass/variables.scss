@@ -1,0 +1,23 @@
+/**
+ * Copyright © 2020, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
+@import "uk/config";
+
+// Z
+$rw-main-zindex: $global-z-index - 500;
+
+// Typography
+$rw-secondary-font-family: "Georgia", serif;
+
+// Syntax
+$rw-syntax-color:             $o-white;
+$rw-syntax-background:        $o-black;
+$rw-syntax-padding:           $padding-small-padding / 2 $padding-small-padding;
+$rw-syntax-clipboard-padding: $padding-small-padding / 2;
+
+// Content
+$rw-content-margin-offset:    $global-margin - $global-gutter;
+
+// Footer
+$rw-prevnext-height:          55px;

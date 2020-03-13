@@ -1,0 +1,10 @@
+{{ if .Params.tags }}
+  <div>
+    {{ range .Params.tags }}
+    <a class="uk-label" href="{{ "/tags/" | relLangURL }}{{ . | urlize }}">
+      <span uk-icon="tag"></span>
+      {{ . }}
+    </a>
+    {{ end }}
+  </div>
+{{ end }}

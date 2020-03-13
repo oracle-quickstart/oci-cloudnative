@@ -1,0 +1,18 @@
+{{- $uid := index (shuffle (seq 0 300)) 0 -}}
+{{- $left := .Get "left" -}}
+{{- $content := .Inner | markdownify -}}
+
+<div uk-grid class="uk-margin-bottom uk-grid-small {{ .Get "class" }}">
+  <div class="uk-width-1-1 {{ with $left }}uk-width-auto@m{{ end }}">
+    <ul class="uk-tab{{ with $left }}-left uk-text-large{{ end }}" uk-tab="connect: #switcher-{{ $uid }}">
+      {{- with .Get "tabs" -}}
+      {{- range (split . "|") -}}
+      <li><a href="#">{{ . }}</a></li>
+      {{- end -}}
+      {{- end -}}
+    </ul>
+  </div>
+  <div class="{{ with $left }}uk-width-expand@m{{ end }}">
+    {{ trim $content "\n " | replaceRE "^<ul>" (printf "<ul id='switcher-%d' class='uk-switcher'>" $uid) | safeHTML }}
+  </div>
+</div>

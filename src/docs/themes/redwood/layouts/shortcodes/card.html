@@ -1,0 +1,6 @@
+<div class="{{ with .Get "width"}}uk-width-{{ . }}{{ end }}">
+  <div class="uk-card uk-card-body {{ with .Get "hover"}}uk-card-hover{{ end }} uk-card-{{ .Get "style" | default "default" }} uk-card-{{ .Get "size" }} {{ .Get "class" }}">
+    {{ with .Get "title" }}<h3 class="uk-card-title">{{ . }}</h3>{{ end }}
+    {{- .Inner -}}
+  </div>
+</div>

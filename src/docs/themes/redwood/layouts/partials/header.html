@@ -1,0 +1,20 @@
+<header>
+  {{$crumbs := (and (not .Params.disableBreadcrumb) (not .Site.Params.disableBreadcrumb))}}
+  {{if $crumbs}}
+    <ul class="uk-breadcrumb uk-margin-top uk-text-small">
+    {{ template "breadcrumb" dict "page" . "value" (printf "<li>%s</li>" .Title) "level" 0 }}
+    </ul>
+  {{- end -}}
+</header>
+
+<!-- templates -->
+{{ define "breadcrumb" }}
+{{- $parent := .page.Parent -}}
+{{- if $parent -}}
+  {{- $title :=  or (and $parent.IsHome (T "home")) $parent.Title -}}
+  {{- $value := (printf "<li><a href='%s'>%s</a></li> %s" $parent.RelPermalink $title .value) }}
+  {{ template "breadcrumb" dict "page" $parent "value" $value "level" (add .level 1) }} 
+{{- else if (and .value .level) -}}
+  {{ .value | safeHTML }}
+{{- end -}}
+{{- end -}}

@@ -1,0 +1,81 @@
+/**
+ * Copyright © 2020, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
+@import "variables";
+
+/* Background */
+pre, .chroma {
+  color: $rw-syntax-color;
+  background-color: $rw-syntax-background;
+  overflow: initial;
+  code {
+    overflow: auto;
+    display: block;
+    padding: $rw-syntax-padding;
+  }
+}
+/* Error */ .chroma .err { color: $o-red; background-color: $o-white }
+/* LineTableTD */ .chroma .lntd { vertical-align: top; padding: 0; margin: 0; border: 0; }
+/* LineTable */ .chroma .lntable { border-spacing: 0; padding: 0; margin: 0; border: 0; width: auto; overflow: auto; display: block; }
+/* LineHighlight */ .chroma .hl { display: block; width: 100%;background-color: $o-white }
+/* LineNumbersTable */ .chroma .lnt { margin-right: 0.4em; padding: 0 0.4em 0 0.4em;color: $o-muted }
+/* LineNumbers */ .chroma .ln { margin-right: 0.4em; padding: 0 0.4em 0 0.4em;color: $o-muted }
+/* Keyword */ .chroma .k { color: lighten($o-green, 5%); font-weight: bold }
+/* KeywordConstant */ .chroma .kc { color: $o-teal; font-weight: bold }
+/* KeywordDeclaration */ .chroma .kd { color: $o-green; font-weight: bold }
+/* KeywordNamespace */ .chroma .kn { color: $o-green; font-weight: bold }
+/* KeywordPseudo */ .chroma .kp { color: $o-green }
+/* KeywordReserved */ .chroma .kr { color: $o-green; font-weight: bold }
+/* KeywordType */ .chroma .kt { color: $o-teal; font-weight: bold }
+/* NameAttribute */ .chroma .na { color: $o-grey-lt }
+/* NameBuiltin */ .chroma .nb { color: $o-teal }
+/* NameClass */ .chroma .nc { color: $o-slate; text-decoration: underline }
+/* NameConstant */ .chroma .no { color: $o-teal }
+/* NameDecorator */ .chroma .nd { color: $o-orange }
+/* NameException */ .chroma .ne { color: $o-grey-lt }
+/* NameFunction */ .chroma .nf { color: $o-slate }
+/* NameNamespace */ .chroma .nn { color: $o-slate; text-decoration: underline }
+/* NameTag */ .chroma .nt { color: $o-green; font-weight: bold }
+/* NameVariable */ .chroma .nv { color: $o-slate }
+/* LiteralString */ .chroma .s { color: $o-orange }
+/* LiteralStringAffix */ .chroma .sa { color: $o-orange }
+/* LiteralStringBacktick */ .chroma .sb { color: $o-orange }
+/* LiteralStringChar */ .chroma .sc { color: $o-orange }
+/* LiteralStringDelimiter */ .chroma .dl { color: $o-orange }
+/* LiteralStringDoc */ .chroma .sd { color: $o-orange }
+/* LiteralStringDouble */ .chroma .s2 { color: $o-orange }
+/* LiteralStringEscape */ .chroma .se { color: $o-orange }
+/* LiteralStringHeredoc */ .chroma .sh { color: $o-orange }
+/* LiteralStringInterpol */ .chroma .si { color: $o-orange }
+/* LiteralStringOther */ .chroma .sx { color: $o-orange }
+/* LiteralStringRegex */ .chroma .sr { color: $o-orange }
+/* LiteralStringSingle */ .chroma .s1 { color: $o-orange }
+/* LiteralStringSymbol */ .chroma .ss { color: $o-orange }
+/* LiteralNumber */ .chroma .m { color: $o-blue }
+/* LiteralNumberBin */ .chroma .mb { color: $o-blue }
+/* LiteralNumberFloat */ .chroma .mf { color: $o-blue }
+/* LiteralNumberHex */ .chroma .mh { color: $o-blue }
+/* LiteralNumberInteger */ .chroma .mi { color: $o-blue }
+/* LiteralNumberIntegerLong */ .chroma .il { color: $o-blue }
+/* LiteralNumberOct */ .chroma .mo { color: $o-blue }
+/* OperatorWord */ .chroma .ow { color: $o-green; font-weight: bold }
+/* Comment */ .chroma .c { color: $o-grey; font-style: italic }
+/* CommentHashbang */ .chroma .ch { color: $o-grey; font-style: italic }
+/* CommentMultiline */ .chroma .cm { color: $o-grey; font-style: italic }
+/* CommentSingle */ .chroma .c1 { color: $o-grey; font-style: italic }
+/* CommentSpecial */ .chroma .cs { color: $o-red; background-color: $o-mauve; font-weight: bold }
+/* CommentPreproc */ .chroma .cp { color: $o-red; font-weight: bold }
+/* CommentPreprocFile */ .chroma .cpf { color: $o-red; font-weight: bold }
+/* GenericDeleted */ .chroma .gd { color: $o-red }
+/* GenericEmph */ .chroma .ge { font-style: italic }
+/* GenericError */ .chroma .gr { color: $o-red }
+/* GenericHeading */ .chroma .gh { color: $o-white; font-weight: bold }
+/* GenericInserted */ .chroma .gi { color: $o-green }
+/* GenericOutput */ .chroma .go { color: $o-beige }
+/* GenericPrompt */ .chroma .gp { color: $o-beige }
+/* GenericStrong */ .chroma .gs { font-weight: bold }
+/* GenericSubheading */ .chroma .gu { color: $o-white; text-decoration: underline }
+/* GenericTraceback */ .chroma .gt { color: $o-red }
+/* GenericUnderline */ .chroma .gl { text-decoration: underline }
+/* TextWhitespace */ .chroma .w { color: $o-brown-lt }

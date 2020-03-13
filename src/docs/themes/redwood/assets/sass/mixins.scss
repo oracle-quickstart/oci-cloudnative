@@ -1,0 +1,15 @@
+@mixin content-gutters() {
+  padding: 0 $global-small-margin;
+  @media (min-width: $breakpoint-small) {
+    padding: 0 $global-gutter;
+  }
+}
+
+@mixin content-background($image) {
+  @media (min-width: $breakpoint-xlarge) {
+    background: fixed url($image) no-repeat bottom right;
+    // background-position-x: right;
+    // background-position-y: bottom;
+    background-size: 500px;
+  }
+}

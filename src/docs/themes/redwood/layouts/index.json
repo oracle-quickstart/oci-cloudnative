@@ -1,0 +1,15 @@
+[{{ range $index, $page := .Site.Pages }}
+{{- if ne $page.Type "json" -}}
+{{- if not $page.Params.hidden -}}
+{{- if and $index (gt $index 0) -}},{{- end }}
+{
+	"uri": "{{ $page.Permalink }}",
+  "title": "{{ htmlEscape $page.Title}}",
+  "section": "{{ htmlEscape (or $page.FirstSection.Section $page.Section )}}",
+	"tags": [{{ range $tindex, $tag := $page.Params.tags }}{{ if $tindex }}, {{ end }}"{{ $tag| htmlEscape }}"{{ end }}],
+	"description": "{{ htmlEscape .Description}}",
+	"content": {{$page.Plain | jsonify}}
+}
+{{- end -}}
+{{- end -}}
+{{- end -}}]

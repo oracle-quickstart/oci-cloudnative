@@ -1,0 +1,13 @@
+/**
+ * Copyright © 2020, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
+// Default variable overrides
+@import "settings";
+
+// Import theme default variables and mixins
+@import "uikit/src/scss/variables";
+@import "uikit/src/scss/mixins";
+
+// Add any hook mixins
+@import "hooks";

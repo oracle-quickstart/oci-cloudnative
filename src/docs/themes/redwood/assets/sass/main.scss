@@ -1,0 +1,266 @@
+/**
+ * Copyright © 2020, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
+
+@import "uk/uikit"; // Customized uikit
+@import "syntax";   // chroma
+@import "variables";
+@import "mixins";
+
+// Main
+main { 
+  > p {
+    img {
+      display: block;
+      margin: 0 auto;
+    }
+  }
+}
+
+// Nav
+.uk-navbar {
+  .uk-logo img {
+    max-height: $navbar-nav-item-height - 10;
+  }
+}
+
+// Button Group
+.uk-button-group {
+  .uk-button + .uk-button {
+    border-left: 1px solid $o-brown-dk;
+  }
+}
+
+// Headings
+h1 {
+  margin-top: $global-medium-margin;
+}
+// h2, h3 {
+//   font-family: $rw-secondary-font-family;
+// }
+
+ul > li > ul,
+ul > li > ol,
+ol > li > ol,
+ol > li > ul { margin-bottom: $base-margin-vertical; }
+
+// --------------
+// Extra features
+// --------------
+
+// Theme
+.no-dark {
+  display: block;
+  .uk-light & {
+    display: none;
+  }
+}
+.no-light {
+  display: none;
+  .uk-light & {
+    display: block;
+  }
+}
+
+
+// Side nav
+.rw-sidebar {
+  border-right: $global-border-width solid transparent;
+  .uk-light & {
+    border-right-color: $inverse-global-border;
+  }
+  @media screen and (min-width: $breakpoint-small) {
+    display: block;
+    z-index: $rw-main-zindex + 2;
+    .uk-offcanvas-bar {
+      left: 0;
+      width: 100%;
+      transform: none;
+    }
+  }
+}
+
+// Main content
+$footer-height: $rw-prevnext-height + $global-margin;
+
+.content-container {
+  z-index: 1;
+  margin-bottom: $footer-height;
+  border-bottom: $global-border-width solid $global-border;
+  .uk-light & {
+    border-bottom-color: $inverse-global-border;
+  }
+  @media (min-width: $breakpoint-small) {
+    margin-left: $rw-content-margin-offset;
+  }
+  > :first-child {
+    @include content-background('../images/cloud.light.png');
+    .uk-light & {
+      @include content-background('../images/cloud.dark.png');
+    }
+  }
+}
+#content {
+  // for body content overlay of footer
+  position: relative;
+  z-index: $rw-main-zindex + 1;
+  @include content-gutters();
+  padding-bottom: $global-gutter !important;
+}
+
+// Footer
+footer {
+  height: $footer-height;
+  @include content-gutters();
+}
+
+
+// Navigation
+.uk-nav {
+  .uk-open {
+    .uk-icon {
+      transform: rotate(90deg);
+    }
+  }
+  &.uk-nav-default {
+    li.uk-active > a {
+      position: relative;
+      &:before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        margin-top: -$global-border-width;
+        left: -$global-margin;
+        width: $global-small-margin;
+        border-top: ($global-border-width * 2) solid $o-orange;
+      }
+    }
+  }
+}
+
+// Table 
+.uk-table {
+  .uk-light & {
+    th {
+      color: $inverse-table-header-cell-color;
+    }
+    &.uk-table-striped {
+      tbody tr:nth-of-type(odd) {
+        background: $inverse-table-striped-row-background;
+      }
+    }
+  }
+}
+
+// heading accents
+[class*="rw-accent"] {
+  &:after {
+    content: '';
+    display: block;
+    width: $global-medium-margin;
+    height: 6px;
+    margin: $global-margin 0;
+    background: $o-red;
+  }
+  &.rw-accent-yellow:after { background: $o-yellow; }
+  &.rw-accent-orange:after { background: $o-orange; }
+  &.rw-accent-green:after { background: $o-green; }
+  &.rw-accent-blue:after { background: $o-blue; }
+}
+
+// Text
+.force-nowrap, .force-nowrap * {
+  white-space: nowrap!important;
+}
+
+// Search
+.rw-search-dropdown {
+  .highlight {
+    text-decoration: underline dotted;
+    -webkit-text-decoration-style: dotted;
+  }
+  .uk-text-muted {
+    color: $inverse-global-subtext-color !important;
+  }
+  .suggestion {
+    // cursor: pointer;
+    a {
+      display: block;
+      color: inherit;
+    }
+  }
+  [class*="rw-accent"] {
+    &:after {
+      height: 3px;
+      margin: $global-small-margin 0;
+    }
+  }
+}
+
+// Code / Clipboard
+pre {
+  position: relative;
+  a.copier {
+    display: none;
+    color: $rw-syntax-color;
+    padding: $rw-syntax-clipboard-padding;
+    background: rgba($rw-syntax-background, 0.5);
+    position: absolute;
+    top: 0; 
+    right: 0;
+  }
+  &:hover a.copier { display: block; }
+
+}
+
+// Pagination Nav
+.rw-page-prev, .rw-page-next {
+  display: block;
+  // position: absolute;
+  // top: 0;
+  width: $width-medium-width;
+  height: $rw-prevnext-height;
+  &.rw-page-next {
+    text-align: right;
+  }
+}
+
+// Fixed aspect ratio
+.rw-aspect {
+  position: relative;
+  &:before {
+    content: "";
+    display: block;
+    width: 100%; 
+  }
+  > * {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+  }
+  &.rw-aspect-1-1 { padding-top: 100%; }
+  &.rw-aspect-3-2 { padding-top: 66.66%; }
+  &.rw-aspect-4-3 { padding-top: 75%; }
+  &.rw-aspect-16-9 { padding-top: 56.25%; }
+  &.rw-aspect-2-1 { padding-top: 50%; }
+}
+
+// Mermaid
+.mermaid {
+  .edgeLabel {
+    background-color: $global-background !important;
+  }
+  .uk-light & {
+    .edgeLabel {
+      background-color: $global-secondary-background !important;
+    }
+  }
+}

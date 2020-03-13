@@ -1,0 +1,8 @@
+{{ partial "_open.html" . }}
+  {{ if .Site.Home.Content }} 
+    {{ .Site.Home.Content }}
+  {{ else }}
+    <h1 class="uk-heading-xlarge rw-accent">¯\_(ツ)_/¯</h1>
+    <div class="uk-text-lead">No content</div>
+  {{ end }}
+{{ partial "_close.html" . }}

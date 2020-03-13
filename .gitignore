@@ -19,6 +19,7 @@ bin/
 **/.classpath
 installs/
 **/.idea/**
+**/node_modules/**
 
 # Log file
 *.log

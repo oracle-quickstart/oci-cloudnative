@@ -1,0 +1,99 @@
+/**
+ * Copyright © 2020, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
+
+ // Base
+@import "uikit/src/scss/components/variables";
+@import "uikit/src/scss/components/mixin";
+@import "uikit/src/scss/components/base";
+
+// Elements
+@import "uikit/src/scss/components/link";
+@import "uikit/src/scss/components/heading";
+@import "uikit/src/scss/components/divider";
+@import "uikit/src/scss/components/list";
+// @import "uikit/src/scss/components/description-list";
+@import "uikit/src/scss/components/table";
+@import "uikit/src/scss/components/icon";
+// @import "uikit/src/scss/components/form-range";
+@import "uikit/src/scss/components/form"; // After: Icon, Form Range
+@import "uikit/src/scss/components/button";
+
+// Layout
+@import "uikit/src/scss/components/section";
+@import "uikit/src/scss/components/container";
+@import "uikit/src/scss/components/grid";
+@import "uikit/src/scss/components/tile";
+@import "uikit/src/scss/components/card";
+
+// Common
+// @import "uikit/src/scss/components/close"; // After: Icon
+// @import "uikit/src/scss/components/spinner"; // After: Icon
+// @import "uikit/src/scss/components/totop"; // After: Icon
+// @import "uikit/src/scss/components/marker"; // After: Icon
+@import "uikit/src/scss/components/alert"; // After: Close
+// @import "uikit/src/scss/components/badge";
+@import "uikit/src/scss/components/label";
+// @import "uikit/src/scss/components/overlay"; // After: Icon
+// @import "uikit/src/scss/components/article"; // After: Subnav
+// @import "uikit/src/scss/components/comment"; // After: Subnav
+@import "uikit/src/scss/components/search"; // After: Icon
+
+// Navs
+@import "uikit/src/scss/components/nav";
+@import "uikit/src/scss/components/navbar"; // After: Card, Grid, Nav, Icon, Search
+@import "uikit/src/scss/components/subnav";
+@import "uikit/src/scss/components/breadcrumb";
+// @import "uikit/src/scss/components/pagination";
+@import "uikit/src/scss/components/tab";
+// @import "uikit/src/scss/components/slidenav"; // After: Icon
+@import "uikit/src/scss/components/dotnav";
+// @import "uikit/src/scss/components/thumbnav";
+
+// JavaScript
+// @import "uikit/src/scss/components/accordion";
+// @import "uikit/src/scss/components/drop"; // After: Card
+// @import "uikit/src/scss/components/dropdown"; // After: Card
+// @import "uikit/src/scss/components/modal"; // After: Close
+@import "uikit/src/scss/components/lightbox"; // After: Close
+@import "uikit/src/scss/components/slideshow";
+@import "uikit/src/scss/components/slider";
+@import "uikit/src/scss/components/sticky";
+@import "uikit/src/scss/components/offcanvas";
+@import "uikit/src/scss/components/switcher";
+// @import "uikit/src/scss/components/leader";
+// Scrollspy
+// Toggle
+// Scroll
+
+// Additional
+@import "uikit/src/scss/components/iconnav";
+// @import "uikit/src/scss/components/notification";
+@import "uikit/src/scss/components/tooltip";
+// @import "uikit/src/scss/components/placeholder";
+// @import "uikit/src/scss/components/progress";
+// @import "uikit/src/scss/components/sortable";
+// @import "uikit/src/scss/components/countdown";
+
+// Utilities
+@import "uikit/src/scss/components/animation";
+@import "uikit/src/scss/components/width";
+@import "uikit/src/scss/components/height";
+@import "uikit/src/scss/components/text";
+@import "uikit/src/scss/components/column";
+// @import "uikit/src/scss/components/cover";
+@import "uikit/src/scss/components/background";
+@import "uikit/src/scss/components/align";
+@import "uikit/src/scss/components/svg";
+@import "uikit/src/scss/components/utility";
+@import "uikit/src/scss/components/flex"; // After: Utility
+@import "uikit/src/scss/components/margin";
+@import "uikit/src/scss/components/padding";
+@import "uikit/src/scss/components/position";
+// @import "uikit/src/scss/components/transition";
+@import "uikit/src/scss/components/visibility";
+@import "uikit/src/scss/components/inverse";
+
+// Need to be loaded last
+@import "uikit/src/scss/components/print";

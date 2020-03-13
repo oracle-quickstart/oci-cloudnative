@@ -1,0 +1,139 @@
+/**
+ * Copyright © 2020, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
+
+// Configurations
+$o-red:        #c74634;
+$o-white:      #fcfbfa;
+$o-black:      #100f0e;
+$o-neutral:    #312d2a;
+$o-yellow:     #e5b757;
+$o-mauve:      #713a47;
+$o-orange:     #d8974d;
+$o-green:      #6b8f63;
+$o-ocean:      #2c5967;
+$o-blue:       #41727e;
+$o-teal:       #41817e;
+$o-beige:      #a79f88;
+$o-slate:      #869e9e;
+$o-grey:       #8B8580;
+$o-grey-lt:    #cbc5bf;
+$o-grey-dk:    #67605b;
+$o-muted:      #79726d;
+
+$o-brown:      #403c38;
+$o-brown-lt:   #56504b;
+$o-brown-dk:   #383330;
+
+$o-theme-bg:        $o-white;
+$o-theme-text:      $o-black;
+$o-darktheme-bg:    $o-neutral;
+$o-darktheme-text:  $o-white;
+
+$o-link-color:           #bc6c37;
+$o-link-secondary-color: #f9dab1;
+$o-inverse-emphasis:     #FBD886;
+
+// Custom UIKit variables and variable overrides
+
+// Global variables
+// ========================================================================
+$global-color:                                   $o-theme-text;
+$global-emphasis-color:                          #000;
+$global-muted-color:                             $o-muted;
+$global-font-size:                               16px;
+
+$global-link-color:                              $o-link-color;
+$global-link-hover-color:                        $o-link-color;
+$global-inverse-color:                           $o-darktheme-text;
+
+$global-background:                              $o-theme-bg;
+$global-muted-background:                        darken($o-theme-bg, 5%);
+$global-primary-background:                      $o-blue;
+$global-secondary-background:                    $o-darktheme-bg;
+$global-success-background:                      $o-green;
+$global-warning-background:                      $o-orange;
+$global-danger-background:                       $o-red;
+
+// inverse
+$inverse-global-color:                           $global-inverse-color;
+$inverse-global-emphasis-color:                  lighten($global-inverse-color, 20%);
+$inverse-global-muted-color:                     darken($global-inverse-color, 20%);
+$inverse-global-subtext-color:                   rgba($global-inverse-color, 0.7);
+$inverse-global-inverse-color:                   $global-color;
+$inverse-global-primary-background:              $global-primary-background;
+$inverse-global-secondary-background:            $global-secondary-background;
+$inverse-global-muted-background:                rgba($global-inverse-color, 0.1);
+$inverse-global-border:                          rgba($global-inverse-color, 0.2);
+
+
+// Base
+$base-selection-background:       $o-grey-lt;
+$base-blockquote-font-size:       0.9rem;
+$inverse-base-link-color:         $o-inverse-emphasis;
+$inverse-base-link-hover-color:   $o-inverse-emphasis;
+$base-em-color:                   $o-brown;
+
+// Typography
+$global-font-family: "OracleSans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", sans-serif;
+
+// Navbar
+$navbar-nav-item-height:          60px;
+$navbar-background:               $o-brown;
+$navbar-nav-item-color:           $global-inverse-color;
+$inverse-navbar-nav-item-color:   $global-inverse-color;
+
+// Nav
+$nav-primary-item-font-size:              1.3rem;
+// $inverse-nav-primary-item-color:          $inverse-global-muted-color;
+// $inverse-nav-primary-item-hover-color:    $inverse-global-color;
+// $inverse-nav-primary-item-active-color:   $inverse-global-emphasis-color;
+$inverse-nav-default-item-color:          $inverse-global-color;
+$inverse-nav-default-item-hover-color:    $inverse-global-emphasis-color;
+$inverse-nav-default-item-active-color:   $o-inverse-emphasis;
+$inverse-nav-primary-item-color:          $inverse-global-color;
+$inverse-nav-primary-item-hover-color:    $inverse-global-emphasis-color;
+$inverse-nav-primary-item-active-color:   $o-inverse-emphasis;
+$inverse-nav-primary-sublist-item-color:          $inverse-global-color;
+$inverse-nav-primary-sublist-item-hover-color:    $inverse-global-emphasis-color;
+$inverse-nav-primary-sublist-item-active-color:   $o-inverse-emphasis;
+
+// Button
+$button-small-padding-horizontal:           10px;
+$button-small-line-height:                  25px;
+
+$inverse-button-default-color:              $global-color;
+$inverse-button-default-hover-color:        $global-color;
+$inverse-button-default-active-color:       $inverse-global-color;
+$inverse-button-default-background:         $global-background;
+$inverse-button-default-active-background:  $inverse-global-primary-background;
+// $inverse-button-default-hover-background:   $o-brown-dk;
+
+$inverse-button-secondary-color:              $inverse-global-color;
+$inverse-button-secondary-hover-color:        $inverse-global-color;
+$inverse-button-secondary-active-color:       $inverse-global-color;
+$inverse-button-secondary-background:         $o-brown;
+$inverse-button-secondary-hover-background:   $o-brown-dk;
+$inverse-button-secondary-active-background:  $inverse-global-primary-background;
+
+// Label
+$inverse-label-color:                         $inverse-global-color;
+
+// Code
+$base-code-color:           $global-color;
+$inverse-base-code-color:   $inverse-global-inverse-color;
+
+// Alert
+$alert-primary-background:  lighten($global-primary-background,3%);
+$alert-primary-color:       $o-white;
+
+$alert-success-background:  lighten($global-success-background, 3%);
+$alert-success-color:       $o-white;
+
+$alert-warning-background:  lighten($global-warning-background, 0%);
+$alert-warning-color:       $o-white;
+
+$alert-danger-background:   lighten($global-danger-background, 3%);
+$alert-danger-color:        $o-white;
+

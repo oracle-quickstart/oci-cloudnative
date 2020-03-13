@@ -1,0 +1,105 @@
+/**
+ * Copyright © 2020, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
+
+// Background
+@mixin hook-background-misc() {
+  .uk-background-muted {
+    color: $global-color;
+  }
+  .uk-background-secondary #content .uk-background-secondary {
+    background: $inverse-global-muted-background;
+  }
+}
+
+// Code
+@mixin hook-base-pre() {
+
+}
+
+@mixin hook-base-code() {
+  padding: 2px 6px;
+  background: rgba($o-beige, 0.4);
+  border-radius: 2px;
+  font-style: normal;
+}
+
+// Blockquote
+@mixin hook-base-blockquote() {
+  color: $global-muted-color;
+  * + & {
+    margin: $global-small-margin 0 !important;
+  }
+  p + &, pre + &, .highlight + & {
+    margin-top: -$global-small-margin !important;
+  }
+}
+
+// Label
+@mixin hook-label() {
+  &:hover {
+    color: $label-color;
+    text-decoration: none;
+  }
+}
+
+// Alert
+@mixin hook-alert() {
+  a {
+    color: $global-emphasis-color;
+  }
+  em {
+    color: inherit;
+    font-weight: 400;
+    opacity: 0.7;
+  }
+}
+
+// Cards
+
+@mixin hook-card-secondary() {
+  .uk-background-secondary & {
+    background: $inverse-global-muted-background;
+  }
+}
+
+// Tabs
+$tab-border-width: 4 * $global-border-width;
+$tab-border-color: rgba($global-muted-color, 0.3) !default;
+
+@mixin hook-tab() {
+  position: relative;
+  &:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: $global-margin;
+    right: 0;
+    border-bottom: $tab-border-width solid $tab-border-color;
+  }
+}
+@mixin hook-tab-item() {
+  border-bottom: $tab-border-width solid transparent;
+}
+@mixin hook-tab-item-active() {
+  border-bottom-color: $global-primary-background;
+}
+
+@mixin hook-tab-left() {
+  &:before {
+    top: 0;
+    bottom: 0;
+    left: auto;
+    right: 0;
+    border-right: $tab-border-width solid $tab-border-color;
+    border-bottom: none;
+  }
+  > * > a {
+    border-right: $tab-border-width solid transparent;
+    border-bottom: none;
+  }
+  > .uk-active > a {
+    border-right-color: $global-primary-background;
+  }
+}

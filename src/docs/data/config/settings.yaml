@@ -1,0 +1,27 @@
+#
+# Copyright (c) 2020, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0
+#
+toggles:
+  - setting: platform
+    target: html
+    label: menu-settings-os
+    icon: desktop
+    options:
+      - label: Mac
+        toggle: stg-os-macos
+        active: true
+      - label: Linux
+        toggle: stg-os-linux
+      - label: Windows
+        toggle: stg-os-windows
+
+  - setting: helm
+    target: html
+    label: Helm
+    options:
+      - label: 3.x
+        toggle: stg-helm-3
+        active: true
+      - label: 2.x
+        toggle: stg-helm-2

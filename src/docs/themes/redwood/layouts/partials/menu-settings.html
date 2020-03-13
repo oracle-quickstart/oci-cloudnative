@@ -1,0 +1,35 @@
+<ul id="rw-settings" class="uk-nav uk-nav-default" uk-nav>
+  {{ template "tpl-setting" (dict "setting" "theme" "target" "html, .content-container" "label" "menu-settings-theme" "icon" "paint-bucket" "options" (slice (dict "label" "menu-settings-theme-light" "active" true "toggle" "uk-background-default") (dict "label" "menu-settings-theme-dark" "button" "secondary" "toggle" "uk-light uk-background-secondary"))  ) }}
+
+  {{/* Configured: @see data/config/settings.yaml */}}
+  {{- $settings := $.Site.Data.config.settings -}}
+  {{- if $settings -}}
+  {{- range $settings.toggles -}}
+  {{ template "tpl-setting" . }}
+  {{- end -}}
+  {{- end -}}
+</ul>
+
+
+{{ define "tpl-setting" }}
+{{- $setting := .setting -}}
+{{- $target := .target -}}
+{{- $label := .label -}}
+{{- $icon := .icon -}}
+<li class="uk-grid uk-grid-small uk-flex-middle uk-flex-between uk-flex-nowrap uk-text-nowrap">
+  <div class="uk-width-1-4">
+    <!-- <span class="uk-visible@l" uk-icon="{{ $icon }}"></span> -->
+    <span>{{ T $label | default $label }}</span>
+  </div>
+  <div class="uk-button-group rw-setting"
+    setting="{{ $setting }}"
+    target="{{ $target }}" >
+    {{- range .options -}}
+    <button class="uk-button uk-button-small uk-button-{{ .button | default "secondary"}}
+    {{ and .active "uk-active" }}" toggle="{{ .toggle }}" >
+      {{ T .label | default .label }}
+    </button>
+    {{- end -}}
+  </div>
+</li>
+{{ end }}
