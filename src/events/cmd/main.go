@@ -79,12 +79,12 @@ func main() {
 	errc := make(chan error)
 	ctx := context.Background()
 
-	// connect service
+	// connect oci service
 	provider, err := events.EnvironmentConfigurationProvider()
 	handler, logger := events.WireUp(ctx, tracer, provider, ServiceName)
 	if err != nil {
 		logger.Log("error", err)
-		os.Exit(1)
+		logger.Log("warning", "Running without stream configuration")
 	}
 
 	// Create and launch the HTTP server.
