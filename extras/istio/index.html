@@ -507,7 +507,7 @@
             <h1 class="rw-accent">Istio Service Mesh</h1>
               
   <div uk-alert class="uk-alert-danger uk-grid uk-grid-collapse uk-flex-nowrap "><span uk-icon="icon: warning; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span><div class="uk-width-expand">
-<p>Note that this is <strong>OPTIONAL</strong>. If you don&rsquo;t want to install Istio service mesh, skip to the <a href="https://oracle-quickstart.github.io/oci-cloudnative/cloud/deployment/">deployment</a> section. Additionally, you don&rsquo;t need to install Grafana and Prometheus from the <code>setup</code> chart as they are already included in the Istio installation.</p>
+<p>Note that this is <strong>OPTIONAL</strong>. If you don&rsquo;t want to install Istio service mesh, skip to the <a href="https://oracle-quickstart.github.io/oci-cloudnative/cloud/deployment/">deployment</a> section. Additionally, you don&rsquo;t need to install Grafana, Prometheus or the Ingress controller from the <code>setup</code> chart as they are already included in the Istio installation.</p>
 </div></div>
 <p>In this section you can install and configure Istio service mesh. The mesh needs to be installed before you deploy Mushop for the service mesh proxies to get injected next to each Mushop service.</p>
 <p>These sidecar proxies intercept the traffic between services and collect data on all requests as well as allow scenarios such as traffic routing and failure injection.</p>

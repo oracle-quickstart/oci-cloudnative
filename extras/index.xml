@@ -28,7 +28,7 @@ helm list --all-namespaces NAME NAMESPACE REVISION UPDATED STATUS CHART APP VERS
       <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
       
       <guid>https://oracle-quickstart.github.io/oci-cloudnative/extras/istio/</guid>
-      <description>Note that this is OPTIONAL. If you don&amp;rsquo;t want to install Istio service mesh, skip to the deployment section. Additionally, you don&amp;rsquo;t need to install Grafana and Prometheus from the setup chart as they are already included in the Istio installation.
+      <description>Note that this is OPTIONAL. If you don&amp;rsquo;t want to install Istio service mesh, skip to the deployment section. Additionally, you don&amp;rsquo;t need to install Grafana, Prometheus or the Ingress controller from the setup chart as they are already included in the Istio installation.
  In this section you can install and configure Istio service mesh. The mesh needs to be installed before you deploy Mushop for the service mesh proxies to get injected next to each Mushop service.</description>
     </item>
     
