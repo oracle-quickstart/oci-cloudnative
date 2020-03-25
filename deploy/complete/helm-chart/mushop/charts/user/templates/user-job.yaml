@@ -10,6 +10,8 @@ spec:
   backoffLimit: 1
   template:
     metadata:
+      annotations:
+        sidecar.istio.io/inject: "false"
       labels:
         app.kubernetes.io/name: {{ include "user.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
