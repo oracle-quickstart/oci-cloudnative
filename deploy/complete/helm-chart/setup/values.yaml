@@ -30,3 +30,8 @@ catalog:
 # https://github.com/helm/charts/blob/master/stable/nginx-ingress/README.md
 nginx-ingress:
   enabled: true
+
+# https://github.com/jetstack/cert-manager/blob/master/README.md
+cert-manager:
+  enabled: true
+  installCRDs: true
