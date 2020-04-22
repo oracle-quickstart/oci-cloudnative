@@ -3,6 +3,7 @@ apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
   name: letsencrypt-prod
+  labels:
 {{ include "setup.labels" . | indent 4 }}
 spec:
   acme:
@@ -22,6 +23,7 @@ apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
   name: letsencrypt-staging
+  labels:
 {{ include "setup.labels" . | indent 4 }}
 spec:
   acme:
@@ -41,6 +43,7 @@ apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
   name: selfsigned
+  labels:
 {{ include "setup.labels" . | indent 4 }}
 spec:
   selfSigned: {}
