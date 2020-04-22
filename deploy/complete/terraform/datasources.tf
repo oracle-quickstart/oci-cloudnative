@@ -25,3 +25,26 @@ resource "random_string" "deploy_id" {
 data "oci_containerengine_cluster_kube_config" "oke_cluster_kube_config" {
     cluster_id = oci_containerengine_cluster.oke-mushop_cluster.id
 }
+
+# Helm repos
+
+## stable
+data "helm_repository" "stable" {
+  name = "stable"
+  url  = "https://kubernetes-charts.storage.googleapis.com"
+}
+## incubator
+data "helm_repository" "incubator" {
+  name = "incubator"
+  url  = "https://kubernetes-charts-incubator.storage.googleapis.com"
+}
+## svc-cat
+data "helm_repository" "svc-cat" {
+  name = "svc-cat"
+  url  = "https://svc-catalog-charts.storage.googleapis.com"
+}
+## jetstack (cert-manager)
+data "helm_repository" "jetstack" {
+  name = "jetstack"
+  url  = "https://charts.jetstack.io"
+}

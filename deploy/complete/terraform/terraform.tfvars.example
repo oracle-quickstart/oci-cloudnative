@@ -1,0 +1,12 @@
+# OCI authentication
+
+tenancy_ocid = "ocid1.tenancy....."
+compartment_ocid = "ocid1.compartment...." 
+fingerprint = "" # e.g.: "5f:53:..." or leave blank if using CloudShell
+user_ocid = ""  # e.g.: "ocid1.user..." or leave blank if using CloudShell
+
+# region
+region = "us-ashburn-1"
+
+# public_ssh_key
+public_ssh_key = ""

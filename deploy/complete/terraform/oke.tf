@@ -1,3 +1,7 @@
+# Copyright (c) 2020 Oracle and/or its affiliates. All rights reserved.
+# Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
+# 
+
 resource "oci_containerengine_cluster" "oke-mushop_cluster" {
   compartment_id     = var.compartment_ocid
   kubernetes_version = var.k8s_version
@@ -8,10 +12,10 @@ resource "oci_containerengine_cluster" "oke-mushop_cluster" {
     service_lb_subnet_ids = [oci_core_subnet.oke-mushop_lb_subnet.id]
     add_ons {
             is_kubernetes_dashboard_enabled = var.cluster_options_add_ons_is_kubernetes_dashboard_enabled
-            is_tiller_enabled = true
+            is_tiller_enabled = false # Default is false, left here for reference
         }
     admission_controller_options {
-            is_pod_security_policy_enabled = false
+            is_pod_security_policy_enabled = var.cluster_options_admission_controller_options_is_pod_security_policy_enabled
         }
   }
 }
