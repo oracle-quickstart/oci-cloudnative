@@ -35,3 +35,7 @@ nginx-ingress:
 cert-manager:
   enabled: true
   installCRDs: true
+
+# Certificates info
+certificate:
+  email: admin@mushop.ateam.cloud

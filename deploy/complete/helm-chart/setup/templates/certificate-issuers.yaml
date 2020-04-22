@@ -3,12 +3,13 @@ apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
   name: letsencrypt-prod
+{{ include "setup.labels" . | indent 4 }}
 spec:
   acme:
     # The ACME production api URL
     server: https://acme-v02.api.letsencrypt.org/directory
     # Email address used for ACME registration
-    email: "admin@mushop.ateam.cloud"
+    email: {{ .Values.certificate.email }}
     # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
       name: letsencrypt-prod
@@ -21,12 +22,13 @@ apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
   name: letsencrypt-staging
+{{ include "setup.labels" . | indent 4 }}
 spec:
   acme:
     # The ACME server URL
     server: https://acme-staging-v02.api.letsencrypt.org/directory
     # Email address used for ACME registration
-    email: "admin@mushop.ateam.cloud"
+    email: {{ .Values.certificate.email }}
     # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
       name: letsencrypt-staging
@@ -39,5 +41,6 @@ apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
   name: selfsigned
+{{ include "setup.labels" . | indent 4 }}
 spec:
   selfSigned: {}
