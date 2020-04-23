@@ -1,0 +1,3 @@
+args:
+  - --kubelet-insecure-tls # not recommended in production
+  - --kubelet-preferred-address-types=InternalIP
