@@ -18,6 +18,8 @@ spec:
         version: {{ .Values.image.tag | quote }}
         app.kubernetes.io/name: {{ include "storefront.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
       containers:
         - name: {{ .Chart.Name }}

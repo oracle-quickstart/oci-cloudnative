@@ -18,6 +18,8 @@ spec:
         app.kubernetes.io/name: {{ include "carts.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
         mockmode: {{ .Values.global.mock.service | quote }}
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
       initContainers:
         {{- include "carts.init.wallet" . | nindent 8 }}
