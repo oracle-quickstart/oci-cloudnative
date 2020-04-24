@@ -70,7 +70,7 @@ export PATH=$JAVA_HOME/bin:/path/to/maven/bin
 To compile the service:
 
 ```bash
-mvn clean package
+mvn clean package -DskipTests
 ```
 This will run the tests and produce the jar `target/carts-1.1.0-SNAPSHOT.jar`
 
@@ -110,9 +110,9 @@ docker build -t mushop/carts .
 Start the container:
 ```bash
 docker run -it \
-   --env DOADB_SERVICE=mushop_high \
-   --env DOADB_USER=CARTS_USER \
-   --env DOADB_PW=MyPassword \
+   --env OADB_SERVICE=mushop_high \
+   --env OADB_USER=CARTS_USER \
+   --env OADB_PW=MyPassword \
    --env TNS_ADMIN=/wallet \
    --volume /local/path/to/wallet:/wallet \
    -p 8080:80 \

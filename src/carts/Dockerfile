@@ -1,7 +1,7 @@
 ##### Application Metadata
 ARG APPLICATION_NAME="carts"
 ARG VERSION="1.1.0-SNAPSHOT"
-ARG SODA_VERSION="1.1.0"
+ARG SODA_VERSION="1.1.4"
 ARG clientVersion=19.3
 
 # ------------
