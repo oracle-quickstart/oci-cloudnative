@@ -165,7 +165,6 @@ public class CartRepositoryDatabaseImpl implements CartRepository {
         // to the database when opening a collection
         Properties props = new Properties();
         props.put("oracle.soda.sharedMetadataCache", "true");
-        props.put("oracle.soda.localMetadataCache", "true");
         SODA = new OracleRDBMSClient(props);
     }
 }
