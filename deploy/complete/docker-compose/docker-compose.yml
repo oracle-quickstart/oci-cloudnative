@@ -128,7 +128,7 @@ services:
       - OADB_USER
       - OADB_PW
       - OADB_SERVICE=mock
-      - JAVA_OPTS= -Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+      - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
 
   # OCI Orders service
   orders:
