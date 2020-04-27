@@ -20,11 +20,13 @@ resource "helm_release" "prometheus" {
   version    = "11.1.2"
   namespace  = kubernetes_namespace.mushop-utilities_namespace.id
   wait       = false
+
+  depends_on = [helm_release.nginx-ingress] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
 }
 
 ## # https://github.com/helm/charts/blob/master/stable/grafana/README.md
 resource "helm_release" "grafana" {
-  name       = "grafana"
+  name       = "mushop-utils-grafana" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = data.helm_repository.stable.metadata[0].name
   chart      = "grafana"
   version    = "5.0.13"
@@ -34,6 +36,8 @@ resource "helm_release" "grafana" {
   values = [
       file("${path.module}/chart-values/grafana.yaml"),
     ]
+
+  depends_on = [helm_release.nginx-ingress] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
 }
 
 ## https://github.com/helm/charts/blob/master/stable/metrics-server/README.md
@@ -48,6 +52,8 @@ resource "helm_release" "metrics-server" {
   values = [
       file("${path.module}/chart-values/metrics-server.yaml"),
     ]
+  
+  depends_on = [helm_release.nginx-ingress] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
 }
 
 ## https://github.com/helm/charts/blob/master/stable/nginx-ingress/README.md
@@ -55,18 +61,19 @@ resource "helm_release" "nginx-ingress" {
   name       = "nginx-ingress"
   repository = data.helm_repository.stable.metadata[0].name
   chart      = "nginx-ingress"
-  version    = "1.29.7"  # "1.36.3"
+  version    = "1.36.3" # "1.29.7"
   namespace  = kubernetes_namespace.mushop-utilities_namespace.id
-  wait       = false
+  wait       = true
 
-  set {
-    name  = "controller.service.annotations.service.beta.kubernetes.io/oci-load-balancer-shape"
-    value = "400Mbps"
-  }  
-  set {
-    name  = "defaultBackend.enabled"
-    value = false
-  }  
+  # set_string {
+  #   name  = "controller.service.annotations.service.beta.kubernetes.io/oci-load-balancer-shape"
+  #   value = "400Mbps"
+  # }  
+  # set {
+  #   name  = "defaultBackend.enabled"
+  #   value = false
+  # }
+  timeout = 600 # workaround to wait the node be active for other charts
 }
 
 ## https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md
@@ -77,6 +84,8 @@ resource "helm_release" "svc-cat" {
   version    = "0.3.0-beta.2"
   namespace  = kubernetes_namespace.mushop-utilities_namespace.id
   wait       = false
+
+  depends_on = [helm_release.nginx-ingress] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
 }
 
 ## https://github.com/jetstack/cert-manager/blob/master/README.md
@@ -91,5 +100,7 @@ resource "helm_release" "cert-manager" {
   set {
     name  = "installCRDs"
     value = "true"
-  }  
+  }
+
+  depends_on = [helm_release.nginx-ingress] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
 }

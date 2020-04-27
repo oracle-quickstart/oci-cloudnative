@@ -10,18 +10,16 @@ resource "kubernetes_namespace" "mushop_namespace" {
   depends_on = [oci_containerengine_node_pool.oke-mushop_node_pool]
 }
 
-resource "kubernetes_namespace" "mushop-utilities_namespace" {
-  metadata {
-    name = "mushop-utilities"
-  }
-  depends_on = [oci_containerengine_node_pool.oke-mushop_node_pool]
-}
+# Deploy mushop chart
+resource "helm_release" "mushop" {
+  name              = "mushop"
+  chart             = "../helm-chart/mushop"
+  namespace         = kubernetes_namespace.mushop_namespace.id
+  wait              = false
 
-# Deploy setup chart with mushop utilities
-# resource "helm_release" "mushop-utility" {
-#   name              = "mushop-utility"
-#   chart             = "../helm-chart/setup"
-#   namespace         = kubernetes_namespace.mushop-utilities_namespace.id
-#   dependency_update = true
-#   wait              = true
-# }
+  values = [
+    file("${path.module}/../helm-chart/mushop/values-mock.yaml"),
+  ]
+
+  depends_on = [helm_release.nginx-ingress] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
+}
