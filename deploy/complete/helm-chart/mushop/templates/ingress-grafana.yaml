@@ -1,8 +1,22 @@
 {{- if .Values.ingress.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: mushop-grafana-ingress
+  labels:
+    name: mushop-grafana-ingress
+    layer: ingress
+spec:
+  selector:
+    name: mushop-grafana-ingress
+    layer: ingress
+  type: ExternalName
+  externalName: mushop-utils-grafana.mushop-utilities
+---
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: {{ include "mushop.fullname" . }}
+  name: {{ include "mushop.fullname" . }}-grafana
   labels:
 {{ include "mushop.labels" . | indent 4 }}
   annotations:
@@ -21,27 +35,19 @@ spec:
     - host: {{ $host }}
       http:
         paths:
-        - path: /
-          backend:
-            # intentionally w/o .Release.Name for metrics workshop
-            serviceName: edge
-            servicePort: {{ $.Values.edge.service.port }}
         - path: /grafana(/|$)(.*)
           backend:
-            serviceName: grafana
+            # intentionally w/o .Release.Name for metrics workshop
+            serviceName: mushop-grafana-ingress
             servicePort: 80
     {{- end -}}
     {{ else }}
     - http:
         paths:
-        - path: /
-          backend:
-            # intentionally w/o .Release.Name for metrics workshop
-            serviceName: edge
-            servicePort: {{ .Values.edge.service.port }}
         - path: /grafana(/|$)(.*)
           backend:
-            serviceName: grafana
+            # intentionally w/o .Release.Name for metrics workshop
+            serviceName: mushop-grafana-ingress
             servicePort: 80
     {{- end -}}
   {{- if .Values.ingress.tls }}
