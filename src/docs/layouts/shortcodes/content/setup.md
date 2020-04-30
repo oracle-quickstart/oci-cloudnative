@@ -15,13 +15,6 @@ application features.
 
 From `deploy/complete/helm-chart` directory:
 
-1. Add required helm repositories:
-
-    ```shell
-    helm repo add svc-cat https://svc-catalog-charts.storage.googleapis.com
-    helm repo add stable https://kubernetes-charts.storage.googleapis.com
-    ```
-
 1. Install chart dependencies:
 
     ```shell
