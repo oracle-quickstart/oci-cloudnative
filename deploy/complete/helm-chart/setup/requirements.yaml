@@ -1,12 +1,12 @@
 dependencies:
   # Prometheus
   - name: prometheus
-    version: 11.1.2
+    version: 11.1.5
     condition: prometheus.enabled
     repository: https://kubernetes-charts.storage.googleapis.com
   # Grafana
   - name: grafana
-    version: 5.0.13
+    version: 5.0.20
     condition: grafana.enabled
     repository: https://kubernetes-charts.storage.googleapis.com
   # HPA Metrics
@@ -26,6 +26,6 @@ dependencies:
     repository: https://svc-catalog-charts.storage.googleapis.com 
   # cert-manager
   - name: cert-manager
-    version: 0.15.0-alpha.0
+    version: 0.15.0-alpha.3
     condition: cert-manager.enabled
     repository: https://charts.jetstack.io
