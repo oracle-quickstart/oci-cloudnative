@@ -99,7 +99,7 @@ resource "helm_release" "cert-manager" {
 
   set {
     name  = "installCRDs"
-    value = "true"
+    value = true
   }
 
   depends_on = [helm_release.nginx-ingress] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
