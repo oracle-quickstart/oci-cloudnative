@@ -10,6 +10,7 @@ application features.
 | [Metrics Server](https://github.com/helm/charts/blob/master/stable/metrics-server/README.md) | Support for Horizontal Pod Autoscaling | `metrics-server.enabled` |
 | [Nginx Ingress](https://github.com/helm/charts/blob/master/stable/nginx-ingress/README.md) | Ingress controller and public Load Balancer | `nginx-ingress.enabled` |
 | [Service Catalog](https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md) | Service Catalog chart utilized by Oracle Service Broker | `catalog.enabled` |
+| [Cert Manager](https://github.com/jetstack/cert-manager/blob/master/README.md) | x509 certificate management for Kubernetes | `cert-manager.enabled` |
 
 > Dependencies installed with `setup` chart. **NOTE** as these are very common installations, each may be disabled as needed to resolve conflicts.
 
