@@ -1,3 +1,7 @@
+# Copyright (c) 2020 Oracle and/or its affiliates. All rights reserved.
+# Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
+# 
+
 resource oci_core_security_list oke-mushop_security_list {
   compartment_id    = var.compartment_ocid
   display_name      = "oke-mushop_wkr_seclist-${random_string.deploy_id.result}"
