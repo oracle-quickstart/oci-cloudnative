@@ -37,6 +37,7 @@ variableGroups:
     - public_ssh_key
     - image_operating_system
     - image_operating_system_version
+    - mock_mode_all
     visible: true
 
   - title: "Network Configuration"
@@ -194,6 +195,17 @@ variables:
     required: true
     title: "Image OS Version"
     description: "The OS/image version installed on all nodes in the node pool."    
+
+  mock_mode_all:
+    visible: #($show_advanced  == ""Yes"")
+      eq:
+        - show_advanced 
+        - "Yes"
+    type: boolean
+    default: true
+    required: true
+    title: "Enable Mock Mode"
+    description: "Enable Mock Mode for all Services"  
 
   # deployer_shape:
   #   visible: #($show_advanced  == ""Yes"")
