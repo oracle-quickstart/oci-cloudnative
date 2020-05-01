@@ -48,3 +48,8 @@ data "helm_repository" "jetstack" {
   name = "jetstack"
   url  = "https://charts.jetstack.io"
 }
+## ingress-nginx
+data "helm_repository" "ingress-nginx" {
+  name = "ingress-nginx"
+  url  = "https://kubernetes.github.io/ingress-nginx"
+}
