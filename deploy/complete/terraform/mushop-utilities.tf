@@ -56,23 +56,15 @@ resource "helm_release" "metrics-server" {
   depends_on = [helm_release.nginx-ingress] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
 }
 
-## https://github.com/helm/charts/blob/master/stable/nginx-ingress/README.md
+## https://kubernetes.github.io/ingress-nginx/
 resource "helm_release" "nginx-ingress" {
   name       = "nginx-ingress"
-  repository = data.helm_repository.stable.metadata[0].name
-  chart      = "nginx-ingress"
-  version    = "1.36.3"
+  repository = data.helm_repository.ingress-nginx.metadata[0].name
+  chart      = "ingress-nginx/ingress-nginx"
+  version    = "2.0.2"
   namespace  = kubernetes_namespace.mushop-utilities_namespace.id
   wait       = true
 
-  # set_string {
-  #   name  = "controller.service.annotations.service.beta.kubernetes.io/oci-load-balancer-shape"
-  #   value = "400Mbps"
-  # }  
-  # set {
-  #   name  = "defaultBackend.enabled"
-  #   value = false
-  # }
   timeout = 600 # workaround to wait the node be active for other charts
 }
 
