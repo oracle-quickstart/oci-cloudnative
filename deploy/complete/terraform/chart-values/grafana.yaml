@@ -49,3 +49,7 @@ persistence:
   enabled: true
 plugins:
   - oci-datasource
+  - grafana-kubernetes-app
+  - grafana-worldmap-panel
+  - grafana-piechart-panel
+  - btplc-status-dot-panel
