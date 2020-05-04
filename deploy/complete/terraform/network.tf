@@ -10,27 +10,27 @@ resource "oci_core_virtual_network" "oke-mushop_vcn" {
 }
 
 resource "oci_core_subnet" "oke-mushop_subnet" {
-  cidr_block        = lookup(var.network_cidrs, "SUBNET-REGIONAL-CIDR")
-  compartment_id    = var.compartment_ocid
-  display_name      = "oke-mushop_subnet-${random_string.deploy_id.result}"
-  dns_label         = "okesubnet${random_string.deploy_id.result}"
-  vcn_id            = oci_core_virtual_network.oke-mushop_vcn.id
+  cidr_block                 = lookup(var.network_cidrs, "SUBNET-REGIONAL-CIDR")
+  compartment_id             = var.compartment_ocid
+  display_name               = "oke-mushop_subnet-${random_string.deploy_id.result}"
+  dns_label                  = "okesubnet${random_string.deploy_id.result}"
+  vcn_id                     = oci_core_virtual_network.oke-mushop_vcn.id
   prohibit_public_ip_on_vnic = (var.cluster_visibility == "Private") ? true : false
-  route_table_id    = oci_core_route_table.oke-mushop_route_table.id
-  dhcp_options_id   = oci_core_virtual_network.oke-mushop_vcn.default_dhcp_options_id
-  security_list_ids = [oci_core_security_list.oke-mushop_security_list.id]
+  route_table_id             = oci_core_route_table.oke-mushop_route_table.id
+  dhcp_options_id            = oci_core_virtual_network.oke-mushop_vcn.default_dhcp_options_id
+  security_list_ids          = [oci_core_security_list.oke-mushop_security_list.id]
 }
 
 resource "oci_core_subnet" "oke-mushop_lb_subnet" {
-  cidr_block        = lookup(var.network_cidrs, "LB-SUBNET-REGIONAL-CIDR")
-  compartment_id    = var.compartment_ocid
-  display_name      = "oke-mushop_lb_subnet-${random_string.deploy_id.result}"
-  dns_label         = "okelbsubnet${random_string.deploy_id.result}"
-  vcn_id            = oci_core_virtual_network.oke-mushop_vcn.id
+  cidr_block                 = lookup(var.network_cidrs, "LB-SUBNET-REGIONAL-CIDR")
+  compartment_id             = var.compartment_ocid
+  display_name               = "oke-mushop_lb_subnet-${random_string.deploy_id.result}"
+  dns_label                  = "okelbsubnet${random_string.deploy_id.result}"
+  vcn_id                     = oci_core_virtual_network.oke-mushop_vcn.id
   prohibit_public_ip_on_vnic = false
-  route_table_id    = oci_core_route_table.oke-mushop_lb_route_table.id
-  dhcp_options_id   = oci_core_virtual_network.oke-mushop_vcn.default_dhcp_options_id
-  security_list_ids = [oci_core_security_list.oke-mushop_lb_security_list.id]
+  route_table_id             = oci_core_route_table.oke-mushop_lb_route_table.id
+  dhcp_options_id            = oci_core_virtual_network.oke-mushop_vcn.default_dhcp_options_id
+  security_list_ids          = [oci_core_security_list.oke-mushop_lb_security_list.id]
 }
 
 resource "oci_core_route_table" "oke-mushop_route_table" {
@@ -58,15 +58,15 @@ resource "oci_core_route_table" "oke-mushop_lb_route_table" {
 }
 
 resource "oci_core_nat_gateway" "oke-mushop_nat_gateway" {
-  block_traffic     = "false"
-  compartment_id    = var.compartment_ocid
-  display_name      = "oke-mushop_nat_gateway-${random_string.deploy_id.result}"
-  vcn_id            = oci_core_virtual_network.oke-mushop_vcn.id
+  block_traffic  = "false"
+  compartment_id = var.compartment_ocid
+  display_name   = "oke-mushop_nat_gateway-${random_string.deploy_id.result}"
+  vcn_id         = oci_core_virtual_network.oke-mushop_vcn.id
 }
 
 resource "oci_core_internet_gateway" "oke-mushop_internet_gateway" {
   compartment_id = var.compartment_ocid
-  display_name  = "oke-mushop_internet_gateway-${random_string.deploy_id.result}"
-  enabled       = true
-  vcn_id = oci_core_virtual_network.oke-mushop_vcn.id
+  display_name   = "oke-mushop_internet_gateway-${random_string.deploy_id.result}"
+  enabled        = true
+  vcn_id         = oci_core_virtual_network.oke-mushop_vcn.id
 }

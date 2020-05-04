@@ -34,8 +34,8 @@ resource "helm_release" "grafana" {
   wait       = false
 
   values = [
-      file("${path.module}/chart-values/grafana.yaml"),
-    ]
+    file("${path.module}/chart-values/grafana.yaml"),
+  ]
 
   depends_on = [helm_release.nginx-ingress] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
 }
@@ -50,15 +50,15 @@ resource "helm_release" "metrics-server" {
   wait       = false
 
   values = [
-      file("${path.module}/chart-values/metrics-server.yaml"),
-    ]
-  
+    file("${path.module}/chart-values/metrics-server.yaml"),
+  ]
+
   depends_on = [helm_release.nginx-ingress] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
 }
 
 ## https://kubernetes.github.io/ingress-nginx/
 resource "helm_release" "nginx-ingress" {
-  name       = "nginx-ingress"
+  name       = "mushop-utils-ingress-nginx"
   repository = data.helm_repository.ingress-nginx.metadata[0].name
   chart      = "ingress-nginx/ingress-nginx"
   version    = "2.0.2"

@@ -12,10 +12,10 @@ resource "kubernetes_namespace" "mushop_namespace" {
 
 # Deploy mushop chart
 resource "helm_release" "mushop" {
-  name              = "mushop"
-  chart             = "../helm-chart/mushop"
-  namespace         = kubernetes_namespace.mushop_namespace.id
-  wait              = false
+  name      = "mushop"
+  chart     = "../helm-chart/mushop"
+  namespace = kubernetes_namespace.mushop_namespace.id
+  wait      = false
 
   values = [
     file("${path.module}/../helm-chart/mushop/values-mock.yaml"),
