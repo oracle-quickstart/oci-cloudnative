@@ -39,7 +39,7 @@ resource "oci_core_route_table" "oke-mushop_route_table" {
   display_name   = "oke-mushop_route_table-${random_string.deploy_id.result}"
 
   route_rules {
-    destination       = "0.0.0.0/0"
+    destination       = lookup(var.network_cidrs, "ALL-CIDR")
     destination_type  = "CIDR_BLOCK"
     network_entity_id = (var.cluster_visibility == "Private") ? oci_core_nat_gateway.oke-mushop_nat_gateway.id : oci_core_internet_gateway.oke-mushop_internet_gateway.id
   }
@@ -51,7 +51,7 @@ resource "oci_core_route_table" "oke-mushop_lb_route_table" {
   display_name   = "oke-mushop_route_table-${random_string.deploy_id.result}"
 
   route_rules {
-    destination       = "0.0.0.0/0"
+    destination       = lookup(var.network_cidrs, "ALL-CIDR")
     destination_type  = "CIDR_BLOCK"
     network_entity_id = oci_core_internet_gateway.oke-mushop_internet_gateway.id
   }

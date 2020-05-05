@@ -61,5 +61,6 @@ variable "network_cidrs" {
     VCN-CIDR                = "10.20.0.0/16"
     SUBNET-REGIONAL-CIDR    = "10.20.10.0/24"
     LB-SUBNET-REGIONAL-CIDR = "10.20.20.0/24"
+    ALL-CIDR                = "0.0.0.0/0"
   }
 }
