@@ -16,6 +16,7 @@ provider "oci" {
   region       = var.region
 }
 
+# https://docs.cloud.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengdownloadkubeconfigfile.htm#notes
 provider "kubernetes" {
   load_config_file       = "false"
   cluster_ca_certificate = base64decode(yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["clusters"][0]["cluster"]["certificate-authority-data"])
@@ -33,6 +34,7 @@ provider "kubernetes" {
   }
 }
 
+# https://docs.cloud.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengdownloadkubeconfigfile.htm#notes
 provider "helm" {
   kubernetes {
     load_config_file       = "false"
