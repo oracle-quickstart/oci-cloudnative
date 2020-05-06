@@ -27,8 +27,8 @@ grafana:
 catalog:
   enabled: true
 
-# https://github.com/helm/charts/blob/master/stable/nginx-ingress/README.md
-nginx-ingress:
+# https://kubernetes.github.io/ingress-nginx/
+ingress-nginx:
   enabled: true
 
 # https://github.com/jetstack/cert-manager/blob/master/README.md

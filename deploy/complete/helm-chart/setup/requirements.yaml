@@ -19,10 +19,10 @@ dependencies:
     condition: metrics-server.enabled
     repository: https://kubernetes-charts.storage.googleapis.com
   # Ingress Controller
-  - name: nginx-ingress
-    version: 1.36.3
-    condition: nginx-ingress.enabled
-    repository: https://kubernetes-charts.storage.googleapis.com
+  - name: ingress-nginx
+    version: 2.0.2
+    condition: ingress-nginx.enabled
+    repository: https://kubernetes.github.io/ingress-nginx
   # Service Catalog
   - name: catalog
     version: 0.3.0-beta.2

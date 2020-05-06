@@ -8,14 +8,14 @@ dependencies:
 - name: metrics-server
   repository: https://kubernetes-charts.storage.googleapis.com
   version: 2.11.1
-- name: nginx-ingress
-  repository: https://kubernetes-charts.storage.googleapis.com
-  version: 1.36.3
+- name: ingress-nginx
+  repository: https://kubernetes.github.io/ingress-nginx
+  version: 2.0.2
 - name: catalog
   repository: https://svc-catalog-charts.storage.googleapis.com
   version: 0.3.0-beta.2
 - name: cert-manager
   repository: https://charts.jetstack.io
   version: v0.15-alpha.3
-digest: sha256:4c33b4aa61925c58bb2785ced755e40118061ed37cd7aa30c154f4db75639885
-generated: "2020-04-30T18:48:16.075226-05:00"
+digest: sha256:1e9ae93188d05ab1c34d354de48df0a8b4730da94956cb14feb4a7b084240f59
+generated: "2020-05-06T17:08:59.300353-05:00"
