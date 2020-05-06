@@ -62,6 +62,8 @@ resource "oci_core_nat_gateway" "oke-mushop_nat_gateway" {
   compartment_id = var.compartment_ocid
   display_name   = "oke-mushop_nat_gateway-${random_string.deploy_id.result}"
   vcn_id         = oci_core_virtual_network.oke-mushop_vcn.id
+
+  count = var.cluster_visibility == "Private" ? 1 : 0
 }
 
 resource "oci_core_internet_gateway" "oke-mushop_internet_gateway" {
