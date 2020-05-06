@@ -21,7 +21,7 @@ resource "helm_release" "prometheus" {
   namespace  = kubernetes_namespace.mushop-utilities_namespace.id
   wait       = false
 
-  depends_on = [helm_release.nginx-ingress] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
+  depends_on = [helm_release.ingress-nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
 }
 
 ## # https://github.com/helm/charts/blob/master/stable/grafana/README.md
@@ -37,7 +37,7 @@ resource "helm_release" "grafana" {
     file("${path.module}/chart-values/grafana.yaml"),
   ]
 
-  depends_on = [helm_release.nginx-ingress] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
+  depends_on = [helm_release.ingress-nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
 }
 
 ## https://github.com/helm/charts/blob/master/stable/metrics-server/README.md
@@ -53,11 +53,11 @@ resource "helm_release" "metrics-server" {
     file("${path.module}/chart-values/metrics-server.yaml"),
   ]
 
-  depends_on = [helm_release.nginx-ingress] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
+  depends_on = [helm_release.ingress-nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
 }
 
 ## https://kubernetes.github.io/ingress-nginx/
-resource "helm_release" "nginx-ingress" {
+resource "helm_release" "ingress-nginx" {
   name       = "mushop-utils-ingress-nginx"
   repository = data.helm_repository.ingress-nginx.metadata[0].name
   chart      = "ingress-nginx/ingress-nginx"
@@ -77,7 +77,7 @@ resource "helm_release" "svc-cat" {
   namespace  = kubernetes_namespace.mushop-utilities_namespace.id
   wait       = false
 
-  depends_on = [helm_release.nginx-ingress] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
+  depends_on = [helm_release.ingress-nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
 }
 
 ## https://github.com/jetstack/cert-manager/blob/master/README.md
@@ -94,5 +94,5 @@ resource "helm_release" "cert-manager" {
     value = true
   }
 
-  depends_on = [helm_release.nginx-ingress] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
+  depends_on = [helm_release.ingress-nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
 }

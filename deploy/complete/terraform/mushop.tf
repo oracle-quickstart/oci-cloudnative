@@ -21,5 +21,5 @@ resource "helm_release" "mushop" {
     file("${path.module}/../helm-chart/mushop/values-mock.yaml"),
   ]
 
-  depends_on = [helm_release.nginx-ingress] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
+  depends_on = [helm_release.ingress-nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
 }
