@@ -11,18 +11,6 @@ metrics-server:
 prometheus:
   enabled: true
 
-# https://github.com/helm/charts/blob/master/stable/grafana/README.md
-grafana:
-  enabled: true
-  plugins: [ 'oci-datasource' ]
-  sidecar:
-    datasources:
-      enabled: true
-      label: grafana_datasource
-    dashboards:
-      enabled: true
-      label: grafana_dashboard
-
 # https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md
 catalog:
   enabled: true
@@ -36,6 +24,46 @@ cert-manager:
   enabled: true
   installCRDs: true
 
-# Certificates info
-certificate:
-  email: admin@mushop.ateam.cloud
+# https://github.com/helm/charts/blob/master/stable/grafana/README.md
+grafana:
+  enabled: true
+  dashboards:
+    default:
+      cluster-metrics:
+        gnetId: 6417
+        revision: 1
+        datasource: Prometheus
+      pods:
+        gnetId: 6336
+        revision: 1
+        datasource: Prometheus
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+      - name: 'default'
+        orgId: 1
+        folder: ''
+        type: file
+        disableDeletion: true
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/default
+  sidecar:
+    datasources:
+      enabled: true
+      label: grafana_datasource
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+  grafana.ini:
+    server:
+      root_url: "%(protocol)s://%(domain)s:%(http_port)s/grafana"
+  persistence:
+    enabled: true
+  plugins:
+    - oci-datasource
+    - grafana-kubernetes-app
+    - grafana-worldmap-panel
+    - grafana-piechart-panel
+    - btplc-status-dot-panel
