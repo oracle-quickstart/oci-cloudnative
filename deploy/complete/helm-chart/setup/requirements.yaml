@@ -1,26 +1,35 @@
+# Copyright (c) 2019, 2020 Oracle and/or its affiliates. All rights reserved.
+# Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
+# 
+
 dependencies:
   # Prometheus
   - name: prometheus
-    version: 10.3.1
+    version: 11.1.5
     condition: prometheus.enabled
     repository: https://kubernetes-charts.storage.googleapis.com
   # Grafana
   - name: grafana
-    version: 4.4.0
+    version: 5.0.20
     condition: grafana.enabled
     repository: https://kubernetes-charts.storage.googleapis.com
   # HPA Metrics
   - name: metrics-server
-    version: 2.9.0
+    version: 2.11.1
     condition: metrics-server.enabled
     repository: https://kubernetes-charts.storage.googleapis.com
   # Ingress Controller
-  - name: nginx-ingress
-    version: 1.29.5
-    condition: nginx-ingress.enabled
-    repository: https://kubernetes-charts.storage.googleapis.com
+  - name: ingress-nginx
+    version: 2.0.2
+    condition: ingress-nginx.enabled
+    repository: https://kubernetes.github.io/ingress-nginx
   # Service Catalog
   - name: catalog
     version: 0.3.0-beta.2
     condition: catalog.enabled
     repository: https://svc-catalog-charts.storage.googleapis.com 
+  # cert-manager
+  - name: cert-manager
+    version: 0.15.0-alpha.3
+    condition: cert-manager.enabled
+    repository: https://charts.jetstack.io

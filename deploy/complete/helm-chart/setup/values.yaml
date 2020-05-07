@@ -11,10 +11,44 @@ metrics-server:
 prometheus:
   enabled: true
 
+# https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md
+catalog:
+  enabled: true
+
+# https://kubernetes.github.io/ingress-nginx/
+ingress-nginx:
+  enabled: true
+
+# https://github.com/jetstack/cert-manager/blob/master/README.md
+cert-manager:
+  enabled: true
+  installCRDs: true
+
 # https://github.com/helm/charts/blob/master/stable/grafana/README.md
 grafana:
   enabled: true
-  plugins: [ 'oci-datasource' ]
+  dashboards:
+    default:
+      cluster-metrics:
+        gnetId: 6417
+        revision: 1
+        datasource: Prometheus
+      pods:
+        gnetId: 6336
+        revision: 1
+        datasource: Prometheus
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+      - name: 'default'
+        orgId: 1
+        folder: ''
+        type: file
+        disableDeletion: true
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/default
   sidecar:
     datasources:
       enabled: true
@@ -22,11 +56,14 @@ grafana:
     dashboards:
       enabled: true
       label: grafana_dashboard
-
-# https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md
-catalog:
-  enabled: true
-
-# https://github.com/helm/charts/blob/master/stable/nginx-ingress/README.md
-nginx-ingress:
-  enabled: true
+  grafana.ini:
+    server:
+      root_url: "%(protocol)s://%(domain)s:%(http_port)s/grafana"
+  persistence:
+    enabled: true
+  plugins:
+    - oci-datasource
+    - grafana-kubernetes-app
+    - grafana-worldmap-panel
+    - grafana-piechart-panel
+    - btplc-status-dot-panel

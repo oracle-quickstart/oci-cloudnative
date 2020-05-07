@@ -46,7 +46,7 @@ Oracle Cloud Infrastructure or enable certain features within the application.
 > Example setting with alternate LoadBalancer port:
 
 ```text
-helm install setup --set nginx-ingress.controller.service.ports.http=8000
+helm install setup --set ingress-nginx.controller.service.ports.http=8000
 ```
 
 The installed dependencies are listed below. Note that any can be disabled as needed.
@@ -57,7 +57,7 @@ The installed dependencies are listed below. Note that any can be disabled as ne
 | [Grafana](https://github.com/helm/charts/blob/master/stable/grafana/README.md)                             | Infra/Service visualization dashboards | `grafana.enabled`        |
 | [Metrics Server](https://github.com/helm/charts/blob/master/stable/metrics-server/README.md)               | Support for Horizontal Pod Autoscaling | `metrics-server.enabled` |
 | [Service Catalog](https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md) | Interface for Oracle Service Broker    | `catalog.enabled`        |
-| [Nginx Ingress](https://github.com/helm/charts/blob/master/stable/nginx-ingress/README.md)                 | Load Balancer ingress control          | `nginx-ingress.enabled`  |
+| [Ingress Nginx](https://kubernetes.github.io/ingress-nginx/)                 | Load Balancer ingress control          | `ingress-nginx.enabled`  |
 
 ## Provision
 

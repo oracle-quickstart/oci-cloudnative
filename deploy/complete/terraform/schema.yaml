@@ -1,0 +1,320 @@
+# Copyright (c) 2020 Oracle and/or its affiliates. All rights reserved.
+# Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
+# 
+
+title: "MuShop App"
+description: "Oracle Container Engine (OKE) stack for MuShop App"
+schemaVersion: 1.1.0
+version: "20190304"
+
+source:
+  type: quickstart
+
+locale: "en"
+variableGroups:
+  - title: "Hidden"
+    variables:
+    - compartment_ocid
+    - tenancy_ocid
+    - region
+    visible: false
+  - title: "General Configuration"
+    variables:
+    - cluster_name
+    - k8s_version
+    - cluster_visibility
+    visible: true
+  - title: "Worker Nodes"
+    variables:
+    - node_pool_shape
+    - num_pool_workers
+    - node_pool_name
+    visible: true
+  - title: "Add Ons"
+    variables:
+    - cluster_options_add_ons_is_kubernetes_dashboard_enabled
+    visible: true
+  - title: "Advanced Options"
+    variables:
+    - show_advanced
+    - generate_public_ssh_key
+    - public_ssh_key
+    - image_operating_system
+    - image_operating_system_version
+    - mock_mode_all
+    visible: true
+
+  - title: "Network Configuration"
+    variables:
+      - network_strategy 
+      - vcn_id 
+      - vcn_display_name 
+      - vcn_cidr_block 
+      - vcn_dns_label            
+      - subnet_type 
+      - subnet_span 
+      - subnet_id 
+      - subnet_display_name       
+      - subnet_cidr_block      
+      - subnet_dns_label
+    visible:
+      eq:
+      - ${show_advanced}
+      - Yes
+
+  - title: "Extras Hidden"
+    variables:
+      - user_ocid
+      - fingerprint
+      - private_key_path
+      - private_key_password
+      - ssh_public_key_openssh
+      - ssh_private_key_x
+      - network_cidrs
+      - cluster_options_admission_controller_options_is_pod_security_policy_enabled
+    visible: false
+
+variables:
+  compartment_ocid:
+    type: oci:identity:compartment:id
+    title: "Compartment"
+    description: "The compartment in which to create compute instance(s)"
+    required: true
+
+  cluster_name:
+    type: string
+    title: "Cluster Name Prefix"
+    default: "MuShop-cluster"
+    description: "OKE cluster name prefix"
+    required: true
+
+  k8s_version:
+    type: enum
+    enum:
+    - "v1.15.7"
+    - "v1.14.8"
+    title: "Kubernetes Version"
+    default: "v1.15.7"
+    description: "Kubernetes version installed on your master and worker nodes"
+    required: true
+
+  cluster_visibility:
+    type: enum
+    enum:
+    - "Private"
+    - "Public"
+    title: "Choose visibility type"
+    default: "Private"
+    description: "The Kubernetes worker nodes that are created will be hosted in public or private subnet(s)"
+    required: true
+
+  node_pool_shape:
+    type: oci:core:instanceshape:name
+    title: "Worker Node Shape"
+    description: "The shape for all nodes in the node pool."
+    required: true
+    dependsOn:
+      compartmentId: ${compartment_ocid}
+
+  num_pool_workers:
+    type: integer
+    title: "Number of Worker Nodes"
+    default: 1
+    description: "The number of worker nodes in the node pool."
+    minimum: 1
+    maximum: 1000
+    required: true
+
+  node_pool_name:
+    visible: #($show_advanced  == ""Yes"")
+      eq:
+        - show_advanced 
+        - "Yes"
+    type: string
+    title: "Node Pool Name"
+    default: "pool1"
+    description: "Name of the node pool"
+    required: true
+
+  cluster_options_add_ons_is_kubernetes_dashboard_enabled:
+    type: boolean
+    title: "Kubernetes Dashboard Enabled"
+    default: false
+
+  # Advanced Options
+  show_advanced:
+    type: enum
+    enum:
+    - "No"
+    - "Yes"
+    default: "No"
+    title: "Open Advanced Options"
+    required: true
+
+  generate_public_ssh_key:
+    visible: #($show_advanced  == ""Yes"")
+      eq:
+        - show_advanced 
+        - "Yes"
+    type: enum
+    enum:
+    - "No"
+    - "Yes"
+    default: "Yes"
+    title: "Auto generate public ssh key?"
+    required: true
+
+  public_ssh_key:
+    visible: #($show_advanced  == ""Yes"") + ($generate_public_ssh_key  == ""No"")
+      eq:
+        - generate_public_ssh_key 
+        - "No"
+        - show_advanced 
+        - "Yes"
+    type: string
+    title: "Input SSH public key"
+    description: "In order to access your private nodes with a public SSH key you will need to set up a bastion host (a.k.a. jump box)."
+    required: false
+
+  image_operating_system:
+    visible: #($show_advanced  == ""Yes"")
+      eq:
+        - show_advanced 
+        - "Yes"
+    type: enum
+    title: "Image OS"
+    description: "The OS/image installed on all nodes in the node pool."
+    enum:
+      - "Oracle Linux"
+    required: true
+    default: "Oracle Linux"    
+
+  image_operating_system_version:
+    visible: #($show_advanced  == ""Yes"")
+      eq:
+        - show_advanced 
+        - "Yes"
+    type: string
+    default: "7.7"
+    required: true
+    title: "Image OS Version"
+    description: "The OS/image version installed on all nodes in the node pool."    
+
+  mock_mode_all:
+    visible: #($show_advanced  == ""Yes"")
+      eq:
+        - show_advanced 
+        - "Yes"
+    type: boolean
+    default: true
+    required: true
+    title: "Enable Mock Mode"
+    description: "Enable Mock Mode for all Services"  
+
+  # deployer_shape:
+  #   visible: #($show_advanced  == ""Yes"")
+  #     eq:
+  #       - show_advanced 
+  #       - "Yes"
+  #   type: oci:core:instanceshape:name
+  #   required: true
+  #   title: "Deployer Shape"
+  #   description: "The Compute Shape used by the Deployer"  
+  #   dependsOn:
+  #     compartmentId: ${compartment_ocid}
+
+  # deployer_oci_cli_version:
+  #   visible: #($show_advanced  == ""Yes"")
+  #     eq:
+  #       - show_advanced 
+  #       - "Yes"
+  #   type: string
+  #   default: "2.9.9"
+  #   required: true
+  #   title: "Deployer oci cli version"
+  #   description: "OCI Cli version used by the deployer"  
+
+  # Network Type Options
+  network_strategy:
+    type: enum
+    title: Network Strategy
+    description: Create or use existing Network Stack (VCN and Subnet)
+    enum:
+      - "Create New VCN and Subnet"
+      - "Use Existing VCN and Subnet"
+    required: true
+    default: "Create New VCN and Subnet"
+
+  subnet_type:
+    visible: #($network_strategy  == ""Create New VCN and Subnet"")
+      eq:
+        - network_strategy 
+        - "Create New VCN and Subnet"
+    type: enum
+    title: Subnet Type
+    description: Choose between private and public subnets
+    enum:
+      - "Private Subnet"
+      - "Public Subnet"
+    required: true
+    default: "Public Subnet"
+
+  vcn_id:
+    visible: #($network_strategy  == "Use Existing VCN and Subnet")
+      eq:
+        - network_strategy 
+        - "Use Existing VCN and Subnet"
+    type: oci:core:vcn:id
+    dependsOn:
+      compartmentId: compartment_ocid 
+    required: true
+    title: Existing Network
+    description: An existing Virtual Cloud Network (VCN) in which to create the compute instances, network resources, and load balancers. If not specified, a new VCN is created.
+
+  vcn_cidr_block:
+    visible: #($network_strategy  == ""Create New VCN and Subnet"")
+      eq:
+        - network_strategy 
+        - "Create New VCN and Subnet"
+    type: string
+    required: true
+    default: 10.0.0.0/16
+    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+    title: VCN CIDR BLOCK
+    description: The CIDR of the new Virtual Cloud Network (VCN). If you plan to peer this VCN with another VCN, the VCNs must not have overlapping CIDRs.
+
+  subnet_cidr_block:
+    visible: #($network_strategy  == ""Create New VCN and Subnet"")
+      eq:
+        - network_strategy 
+        - "Create New VCN and Subnet"
+    type: string
+    default: 10.0.0.0/24
+    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+    required: true
+    title: Subnet CIDR
+    description: The CIDR of the new Subnet. The new subnet's CIDR should not overlap with any other subnet CIDRs.
+
+outputGroups:
+  - title: "Output"
+    outputs:
+      - ${instance_public_ip}
+      - ${instance_id}
+
+outputs:
+  application_url:
+    type: link
+    title: Go to Application VM URL
+    visible: false
+
+  instance_public_ip:
+    type: link
+    title: Public IP
+    visible: true
+  
+  instance_private_ip:
+    type: link
+    title: Private IP
+    visible: true
+  
+primaryOutputButton: ${application_url}
