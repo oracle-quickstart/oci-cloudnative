@@ -524,14 +524,19 @@ application features.</p>
 <td><code>metrics-server.enabled</code></td>
 </tr>
 <tr>
-<td><a href="https://github.com/helm/charts/blob/master/stable/nginx-ingress/README.md">Nginx Ingress</a></td>
+<td><a href="https://kubernetes.github.io/ingress-nginx/">Ingress Nginx</a></td>
 <td>Ingress controller and public Load Balancer</td>
-<td><code>nginx-ingress.enabled</code></td>
+<td><code>ingress-nginx.enabled</code></td>
 </tr>
 <tr>
 <td><a href="https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md">Service Catalog</a></td>
 <td>Service Catalog chart utilized by Oracle Service Broker</td>
 <td><code>catalog.enabled</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/jetstack/cert-manager/blob/master/README.md">Cert Manager</a></td>
+<td>x509 certificate management for Kubernetes</td>
+<td><code>cert-manager.enabled</code></td>
 </tr>
 </tbody>
 </table>
@@ -540,11 +545,6 @@ application features.</p>
 </blockquote>
 <p>From <code>deploy/complete/helm-chart</code> directory:</p>
 <ol>
-<li>
-<p>Add required helm repositories:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">helm repo add svc-cat https://svc-catalog-charts.storage.googleapis.com
-helm repo add stable https://kubernetes-charts.storage.googleapis.com
-</code></pre></div></li>
 <li>
 <p>Install chart dependencies:</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">helm dependency update setup
@@ -560,7 +560,7 @@ helm repo add stable https://kubernetes-charts.storage.googleapis.com
 </code></pre></li>
 <li>
 <p><strong>NOTE</strong> the public <code>EXTERNAL-IP</code> assigned to the ingress controller load balancer:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">kubectl get svc mushop-utils-nginx-ingress-controller <span class="se">\
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">kubectl get svc mushop-utils-ingress-nginx-controller <span class="se">\
 </span><span class="se"></span>  --namespace mushop-utilities
 </code></pre></div></li>
 </ol>

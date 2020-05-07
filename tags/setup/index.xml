@@ -18,7 +18,7 @@
       
       <guid>https://oracle-quickstart.github.io/oci-cloudnative/cloud/setup/</guid>
       <description>MuShop provides an umbrella helm chart called setup, which includes several recommended installations on the cluster. These represent common 3rd party services, which integrate with Oracle Cloud Infrastructure or enable certain application features.
-   Chart Purpose Option     Prometheus Service metrics aggregation prometheus.enabled   Grafana Infrastructure/service visualization dashboards grafana.enabled   Metrics Server Support for Horizontal Pod Autoscaling metrics-server.enabled   Nginx Ingress Ingress controller and public Load Balancer nginx-ingress.</description>
+   Chart Purpose Option     Prometheus Service metrics aggregation prometheus.enabled   Grafana Infrastructure/service visualization dashboards grafana.enabled   Metrics Server Support for Horizontal Pod Autoscaling metrics-server.enabled   Ingress Nginx Ingress controller and public Load Balancer ingress-nginx.</description>
     </item>
     
     <item>
