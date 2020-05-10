@@ -61,7 +61,7 @@ resource "helm_release" "ingress-nginx" {
   name       = "mushop-utils-ingress-nginx"
   repository = data.helm_repository.ingress-nginx.metadata[0].name
   chart      = "ingress-nginx/ingress-nginx"
-  version    = "2.0.2"
+  version    = "2.1.0"
   namespace  = kubernetes_namespace.mushop-utilities_namespace.id
   wait       = true
 
