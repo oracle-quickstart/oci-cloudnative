@@ -87,7 +87,6 @@ jenkins:
     tag: "lts"
     numExecutors: 0
     adminUser: "admin"
-    adminPassword: "Welcome1"
     resources:
       requests:
         cpu: "1000m"
@@ -96,7 +95,6 @@ jenkins:
         cpu: "2000m"
         memory: "4096Mi"
     hostAliases: []
-    # Use ClusterIP if your setup includes ingress controller
     serviceType: ClusterIP
     slaveListenerPort: 50000
     jenkinsUriPrefix: "/jenkins"
@@ -108,20 +106,10 @@ jenkins:
             serviceName: >-
               {{ template "jenkins.fullname" . }}
             servicePort: 8080
-
-      #hostName: build.voicea.app
-      # For Kubernetes v1.14+, use 'networking.k8s.io/v1beta1'
       apiVersion: "networking.k8s.io/v1beta1"
       labels: {}
       annotations:
         kubernetes.io/ingress.class: nginx
-        # kubernetes.io/tls-acme: "true"
-        # certmanager.k8s.io/cluster-issuer: letsencrypt-prod
-        # ingress.kubernetes.io/secure-backends: "true"
-      # tls:
-      #  - secretName: build.voicea.app
-      #    hosts:
-      #      - build.voicea.app
     installPlugins:
       - kubernetes:1.26.1
       - workflow-job:2.39
