@@ -30,6 +30,29 @@ how to access the Grafana application.
 
 {{- end }}
 
+{{- if .Values.jenkins.enabled }}
+
+## Jenkins
+
+An instance of Jenkins was installed with this chart. These instructions describe
+how to access the Jenkins application. 
+
+- Get the admin password:
+
+  kubectl get secret -n {{ .Release.Namespace }} {{ .Release.Name }}-jenkins \
+    -o jsonpath="{.data.jenkins-admin-password}" | base64 --decode ; echo
+
+- Access the dashboard with admin/<password>:
+  
+  kubectl port-forward -n {{ .Release.Namespace }} svc/{{ .Release.Name }}-jenkins 3001:8080
+
+- Then open http://localhost:3001/jenkins
+
+- Alternatively, if the ingress controller is enabled, you can access jenkins by opening http://<external-ip>/jenkins
+
+
+{{- end }}
+
 {{- $ingressConfig := index $.Values "ingress-nginx" -}}
 {{- if $ingressConfig.enabled }}
 
