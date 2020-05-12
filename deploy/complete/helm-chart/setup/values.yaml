@@ -10,6 +10,13 @@ metrics-server:
 # https://github.com/helm/charts/blob/master/stable/prometheus/README.md
 prometheus:
   enabled: true
+  extraScrapeConfigs: |
+    - job_name: 'ingress-nginx'
+      metrics_path: /metrics
+      scrape_interval: 5s
+      static_configs:
+        - targets:
+          - mushop-utils-ingress-nginx-controller-metrics:9913
 
 # https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md
 catalog:
@@ -18,6 +25,9 @@ catalog:
 # https://kubernetes.github.io/ingress-nginx/
 ingress-nginx:
   enabled: true
+  controller:
+    metrics:
+      enabled: true
 
 # https://github.com/jetstack/cert-manager/blob/master/README.md
 cert-manager:
