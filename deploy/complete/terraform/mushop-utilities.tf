@@ -29,7 +29,7 @@ resource "helm_release" "grafana" {
   name       = "mushop-utils-grafana" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = data.helm_repository.stable.metadata[0].name
   chart      = "grafana"
-  version    = "5.0.24"
+  version    = "5.0.25"
   namespace  = kubernetes_namespace.mushop-utilities_namespace.id
   wait       = false
 

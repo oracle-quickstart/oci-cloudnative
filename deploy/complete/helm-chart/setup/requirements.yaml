@@ -10,7 +10,7 @@ dependencies:
     repository: https://kubernetes-charts.storage.googleapis.com
   # Grafana
   - name: grafana
-    version: 5.0.24
+    version: 5.0.25
     condition: grafana.enabled
     repository: https://kubernetes-charts.storage.googleapis.com
   # HPA Metrics
