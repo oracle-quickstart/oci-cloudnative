@@ -17,7 +17,7 @@ resource "helm_release" "prometheus" {
   name       = "prometheus"
   repository = data.helm_repository.stable.metadata[0].name
   chart      = "prometheus"
-  version    = "11.1.6"
+  version    = "11.3.0"
   namespace  = kubernetes_namespace.mushop-utilities_namespace.id
   wait       = false
 
