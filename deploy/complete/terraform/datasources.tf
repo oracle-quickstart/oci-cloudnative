@@ -17,17 +17,12 @@ data "oci_identity_availability_domains" "ADs" {
   compartment_id = var.tenancy_ocid
 }
 
-resource "random_string" "deploy_id" {
-  length  = 4
-  special = false
-}
-
+# Gets kubeconfig
 data "oci_containerengine_cluster_kube_config" "oke_cluster_kube_config" {
   cluster_id = oci_containerengine_cluster.oke-mushop_cluster.id
 }
 
 # Helm repos
-
 ## stable
 data "helm_repository" "stable" {
   name = "stable"
@@ -52,4 +47,41 @@ data "helm_repository" "jetstack" {
 data "helm_repository" "ingress-nginx" {
   name = "ingress-nginx"
   url  = "https://kubernetes.github.io/ingress-nginx"
+}
+
+# OCI Services
+## Autonomous Database
+### Wallet
+data "oci_database_autonomous_database_wallet" "autonomous_database_wallet" {
+  autonomous_database_id = oci_database_autonomous_database.mushop_autonomous_database.id
+  password               = random_string.autonomous_database_wallet_password.result
+  generate_type          = var.autonomous_database_wallet_generate_type
+  base64_encode_content  = true
+}
+
+# Randoms
+resource "random_string" "deploy_id" {
+  length  = 4
+  special = false
+}
+
+### Passwords using random_string instead of random_password to be compatible with ORM (Need to update random provider)
+resource "random_string" "autonomous_database_wallet_password" {
+  length           = 16
+  special          = true
+  min_upper        = 3
+  min_lower        = 3
+  min_numeric      = 3
+  min_special      = 3
+  override_special = "{}#^*<>[]%~"
+}
+
+resource "random_string" "autonomous_database_admin_password" {
+  length           = 16
+  special          = true
+  min_upper        = 3
+  min_lower        = 3
+  min_numeric      = 3
+  min_special      = 3
+  override_special = "{}#^*<>[]%~"
 }
