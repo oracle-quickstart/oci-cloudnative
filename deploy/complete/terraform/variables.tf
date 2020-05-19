@@ -64,3 +64,54 @@ variable "network_cidrs" {
     ALL-CIDR                = "0.0.0.0/0"
   }
 }
+
+# MuShop
+variable "mushop_mock_mode_all" {
+  default = false
+}
+
+variable "db_admin_name" {
+  default = "oadb-admin"
+}
+
+variable "db_connection_name" {
+  default = "oadb-connection"
+}
+
+variable "db_wallet_name" {
+  default = "oadb-wallet"
+}
+
+# OCI Services
+## Autonomous Database
+variable "autonomous_database_cpu_core_count" {
+  default = 1
+}
+
+variable "autonomous_database_data_storage_size_in_tbs" {
+  default = 1
+}
+
+variable "autonomous_database_data_safe_status" {
+  default = "REGISTERED" # REGISTERED || NOT_REGISTERED
+}
+
+variable "autonomous_database_db_version" {
+  default = "19c"
+}
+
+variable "autonomous_database_license_model" {
+  default = "BRING_YOUR_OWN_LICENSE"
+}
+
+variable "autonomous_database_is_auto_scaling_enabled" {
+  default = false
+}
+
+variable "autonomous_database_is_free_tier" {
+  default = false
+}
+
+variable "autonomous_database_wallet_generate_type" {
+  default = "SINGLE"
+}
