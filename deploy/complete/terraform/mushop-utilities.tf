@@ -24,7 +24,7 @@ resource "helm_release" "prometheus" {
   depends_on = [helm_release.ingress-nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
 }
 
-## # https://github.com/helm/charts/blob/master/stable/grafana/README.md
+## https://github.com/helm/charts/blob/master/stable/grafana/README.md
 resource "helm_release" "grafana" {
   name       = "mushop-utils-grafana" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = data.helm_repository.stable.metadata[0].name
@@ -65,7 +65,7 @@ resource "helm_release" "ingress-nginx" {
   namespace  = kubernetes_namespace.mushop-utilities_namespace.id
   wait       = true
 
-  timeout = 600 # workaround to wait the node be active for other charts
+  timeout = 1800 # workaround to wait the node be active for other charts
 }
 
 ## https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md
