@@ -12,7 +12,7 @@ source:
 
 locale: "en"
 variableGroups:
-  - title: "Hidden"
+  - title: "Basic Hidden"
     variables:
     - compartment_ocid
     - tenancy_ocid
@@ -34,6 +34,12 @@ variableGroups:
     variables:
     - cluster_options_add_ons_is_kubernetes_dashboard_enabled
     visible: true
+  - title: "MuShop Features"
+    variables:
+    - mushop_mock_mode_all
+    - mushop_atp
+    - mushop_oss
+    visible: true
   - title: "Advanced Options"
     variables:
     - show_advanced
@@ -43,7 +49,6 @@ variableGroups:
     - image_operating_system_version
     - mock_mode_all
     visible: true
-
   - title: "Network Configuration"
     variables:
       - network_strategy 
@@ -72,6 +77,21 @@ variableGroups:
       - ssh_private_key_x
       - network_cidrs
       - cluster_options_admission_controller_options_is_pod_security_policy_enabled
+    visible: false
+
+  - title: "OCI Services Hidden"
+    variables:
+      - autonomous_database_cpu_core_count
+      - autonomous_database_data_storage_size_in_tbs
+      - autonomous_database_data_safe_status
+      - autonomous_database_db_version
+      - autonomous_database_license_model
+      - autonomous_database_is_auto_scaling_enabled
+      - autonomous_database_is_free_tier
+      - autonomous_database_wallet_generate_type
+      - db_admin_name
+      - db_connection_name
+      - db_wallet_name
     visible: false
 
 variables:
@@ -119,7 +139,7 @@ variables:
   num_pool_workers:
     type: integer
     title: "Number of Worker Nodes"
-    default: 1
+    # default: 1
     description: "The number of worker nodes in the node pool."
     minimum: 1
     maximum: 1000
@@ -211,6 +231,30 @@ variables:
     title: "Enable Mock Mode"
     description: "Enable Mock Mode for all Services"  
 
+  mushop_mock_mode_all:
+    visible: yes
+    type: boolean
+    default: false
+    required: true
+    title: "Enable Mock Mode"
+    description: "Enable Mock Mode for all Services"
+
+  mushop_atp:
+    visible: yes
+    type: boolean
+    default: true
+    required: true
+    title: "Deploy ATP for services"
+    description: "Enable Oracle Autonomous Database ATP for all Services"
+
+  mushop_oss:
+    visible: yes
+    type: boolean
+    default: true
+    required: true
+    title: "Deploy Streaming for services"
+    description: "Enable Oracle Streaming for all Services"
+
   # deployer_shape:
   #   visible: #($show_advanced  == ""Yes"")
   #     eq:
@@ -278,7 +322,7 @@ variables:
         - "Create New VCN and Subnet"
     type: string
     required: true
-    default: 10.0.0.0/16
+    default: 10.20.0.0/16
     pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
     title: VCN CIDR BLOCK
     description: The CIDR of the new Virtual Cloud Network (VCN). If you plan to peer this VCN with another VCN, the VCNs must not have overlapping CIDRs.
@@ -289,7 +333,7 @@ variables:
         - network_strategy 
         - "Create New VCN and Subnet"
     type: string
-    default: 10.0.0.0/24
+    default: 10.20.10.0/24
     pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
     required: true
     title: Subnet CIDR
