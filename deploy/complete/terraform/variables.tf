@@ -44,7 +44,7 @@ variable "num_pool_workers" {
   default = 2
 }
 variable "node_pool_shape" {
-  default = "VM.Standard.E2.1"
+  default = "VM.Standard.2.1"
 }
 variable "image_operating_system" {
   default = "Oracle Linux"

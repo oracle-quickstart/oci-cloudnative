@@ -73,10 +73,6 @@ variableGroups:
     variables:
       - user_ocid
       - fingerprint
-      - private_key_path
-      - private_key_password
-      - ssh_public_key_openssh
-      - ssh_private_key_x
       - network_cidrs
       - cluster_options_admission_controller_options_is_pod_security_policy_enabled
     visible: false
@@ -106,7 +102,6 @@ variables:
   cluster_name:
     type: string
     title: "Cluster Name Prefix"
-    default: "MuShop-cluster"
     description: "OKE cluster name prefix"
     required: true
 
@@ -126,7 +121,6 @@ variables:
     - "Private"
     - "Public"
     title: "Choose visibility type"
-    default: "Private"
     description: "The Kubernetes worker nodes that are created will be hosted in public or private subnet(s)"
     required: true
 
@@ -141,7 +135,6 @@ variables:
   num_pool_workers:
     type: integer
     title: "Number of Worker Nodes"
-    # default: 1
     description: "The number of worker nodes in the node pool."
     minimum: 1
     maximum: 1000
@@ -154,14 +147,12 @@ variables:
         - "Yes"
     type: string
     title: "Node Pool Name"
-    default: "pool1"
     description: "Name of the node pool"
     required: true
 
   cluster_options_add_ons_is_kubernetes_dashboard_enabled:
     type: boolean
     title: "Kubernetes Dashboard Enabled"
-    default: false
 
   # Advanced Options
   show_advanced:
@@ -209,7 +200,6 @@ variables:
     enum:
       - "Oracle Linux"
     required: true
-    default: "Oracle Linux"    
 
   image_operating_system_version:
     visible: #($show_advanced  == ""Yes"")
@@ -217,45 +207,32 @@ variables:
         - show_advanced 
         - "Yes"
     type: string
-    # default: "7.7"
     required: true
     title: "Image OS Version"
     description: "The OS/image version installed on all nodes in the node pool."    
 
-  mock_mode_all:
-    visible: #($show_advanced  == ""Yes"")
-      eq:
-        - show_advanced 
-        - "Yes"
-    type: boolean
-    default: true
-    required: true
-    title: "Enable Mock Mode"
-    description: "Enable Mock Mode for all Services"  
-
   mushop_mock_mode_all:
     visible: yes
     type: boolean
-    default: false
     required: true
     title: "Enable Mock Mode"
-    description: "Enable Mock Mode for all Services"
+    description: "Enable Mock Mode for MuShop all Services"
 
-  mushop_atp:
-    visible: yes
-    type: boolean
-    default: true
-    required: true
-    title: "Deploy ATP for services"
-    description: "Enable Oracle Autonomous Database ATP for all Services"
+  # mushop_atp:
+  #   visible: yes
+  #   type: boolean
+  #   default: true
+  #   required: true
+  #   title: "Deploy ATP for services"
+  #   description: "Enable Oracle Autonomous Database ATP for all Services"
 
-  mushop_oss:
-    visible: yes
-    type: boolean
-    default: true
-    required: true
-    title: "Deploy Streaming for services"
-    description: "Enable Oracle Streaming for all Services"
+  # mushop_oss:
+  #   visible: yes
+  #   type: boolean
+  #   default: true
+  #   required: true
+  #   title: "Deploy Streaming for services"
+  #   description: "Enable Oracle Streaming for all Services"
 
   # Network Type Options
   network_strategy:
