@@ -6,6 +6,7 @@
 ## Autonomous Database
 ### creates an ATP database
 resource "oci_database_autonomous_database" "mushop_autonomous_database" {
+  count = var.mushop_mock_mode_all ? 0 : 1
   admin_password           = random_string.autonomous_database_admin_password.result
   compartment_id           = var.compartment_ocid
   cpu_core_count           = var.autonomous_database_cpu_core_count
@@ -20,6 +21,7 @@ resource "oci_database_autonomous_database" "mushop_autonomous_database" {
 }
 
 resource "kubernetes_secret" "oadb-admin" {
+  count = var.mushop_mock_mode_all ? 0 : 1
   metadata {
     name      = var.db_admin_name
     namespace = kubernetes_namespace.mushop_namespace.id
@@ -31,6 +33,7 @@ resource "kubernetes_secret" "oadb-admin" {
 }
 
 resource "kubernetes_secret" "oadb-connection" {
+  count = var.mushop_mock_mode_all ? 0 : 1
   metadata {
     name      = var.db_connection_name
     namespace = kubernetes_namespace.mushop_namespace.id
@@ -44,16 +47,18 @@ resource "kubernetes_secret" "oadb-connection" {
 
 ### OADB Wallet extraction <>
 resource "kubernetes_secret" "oadb_wallet_zip" {
+  count = var.mushop_mock_mode_all ? 0 : 1
   metadata {
     name      = "oadb-wallet-zip"
     namespace = kubernetes_namespace.mushop_namespace.id
   }
   data = {
-    wallet = data.oci_database_autonomous_database_wallet.autonomous_database_wallet.content
+    wallet = data.oci_database_autonomous_database_wallet.autonomous_database_wallet[0].content
   }
   type = "Opaque"
 }
 resource "kubernetes_cluster_role" "secret_creator" {
+  count = var.mushop_mock_mode_all ? 0 : 1
   metadata {
     name = "secret-creator"
   }
@@ -64,27 +69,30 @@ resource "kubernetes_cluster_role" "secret_creator" {
   }
 }
 resource "kubernetes_cluster_role_binding" "wallet_extractor_crb" {
+  count = var.mushop_mock_mode_all ? 0 : 1
   metadata {
     name = "wallet-extractor-crb"
   }
   role_ref {
     api_group = "rbac.authorization.k8s.io"
     kind      = "ClusterRole"
-    name      = kubernetes_cluster_role.secret_creator.metadata.0.name
+    name      = kubernetes_cluster_role.secret_creator[0].metadata.0.name
   }
   subject {
     kind      = "ServiceAccount"
-    name      = kubernetes_service_account.wallet_extractor_sa.metadata.0.name
+    name      = kubernetes_service_account.wallet_extractor_sa[0].metadata.0.name
     namespace = kubernetes_namespace.mushop_namespace.id
   }
 }
 resource "kubernetes_service_account" "wallet_extractor_sa" {
+  count = var.mushop_mock_mode_all ? 0 : 1
   metadata {
     name      = "wallet-extractor-sa"
     namespace = kubernetes_namespace.mushop_namespace.id
   }
 }
 resource "kubernetes_job" "wallet_extractor_job" {
+  count = var.mushop_mock_mode_all ? 0 : 1
   metadata {
     name      = "wallet-extractor-job"
     namespace = kubernetes_namespace.mushop_namespace.id
@@ -115,7 +123,7 @@ resource "kubernetes_job" "wallet_extractor_job" {
           args    = ["kubectl create secret generic oadb-wallet --from-file=/wallet"]
           volume_mount {
             mount_path = "/var/run/secrets/kubernetes.io/serviceaccount"
-            name       = kubernetes_service_account.wallet_extractor_sa.default_secret_name
+            name       = kubernetes_service_account.wallet_extractor_sa[0].default_secret_name
             read_only  = true
           }
           volume_mount {
@@ -125,15 +133,15 @@ resource "kubernetes_job" "wallet_extractor_job" {
           }
         }
         volume {
-          name = kubernetes_service_account.wallet_extractor_sa.default_secret_name
+          name = kubernetes_service_account.wallet_extractor_sa[0].default_secret_name
           secret {
-            secret_name = kubernetes_service_account.wallet_extractor_sa.default_secret_name
+            secret_name = kubernetes_service_account.wallet_extractor_sa[0].default_secret_name
           }
         }
         volume {
           name = "wallet-zip"
           secret {
-            secret_name = kubernetes_secret.oadb_wallet_zip.metadata.0.name
+            secret_name = kubernetes_secret.oadb_wallet_zip[0].metadata.0.name
           }
         }
         volume {
