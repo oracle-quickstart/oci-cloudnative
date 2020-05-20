@@ -53,7 +53,7 @@ data "helm_repository" "ingress-nginx" {
 ## Kubernetes Service: mushop-utils-ingress-nginx-controller
 data "kubernetes_service" "mushop_ingress" {
   metadata {
-    name = "mushop-utils-ingress-nginx-controller"
+    name      = "mushop-utils-ingress-nginx-controller"
     namespace = "mushop-utilities"
   }
 }
@@ -62,7 +62,7 @@ data "kubernetes_service" "mushop_ingress" {
 ## Autonomous Database
 ### Wallet
 data "oci_database_autonomous_database_wallet" "autonomous_database_wallet" {
-  count = var.mushop_mock_mode_all ? 0 : 1
+  count                  = var.mushop_mock_mode_all ? 0 : 1
   autonomous_database_id = oci_database_autonomous_database.mushop_autonomous_database[0].id
   password               = random_string.autonomous_database_wallet_password.result
   generate_type          = var.autonomous_database_wallet_generate_type

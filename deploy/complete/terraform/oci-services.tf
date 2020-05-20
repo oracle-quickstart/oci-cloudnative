@@ -6,7 +6,7 @@
 ## Autonomous Database
 ### creates an ATP database
 resource "oci_database_autonomous_database" "mushop_autonomous_database" {
-  count = var.mushop_mock_mode_all ? 0 : 1
+  count                    = var.mushop_mock_mode_all ? 0 : 1
   admin_password           = random_string.autonomous_database_admin_password.result
   compartment_id           = var.compartment_ocid
   cpu_core_count           = var.autonomous_database_cpu_core_count
@@ -104,7 +104,7 @@ resource "kubernetes_job" "wallet_extractor_job" {
         init_container {
           name    = "wallet-extractor"
           image   = "busybox"
-          command = ["/bin/sh","-c"]
+          command = ["/bin/sh", "-c"]
           args    = ["base64 -d /tmp/zip/wallet > /tmp/wallet.zip && unzip /tmp/wallet.zip -d /wallet"]
           volume_mount {
             mount_path = "/tmp/zip"
@@ -119,7 +119,7 @@ resource "kubernetes_job" "wallet_extractor_job" {
         container {
           name    = "wallet-binding"
           image   = "bitnami/kubectl"
-          command = ["/bin/sh","-c"]
+          command = ["/bin/sh", "-c"]
           args    = ["kubectl create secret generic oadb-wallet --from-file=/wallet"]
           volume_mount {
             mount_path = "/var/run/secrets/kubernetes.io/serviceaccount"
