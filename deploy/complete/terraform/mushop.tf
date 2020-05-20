@@ -17,9 +17,30 @@ resource "helm_release" "mushop" {
   namespace = kubernetes_namespace.mushop_namespace.id
   wait      = false
 
-  values = [
-    file("${path.module}/../helm-chart/mushop/values-mock.yaml"),
-  ]
+  set_string {
+    name  = "global.mock.service"
+    value = var.mushop_mock_mode_all ? "all" : "false"
+  }
+  set {
+    name  = "global.oadbAdminSecret"
+    value = var.mushop_mock_mode_all ? "" : var.db_admin_name
+  }
+  set {
+    name  = "global.oadbConnectionSecret"
+    value = var.mushop_mock_mode_all ? "" : var.db_connection_name
+  }
+  set {
+    name  = "global.oadbWalletSecret"
+    value = var.mushop_mock_mode_all ? "" : var.db_wallet_name
+  }
+  set {
+    name  = "tags.atp"
+    value = var.mushop_mock_mode_all ? false : true
+  }
+  set {
+    name  = "tags.streaming"
+    value = var.mushop_mock_mode_all ? false : false
+  }
 
   depends_on = [helm_release.ingress-nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
 }
