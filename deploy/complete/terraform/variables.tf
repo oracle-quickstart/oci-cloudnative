@@ -41,10 +41,10 @@ variable "k8s_version" {
   default = "v1.15.7"
 }
 variable "num_pool_workers" {
-  default = 2
+  default = 3
 }
 variable "node_pool_shape" {
-  default = "VM.Standard.2.1"
+  default = "VM.Standard2.1"
 }
 variable "image_operating_system" {
   default = "Oracle Linux"
