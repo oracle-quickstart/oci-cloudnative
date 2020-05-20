@@ -14,3 +14,6 @@ region = "us-ashburn-1"
 
 # public_ssh_key
 public_ssh_key = ""
+
+# MuShop
+mushop_mock_mode_all = false # Set to true if do not want to provision ATP, ObjectStorage and mock all services
