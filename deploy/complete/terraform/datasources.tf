@@ -49,6 +49,15 @@ data "helm_repository" "ingress-nginx" {
   url  = "https://kubernetes.github.io/ingress-nginx"
 }
 
+# MuShop
+## Kubernetes Service: mushop-utils-ingress-nginx-controller
+data "kubernetes_service" "mushop_ingress" {
+  metadata {
+    name = "mushop-utils-ingress-nginx-controller"
+    namespace = "mushop-utilities"
+  }
+}
+
 # OCI Services
 ## Autonomous Database
 ### Wallet
