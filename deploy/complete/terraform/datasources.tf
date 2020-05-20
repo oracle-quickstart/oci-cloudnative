@@ -54,8 +54,9 @@ data "helm_repository" "ingress-nginx" {
 data "kubernetes_service" "mushop_ingress" {
   metadata {
     name      = "mushop-utils-ingress-nginx-controller"
-    namespace = "mushop-utilities"
+    namespace = kubernetes_namespace.mushop_utilities_namespace.id
   }
+  depends_on = [helm_release.ingress-nginx]
 }
 
 # OCI Services

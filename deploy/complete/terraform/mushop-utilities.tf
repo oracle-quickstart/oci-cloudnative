@@ -3,7 +3,7 @@
 # 
 
 # Create namespace mushop-utilities for supporting services
-resource "kubernetes_namespace" "mushop-utilities_namespace" {
+resource "kubernetes_namespace" "mushop_utilities_namespace" {
   metadata {
     name = "mushop-utilities"
   }
@@ -18,7 +18,7 @@ resource "helm_release" "prometheus" {
   repository = data.helm_repository.stable.metadata[0].name
   chart      = "prometheus"
   version    = "11.3.0"
-  namespace  = kubernetes_namespace.mushop-utilities_namespace.id
+  namespace  = kubernetes_namespace.mushop_utilities_namespace.id
   wait       = false
 
   depends_on = [helm_release.ingress-nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
@@ -30,7 +30,7 @@ resource "helm_release" "grafana" {
   repository = data.helm_repository.stable.metadata[0].name
   chart      = "grafana"
   version    = "5.0.25"
-  namespace  = kubernetes_namespace.mushop-utilities_namespace.id
+  namespace  = kubernetes_namespace.mushop_utilities_namespace.id
   wait       = false
 
   values = [
@@ -46,7 +46,7 @@ resource "helm_release" "metrics-server" {
   repository = data.helm_repository.stable.metadata[0].name
   chart      = "metrics-server"
   version    = "2.11.1"
-  namespace  = kubernetes_namespace.mushop-utilities_namespace.id
+  namespace  = kubernetes_namespace.mushop_utilities_namespace.id
   wait       = false
 
   values = [
@@ -62,7 +62,7 @@ resource "helm_release" "ingress-nginx" {
   repository = data.helm_repository.ingress-nginx.metadata[0].name
   chart      = "ingress-nginx/ingress-nginx"
   version    = "2.1.0"
-  namespace  = kubernetes_namespace.mushop-utilities_namespace.id
+  namespace  = kubernetes_namespace.mushop_utilities_namespace.id
   wait       = true
 
   timeout = 1800 # workaround to wait the node be active for other charts
@@ -74,7 +74,7 @@ resource "helm_release" "svc-cat" {
   repository = data.helm_repository.svc-cat.metadata[0].name
   chart      = "catalog"
   version    = "0.3.0-beta.2"
-  namespace  = kubernetes_namespace.mushop-utilities_namespace.id
+  namespace  = kubernetes_namespace.mushop_utilities_namespace.id
   wait       = false
 
   depends_on = [helm_release.ingress-nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
@@ -86,7 +86,7 @@ resource "helm_release" "cert-manager" {
   repository = data.helm_repository.jetstack.metadata[0].name
   chart      = "cert-manager"
   version    = "0.15.0"
-  namespace  = kubernetes_namespace.mushop-utilities_namespace.id
+  namespace  = kubernetes_namespace.mushop_utilities_namespace.id
   wait       = false
 
   set {
