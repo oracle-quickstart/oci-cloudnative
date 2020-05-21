@@ -43,4 +43,6 @@ resource "helm_release" "mushop" {
   }
 
   depends_on = [helm_release.ingress-nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
+
+  timeout = 120
 }
