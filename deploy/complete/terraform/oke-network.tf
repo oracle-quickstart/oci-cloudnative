@@ -72,3 +72,14 @@ resource "oci_core_internet_gateway" "oke-mushop_internet_gateway" {
   enabled        = true
   vcn_id         = oci_core_virtual_network.oke-mushop_vcn.id
 }
+
+resource "oci_core_service_gateway" "oke_mushop_service_gateway" {
+  compartment_id = var.compartment_ocid
+  display_name   = "oke-mushop-service-gateway-${random_string.deploy_id.result}"
+  vcn_id         = oci_core_virtual_network.oke-mushop_vcn.id
+  services {
+        service_id = lookup(data.oci_core_services.test_services.services[0], "id")
+  }
+
+  count = var.mushop_mock_mode_all ? 0 : 1
+}

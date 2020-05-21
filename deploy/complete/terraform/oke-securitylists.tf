@@ -21,6 +21,12 @@ resource oci_core_security_list oke-mushop_security_list {
     stateless        = false
   }
 
+  egress_security_rules {
+    destination      = lookup(data.oci_core_services.all_services.services[0], "cidr_block")
+    destination_type = "SERVICE_CIDR_BLOCK"
+    protocol         = "all"
+  }
+
   ingress_security_rules {
     source      = lookup(var.network_cidrs, "SUBNET-REGIONAL-CIDR")
     source_type = "CIDR_BLOCK"
