@@ -335,5 +335,10 @@ outputs:
     type: string
     title: dev
     displayText: dev note from A-Team
+  kubeconfig:
+    type: string
+    title: kubeconfig
+    displayText: kubeconfig for local kubectl run. Not used by ORM
+    visible: false
   
 primaryOutputButton: mushop_url_button
