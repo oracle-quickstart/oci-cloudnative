@@ -16,7 +16,7 @@ prometheus:
       scrape_interval: 5s
       static_configs:
         - targets:
-          - mushop-utils-ingress-nginx-controller-metrics:9913
+          - {{ .Release.Name }}-ingress-nginx-controller-metrics:9913
 
 # https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md
 catalog:
