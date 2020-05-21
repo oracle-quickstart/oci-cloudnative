@@ -60,6 +60,6 @@ resource "local_file" "kubeconfig" {
 
 # Generate ssh keys to access Worker Nodes, if generate_public_ssh_key=true, applies to the pool
 resource "tls_private_key" "oke_worker_node_ssh_key" {
-  algorithm   = "RSA"
-  rsa_bits = 2048
+  algorithm = "RSA"
+  rsa_bits  = 2048
 }

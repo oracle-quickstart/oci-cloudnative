@@ -78,7 +78,7 @@ resource "oci_core_service_gateway" "oke_mushop_service_gateway" {
   display_name   = "oke-mushop-service-gateway-${random_string.deploy_id.result}"
   vcn_id         = oci_core_virtual_network.oke_mushop_vcn.id
   services {
-        service_id = lookup(data.oci_core_services.all_services.services[0], "id")
+    service_id = lookup(data.oci_core_services.all_services.services[0], "id")
   }
 
   count = var.mushop_mock_mode_all ? 0 : 1
