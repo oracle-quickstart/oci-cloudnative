@@ -26,7 +26,7 @@ resource "oci_containerengine_node_pool" "oke-mushop_node_pool" {
   kubernetes_version = var.k8s_version
   name               = var.node_pool_name
   node_shape         = var.node_pool_shape
-  ssh_public_key     = var.public_ssh_key
+  ssh_public_key     = var.generate_public_ssh_key ? tls_private_key.oke_worker_node_ssh_key.public_key_openssh : var.public_ssh_key
 
   node_config_details {
     dynamic "placement_configs" {
@@ -52,8 +52,14 @@ resource "oci_containerengine_node_pool" "oke-mushop_node_pool" {
   }
 }
 
-## Local kubeconfig for when using Terraform locally. Not used by Oracle Resource Manager
+# Local kubeconfig for when using Terraform locally. Not used by Oracle Resource Manager
 resource "local_file" "kubeconfig" {
   content  = data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content
   filename = "generated/kubeconfig"
+}
+
+# Generate ssh keys to access Worker Nodes, if generate_public_ssh_key=true, applies to the pool
+resource "tls_private_key" "oke_worker_node_ssh_key" {
+  algorithm   = "RSA"
+  rsa_bits = 2048
 }

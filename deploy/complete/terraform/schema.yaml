@@ -167,18 +167,15 @@ variables:
       eq:
         - show_advanced 
         - "Yes"
-    type: enum
-    enum:
-    - "No"
-    - "Yes"
+    type: boolean
     title: "Auto generate public ssh key?"
     required: true
 
   public_ssh_key:
-    visible: #($show_advanced  == ""Yes"") + ($generate_public_ssh_key  == ""No"")
+    visible: #($show_advanced  == ""Yes"") + ($generate_public_ssh_key  == "false")
       eq:
         - generate_public_ssh_key 
-        - "No"
+        - false
         - show_advanced 
         - "Yes"
     type: string

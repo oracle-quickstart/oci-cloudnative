@@ -53,7 +53,7 @@ variable "image_operating_system_version" {
   default = "7.7"
 }
 variable "generate_public_ssh_key" {
-  default = "Yes"
+  default = true
 }
 
 # Network Details
