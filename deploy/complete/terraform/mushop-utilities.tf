@@ -7,7 +7,7 @@ resource "kubernetes_namespace" "mushop_utilities_namespace" {
   metadata {
     name = "mushop-utilities"
   }
-  depends_on = [oci_containerengine_node_pool.oke-mushop_node_pool]
+  depends_on = [oci_containerengine_node_pool.oke_mushop_node_pool]
 }
 
 # MuShop Utilities helm charts

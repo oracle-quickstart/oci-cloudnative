@@ -2,14 +2,14 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
-resource "oci_containerengine_cluster" "oke-mushop_cluster" {
+resource "oci_containerengine_cluster" "oke_mushop_cluster" {
   compartment_id     = var.compartment_ocid
   kubernetes_version = var.k8s_version
   name               = "${var.cluster_name}-${random_string.deploy_id.result}"
-  vcn_id             = oci_core_virtual_network.oke-mushop_vcn.id
+  vcn_id             = oci_core_virtual_network.oke_mushop_vcn.id
 
   options {
-    service_lb_subnet_ids = [oci_core_subnet.oke-mushop_lb_subnet.id]
+    service_lb_subnet_ids = [oci_core_subnet.oke_mushop_lb_subnet.id]
     add_ons {
       is_kubernetes_dashboard_enabled = var.cluster_options_add_ons_is_kubernetes_dashboard_enabled
       is_tiller_enabled               = false # Default is false, left here for reference
@@ -20,8 +20,8 @@ resource "oci_containerengine_cluster" "oke-mushop_cluster" {
   }
 }
 
-resource "oci_containerengine_node_pool" "oke-mushop_node_pool" {
-  cluster_id         = oci_containerengine_cluster.oke-mushop_cluster.id
+resource "oci_containerengine_node_pool" "oke_mushop_node_pool" {
+  cluster_id         = oci_containerengine_cluster.oke_mushop_cluster.id
   compartment_id     = var.compartment_ocid
   kubernetes_version = var.k8s_version
   name               = var.node_pool_name
@@ -34,7 +34,7 @@ resource "oci_containerengine_node_pool" "oke-mushop_node_pool" {
 
       content {
         availability_domain = placement_configs.value.name
-        subnet_id           = oci_core_subnet.oke-mushop_subnet.id
+        subnet_id           = oci_core_subnet.oke_mushop_subnet.id
       }
     }
     size = var.num_pool_workers

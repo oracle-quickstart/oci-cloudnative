@@ -19,7 +19,7 @@ data "oci_identity_availability_domains" "ADs" {
 
 # Gets kubeconfig
 data "oci_containerengine_cluster_kube_config" "oke_cluster_kube_config" {
-  cluster_id = oci_containerengine_cluster.oke-mushop_cluster.id
+  cluster_id = oci_containerengine_cluster.oke_mushop_cluster.id
 }
 
 # Helm repos
