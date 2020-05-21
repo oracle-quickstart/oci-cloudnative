@@ -14,6 +14,9 @@ output "grafana_url" {
   value       = format("http://%s/grafana", data.kubernetes_service.mushop_ingress.load_balancer_ingress[0].ip)
   description = "Grafana Dashboards URL"
 }
+output "external_ip" {
+  value = data.kubernetes_service.mushop_ingress.load_balancer_ingress[0].ip
+}
 output "autonomous_database_password" {
   value     = random_string.autonomous_database_wallet_password.result
   sensitive = true
@@ -24,8 +27,10 @@ output "dev" {
 output "comments" {
   value = "The application URL will be unavailable for a few minutes after provisioning, while the application is configured"
 }
-output "external_ip" {
-  value = data.kubernetes_service.mushop_ingress.load_balancer_ingress[0].ip
+output "kubeconfig_for_kubectl" {
+  value       = "export KUBECONFIG=./generated/kubeconfig"
+  description = "If using Terraform locally, this command set KUBECONFIG environment variable to run kubectl locally"
 }
+
 
 

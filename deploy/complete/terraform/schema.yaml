@@ -335,7 +335,7 @@ outputs:
     type: string
     title: dev
     displayText: dev note from A-Team
-  kubeconfig:
+  kubeconfig_for_kubectl:
     type: string
     title: kubeconfig
     displayText: kubeconfig for local kubectl run. Not used by ORM
