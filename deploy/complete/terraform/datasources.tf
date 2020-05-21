@@ -53,7 +53,7 @@ data "helm_repository" "ingress-nginx" {
 ## Kubernetes Service: mushop-utils-ingress-nginx-controller
 data "kubernetes_service" "mushop_ingress" {
   metadata {
-    name      = "mushop-utils-ingress-nginx-controller" # "mushop-utils" used just to follow the documentation examples
+    name      = "mushop-utils-ingress-nginx-controller" # mushop-utils included to be backwards compatible to the docs and setup chart install
     namespace = kubernetes_namespace.mushop_utilities_namespace.id
   }
   depends_on = [helm_release.ingress-nginx]
