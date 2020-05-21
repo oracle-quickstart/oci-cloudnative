@@ -52,6 +52,9 @@ variable "image_operating_system" {
 variable "image_operating_system_version" {
   default = "7.7"
 }
+variable "generate_public_ssh_key" {
+  default = "Yes"
+}
 
 # Network Details
 variable "network_cidrs" {
