@@ -49,7 +49,6 @@ variableGroups:
     - public_ssh_key
     - image_operating_system
     - image_operating_system_version
-    - mock_mode_all
     visible: true
   - title: "Network Configuration"
     variables:
@@ -111,7 +110,6 @@ variables:
     - "v1.15.7"
     - "v1.14.8"
     title: "Kubernetes Version"
-    default: "v1.15.7"
     description: "Kubernetes version installed on your master and worker nodes"
     required: true
 
@@ -173,7 +171,6 @@ variables:
     enum:
     - "No"
     - "Yes"
-    default: "Yes"
     title: "Auto generate public ssh key?"
     required: true
 
