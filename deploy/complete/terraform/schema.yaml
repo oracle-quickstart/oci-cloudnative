@@ -186,7 +186,7 @@ variables:
         - "Yes"
     type: string
     title: "Input SSH public key"
-    description: "In order to access your private nodes with a public SSH key you will need to set up a bastion host (a.k.a. jump box)."
+    description: "In order to access your private nodes with a public SSH key you will need to set up a bastion host (a.k.a. jump box). If using public nodes, bastion is not needed."
     required: false
 
   image_operating_system:
