@@ -70,6 +70,15 @@ data "oci_database_autonomous_database_wallet" "autonomous_database_wallet" {
   base64_encode_content  = true
 }
 
+## Available Services
+data "oci_core_services" "all_services" {
+  filter {
+    name   = "name"
+    values = ["All .* Services In Oracle Services Network"]
+    regex  = true
+  }
+}
+
 # Randoms
 resource "random_string" "deploy_id" {
   length  = 4
@@ -96,3 +105,4 @@ resource "random_string" "autonomous_database_admin_password" {
   min_special      = 3
   override_special = "{}#^*<>[]%~"
 }
+
