@@ -23,15 +23,15 @@ resource "helm_release" "mushop" {
   }
   set {
     name  = "global.oadbAdminSecret"
-    value = var.mushop_mock_mode_all ? "" : var.db_admin_name
+    value = var.db_admin_name
   }
   set {
     name  = "global.oadbConnectionSecret"
-    value = var.mushop_mock_mode_all ? "" : var.db_connection_name
+    value = var.db_connection_name
   }
   set {
     name  = "global.oadbWalletSecret"
-    value = var.mushop_mock_mode_all ? "" : var.db_wallet_name
+    value = var.db_wallet_name
   }
   set {
     name  = "tags.atp"
