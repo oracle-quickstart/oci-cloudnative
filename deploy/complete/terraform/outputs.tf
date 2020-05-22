@@ -21,6 +21,10 @@ output "autonomous_database_password" {
   value     = random_string.autonomous_database_wallet_password.result
   sensitive = true
 }
+output "grafana_admin_password" {
+  value     = data.kubernetes_secret.mushop_utils_grafana.data.admin-password
+  sensitive = true
+}
 output "dev" {
   value = "Made with \u2764 by Oracle A-Team"
 }

@@ -59,6 +59,15 @@ data "kubernetes_service" "mushop_ingress" {
   depends_on = [helm_release.ingress-nginx]
 }
 
+## Kubernetes Secret: Grafana Admin Password
+data "kubernetes_secret" "mushop_utils_grafana" {
+  metadata {
+    name      = "mushop-utils-grafana"
+    namespace = kubernetes_namespace.mushop_utilities_namespace.id
+  }
+  depends_on = [helm_release.grafana, helm_release.mushop]
+}
+
 # OCI Services
 ## Autonomous Database
 ### Wallet
