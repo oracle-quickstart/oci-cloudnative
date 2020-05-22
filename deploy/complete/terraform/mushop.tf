@@ -33,10 +33,10 @@ resource "helm_release" "mushop" {
     name  = "global.oadbWalletSecret"
     value = var.db_wallet_name
   }
-  set {
-    name  = "global.oosBucketSecret"
-    value = var.oos_bucket_name
-  }
+  # set {
+  #   name  = "global.oosBucketSecret" # Commented until come with solution to gracefull removal of objects when terraform destroy
+  #   value = var.oos_bucket_name
+  # }
   set {
     name  = "tags.atp"
     value = var.mushop_mock_mode_all ? false : true
