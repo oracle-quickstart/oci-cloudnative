@@ -174,14 +174,15 @@ variables:
 
   public_ssh_key:
     visible: #($show_advanced  == ""Yes"") + ($generate_public_ssh_key  == "false")
-      eq:
-        - generate_public_ssh_key 
-        - false
-        - show_advanced 
-        - "Yes"
+      and:
+        - eq:
+          - show_advanced 
+          - "Yes"
+        - not:
+          - generate_public_ssh_key
     type: string
     title: "Input SSH public key"
-    description: "In order to access your private nodes with a public SSH key you will need to set up a bastion host (a.k.a. jump box). If using public nodes, bastion is not needed."
+    description: "In order to access your private nodes with a public SSH key you will need to set up a bastion host (a.k.a. jump box). If using public nodes, bastion is not needed. Left blank to not import keys."
     required: false
 
   image_operating_system:
@@ -252,7 +253,7 @@ variables:
       - "Private Subnet"
       - "Public Subnet"
     required: true
-    default: "Public Subnet"
+    default: "Private Subnet"
 
   vcn_id:
     visible: #($network_strategy  == "Use Existing VCN and Subnet")
