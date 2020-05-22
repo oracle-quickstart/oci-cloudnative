@@ -70,8 +70,8 @@ resource "helm_release" "ingress-nginx" {
   wait       = true
 
   set {
-      name  = "controller.metrics.enable"
-      value = true
+    name  = "controller.metrics.enable"
+    value = true
   }
 
   timeout = 1800 # workaround to wait the node be active for other charts
