@@ -21,6 +21,10 @@ resource "helm_release" "prometheus" {
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
   wait       = false
 
+  values = [
+    file("${path.module}/chart-values/prometheus.yaml"),
+  ]
+
   depends_on = [helm_release.ingress-nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
 }
 
