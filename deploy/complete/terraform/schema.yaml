@@ -89,6 +89,7 @@ variableGroups:
       - db_admin_name
       - db_connection_name
       - db_wallet_name
+      - oos_bucket_name
     visible: false
 
 variables:

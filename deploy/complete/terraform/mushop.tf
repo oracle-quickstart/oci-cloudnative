@@ -34,6 +34,10 @@ resource "helm_release" "mushop" {
     value = var.db_wallet_name
   }
   set {
+    name  = "global.oosBucketSecret"
+    value = var.oos_bucket_name
+  }
+  set {
     name  = "tags.atp"
     value = var.mushop_mock_mode_all ? false : true
   }

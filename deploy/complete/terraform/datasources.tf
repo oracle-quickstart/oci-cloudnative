@@ -79,6 +79,11 @@ data "oci_core_services" "all_services" {
   }
 }
 
+## Object Storage
+data "oci_objectstorage_namespace" "ns" {
+  compartment_id = var.compartment_ocid
+}
+
 # Randoms
 resource "random_string" "deploy_id" {
   length  = 4

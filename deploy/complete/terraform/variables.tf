@@ -85,6 +85,10 @@ variable "db_wallet_name" {
   default = "oadb-wallet"
 }
 
+variable "oos_bucket_name" {
+  default = "oos-bucket"
+}
+
 # OCI Services
 ## Autonomous Database
 variable "autonomous_database_cpu_core_count" {
