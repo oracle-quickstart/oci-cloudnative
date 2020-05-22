@@ -1,21 +1,21 @@
 dependencies:
 - name: prometheus
   repository: https://kubernetes-charts.storage.googleapis.com
-  version: 11.1.5
+  version: 11.3.0
 - name: grafana
   repository: https://kubernetes-charts.storage.googleapis.com
-  version: 5.0.20
+  version: 5.0.25
 - name: metrics-server
   repository: https://kubernetes-charts.storage.googleapis.com
   version: 2.11.1
 - name: ingress-nginx
   repository: https://kubernetes.github.io/ingress-nginx
-  version: 2.0.2
+  version: 2.1.0
 - name: catalog
   repository: https://svc-catalog-charts.storage.googleapis.com
   version: 0.3.0-beta.2
 - name: cert-manager
   repository: https://charts.jetstack.io
-  version: v0.15-alpha.3
-digest: sha256:1e9ae93188d05ab1c34d354de48df0a8b4730da94956cb14feb4a7b084240f59
-generated: "2020-05-06T17:08:59.300353-05:00"
+  version: v0.15.0
+digest: sha256:920a4254b36b9dc3b68fcba8b51931ba7a6dd150c40ce065857c2a584237b5b0
+generated: "2020-05-18T19:46:04.576498-05:00"

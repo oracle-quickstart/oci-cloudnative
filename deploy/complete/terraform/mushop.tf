@@ -7,7 +7,7 @@ resource "kubernetes_namespace" "mushop_namespace" {
   metadata {
     name = "mushop"
   }
-  depends_on = [oci_containerengine_node_pool.oke-mushop_node_pool]
+  depends_on = [oci_containerengine_node_pool.oke_mushop_node_pool]
 }
 
 # Deploy mushop chart
@@ -17,9 +17,36 @@ resource "helm_release" "mushop" {
   namespace = kubernetes_namespace.mushop_namespace.id
   wait      = false
 
-  values = [
-    file("${path.module}/../helm-chart/mushop/values-mock.yaml"),
-  ]
+  set_string {
+    name  = "global.mock.service"
+    value = var.mushop_mock_mode_all ? "all" : "false"
+  }
+  set {
+    name  = "global.oadbAdminSecret"
+    value = var.db_admin_name
+  }
+  set {
+    name  = "global.oadbConnectionSecret"
+    value = var.db_connection_name
+  }
+  set {
+    name  = "global.oadbWalletSecret"
+    value = var.db_wallet_name
+  }
+  # set {
+  #   name  = "global.oosBucketSecret" # Commented until come with solution to gracefull removal of objects when terraform destroy
+  #   value = var.oos_bucket_name
+  # }
+  set {
+    name  = "tags.atp"
+    value = var.mushop_mock_mode_all ? false : true
+  }
+  set {
+    name  = "tags.streaming"
+    value = var.mushop_mock_mode_all ? false : false
+  }
 
   depends_on = [helm_release.ingress-nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
+
+  timeout = 500
 }

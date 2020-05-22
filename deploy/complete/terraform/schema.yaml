@@ -3,16 +3,18 @@
 # 
 
 title: "MuShop App"
-description: "Oracle Container Engine (OKE) stack for MuShop App"
+description: "Oracle Container Engine (OKE) stack for MuShop CloudNative App"
 schemaVersion: 1.1.0
 version: "20190304"
+
+logoUrl: data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgMTI4IDEyOCI+CiAgPGRlZnM+CiAgICA8ZmlsdGVyIGlkPSJQYXRoXzI3IiB4PSIwIiB5PSIwIiB3aWR0aD0iNjguMjciIGhlaWdodD0iNjIuOTUxIiBmaWx0ZXJVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8ZmVPZmZzZXQgZHg9IjEiIGR5PSIzIiBpbnB1dD0iU291cmNlQWxwaGEiLz4KICAgICAgPGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0iMyIgcmVzdWx0PSJibHVyIi8+CiAgICAgIDxmZUZsb29kIGZsb29kLW9wYWNpdHk9IjAuNTAyIi8+CiAgICAgIDxmZUNvbXBvc2l0ZSBvcGVyYXRvcj0iaW4iIGluMj0iYmx1ciIvPgogICAgICA8ZmVDb21wb3NpdGUgaW49IlNvdXJjZUdyYXBoaWMiLz4KICAgIDwvZmlsdGVyPgogICAgPGZpbHRlciBpZD0icGF0aDUiIHg9IjE3LjYzNyIgeT0iMTEuNCIgd2lkdGg9IjMyLjUzNyIgaGVpZ2h0PSIzOS4xNzMiIGZpbHRlclVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CiAgICAgIDxmZU9mZnNldCBkeT0iMyIgaW5wdXQ9IlNvdXJjZUFscGhhIi8+CiAgICAgIDxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjMiIHJlc3VsdD0iYmx1ci0yIi8+CiAgICAgIDxmZUZsb29kIGZsb29kLW9wYWNpdHk9IjAuMjc1Ii8+CiAgICAgIDxmZUNvbXBvc2l0ZSBvcGVyYXRvcj0iaW4iIGluMj0iYmx1ci0yIi8+CiAgICAgIDxmZUNvbXBvc2l0ZSBpbj0iU291cmNlR3JhcGhpYyIvPgogICAgPC9maWx0ZXI+CiAgPC9kZWZzPgogIDxnIGlkPSJHcm91cF81MCIgZGF0YS1uYW1lPSJHcm91cCA1MCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTIzIC0xNzUpIj4KICAgIDxnIGlkPSJHcm91cF80NCIgZGF0YS1uYW1lPSJHcm91cCA0NCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3IC0yMjcpIj4KICAgICAgPGcgaWQ9ImFpbHVyb3BoaWxlIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1Ni4xNDYgNDI0KSI+CiAgICAgICAgPHBhdGggaWQ9IlBhdGhfMjIiIGRhdGEtbmFtZT0iUGF0aCAyMiIgZD0iTTkyLjQxOSwzOS45M2MxLjM2Ni0zLjc1MywyLjQ1Mi05LjI4OC0uMTM0LTE0LjM0MkExNC4xNTcsMTQuMTU3LDAsMCwxLDkwLjgsMTkuMDc3Yy4wMzYtNi4wNzEuMTI4LTEyLjM5NS4yLTE2LjYzMUEyLjQsMi40LDAsMCwwLDg2Ljg4LjcyNmwtOS41MTUsOS43MjZhMjQuNDcxLDI0LjQ3MSwwLDAsMC0xNC4yOTMsMS4wMzVjLTIuNjg1LTIuNjA2LTcuNzE1LTcuMDI5LTEwLjYtOS41NGEyLjM3LDIuMzcsMCwwLDAtMi42MjMtLjM1MiwyLjQsMi40LDAsMCwwLTEuMzU4LDIuMjc1bC42ODEsMTUuMTUyYTQyLjQ2LDQyLjQ2LDAsMCwxLS43NjksMTAuMjQzQTU4LjY2NCw1OC42NjQsMCwwLDAsNDcuMiw0My40NTksMjYuNzE2LDI2LjcxNiwwLDAsMCwzMi44NzksNDkuNWMtNy44MDYsNi4zMjItMTIuODU3LDE2LjYyMS0xNS4wMTIsMzAuNjEzYTEuMTUsMS4xNSwwLDAsMCwyLjI3NC4zNUMyMi4yMDcsNjcuMDU3LDI2Ljk4LDU3LjI0MSwzNC4zMjcsNTEuMjljNi41NjgtNS4zMTksMTIuOS01LjU4OSwxNC4xLTUuNTg5YTEuMTUsMS4xNSwwLDAsMCwxLjE0Ni0xLjI0OCw1NC41NTksNTQuNTU5LDAsMCwxLDEuMDg4LTE0LjczNyw0NC43NDgsNDQuNzQ4LDAsMCwwLC44MTItMTAuOEw1MC43OTIsMy43NjZhLjA5MS4wOTEsMCwwLDEsLjA1OS0uMS4wODcuMDg3LDAsMCwxLC4xMTIuMDE1YzMuMDY3LDIuNjcxLDguNTc2LDcuNTE3LDExLjAyLDkuOTYyYTEuMTUsMS4xNSwwLDAsMCwxLjI0OC4yNTIsMjIuMDU5LDIyLjA1OSwwLDAsMSwxNC4xMDctMS4wNiwxLjE1MSwxLjE1MSwwLDAsMCwxLjE5Mi0uMjg1TDg4LjUyNCwyLjMzNWEuMDg5LjA4OSwwLDAsMSwuMTE2LS4wMjQuMDg2LjA4NiwwLDAsMSwuMDYzLjFjLS4wNzIsNC4yNDItLjE2NCwxMC41NzUtLjIsMTYuNjU2YTE2LjQ2OCwxNi40NjgsMCwwLDAsMS43MzMsNy41NzNjMi4yMDgsNC4zMTYsMS4yMyw5LjE4My4wMiwxMi41MDdhMTYuNzUyLDE2Ljc1MiwwLDAsMC0uNTA2LDkuNzVjMS42NTQsNi43NDQsMy4zNTgsMTkuOS0zLjgxNywzMi4yMjRhMS4xNSwxLjE1LDAsMSwwLDEuOTg4LDEuMTU3YzcuNTgxLTEzLjAyNCw1LjgtMjYuODQ4LDQuMDYzLTMzLjkzQTE0LjQ2MSwxNC40NjEsMCwwLDEsOTIuNDE5LDM5LjkzWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAwKSIvPgogICAgICAgIDxwYXRoIGlkPSJQYXRoXzIzIiBkYXRhLW5hbWU9IlBhdGggMjMiIGQ9Ik0yNDQuMDA4LDEyOS42ODVhMS4xNSwxLjE1LDAsMCwwLDIuMywwLDQuNyw0LjcsMCwwLDAtOS4zOTQsMCwxLjE1LDEuMTUsMCwwLDAsMi4zLDAsMi40LDIuNCwwLDAsMSw0Ljc5MywwWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ny4wNjIgLTEwMS4wMjUpIi8+CiAgICAgICAgPHBhdGggaWQ9IlBhdGhfMjQiIGRhdGEtbmFtZT0iUGF0aCAyNCIgZD0iTTMyNS42MTQsMTI0Ljk4OGE0LjcsNC43LDAsMCwwLTQuNyw0LjcsMS4xNSwxLjE1LDAsMSwwLDIuMywwLDIuNCwyLjQsMCwwLDEsNC43OTMsMCwxLjE1LDEuMTUsMCwxLDAsMi4zLDBBNC43LDQuNywwLDAsMCwzMjUuNjE0LDEyNC45ODhaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMjQ0Ljk2IC0xMDEuMDI1KSIvPgogICAgICAgIDxwYXRoIGlkPSJQYXRoXzI1IiBkYXRhLW5hbWU9IlBhdGggMjUiIGQ9Ik0yNzQuOTU3LDE4Mi41MTdhMS4xNSwxLjE1LDAsMCwwLTEuMTUsMS4xNSwzLjMsMy4zLDAsMSwxLTYuNjA2LDAsMS4xNSwxLjE1LDAsMCwwLTIuMywwLDMuMywzLjMsMCwxLDEtNi42MDYsMCwxLjE1LDEuMTUsMCwwLDAtMi4zLDAsNS42LDUuNiwwLDAsMCwxMC4wNTcsMy40LDUuNiw1LjYsMCwwLDAsMTAuMDU3LTMuNEExLjE1LDEuMTUsMCwwLDAsMjc0Ljk1NywxODIuNTE3WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE5Mi40ODMgLTE0Ny41MjUpIi8+CiAgICAgIDwvZz4KICAgIDwvZz4KICAgIDxnIGlkPSJjb252ZXJzYXRpb24tc3BlZWNoLWJ1YmJsZXMtIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5NSwgLTAuMTA1LCAwLjEwNSwgMC45OTUsIDMyLjI2NSwgMTk4LjYwMSkiPgogICAgICA8ZyB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5LCAwLjEsIC0wLjEsIDAuOTksIC02LjgyLCAtMTAuNjgpIiBmaWx0ZXI9InVybCgjUGF0aF8yNykiPgogICAgICAgIDxwYXRoIGlkPSJQYXRoXzI3LTIiIGRhdGEtbmFtZT0iUGF0aCAyNyIgZD0iTTIzLjE1NC45MzVjMTIuNzg4LDAsMjMuMTU0LDguMTg5LDIzLjE1NCwxOC4yODdhMTYuMzY0LDE2LjM2NCwwLDAsMS02LjEzMiwxMi40Yy4xNDYsMy4xNzUuOCw3LjQ0NCwzLjExNiw5LjY0Ni00LjQyMiwwLTguOTUxLTIuOTI2LTExLjYzNi01LjAzNGEyOC40NjMsMjguNDYzLDAsMCwxLTguNSwxLjI3N0MxMC4zNjYsMzcuNTA5LDAsMjkuMzIsMCwxOS4yMjJTMTAuMzY2LjkzNSwyMy4xNTQuOTM1WiIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OSwgLTAuMSwgMC4xLCAwLjk5LCA3LjksIDkuOTEpIiBvcGFjaXR5PSIwLjA5NyIvPgogICAgICA8L2c+CiAgICA8L2c+CiAgICA8ZyB0cmFuc2Zvcm09Im1hdHJpeCgxLCAwLCAwLCAxLCAyNC4zNiwgMTg4LjY5KSIgZmlsdGVyPSJ1cmwoI3BhdGg1KSI+CiAgICAgIDxwYXRoIGlkPSJwYXRoNS0yIiBkYXRhLW5hbWU9InBhdGg1IiBkPSJNMTYuODksMjQuNTA4aDBhMi4zNCwyLjM0LDAsMCwwLDIuNTI4LDIuMjEyQTMuMzMyLDMuMzMyLDAsMCwwLDIyLjEsMjUuM2MwLS4xNTgtLjE1OC0uNDc0LS4zMTYtLjQ3NHMtLjMxNi40NzQtMS4xMDYuNDc0Yy0xLjI2NCwwLTEuMjY0LTEuMjY0LTEuMjY0LTIuNjg2VjEyLjY1N2MtLjc5LDAtMS43MzguMzE2LTIuNTI4LjMxNlYyMy4wODZBNi4yMTksNi4yMTksMCwwLDEsMTIuNzgxLDI1LjNjLTEuOSwwLTIuMzctMS41OC0yLjM3LTMuNDc2VjE1LjY1OWMwLTEuMTA2LS4xNTgtMy0uMTU4LTMtLjk0OCwwLTEuOS4zMTYtMi42ODYuMzE2LDAsMCwuMzE2LDIuMzcuMzE2LDMuMzE4djUuODQ2YzAsMS45LjMxNiwzLjQ3Ni4zMTYsNC41ODIsMCwxLjktLjQ3NCwzLjMxOC0uNDc0LDUuMDU2QTIuMjE0LDIuMjE0LDAsMCwwLDkuNDYzLDMzLjgzYy43OSwwLDEuNDIyLS42MzIsMS40MjItMS45LDAtMS40MjItMS4xMDYtMy42MzQtMS4xMDYtNS42ODgsMC0uMTU4LjE1OC0uMzE2LjQ3NC0uMzE2YTIuMzY3LDIuMzY3LDAsMCwwLDEuOS43OUE1LjkyNCw1LjkyNCwwLDAsMCwxNi44OSwyNC41MDhaTTE2Ljg5LDI0LjUwOFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE5LjA3IDQuNzQpIi8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4=
 
 source:
   type: quickstart
 
 locale: "en"
 variableGroups:
-  - title: "Hidden"
+  - title: "Basic Hidden"
     variables:
     - compartment_ocid
     - tenancy_ocid
@@ -34,6 +36,12 @@ variableGroups:
     variables:
     - cluster_options_add_ons_is_kubernetes_dashboard_enabled
     visible: true
+  - title: "MuShop Features"
+    variables:
+    - mushop_mock_mode_all
+    - mushop_atp
+    - mushop_oss
+    visible: true
   - title: "Advanced Options"
     variables:
     - show_advanced
@@ -41,9 +49,7 @@ variableGroups:
     - public_ssh_key
     - image_operating_system
     - image_operating_system_version
-    - mock_mode_all
     visible: true
-
   - title: "Network Configuration"
     variables:
       - network_strategy 
@@ -66,12 +72,24 @@ variableGroups:
     variables:
       - user_ocid
       - fingerprint
-      - private_key_path
-      - private_key_password
-      - ssh_public_key_openssh
-      - ssh_private_key_x
       - network_cidrs
       - cluster_options_admission_controller_options_is_pod_security_policy_enabled
+    visible: false
+
+  - title: "OCI Services Hidden"
+    variables:
+      - autonomous_database_cpu_core_count
+      - autonomous_database_data_storage_size_in_tbs
+      - autonomous_database_data_safe_status
+      - autonomous_database_db_version
+      - autonomous_database_license_model
+      - autonomous_database_is_auto_scaling_enabled
+      - autonomous_database_is_free_tier
+      - autonomous_database_wallet_generate_type
+      - db_admin_name
+      - db_connection_name
+      - db_wallet_name
+      - oos_bucket_name
     visible: false
 
 variables:
@@ -84,7 +102,6 @@ variables:
   cluster_name:
     type: string
     title: "Cluster Name Prefix"
-    default: "MuShop-cluster"
     description: "OKE cluster name prefix"
     required: true
 
@@ -94,7 +111,6 @@ variables:
     - "v1.15.7"
     - "v1.14.8"
     title: "Kubernetes Version"
-    default: "v1.15.7"
     description: "Kubernetes version installed on your master and worker nodes"
     required: true
 
@@ -104,7 +120,6 @@ variables:
     - "Private"
     - "Public"
     title: "Choose visibility type"
-    default: "Private"
     description: "The Kubernetes worker nodes that are created will be hosted in public or private subnet(s)"
     required: true
 
@@ -119,7 +134,6 @@ variables:
   num_pool_workers:
     type: integer
     title: "Number of Worker Nodes"
-    default: 1
     description: "The number of worker nodes in the node pool."
     minimum: 1
     maximum: 1000
@@ -132,14 +146,12 @@ variables:
         - "Yes"
     type: string
     title: "Node Pool Name"
-    default: "pool1"
     description: "Name of the node pool"
     required: true
 
   cluster_options_add_ons_is_kubernetes_dashboard_enabled:
     type: boolean
     title: "Kubernetes Dashboard Enabled"
-    default: false
 
   # Advanced Options
   show_advanced:
@@ -156,24 +168,21 @@ variables:
       eq:
         - show_advanced 
         - "Yes"
-    type: enum
-    enum:
-    - "No"
-    - "Yes"
-    default: "Yes"
+    type: boolean
     title: "Auto generate public ssh key?"
     required: true
 
   public_ssh_key:
-    visible: #($show_advanced  == ""Yes"") + ($generate_public_ssh_key  == ""No"")
-      eq:
-        - generate_public_ssh_key 
-        - "No"
-        - show_advanced 
-        - "Yes"
+    visible: #($show_advanced  == ""Yes"") + ($generate_public_ssh_key  == "false")
+      and:
+        - eq:
+          - show_advanced 
+          - "Yes"
+        - not:
+          - generate_public_ssh_key
     type: string
     title: "Input SSH public key"
-    description: "In order to access your private nodes with a public SSH key you will need to set up a bastion host (a.k.a. jump box)."
+    description: "In order to access your private nodes with a public SSH key you will need to set up a bastion host (a.k.a. jump box). If using public nodes, bastion is not needed. Left blank to not import keys."
     required: false
 
   image_operating_system:
@@ -187,7 +196,6 @@ variables:
     enum:
       - "Oracle Linux"
     required: true
-    default: "Oracle Linux"    
 
   image_operating_system_version:
     visible: #($show_advanced  == ""Yes"")
@@ -195,44 +203,32 @@ variables:
         - show_advanced 
         - "Yes"
     type: string
-    default: "7.7"
     required: true
     title: "Image OS Version"
     description: "The OS/image version installed on all nodes in the node pool."    
 
-  mock_mode_all:
-    visible: #($show_advanced  == ""Yes"")
-      eq:
-        - show_advanced 
-        - "Yes"
+  mushop_mock_mode_all:
+    visible: yes
     type: boolean
-    default: true
     required: true
     title: "Enable Mock Mode"
-    description: "Enable Mock Mode for all Services"  
+    description: "Enable Mock Mode for MuShop all Services"
 
-  # deployer_shape:
-  #   visible: #($show_advanced  == ""Yes"")
-  #     eq:
-  #       - show_advanced 
-  #       - "Yes"
-  #   type: oci:core:instanceshape:name
+  # mushop_atp:
+  #   visible: yes
+  #   type: boolean
+  #   default: true
   #   required: true
-  #   title: "Deployer Shape"
-  #   description: "The Compute Shape used by the Deployer"  
-  #   dependsOn:
-  #     compartmentId: ${compartment_ocid}
+  #   title: "Deploy ATP for services"
+  #   description: "Enable Oracle Autonomous Database ATP for all Services"
 
-  # deployer_oci_cli_version:
-  #   visible: #($show_advanced  == ""Yes"")
-  #     eq:
-  #       - show_advanced 
-  #       - "Yes"
-  #   type: string
-  #   default: "2.9.9"
+  # mushop_oss:
+  #   visible: yes
+  #   type: boolean
+  #   default: true
   #   required: true
-  #   title: "Deployer oci cli version"
-  #   description: "OCI Cli version used by the deployer"  
+  #   title: "Deploy Streaming for services"
+  #   description: "Enable Oracle Streaming for all Services"
 
   # Network Type Options
   network_strategy:
@@ -241,7 +237,7 @@ variables:
     description: Create or use existing Network Stack (VCN and Subnet)
     enum:
       - "Create New VCN and Subnet"
-      - "Use Existing VCN and Subnet"
+      # - "Use Existing VCN and Subnet"
     required: true
     default: "Create New VCN and Subnet"
 
@@ -257,7 +253,7 @@ variables:
       - "Private Subnet"
       - "Public Subnet"
     required: true
-    default: "Public Subnet"
+    default: "Private Subnet"
 
   vcn_id:
     visible: #($network_strategy  == "Use Existing VCN and Subnet")
@@ -278,7 +274,7 @@ variables:
         - "Create New VCN and Subnet"
     type: string
     required: true
-    default: 10.0.0.0/16
+    default: 10.20.0.0/16
     pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
     title: VCN CIDR BLOCK
     description: The CIDR of the new Virtual Cloud Network (VCN). If you plan to peer this VCN with another VCN, the VCNs must not have overlapping CIDRs.
@@ -289,32 +285,62 @@ variables:
         - network_strategy 
         - "Create New VCN and Subnet"
     type: string
-    default: 10.0.0.0/24
+    default: 10.20.10.0/24
     pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
     required: true
     title: Subnet CIDR
     description: The CIDR of the new Subnet. The new subnet's CIDR should not overlap with any other subnet CIDRs.
 
 outputGroups:
-  - title: "Output"
+  - title: Mushop endpoints
     outputs:
-      - ${instance_public_ip}
-      - ${instance_id}
+      - mushop_url
+      - grafana_url
+      - external_ip
+  - title: Passwords
+    outputs:
+      - autonomous_database_password
+      - grafana_admin_password
+  - title: Comments
+    outputs:
+      - comments
+      - dev
 
 outputs:
-  application_url:
+  mushop_url_button:
+      type: link
+      title: MuShop URL Button
+      displayText: MuShop Storefront
+  mushop_url:
     type: link
-    title: Go to Application VM URL
+    title: MuShop
+    displayText: Storefront
+  grafana_url:
+    type: link
+    title: Grafana
+    displayText: Dashboards
+  autonomous_database_password:
+    type: string
+    title: DB Admin Password
+    displayText: Autonomous Database Admin Password
+    sensitive: true
+  grafana_admin_password:
+    type: string
+    title: Grafana Admin Password
+    displayText: Grafana Admin Password
+    sensitive: true
+  comments:
+    type: string
+    title: Comments
+    displayText: Comments
+  dev:
+    type: string
+    title: dev
+    displayText: dev note from A-Team
+  kubeconfig_for_kubectl:
+    type: string
+    title: kubeconfig
+    displayText: kubeconfig for local kubectl run. Not used by ORM
     visible: false
-
-  instance_public_ip:
-    type: link
-    title: Public IP
-    visible: true
   
-  instance_private_ip:
-    type: link
-    title: Private IP
-    visible: true
-  
-primaryOutputButton: ${application_url}
+primaryOutputButton: mushop_url_button

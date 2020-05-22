@@ -2,10 +2,10 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
-resource oci_core_security_list oke-mushop_security_list {
+resource oci_core_security_list oke_mushop_security_list {
   compartment_id = var.compartment_ocid
-  display_name   = "oke-mushop_wkr_seclist-${random_string.deploy_id.result}"
-  vcn_id         = oci_core_virtual_network.oke-mushop_vcn.id
+  display_name   = "oke-mushop-wkr-seclist-${random_string.deploy_id.result}"
+  vcn_id         = oci_core_virtual_network.oke_mushop_vcn.id
 
   egress_security_rules {
     destination      = lookup(var.network_cidrs, "SUBNET-REGIONAL-CIDR")
@@ -19,6 +19,12 @@ resource oci_core_security_list oke-mushop_security_list {
     destination_type = "CIDR_BLOCK"
     protocol         = "all"
     stateless        = false
+  }
+
+  egress_security_rules {
+    destination      = lookup(data.oci_core_services.all_services.services[0], "cidr_block")
+    destination_type = "SERVICE_CIDR_BLOCK"
+    protocol         = "all"
   }
 
   ingress_security_rules {
@@ -42,10 +48,10 @@ resource oci_core_security_list oke-mushop_security_list {
 
 }
 
-resource oci_core_security_list oke-mushop_lb_security_list {
+resource oci_core_security_list oke_mushop_lb_security_list {
   compartment_id = var.compartment_ocid
-  display_name   = "oke-mushop_wkr_lb_seclist-${random_string.deploy_id.result}"
-  vcn_id         = oci_core_virtual_network.oke-mushop_vcn.id
+  display_name   = "oke-mushop-wkr-lb-seclist-${random_string.deploy_id.result}"
+  vcn_id         = oci_core_virtual_network.oke_mushop_vcn.id
 
   egress_security_rules {
     destination      = lookup(var.network_cidrs, "ALL-CIDR")
