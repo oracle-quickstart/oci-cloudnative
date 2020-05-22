@@ -157,3 +157,36 @@ resource "kubernetes_job" "wallet_extractor_job" {
   }
 }
 ### OADB Wallet extraction </>
+
+## Object Storage
+resource "oci_objectstorage_bucket" "mushop_catalogue_bucket" {
+  count          = var.mushop_mock_mode_all ? 0 : 1
+  compartment_id = var.compartment_ocid
+  namespace      = data.oci_objectstorage_namespace.ns.namespace
+  name           = "mushop-catalogue-bucket-${random_string.deploy_id.result}"
+  access_type    = "ObjectReadWithoutList"
+}
+
+resource "oci_objectstorage_preauthrequest" "mushop_catalogue_bucket_par" {
+  count        = var.mushop_mock_mode_all ? 0 : 1
+  namespace    = data.oci_objectstorage_namespace.ns.namespace
+  bucket       = oci_objectstorage_bucket.mushop_catalogue_bucket[0].name
+  name         = "mushop-catalogue-bucket-par-${random_string.deploy_id.result}"
+  access_type  = "AnyObjectWrite"
+  time_expires = timeadd(timestamp(), "60m")
+}
+
+resource "kubernetes_secret" "oos_bucket" {
+  count = var.mushop_mock_mode_all ? 0 : 1
+  metadata {
+    name      = var.oos_bucket_name
+    namespace = kubernetes_namespace.mushop_namespace.id
+  }
+  data = {
+    region    = var.region
+    name      = "mushop-catalogue-bucket-${random_string.deploy_id.result}"
+    namespace = data.oci_objectstorage_namespace.ns.namespace
+    parUrl    = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.mushop_catalogue_bucket_par[0].access_uri}"
+  }
+  type = "Opaque"
+}
