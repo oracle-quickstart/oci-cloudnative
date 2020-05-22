@@ -3,7 +3,7 @@
 # 
 
 title: "MuShop App"
-description: "Oracle Container Engine (OKE) stack for MuShop App"
+description: "Oracle Container Engine (OKE) stack for MuShop CloudNative App"
 schemaVersion: 1.1.0
 version: "20190304"
 
@@ -299,7 +299,8 @@ outputGroups:
       - external_ip
   - title: Passwords
     outputs:
-      - db_password
+      - autonomous_database_password
+      - grafana_admin_password
   - title: Comments
     outputs:
       - comments
@@ -318,10 +319,15 @@ outputs:
     type: link
     title: Grafana
     displayText: Dashboards
-  db_password:
+  autonomous_database_password:
     type: string
-    title: DB Password
-    displayText: DB Pass
+    title: DB Admin Password
+    displayText: Autonomous Database Admin Password
+    sensitive: true
+  grafana_admin_password:
+    type: string
+    title: Grafana Admin Password
+    displayText: Grafana Admin Password
     sensitive: true
   comments:
     type: string
