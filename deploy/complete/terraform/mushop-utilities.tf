@@ -65,7 +65,7 @@ resource "helm_release" "ingress-nginx" {
   name       = "mushop-utils-ingress-nginx" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = data.helm_repository.ingress-nginx.metadata[0].name
   chart      = "ingress-nginx/ingress-nginx"
-  version    = "2.1.0"
+  version    = "2.3.0"
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
   wait       = true
 
