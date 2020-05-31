@@ -30,6 +30,6 @@ dependencies:
     repository: https://svc-catalog-charts.storage.googleapis.com 
   # cert-manager
   - name: cert-manager
-    version: 0.15.0
+    version: 0.15.1
     condition: cert-manager.enabled
     repository: https://charts.jetstack.io

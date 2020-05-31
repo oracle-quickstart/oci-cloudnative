@@ -94,7 +94,7 @@ resource "helm_release" "cert-manager" {
   name       = "cert-manager"
   repository = data.helm_repository.jetstack.metadata[0].name
   chart      = "cert-manager"
-  version    = "0.15.0"
+  version    = "0.15.1"
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
   wait       = false
 
