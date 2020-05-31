@@ -82,7 +82,7 @@ resource "helm_release" "svc-cat" {
   name       = "svc-cat"
   repository = data.helm_repository.svc-cat.metadata[0].name
   chart      = "catalog"
-  version    = "0.3.0-beta.2"
+  version    = "0.3.0"
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
   wait       = false
 
