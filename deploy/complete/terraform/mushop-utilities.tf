@@ -15,7 +15,7 @@ resource "kubernetes_namespace" "mushop_utilities_namespace" {
 ## https://github.com/helm/charts/blob/master/stable/prometheus/README.md
 resource "helm_release" "prometheus" {
   name       = "prometheus"
-  repository = data.helm_repository.stable.metadata[0].name
+  repository = local.helm_repository.stable
   chart      = "prometheus"
   version    = "11.3.0"
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
@@ -31,7 +31,7 @@ resource "helm_release" "prometheus" {
 ## https://github.com/helm/charts/blob/master/stable/grafana/README.md
 resource "helm_release" "grafana" {
   name       = "mushop-utils-grafana" # mushop-utils included to be backwards compatible to the docs and setup chart install
-  repository = data.helm_repository.stable.metadata[0].name
+  repository = local.helm_repository.stable
   chart      = "grafana"
   version    = "5.1.0"
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
@@ -47,7 +47,7 @@ resource "helm_release" "grafana" {
 ## https://github.com/helm/charts/blob/master/stable/metrics-server/README.md
 resource "helm_release" "metrics-server" {
   name       = "metrics-server"
-  repository = data.helm_repository.stable.metadata[0].name
+  repository = local.helm_repository.stable
   chart      = "metrics-server"
   version    = "2.11.1"
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
@@ -63,7 +63,7 @@ resource "helm_release" "metrics-server" {
 ## https://kubernetes.github.io/ingress-nginx/
 resource "helm_release" "ingress-nginx" {
   name       = "mushop-utils-ingress-nginx" # mushop-utils included to be backwards compatible to the docs and setup chart install
-  repository = data.helm_repository.ingress-nginx.metadata[0].name
+  repository = local.helm_repository.ingress-nginx
   chart      = "ingress-nginx/ingress-nginx"
   version    = "2.3.0"
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
@@ -80,7 +80,7 @@ resource "helm_release" "ingress-nginx" {
 ## https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md
 resource "helm_release" "svc-cat" {
   name       = "svc-cat"
-  repository = data.helm_repository.svc-cat.metadata[0].name
+  repository = local.helm_repository.svc-cat
   chart      = "catalog"
   version    = "0.3.0"
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
@@ -92,7 +92,7 @@ resource "helm_release" "svc-cat" {
 ## https://github.com/jetstack/cert-manager/blob/master/README.md
 resource "helm_release" "cert-manager" {
   name       = "cert-manager"
-  repository = data.helm_repository.jetstack.metadata[0].name
+  repository = local.helm_repository.jetstack
   chart      = "cert-manager"
   version    = "0.15.1"
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
