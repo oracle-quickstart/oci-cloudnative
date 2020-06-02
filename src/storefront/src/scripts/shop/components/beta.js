@@ -17,7 +17,15 @@ export class MuBetaBanner {
     const ver = this.mu.root.context.get('VERSION');
     return /beta/i.test(ver) && this.view.render(this.node, `
       <div uk-alert class="uk-alert-warning">
-        <p>You are viewing a beta version of MuShop: <span class="uk-text-bold">v{{ver}}</span></p>
+        <p>You are viewing a beta version of MuShop: <span class="uk-text-bold">v{{ver}}</span>
+        <br>
+        Features enabled on this version are :</a>
+        <ul>
+          <li>
+            <a href="reviews.html" mu-route>Review</a>
+          </li>
+        </ul>
+        </p>  
       </div>`,
       { ver },
     );
