@@ -1,0 +1,23 @@
+# Copyright (c) 2020 Oracle and/or its affiliates. All rights reserved.
+# Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
+# 
+
+# OCI authentication
+
+tenancy_ocid = "ocid1.tenancy....."
+compartment_ocid = "ocid1.compartment...." 
+fingerprint = "" # e.g.: "5f:53:..." or leave blank if using CloudShell
+user_ocid = ""  # e.g.: "ocid1.user..." or leave blank if using CloudShell
+
+# region
+region = "us-ashburn-1"
+
+# cluster_visibility
+cluster_visibility = "Private"
+
+# public_ssh_key
+generate_public_ssh_key = true # if true, auto generate public and private keys and assign to the node pool.
+public_ssh_key = "" # if generate_public_ssh_key=true, public_ssh_key is ignored. if generate_public_ssh_key=false, assign public_ssh_key, that can be nothing if ""
+
+# MuShop
+mushop_mock_mode_all = false # Set to true if do not want to provision ATP, ObjectStorage and mock all services

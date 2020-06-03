@@ -1,0 +1,55 @@
+# Copyright (c) 2020 Oracle and/or its affiliates. All rights reserved.
+# Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
+# 
+
+datasources: 
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+    - name: Prometheus
+      type: prometheus
+      url: http://prometheus-server.mushop-utilities.svc.cluster.local
+      access: proxy
+      isDefault: true
+      disableDeletion: true
+      editable: false
+dashboards:
+  default:
+    cluster-metrics:
+      gnetId: 6417
+      revision: 1
+      datasource: Prometheus
+    pods:
+      gnetId: 6336
+      revision: 1
+      datasource: Prometheus
+dashboardProviders:
+   dashboardproviders.yaml:
+     apiVersion: 1
+     providers:
+     - name: 'default'
+       orgId: 1
+       folder: ''
+       type: file
+       disableDeletion: true
+       editable: true
+       options:
+         path: /var/lib/grafana/dashboards/default
+sidecar:
+  datasources:
+    enabled: true
+    label: grafana_datasource
+  dashboards:
+    enabled: true
+    label: grafana_dashboard
+grafana.ini:
+  server:
+    root_url: "%(protocol)s://%(domain)s:%(http_port)s/grafana"
+persistence:
+  enabled: true
+plugins:
+  - oci-datasource
+  - grafana-kubernetes-app
+  - grafana-worldmap-panel
+  - grafana-piechart-panel
+  - btplc-status-dot-panel

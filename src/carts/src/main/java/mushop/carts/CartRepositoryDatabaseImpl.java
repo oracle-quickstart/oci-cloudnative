@@ -3,8 +3,10 @@ package mushop.carts;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.io.InputStream;
 
 import javax.json.Json;
 import javax.json.bind.Jsonb;
@@ -28,7 +30,7 @@ import oracle.ucp.jdbc.PoolDataSourceFactory;
 public class CartRepositoryDatabaseImpl implements CartRepository {
 
     /** Factory for SODA (simple oracle document access) api */
-    private static final OracleRDBMSClient SODA = new OracleRDBMSClient();
+    private static final OracleRDBMSClient SODA;
 
     /** The name of the backing collection */
     private final String collectionName;
@@ -59,11 +61,13 @@ public class CartRepositoryDatabaseImpl implements CartRepository {
                 OracleDatabase db = SODA.getDatabase(con);
                 OracleCollection col = db.openCollection(collectionName);
                 if (col == null) {
-                    // Create a collection where the document id is not generated automatically.
+                    // Create a collection (see src/main/resources/metadata.json)
                     // It is OK if multiple processes try to create the collection at the
                     // same time. The collection will simply be returned by createCollection() if it
                     // already exists.
-                    OracleDocument collMeta = SODA.createMetadataBuilder().keyColumnAssignmentMethod("client").build();
+                    InputStream metaData = getClass().getClassLoader().getResourceAsStream("metadata.json");
+                    OracleDocument collMeta = db.createDocumentFrom(metaData);
+                    metaData.close();
                     col = db.admin().createCollection(collectionName, collMeta);
                 }
                 log.info("Connected to " + dbName);
@@ -156,4 +160,11 @@ public class CartRepositoryDatabaseImpl implements CartRepository {
         }
     }
 
+    static {
+        // Optimization: cache collection metadata to avoid extra roundtrips
+        // to the database when opening a collection
+        Properties props = new Properties();
+        props.put("oracle.soda.sharedMetadataCache", "true");
+        SODA = new OracleRDBMSClient(props);
+    }
 }
