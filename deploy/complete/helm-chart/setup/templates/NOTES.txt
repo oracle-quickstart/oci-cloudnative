@@ -30,7 +30,7 @@ how to access the Grafana application.
 
 {{- end }}
 
-{{- $ingressConfig := index $.Values "nginx-ingress" -}}
+{{- $ingressConfig := index $.Values "ingress-nginx" -}}
 {{- if $ingressConfig.enabled }}
 
 ## Ingress
@@ -40,7 +40,7 @@ resource in this namespace.
 
 - Locate the ingress controller EXTERNAL-IP address
 
-  kubectl get svc -n {{ .Release.Namespace }} {{ .Release.Name }}-nginx-ingress-controller
+  kubectl get svc -n {{ .Release.Namespace }} {{ .Release.Name }}-ingress-nginx-controller
 
 {{- end }}
 

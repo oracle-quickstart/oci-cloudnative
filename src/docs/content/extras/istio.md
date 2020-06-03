@@ -10,7 +10,7 @@ tags:
 ---
 
 {{% alert style="danger" icon="warning" %}}
-Note that this is **OPTIONAL**. If you don't want to install Istio service mesh, skip to the [deployment]({{< ref "cloud/deployment.md" >}}) section. Additionally, you don't need to install Grafana and Prometheus from the `setup` chart as they are already included in the Istio installation.
+Note that this is **OPTIONAL**. If you don't want to install Istio service mesh, skip to the [deployment]({{< ref "cloud/deployment.md" >}}) section. Additionally, you don't need to install Grafana, Prometheus or the Ingress controller from the `setup` chart as they are already included in the Istio installation.
 {{% /alert %}}
 
 In this section you can install and configure Istio service mesh. The mesh needs to be installed before you deploy Mushop for the service mesh proxies to get injected next to each Mushop service.

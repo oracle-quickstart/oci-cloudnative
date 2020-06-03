@@ -1,4 +1,11 @@
+# Generic
 .DS_Store
+*.tgz
+*.zip
+
+## Kubeconfig
+kubeconfig
+generated/
 
 ## Secrets
 credentials.txt
@@ -53,6 +60,11 @@ pkg/
 *.tar.gz
 *.rar
 
+# Keystores
+tnsnames.ora
+keystore.jks
+truststore.jks
+
 ### Terraform ###
 # Local .terraform directories
 **/.terraform/*
@@ -74,6 +86,7 @@ override.tf.json
 *_override.tf
 *_override.tf.json
 
-tnsnames.ora
-keystore.jks
-truststore.jks
+# tf crash log
+crash.log
+
+

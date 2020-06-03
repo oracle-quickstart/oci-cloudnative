@@ -1,0 +1,58 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: mushop-grafana-ingress
+  labels:
+    name: mushop-grafana-ingress
+    layer: ingress
+spec:
+  selector:
+    name: mushop-grafana-ingress
+    layer: ingress
+  type: ExternalName
+  externalName: mushop-utils-grafana.mushop-utilities
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: {{ include "mushop.fullname" . }}-grafana
+  labels:
+{{ include "mushop.labels" . | indent 4 }}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    {{- if .Values.ingress.tls }}
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: {{ include "mushop.fullname" . }}-{{ .Values.ingress.clusterIssuer }}
+    cert-manager.io/acme-challenge-type: http01
+    {{- end }}
+    
+spec:
+  rules:
+    {{- if .Values.ingress.hosts }}
+    {{- range $host := .Values.ingress.hosts }}
+    - host: {{ $host }}
+      http:
+        paths:
+        - path: /grafana(/|$)(.*)
+          backend:
+            # intentionally w/o .Release.Name for metrics workshop
+            serviceName: mushop-grafana-ingress
+            servicePort: 80
+    {{- end -}}
+    {{ else }}
+    - http:
+        paths:
+        - path: /grafana(/|$)(.*)
+          backend:
+            # intentionally w/o .Release.Name for metrics workshop
+            serviceName: mushop-grafana-ingress
+            servicePort: 80
+    {{- end -}}
+  {{- if .Values.ingress.tls }}
+  tls:
+    - secretName: {{ include "mushop.fullname" . }}-{{ .Values.ingress.clusterIssuer }}-tls
+      hosts: {{- toYaml .Values.ingress.hosts | nindent 6 }}
+  {{- end -}}
+{{- end -}}

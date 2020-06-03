@@ -20,6 +20,8 @@ spec:
         app.kubernetes.io/name: {{ include "fulfillment.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
         run: {{ include "fulfillment.name" . }}
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
       containers:
         - name: {{ .Chart.Name }}

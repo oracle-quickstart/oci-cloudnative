@@ -18,6 +18,8 @@ spec:
         app.kubernetes.io/name: {{ include "orders.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
         mockmode: {{ .Values.global.mock.service | quote }}
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
       initContainers:
         {{- include "orders.init.wallet" . | nindent 8 }}
