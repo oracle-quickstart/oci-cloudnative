@@ -18,7 +18,7 @@ variable "public_ssh_key" {
   default = ""
 }
 
-# Cluster Details
+# OKE Cluster Details
 variable "cluster_name" {
   default = "MuShop-cluster"
 }
@@ -31,8 +31,14 @@ variable "cluster_options_add_ons_is_kubernetes_dashboard_enabled" {
 variable "cluster_options_admission_controller_options_is_pod_security_policy_enabled" {
   default = false
 }
+variable "create_new_oke_cluster" {
+  default = true
+}
+variable "existent_oke_cluster_id" {
+  default = ""
+}
 
-# Node Pool Details
+# OKE Node Pool Details
 variable "node_pool_name" {
   default = "pool1"
 }
