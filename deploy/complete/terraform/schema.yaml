@@ -20,13 +20,15 @@ variableGroups:
     - tenancy_ocid
     - region
     visible: false
-  - title: "General Configuration"
+  - title: "OKE General Configuration"
     variables:
+    - create_new_oke_cluster
+    - existent_oke_cluster_id
     - cluster_name
     - k8s_version
     - cluster_visibility
     visible: true
-  - title: "Worker Nodes"
+  - title: "OKE Worker Nodes"
     variables:
     - node_pool_shape
     - num_pool_workers
@@ -99,11 +101,28 @@ variables:
     description: "The compartment in which to create compute instance(s)"
     required: true
 
+  create_new_oke_cluster:
+    type: boolean
+    title: "Create new OKE Cluster"
+    description: "Creates a new OKE cluster, node pool and network resources"
+
+  existent_oke_cluster_id:
+    type: string
+    title: "OKE Cluster id"
+    description: "Cluster id of the existent OKE"
+    required: true
+    visible: #($create_new_oke_cluster = false)
+      not:
+        - create_new_oke_cluster 
+
   cluster_name:
     type: string
     title: "Cluster Name Prefix"
     description: "OKE cluster name prefix"
     required: true
+    visible: #($create_new_oke_cluster = false)
+      and:
+        - create_new_oke_cluster 
 
   k8s_version:
     type: enum
@@ -140,14 +159,14 @@ variables:
     required: true
 
   node_pool_name:
-    visible: #($show_advanced  == ""Yes"")
-      eq:
-        - show_advanced 
-        - "Yes"
     type: string
     title: "Node Pool Name"
     description: "Name of the node pool"
     required: true
+    visible: #($show_advanced  == ""Yes"")
+      eq:
+        - show_advanced 
+        - "Yes"
 
   cluster_options_add_ons_is_kubernetes_dashboard_enabled:
     type: boolean
@@ -164,15 +183,19 @@ variables:
     required: true
 
   generate_public_ssh_key:
+    type: boolean
+    title: "Auto generate public ssh key?"
+    required: true
     visible: #($show_advanced  == ""Yes"")
       eq:
         - show_advanced 
         - "Yes"
-    type: boolean
-    title: "Auto generate public ssh key?"
-    required: true
 
   public_ssh_key:
+    type: string
+    title: "Input SSH public key"
+    description: "In order to access your private nodes with a public SSH key you will need to set up a bastion host (a.k.a. jump box). If using public nodes, bastion is not needed. Left blank to not import keys."
+    required: false
     visible: #($show_advanced  == ""Yes"") + ($generate_public_ssh_key  == "false")
       and:
         - eq:
@@ -180,32 +203,28 @@ variables:
           - "Yes"
         - not:
           - generate_public_ssh_key
-    type: string
-    title: "Input SSH public key"
-    description: "In order to access your private nodes with a public SSH key you will need to set up a bastion host (a.k.a. jump box). If using public nodes, bastion is not needed. Left blank to not import keys."
-    required: false
 
   image_operating_system:
-    visible: #($show_advanced  == ""Yes"")
-      eq:
-        - show_advanced 
-        - "Yes"
     type: enum
     title: "Image OS"
     description: "The OS/image installed on all nodes in the node pool."
     enum:
       - "Oracle Linux"
     required: true
-
-  image_operating_system_version:
     visible: #($show_advanced  == ""Yes"")
       eq:
         - show_advanced 
         - "Yes"
+
+  image_operating_system_version:
     type: string
     required: true
     title: "Image OS Version"
-    description: "The OS/image version installed on all nodes in the node pool."    
+    description: "The OS/image version installed on all nodes in the node pool."
+    visible: #($show_advanced  == ""Yes"")
+      eq:
+        - show_advanced 
+        - "Yes"
 
   mushop_mock_mode_all:
     visible: yes
