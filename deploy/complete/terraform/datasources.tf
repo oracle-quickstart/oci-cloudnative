@@ -19,7 +19,7 @@ data "oci_identity_availability_domains" "ADs" {
 
 # Gets kubeconfig
 data "oci_containerengine_cluster_kube_config" "oke_cluster_kube_config" {
-  cluster_id = oci_containerengine_cluster.oke_mushop_cluster.id
+  cluster_id = var.create_new_oke_cluster ? oci_containerengine_cluster.oke_mushop_cluster[0].id : var.oke_cluster_id
 }
 
 
@@ -37,7 +37,7 @@ locals {
 ## Kubernetes Service: mushop-utils-ingress-nginx-controller
 data "kubernetes_service" "mushop_ingress" {
   metadata {
-    name      = "mushop-utils-ingress-nginx-controller" # mushop-utils included to be backwards compatible to the docs and setup chart install
+    name      = "mushop-utils-ingress-nginx-controller" # mushop-utils name included to be backwards compatible to the docs and setup chart install
     namespace = kubernetes_namespace.mushop_utilities_namespace.id
   }
   depends_on = [helm_release.ingress-nginx]
