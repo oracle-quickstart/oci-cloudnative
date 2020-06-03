@@ -36,7 +36,7 @@ resource "oci_containerengine_node_pool" "oke_mushop_node_pool" {
 
       content {
         availability_domain = placement_configs.value.name
-        subnet_id           = oci_core_subnet.oke_mushop_subnet.id
+        subnet_id           = oci_core_subnet.oke_mushop_subnet[0].id
       }
     }
     size = var.num_pool_workers
