@@ -56,7 +56,7 @@ variable "image_operating_system" {
   default = "Oracle Linux"
 }
 variable "image_operating_system_version" {
-  default = "7.7"
+  default = "7.8"
 }
 variable "generate_public_ssh_key" {
   default = true
