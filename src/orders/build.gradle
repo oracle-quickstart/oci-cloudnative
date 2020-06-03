@@ -13,6 +13,7 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	compile.exclude module: 'spring-boot-starter-tomcat'
 }
 
 repositories {
@@ -27,12 +28,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-jetty'
 	implementation 'io.nats:jnats:2.6.6'
-
-	runtimeOnly 'com.oracle.ojdbc:ojdbc8:19.3.0.0'
+  implementation 'com.h2database:h2:1.4.200'
+	runtimeOnly    'com.oracle.ojdbc:ojdbc8:19.3.0.0'
 	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'com.h2database:h2'
+	
 	testImplementation 'com.openpojo:openpojo:0.8.12'
 	
 }

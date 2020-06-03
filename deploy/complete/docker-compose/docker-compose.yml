@@ -132,9 +132,10 @@ services:
 
   # OCI Orders service
   orders:
-    image: iad.ocir.io/oracle/ateam/mushop-orders:2.1.1
+    image: mushop-orders:local
     ports:
       - 8085:80
+      # - 9091:9091
     hostname: orders
     restart: always
     cap_drop:
@@ -152,7 +153,8 @@ services:
       - OADB_USER
       - OADB_PW
       - OADB_SERVICE=mock
-      - JAVA_OPTS=-Xms32m -Xmx256m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Doracle.jdbc.fanEnabled=false 
+#      - JAVA_OPTS=-Xms32m -Xmx128m -XX:MaxRAM=128m -Djava.security.egd=file:/dev/urandom -Doracle.jdbc.fanEnabled=false -XX:+UnlockExperimentalVMOptions -XX:+UseZGC -XX:+FlightRecorder -Doracle.jdbc.fanEnabled=false -Dcom.sun.management.jmxremote.rmi.port=9091 -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.port=9091  -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=localhost
+      - JAVA_OPTS=-Xms32m -Xmx128m -XX:MaxRAM=128m -Djava.security.egd=file:/dev/urandom -Doracle.jdbc.fanEnabled=false -XX:+UnlockExperimentalVMOptions -XX:+UseZGC 
 
   payment:
     image: iad.ocir.io/oracle/ateam/mushop-payment:0.0.1

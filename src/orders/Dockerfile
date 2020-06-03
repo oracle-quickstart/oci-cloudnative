@@ -6,7 +6,7 @@ ARG clientVersion=19.3
 # ------------
 # Stage 1 : Setup the build environment
 FROM maven:3.6-jdk-8 as buildenv
-ARG GRADLE_VERSION=5.5.1
+ARG GRADLE_VERSION=6.5
 ENV GRADLE_HOME /opt/gradle
 
 # create source folder
@@ -37,7 +37,7 @@ RUN gradle --refresh-dependencies
 FROM buildenv as appbuild
 ARG APPLICATION_NAME
 ARG VERSION
-
+ENV INSTANT_CLIENT_VERSION=${clientVersion}
 # Copy the source code. 
 # This layer is recreated only when there are actual source chnages 
 COPY src /usr/src/app/src
@@ -50,11 +50,12 @@ RUN ls -ltr /usr/src/app/build/libs
 # ------------
 # Stage 3 : Application container
 #
-FROM openjdk:8-jre-slim
+FROM openjdk:13-slim
 ARG APPLICATION_NAME
 ARG VERSION
 ARG clientVersion
 
+RUN apt-get update && apt-get install -y procps
 
 # copy the generated application distribution
 COPY --from=appbuild /usr/src/app/build/libs/${APPLICATION_NAME}-${VERSION}.jar /app/${APPLICATION_NAME}-${VERSION}.jar
