@@ -33,7 +33,9 @@ variableGroups:
     - node_pool_shape
     - num_pool_workers
     - node_pool_name
-    visible: true
+    visible: #($create_new_oke_cluster = true)
+      and:
+        - create_new_oke_cluster
   - title: "Add Ons"
     variables:
     - cluster_options_add_ons_is_kubernetes_dashboard_enabled
@@ -109,20 +111,20 @@ variables:
   existent_oke_cluster_id:
     type: string
     title: "OKE Cluster id"
-    description: "Cluster id of the existent OKE"
+    description: "Cluster Id of the existent OKE"
     required: true
     visible: #($create_new_oke_cluster = false)
       not:
-        - create_new_oke_cluster 
+        - create_new_oke_cluster
 
   cluster_name:
     type: string
     title: "Cluster Name Prefix"
     description: "OKE cluster name prefix"
     required: true
-    visible: #($create_new_oke_cluster = false)
+    visible: #($create_new_oke_cluster = true)
       and:
-        - create_new_oke_cluster 
+        - create_new_oke_cluster
 
   k8s_version:
     type: enum
@@ -132,6 +134,9 @@ variables:
     title: "Kubernetes Version"
     description: "Kubernetes version installed on your master and worker nodes"
     required: true
+    visible: #($create_new_oke_cluster = true)
+      and:
+        - create_new_oke_cluster
 
   cluster_visibility:
     type: enum
@@ -141,6 +146,9 @@ variables:
     title: "Choose visibility type"
     description: "The Kubernetes worker nodes that are created will be hosted in public or private subnet(s)"
     required: true
+    visible: #($create_new_oke_cluster = true)
+      and:
+        - create_new_oke_cluster
 
   node_pool_shape:
     type: oci:core:instanceshape:name
@@ -171,6 +179,9 @@ variables:
   cluster_options_add_ons_is_kubernetes_dashboard_enabled:
     type: boolean
     title: "Kubernetes Dashboard Enabled"
+    visible: #($create_new_oke_cluster = true)
+      and:
+        - create_new_oke_cluster
 
   # Advanced Options
   show_advanced:
