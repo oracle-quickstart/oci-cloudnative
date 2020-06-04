@@ -9,7 +9,7 @@ resource "oci_database_autonomous_database" "mushop_autonomous_database" {
   compartment_id           = var.compartment_ocid
   cpu_core_count           = 1
   data_storage_size_in_tbs = 1
-  db_name                  = "${var.database_name}${random_id.mushop_id.dec}"
+  db_name                  = var.database_name
   freeform_tags            = local.common_tags
   is_free_tier             = true
 
