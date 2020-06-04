@@ -98,27 +98,16 @@ variable "grafana_enabled" {
 variable "prometheus_enabled" {
   default = true
 }
-<<<<<<< HEAD
 variable "metrics_server_enabled" {
-=======
-variable "metrics-server_enabled" {
->>>>>>> variable for mushop utilities
   default = true
 }
 variable "catalog_enabled" {
   default = true
 }
-<<<<<<< HEAD
 variable "ingress_nginx_enabled" {
   default = true
 }
 variable "cert_manager_enabled" {
-=======
-variable "ingress-nginx_enabled" {
-  default = true
-}
-variable "cert-manager_enabled" {
->>>>>>> variable for mushop utilities
   default = true
 }
 
