@@ -29,22 +29,12 @@ variable "cluster_options_add_ons_is_kubernetes_dashboard_enabled" {
   default = false
 }
 variable "cluster_options_admission_controller_options_is_pod_security_policy_enabled" {
-  description = "If true: The pod security policy admission controller will use pod security policies to restrict the pods accepted into the cluster."
-  default     = false
+  default = false
 }
 variable "create_new_oke_cluster" {
   default = true
 }
 variable "existent_oke_cluster_id" {
-  default = ""
-}
-variable "use_encryption" {
-  default = false
-}
-variable "create_new_encryption_key" {
-  default = false
-}
-variable "encryption_key_id" {
   default = ""
 }
 
@@ -81,8 +71,6 @@ variable "network_cidrs" {
     SUBNET-REGIONAL-CIDR    = "10.20.10.0/24"
     LB-SUBNET-REGIONAL-CIDR = "10.20.20.0/24"
     ALL-CIDR                = "0.0.0.0/0"
-    PODS-CIDR               = "10.244.0.0/16"
-    KUBERNETES-SERVICE-CIDR = "10.96.0.0/16"
   }
 }
 
@@ -99,16 +87,16 @@ variable "grafana_enabled" {
 variable "prometheus_enabled" {
   default = true
 }
-variable "metrics_server_enabled" {
+variable "metrics-server_enabled" {
   default = true
 }
 variable "catalog_enabled" {
   default = true
 }
-variable "ingress_nginx_enabled" {
+variable "ingress-nginx_enabled" {
   default = true
 }
-variable "cert_manager_enabled" {
+variable "cert-manager_enabled" {
   default = true
 }
 
