@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.1.3.RELEASE'
+	id 'org.springframework.boot' version '2.3.0.RELEASE'
 	id 'java'
 }
 
@@ -13,6 +13,7 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	compile.exclude module: 'spring-boot-starter-tomcat'
 }
 
 repositories {
@@ -24,22 +25,17 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	compileOnly 'org.projectlombok:lombok'
 		
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
-	implementation 'org.springframework.data:spring-data-rest-hal-browser'
-	implementation 'org.springframework.cloud:spring-cloud-starter-zipkin'
-	implementation 'io.micrometer:micrometer-core:1.0.1'
-	implementation 'io.micrometer:micrometer-registry-prometheus:1.0.1'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
+	implementation 'org.springframework.boot:spring-boot-starter-jetty'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'io.nats:jnats:2.6.6'
-
-	runtimeOnly 'com.oracle.ojdbc:ojdbc8:19.3.0.0'
+    implementation 'com.h2database:h2:1.4.200'
+	runtimeOnly    'com.oracle.ojdbc:ojdbc8:19.3.0.0'
 	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'com.h2database:h2'
+	
 	testImplementation 'com.openpojo:openpojo:0.8.12'
 	
 }
