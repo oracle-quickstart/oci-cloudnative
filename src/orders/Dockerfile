@@ -37,7 +37,6 @@ RUN gradle --refresh-dependencies
 FROM buildenv as appbuild
 ARG APPLICATION_NAME
 ARG VERSION
-ENV INSTANT_CLIENT_VERSION=${clientVersion}
 # Copy the source code. 
 # This layer is recreated only when there are actual source chnages 
 COPY src /usr/src/app/src
