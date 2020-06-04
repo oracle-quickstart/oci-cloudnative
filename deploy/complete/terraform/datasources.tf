@@ -27,9 +27,9 @@ locals {
   # Helm repos
   helm_repository = {
     stable        = "https://kubernetes-charts.storage.googleapis.com"
-    ingress-nginx = "https://kubernetes.github.io/ingress-nginx"
+    ingress_nginx = "https://kubernetes.github.io/ingress-nginx"
     jetstack      = "https://charts.jetstack.io"                        # cert-manager
-    svc-cat       = "https://svc-catalog-charts.storage.googleapis.com" # Service Catalog
+    svc_catalog   = "https://svc-catalog-charts.storage.googleapis.com" # Service Catalog
   }
 }
 
@@ -40,7 +40,7 @@ data "kubernetes_service" "mushop_ingress" {
     name      = "mushop-utils-ingress-nginx-controller" # mushop-utils name included to be backwards compatible to the docs and setup chart install
     namespace = kubernetes_namespace.mushop_utilities_namespace.id
   }
-  depends_on = [helm_release.ingress-nginx]
+  depends_on = [helm_release.ingress_nginx]
 }
 
 ## Kubernetes Secret: Grafana Admin Password
