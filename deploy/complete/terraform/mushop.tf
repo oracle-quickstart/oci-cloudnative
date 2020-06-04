@@ -46,7 +46,7 @@ resource "helm_release" "mushop" {
     value = var.mushop_mock_mode_all ? false : false
   }
 
-  depends_on = [helm_release.ingress-nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
+  depends_on = [helm_release.ingress_nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
 
   timeout = 500
 }
