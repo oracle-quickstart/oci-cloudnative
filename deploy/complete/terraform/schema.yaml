@@ -50,9 +50,9 @@ variableGroups:
     variables:
     - grafana_enabled
     - prometheus_enabled
-    - ingress_nginx_enabled
-    - cert_manager_enabled
-    - metrics_server_enabled
+    - ingress-nginx_enabled
+    - cert-manager_enabled
+    - metrics-server_enabled
     - catalog_enabled
     visible:
       eq:
