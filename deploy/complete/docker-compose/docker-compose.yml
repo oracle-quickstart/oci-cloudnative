@@ -132,7 +132,7 @@ services:
 
   # OCI Orders service
   orders:
-    image: iad.ocir.io/oracle/ateam/mushop-orders:2.1.1
+    image: iad.ocir.io/oracle/ateam/mushop-orders:2.1.2
     ports:
       - 8085:80
       # - 9091:9091
