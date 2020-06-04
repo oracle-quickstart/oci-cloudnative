@@ -26,3 +26,10 @@ public_ssh_key = "" # if generate_public_ssh_key=true, public_ssh_key is ignored
 # MuShop
 ## Enable Mock Mode
 mushop_mock_mode_all = false # Set to true if do not want to provision ATP, ObjectStorage and mock all services
+## Common Services (MuShop Utilities)
+grafana_enabled = true
+prometheus_enabled = true
+metrics_server_enabled = true
+catalog_enabled = true
+ingress_nginx_enabled = true
+cert_manager_enabled = true
