@@ -103,7 +103,7 @@ variable "metrics_server_enabled" {
 variable "catalog_enabled" {
   default = true
 }
-variable "ingress-nginx_enabled" {
+variable "ingress_nginx_enabled" {
   default = true
 }
 variable "cert_manager_enabled" {
