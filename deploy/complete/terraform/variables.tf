@@ -75,22 +75,41 @@ variable "network_cidrs" {
 }
 
 # MuShop
+## Features
 variable "mushop_mock_mode_all" {
   default = false
 }
 
+## Common Services (MuShop Utilities)
+variable "grafana_enabled" {
+  default = true
+}
+variable "prometheus_enabled" {
+  default = true
+}
+variable "metrics-server_enabled" {
+  default = true
+}
+variable "catalog_enabled" {
+  default = true
+}
+variable "ingress-nginx_enabled" {
+  default = true
+}
+variable "cert-manager_enabled" {
+  default = true
+}
+
+## Secrets
 variable "db_admin_name" {
   default = "oadb-admin"
 }
-
 variable "db_connection_name" {
   default = "oadb-connection"
 }
-
 variable "db_wallet_name" {
   default = "oadb-wallet"
 }
-
 variable "oos_bucket_name" {
   default = "oos-bucket"
 }
