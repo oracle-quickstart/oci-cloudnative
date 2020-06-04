@@ -87,16 +87,16 @@ variable "grafana_enabled" {
 variable "prometheus_enabled" {
   default = true
 }
-variable "metrics-server_enabled" {
+variable "metrics_server_enabled" {
   default = true
 }
 variable "catalog_enabled" {
   default = true
 }
-variable "ingress-nginx_enabled" {
+variable "ingress_nginx_enabled" {
   default = true
 }
-variable "cert-manager_enabled" {
+variable "cert_manager_enabled" {
   default = true
 }
 
