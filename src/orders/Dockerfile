@@ -5,23 +5,14 @@ ARG clientVersion=19.3
 
 # ------------
 # Stage 1 : Setup the build environment
-FROM maven:3.6-jdk-8 as buildenv
-ARG GRADLE_VERSION=6.5
-ENV GRADLE_HOME /opt/gradle
+FROM gradle:6.5 as buildenv
 
 # create source folder
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 # Get Gradle.
-ADD https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip /tmp/gradle.zip
-RUN echo "Installing Gradle" && \
-    unzip /tmp/gradle.zip && \
-    rm /tmp/gradle.zip && \
-    mv "gradle-${GRADLE_VERSION}" "${GRADLE_HOME}/" && \
-    ln --symbolic "${GRADLE_HOME}/bin/gradle" /usr/bin/gradle && \
-    echo "Testing Gradle installation" && \
-    gradle --version
+RUN gradle --version
 COPY settings.gradle /usr/src/app
 RUN gradle --refresh-dependencies
 
