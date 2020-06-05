@@ -11,8 +11,7 @@ FROM gradle:6.5 as buildenv
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-# Get Gradle.
-RUN gradle --version
+# Refresh Deps.
 COPY settings.gradle /usr/src/app
 RUN gradle --refresh-dependencies
 
