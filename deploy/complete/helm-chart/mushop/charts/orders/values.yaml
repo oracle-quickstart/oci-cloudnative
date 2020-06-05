@@ -1,8 +1,8 @@
 replicaCount: 1
 
 image:
-  repository: iad.ocir.io/oracle/ateam/mushop-orders
-  tag: 2.1.2
+  repository: mushop-orders
+  tag: local
   pullPolicy: IfNotPresent
 
 dbtools:
