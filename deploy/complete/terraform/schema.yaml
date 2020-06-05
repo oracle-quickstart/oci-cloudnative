@@ -357,7 +357,7 @@ outputs:
   mushop_url_button:
       type: link
       title: MuShop URL Button
-      displayText: MuShop Storefront
+      displayText: Open MuShop
   mushop_url:
     type: link
     title: MuShop
