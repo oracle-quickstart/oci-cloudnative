@@ -13,11 +13,8 @@ WORKDIR /usr/src/app
 
 # Refresh Deps.
 COPY settings.gradle /usr/src/app
-RUN gradle --refresh-dependencies
-
 # copy buildscript and cache all dependencies
 COPY build.gradle /usr/src/app
-RUN gradle --refresh-dependencies
 #
 # ------------
 
