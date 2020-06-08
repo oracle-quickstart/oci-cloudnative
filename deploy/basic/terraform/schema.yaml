@@ -1,3 +1,7 @@
+# Copyright (c) 2019 Oracle and/or its affiliates. All rights reserved.
+# Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
+# 
+
 title: "Three-tier web application using Always Free resources"
 description: "A demo eCommerce example app using Always Free Oracle Cloud Infrastructure"
 schemaVersion: 1.1.0
@@ -44,14 +48,19 @@ variables:
     required: true
     title: "Database Name"
     description: "The name for the Autonomous Database instance"
-    default: "mushop"
+    default: "MuShopDB"
+    minLength: 1
+    maxLength: 14
+    pattern: "^[a-zA-Z][a-zA-Z0-9]+$"
 
   ssh_public_key:
-    type: string
+    type: oci:core:ssh:publickey
     required: false
     title: "SSH Public Key"
     description: "The public SSH key for the key-pair that you want to use, if you wish to login to the instances over SSH"
-
+    additionalProps:
+      allowMultiple: true
+    pattern: "((^(ssh-rsa AAAAB3NzaC1yc2|ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNT|ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzOD|ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1Mj|ssh-ed25519 AAAAC3NzaC1lZDI1NTE5|ssh-dss AAAAB3NzaC1kc3)[0-9A-Za-z+\/]+[=]{0,3})( [^,]*)?)(,((ssh-rsa AAAAB3NzaC1yc2|ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNT|ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzOD|ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1Mj|ssh-ed25519 AAAAC3NzaC1lZDI1NTE5|ssh-dss AAAAB3NzaC1kc3)[0-9A-Za-z+\/]+[=]{0,3})( [^,]*)?)*$"
 
 outputGroups:
   - title: "MuShop App details"
