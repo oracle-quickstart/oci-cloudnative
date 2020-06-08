@@ -62,7 +62,7 @@ WORKDIR /app
 ENV APPLICATION_NAME=${APPLICATION_NAME}
 ENV VERSION=${VERSION}
 # Edit the helm chart to map
-ENV TNS_ADMIN=/usr/lib/oracle/latest/client64/lib/network/admin/
+ENV TNS_ADMIN=/wallet/
 ENTRYPOINT java $JAVA_OPTS -jar /app/${APPLICATION_NAME}-${VERSION}.jar --port=80
 #
 # ------------

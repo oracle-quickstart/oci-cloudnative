@@ -90,7 +90,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- define "orders.mount.wallet" -}}
 # for init container
 - name: wallet
-  mountPath: /usr/lib/oracle/latest/client64/lib/network/admin/
+  mountPath: /wallet/
   readOnly: true
 {{- end -}}
 
