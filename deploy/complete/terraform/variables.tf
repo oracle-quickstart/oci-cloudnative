@@ -27,7 +27,7 @@ variable "cluster_options_add_ons_is_kubernetes_dashboard_enabled" {
   default = false
 }
 variable "cluster_options_admission_controller_options_is_pod_security_policy_enabled" {
-  default = false
+  default     = false
 }
 variable "create_new_oke_cluster" {
   default = true
