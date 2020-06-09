@@ -27,6 +27,7 @@ variable "cluster_options_add_ons_is_kubernetes_dashboard_enabled" {
   default = false
 }
 variable "cluster_options_admission_controller_options_is_pod_security_policy_enabled" {
+  description = "If true: The pod security policy admission controller will use pod security policies to restrict the pods accepted into the cluster."
   default     = false
 }
 variable "create_new_oke_cluster" {
