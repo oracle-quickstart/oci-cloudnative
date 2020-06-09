@@ -17,7 +17,12 @@ resource "oci_containerengine_cluster" "oke_mushop_cluster" {
     admission_controller_options {
       is_pod_security_policy_enabled = var.cluster_options_admission_controller_options_is_pod_security_policy_enabled
     }
+    kubernetes_network_config {
+      pods_cidr     = lookup(var.network_cidrs, "PODS-CIDR")
+      services_cidr = lookup(var.network_cidrs, "SERVICES-CIDR")
+    }
   }
+  kms_key_id = null
 
   count = var.create_new_oke_cluster ? 1 : 0
 }
