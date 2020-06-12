@@ -19,12 +19,8 @@ export class MuBetaBanner {
       <div uk-alert class="uk-alert-warning">
         <p>You are viewing a beta version of MuShop: <span class="uk-text-bold">v{{ver}}</span>
         <br>
-        Features enabled on this version are :</a>
-        <ul>
-          <li>
-            <a href="reviews.html" mu-route>Review</a>
-          </li>
-        </ul>
+        Features enabled on this version are :</a><br>
+        <a href="reviews.html" mu-route>Review</a>
         </p>  
       </div>`,
       { ver },
