@@ -1,7 +1,6 @@
 # Application Metadata
 ARG APPLICATION_NAME="orders"
 ARG VERSION="0.0.1-SNAPSHOT"
-ARG clientVersion=19.3
 
 # ------------
 # Stage 1 : Setup the build environment
@@ -24,7 +23,7 @@ COPY build.gradle /usr/src/app
 FROM buildenv as appbuild
 ARG APPLICATION_NAME
 ARG VERSION
-# Copy the source code. 
+# Copy the source code.
 # This layer is recreated only when there are actual source chnages 
 COPY src /usr/src/app/src
 
@@ -39,7 +38,6 @@ RUN ls -ltr /usr/src/app/build/libs
 FROM openjdk:13-slim
 ARG APPLICATION_NAME
 ARG VERSION
-ARG clientVersion
 
 RUN apt-get update && apt-get install -y procps
 
@@ -50,7 +48,7 @@ EXPOSE 80
 WORKDIR /app
 ENV APPLICATION_NAME=${APPLICATION_NAME}
 ENV VERSION=${VERSION}
-ENV TNS_ADMIN=/usr/lib/oracle/${clientVersion}/client64/lib/network/admin/
+ENV TNS_ADMIN=/wallet/
 ENTRYPOINT java $JAVA_OPTS -jar /app/${APPLICATION_NAME}-${VERSION}.jar --port=80
 #
 # ------------
