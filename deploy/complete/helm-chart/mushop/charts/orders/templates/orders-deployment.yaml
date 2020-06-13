@@ -20,6 +20,9 @@ spec:
         mockmode: {{ .Values.global.mock.service | quote }}
       annotations:
         sidecar.istio.io/rewriteAppHTTPProbers: "true"
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "80"
     spec:
       initContainers:
         {{- include "orders.init.wallet" . | nindent 8 }}
