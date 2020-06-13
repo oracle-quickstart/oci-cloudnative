@@ -35,6 +35,7 @@ dependencies {
 	implementation 'io.nats:jnats:2.6.6'
 	implementation 'com.h2database:h2:1.4.200'
 	runtimeOnly    'com.oracle.database.jdbc:ojdbc8:19.6.0.0'
+	runtimeOnly    'io.micrometer:micrometer-registry-prometheus'
 	
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
     exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
