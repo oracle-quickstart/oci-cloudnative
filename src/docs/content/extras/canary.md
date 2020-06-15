@@ -136,14 +136,10 @@ Download and install [Istio Service Mesh]({{< ref "istio.md" >}})
       - route:
         - destination:
             host: mushop-storefront.mushop.svc.cluster.local
-            port:
-              number: 80
             subset: original
           weight: 50
         - destination:
             host: mushop-storefront.mushop.svc.cluster.local
-            port:
-              number: 80
             subset: beta
           weight: 50
         EOF
