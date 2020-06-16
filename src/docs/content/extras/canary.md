@@ -14,11 +14,11 @@ Note that this is **OPTIONAL**. This section is only applicable if you have comp
 
 ## Introduction
 
-In this section we will demonstrate canary deployment use case on MuShop Application.
+In this section we will demonstrate canary deployment use case with MuShop Application.
 
 One of the benefits of the Istio project is that it provides the control needed to deploy canary services. The idea behind canary deployment (or rollout) is to introduce a new version of a service by first testing it using a small percentage of user traffic, and then if all goes well, increase, possibly gradually in increments, the percentage while simultaneously phasing out the old version. If anything goes wrong along the way, we abort and rollback to the previous version. In its simplest form, the traffic sent to the canary version is a randomly selected percentage of requests, but in more sophisticated schemes it can be based on the region, user, or other properties of the request. Read more details [here](https://istio.io/latest/blog/2017/0.1-canary/) 
 
-We shall demonstrate this by using two versions of storefront microservice (storefront:original and storefront:beta) and would split traffic between the two. 
+We shall demonstrate the simplest canary deployment by using two versions of storefront microservice (storefront:original and storefront:beta) and would split traffic between the two. 
 
 - storefront:original would be the original page which does not have the reviews feature.
 - storefront:beta would have a new feature called "reviews" displayed on the UI which would let the user's provide review for their products. 
@@ -34,7 +34,7 @@ Lets look at the diagram which would explain the same
 The path between users and storefront has many layers ( DNS -> WAF -> LB -> INGRESS -> Router -> Storefront), The above figure shown is high level. Refer https://mushop.ateam.cloud/about.html for more details.
 {{% /alert %}}
 
-We would configure and run the storefront services in an Istio-enabled environment, with Envoy sidecars injected along side each service. We configure the Istio http routing by creating a VirtualService object. Storefront images are available on the Oracle Cloud Infrastructure Registry. We would use them to create a kubernetes deployment.
+We would configure and run the storefront services in an Istio-enabled environment, with Envoy sidecars injected along side each service. We configure the Istio http routing by creating a VirtualService and Destination rules. Storefront images are available on the Oracle Cloud Infrastructure Registry. We would use them to create a kubernetes deployment.
 
 ## Pre-Requisites:
 
@@ -70,10 +70,10 @@ Download and install [Istio Service Mesh]({{< ref "istio.md" >}})
             app: storefront
             app.kubernetes.io/instance: mushop
             app.kubernetes.io/name: storefront
-            version: 2.1.3
+            version: 2.1.3-beta.1
         spec:
           containers:
-          - image: syd.ocir.io/ociateam/mushop/storefront:beta
+          - image: iad.ocir.io/oracle/ateam/mushop-storefront:2.1.3-beta.1
             imagePullPolicy: Always
             name: storefront
     EOF
@@ -145,7 +145,7 @@ Download and install [Istio Service Mesh]({{< ref "istio.md" >}})
         EOF
     ```
 
-   - Destination Rule:
+   - Destination Rule
     
     ```shell--macos-linux
     cat <<EOF | k apply -f -
@@ -161,7 +161,7 @@ Download and install [Istio Service Mesh]({{< ref "istio.md" >}})
           version: 2.1.2
       - name: beta
         labels:
-          version: 2.1.3
+          version: 2.1.3-beta.1
     EOF
     ```
 
@@ -194,7 +194,7 @@ You can also increase the percentage of traffic from 50:50 to 90:10. We could al
 
 ## Roll Back
 
-- We would change the Routing back to default as below
+- We would change the routing back to default as below
 
   ```shell--macos-linux
     cat <<EOF | kubectl apply -f -
