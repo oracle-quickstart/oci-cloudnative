@@ -32,5 +32,16 @@ helm list --all-namespaces NAME NAMESPACE REVISION UPDATED STATUS CHART APP VERS
  In this section you can install and configure Istio service mesh. The mesh needs to be installed before you deploy Mushop for the service mesh proxies to get injected next to each Mushop service.</description>
     </item>
     
+    <item>
+      <title>Canary Deployment</title>
+      <link>https://oracle-quickstart.github.io/oci-cloudnative/extras/canary/</link>
+      <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
+      
+      <guid>https://oracle-quickstart.github.io/oci-cloudnative/extras/canary/</guid>
+      <description>Note that this is OPTIONAL. This section is only applicable if you have completed Istio service mesh section.
+ Introduction In this section we will demonstrate canary deployment use case with MuShop Application.
+One of the benefits of the Istio project is that it provides the control needed to deploy canary services. The idea behind canary deployment (or rollout) is to introduce a new version of a service by first testing it using a small percentage of user traffic, and then if all goes well, increase, possibly gradually in increments, the percentage while simultaneously phasing out the old version.</description>
+    </item>
+    
   </channel>
 </rss>

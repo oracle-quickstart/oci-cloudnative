@@ -47,6 +47,11 @@
   </url>
   
   <url>
+    <loc>https://oracle-quickstart.github.io/oci-cloudnative/extras/canary/</loc>
+    <lastmod>2020-03-10T13:29:23-06:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://oracle-quickstart.github.io/oci-cloudnative/cloud/</loc>
     <lastmod>2020-03-09T13:33:46-06:00</lastmod>
   </url>
@@ -62,12 +67,22 @@
   </url>
   
   <url>
+    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/canary/</loc>
+    <lastmod>2020-03-10T13:29:23-06:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/istio/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
   </url>
   
   <url>
     <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/kiali/</loc>
+    <lastmod>2020-03-10T13:29:23-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/patching/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
   </url>
   

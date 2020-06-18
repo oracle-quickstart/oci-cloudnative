@@ -12,6 +12,15 @@
     
     
     <item>
+      <title>Canary</title>
+      <link>https://oracle-quickstart.github.io/oci-cloudnative/tags/canary/</link>
+      <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
+      
+      <guid>https://oracle-quickstart.github.io/oci-cloudnative/tags/canary/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Istio</title>
       <link>https://oracle-quickstart.github.io/oci-cloudnative/tags/istio/</link>
       <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
@@ -26,6 +35,15 @@
       <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
       
       <guid>https://oracle-quickstart.github.io/oci-cloudnative/tags/kiali/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Patching</title>
+      <link>https://oracle-quickstart.github.io/oci-cloudnative/tags/patching/</link>
+      <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
+      
+      <guid>https://oracle-quickstart.github.io/oci-cloudnative/tags/patching/</guid>
       <description></description>
     </item>
     
