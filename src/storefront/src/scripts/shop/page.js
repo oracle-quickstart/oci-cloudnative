@@ -34,7 +34,8 @@ const pages = {
   product:    'product.html',
   settings:   'settings.html',
   services:   'services.html',
-  subcategory:'subcategory.html'
+  subcategory:'subcategory.html',
+  reviews:    'reviews.html'
 };
 
 const authPage = 'auth';
