@@ -5,9 +5,7 @@
 # OCI Provider
 variable "tenancy_ocid" {}
 variable "compartment_ocid" {}
-variable "region" {
-  default = "us-ashburn-1"
-}
+variable "region" {}
 variable "user_ocid" {
   default = ""
 }
@@ -39,7 +37,8 @@ variable "existent_oke_cluster_id" {
   default = ""
 }
 variable "use_encryption" {
-  default = false
+  default     = false
+  description = "Uses standard block storage encryption or encrypt using customer-managed keys"
 }
 variable "create_new_encryption_key" {
   default = false
