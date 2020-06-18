@@ -27,6 +27,9 @@ variableGroups:
     - cluster_name
     - k8s_version
     - cluster_visibility
+    - use_encryption
+    - create_new_encryption_key
+    - encryption_key_id
     visible: true
   - title: "OKE Worker Nodes"
     variables:
@@ -164,6 +167,30 @@ variables:
       and:
         - create_new_oke_cluster
 
+  use_encryption:
+      type: boolean
+      title: "Use Encryption"
+      visible: #($show_advanced  == ""Yes"")
+        eq:
+          - show_advanced 
+          - "Yes"
+
+  create_new_encryption_key:
+      type: boolean
+      title: "Create new Vault and Key"
+      visible: #($show_advanced  == ""Yes"")
+        eq:
+          - show_advanced 
+          - "Yes"
+
+  encryption_key_id:
+      type: string
+      title: "Existent Encryption Key OCID"
+      visible: #($show_advanced  == ""Yes"")
+        eq:
+          - show_advanced 
+          - "Yes"
+
   node_pool_shape:
     type: oci:core:instanceshape:name
     title: "Worker Node Shape"
@@ -260,6 +287,36 @@ variables:
     required: true
     title: "Enable Mock Mode"
     description: "Enable Mock Mode for MuShop all Services"
+
+  grafana_enabled:
+    type: boolean
+    title: "Grafana"
+    description: "Enable Grafana Dashboards"
+
+  prometheus_enabled:
+    type: boolean
+    title: "Prometheus"
+    description: "Enable Prometheus"
+
+  metrics_server_enabled:
+    type: boolean
+    title: "Metrics Server"
+    description: "Enable Metrics Server for Auto Scaling"
+
+  catalog_enabled:
+    type: boolean
+    title: "Service Catalog"
+    description: "Enable Service Catalog to use with OCI Service Broker"
+
+  ingress_nginx_enabled:
+      type: boolean
+      title: "Ingress NGINX"
+      description: "Enable Ingress Nginx for Services (Provision a Load Balancer)"
+
+  cert_manager_enabled:
+    type: boolean
+    title: "Certificate Management"
+    description: "Enable x509 Certificate Management"
 
   # mushop_atp:
   #   visible: yes
