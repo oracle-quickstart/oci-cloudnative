@@ -9,8 +9,9 @@ resource "oci_database_autonomous_database" "mushop_autonomous_database" {
   cpu_core_count                                 = 1
   data_storage_size_in_tbs                       = 1
   db_name                                        = var.database_name
+  display_name                                   = "${var.database_name}${random_id.mushop_id.dec}"
   freeform_tags                                  = local.common_tags
   is_free_tier                                   = true
-  display_name                                   = "${var.database_name}${random_id.mushop_id.dec}"
+  license_model           = "LICENSE_INCLUDED"
   is_preview_version_with_service_terms_accepted = false
 }
