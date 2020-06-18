@@ -9,7 +9,7 @@ resource "oci_objectstorage_bucket" "mushop" {
   name           = "mushop-${random_id.mushop_id.dec}"
   namespace      = data.oci_objectstorage_namespace.user_namespace.namespace
   freeform_tags  = local.common_tags
-  depends_on = [oci_identity_policy.mushop_allow_object_storage_lifecycle]
+  depends_on     = [oci_identity_policy.mushop_allow_object_storage_lifecycle]
 }
 
 resource "oci_objectstorage_object" "mushop_wallet" {
@@ -99,7 +99,7 @@ resource "oci_objectstorage_preauthrequest" "entrypoint_preauth" {
 resource "oci_objectstorage_object" "mushop_basic" {
   #Required
   bucket    = oci_objectstorage_bucket.mushop.name
-  source   = "./scripts/mushop-basic.tar.gz"
+  source    = "./scripts/mushop-basic.tar.gz"
   namespace = data.oci_objectstorage_namespace.user_namespace.namespace
   object    = "mushop_basic"
 
@@ -153,8 +153,8 @@ resource "oci_objectstorage_preauthrequest" "mushop_media_preauth" {
 
 # Static product media
 resource "oci_objectstorage_object" "mushop_media" {
-  for_each      = fileset("./images", "**")
-  
+  for_each = fileset("./images", "**")
+
   bucket        = oci_objectstorage_bucket.mushop_media.name
   namespace     = oci_objectstorage_bucket.mushop_media.namespace
   object        = each.value

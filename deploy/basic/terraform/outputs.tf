@@ -3,7 +3,7 @@
 # 
 
 output "lb_public_url" {
-  value = format("http://%s", lookup(oci_load_balancer_load_balancer.mushop_lb.ip_address_details[0],"ip_address"))
+  value = format("http://%s", lookup(oci_load_balancer_load_balancer.mushop_lb.ip_address_details[0], "ip_address"))
 }
 
 output "autonomous_database_password" {
