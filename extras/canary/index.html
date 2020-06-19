@@ -580,7 +580,7 @@ Later during the procedure we will use the exact build version.</p>
         - image: iad.ocir.io/oracle/ateam/mushop-storefront:2.1.3-beta.1
           imagePullPolicy: Always
           name: storefront
-  EOF
+EOF
 </code></pre><pre><code class="language-shell--win" data-lang="shell--win">&quot;apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -628,7 +628,7 @@ spec:
           protocol: HTTP
         hosts:
           - '*'
-  EOF
+EOF
 </code></pre><pre><code class="language-shell--win" data-lang="shell--win">&quot;apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
@@ -682,7 +682,7 @@ spec:
           host: mushop-storefront.mushop.svc.cluster.local
           subset: beta
         weight: 50
-      EOF
+EOF
 </code></pre><pre><code class="language-shell--win" data-lang="shell--win">&quot;apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -804,7 +804,7 @@ spec:
           host: mushop-storefront.mushop.svc.cluster.local
           port:
             number: 80
-  EOF
+EOF
 </code></pre><pre><code class="language-shell--win" data-lang="shell--win">&quot;apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
