@@ -46,12 +46,7 @@ spec:
             httpGet:
               path: /actuator/health/liveness
               port: http
-          startupProbe:
-            failureThreshold: 9
-            periodSeconds: 10
-            httpGet:
-              path: /actuator/health/liveness
-              port: http
+
           env:
             - name: ZIPKIN
               value: {{ .Values.env.zipkin }}
