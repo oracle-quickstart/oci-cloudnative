@@ -77,7 +77,7 @@ Download and install [Istio Service Mesh]({{< ref "istio.md" >}})
           - image: iad.ocir.io/oracle/ateam/mushop-storefront:2.1.3-beta.1
             imagePullPolicy: Always
             name: storefront
-    EOF
+  EOF
   ```
 
   ```shell--win
@@ -132,7 +132,7 @@ Download and install [Istio Service Mesh]({{< ref "istio.md" >}})
             protocol: HTTP
           hosts:
             - '*'
-    EOF
+  EOF
     ```
 
     ```shell--win
@@ -191,7 +191,7 @@ Download and install [Istio Service Mesh]({{< ref "istio.md" >}})
             host: mushop-storefront.mushop.svc.cluster.local
             subset: beta
           weight: 50
-        EOF
+  EOF
     ```
 
     ```shell--win
@@ -248,7 +248,7 @@ Download and install [Istio Service Mesh]({{< ref "istio.md" >}})
       - name: beta
         labels:
           version: 2.1.3-beta.1
-    EOF
+  EOF
     ```
 
     ```shell--win
@@ -329,7 +329,7 @@ We can also change the percentage of traffic from 50:50 to 90:10. For more focus
             host: mushop-storefront.mushop.svc.cluster.local
             port:
               number: 80
-    EOF
+  EOF
     ```
 
     ```shell--win
