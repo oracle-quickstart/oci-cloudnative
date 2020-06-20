@@ -62,13 +62,11 @@ how to access the Jenkins application.
 
 - Access Jenkins with admin/<password>:
 
-{{- if .Values.jenkins.master.ingress.enabled }}
-
-- Open http://<external-ip>/jenkins ( See above for how to locate the <external-ip> )
-
-{{- end }}
-
-- Setup a port forward for the service.
+- {{ if .Values.jenkins.master.ingress.enabled -}}
+  Open http://<external-ip>/jenkins ( See above for how to locate the <external-ip> )
+  Or alternatively,
+  {{ end -}}
+  Setup a port forward for the service.
 
   kubectl port-forward -n {{ .Release.Namespace }} svc/{{ .Release.Name }}-jenkins 3001:8080
 
