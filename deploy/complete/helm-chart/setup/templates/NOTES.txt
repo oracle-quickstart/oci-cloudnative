@@ -30,6 +30,20 @@ how to access the Grafana application.
 
 {{- end }}
 
+{{- $ingressConfig := index $.Values "ingress-nginx" -}}
+{{- if $ingressConfig.enabled }}
+
+## Ingress
+
+An nginx ingress controller has been installed, which includes a LoadBalancer
+resource in this namespace.
+
+- Locate the ingress controller EXTERNAL-IP address
+
+  kubectl get svc -n {{ .Release.Namespace }} {{ .Release.Name }}-ingress-nginx-controller
+
+{{- end }}
+
 {{- if .Values.jenkins.enabled }}
 
 ## Jenkins
@@ -43,27 +57,21 @@ how to access the Jenkins application.
     -o jsonpath="{.data.jenkins-admin-password}" | base64 --decode ; echo
 
 - Access Jenkins with admin/<password>:
-  
+
+{{- if .Values.jenkins.master.ingress.enabled }}
+
+- You can access jenkins by opening http://<external-ip>/jenkins
+
+{{- else -}}
+
+- Setup a port forward for the service.
+
   kubectl port-forward -n {{ .Release.Namespace }} svc/{{ .Release.Name }}-jenkins 3001:8080
 
 - Then open http://localhost:3001/jenkins
 
-- Alternatively, if the ingress controller is enabled, you can access jenkins by opening http://<external-ip>/jenkins
-
-
-{{- end }}
-
-{{- $ingressConfig := index $.Values "ingress-nginx" -}}
-{{- if $ingressConfig.enabled }}
-
-## Ingress
-
-An nginx ingress controller has been installed, which includes a LoadBalancer
-resource in this namespace.
-
-- Locate the ingress controller EXTERNAL-IP address
-
-  kubectl get svc -n {{ .Release.Namespace }} {{ .Release.Name }}-ingress-nginx-controller
+- You can access jenkins by opening http://<external-ip>/jenkins
+{{- end -}}
 
 {{- end }}
 

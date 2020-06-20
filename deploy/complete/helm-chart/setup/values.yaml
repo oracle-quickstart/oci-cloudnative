@@ -99,6 +99,7 @@ jenkins:
     slaveListenerPort: 50000
     jenkinsUriPrefix: "/jenkins"
     ingress:
+      # enable ingress only if the ingress-controller `nginx-ingress` is enabled.
       enabled: true
       paths:
         - path: /jenkins
