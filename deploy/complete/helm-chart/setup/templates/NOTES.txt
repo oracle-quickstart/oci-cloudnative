@@ -56,21 +56,23 @@ how to access the Jenkins application.
   kubectl get secret -n {{ .Release.Namespace }} {{ .Release.Name }}-jenkins \
     -o jsonpath="{.data.jenkins-admin-password}" | base64 --decode ; echo
 
+- Ensure that jenkins is up and running
+
+  kubectl get deployment -n {{ .Release.Namespace }} {{ .Release.Name }}-jenkins
+
 - Access Jenkins with admin/<password>:
+
+{{- if .Values.jenkins.master.ingress.enabled }}
+
+- Open http://<external-ip>/jenkins ( See above for how to locate the <external-ip> )
+
+{{- end }}
 
 - Setup a port forward for the service.
 
   kubectl port-forward -n {{ .Release.Namespace }} svc/{{ .Release.Name }}-jenkins 3001:8080
 
 - Open http://localhost:3001/jenkins
-
-{{- if .Values.jenkins.master.ingress.enabled }}
-
-- You can also access jenkins using the ingress. ( See above for how to locate the <external-ip> )
-
-- Open http://<external-ip>/jenkins  
-
-{{- end -}}
 
 {{- end }}
 
