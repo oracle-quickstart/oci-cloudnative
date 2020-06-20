@@ -80,7 +80,7 @@ grafana:
 
 # https://github.com/helm/charts/blob/master/stable/jenkins/README.md
 jenkins:
-  enabled: true
+  enabled: false
   master:
     componentName: "jenkins-master"
     image: "jenkins/jenkins"
