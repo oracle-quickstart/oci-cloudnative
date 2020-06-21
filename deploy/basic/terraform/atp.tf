@@ -12,6 +12,6 @@ resource "oci_database_autonomous_database" "mushop_autonomous_database" {
   display_name                                   = "${var.database_name}${random_id.mushop_id.dec}"
   freeform_tags                                  = local.common_tags
   is_free_tier                                   = true
-  license_model           = "LICENSE_INCLUDED"
+  license_model                                  = "LICENSE_INCLUDED"
   is_preview_version_with_service_terms_accepted = false
 }
