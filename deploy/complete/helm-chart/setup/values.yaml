@@ -18,6 +18,7 @@ prometheus:
         - targets:
           - {{ .Release.Name }}-ingress-nginx-controller-metrics:9913
 
+
 # https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md
 catalog:
   enabled: true
@@ -46,6 +47,10 @@ grafana:
       pods:
         gnetId: 6336
         revision: 1
+        datasource: Prometheus
+      spring-boot:
+        gnetId: 12464
+        revision: 2
         datasource: Prometheus
   dashboardProviders:
     dashboardproviders.yaml:
