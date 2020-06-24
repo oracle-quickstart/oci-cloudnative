@@ -50,3 +50,13 @@ The default username is `admin`. The default password is generated and stored as
 
 ## A simple build job
 
+Once logged in, we can test a simple pipeline by creating a multi-branch pipeline based on the repository 
+
+https://github.com/jeevanjoseph/jenkins-k8s-pipeline.git
+
+
+The repository contains a `Jenkinsfile` that describes how it should be built and this is the only information 
+that Jenkins requires in order to run the build. In this example, the build defines its execution environment to
+include a terraform container to run terraform code, and a docker container to build docker images.
+
+
