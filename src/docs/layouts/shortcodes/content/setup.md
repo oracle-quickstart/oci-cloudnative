@@ -11,6 +11,7 @@ application features.
 | [Ingress Nginx](https://kubernetes.github.io/ingress-nginx/) | Ingress controller and public Load Balancer | `ingress-nginx.enabled` |
 | [Service Catalog](https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md) | Service Catalog chart utilized by Oracle Service Broker | `catalog.enabled` |
 | [Cert Manager](https://github.com/jetstack/cert-manager/blob/master/README.md) | x509 certificate management for Kubernetes | `cert-manager.enabled` |
+| [Jenkins](https://github.com/helm/charts/blob/master/stable/jenkins/README.md) | Jenkins automation server on Kubernetes | `jenkins.enabled` |
 
 > Dependencies installed with `setup` chart. **NOTE** as these are very common installations, each may be disabled as needed to resolve conflicts.
 
