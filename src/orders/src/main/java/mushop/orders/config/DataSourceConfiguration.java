@@ -5,9 +5,14 @@
  **/
 package  mushop.orders.config;
 
+import com.zaxxer.hikari.HikariDataSource;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.metrics.jdbc.DataSourcePoolMetrics;
 import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.boot.jdbc.metadata.DataSourcePoolMetadataProvider;
+import org.springframework.boot.jdbc.metadata.HikariDataSourcePoolMetadata;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -16,6 +21,7 @@ import javax.sql.DataSource;
 
 @Configuration
 public class DataSourceConfiguration {
+
 
     @Autowired
     private Environment env;
@@ -30,7 +36,7 @@ public class DataSourceConfiguration {
     private String db_pass;
      
     @Bean
-    public DataSource getDataSource() {
+    public DataSource getDataSource(MeterRegistry registry) {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         //
         if("Mock".equalsIgnoreCase(db_Name)) {
@@ -44,7 +50,9 @@ public class DataSourceConfiguration {
             dataSourceBuilder.username(db_user);
             dataSourceBuilder.password(db_pass);
         }
-        
-        return dataSourceBuilder.build();
+        DataSource ordersDS = dataSourceBuilder.build();
+        DataSourcePoolMetadataProvider provider = dataSource -> new HikariDataSourcePoolMetadata((HikariDataSource) dataSource);
+        new DataSourcePoolMetrics(ordersDS,provider,"orders_data_source",null).bindTo(registry);
+        return ordersDS;
     }
 }
