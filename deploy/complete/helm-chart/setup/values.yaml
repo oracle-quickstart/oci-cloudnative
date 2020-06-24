@@ -82,21 +82,7 @@ grafana:
 jenkins:
   enabled: false
   master:
-    componentName: "jenkins-master"
-    image: "jenkins/jenkins"
-    tag: "lts"
-    numExecutors: 0
-    adminUser: "admin"
-    resources:
-      requests:
-        cpu: "1000m"
-        memory: "2048Mi"
-      limits:
-        cpu: "2000m"
-        memory: "4096Mi"
-    hostAliases: []
     serviceType: ClusterIP
-    slaveListenerPort: 50000
     jenkinsUriPrefix: "/jenkins"
     ingress:
       # enable ingress only if the ingress-controller `nginx-ingress` is enabled.

@@ -56,7 +56,7 @@ how to access the Jenkins application.
   kubectl get secret -n {{ .Release.Namespace }} {{ .Release.Name }}-jenkins \
     -o jsonpath="{.data.jenkins-admin-password}" | base64 --decode ; echo
 
-- Ensure that jenkins is up and running
+- Ensure that Jenkins is up and running
 
   kubectl get deployment -n {{ .Release.Namespace }} {{ .Release.Name }}-jenkins
 
