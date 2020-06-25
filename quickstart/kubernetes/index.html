@@ -311,6 +311,24 @@
 
         
       
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/extras/jenkins/" title="Jenkins" class="">
+      <a href="/oci-cloudnative/extras/jenkins/" class="uk-text-truncate">
+        Jenkins
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
     </ul>
   
   </li>
@@ -562,6 +580,7 @@ application features.</p>
 <th>Chart</th>
 <th>Purpose</th>
 <th>Option</th>
+<th>Default</th>
 </tr>
 </thead>
 <tbody>
@@ -569,31 +588,43 @@ application features.</p>
 <td><a href="https://github.com/helm/charts/blob/master/stable/prometheus/README.md">Prometheus</a></td>
 <td>Service metrics aggregation</td>
 <td><code>prometheus.enabled</code></td>
+<td>true</td>
 </tr>
 <tr>
 <td><a href="https://github.com/helm/charts/blob/master/stable/grafana/README.md">Grafana</a></td>
 <td>Infrastructure/service visualization dashboards</td>
 <td><code>grafana.enabled</code></td>
+<td>true</td>
 </tr>
 <tr>
 <td><a href="https://github.com/helm/charts/blob/master/stable/metrics-server/README.md">Metrics Server</a></td>
 <td>Support for Horizontal Pod Autoscaling</td>
 <td><code>metrics-server.enabled</code></td>
+<td>true</td>
 </tr>
 <tr>
 <td><a href="https://kubernetes.github.io/ingress-nginx/">Ingress Nginx</a></td>
 <td>Ingress controller and public Load Balancer</td>
 <td><code>ingress-nginx.enabled</code></td>
+<td>true</td>
 </tr>
 <tr>
 <td><a href="https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md">Service Catalog</a></td>
 <td>Service Catalog chart utilized by Oracle Service Broker</td>
 <td><code>catalog.enabled</code></td>
+<td>true</td>
 </tr>
 <tr>
 <td><a href="https://github.com/jetstack/cert-manager/blob/master/README.md">Cert Manager</a></td>
 <td>x509 certificate management for Kubernetes</td>
 <td><code>cert-manager.enabled</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td><a href="https://github.com/helm/charts/blob/master/stable/jenkins/README.md">Jenkins</a></td>
+<td>Jenkins automation server on Kubernetes</td>
+<td><code>jenkins.enabled</code></td>
+<td>false</td>
 </tr>
 </tbody>
 </table>
@@ -615,6 +646,14 @@ application features.</p>
 </code></pre><pre><code class="language-shell--helm3" data-lang="shell--helm3">helm install mushop-utils setup \
   --namespace mushop-utilities
 </code></pre></li>
+</ol>
+<blockquote>
+<p><strong>OPTIONAL</strong> The Jenkins automation server can be enabled by setting <code>jenkins.enabled</code> to <code>true</code> in <code>values.yaml</code> or by adding the command line flag <code>--set jenkins.enabled=true</code> in the <code>helm install</code> command above.</p>
+</blockquote>
+<pre><code class="language-shell--helm3" data-lang="shell--helm3">helm install mushop-utils setup \
+  --namespace mushop-utilities \
+  --set jenkins.enabled=true
+</code></pre><ol>
 <li>
 <p><strong>NOTE</strong> the public <code>EXTERNAL-IP</code> assigned to the ingress controller load balancer:</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">kubectl get svc mushop-utils-ingress-nginx-controller <span class="se">\
@@ -848,6 +887,22 @@ directly to the <code>edge</code> service resource:</p>
   
 
   
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
   
     
 

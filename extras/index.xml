@@ -43,5 +43,16 @@ helm list --all-namespaces NAME NAMESPACE REVISION UPDATED STATUS CHART APP VERS
 One of the benefits of the Istio project is that it provides the control needed to deploy canary services. The idea behind canary deployment (or rollout) is to introduce a new version of a service by first testing it using a small percentage of user traffic, and then if all goes well, increase, possibly gradually in increments, the percentage while simultaneously phasing out the old version.</description>
     </item>
     
+    <item>
+      <title>Jenkins</title>
+      <link>https://oracle-quickstart.github.io/oci-cloudnative/extras/jenkins/</link>
+      <pubDate>Wed, 24 Jun 2020 16:48:49 -0700</pubDate>
+      
+      <guid>https://oracle-quickstart.github.io/oci-cloudnative/extras/jenkins/</guid>
+      <description>Introduction In this section we will demonstrate how to run leverage your kubernetes cluster for CI/CD tasks using Jenkins.
+Note that Jenkins is OPTIONAL and disabled by default. To enable it, see setup section.
+ When enabled, a Jenkins server is installed on the kubernetes cluster and is setup to utilize the Jenkins Kubernetes plugin. The plugin enables Jenkins to create worker nodes on demand as pods on the kubernetes cluster to run jobs, then terminates the pods when the job is completed.</description>
+    </item>
+    
   </channel>
 </rss>
