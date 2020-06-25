@@ -44,6 +44,36 @@ resource in this namespace.
 
 {{- end }}
 
+{{- if .Values.jenkins.enabled }}
+
+## Jenkins
+
+An instance of Jenkins was installed with this chart. These instructions describe
+how to access the Jenkins application. 
+
+- Get the admin password:
+
+  kubectl get secret -n {{ .Release.Namespace }} {{ .Release.Name }}-jenkins \
+    -o jsonpath="{.data.jenkins-admin-password}" | base64 --decode ; echo
+
+- Ensure that Jenkins is up and running
+
+  kubectl get deployment -n {{ .Release.Namespace }} {{ .Release.Name }}-jenkins
+
+- Access Jenkins with admin/<password>:
+
+- {{ if .Values.jenkins.master.ingress.enabled -}}
+  Open http://<external-ip>/jenkins ( See above for how to locate the <external-ip> )
+  Or alternatively,
+  {{ end -}}
+  Setup a port forward for the service.
+
+  kubectl port-forward -n {{ .Release.Namespace }} svc/{{ .Release.Name }}-jenkins 3001:8080
+
+- Open http://localhost:3001/jenkins
+
+{{- end }}
+
 ## Uninstalling the Chart:
 
   helm delete {{ .Release.Name }} -n {{ .Release.Namespace }}
