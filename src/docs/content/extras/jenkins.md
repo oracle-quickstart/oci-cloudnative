@@ -16,10 +16,10 @@ In this section we will demonstrate how to run leverage your kubernetes cluster 
 using [Jenkins](https://www.jenkins.io/).
 
 {{% alert style="danger" icon="warning" %}}
-Note that Jenkins is **OPTIONAL** and disabled by default. To enable it, see [deployment]({{< ref "cloud/setup.md" >}}) section. Additionally, you don't need to install Grafana, Prometheus or the Ingress controller from the `setup` chart as they are already included in the Istio installation.
+Note that Jenkins is **OPTIONAL** and disabled by default. To enable it, see [setup]({{< ref "cloud/setup.md" >}}) section. 
 {{% /alert %}}
 
-When enabled, this installs a Jenkins server on the kubernetes cluster utilizing the [Jenkins Kubernetes plugin](https://plugins.jenkins.io/kubernetes).
+When enabled, a Jenkins server is installed on the kubernetes cluster and is setup to utilize the [Jenkins Kubernetes plugin](https://plugins.jenkins.io/kubernetes).
 The plugin enables Jenkins to create worker nodes on demand as pods on the kubernetes cluster to run jobs, 
 then terminates the pods when the job is completed. This also lets the system run any arbitrary job since all
 job related dependencies (say, building an application that requires a specific version of `java`) are contained
@@ -27,7 +27,7 @@ within the definition of a docker container that executes the step.
 
 More information on the kubernetes plugin and the extensions it provides for the Jenkins pipeline are described [here](https://github.com/jenkinsci/kubernetes-plugin#pipeline-support)
 
-## Accessing the server
+## Accessing Jenkins
 
 Once installation is completed, you can access the Jenkins server using the ingress controller (if one was configured), or using a port forward.
 
