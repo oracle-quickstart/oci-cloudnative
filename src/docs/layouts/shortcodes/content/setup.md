@@ -39,7 +39,7 @@ From `deploy/complete/helm-chart` directory:
     helm install mushop-utils setup \
       --namespace mushop-utilities
     ```
->  **OPTIONAL** The Jenkins automation server is disabled by default in the `values.yaml`, and can be enabled by setting `jenkins.enabled` to `true` in the file or using the CLI.
+>  **OPTIONAL** The Jenkins automation server can be enabled by setting `jenkins.enabled` to `true` in `values.yaml` or by adding the command line flag `--set jenkins.enabled=true` in the `helm install` command above.
 
   ```shell--helm3
   helm install mushop-utils setup \
