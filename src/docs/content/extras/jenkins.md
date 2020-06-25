@@ -12,7 +12,12 @@ tags:
 
 ## Introduction
 
-In this section we will demonstrate how to run leverage your kubernetes cluster for CI/CD tasks using Jenkins .
+In this section we will demonstrate how to run leverage your kubernetes cluster for CI/CD tasks 
+using [Jenkins](https://www.jenkins.io/).
+
+{{% alert style="danger" icon="warning" %}}
+Note that Jenkins is **OPTIONAL** and disabled by default. To enable it, see [deployment]({{< ref "cloud/setup.md" >}}) section. Additionally, you don't need to install Grafana, Prometheus or the Ingress controller from the `setup` chart as they are already included in the Istio installation.
+{{% /alert %}}
 
 When enabled, this installs a Jenkins server on the kubernetes cluster utilizing the [Jenkins Kubernetes plugin](https://plugins.jenkins.io/kubernetes).
 The plugin enables Jenkins to create worker nodes on demand as pods on the kubernetes cluster to run jobs, 
@@ -28,32 +33,30 @@ Once installation is completed, you can access the Jenkins server using the ingr
 
 To use the ingress, first find the external IP for the Load Balancer that was created :
 
-    ```shell
-    kubectl get svc mushop-utils-ingress-nginx-controller \
-      --namespace mushop-utilities
-    ```
+```shell
+kubectl get svc mushop-utils-ingress-nginx-controller \
+  --namespace mushop-utilities
+```
 Ensure that Jenkins is up and ready
 
-    ```shell
-    kubectl get deployment -n mushop-utilities mushop-utils-jenkins
-    ```
+```shell
+kubectl get deployment -n mushop-utilities mushop-utils-jenkins
+```
 
 Once Jenkins is ready, navigate to http://<external-ip>/jenkins
 
 The default username is `admin`. The default password is generated and stored as a kubernetes secret.
 
-    ```shell
-    kubectl get secret -n mushop-utilities mushop-utils-jenkins \
-    -o jsonpath="{.data.jenkins-admin-password}" | base64 --decode ; echo
-    ```
-
+```shell
+kubectl get secret -n mushop-utilities mushop-utils-jenkins \
+-o jsonpath="{.data.jenkins-admin-password}" | base64 --decode ; echo
+```
 
 ## A simple build job
 
 Once logged in, we can test a simple pipeline by creating a multi-branch pipeline based on the repository 
 
 https://github.com/jeevanjoseph/jenkins-k8s-pipeline.git
-
 
 The repository contains a `Jenkinsfile` that describes how it should be built and this is the only information 
 that Jenkins requires in order to run the build. In this example, the build defines its execution environment to

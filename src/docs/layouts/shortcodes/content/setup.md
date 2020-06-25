@@ -39,12 +39,13 @@ From `deploy/complete/helm-chart` directory:
     helm install mushop-utils setup \
       --namespace mushop-utilities
     ```
-1. **NOTE** The Jenkins automation server is disabled by default in the `values.yaml`, and can be enabled by setting `jenkins.enabled` to `true` in the file or using the CLI.
-   ```shell--helm3
-    helm install mushop-utils setup \
-      --namespace mushop-utilities \
-      --set jenkins.enabled=true
-   ```
+>  **OPTIONAL** The Jenkins automation server is disabled by default in the `values.yaml`, and can be enabled by setting `jenkins.enabled` to `true` in the file or using the CLI.
+
+  ```shell--helm3
+  helm install mushop-utils setup \
+    --namespace mushop-utilities \
+    --set jenkins.enabled=true
+  ```
 
 1. **NOTE** the public `EXTERNAL-IP` assigned to the ingress controller load balancer:
 
