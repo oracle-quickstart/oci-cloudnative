@@ -29,7 +29,7 @@ RUN gu install native-image
 RUN native-image --no-server  -cp libs/fulfillment-*-all.jar
 
 # Step 4 : Build the final application image
-FROM ubuntu:19.10
+FROM ubuntu:20.04
 EXPOSE 80
 COPY --from=graalvm /home/app/fulfillment/fulfillment /app/fulfillment
 ENTRYPOINT ["/app/fulfillment", "-Djava.library.path=/app"]
