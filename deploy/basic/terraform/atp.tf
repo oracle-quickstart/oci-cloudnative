@@ -14,7 +14,7 @@ resource "oci_database_autonomous_database" "mushop_autonomous_database" {
   is_free_tier             = true
 
   #Optional
-
+  db_version                                     = "19c"
   db_workload                                    = "OLTP"
   display_name                                   = "${var.database_name}${random_id.mushop_id.dec}"
   is_auto_scaling_enabled                        = false
