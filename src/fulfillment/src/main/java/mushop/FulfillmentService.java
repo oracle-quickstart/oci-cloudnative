@@ -6,6 +6,7 @@ package  mushop;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.micrometer.core.instrument.MeterRegistry;
 import io.micronaut.context.annotation.Value;
 import io.micronaut.core.annotation.Introspected;
 import io.micronaut.discovery.event.ServiceReadyEvent;
@@ -42,9 +43,11 @@ public class FulfillmentService {
     @Value("${mushop.messaging.simulation-delay}")
     private Long simulationDelay;
     private ExecutorService messageProcessingPool;
+    private MeterRegistry meterRegistry;
 
-    public FulfillmentService() {
+    public FulfillmentService(MeterRegistry meterRegistry) {
         messageProcessingPool = Executors.newCachedThreadPool();
+        this.meterRegistry = meterRegistry;
     }
 
     @EventListener
@@ -61,6 +64,7 @@ public class FulfillmentService {
                         Dispatcher d = nc.createDispatcher((msg) -> {
                             try {
                                 OrderUpdate update = handleMessage(msg);
+                                meterRegistry.counter("orders.received","app","fulfillment").increment();
                                 fulfillOrder(update);
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -102,6 +106,7 @@ public class FulfillmentService {
                 String msg = objectMapper.writeValueAsString(order);
                 log.info("Sending shipment update {}", msg);
                 nc.publish(mushopShipmentsSubject, msg.getBytes(StandardCharsets.UTF_8));
+                meterRegistry.counter("orders.fulfilled","app","fulfillment").increment();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (JsonProcessingException e) {
