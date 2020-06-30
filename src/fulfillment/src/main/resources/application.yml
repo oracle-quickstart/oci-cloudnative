@@ -19,12 +19,11 @@ micronaut:
         enabled: true
       processor:
         enabled: true
-      files:
-        enabled: true
+
 
 
 endpoints:
-    all:
+    prometheus:
         enabled: true
         sensitive: false
 
