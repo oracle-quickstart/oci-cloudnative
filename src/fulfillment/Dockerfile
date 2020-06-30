@@ -2,7 +2,7 @@ ARG APPLICATION_NAME="fulfillment"
 ARG VERSION="0.0.1-SNAPSHOT"
 
 # Stage 1 : Setup the build environment
-FROM gradle:6.5 as buildenv
+FROM gradle:6.5-jdk11 as buildenv
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app

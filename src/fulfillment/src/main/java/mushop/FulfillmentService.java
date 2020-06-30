@@ -8,7 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.context.annotation.Value;
 import io.micronaut.core.annotation.Introspected;
-import io.micronaut.discovery.event.ServiceStartedEvent;
+import io.micronaut.discovery.event.ServiceReadyEvent;
 import io.micronaut.runtime.event.annotation.EventListener;
 import io.micronaut.scheduling.annotation.Async;
 import io.nats.client.Connection;
@@ -49,7 +49,7 @@ public class FulfillmentService {
 
     @EventListener
     @Async
-    public void connect(final ServiceStartedEvent event) throws InterruptedException {
+    public void connect(final ServiceReadyEvent event) throws InterruptedException {
         boolean connected = false;
         ExecutorService connect = Executors.newSingleThreadExecutor();
         while (!connected) {
