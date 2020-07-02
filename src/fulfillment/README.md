@@ -58,6 +58,27 @@ There are a few attributes that are externally configurable. These are
 | NATS_HOST  | The hostname for where NATS is reachable. Defaults to `localhost`  |
 | SIMULATION_DELAY | The artificial time delay between the fulfillment service receiving a message from the orders service and it replying  (for demos). Defaults to 8s. Value is in milliseconds. |
 
+## Metrics & Monitoring
+
+The application uses micronaut-micrometer features to report metrics. Some of the JVM metrics are not reported as the application does not use a JVM in the default configuration.
+To generate additional metrics, you can send fake message to indicate orders on to the NATS messaging platform. The fulfillment service does not validate the orders, and will "process" 
+the orders by sending an acknowledgement with shipment information back to orders over the `mushop-shipments` channel. Orders does validate `orderId`s so there will be no accidental update 
+of order records from the fake data.
+
+To send messages at a high volume, use the `nats-box`.
+
+```shell
+kubectl run -i --rm --tty nats-box --image=synadia/nats-box --restart=Never
+```
+
+Once inside the container, use the following to send a stream of messages to the fulfillment service.
+
+```shell
+for x in `seq 1 300`; do echo $x; nats-pub -s nats://mushop-nats:4222 mushop-orders '{"orderId":2}';sleep 1;done
+```
+
+You should see some metrics being graphed in the dashboards.
+
 ## Micronaut & GraalVM
 
 This application also uses the [Micronaut](https://micronaut.io/) - a lightweight framework 
