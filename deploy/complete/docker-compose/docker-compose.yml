@@ -215,3 +215,18 @@ services:
       - ORDERS_SHIPPED=mushop-shipments
       - SIMULATION_DELAY=10000
 
+  fulfillment-exporter:
+    image: synadia/prometheus-nats-exporter:latest
+    ports: 
+      - 7777:7777
+    hostname: fulfillment-exporter
+    restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid
+    command: -D -varz http://nats:8222
+
