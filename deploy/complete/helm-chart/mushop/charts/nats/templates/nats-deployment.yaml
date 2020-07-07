@@ -22,6 +22,9 @@ spec:
         run: {{ include "nats.name" . }}
       annotations:
         sidecar.istio.io/rewriteAppHTTPProbers: "true"
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "7777"
     spec:
       containers:
         - name: {{ .Chart.Name }}
@@ -37,4 +40,19 @@ spec:
             - name: monitoring
               containerPort: 8222
               protocol: TCP
+        - name: {{ .Chart.Name }}-exporter
+          image: "{{ .Values.exporter.repository }}:{{ .Values.exporter.tag }}"
+          imagePullPolicy: {{ .Values.exporter.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 7777
+          args:
+            - -D 
+            - -varz 
+            - -channelz
+            - -connz
+            - -serverz
+            - -subz
+            - -gatewayz
+            - "http://localhost:8222"
           
