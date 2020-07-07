@@ -5,13 +5,18 @@ import static java.net.HttpURLConnection.HTTP_OK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -48,12 +53,26 @@ public class TestCartService {
     }
     
     @Test
-    public void testMetrics() throws Exception {
+    public void testMetricsJson() throws Exception {
         JsonObject result = get(baseUrl() + "/metrics", "Accept: application/json").asJsonObject();
 
         assertTrue(result.get("vendor").asJsonObject()
                          .getInt("requests.count") > 0);
         
+    }
+
+    @Test
+    public void testMetricsText() throws Exception {
+        String result = getPlainText(baseUrl() + "/metrics", "Accept: text/plain");
+        Boolean result_b = Arrays.stream(result.split(System.lineSeparator()))
+                .filter(line -> !line.startsWith("#"))
+                //.map(line -> {System.out.println(line); return line;})
+                .map(line -> line.matches("([a-zA-Z_:]*)(.*)[ ]([0-9.]*)"))
+                .allMatch(bool -> bool==true);
+        System.out.println(result_b);;
+
+        assertTrue(result_b);
+
     }
 
     @Test
@@ -127,6 +146,21 @@ public class TestCartService {
         try (JsonReader reader = Json.createReader(con.getInputStream())) {
             return reader.readValue();
         }
+    }
+
+    private String getPlainText(String urlStr, String... headers) throws IOException {
+        URL url = new URL(urlStr);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        for (String header : headers) {
+            String[] kv = header.split(":");
+            con.setRequestProperty(kv[0], kv[1]);
+        }
+        con.setRequestProperty("Accept", "text/plain");
+        String text = new BufferedReader(
+                new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8)).lines()
+                .collect(Collectors.joining("\n"));
+        return text;
     }
     
     private String baseUrl() throws UnknownHostException {
