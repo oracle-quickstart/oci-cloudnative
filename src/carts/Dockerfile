@@ -42,4 +42,4 @@ ENV APPLICATION_NAME=${APPLICATION_NAME}
 ENV VERSION=${VERSION}
 ENV TNS_ADMIN=/usr/lib/oracle/${clientVersion}/client64/lib/network/admin/
 
-ENTRYPOINT java $JAVA_OPTS -Dserver.port=80 -jar /app/${APPLICATION_NAME}-${VERSION}.jar
+ENTRYPOINT java $JAVA_OPTS  -jar /app/${APPLICATION_NAME}-${VERSION}.jar
