@@ -39,7 +39,9 @@ public class CartService implements Service {
     private final MetricRegistry registry = RegistryFactory.getInstance().getRegistry(MetricRegistry.Type.APPLICATION);
     private final Counter newCartCounter = registry.counter("cart_create");
     private final Counter updateCartCounter = registry.counter("cart_update");
+    private final Counter deleteCartCounter = registry.counter("cart_delete");
     private final Timer saveCartTimer = registry.timer("cart_save_timer");
+    private final Timer dbConnectTimer = registry.timer("cart_db_conn_timer");
 
 
     public CartService(Config config) {
@@ -55,7 +57,9 @@ public class CartService implements Service {
                     Future<Boolean> result = executorService.submit(() -> {
                         try {
                             log.info("Connecting to " + dbName);
+                            Timer.Context context = dbConnectTimer.time();
                             carts = new CartRepositoryDatabaseImpl(config);
+                            context.close();
                             log.info("Connected to " + dbName);
                             return Boolean.TRUE;
                         } catch (Exception ex) {
@@ -113,6 +117,7 @@ public class CartService implements Service {
     public void deleteCart(ServerRequest request, ServerResponse response) {
         try {
             if (carts.deleteCart(request.path().param("cartId"))) {
+                deleteCartCounter.inc();
                 response.status(200).send();
             } else {
                 response.status(404).send();
@@ -139,7 +144,10 @@ public class CartService implements Service {
                 response.status(404).send();
                 return;
             }
+            Timer.Context context = saveCartTimer.time();
             carts.save(cart);
+            context.close();
+            updateCartCounter.inc();
             response.status(200).send();
         } catch (Exception e) {
             log.log(Level.SEVERE, "deleteCartItem failed.", e);
