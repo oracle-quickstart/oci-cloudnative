@@ -11,10 +11,15 @@ import java.util.concurrent.*;
 import io.helidon.common.http.Http;
 import io.helidon.common.http.Http.RequestMethod;
 import io.helidon.config.Config;
+import io.helidon.metrics.RegistryFactory;
 import io.helidon.webserver.Routing.Rules;
 import io.helidon.webserver.ServerRequest;
 import io.helidon.webserver.ServerResponse;
 import io.helidon.webserver.Service;
+import org.eclipse.microprofile.metrics.Counter;
+import org.eclipse.microprofile.metrics.MetricRegistry;
+import org.eclipse.microprofile.metrics.Tag;
+import org.eclipse.microprofile.metrics.Timer;
 
 public class CartService implements Service {
 
@@ -30,6 +35,12 @@ public class CartService implements Service {
     private static final Set<RequestMethod> PATCH = Collections.singleton(Http.RequestMethod.create("PATCH"));
 
     private CartRepository carts;
+
+    private final MetricRegistry registry = RegistryFactory.getInstance().getRegistry(MetricRegistry.Type.APPLICATION);
+    private final Counter newCartCounter = registry.counter("cart_create");
+    private final Counter updateCartCounter = registry.counter("cart_update");
+    private final Timer saveCartTimer = registry.timer("cart_save_timer");
+
 
     public CartService(Config config) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -153,11 +164,17 @@ public class CartService implements Service {
                     Cart cart = carts.getById(cartId);
                     if (cart == null) {
                         newCart.setId(cartId);
+                        Timer.Context context = saveCartTimer.time();
                         carts.save(newCart);
+                        context.close();
+                        newCartCounter.inc();
                         response.status(201).send(); // created
                     } else {
                         cart.merge(newCart);
+                        Timer.Context context = saveCartTimer.time();
                         carts.save(cart);
+                        context.close();
+                        updateCartCounter.inc();
                         response.status(200).send(); // ok
                     }
                 } catch (Exception e) {
@@ -191,7 +208,10 @@ public class CartService implements Service {
                     for (Item item : cart.getItems()) {
                         if (item.getItemId().equals(qItem.getItemId())) {
                             item.setQuantity(qItem.getQuantity());
+                            Timer.Context context = saveCartTimer.time();
                             carts.save(cart);
+                            context.close();
+                            updateCartCounter.inc();
                             response.status(200).send();
                             return;
                         }
