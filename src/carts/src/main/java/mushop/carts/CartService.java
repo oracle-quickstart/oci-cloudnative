@@ -16,10 +16,7 @@ import io.helidon.webserver.Routing.Rules;
 import io.helidon.webserver.ServerRequest;
 import io.helidon.webserver.ServerResponse;
 import io.helidon.webserver.Service;
-import org.eclipse.microprofile.metrics.Counter;
-import org.eclipse.microprofile.metrics.MetricRegistry;
-import org.eclipse.microprofile.metrics.Tag;
-import org.eclipse.microprofile.metrics.Timer;
+import org.eclipse.microprofile.metrics.*;
 
 public class CartService implements Service {
 
@@ -37,11 +34,13 @@ public class CartService implements Service {
     private CartRepository carts;
 
     private final MetricRegistry registry = RegistryFactory.getInstance().getRegistry(MetricRegistry.Type.APPLICATION);
-    private final Counter newCartCounter = registry.counter("cart_create");
-    private final Counter updateCartCounter = registry.counter("cart_update");
-    private final Counter deleteCartCounter = registry.counter("cart_delete");
-    private final Timer saveCartTimer = registry.timer("cart_save_timer");
-    private final Timer dbConnectTimer = registry.timer("cart_db_conn_timer");
+    private final Counter newCartCounter = registry.counter("carts_create_count");
+    private final Meter newCartMeter = registry.meter("carts_create_meter");
+    private final Counter updateCartCounter = registry.counter("carts_update_count");
+    private final Meter updateCartMeter = registry.meter("carts_update_meter");
+    private final Counter deleteCartCounter = registry.counter("carts_delete");
+    private final Timer saveCartTimer = registry.timer("carts_save_timer");
+    private final Timer dbConnectTimer = registry.timer("carts_db_conn_timer");
 
 
     public CartService(Config config) {
@@ -148,6 +147,7 @@ public class CartService implements Service {
             carts.save(cart);
             context.close();
             updateCartCounter.inc();
+            updateCartMeter.mark();
             response.status(200).send();
         } catch (Exception e) {
             log.log(Level.SEVERE, "deleteCartItem failed.", e);
@@ -176,6 +176,7 @@ public class CartService implements Service {
                         carts.save(newCart);
                         context.close();
                         newCartCounter.inc();
+                        newCartMeter.mark();
                         response.status(201).send(); // created
                     } else {
                         cart.merge(newCart);
@@ -183,6 +184,7 @@ public class CartService implements Service {
                         carts.save(cart);
                         context.close();
                         updateCartCounter.inc();
+                        updateCartMeter.mark();
                         response.status(200).send(); // ok
                     }
                 } catch (Exception e) {
@@ -220,6 +222,7 @@ public class CartService implements Service {
                             carts.save(cart);
                             context.close();
                             updateCartCounter.inc();
+                            updateCartMeter.mark();
                             response.status(200).send();
                             return;
                         }
