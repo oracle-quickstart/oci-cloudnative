@@ -34,9 +34,7 @@ public class CartService implements Service {
     private CartRepository carts;
 
     private final MetricRegistry registry = RegistryFactory.getInstance().getRegistry(MetricRegistry.Type.APPLICATION);
-    private final Counter newCartCounter = registry.counter("carts_create_count");
     private final Meter newCartMeter = registry.meter("carts_create_meter");
-    private final Counter updateCartCounter = registry.counter("carts_update_count");
     private final Meter updateCartMeter = registry.meter("carts_update_meter");
     private final Counter deleteCartCounter = registry.counter("carts_delete");
     private final Timer saveCartTimer = registry.timer("carts_save_timer");
@@ -146,7 +144,6 @@ public class CartService implements Service {
             Timer.Context context = saveCartTimer.time();
             carts.save(cart);
             context.close();
-            updateCartCounter.inc();
             updateCartMeter.mark();
             response.status(200).send();
         } catch (Exception e) {
@@ -175,7 +172,6 @@ public class CartService implements Service {
                         Timer.Context context = saveCartTimer.time();
                         carts.save(newCart);
                         context.close();
-                        newCartCounter.inc();
                         newCartMeter.mark();
                         response.status(201).send(); // created
                     } else {
@@ -183,7 +179,6 @@ public class CartService implements Service {
                         Timer.Context context = saveCartTimer.time();
                         carts.save(cart);
                         context.close();
-                        updateCartCounter.inc();
                         updateCartMeter.mark();
                         response.status(200).send(); // ok
                     }
@@ -221,7 +216,6 @@ public class CartService implements Service {
                             Timer.Context context = saveCartTimer.time();
                             carts.save(cart);
                             context.close();
-                            updateCartCounter.inc();
                             updateCartMeter.mark();
                             response.status(200).send();
                             return;
