@@ -15,6 +15,9 @@ variable "public_ssh_key" {
 variable "num_nodes" {
   default = 1
 }
+variable "generate_public_ssh_key" {
+  default = true
+}
 
 # Autonomous Database
 variable "autonomous_database_name" {
