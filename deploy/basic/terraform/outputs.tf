@@ -10,6 +10,10 @@ output "autonomous_database_password" {
   value = random_string.autonomous_database_wallet_password.result
 }
 
+output "generated_public_ssh_key" {
+  value = tls_private_key.compute_ssh_key.public_key_openssh
+}
+
 output "dev" {
   value = "Made with \u2764 by Oracle A-Team"
 }
