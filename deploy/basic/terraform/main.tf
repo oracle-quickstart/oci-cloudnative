@@ -30,7 +30,7 @@ resource "oci_core_instance" "app-instance" {
   }
 
   metadata = {
-    ssh_authorized_keys = var.ssh_public_key
+    ssh_authorized_keys = var.generate_public_ssh_key ? tls_private_key.oke_worker_node_ssh_key.public_key_openssh : var.public_ssh_key
     user_data           = base64encode(data.template_file.mushop.rendered)
     db_name             = oci_database_autonomous_database.mushop_autonomous_database.db_name
     atp_pw              = random_string.autonomous_database_wallet_password.result
