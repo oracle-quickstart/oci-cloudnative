@@ -16,12 +16,12 @@ variable "num_nodes" {
   default = 1
 }
 variable "generate_public_ssh_key" {
-  default = true
+  default = false
 }
 
 # Autonomous Database
 variable "autonomous_database_name" {
-  default = "mushop"
+  default = "MuShopDB"
 }
 variable "autonomous_database_db_version" {
   default = "19c"
