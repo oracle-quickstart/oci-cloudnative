@@ -1,13 +1,5 @@
 package mushop.carts;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Set;
-import java.util.logging.Logger;
-import java.util.logging.Level;
-import java.util.concurrent.*;
-
 import io.helidon.common.http.Http;
 import io.helidon.common.http.Http.RequestMethod;
 import io.helidon.config.Config;
@@ -16,7 +8,19 @@ import io.helidon.webserver.Routing.Rules;
 import io.helidon.webserver.ServerRequest;
 import io.helidon.webserver.ServerResponse;
 import io.helidon.webserver.Service;
-import org.eclipse.microprofile.metrics.*;
+import org.eclipse.microprofile.metrics.Counter;
+import org.eclipse.microprofile.metrics.Meter;
+import org.eclipse.microprofile.metrics.MetricRegistry;
+import org.eclipse.microprofile.metrics.Timer;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CartService implements Service {
 
@@ -39,7 +43,6 @@ public class CartService implements Service {
     private final Counter deleteCartCounter = registry.counter("carts_delete");
     private final Timer saveCartTimer = registry.timer("carts_save_timer");
     private final Timer dbConnectTimer = registry.timer("carts_db_conn_timer");
-
 
     public CartService(Config config) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();

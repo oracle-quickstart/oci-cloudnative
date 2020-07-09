@@ -3,17 +3,13 @@ package mushop.carts;
 import io.helidon.config.Config;
 import io.helidon.health.HealthSupport;
 import io.helidon.health.checks.HealthChecks;
+import io.helidon.media.jsonb.JsonbSupport;
 import io.helidon.metrics.MetricsSupport;
+import io.helidon.webserver.Routing;
+import io.helidon.webserver.WebServer;
+import io.helidon.webserver.accesslog.AccessLogSupport;
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
-//import io.helidon.metrics.prometheus.PrometheusSupport;
-import io.helidon.metrics.MetricsSupport;
-import io.helidon.webserver.accesslog.AccessLogSupport;
-import io.helidon.media.jsonb.JsonbSupport;
-import io.helidon.webserver.Routing;
-import io.helidon.webserver.Routing.Builder;
-import io.helidon.webserver.ServerConfiguration;
-import io.helidon.webserver.WebServer;
 
 public class Main {
         
@@ -50,7 +46,6 @@ public class Main {
         
         Routing routing = Routing.builder()
                       .register(AccessLogSupport.create(config.get("server.access-log")))
-                      //.register(PrometheusSupport.builder().path("/prometheus/").build().create())    // "/metrics"]
                       .register(MetricsSupport.create())
                       .register(health)                     // "/health"
                       .register("/carts", cartService)
