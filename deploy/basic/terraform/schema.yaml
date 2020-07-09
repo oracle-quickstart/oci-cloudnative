@@ -53,12 +53,11 @@ variables:
     description: "Choose the number of compute instances to deploy"
     required: true
 
-  database_name:
+  autonomous_database_name:
     type: string
     required: true
     title: "Database Name"
     description: "The name for the Autonomous Database instance"
-    default: "MuShopDB"
     minLength: 1
     maxLength: 14
     pattern: "^[a-zA-Z][a-zA-Z0-9]+$"
