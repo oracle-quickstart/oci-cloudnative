@@ -82,14 +82,14 @@ variables:
     pattern: "((^(ssh-rsa AAAAB3NzaC1yc2|ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNT|ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzOD|ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1Mj|ssh-ed25519 AAAAC3NzaC1lZDI1NTE5|ssh-dss AAAAB3NzaC1kc3)[0-9A-Za-z+\/]+[=]{0,3})( [^,]*)?)(,((ssh-rsa AAAAB3NzaC1yc2|ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNT|ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzOD|ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1Mj|ssh-ed25519 AAAAC3NzaC1lZDI1NTE5|ssh-dss AAAAB3NzaC1kc3)[0-9A-Za-z+\/]+[=]{0,3})( [^,]*)?)*$"
     visible:
       not:
-        - generate_public_ssh_key
+        - generate_private_key_pem
 
 outputGroups:
   - title: "MuShop App details"
     outputs:
       - lb_public_url
       - autonomous_database_password
-      - generated_public_ssh_key
+      - generated_private_key_pem
       - dev
       - comments
 
@@ -105,10 +105,10 @@ outputs:
     displayText: "Autonomous Database Password"
     visible: true
   
-  generated_public_ssh_key:
+  generated_private_key_pem:
     type: string
-    title: "Generated Public SSH key"
-    displayText: "Generated public ssh key to access compute nodes"
+    title: "Generated Private Key for SSH Access"
+    displayText: "Generated Private Key for ssh access to compute nodes"
     visible: true
 
   dev:
