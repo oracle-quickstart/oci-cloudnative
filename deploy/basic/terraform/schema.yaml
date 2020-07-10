@@ -69,7 +69,7 @@ variables:
   generate_public_ssh_key:
     type: boolean
     title: "Auto generate public ssh key?"
-    description: "Auto generate a public key and assign to the compute instances"
+    description: "Auto generate a public key and assign to the compute instances. Uncheck to provide your own public key or leave blank to not use any attach any key to the compute instance"
     required: true
 
   public_ssh_key:
@@ -89,7 +89,7 @@ outputGroups:
     outputs:
       - lb_public_url
       - autonomous_database_password
-      - generated_public_ssh_key
+      - generated_private_key_pem
       - dev
       - comments
 
@@ -105,10 +105,10 @@ outputs:
     displayText: "Autonomous Database Password"
     visible: true
   
-  generated_public_ssh_key:
+  generated_private_key_pem:
     type: string
-    title: "Generated Public SSH key"
-    displayText: "Generated public ssh key to access compute nodes"
+    title: "Generated Private Key for SSH Access"
+    displayText: "Generated Private Key for ssh access to compute nodes"
     visible: true
 
   dev:
