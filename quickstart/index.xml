@@ -20,7 +20,7 @@
       <description>Basic Deployment This deployment is designed to run on Oracle Cloud Infrastructure using only Always Free resources. It uses MuShop source code and the Oracle Cloud Infrastructure Terraform Provider to produce a Resource Manager stack, that provisions all required resources and configures the application on those resources.
 cd deploy/basic dir deploy/basic  Source directory for basic deployment build/configuration
  These steps outline the Basic deployment using Resource Manager:
- Download the latest mushop-basic-stack-v1.</description>
+ Download the latest mushop-basic-stack-latest.</description>
     </item>
     
     <item>
