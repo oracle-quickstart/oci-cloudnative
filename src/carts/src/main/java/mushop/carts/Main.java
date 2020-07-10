@@ -3,15 +3,13 @@ package mushop.carts;
 import io.helidon.config.Config;
 import io.helidon.health.HealthSupport;
 import io.helidon.health.checks.HealthChecks;
+import io.helidon.media.jsonb.JsonbSupport;
+import io.helidon.metrics.MetricsSupport;
+import io.helidon.webserver.Routing;
+import io.helidon.webserver.WebServer;
+import io.helidon.webserver.accesslog.AccessLogSupport;
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
-import io.helidon.media.jsonb.server.JsonBindingSupport;
-import io.helidon.metrics.MetricsSupport;
-import io.helidon.webserver.accesslog.AccessLogSupport;
-import io.helidon.webserver.Routing;
-import io.helidon.webserver.Routing.Builder;
-import io.helidon.webserver.ServerConfiguration;
-import io.helidon.webserver.WebServer;
 
 public class Main {
         
@@ -33,7 +31,6 @@ public class Main {
 
     public static WebServer createWebServer() {
         Config config = Config.create();
-        ServerConfiguration serverConfig = ServerConfiguration.create(config.get("server"));
 
         CartService cartService = new CartService(config);
 
@@ -47,14 +44,17 @@ public class Main {
                 .addLiveness(dbHealth)
                 .build();
         
-        Builder routes = Routing.builder()
+        Routing routing = Routing.builder()
                       .register(AccessLogSupport.create(config.get("server.access-log")))
-                      .register(JsonBindingSupport.create())
-                      .register(MetricsSupport.create())    // "/metrics" 
+                      .register(MetricsSupport.create())
                       .register(health)                     // "/health"
-                      .register("/carts", cartService);
+                      .register("/carts", cartService)
+                      .build();
         
-        return WebServer.create(serverConfig, routes);
+        return WebServer.builder(routing)
+                .config(config.get("server"))
+                .addMediaSupport(JsonbSupport.create())
+                .build();
     }
 
 }

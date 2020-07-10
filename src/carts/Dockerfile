@@ -7,7 +7,7 @@ ARG clientVersion=19.3
 # ------------
 # Stage 1 : Build the application using Maven
 # 
-FROM maven:3.6-jdk-8 as appbuild
+FROM maven:3.6-jdk-11 as appbuild
 
 ARG SODA_VERSION
 
@@ -28,7 +28,7 @@ RUN mvn package
 # ------------
 # Stage 2 : Application container
 #
-FROM openjdk:8-jre-slim
+FROM openjdk:11-jre-slim
 ARG APPLICATION_NAME
 ARG VERSION
 ARG clientVersion
@@ -42,4 +42,4 @@ ENV APPLICATION_NAME=${APPLICATION_NAME}
 ENV VERSION=${VERSION}
 ENV TNS_ADMIN=/usr/lib/oracle/${clientVersion}/client64/lib/network/admin/
 
-ENTRYPOINT java $JAVA_OPTS -Dserver.port=80 -jar /app/${APPLICATION_NAME}-${VERSION}.jar
+ENTRYPOINT java $JAVA_OPTS  -jar /app/${APPLICATION_NAME}-${VERSION}.jar
