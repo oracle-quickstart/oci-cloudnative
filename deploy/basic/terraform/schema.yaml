@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2019, 2020 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -9,7 +9,7 @@ version: "20190304"
 locale: "en"
 
 groupings:
-  - title: "General Configuration"
+  - title: "Basic Hidden"
     visible: false
     variables:
     - compartment_ocid
@@ -18,12 +18,26 @@ groupings:
 
   - title: "General Configuration"
     variables:
-    - database_name
+    - autonomous_database_name
     - num_nodes
 
   - title: "Optional Configuration"
     variables:
-    - ssh_public_key
+    - generate_public_ssh_key
+    - public_ssh_key
+
+  - title: "Extras Hidden"
+    variables:
+      - user_ocid
+      - fingerprint
+      - autonomous_database_db_version
+      - autonomous_database_license_model
+      - autonomous_database_is_free_tier
+      - instance_shape
+      - lb_shape
+      - image_operating_system
+      - image_operating_system_version
+    visible: false
 
 variables:
   compartment_ocid:
@@ -43,17 +57,22 @@ variables:
     description: "Choose the number of compute instances to deploy"
     required: true
 
-  database_name:
+  autonomous_database_name:
     type: string
     required: true
     title: "Database Name"
     description: "The name for the Autonomous Database instance"
-    default: "MuShopDB"
     minLength: 1
     maxLength: 14
     pattern: "^[a-zA-Z][a-zA-Z0-9]+$"
 
-  ssh_public_key:
+  generate_public_ssh_key:
+    type: boolean
+    title: "Auto generate public ssh key?"
+    description: "Auto generate a public key and assign to the compute instances"
+    required: true
+
+  public_ssh_key:
     type: oci:core:ssh:publickey
     required: false
     title: "SSH Public Key"
@@ -61,14 +80,18 @@ variables:
     additionalProps:
       allowMultiple: true
     pattern: "((^(ssh-rsa AAAAB3NzaC1yc2|ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNT|ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzOD|ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1Mj|ssh-ed25519 AAAAC3NzaC1lZDI1NTE5|ssh-dss AAAAB3NzaC1kc3)[0-9A-Za-z+\/]+[=]{0,3})( [^,]*)?)(,((ssh-rsa AAAAB3NzaC1yc2|ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNT|ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzOD|ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1Mj|ssh-ed25519 AAAAC3NzaC1lZDI1NTE5|ssh-dss AAAAB3NzaC1kc3)[0-9A-Za-z+\/]+[=]{0,3})( [^,]*)?)*$"
+    visible:
+      not:
+        - generate_public_ssh_key
 
 outputGroups:
   - title: "MuShop App details"
     outputs:
-      - ${lb_public_url}
-      - ${autonomous_database_password}
-      - ${dev}
-      - ${comments}
+      - lb_public_url
+      - autonomous_database_password
+      - generated_public_ssh_key
+      - dev
+      - comments
 
 outputs:
   lb_public_url:
@@ -82,6 +105,12 @@ outputs:
     displayText: "Autonomous Database Password"
     visible: true
   
+  generated_public_ssh_key:
+    type: string
+    title: "Generated Public SSH key"
+    displayText: "Generated public ssh key to access compute nodes"
+    visible: true
+
   dev:
     type: string
     title: "Message"
