@@ -21,6 +21,9 @@ variable "generate_public_ssh_key" {
 variable "instance_shape" {
   default = "VM.Standard.E2.1.Micro"
 }
+variable "lb_shape" {
+  default = "10Mbps-Micro"
+}
 
 # Autonomous Database
 variable "autonomous_database_name" {
