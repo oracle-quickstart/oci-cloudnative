@@ -13,10 +13,13 @@ variable "public_ssh_key" {
 
 # Compute
 variable "num_nodes" {
-  default = 1
+  default = 2
 }
 variable "generate_public_ssh_key" {
   default = false
+}
+variable "instance_shape" {
+  default = "VM.Standard.E2.1.Micro"
 }
 
 # Autonomous Database

@@ -14,7 +14,7 @@ resource "oci_core_instance" "app-instance" {
   availability_domain = local.availability_domain[0]
   compartment_id      = var.compartment_ocid
   display_name        = "mushop-${random_id.mushop_id.dec}-${count.index}"
-  shape               = local.instance_shape
+  shape               = var.instance_shape
   freeform_tags       = local.common_tags
 
   create_vnic_details {
@@ -63,9 +63,6 @@ locals {
     us-luke-1      = "ocid1.image.oc2.us-luke-1.aaaaaaaa73qnm5jktrwmkutf6iaigib4msieymk2s5r5iweq5yvqublgcx5q"
     us-phoenix-1   = "ocid1.image.oc1.phx.aaaaaaaadtmpmfm77czi5ghi5zh7uvkguu6dsecsg7kuo3eigc5663und4za"
   }
-
-
-  instance_shape = "VM.Standard.E2.1.Micro"
 
   availability_domain = [for limit in data.oci_limits_limit_values.test_limit_values : limit.limit_values[0].availability_domain if limit.limit_values[0].value > 0]
 
