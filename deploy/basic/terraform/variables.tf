@@ -16,7 +16,7 @@ variable "num_nodes" {
   default = 2
 }
 variable "generate_public_ssh_key" {
-  default = false
+  default = true
 }
 variable "instance_shape" {
   default = "VM.Standard.E2.1.Micro"
