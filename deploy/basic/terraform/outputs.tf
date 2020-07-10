@@ -11,7 +11,7 @@ output "autonomous_database_password" {
 }
 
 output "generated_public_ssh_key" {
-  value = tls_private_key.compute_ssh_key.public_key_openssh
+  value = var.generate_public_ssh_key ? tls_private_key.compute_ssh_key.public_key_openssh : "No Keys Auto Generated"
 }
 
 output "dev" {
