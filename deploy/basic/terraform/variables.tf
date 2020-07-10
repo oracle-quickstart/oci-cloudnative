@@ -24,6 +24,12 @@ variable "instance_shape" {
 variable "lb_shape" {
   default = "10Mbps-Micro"
 }
+variable "image_operating_system" {
+  default = "Oracle Linux"
+}
+variable "image_operating_system_version" {
+  default = "7.8"
+}
 
 # Autonomous Database
 variable "autonomous_database_name" {

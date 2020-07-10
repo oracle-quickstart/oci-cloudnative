@@ -35,6 +35,8 @@ groupings:
       - autonomous_database_is_free_tier
       - instance_shape
       - lb_shape
+      - image_operating_system
+      - image_operating_system_version
     visible: false
 
 variables:
