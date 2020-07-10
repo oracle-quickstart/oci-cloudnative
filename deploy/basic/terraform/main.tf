@@ -3,7 +3,7 @@
 # 
 
 terraform {
-  required_version = ">= 0.12.0"
+  required_version = ">= 0.12.16"
 }
 data "template_file" "mushop" {
   template = "${file("./scripts/node.sh")}"
