@@ -34,7 +34,7 @@ resource "oci_load_balancer_backend" "mushop-be" {
   count            = var.num_nodes
   load_balancer_id = oci_load_balancer_load_balancer.mushop_lb.id
   backendset_name  = oci_load_balancer_backend_set.mushop-bes.name
-  ip_address       = element(oci_core_instance.app-instance.*.private_ip, count.index)
+  ip_address       = element(oci_core_instance.app_instance.*.private_ip, count.index)
   port             = 80
   backup           = false
   drain            = false

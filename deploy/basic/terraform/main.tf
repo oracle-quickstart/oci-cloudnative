@@ -9,7 +9,7 @@ data "template_file" "mushop" {
   template = "${file("./scripts/node.sh")}"
 }
 
-resource "oci_core_instance" "app-instance" {
+resource "oci_core_instance" "app_instance" {
   count               = var.num_nodes
   availability_domain = local.availability_domain[0]
   compartment_id      = var.compartment_ocid
@@ -26,7 +26,7 @@ resource "oci_core_instance" "app-instance" {
 
   source_details {
     source_type = "image"
-    source_id   = lookup(data.oci_core_images.node_pool_images.images[0], "id")
+    source_id   = lookup(data.oci_core_images.compute_images.images[0], "id")
   }
 
   metadata = {
