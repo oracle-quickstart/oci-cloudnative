@@ -49,7 +49,6 @@ variables:
     - "1"
     - "2"
     title: "Node Count"
-    default: "2"
     description: "Choose the number of compute instances to deploy"
     required: true
 
