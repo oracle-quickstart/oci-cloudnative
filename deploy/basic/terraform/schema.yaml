@@ -53,6 +53,7 @@ variables:
     - "1"
     - "2"
     title: "Node Count"
+    default: "2"
     description: "Choose the number of compute instances to deploy"
     required: true
 
@@ -68,6 +69,7 @@ variables:
   generate_public_ssh_key:
     type: boolean
     title: "Auto generate public ssh key?"
+    description: "Auto generate a public key and assign to the compute instances"
     required: true
 
   public_ssh_key:
