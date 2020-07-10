@@ -82,10 +82,11 @@ variables:
 outputGroups:
   - title: "MuShop App details"
     outputs:
-      - ${lb_public_url}
-      - ${autonomous_database_password}
-      - ${dev}
-      - ${comments}
+      - lb_public_url
+      - autonomous_database_password
+      - generated_public_ssh_key
+      - dev
+      - comments
 
 outputs:
   lb_public_url:
@@ -99,6 +100,12 @@ outputs:
     displayText: "Autonomous Database Password"
     visible: true
   
+  generated_public_ssh_key:
+    type: string
+    title: "Generated Public SSH key"
+    displayText: "Generated public ssh key to access compute nodes"
+    visible: true
+
   dev:
     type: string
     title: "Message"
