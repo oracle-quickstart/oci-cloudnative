@@ -33,6 +33,8 @@ groupings:
       - autonomous_database_db_version
       - autonomous_database_license_model
       - autonomous_database_is_free_tier
+      - instance_shape
+      - lb_shape
     visible: false
 
 variables:

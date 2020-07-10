@@ -66,10 +66,6 @@ locals {
 
   availability_domain = [for limit in data.oci_limits_limit_values.test_limit_values : limit.limit_values[0].availability_domain if limit.limit_values[0].value > 0]
 
-  num_nodes = 2
-
-  lb_shape = "10Mbps-Micro"
-
   common_tags = {
     Reference = "Created by OCI QuickStart for Free Tier"
   }
