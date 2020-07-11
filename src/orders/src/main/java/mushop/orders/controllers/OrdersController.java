@@ -24,6 +24,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -111,6 +113,15 @@ public class OrdersController {
 
             CustomerOrder savedOrder = customerOrderRepository.save(order);
             LOG.debug("Saved order: " + savedOrder);
+            String cartPath = item.items.getPath();
+            String cart = cartPath.substring(0, cartPath.lastIndexOf("/items"));
+            URI cartUri = null;
+            try {
+                cartUri = new URI(item.items.getScheme()+"://"+item.items.getHost()+cart+(item.items.getQuery()==null?"":item.items.getQuery()));
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            asyncGetService.deleteResource(cartUri);
             OrderUpdate update = new OrderUpdate(savedOrder.getId(), null);
             messagingService.dispatchToFulfillment(update);
             return savedOrder;
