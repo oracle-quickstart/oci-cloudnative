@@ -94,6 +94,13 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
   readOnly: true
 {{- end -}}
 
+{{- define "orders.mount.init.wallet" -}}
+# for init container
+- name: wallet
+  mountPath: /usr/lib/oracle/19.3/client64/lib/network/admin/
+  readOnly: true
+{{- end -}}
+
 {{/* OADB Wallet BINDING initContainer */}}
 {{- define "orders.init.wallet" -}}
 {{- $usesOsb := (index (.Values.global | default .Values) "osb").atp | default .Values.osb.atp -}}
