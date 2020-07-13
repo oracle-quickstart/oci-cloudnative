@@ -132,7 +132,7 @@ services:
 
   # OCI Orders service
   orders:
-    image: iad.ocir.io/oracle/ateam/mushop-orders:2.2.0
+    image: mushop-orders:snapshot
     ports:
       - 8085:80
     hostname: orders
@@ -152,7 +152,7 @@ services:
       - OADB_USER
       - OADB_PW
       - OADB_SERVICE=mock
-      - JAVA_OPTS=-Xms32m -Xmx128m -XX:MaxRAM=128m -Djava.security.egd=file:/dev/urandom -Doracle.jdbc.fanEnabled=false -XX:+UnlockExperimentalVMOptions -XX:+UseZGC 
+      - JAVA_OPTS=-Xms32m -Xmx128m -XX:MaxRAM=128m -Dlogging.level.mushop.orders=WARN -Djava.security.egd=file:/dev/urandom -Doracle.jdbc.fanEnabled=false -XX:+UnlockExperimentalVMOptions -XX:+UseZGC 
 
   payment:
     image: iad.ocir.io/oracle/ateam/mushop-payment:0.0.1
@@ -214,5 +214,13 @@ services:
       - ORDERS_NEW=mushop-orders
       - ORDERS_SHIPPED=mushop-shipments
       - SIMULATION_DELAY=10000
+
+  load:
+    image: mushop-load:snapshot
+    
+    hostname: nats
+    restart: "no"
+    command: -h 150.136.200.204 -c 100 -r 60
+    read_only: true
 
 
