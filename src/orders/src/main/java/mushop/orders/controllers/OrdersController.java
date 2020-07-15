@@ -113,15 +113,7 @@ public class OrdersController {
 
             CustomerOrder savedOrder = customerOrderRepository.save(order);
             LOG.debug("Saved order: " + savedOrder);
-            String cartPath = item.items.getPath();
-            String cart = cartPath.substring(0, cartPath.lastIndexOf("/items"));
-            URI cartUri = null;
-            try {
-                cartUri = new URI(item.items.getScheme()+"://"+item.items.getHost()+cart+(item.items.getQuery()==null?"":item.items.getQuery()));
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
-            asyncGetService.deleteResource(cartUri);
+            asyncGetService.deleteResource(getCartURI(item.items  ));
             OrderUpdate update = new OrderUpdate(savedOrder.getId(), null);
             messagingService.dispatchToFulfillment(update);
             return savedOrder;
@@ -170,5 +162,17 @@ public class OrdersController {
         public InvalidOrderException(String s) {
             super(s);
         }
+    }
+
+    private URI getCartURI(URI itemUri){
+        String cartPath = itemUri.getPath();
+        String cart = cartPath.substring(0, cartPath.lastIndexOf("/items"));
+        URI cartUri = null;
+        try {
+            cartUri = new URI(itemUri.getScheme()+"://"+itemUri.getHost()+cart+(itemUri.getQuery()==null?"":itemUri.getQuery()));
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        return cartUri;
     }
 }
