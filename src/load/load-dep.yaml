@@ -1,5 +1,5 @@
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: load
@@ -7,15 +7,20 @@ metadata:
     name: load
 spec:
   replicas: 2
+  selector:
+    matchLabels:
+      app: load
+      app.kubernetes.io/name: load
   template:
     metadata:
       labels:
-        name: load
+        app: load
+        app.kubernetes.io/name: load
     spec:
       containers:
       - name: load
-        image: iad.ocir.io/oracle/ateam/mushop-load:1
+        image: iad.ocir.io/oracle/ateam/mushop-load:2.0.0
         imagePullPolicy: Always
-        args: ["-h", "edge", "-c", "5", "-r", "120"]
+        args: ["-h", "edge", "-c", "10", "-r", "120"]
       nodeSelector:
         beta.kubernetes.io/os: linux
