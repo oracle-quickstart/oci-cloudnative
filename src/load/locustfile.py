@@ -79,6 +79,9 @@ class Web(HttpUser):
         # add item to cart
         self.client.post("/api/cart", json={"id": item_id, "quantity": 1})
 
+        # visit the cart page
+        self.client.get("/cart.html")
+
         # Get info for checkout
         cart = self.client.get("/api/cart").json()
         address = self.client.get("/api/address").json()
@@ -98,5 +101,10 @@ class Web(HttpUser):
 
         # get orders
         order = self.client.get("/api/orders").json()
+
+        # visit the cart page
+        self.client.get("/orders.html")
+
+        # Logout
         self.client.get("/api/logout")
 
