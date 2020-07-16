@@ -21,6 +21,6 @@ spec:
       - name: load
         image: iad.ocir.io/oracle/ateam/mushop-load:2.0.0
         imagePullPolicy: Always
-        args: ["-h", "edge", "-c", "10", "-r", "120"]
+        args: ["-h", "edge", "-c", "15", "-r", "120"]
       nodeSelector:
         beta.kubernetes.io/os: linux
