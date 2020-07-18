@@ -10,13 +10,13 @@ import mushop.orders.services.OrdersService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-@RepositoryRestController
+@RestController
 public class OrdersController {
     private final Logger LOG = LoggerFactory.getLogger(getClass());
 
@@ -28,12 +28,12 @@ public class OrdersController {
     @RequestMapping(path = "/orders", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     public
     @ResponseBody
-    CustomerOrder newOrder(@RequestBody NewOrderResource item) {
+    CustomerOrder newOrder(@RequestBody NewOrderResource newOrderResource) {
 
-        if (item.address == null || item.customer == null || item.card == null || item.items == null) {
+        if (newOrderResource.address == null || newOrderResource.customer == null || newOrderResource.card == null || newOrderResource.items == null) {
             throw new InvalidOrderException("Invalid order request. Order requires customer, address, card and items.");
         }
-        return ordersService.createNewOrder(item);
+        return ordersService.createNewOrder(newOrderResource);
     }
 
     @ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE)
