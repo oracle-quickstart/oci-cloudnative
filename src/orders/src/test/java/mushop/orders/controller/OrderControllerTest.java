@@ -59,14 +59,14 @@ public class OrderControllerTest {
     URI addressURI = URI.create("http://user/customers/1/addresses/1");
     URI cardURI = URI.create("http://user/customers/1/cards/1");
     URI itemsURI = URI.create("http://carts/carts/1/items");
+    CustomerOrder order = new CustomerOrder(001l, customer, address, card, null, null, null, 00f);
 
     @Test
     void orderPayload_returns_201() throws Exception {
         NewOrderResource orderPayload = new NewOrderResource(customerURI, addressURI, cardURI, itemsURI);
 
-
-        CustomerOrder order = new CustomerOrder(001l, customer, address, card, null, null, null, 00f);
-        when(ordersService.createNewOrder(orderPayload)).thenReturn(order);
+        when(ordersService.createNewOrder(orderPayload))
+                .thenReturn(order);
 
         this.mockMvc.perform(post("/orders")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -79,9 +79,8 @@ public class OrderControllerTest {
     void missingCustomer_returns_406() throws Exception {
         NewOrderResource orderPayload = new NewOrderResource(null, addressURI, cardURI, itemsURI);
 
-
-        CustomerOrder order = new CustomerOrder(001l, customer, address, card, null, null, null, 00f);
-        when(ordersService.createNewOrder(orderPayload)).thenReturn(order);
+        when(ordersService.createNewOrder(orderPayload))
+                .thenReturn(order);
 
         this.mockMvc.perform(post("/orders")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -94,9 +93,8 @@ public class OrderControllerTest {
     void missingAddress_returns_406() throws Exception {
         NewOrderResource orderPayload = new NewOrderResource(customerURI, null, cardURI, itemsURI);
 
-
-        CustomerOrder order = new CustomerOrder(001l, customer, address, card, null, null, null, 00f);
-        when(ordersService.createNewOrder(orderPayload)).thenReturn(order);
+        when(ordersService.createNewOrder(orderPayload))
+                .thenReturn(order);
 
         this.mockMvc.perform(post("/orders")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -109,9 +107,8 @@ public class OrderControllerTest {
     void missingCard_returns_406() throws Exception {
         NewOrderResource orderPayload = new NewOrderResource(customerURI, addressURI, null, itemsURI);
 
-
-        CustomerOrder order = new CustomerOrder(001l, customer, address, card, null, null, null, 00f);
-        when(ordersService.createNewOrder(orderPayload)).thenReturn(order);
+        when(ordersService.createNewOrder(orderPayload))
+                .thenReturn(order);
 
         this.mockMvc.perform(post("/orders")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -124,9 +121,8 @@ public class OrderControllerTest {
     void missingCartItems_returns_406() throws Exception {
         NewOrderResource orderPayload = new NewOrderResource(customerURI, addressURI, cardURI, null);
 
-
-        CustomerOrder order = new CustomerOrder(001l, customer, address, card, null, null, null, 00f);
-        when(ordersService.createNewOrder(orderPayload)).thenReturn(order);
+        when(ordersService.createNewOrder(orderPayload))
+                .thenReturn(order);
 
         this.mockMvc.perform(post("/orders")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -138,9 +134,8 @@ public class OrderControllerTest {
     @Test
     void paymentDeclined_returns_406() throws Exception {
         NewOrderResource orderPayload = new NewOrderResource(customerURI, addressURI, cardURI, itemsURI);
-
-
-        when(ordersService.createNewOrder(orderPayload)).thenThrow(new OrdersController.PaymentDeclinedException("test"));
+        when(ordersService.createNewOrder(orderPayload))
+                .thenThrow(new OrdersController.PaymentDeclinedException("test"));
 
         this.mockMvc.perform(post("/orders")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -152,9 +147,9 @@ public class OrderControllerTest {
     @Test
     void illegalState_returns_503() throws Exception {
         NewOrderResource orderPayload = new NewOrderResource(customerURI, addressURI, cardURI, itemsURI);
-
-
-        when(ordersService.createNewOrder(orderPayload)).thenThrow(new OrderFailedException("test",null));
+        
+        when(ordersService.createNewOrder(orderPayload))
+                .thenThrow(new OrderFailedException("test",null));
 
         this.mockMvc.perform(post("/orders")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
