@@ -215,12 +215,5 @@ services:
       - ORDERS_SHIPPED=mushop-shipments
       - SIMULATION_DELAY=10000
 
-  load:
-    image: mushop-load:snapshot
-    
-    hostname: nats
-    restart: "no"
-    command: -h 150.136.200.204 -c 100 -r 60
-    read_only: true
 
 
