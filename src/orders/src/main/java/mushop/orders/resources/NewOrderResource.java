@@ -7,6 +7,7 @@ package  mushop.orders.resources;
 import org.hibernate.validator.constraints.URL;
 
 import java.net.URI;
+import java.util.Objects;
 
 public class NewOrderResource {
     @URL
@@ -68,5 +69,21 @@ public class NewOrderResource {
                 ", \"card\":" + card +
                 ", \"items\": [" + items +
                 "] }";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NewOrderResource that = (NewOrderResource) o;
+        return Objects.equals(customer, that.customer) &&
+                Objects.equals(address, that.address) &&
+                Objects.equals(card, that.card) &&
+                Objects.equals(items, that.items);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(customer, address, card, items);
     }
 }

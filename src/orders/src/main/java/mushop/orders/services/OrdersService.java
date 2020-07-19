@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.*;
 
+import static mushop.orders.controllers.OrdersController.OrderFailedException;
 import static mushop.orders.controllers.OrdersController.PaymentDeclinedException;
 
 @Service
@@ -103,9 +104,9 @@ public class OrdersService {
             //cartDeleteExecutor.schedule(() -> asyncGetService.deleteResource(getCartURI(orderPayload.items)),10,TimeUnit.SECONDS);
             return savedOrder;
         }catch (TimeoutException e) {
-            throw new IllegalStateException("Unable to create order due to timeout from one of the services.", e);
+            throw new OrderFailedException("Unable to create order due to timeout from one of the services.", e);
         } catch (InterruptedException | IOException | ExecutionException e) {
-            throw new IllegalStateException("Unable to create order due to unspecified IO error.", e);
+            throw new OrderFailedException("Unable to create order due to unspecified IO error.", e);
         }
 
     }
