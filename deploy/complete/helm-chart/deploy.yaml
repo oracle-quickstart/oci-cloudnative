@@ -1,0 +1,42 @@
+global:
+  ociAuthSecret: oci-credentials        # OCI authentication credentials secret name
+  ossStreamSecret: oss-connection       # Name of Stream Connection secret
+  oadbAdminSecret: oadb-admin           # Name of DB Admin secret created earlier
+  oadbWalletSecret: oadb-wallet         # Name of wallet secret created earlier
+  oadbConnectionSecret: oadb-connection # Name of connection secret created earlier
+  mock:
+    service: "false"
+  osb:
+    instanceName: mushopref
+    atp: true
+    oss: true
+    objectstorage: true
+    objectstoragenamespace: ociateam
+
+ingress:
+  enabled: true
+
+  hosts:
+    - mushop.ateam.cloud
+    - secure.mushop.ateam.cloud
+
+  # Value can be either prod or staging
+  # This controls the cluster issuer what's used in Ingress
+  clusterIssuer: letsencrypt-prod
+
+  # Used for ACME registration (if TLS is set)
+  email: "no-reply@ateam-oracle.com"
+
+  # If TLS is provided, cert-manager needs to be installed.
+  tls: true
+
+api:
+  env:
+    mediaUrl:                 # Object Storage URL for catalog image assets
+
+secrets:
+  streams:
+    region: us-ashburn-1
+    compartmentId: ocid1.compartment.oc1..aaaaaaaa3vjfrbwxwalj3p24fn7rfonms35evfr7zlwnullwsd5jrrcewexa
+    streamName: MuShop Hqk4 Streaming
+    streamId: ocid1.stream.oc1.iad.amaaaaaac3adhhqaw6ez3z7rdowjhwoun54rsr7jocnebnjqlsxyhjtibngq
