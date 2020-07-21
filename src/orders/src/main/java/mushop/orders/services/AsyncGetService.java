@@ -104,4 +104,10 @@ public class AsyncGetService {
         LOG.debug("Received: " + responseBody);
         return new AsyncResult<>(responseBody);
     }
+
+    @Async
+    public void deleteResource(URI uri) {
+        LOG.debug("Deleteing: " + uri.toString());
+        restProxyTemplate.getRestTemplate().delete(uri);
+    }
 }
