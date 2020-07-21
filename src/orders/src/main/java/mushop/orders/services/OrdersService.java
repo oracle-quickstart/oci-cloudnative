@@ -15,8 +15,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.*;
@@ -106,7 +104,6 @@ public class OrdersService {
             LOG.debug("Saved order: " + savedOrder);
             OrderUpdate update = new OrderUpdate(savedOrder.getId(), null);
             messagingService.dispatchToFulfillment(update);
-            //cartDeleteExecutor.schedule(() -> asyncGetService.deleteResource(getCartURI(orderPayload.items)),10,TimeUnit.SECONDS);
             return savedOrder;
         } catch (TimeoutException e) {
             throw new OrderFailedException("Unable to create order due to timeout from one of the services.", e);
@@ -122,17 +119,5 @@ public class OrdersService {
         amount += items.stream().mapToDouble(i -> i.getQuantity() * i.getUnitPrice()).sum();
         amount += shipping;
         return amount;
-    }
-
-    private URI getCartURI(URI itemUri) {
-        String cartPath = itemUri.getPath();
-        String cart = cartPath.substring(0, cartPath.lastIndexOf("/items"));
-        URI cartUri = null;
-        try {
-            cartUri = new URI(itemUri.getScheme() + "://" + itemUri.getHost() + cart + (itemUri.getQuery() == null ? "" : itemUri.getQuery()));
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        return cartUri;
     }
 }
