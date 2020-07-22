@@ -8,6 +8,8 @@ import mushop.orders.entities.Address;
 import mushop.orders.entities.Card;
 import mushop.orders.entities.Customer;
 
+import java.util.Objects;
+
 public class PaymentRequest {
     private Address address;
     private Card card;
@@ -64,5 +66,21 @@ public class PaymentRequest {
 
     public void setAmount(float amount) {
         this.amount = amount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PaymentRequest that = (PaymentRequest) o;
+        return Float.compare(that.amount, amount) == 0 &&
+                Objects.equals(address, that.address) &&
+                Objects.equals(card, that.card) &&
+                Objects.equals(customer, that.customer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(address, card, customer, amount);
     }
 }

@@ -4,6 +4,8 @@
  **/
 package  mushop.orders.resources;
 
+import java.util.Objects;
+
 public class PaymentResponse {
     private boolean authorised = false;
     private String  message;
@@ -39,5 +41,19 @@ public class PaymentResponse {
 
     public String getMessage() {
         return message;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PaymentResponse that = (PaymentResponse) o;
+        return authorised == that.authorised &&
+                Objects.equals(message, that.message);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(authorised, message);
     }
 }
