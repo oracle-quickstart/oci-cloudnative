@@ -6,7 +6,7 @@
 resource "oci_identity_policy" "mushop_allow_object_storage_lifecycle" {
   name           = "mushop-object-family-${random_id.mushop_id.dec}"
   description    = "policy created by terraform for MuShop Basic"
-  compartment_id = var.tenancy_ocid
-  statements     = ["Allow service objectstorage-${var.region} to manage object-family in tenancy"]
+  compartment_id = var.compartment_ocid
+  statements     = ["Allow service objectstorage-${var.region} to manage object-family in compartment id ${var.compartment_ocid}"]
   freeform_tags  = local.common_tags
 }
