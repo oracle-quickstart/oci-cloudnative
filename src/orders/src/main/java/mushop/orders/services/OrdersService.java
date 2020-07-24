@@ -113,7 +113,7 @@ public class OrdersService {
             meterRegistry.summary("orders.amount").record(amount);
             DistributionSummary.builder("order.stats")
                     .serviceLevelObjectives(10d,20d,30d,40d,50d,60d,70d,80d,90d,100d,110d)
-                    .publishPercentileHistogram()
+                    //.publishPercentileHistogram()
                     .maximumExpectedValue(120d)
                     .minimumExpectedValue(5d)
                     .register(meterRegistry)
