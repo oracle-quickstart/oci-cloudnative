@@ -38,7 +38,7 @@
     "@nestjs/typeorm": "^6.2.0",
     "@nestjsx/crud": "^4.2.0",
     "@nestjsx/crud-typeorm": "^4.2.0",
-    "class-transformer": "^0.2.3",
+    "class-transformer": "^0.3.1",
     "class-validator": "^0.10.0",
     "morgan": "^1.9.1",
     "oracledb": "^4.0.1",
