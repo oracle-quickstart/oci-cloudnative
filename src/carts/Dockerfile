@@ -1,20 +1,12 @@
 ##### Application Metadata
 ARG APPLICATION_NAME="carts"
 ARG VERSION="1.1.0-SNAPSHOT"
-ARG SODA_VERSION="1.1.4"
 ARG clientVersion=19.3
 
 # ------------
 # Stage 1 : Build the application using Maven
 # 
 FROM maven:3.6-jdk-11 as appbuild
-
-ARG SODA_VERSION
-
-# Get SODA Java
-ADD https://github.com/oracle/soda-for-java/releases/download/v${SODA_VERSION}/orajsoda-${SODA_VERSION}.jar /tmp/orajsoda-${SODA_VERSION}.jar
-
-RUN mvn install:install-file -Dfile=/tmp/orajsoda-${SODA_VERSION}.jar -DgroupId=com.oracle.database.soda -DartifactId=soda -Dversion=${SODA_VERSION} -Dpackaging=jar
 
 # Create source folder
 RUN mkdir -p /usr/src/app
