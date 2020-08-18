@@ -80,7 +80,7 @@
         </dependency>
         <dependency>
             <groupId>com.oracle.database.soda</groupId>
-            <artifactId>soda</artifactId>
+            <artifactId>orajsoda</artifactId>
             <version>${soda.version}</version>
         </dependency>
 
