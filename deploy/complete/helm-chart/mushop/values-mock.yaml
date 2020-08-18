@@ -2,18 +2,18 @@ global:
   mock:
     service: "all"
 
-# Catalogue service runs in mock mode for product images
-catalogue:
-  enabled: true
-
-carts:
-  enabled: false
-
-orders:
-  enabled: false
+tags:
+  streaming: false
+  atp: false
 
 payment:
   enabled: false
 
-user:
+assets:
+  enabled: true
+
+nats:
+  enabled: false
+
+fulfillment:
   enabled: false
