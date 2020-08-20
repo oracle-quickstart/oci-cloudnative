@@ -19,7 +19,7 @@ output "generated_private_key_pem" {
 }
 
 output "dev" {
-  value = "Made with \u2764 by Oracle A-Team"
+  value = "Made with \u2764 by Oracle"
 }
 
 output "comments" {
