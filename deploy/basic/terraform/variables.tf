@@ -48,7 +48,7 @@ variable "autonomous_database_is_free_tier" {
 # Encryption
 
 variable "is_pv_encryption_in_transit_enabled" {
-  default = true
+  default = false
 }
 variable "use_encryption" {
   default     = false
