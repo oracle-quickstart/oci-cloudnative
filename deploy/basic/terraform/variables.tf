@@ -45,3 +45,17 @@ variable "autonomous_database_is_free_tier" {
   default = true
 }
 
+# Encryption
+
+variable "is_pv_encryption_in_transit_enabled" {
+  default = true
+}
+variable "use_encryption" {
+  default     = false
+}
+variable "create_new_encryption_key" {
+  default = false
+}
+variable "encryption_key_id" {
+  default = ""
+}
