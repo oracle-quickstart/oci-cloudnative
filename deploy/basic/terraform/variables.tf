@@ -72,14 +72,14 @@ variable "user_admin_group_for_vault_policy" {
   default = "Administrators"
 }
 variable "vault_display_name" {
-  default = "OciTester Vault"
+  default = "MuShop Vault"
 }
 variable "vault_type" {
   type    = list
   default = ["DEFAULT", "VIRTUAL_PRIVATE"]
 }
 variable "vault_key_display_name" {
-  default = "OciTester Key"
+  default = "MuShop Key"
 }
 variable "vault_key_key_shape_algorithm" {
   default = "AES"
