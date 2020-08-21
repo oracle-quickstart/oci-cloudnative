@@ -2,6 +2,10 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
+terraform {
+  required_version = ">= 0.12.16"
+}
+
 provider "oci" {
   tenancy_ocid = var.tenancy_ocid
   # user_ocid        = "${var.user_ocid}"

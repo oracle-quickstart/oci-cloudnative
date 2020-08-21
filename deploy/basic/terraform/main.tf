@@ -2,10 +2,6 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
-terraform {
-  required_version = ">= 0.12.16"
-}
-
 resource "oci_core_instance" "app_instance" {
   count               = var.num_nodes
   availability_domain = local.availability_domain[0]
