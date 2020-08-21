@@ -27,7 +27,7 @@ resource "oci_core_instance" "app_instance" {
     ssh_authorized_keys = var.generate_public_ssh_key ? tls_private_key.compute_ssh_key.public_key_openssh : var.public_ssh_key
     user_data           = base64encode(data.template_file.mushop.rendered)
     db_name             = oci_database_autonomous_database.mushop_autonomous_database.db_name
-    atp_pw              = random_string.autonomous_database_wallet_password.result
+    atp_pw              = random_string.autonomous_database_admin_password.result
     catalogue_sql_par   = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.catalogue_sql_script_preauth.access_uri}"
     apache_conf_par     = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.apache_conf_preauth.access_uri}"
     entrypoint_par      = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.entrypoint_preauth.access_uri}"
