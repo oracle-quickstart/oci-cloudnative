@@ -5,8 +5,8 @@
 # Creates OCI Vault vault
 resource "oci_kms_vault" "mushop_vault" {
   compartment_id = var.compartment_ocid
-	display_name = "${var.vault_display_name} - ${random_id.mushop_id.dec}"
-	vault_type = var.vault_type[0]
+  display_name   = "${var.vault_display_name} - ${random_id.mushop_id.dec}"
+  vault_type     = var.vault_type[0]
   freeform_tags  = local.common_tags
 
   count      = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? 1 : 0) : 0
@@ -23,7 +23,7 @@ resource "oci_kms_key" "mushop_key" {
     algorithm = var.vault_key_key_shape_algorithm
     length    = var.vault_key_key_shape_length
   }
-  freeform_tags  = local.common_tags
+  freeform_tags = local.common_tags
 
-  count      = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? 1 : 0) : 0
+  count = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? 1 : 0) : 0
 }

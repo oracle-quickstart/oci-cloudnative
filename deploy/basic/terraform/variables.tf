@@ -51,7 +51,7 @@ variable "is_pv_encryption_in_transit_enabled" {
   default = false
 }
 variable "use_encryption_from_oci_vault" {
-  default     = false
+  default = false
 }
 variable "create_new_encryption_key" {
   default = false

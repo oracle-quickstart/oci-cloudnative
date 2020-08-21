@@ -74,7 +74,7 @@ locals {
 }
 
 data "oci_kms_vault" "mushop_vault" {
-    vault_id = oci_kms_vault.mushop_vault[0].id
+  vault_id = oci_kms_vault.mushop_vault[0].id
 
-    count      = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? 1 : 0) : 0
+  count = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? 1 : 0) : 0
 }
