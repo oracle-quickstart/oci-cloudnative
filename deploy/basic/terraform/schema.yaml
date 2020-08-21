@@ -15,7 +15,6 @@ groupings:
     - compartment_ocid
     - tenancy_ocid
     - region
-    - private_key_path
 
   - title: "General Configuration"
     variables:
@@ -36,10 +35,18 @@ groupings:
     - create_vault_policies
     - user_admin_group_for_vault_policy
 
+  - title: "Advanced Resource Options"
+    description: "Changes here may not be supported by Always Free elegible resources"
+    variables:
+    - lb_shape
+    - instance_shape
+    - autonomous_database_is_free_tier
+
   - title: "Extras Hidden"
     variables:
       - user_ocid
       - fingerprint
+      - private_key_path
       - autonomous_database_db_version
       - autonomous_database_license_model
       - autonomous_database_is_free_tier
