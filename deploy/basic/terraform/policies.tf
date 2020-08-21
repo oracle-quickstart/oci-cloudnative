@@ -4,7 +4,7 @@
 
 # Create policy to allow use lifecycle
 resource "oci_identity_policy" "mushop_allow_object_storage_lifecycle" {
-  name           = "mushop-object-family-${random_id.mushop_id.dec}"
+  name           = "mushop-object-family-${random_string.deploy_id.result}"
   description    = "policy created by terraform for MuShop Basic"
   compartment_id = var.compartment_ocid
   statements     = ["Allow service objectstorage-${var.region} to manage object-family in compartment id ${var.compartment_ocid}"]
@@ -13,7 +13,7 @@ resource "oci_identity_policy" "mushop_allow_object_storage_lifecycle" {
 
 # Create pilicy to allow use OCI Vault/KMS
 resource "oci_identity_policy" "mushop_allow_manage_vaults_and_keys" {
-  name           = "mushop-vault-and-keys-${random_id.mushop_id.dec}"
+  name           = "mushop-vault-and-keys-${random_string.deploy_id.result}"
   description    = "policy created by terraform for MuShop Basic"
   compartment_id = var.compartment_ocid
   statements = [
