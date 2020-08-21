@@ -7,6 +7,10 @@ output "lb_public_url" {
 }
 
 output "autonomous_database_password" {
+  value = random_string.autonomous_database_admin_password.result
+}
+
+output "autonomous_database_wallet_password" {
   value = random_string.autonomous_database_wallet_password.result
 }
 
