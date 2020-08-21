@@ -91,20 +91,6 @@ resource "oci_objectstorage_preauthrequest" "mushop_lite_preauth" {
   object = oci_objectstorage_object.mushop_basic.object
 }
 
-resource "oci_objectstorage_object_lifecycle_policy" "mushop_deploy_assets_lifecycle_policy" {
-  namespace = data.oci_objectstorage_namespace.user_namespace.namespace
-  bucket    = oci_objectstorage_bucket.mushop.name
-
-  rules {
-    action      = "DELETE"
-    is_enabled  = "true"
-    name        = "mushop-delete-deploy-assets-rule"
-    time_amount = "1"
-    time_unit   = "DAYS"
-  }
-  depends_on = [oci_identity_policy.mushop_allow_object_storage_lifecycle, oci_objectstorage_object.mushop_wallet]
-}
-
 # Static assets bucket
 resource "oci_objectstorage_bucket" "mushop_media" {
   compartment_id = var.compartment_ocid

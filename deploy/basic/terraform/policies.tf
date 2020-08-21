@@ -11,6 +11,21 @@ resource "oci_identity_policy" "mushop_allow_object_storage_lifecycle" {
   freeform_tags  = local.common_tags
 }
 
+# Create lifecycle policy to delete temp files
+resource "oci_objectstorage_object_lifecycle_policy" "mushop_deploy_assets_lifecycle_policy" {
+  namespace = data.oci_objectstorage_namespace.user_namespace.namespace
+  bucket    = oci_objectstorage_bucket.mushop.name
+
+  rules {
+    action      = "DELETE"
+    is_enabled  = "true"
+    name        = "mushop-delete-deploy-assets-rule"
+    time_amount = "1"
+    time_unit   = "DAYS"
+  }
+  depends_on = [oci_identity_policy.mushop_allow_object_storage_lifecycle, oci_objectstorage_object.mushop_wallet]
+}
+
 # Create pilicy to allow use OCI Vault/KMS
 resource "oci_identity_policy" "mushop_allow_manage_vaults_and_keys" {
   name           = "mushop-vault-and-keys-${random_string.deploy_id.result}"
