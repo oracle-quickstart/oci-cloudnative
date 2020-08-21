@@ -5,7 +5,7 @@
 resource "oci_core_security_list" "mushopLBSecurityList" {
   compartment_id = var.compartment_ocid
   vcn_id         = oci_core_virtual_network.mushopVCN.id
-  display_name   = "mushop-lb-${random_id.mushop_id.dec}"
+  display_name   = "mushop-lb-${random_string.deploy_id.result}"
   freeform_tags  = local.common_tags
 
   egress_security_rules {
