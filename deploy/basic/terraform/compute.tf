@@ -20,7 +20,7 @@ resource "oci_core_instance" "app_instance" {
   source_details {
     source_type = "image"
     source_id   = lookup(data.oci_core_images.compute_images.images[0], "id")
-    kms_key_id  = var.use_encryption_from_oci_vault ? var.encryption_key_id : null
+    kms_key_id  = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? oci_kms_key.mushop_key[0].id : var.encryption_key_id) : null
   }
 
   metadata = {
