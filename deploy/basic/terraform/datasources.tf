@@ -59,3 +59,16 @@ data "oci_core_images" "compute_images" {
   sort_by                  = "TIMECREATED"
   sort_order               = "DESC"
 }
+
+data "template_file" "mushop" {
+  template = "${file("./scripts/node.sh")}"
+}
+
+locals {
+  availability_domain = [for limit in data.oci_limits_limit_values.test_limit_values : limit.limit_values[0].availability_domain if limit.limit_values[0].value > 0]
+
+  common_tags = {
+    Reference = "Created by OCI QuickStart for Free Tier"
+  }
+
+}

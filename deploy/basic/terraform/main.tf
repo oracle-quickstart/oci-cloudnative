@@ -5,9 +5,6 @@
 terraform {
   required_version = ">= 0.12.16"
 }
-data "template_file" "mushop" {
-  template = "${file("./scripts/node.sh")}"
-}
 
 resource "oci_core_instance" "app_instance" {
   count               = var.num_nodes
@@ -42,15 +39,6 @@ resource "oci_core_instance" "app_instance" {
     wallet_par          = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.mushop_wallet_preauth.access_uri}"
     assets_par          = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.mushop_media_preauth.access_uri}"
     assets_url          = "https://objectstorage.${var.region}.oraclecloud.com/n/${oci_objectstorage_bucket.mushop_media.namespace}/b/${oci_objectstorage_bucket.mushop_media.name}/o/"
-  }
-
-}
-
-locals {
-  availability_domain = [for limit in data.oci_limits_limit_values.test_limit_values : limit.limit_values[0].availability_domain if limit.limit_values[0].value > 0]
-
-  common_tags = {
-    Reference = "Created by OCI QuickStart for Free Tier"
   }
 
 }
