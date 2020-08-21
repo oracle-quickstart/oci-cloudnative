@@ -62,7 +62,7 @@ variable "encryption_key_id" {
 variable "create_vault_policies" {
   default = false
 }
-variable "user_admin_group" {
+variable "user_admin_group_for_vault_policy" {
   default = "Administrators"
 }
 variable "vault_display_name" {

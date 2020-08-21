@@ -17,8 +17,8 @@ resource "oci_identity_policy" "mushop_allow_manage_vaults_and_keys" {
   description    = "policy created by terraform for MuShop Basic"
   compartment_id = var.compartment_ocid
   statements = [
-    "Allow group ${var.user_admin_group} to manage vaults in compartment id ${var.compartment_ocid}",
-    "Allow group ${var.user_admin_group} to manage keys in compartment id ${var.compartment_ocid}"
+    "Allow group ${var.user_admin_group_for_vault_policy} to manage vaults in compartment id ${var.compartment_ocid}",
+    "Allow group ${var.user_admin_group_for_vault_policy} to manage keys in compartment id ${var.compartment_ocid}"
   ]
   freeform_tags = local.common_tags
 
