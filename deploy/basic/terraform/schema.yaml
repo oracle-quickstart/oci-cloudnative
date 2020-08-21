@@ -15,13 +15,14 @@ groupings:
     - compartment_ocid
     - tenancy_ocid
     - region
+    - private_key_path
 
   - title: "General Configuration"
     variables:
     - autonomous_database_name
     - num_nodes
 
-  - title: "Advanced Configuration"
+  - title: "Optional Configuration"
     variables:
     - generate_public_ssh_key
     - public_ssh_key
@@ -108,6 +109,10 @@ variables:
     type: boolean
     title: "Create new vault and encryption key?"
     description: "Creates new vault and key on OCI Vault/Key Management/KMS and assign to boot volume of compute and object storage bucket"
+    default: true
+    visible:
+      and:
+        - use_encryption_from_oci_vault
 
   encryption_key_id:
     type: string
@@ -121,6 +126,10 @@ variables:
     type: boolean
     title: "Create policies to manage vault and keys?"
     description: "Creates policies to manage vault and keys. If you are on the Administrators group or already have the policies for a compartment, this policy is not needed. If you do not have access to allow the policy, ask your administrator to include for you."
+    visible:
+      and:
+        - use_encryption_from_oci_vault
+        - create_new_encryption_key
 
   user_admin_group_for_vault_policy:
     type: string
