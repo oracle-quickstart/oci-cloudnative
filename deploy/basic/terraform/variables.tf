@@ -21,14 +21,16 @@ variable "generate_public_ssh_key" {
 variable "instance_shape" {
   default = "VM.Standard.E2.1.Micro"
 }
-variable "lb_shape" {
-  default = "10Mbps-Micro"
-}
 variable "image_operating_system" {
   default = "Oracle Linux"
 }
 variable "image_operating_system_version" {
   default = "7.8"
+}
+
+# Network
+variable "lb_shape" {
+  default = "10Mbps-Micro"
 }
 
 # Autonomous Database
@@ -52,7 +54,6 @@ variable "autonomous_database_data_storage_size_in_tbs" {
 }
 
 # Encryption (OCI Vault/Key Management/KMS)
-
 variable "is_pv_encryption_in_transit_enabled" {
   default = false
 }
@@ -86,4 +87,9 @@ variable "vault_key_key_shape_algorithm" {
 }
 variable "vault_key_key_shape_length" {
   default = 32
+}
+
+# Always Free only or support other shapes
+variable "use_only_always_free_elegible_resources" {
+  default = true
 }
