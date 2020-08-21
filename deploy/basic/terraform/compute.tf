@@ -6,7 +6,7 @@ resource "oci_core_instance" "app_instance" {
   count               = var.num_nodes
   availability_domain = local.availability_domain[0]
   compartment_id      = var.compartment_ocid
-  display_name        = "mushop-${random_id.mushop_id.dec}-${count.index}"
+  display_name        = "mushop-${random_string.deploy_id.result}-${count.index}"
   shape               = var.instance_shape
   freeform_tags       = local.common_tags
 
@@ -14,7 +14,7 @@ resource "oci_core_instance" "app_instance" {
     subnet_id        = oci_core_subnet.mushopLBSubnet.id
     display_name     = "primaryvnic"
     assign_public_ip = true
-    hostname_label   = "mushop-${random_id.mushop_id.dec}-${count.index}"
+    hostname_label   = "mushop-${random_string.deploy_id.result}-${count.index}"
   }
 
   source_details {
