@@ -11,7 +11,24 @@ data "oci_objectstorage_namespace" "user_namespace" {
   compartment_id = var.compartment_ocid
 }
 
+# Randoms
+resource "random_string" "deploy_id" {
+  length  = 4
+  special = false
+}
+
+### Passwords using random_string instead of random_password to be compatible with ORM (Need to update random provider)
 resource "random_string" "autonomous_database_wallet_password" {
+  length           = 16
+  special          = true
+  min_upper        = 3
+  min_lower        = 3
+  min_numeric      = 3
+  min_special      = 3
+  override_special = "{}#^*<>[]%~"
+}
+
+resource "random_string" "autonomous_database_admin_password" {
   length           = 16
   special          = true
   min_upper        = 3
@@ -70,7 +87,6 @@ locals {
   common_tags = {
     Reference = "Created by OCI QuickStart for Free Tier"
   }
-
 }
 
 data "oci_kms_vault" "mushop_vault" {
