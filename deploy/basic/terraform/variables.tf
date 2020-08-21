@@ -44,6 +44,12 @@ variable "autonomous_database_license_model" {
 variable "autonomous_database_is_free_tier" {
   default = true
 }
+variable "autonomous_database_cpu_core_count" {
+  default = 1
+}
+variable "autonomous_database_data_storage_size_in_tbs" {
+  default = 1
+}
 
 # Encryption (OCI Vault/Key Management/KMS)
 
