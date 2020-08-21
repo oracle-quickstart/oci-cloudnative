@@ -6,6 +6,7 @@ package  mushop.orders.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.micrometer.core.instrument.MeterRegistry;
 import io.nats.client.Connection;
 import io.nats.client.Dispatcher;
 import io.nats.client.Message;
@@ -30,6 +31,8 @@ import java.util.concurrent.Future;
 public class MessagingService {
     @Autowired
     private CustomerOrderRepository customerOrderRepository;
+    @Autowired
+    private MeterRegistry meterRegistry;
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final ObjectMapper objectMapper = new ObjectMapper();
     private Connection nc;
@@ -82,6 +85,7 @@ public class MessagingService {
         String msg = objectMapper.writeValueAsString(order);
         log.debug("Sending order over to fulfillment {}", order);
         this.nc.publish(this.mushopOrdersSubject, msg.getBytes(StandardCharsets.UTF_8));
+        meterRegistry.counter("orders.fulfillment_sent").increment();
     }
 
     private void handleMessage(Message message) {
@@ -94,6 +98,8 @@ public class MessagingService {
                                     order.setShipment(update.getShipment());
                                     customerOrderRepository.save(order);
                                     log.info("order {} is now {}", order.getId(), update.getShipment().getName());
+                                    meterRegistry.counter("orders.fulfillment_ack").increment();
+
                                 }
                         );
 

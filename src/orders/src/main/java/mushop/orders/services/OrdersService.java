@@ -1,5 +1,7 @@
 package mushop.orders.services;
 
+import io.micrometer.core.instrument.DistributionSummary;
+import io.micrometer.core.instrument.MeterRegistry;
 import mushop.orders.config.OrdersConfigurationProperties;
 import mushop.orders.entities.*;
 import mushop.orders.repositories.CustomerOrderRepository;
@@ -38,6 +40,9 @@ public class OrdersService {
     @Autowired
     private CustomerOrderRepository customerOrderRepository;
 
+    @Autowired
+    private MeterRegistry meterRegistry;
+
     @Value(value = "${http.timeout:5}")
     private long timeout;
 
@@ -47,6 +52,7 @@ public class OrdersService {
     public CustomerOrder createNewOrder(NewOrderResource orderPayload) {
         LOG.info("Creating order {}", orderPayload);
         LOG.debug("Starting calls");
+        meterRegistry.counter("orders.placed").increment();
         try {
             Future<Address> addressFuture = asyncGetService.getObject(orderPayload.address,
                     new ParameterizedTypeReference<Address>() {
@@ -82,9 +88,11 @@ public class OrdersService {
             
             LOG.info("Received payment response: " + paymentResponse);
             if (paymentResponse == null) {
+                meterRegistry.counter("orders.rejected","cause","payment_response_invalid").increment();
                 throw new PaymentDeclinedException("Unable to parse authorisation packet");
             }
             if (!paymentResponse.isAuthorised()) {
+                meterRegistry.counter("orders.rejected","cause","payment_declined").increment();
                 throw new PaymentDeclinedException(paymentResponse.getMessage());
             }
 
@@ -102,12 +110,28 @@ public class OrdersService {
 
             CustomerOrder savedOrder = customerOrderRepository.save(order);
             LOG.debug("Saved order: " + savedOrder);
+            meterRegistry.summary("orders.amount").record(amount);
+            DistributionSummary.builder("order.stats")
+                    .serviceLevelObjectives(10d,20d,30d,40d,50d,60d,70d,80d,90d,100d,110d)
+                    //.publishPercentileHistogram()
+                    .maximumExpectedValue(120d)
+                    .minimumExpectedValue(5d)
+                    .register(meterRegistry)
+                    .record(amount);
             OrderUpdate update = new OrderUpdate(savedOrder.getId(), null);
             messagingService.dispatchToFulfillment(update);
             return savedOrder;
         } catch (TimeoutException e) {
+            meterRegistry.counter("orders.rejected","cause","timeout").increment();
             throw new OrderFailedException("Unable to create order due to timeout from one of the services.", e);
-        } catch (InterruptedException | IOException | ExecutionException e) {
+        } catch (InterruptedException e) {
+            meterRegistry.counter("orders.rejected","cause","interrupted").increment();
+            throw new OrderFailedException("Unable to create order due to unspecified IO error.", e);
+        }catch ( IOException  e) {
+            meterRegistry.counter("orders.rejected","cause","connectivity").increment();
+            throw new OrderFailedException("Unable to create order due to unspecified IO error.", e);
+        }catch (ExecutionException e) {
+            meterRegistry.counter("orders.rejected","cause","task_failed").increment();
             throw new OrderFailedException("Unable to create order due to unspecified IO error.", e);
         }
 
