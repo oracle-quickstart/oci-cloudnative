@@ -38,10 +38,6 @@ resource "random_string" "autonomous_database_admin_password" {
   override_special = "{}#^*<>[]%~"
 }
 
-resource "random_id" "mushop_id" {
-  byte_length = 2
-}
-
 data "oci_database_autonomous_database_wallet" "autonomous_database_wallet" {
   autonomous_database_id = oci_database_autonomous_database.mushop_autonomous_database.id
   password               = random_string.autonomous_database_wallet_password.result
