@@ -21,10 +21,18 @@ groupings:
     - autonomous_database_name
     - num_nodes
 
-  - title: "Optional Configuration"
+  - title: "Advanced Configuration"
     variables:
     - generate_public_ssh_key
     - public_ssh_key
+
+  - title: "Encryption using OCI Vault (KMS)"
+    variables:
+    - use_encryption_from_oci_vault
+    - create_new_encryption_key
+    - encryption_key_id
+    - create_vault_policies
+    - user_admin_group_for_vault_policy
 
   - title: "Extras Hidden"
     variables:
@@ -33,16 +41,23 @@ groupings:
       - autonomous_database_db_version
       - autonomous_database_license_model
       - autonomous_database_is_free_tier
+      - autonomous_database_cpu_core_count
+      - autonomous_database_data_storage_size_in_tbs
       - instance_shape
       - lb_shape
       - image_operating_system
       - image_operating_system_version
+      - is_pv_encryption_in_transit_enabled
+      - vault_display_name
+      - vault_type
+      - vault_key_display_name
+      - vault_key_key_shape_algorithm
+      - vault_key_key_shape_length
     visible: false
 
 variables:
   compartment_ocid:
     type: oci:identity:compartment:id
-    # type: string
     required: true
     title: "Compartment"
     description: "The compartment in which to create compute instance(s)"
@@ -63,7 +78,7 @@ variables:
     title: "Database Name"
     description: "The name for the Autonomous Database instance"
     minLength: 1
-    maxLength: 14
+    maxLength: 10
     pattern: "^[a-zA-Z][a-zA-Z0-9]+$"
 
   generate_public_ssh_key:
@@ -84,6 +99,37 @@ variables:
       not:
         - generate_public_ssh_key
 
+  use_encryption_from_oci_vault:
+    type: boolean
+    title: "Encrypt boot volume and object storage bucket with a key that you manage?"
+    description: "By default, Oracle manages the keys that encrypt the boot volume and object storage bucket, but you can choose a key from a vault that you have access to if you want greater control over the key's lifecycle and how it's used."
+
+  create_new_encryption_key:
+    type: boolean
+    title: "Create new vault and encryption key?"
+    description: "Creates new vault and key on OCI Vault/Key Management/KMS and assign to boot volume of compute and object storage bucket"
+
+  encryption_key_id:
+    type: string
+    title: "Existent master encryption key"
+    description: "Use an existent master encryption key to encrypt boot volume and object storage bucket"
+    visible:
+      not:
+        - create_new_encryption_key
+
+  create_vault_policies:
+    type: boolean
+    title: "Create policies to manage vault and keys?"
+    description: "Creates policies to manage vault and keys. If you are on the Administrators group or already have the policies for a compartment, this policy is not needed. If you do not have access to allow the policy, ask your administrator to include for you."
+
+  user_admin_group_for_vault_policy:
+    type: string
+    title: "Specific your group to include the policy"
+    description: "Identity Group to allow manage vault and keys."
+    visible:
+      and:
+        - create_vault_policies
+
 outputGroups:
   - title: "MuShop App details"
     outputs:
@@ -101,8 +147,8 @@ outputs:
   
   autonomous_database_password:
     type: string
-    title: "Database Password"
-    displayText: "Autonomous Database Password"
+    title: "Database Admin Password"
+    displayText: "Autonomous Database Admin Password"
     visible: true
   
   generated_private_key_pem:
@@ -114,7 +160,7 @@ outputs:
   dev:
     type: string
     title: "Message"
-    displayText: "Made with \u2764 by Oracle A-Team"
+    displayText: "Made with \u2764 by Oracle"
     visible: true
   
   comments:
