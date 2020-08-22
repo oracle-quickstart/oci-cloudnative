@@ -49,11 +49,8 @@ groupings:
       - private_key_path
       - autonomous_database_db_version
       - autonomous_database_license_model
-      - autonomous_database_is_free_tier
       - autonomous_database_cpu_core_count
       - autonomous_database_data_storage_size_in_tbs
-      - instance_shape
-      - lb_shape
       - image_operating_system
       - image_operating_system_version
       - is_pv_encryption_in_transit_enabled
@@ -78,22 +75,24 @@ variables:
     - "2"
     title: "Node Count"
     description: "Choose the number of compute instances to deploy"
+    default: "2"
     required: true
 
   autonomous_database_name:
     type: string
-    required: true
     title: "Database Name"
     description: "The name for the Autonomous Database instance"
     minLength: 1
     maxLength: 10
     pattern: "^[a-zA-Z][a-zA-Z0-9]+$"
+    required: true
 
   show_advanced:
     type: boolean
     title: "Show advanced options?"
     description: "Shows advanced options, allowing enable customer managed encryption keys, select your ssh key, and other advanced options. NOTE: Only encryption and ssh key changes are available as Always Free resources, other advanced options may not be available on the Always Free."
-    default: false    
+    default: false
+    visible: true
 
   generate_public_ssh_key:
     type: boolean
