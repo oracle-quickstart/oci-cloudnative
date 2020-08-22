@@ -2,15 +2,6 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
-# Create policy to allow use lifecycle
-resource "oci_identity_policy" "mushop_allow_object_storage_lifecycle" {
-  name           = "mushop-object-family-${random_string.deploy_id.result}"
-  description    = "policy created by terraform for MuShop Basic"
-  compartment_id = var.compartment_ocid
-  statements     = ["Allow service objectstorage-${var.region} to manage object-family in compartment id ${var.compartment_ocid}"]
-  freeform_tags  = local.common_tags
-}
-
 # Create lifecycle policy to delete temp files
 resource "oci_objectstorage_object_lifecycle_policy" "mushop_deploy_assets_lifecycle_policy" {
   namespace = data.oci_objectstorage_namespace.user_namespace.namespace
@@ -23,19 +14,30 @@ resource "oci_objectstorage_object_lifecycle_policy" "mushop_deploy_assets_lifec
     time_amount = "1"
     time_unit   = "DAYS"
   }
-  depends_on = [oci_identity_policy.mushop_allow_object_storage_lifecycle, oci_objectstorage_object.mushop_wallet]
+  depends_on = [oci_identity_policy.mushop_basic_policies, oci_objectstorage_object.mushop_wallet]
 }
 
-# Create pilicy to allow use OCI Vault/KMS
-resource "oci_identity_policy" "mushop_allow_manage_vaults_and_keys" {
-  name           = "mushop-vault-and-keys-${random_string.deploy_id.result}"
-  description    = "policy created by terraform for MuShop Basic"
+# Create policies for MuShop based on the features
+resource "oci_identity_policy" "mushop_basic_policies" {
+  name           = "mushop-basic-policies-${random_string.deploy_id.result}"
+  description    = "Policies created by terraform for MuShop Basic"
   compartment_id = var.compartment_ocid
-  statements = [
+  statements = (var.use_encryption_from_oci_vault ?
+    (var.create_vault_policies_for_group ? (
+      concat(local.allow_object_storage_lifecycle_statement, local.allow_object_storage_service_keys_statements, local.allow_group_manage_vault_keys_statements)
+      ) : concat(local.allow_object_storage_lifecycle_statement, local.allow_object_storage_service_keys_statements)
+  ) : local.allow_object_storage_lifecycle_statement)
+  freeform_tags = local.common_tags
+}
+
+locals {
+  allow_object_storage_lifecycle_statement = ["Allow service objectstorage-${var.region} to manage object-family in compartment id ${var.compartment_ocid}"]
+  allow_object_storage_service_keys_statements = [
+    "Allow service objectstorage-${var.region} to use vaults in compartment id ${var.compartment_ocid}",
+    "Allow service objectstorage-${var.region} to use keys in compartment id ${var.compartment_ocid}"
+  ]
+  allow_group_manage_vault_keys_statements = [
     "Allow group ${var.user_admin_group_for_vault_policy} to manage vaults in compartment id ${var.compartment_ocid}",
     "Allow group ${var.user_admin_group_for_vault_policy} to manage keys in compartment id ${var.compartment_ocid}"
   ]
-  freeform_tags = local.common_tags
-
-  count = var.create_vault_policies ? 1 : 0
 }

@@ -8,7 +8,7 @@ resource "oci_objectstorage_bucket" "mushop" {
   namespace      = data.oci_objectstorage_namespace.user_namespace.namespace
   freeform_tags  = local.common_tags
   kms_key_id     = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? oci_kms_key.mushop_key[0].id : var.encryption_key_id) : null
-  depends_on     = [oci_identity_policy.mushop_allow_object_storage_lifecycle]
+  depends_on     = [oci_identity_policy.mushop_basic_policies]
 }
 
 resource "oci_objectstorage_object" "mushop_wallet" {

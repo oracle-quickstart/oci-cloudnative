@@ -32,7 +32,7 @@ groupings:
     - use_encryption_from_oci_vault
     - create_new_encryption_key
     - encryption_key_id
-    - create_vault_policies
+    - create_vault_policies_for_group
     - user_admin_group_for_vault_policy
 
   - title: "Advanced Resource Options"
@@ -91,7 +91,6 @@ variables:
     type: boolean
     title: "Show advanced options?"
     description: "Shows advanced options, allowing enable customer managed encryption keys, select your ssh key, and other advanced options. NOTE: Only encryption and ssh key changes are available as Always Free resources, other advanced options may not be available on the Always Free."
-    default: false
     visible: true
 
   generate_public_ssh_key:
@@ -147,7 +146,7 @@ variables:
         - not:
           - create_new_encryption_key
 
-  create_vault_policies:
+  create_vault_policies_for_group:
     type: boolean
     title: "Create policies to manage vault and keys?"
     description: "Creates policies to manage vault and keys. If you are on the Administrators group or already have the policies for a compartment, this policy is not needed. If you do not have access to allow the policy, ask your administrator to include it for you."
@@ -166,13 +165,12 @@ variables:
         - show_advanced
         - use_encryption_from_oci_vault
         - create_new_encryption_key
-        - create_vault_policies
+        - create_vault_policies_for_group
 
   use_only_always_free_elegible_resources:
     type: boolean
     title: "Use only always free eligible resources?"
     description: "*** Unchecking this may use options that are not included or supported by Always Free eligible resources"
-    default: true
     visible:
       and:
         - show_advanced
