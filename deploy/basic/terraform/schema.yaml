@@ -256,6 +256,11 @@ outputs:
     title: "Deployment Id"
     visible: true
 
+  mushop_basic_source_code:
+    type: link
+    title: "MuShop Basic source code"
+    visible: true
+
   comments:
     type: string
     title: "Comments"
