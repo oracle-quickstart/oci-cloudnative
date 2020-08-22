@@ -84,9 +84,3 @@ locals {
     Reference = "Created by OCI QuickStart for Free Tier"
   }
 }
-
-data "oci_kms_vault" "mushop_vault" {
-  vault_id = oci_kms_vault.mushop_vault[0].id
-
-  count = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? 1 : 0) : 0
-}

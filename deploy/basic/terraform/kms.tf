@@ -17,7 +17,7 @@ resource "oci_kms_vault" "mushop_vault" {
 resource "oci_kms_key" "mushop_key" {
   compartment_id      = var.compartment_ocid
   display_name        = "${var.vault_key_display_name} - ${random_string.deploy_id.result}"
-  management_endpoint = data.oci_kms_vault.mushop_vault[0].management_endpoint
+  management_endpoint = oci_kms_vault.mushop_vault[0].management_endpoint
 
   key_shape {
     algorithm = var.vault_key_key_shape_algorithm
