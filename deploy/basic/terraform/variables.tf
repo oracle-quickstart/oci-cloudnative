@@ -66,7 +66,7 @@ variable "create_new_encryption_key" {
 variable "encryption_key_id" {
   default = ""
 }
-variable "create_vault_policies" {
+variable "create_vault_policies_for_group" {
   default = false
 }
 variable "user_admin_group_for_vault_policy" {
@@ -92,4 +92,9 @@ variable "vault_key_key_shape_length" {
 # Always Free only or support other shapes
 variable "use_only_always_free_elegible_resources" {
   default = true
+}
+
+# ORM Schema visual control variables
+variable "show_advanced" {
+  default = false
 }
