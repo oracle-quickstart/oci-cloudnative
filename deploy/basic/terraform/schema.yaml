@@ -36,8 +36,8 @@ groupings:
     - user_admin_group_for_vault_policy
 
   - title: "Advanced Resource Options"
-    description: "Changes here may not be supported by Always Free elegible resources"
     variables:
+    - use_only_always_free_elegible_resources
     - lb_shape
     - instance_shape
     - autonomous_database_is_free_tier
@@ -170,6 +170,54 @@ variables:
         - use_encryption_from_oci_vault
         - create_new_encryption_key
         - create_vault_policies
+
+  use_only_always_free_elegible_resources:
+    type: boolean
+    title: "Use only always free elegible resources?"
+    description: "*** Unchecking this may use options that are not included or supported by Always Free elegible resources"
+    visible:
+      and:
+        - show_advanced
+
+  lb_shape:
+    type: enum
+    enum:
+    - "10Mbps-Micro"
+    - "100Mbps"
+    - "400Mbps"
+    - "8000Mbps"
+    title: "Select a shape for the load balancer"
+    description: "A load balancer provides automated traffic distribution from one entry point to multiple servers in a backend set. The load balancer ensures that your services remain available by directing traffic only to healthy servers in the backend set."
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
+
+  instance_shape:
+    type: oci:core:instanceshape:name
+    title: "Select a shape for the compute instances"
+    description: "A shape is a template that determines the number of CPUs, amount of memory, and other resources allocated to a newly created instance."
+    dependsOn:
+      compartmentId: compartment_ocid
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
+
+  autonomous_database_is_free_tier:
+    type: boolean
+    title: "Use always free Autonomous Database?"
+    description: "Uses Always Free Transaction Processing Autonomous Database. Unchecking this option will provision a regular 1 OCPU ATP instance with License."
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
 
 outputGroups:
   - title: "MuShop App details"
