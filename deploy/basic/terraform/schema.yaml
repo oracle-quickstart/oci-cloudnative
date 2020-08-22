@@ -224,6 +224,7 @@ outputGroups:
       - lb_public_url
       - autonomous_database_password
       - generated_private_key_pem
+      - deploy_id
       - dev
       - comments
 
@@ -248,9 +249,14 @@ outputs:
   dev:
     type: string
     title: "Message"
-    displayText: "Made with \u2764 by Oracle"
+    # displayText: "Made with \u2764 by Oracle"
     visible: true
   
+  deploy_id:
+    type: string
+    title: "Deployment Id"
+    visible: true
+
   comments:
     type: string
     title: "Comments"
