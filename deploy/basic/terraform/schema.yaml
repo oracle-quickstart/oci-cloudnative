@@ -77,7 +77,6 @@ variables:
     - "1"
     - "2"
     title: "Node Count"
-    default: "2"
     description: "Choose the number of compute instances to deploy"
     required: true
 
@@ -132,7 +131,6 @@ variables:
     type: boolean
     title: "Create new vault and encryption key?"
     description: "Creates new vault and key on OCI Vault/Key Management/KMS and assign to boot volume of compute and object storage bucket"
-    default: true
     visible:
       and:
         - show_advanced
@@ -175,6 +173,7 @@ variables:
     type: boolean
     title: "Use only always free eligible resources?"
     description: "*** Unchecking this may use options that are not included or supported by Always Free eligible resources"
+    default: true
     visible:
       and:
         - show_advanced
