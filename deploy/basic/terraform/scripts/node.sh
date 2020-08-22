@@ -38,7 +38,7 @@ yum install -y gcc-c++ make nodejs wget unzip httpd jq
 
 yum -y install oracle-release-el7
 yum-config-manager --enable ol7_oracle_instantclient
-yum -y install oracle-instantclient19.3-basic oracle-instantclient19.3-jdbc oracle-instantclient19.3-sqlplus
+yum -y install oracle-instantclient8-basic oracle-instantclient19.8-jdbc oracle-instantclient19.8-sqlplus
 
 # Enable and start services
 systemctl daemon-reload
@@ -57,7 +57,7 @@ ASSETS_URL=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".a
 get_object /root/wallet.64 $${WALLET_URI}
 # Setup ATP wallet files
 base64 --decode /root/wallet.64 > /root/wallet.zip
-unzip /root/wallet.zip -d /usr/lib/oracle/19.3/client64/lib/network/admin/
+unzip /root/wallet.zip -d /usr/lib/oracle/19.8/client64/lib/network/admin/
 
 # Init DB
 get_object /root/catalogue.sql $${CATALOGUE_SQL_URI}

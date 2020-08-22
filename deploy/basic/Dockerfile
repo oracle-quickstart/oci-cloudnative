@@ -4,7 +4,7 @@
 # 
 
 # Oracle Instant Client version
-ARG oracleClientVersion=19.3
+ARG oracleClientVersion=19.8
 
 # Node version
 ARG nodeVersion=10
