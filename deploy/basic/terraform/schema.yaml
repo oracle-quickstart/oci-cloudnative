@@ -148,8 +148,8 @@ variables:
 
   create_vault_policies_for_group:
     type: boolean
-    title: "Create policies to manage vault and keys?"
-    description: "Creates policies to manage vault and keys. If you are on the Administrators group or already have the policies for a compartment, this policy is not needed. If you do not have access to allow the policy, ask your administrator to include it for you."
+    title: "Create policies for the user group to manage vault and keys?"
+    description: "Creates policies to allow the user applying the stack to manage vault and keys. If you are on the Administrators group or already have the policies for a compartment, this policy is not needed. If you do not have access to allow the policy, ask your administrator to include it for you."
     visible:
       and:
         - show_advanced
@@ -222,6 +222,7 @@ outputGroups:
       - autonomous_database_password
       - generated_private_key_pem
       - deploy_id
+      - mushop_basic_source_code
       - dev
       - comments
 
