@@ -61,7 +61,7 @@ variable "use_encryption_from_oci_vault" {
   default = false
 }
 variable "create_new_encryption_key" {
-  default = false
+  default = true
 }
 variable "encryption_key_id" {
   default = ""
