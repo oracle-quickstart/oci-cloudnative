@@ -2,8 +2,8 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
-title: "Three-tier web application using Always Free resources"
-description: "A demo eCommerce example app using Always Free Oracle Cloud Infrastructure"
+title: "Three-tier web application using Always-Free resources"
+description: "A demo eCommerce example app (MuShop Basic) using Always-Free Oracle Cloud Infrastructure"
 schemaVersion: 1.1.0
 version: "20190304"
 locale: "en"
@@ -93,13 +93,13 @@ variables:
   show_advanced:
     type: boolean
     title: "Show advanced options?"
-    description: "Shows advanced options, allowing enable customer managed encryption, select your own ssh key, and other advanced options. NOTE: Only encryption and ssh key changes are available as Always Free resources, other advanced options may not be available on the Always Free."
+    description: "Shows advanced options, allowing enable customer managed encryption keys, select your ssh key, and other advanced options. NOTE: Only encryption and ssh key changes are available as Always Free resources, other advanced options may not be available on the Always Free."
     default: false    
 
   generate_public_ssh_key:
     type: boolean
-    title: "Auto generate public ssh key?"
-    description: "Auto generate a public key and assign to the compute instances. Uncheck to provide your own public key or leave blank to not use any attach any key to the compute instance"
+    title: "Auto-generate public ssh key?"
+    description: "Auto-generate a public key and assign to the compute instances. Uncheck to provide your own public key or leave blank not to use any attach any key to the compute instance"
     required: true
     visible:
       and:
@@ -153,7 +153,7 @@ variables:
   create_vault_policies:
     type: boolean
     title: "Create policies to manage vault and keys?"
-    description: "Creates policies to manage vault and keys. If you are on the Administrators group or already have the policies for a compartment, this policy is not needed. If you do not have access to allow the policy, ask your administrator to include for you."
+    description: "Creates policies to manage vault and keys. If you are on the Administrators group or already have the policies for a compartment, this policy is not needed. If you do not have access to allow the policy, ask your administrator to include it for you."
     visible:
       and:
         - show_advanced
@@ -173,8 +173,8 @@ variables:
 
   use_only_always_free_elegible_resources:
     type: boolean
-    title: "Use only always free elegible resources?"
-    description: "*** Unchecking this may use options that are not included or supported by Always Free elegible resources"
+    title: "Use only always free eligible resources?"
+    description: "*** Unchecking this may use options that are not included or supported by Always Free eligible resources"
     visible:
       and:
         - show_advanced
