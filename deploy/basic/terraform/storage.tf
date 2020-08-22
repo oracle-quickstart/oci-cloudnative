@@ -7,7 +7,7 @@ resource "oci_objectstorage_bucket" "mushop" {
   name           = "mushop-${random_string.deploy_id.result}"
   namespace      = data.oci_objectstorage_namespace.user_namespace.namespace
   freeform_tags  = local.common_tags
-  kms_key_id  = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? oci_kms_key.mushop_key[0].id : var.encryption_key_id) : null
+  kms_key_id     = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? oci_kms_key.mushop_key[0].id : var.encryption_key_id) : null
   depends_on     = [oci_identity_policy.mushop_allow_object_storage_lifecycle]
 }
 
@@ -24,7 +24,7 @@ resource "oci_objectstorage_preauthrequest" "mushop_wallet_preauth" {
   name         = "mushop_wallet_preauth"
   namespace    = data.oci_objectstorage_namespace.user_namespace.namespace
   time_expires = timeadd(timestamp(), "30m")
-  object = oci_objectstorage_object.mushop_wallet.object
+  object       = oci_objectstorage_object.mushop_wallet.object
 }
 
 resource "oci_objectstorage_object" "catalogue_sql_script" {
@@ -40,7 +40,7 @@ resource "oci_objectstorage_preauthrequest" "catalogue_sql_script_preauth" {
   name         = "catalogue_sql_script_preauth"
   namespace    = data.oci_objectstorage_namespace.user_namespace.namespace
   time_expires = timeadd(timestamp(), "30m")
-  object = oci_objectstorage_object.catalogue_sql_script.object
+  object       = oci_objectstorage_object.catalogue_sql_script.object
 }
 
 resource "oci_objectstorage_object" "apache_conf" {
@@ -56,7 +56,7 @@ resource "oci_objectstorage_preauthrequest" "apache_conf_preauth" {
   name         = "apache_conf_preauth"
   namespace    = data.oci_objectstorage_namespace.user_namespace.namespace
   time_expires = timeadd(timestamp(), "30m")
-  object = oci_objectstorage_object.apache_conf.object
+  object       = oci_objectstorage_object.apache_conf.object
 }
 
 resource "oci_objectstorage_object" "entrypoint" {
@@ -72,7 +72,7 @@ resource "oci_objectstorage_preauthrequest" "entrypoint_preauth" {
   name         = "entrypoint_preauth"
   namespace    = data.oci_objectstorage_namespace.user_namespace.namespace
   time_expires = timeadd(timestamp(), "30m")
-  object = oci_objectstorage_object.entrypoint.object
+  object       = oci_objectstorage_object.entrypoint.object
 }
 
 resource "oci_objectstorage_object" "mushop_basic" {
@@ -88,7 +88,7 @@ resource "oci_objectstorage_preauthrequest" "mushop_lite_preauth" {
   name         = "mushop_lite_preauth"
   namespace    = data.oci_objectstorage_namespace.user_namespace.namespace
   time_expires = timeadd(timestamp(), "30m")
-  object = oci_objectstorage_object.mushop_basic.object
+  object       = oci_objectstorage_object.mushop_basic.object
 }
 
 # Static assets bucket
@@ -98,7 +98,7 @@ resource "oci_objectstorage_bucket" "mushop_media" {
   namespace      = data.oci_objectstorage_namespace.user_namespace.namespace
   freeform_tags  = local.common_tags
   access_type    = "ObjectReadWithoutList"
-  kms_key_id  = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? oci_kms_key.mushop_key[0].id : var.encryption_key_id) : null
+  kms_key_id     = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? oci_kms_key.mushop_key[0].id : var.encryption_key_id) : null
 }
 
 # Static assets PAR
