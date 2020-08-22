@@ -162,6 +162,8 @@ COPY --from=catalogue-builder /catalogue /app/catalogue/catalogue
 RUN mkdir /package && GZIP=-9 tar cvzf /package/mushop-basic.tar.gz /app
 
 # Create ORM package
+COPY deploy/basic/VERSION /
+COPY deploy/basic/VERSION /basic
 COPY deploy/basic/terraform /basic
 COPY src/catalogue/dbdata/atp_mushop_catalogue.sql /basic/scripts
 COPY deploy/basic/httpd.conf /basic/scripts
