@@ -19,7 +19,7 @@ output "generated_private_key_pem" {
 }
 
 output "dev" {
-  value = "Made with \u2764 by Oracle"
+  value = "Made with \u2764 by Oracle A-Team Alumni"
 }
 
 output "comments" {
@@ -30,3 +30,6 @@ output "deploy_id" {
   value = random_string.deploy_id.result
 }
 
+output "mushop_basic_source_code" {
+  value = "https://github.com/oracle-quickstart/oci-cloudnative/tree/master/deploy/basic"
+}
