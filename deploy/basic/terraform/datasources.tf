@@ -78,9 +78,7 @@ data "template_file" "mushop" {
 }
 
 locals {
-  availability_domain = [for limit in data.oci_limits_limit_values.test_limit_values : limit.limit_values[0].availability_domain if limit.limit_values[0].value > 0]
-
   common_tags = {
-    Reference = "Created by OCI QuickStart for Free Tier"
+    Reference = "Created by OCI QuickStart for Always-Free Tier"
   }
 }
