@@ -33,8 +33,8 @@ resource "oci_identity_policy" "mushop_basic_policies" {
 locals {
   allow_object_storage_lifecycle_statement = ["Allow service objectstorage-${var.region} to manage object-family in compartment id ${var.compartment_ocid}"]
   allow_object_storage_service_keys_statements = [
-    "Allow service objectstorage-${var.region} to use vaults in compartment id ${var.compartment_ocid}",
-    "Allow service objectstorage-${var.region} to use keys in compartment id ${var.compartment_ocid}"
+    "Allow service blockstorage, objectstorage-${var.region} to use vaults in compartment id ${var.compartment_ocid}",
+    "Allow service blockstorage, objectstorage-${var.region} to use keys in compartment id ${var.compartment_ocid}"
   ]
   allow_group_manage_vault_keys_statements = [
     "Allow group ${var.user_admin_group_for_vault_policy} to manage vaults in compartment id ${var.compartment_ocid}",
