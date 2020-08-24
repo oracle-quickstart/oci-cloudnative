@@ -77,6 +77,15 @@ data "template_file" "mushop" {
   template = "${file("./scripts/node.sh")}"
 }
 
+## Available Services
+data "oci_core_services" "all_services" {
+  filter {
+    name   = "name"
+    values = ["All .* Services In Oracle Services Network"]
+    regex  = true
+  }
+}
+
 locals {
   common_tags = {
     Reference = "Created by OCI QuickStart for Always-Free Tier"
