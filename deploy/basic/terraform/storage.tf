@@ -93,7 +93,7 @@ resource "oci_objectstorage_preauthrequest" "mushop_lite_preauth" {
 
 # Static assets bucket
 resource "oci_objectstorage_bucket" "mushop_media" {
-  compartment_id = var.compartment_ocid
+  compartment_id = (var.object_storage_mushop_media_compartment_ocid != "") ? var.object_storage_mushop_media_compartment_ocid : var.compartment_ocid
   name           = "mushop-media-${random_string.deploy_id.result}"
   namespace      = data.oci_objectstorage_namespace.user_namespace.namespace
   freeform_tags  = local.common_tags
@@ -101,7 +101,7 @@ resource "oci_objectstorage_bucket" "mushop_media" {
   kms_key_id     = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? oci_kms_key.mushop_key[0].id : var.encryption_key_id) : null
 }
 
-# Static assets PAR
+# Static assets write PAR
 resource "oci_objectstorage_preauthrequest" "mushop_media_preauth" {
   bucket       = oci_objectstorage_bucket.mushop_media.name
   namespace    = oci_objectstorage_bucket.mushop_media.namespace
