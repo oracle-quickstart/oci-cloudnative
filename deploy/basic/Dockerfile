@@ -6,14 +6,11 @@
 # Oracle Instant Client version
 ARG oracleClientVersion=19.8
 
-# Node version
-ARG nodeVersion=10
-
 ###############################
 #    ----- STOREFRONT -----   #
 #    Build stage (node/npm)   #
 ###############################
-FROM node:10-alpine as storefront-builder
+FROM node:12-alpine as storefront-builder
 
 RUN apk update && apk add --no-cache \
     autoconf \
@@ -53,7 +50,7 @@ RUN npm run build
 #    ----- API Gateway -----  #
 #    Build stage (node/npm)   #
 ###############################
-FROM node:10-alpine as api-builder
+FROM node:12-alpine as api-builder
 
 WORKDIR /app/api
 COPY src/api/. .
@@ -65,7 +62,7 @@ RUN rm -rf test scripts node_modules
 ###############################
 #  ----- Image Assets -----   #
 ###############################
-FROM node:10-alpine as assets-builder
+FROM node:12-alpine as assets-builder
 
 RUN apk update && apk add --no-cache \
     autoconf \
@@ -124,18 +121,14 @@ RUN GO111MODULE=on GOARCH=amd64 GOOS=linux \
 # Base image with Oracle Instant Client Basic Lite
 FROM oraclelinux:7-slim AS base
 ARG oracleClientVersion
-ARG nodeVersion
 RUN yum --enablerepo=ol7_latest clean metadata && \
   yum update -y && \
   yum -y install oracle-release-el7 && \
   yum-config-manager --enable ol7_oracle_instantclient && \
   yum-config-manager --enable ol7_latest && \
-  yum -y install oracle-instantclient${oracleClientVersion}-basiclite
-# RUN yum install -y gcc-c++ 
-# RUN yum install -y make 
-RUN yum install -y sudo
-RUN yum install -y zip 
-RUN curl -sL https://rpm.nodesource.com/setup_${nodeVersion}.x | sudo -E bash - && \
+  yum -y install oracle-instantclient${oracleClientVersion}-basiclite && \
+  yum -y install zip && \
+  yum -y install oracle-nodejs-release-el7 && \
   yum -y install nodejs && \
   yum -y install httpd && \
   yum clean all && \
@@ -155,7 +148,6 @@ RUN chmod +x /entrypoint.sh
 # Runtime Image
 FROM base
 ARG oracleClientVersion
-ARG nodeVersion
 WORKDIR /
 
 # Copy Services apps
