@@ -32,6 +32,9 @@ variable "image_operating_system_version" {
 variable "lb_shape" {
   default = "10Mbps-Micro"
 }
+variable "lb_compartment_ocid" {
+  default = ""
+}
 
 # Autonomous Database
 variable "autonomous_database_name" {
@@ -97,4 +100,9 @@ variable "use_only_always_free_elegible_resources" {
 # ORM Schema visual control variables
 variable "show_advanced" {
   default = false
+}
+
+# Object Storage
+variable "object_storage_mushop_media_compartment_ocid" {
+  default = ""
 }
