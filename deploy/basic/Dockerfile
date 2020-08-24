@@ -125,12 +125,17 @@ RUN GO111MODULE=on GOARCH=amd64 GOOS=linux \
 FROM oraclelinux:7-slim AS base
 ARG oracleClientVersion
 ARG nodeVersion
-RUN yum update -y && \
+RUN yum --enablerepo=ol7_latest clean metadata && \
+  yum update -y && \
   yum -y install oracle-release-el7 && \
   yum-config-manager --enable ol7_oracle_instantclient && \
-  yum -y install oracle-instantclient${oracleClientVersion}-basiclite && \
-  yum install -y gcc-c++ make sudo zip && \
-  curl -sL https://rpm.nodesource.com/setup_${nodeVersion}.x | sudo -E bash - && \
+  yum-config-manager --enable ol7_latest && \
+  yum -y install oracle-instantclient${oracleClientVersion}-basiclite
+# RUN yum install -y gcc-c++ 
+# RUN yum install -y make 
+RUN yum install -y sudo
+RUN yum install -y zip 
+RUN curl -sL https://rpm.nodesource.com/setup_${nodeVersion}.x | sudo -E bash - && \
   yum -y install nodejs && \
   yum -y install httpd && \
   yum clean all && \
