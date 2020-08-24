@@ -38,9 +38,23 @@ groupings:
   - title: "Advanced Resource Options"
     variables:
     - use_only_always_free_elegible_resources
+
+  - title: "Advanced Resource Options - Load Balancer"
+    variables:
     - lb_shape
+    - lb_compartment_ocid
+
+  - title: "Advanced Resource Options - Compute"
+    variables:
     - instance_shape
+
+  - title: "Advanced Resource Options - ATP"
+    variables:
     - autonomous_database_is_free_tier
+
+  - title: "Advanced Resource Options - Object Storage"
+    variables:
+    - object_storage_mushop_media_compartment_ocid
 
   - title: "Extras Hidden"
     variables:
@@ -59,6 +73,8 @@ groupings:
       - vault_key_display_name
       - vault_key_key_shape_algorithm
       - vault_key_key_shape_length
+      - object_storage_mushop_media_visibility
+      - object_storage_mushop_media_read_par_expiration_date
     visible: false
 
 variables:
@@ -66,7 +82,7 @@ variables:
     type: oci:identity:compartment:id
     required: true
     title: "Compartment"
-    description: "The compartment in which to create compute instance(s)"
+    description: "The compartment in which to create compute instance(s) and ATP."
 
   num_nodes:
     type: enum
@@ -74,14 +90,14 @@ variables:
     - "1"
     - "2"
     title: "Node Count"
-    description: "Choose the number of compute instances to deploy"
+    description: "Choose the number of compute instances to deploy."
     default: "2"
     required: true
 
   autonomous_database_name:
     type: string
     title: "Database Name"
-    description: "The name for the Autonomous Database instance"
+    description: "The name for the Autonomous Database instance."
     minLength: 1
     maxLength: 10
     pattern: "^[a-zA-Z][a-zA-Z0-9]+$"
@@ -96,7 +112,7 @@ variables:
   generate_public_ssh_key:
     type: boolean
     title: "Auto-generate public ssh key?"
-    description: "Auto-generate a public key and assign to the compute instances. Uncheck to provide your own public key or leave blank not to use any attach any key to the compute instance"
+    description: "Auto-generate a public key and assign to the compute instances. Uncheck to provide your own public key or leave blank not to use any attach any key to the compute instance."
     required: true
     visible:
       and:
@@ -106,7 +122,7 @@ variables:
     type: oci:core:ssh:publickey
     required: false
     title: "SSH Public Key"
-    description: "The public SSH key for the key-pair that you want to use, if you wish to login to the instances over SSH"
+    description: "The public SSH key for the key-pair that you want to use, if you wish to login to the instances over SSH."
     additionalProps:
       allowMultiple: true
     pattern: "((^(ssh-rsa AAAAB3NzaC1yc2|ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNT|ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzOD|ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1Mj|ssh-ed25519 AAAAC3NzaC1lZDI1NTE5|ssh-dss AAAAB3NzaC1kc3)[0-9A-Za-z+\/]+[=]{0,3})( [^,]*)?)(,((ssh-rsa AAAAB3NzaC1yc2|ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNT|ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzOD|ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1Mj|ssh-ed25519 AAAAC3NzaC1lZDI1NTE5|ssh-dss AAAAB3NzaC1kc3)[0-9A-Za-z+\/]+[=]{0,3})( [^,]*)?)*$"
@@ -116,6 +132,22 @@ variables:
           - show_advanced
         - not:
           - generate_public_ssh_key
+
+  object_storage_mushop_media_visibility:
+    type: enum
+    enum:
+    - "Public"
+    - "Private"
+    title: "Select Object Storage visibility"
+    description: "Public creates a public bucket for the mushop media product images. Private creates a private bucket and creates a ObjectRead pre auth request to provide the images."
+    visible:
+      and:
+        - show_advanced
+
+  object_storage_mushop_media_read_par_expiration_date:
+    type: string
+    title: "Object Storage Media PAR expiration date"
+    description: "The name for the Autonomous Database instance."
 
   use_encryption_from_oci_vault:
     type: boolean
@@ -128,7 +160,7 @@ variables:
   create_new_encryption_key:
     type: boolean
     title: "Create new vault and encryption key?"
-    description: "Creates new vault and key on OCI Vault/Key Management/KMS and assign to boot volume of compute and object storage bucket"
+    description: "Creates new vault and key on OCI Vault/Key Management/KMS and assign to boot volume of compute and object storage bucket."
     visible:
       and:
         - show_advanced
@@ -137,7 +169,7 @@ variables:
   encryption_key_id:
     type: string
     title: "Existent master encryption key"
-    description: "Use an existent master encryption key to encrypt boot volume and object storage bucket"
+    description: "Use an existent master encryption key to encrypt boot volume and object storage bucket. NOTE: If the key resides in a different compartment or in a different tenancy, make sure you have the proper policies to access, or the provision of Object Storage and Compute will fail."
     visible:
       and:
         - and:
@@ -170,7 +202,7 @@ variables:
   use_only_always_free_elegible_resources:
     type: boolean
     title: "Use only always free eligible resources?"
-    description: "*** Unchecking this may use options that are not included or supported by Always Free eligible resources"
+    description: "*** Unchecking this may use options that are not included or supported by Always Free eligible resources."
     visible:
       and:
         - show_advanced
@@ -184,6 +216,19 @@ variables:
     - "8000Mbps"
     title: "Select a shape for the load balancer"
     description: "A load balancer provides automated traffic distribution from one entry point to multiple servers in a backend set. The load balancer ensures that your services remain available by directing traffic only to healthy servers in the backend set."
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
+
+  lb_compartment_ocid:
+    type: oci:identity:compartment:id
+    required: true
+    title: "Load Balancer Compartment"
+    description: "The compartment in which to create the Public Load Balancer."
+    default: compartment_ocid
     visible:
       and:
         - and:
@@ -208,6 +253,18 @@ variables:
     type: boolean
     title: "Use always free Autonomous Database?"
     description: "Uses Always Free Transaction Processing Autonomous Database. Unchecking this option will provision a regular 1 OCPU ATP instance with License."
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
+
+  object_storage_mushop_media_compartment_ocid:
+    type: oci:identity:compartment:id
+    required: true
+    title: "Object Storage (MuShop Media) Compartment"
+    description: "The compartment in which to create the Public MuShop product images."
     visible:
       and:
         - and:
@@ -247,7 +304,6 @@ outputs:
   dev:
     type: string
     title: "Message"
-    # displayText: "Made with \u2764 by Oracle"
     visible: true
   
   deploy_id:
