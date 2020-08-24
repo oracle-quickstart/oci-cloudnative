@@ -37,12 +37,21 @@ variable "image_operating_system_version" {
   default = "7.8"
 }
 
-# Network
+# Network Details
 variable "lb_shape" {
   default = "10Mbps-Micro"
 }
 variable "lb_compartment_ocid" {
   default = ""
+}
+variable "network_cidrs" {
+  type = map(string)
+
+  default = {
+    VCN-CIDR                = "10.1.0.0/16"
+    LB-SUBNET-REGIONAL-CIDR = "10.1.21.0/24"
+    ALL-CIDR                = "0.0.0.0/0"
+  }
 }
 
 # Autonomous Database
