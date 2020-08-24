@@ -38,7 +38,7 @@ yum install -y gcc-c++ make nodejs wget unzip httpd jq
 
 yum -y install oracle-release-el7
 yum-config-manager --enable ol7_oracle_instantclient
-yum -y install oracle-instantclient8-basic oracle-instantclient19.8-jdbc oracle-instantclient19.8-sqlplus
+yum -y install oracle-instantclient19.8-basic oracle-instantclient19.8-jdbc oracle-instantclient19.8-sqlplus
 
 # Enable and start services
 systemctl daemon-reload
