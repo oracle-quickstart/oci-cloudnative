@@ -113,14 +113,12 @@ variables:
     type: boolean
     title: "Auto-generate public ssh key?"
     description: "Auto-generate a public key and assign to the compute instances. Uncheck to provide your own public key or leave blank not to use any attach any key to the compute instance."
-    required: true
     visible:
       and:
         - show_advanced
 
   public_ssh_key:
     type: oci:core:ssh:publickey
-    required: false
     title: "SSH Public Key"
     description: "The public SSH key for the key-pair that you want to use, if you wish to login to the instances over SSH."
     additionalProps:
@@ -203,9 +201,10 @@ variables:
     type: boolean
     title: "Use only always free eligible resources?"
     description: "*** Unchecking this may use options that are not included or supported by Always Free eligible resources."
-    visible:
-      and:
-        - show_advanced
+    visible: show_advanced
+    # visible:
+    #   and:
+    #     - show_advanced
 
   lb_shape:
     type: enum
@@ -225,7 +224,6 @@ variables:
 
   lb_compartment_ocid:
     type: oci:identity:compartment:id
-    required: true
     title: "Load Balancer Compartment"
     description: "The compartment in which to create the Public Load Balancer."
     default: compartment_ocid
@@ -262,9 +260,9 @@ variables:
 
   object_storage_mushop_media_compartment_ocid:
     type: oci:identity:compartment:id
-    required: true
     title: "Object Storage (MuShop Media) Compartment"
     description: "The compartment in which to create the Public MuShop product images."
+    default: compartment_ocid
     visible:
       and:
         - and:

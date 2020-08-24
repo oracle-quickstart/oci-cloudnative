@@ -36,7 +36,6 @@ resource "oci_core_instance" "app_instance" {
     assets_par          = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.mushop_media_preauth.access_uri}"
     assets_url          = "https://objectstorage.${var.region}.oraclecloud.com/n/${oci_objectstorage_bucket.mushop_media.namespace}/b/${oci_objectstorage_bucket.mushop_media.name}/o/"
   }
-
 }
 
 ### Important Security Notice ###
