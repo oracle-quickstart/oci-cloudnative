@@ -29,6 +29,7 @@ groupings:
 
   - title: "Encryption using OCI Vault (KMS)"
     variables:
+    - is_pv_encryption_in_transit_enabled
     - use_encryption_from_oci_vault
     - create_new_encryption_key
     - encryption_key_id
@@ -67,7 +68,6 @@ groupings:
       - autonomous_database_license_model
       - autonomous_database_cpu_core_count
       - autonomous_database_data_storage_size_in_tbs
-      - is_pv_encryption_in_transit_enabled
       - vault_display_name
       - vault_type
       - vault_key_display_name
