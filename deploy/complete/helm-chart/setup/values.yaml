@@ -74,6 +74,8 @@ grafana:
   grafana.ini:
     server:
       root_url: "%(protocol)s://%(domain)s:%(http_port)s/grafana"
+    plugins:
+      allow_loading_unsigned_plugins: "oci-datasource"
   persistence:
     enabled: true
   plugins:
