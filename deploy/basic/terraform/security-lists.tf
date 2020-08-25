@@ -1,10 +1,10 @@
-# Copyright (c) 2019 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2019, 2020 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
-resource "oci_core_security_list" "mushopLBSecurityList" {
+resource "oci_core_security_list" "mushop_security_list" {
   compartment_id = var.compartment_ocid
-  vcn_id         = oci_core_virtual_network.mushop_vcn.id
+  vcn_id         = oci_core_virtual_network.mushop_main_vcn.id
   display_name   = "mushop-lb-${random_string.deploy_id.result}"
   freeform_tags  = local.common_tags
 

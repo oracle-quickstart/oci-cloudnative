@@ -13,7 +13,7 @@ resource "oci_load_balancer_load_balancer" "mushop_lb" {
 
 }
 
-resource "oci_load_balancer_backend_set" "mushop-bes" {
+resource "oci_load_balancer_backend_set" "mushop_bes" {
   name             = "mushop-${random_string.deploy_id.result}"
   load_balancer_id = oci_load_balancer_load_balancer.mushop_lb.id
   policy           = "IP_HASH"
@@ -33,7 +33,7 @@ resource "oci_load_balancer_backend_set" "mushop-bes" {
 resource "oci_load_balancer_backend" "mushop-be" {
   count            = var.num_nodes
   load_balancer_id = oci_load_balancer_load_balancer.mushop_lb.id
-  backendset_name  = oci_load_balancer_backend_set.mushop-bes.name
+  backendset_name  = oci_load_balancer_backend_set.mushop_bes.name
   ip_address       = element(oci_core_instance.app_instance.*.private_ip, count.index)
   port             = 80
   backup           = false
@@ -46,7 +46,7 @@ resource "oci_load_balancer_listener" "mushop_listener" {
   #Required
 
   load_balancer_id         = oci_load_balancer_load_balancer.mushop_lb.id
-  default_backend_set_name = oci_load_balancer_backend_set.mushop-bes.name
+  default_backend_set_name = oci_load_balancer_backend_set.mushop_bes.name
   name                     = "mushop-${random_string.deploy_id.result}"
   port                     = 80
   protocol                 = "HTTP"
