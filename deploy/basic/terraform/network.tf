@@ -11,29 +11,29 @@ resource "oci_core_virtual_network" "mushop_main_vcn" {
 }
 
 resource "oci_core_subnet" "mushop_main_subnet" {
-  cidr_block        = lookup(var.network_cidrs, "MAIN-SUBNET-REGIONAL-CIDR")
-  display_name      = "mushop-main-${random_string.deploy_id.result}"
-  dns_label         = "mushopmain${random_string.deploy_id.result}"
-  security_list_ids = [oci_core_security_list.mushop_security_list.id]
-  compartment_id    = var.compartment_ocid
-  vcn_id            = oci_core_virtual_network.mushop_main_vcn.id
-  route_table_id    = oci_core_route_table.mushop_main_route_table.id
-  dhcp_options_id   = oci_core_virtual_network.mushop_main_vcn.default_dhcp_options_id
+  cidr_block                 = lookup(var.network_cidrs, "MAIN-SUBNET-REGIONAL-CIDR")
+  display_name               = "mushop-main-${random_string.deploy_id.result}"
+  dns_label                  = "mushopmain${random_string.deploy_id.result}"
+  security_list_ids          = [oci_core_security_list.mushop_security_list.id]
+  compartment_id             = var.compartment_ocid
+  vcn_id                     = oci_core_virtual_network.mushop_main_vcn.id
+  route_table_id             = oci_core_route_table.mushop_main_route_table.id
+  dhcp_options_id            = oci_core_virtual_network.mushop_main_vcn.default_dhcp_options_id
   prohibit_public_ip_on_vnic = (var.instance_visibility == "Private") ? true : false
-  freeform_tags     = local.common_tags
+  freeform_tags              = local.common_tags
 }
 
 resource "oci_core_subnet" "mushop_lb_subnet" {
-  cidr_block        = lookup(var.network_cidrs, "LB-SUBNET-REGIONAL-CIDR")
-  display_name      = "mushop-lb-${random_string.deploy_id.result}"
-  dns_label         = "mushoplb${random_string.deploy_id.result}"
-  security_list_ids = [oci_core_security_list.mushop_lb_security_list.id]
-  compartment_id    = var.compartment_ocid
-  vcn_id            = oci_core_virtual_network.mushop_main_vcn.id
-  route_table_id    = oci_core_route_table.mushop_lb_route_table.id
-  dhcp_options_id   = oci_core_virtual_network.mushop_main_vcn.default_dhcp_options_id
+  cidr_block                 = lookup(var.network_cidrs, "LB-SUBNET-REGIONAL-CIDR")
+  display_name               = "mushop-lb-${random_string.deploy_id.result}"
+  dns_label                  = "mushoplb${random_string.deploy_id.result}"
+  security_list_ids          = [oci_core_security_list.mushop_lb_security_list.id]
+  compartment_id             = var.compartment_ocid
+  vcn_id                     = oci_core_virtual_network.mushop_main_vcn.id
+  route_table_id             = oci_core_route_table.mushop_lb_route_table.id
+  dhcp_options_id            = oci_core_virtual_network.mushop_main_vcn.default_dhcp_options_id
   prohibit_public_ip_on_vnic = false
-  freeform_tags     = local.common_tags
+  freeform_tags              = local.common_tags
 }
 
 resource "oci_core_route_table" "mushop_main_route_table" {

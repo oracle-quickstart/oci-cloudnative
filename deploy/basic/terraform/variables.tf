@@ -51,10 +51,10 @@ variable "network_cidrs" {
   type = map(string)
 
   default = {
-    MAIN-VCN-CIDR                = "10.1.0.0/16"
+    MAIN-VCN-CIDR             = "10.1.0.0/16"
     MAIN-SUBNET-REGIONAL-CIDR = "10.1.21.0/24"
-    LB-SUBNET-REGIONAL-CIDR = "10.1.22.0/24"
-    ALL-CIDR                = "0.0.0.0/0"
+    LB-SUBNET-REGIONAL-CIDR   = "10.1.22.0/24"
+    ALL-CIDR                  = "0.0.0.0/0"
   }
 }
 
