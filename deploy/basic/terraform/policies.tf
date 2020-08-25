@@ -28,6 +28,8 @@ resource "oci_identity_policy" "mushop_basic_policies" {
       ) : concat(local.allow_object_storage_lifecycle_statement, local.allow_object_storage_service_keys_statements)
   ) : local.allow_object_storage_lifecycle_statement)
   freeform_tags = local.common_tags
+
+  provider = oci.home_region
 }
 
 locals {

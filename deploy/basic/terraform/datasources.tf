@@ -64,7 +64,7 @@ data "oci_limits_limit_values" "test_limit_values" {
 }
 
 resource "random_shuffle" "ad" {
-  input = [for ad in data.oci_identity_availability_domains.ADs.availability_domains: ad.name]
+  input        = [for ad in data.oci_identity_availability_domains.ADs.availability_domains : ad.name]
   result_count = 1
 }
 
@@ -82,7 +82,18 @@ data "template_file" "mushop" {
   template = "${file("./scripts/node.sh")}"
 }
 
-## Available Services
+data "oci_identity_tenancy" "tenant_details" {
+  tenancy_id = var.tenancy_ocid
+}
+
+data "oci_identity_regions" "home_region" {
+  filter {
+    name   = "key"
+    values = [data.oci_identity_tenancy.tenant_details.home_region_key]
+  }
+}
+
+# Available Services
 data "oci_core_services" "all_services" {
   filter {
     name   = "name"
