@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2019 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2019, 2020 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 #
 #
@@ -30,19 +30,7 @@ get_object() {
 firewall-offline-cmd --add-port=80/tcp
 systemctl restart firewalld
 
-# Install the yum repo
-curl -sL https://rpm.nodesource.com/setup_10.x | sudo -E bash -
-
-# Install build tools & nodeJS
-yum install -y gcc-c++ make nodejs wget unzip httpd jq
-
-yum -y install oracle-release-el7
-yum-config-manager --enable ol7_oracle_instantclient
-yum -y install oracle-instantclient19.8-basic oracle-instantclient19.8-jdbc oracle-instantclient19.8-sqlplus
-
-# Enable and start services
-systemctl daemon-reload
-
+# Get metadata
 ATP_DB_NAME=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".db_name")
 ATP_PW=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".atp_pw")
 CATALOGUE_SQL_URI=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".catalogue_sql_par")
@@ -52,12 +40,26 @@ MUSHOP_APP_URI=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j
 WALLET_URI=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".wallet_par")
 ASSETS_PAR=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".assets_par")
 ASSETS_URL=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".assets_url")
+ORACLE_CLIENT_VERSION=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".oracle_client_version")
+
+# Install the yum repo
+curl -sL https://rpm.nodesource.com/setup_10.x | sudo -E bash -
+
+# Install build tools & nodeJS
+yum install -y gcc-c++ make nodejs wget unzip httpd jq
+
+yum -y install oracle-release-el7
+yum-config-manager --enable ol7_oracle_instantclient
+yum -y install oracle-instantclient$${ORACLE_CLIENT_VERSION}-basic oracle-instantclient$${ORACLE_CLIENT_VERSION}-jdbc oracle-instantclient$${ORACLE_CLIENT_VERSION}-sqlplus
+
+# Enable and start services
+systemctl daemon-reload
 
 # get artifacts from object storage
 get_object /root/wallet.64 $${WALLET_URI}
 # Setup ATP wallet files
 base64 --decode /root/wallet.64 > /root/wallet.zip
-unzip /root/wallet.zip -d /usr/lib/oracle/19.8/client64/lib/network/admin/
+unzip /root/wallet.zip -d /usr/lib/oracle/$${ORACLE_CLIENT_VERSION}/client64/lib/network/admin/
 
 # Init DB
 get_object /root/catalogue.sql $${CATALOGUE_SQL_URI}

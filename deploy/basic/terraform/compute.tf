@@ -24,24 +24,28 @@ resource "oci_core_instance" "app_instance" {
   }
 
   metadata = {
-    ssh_authorized_keys = var.generate_public_ssh_key ? tls_private_key.compute_ssh_key.public_key_openssh : var.public_ssh_key
-    user_data           = base64encode(data.template_file.mushop.rendered)
-    db_name             = oci_database_autonomous_database.mushop_autonomous_database.db_name
-    atp_pw              = random_string.autonomous_database_admin_password.result
-    catalogue_sql_par   = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.catalogue_sql_script_preauth.access_uri}"
-    apache_conf_par     = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.apache_conf_preauth.access_uri}"
-    entrypoint_par      = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.entrypoint_preauth.access_uri}"
-    mushop_app_par      = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.mushop_lite_preauth.access_uri}"
-    wallet_par          = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.mushop_wallet_preauth.access_uri}"
-    assets_par          = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.mushop_media_preauth.access_uri}"
-    assets_url          = "https://objectstorage.${var.region}.oraclecloud.com/n/${oci_objectstorage_bucket.mushop_media.namespace}/b/${oci_objectstorage_bucket.mushop_media.name}/o/"
+    ssh_authorized_keys   = var.generate_public_ssh_key ? tls_private_key.compute_ssh_key.public_key_openssh : var.public_ssh_key
+    user_data             = base64encode(data.template_file.mushop.rendered)
+    db_name               = oci_database_autonomous_database.mushop_autonomous_database.db_name
+    atp_pw                = random_string.autonomous_database_admin_password.result
+    catalogue_sql_par     = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.catalogue_sql_script_preauth.access_uri}"
+    apache_conf_par       = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.apache_conf_preauth.access_uri}"
+    entrypoint_par        = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.entrypoint_preauth.access_uri}"
+    mushop_app_par        = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.mushop_lite_preauth.access_uri}"
+    wallet_par            = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.mushop_wallet_preauth.access_uri}"
+    assets_par            = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.mushop_media_preauth.access_uri}"
+    assets_url            = "https://objectstorage.${var.region}.oraclecloud.com/n/${oci_objectstorage_bucket.mushop_media.namespace}/b/${oci_objectstorage_bucket.mushop_media.name}/o/"
+    oracle_client_version = "19.8"
   }
 
   is_pv_encryption_in_transit_enabled = var.is_pv_encryption_in_transit_enabled
 }
 
 locals {
-  availability_domain = [for limit in data.oci_limits_limit_values.test_limit_values : limit.limit_values[0].availability_domain if limit.limit_values[0].value > 0]
+  availability_domain = ((var.use_only_always_free_elegible_resources)
+    ? [for limit in data.oci_limits_limit_values.test_limit_values : limit.limit_values[0].availability_domain if limit.limit_values[0].value > 0]
+    : data.oci_identity_availability_domains.ADs.availability_domains
+  )
 }
 
 ### Important Security Notice ###
