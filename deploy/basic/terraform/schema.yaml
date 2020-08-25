@@ -289,8 +289,8 @@ variables:
     enum:
     - "Public"
     - "Private"
-    title: "Select a shape for the load balancer"
-    description: "A lo"
+    title: "Choose instance visibility type"
+    description: "The instance visibility will define if assign a public ip address to the compute instance and if the subnet is public or private."
     visible:
       and:
         - and:
