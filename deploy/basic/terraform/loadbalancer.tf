@@ -7,7 +7,7 @@ resource "oci_load_balancer_load_balancer" "mushop_lb" {
   compartment_id = (var.lb_compartment_ocid != "") ? var.lb_compartment_ocid : var.compartment_ocid
   display_name   = "mushop-${random_string.deploy_id.result}"
   shape          = var.lb_shape
-  subnet_ids     = [oci_core_subnet.mushopLBSubnet.id]
+  subnet_ids     = [oci_core_subnet.mushop_main_subnet.id]
   is_private     = "false"
   freeform_tags  = local.common_tags
 

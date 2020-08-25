@@ -36,6 +36,9 @@ variable "image_operating_system" {
 variable "image_operating_system_version" {
   default = "7.8"
 }
+variable "instance_visibility" {
+  default = "Public"
+}
 
 # Network Details
 variable "lb_shape" {
@@ -49,7 +52,7 @@ variable "network_cidrs" {
 
   default = {
     VCN-CIDR                = "10.1.0.0/16"
-    LB-SUBNET-REGIONAL-CIDR = "10.1.21.0/24"
+    MAIN-SUBNET-REGIONAL-CIDR = "10.1.21.0/24"
     ALL-CIDR                = "0.0.0.0/0"
   }
 }
