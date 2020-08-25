@@ -44,7 +44,7 @@ resource "oci_core_instance" "app_instance" {
 locals {
   availability_domain = ((var.use_only_always_free_elegible_resources)
     ? [for limit in data.oci_limits_limit_values.test_limit_values : limit.limit_values[0].availability_domain if limit.limit_values[0].value > 0]
-    : data.oci_identity_availability_domains.ADs.availability_domains
+    : random_shuffle.ad.result
   )
 }
 

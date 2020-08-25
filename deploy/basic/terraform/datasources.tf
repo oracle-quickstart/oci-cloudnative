@@ -63,6 +63,11 @@ data "oci_limits_limit_values" "test_limit_values" {
   scope_type          = "AD"
 }
 
+resource "random_shuffle" "ad" {
+  input = [for ad in data.oci_identity_availability_domains.ADs.availability_domains: ad.name]
+  result_count = 1
+}
+
 # Gets a list of supported images based on the shape, operating_system and operating_system_version provided
 data "oci_core_images" "compute_images" {
   compartment_id           = var.compartment_ocid
