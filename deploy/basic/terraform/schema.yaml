@@ -48,6 +48,7 @@ groupings:
     variables:
     - lb_shape
     - lb_compartment_ocid
+    - create_secondary_vcn
 
   - title: "Advanced Resource Options - Compute"
     variables:
@@ -240,6 +241,17 @@ variables:
     title: "Load Balancer Compartment"
     description: "The compartment in which to create the Public Load Balancer."
     default: compartment_ocid
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
+
+  create_secondary_vcn:
+    type: boolean
+    title: "Create secondary VCN for LoadBalancer?"
+    description: "Creates a secondary VCN for the LoadBalancer with local peering to the main VCN."
     visible:
       and:
         - and:
