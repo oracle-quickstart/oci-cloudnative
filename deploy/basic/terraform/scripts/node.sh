@@ -3,7 +3,7 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 #
 #
-# Description: Sets up Mushop "Monolite".
+# Description: Sets up Mushop Basic a.k.a. "Monolite".
 # Return codes: 0 =
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 #
@@ -43,14 +43,20 @@ ASSETS_URL=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".a
 ORACLE_CLIENT_VERSION=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".oracle_client_version")
 
 # Install the yum repo
-curl -sL https://rpm.nodesource.com/setup_10.x | sudo -E bash -
+yum --enablerepo=ol7_latest clean metadata
+yum-config-manager --enable ol7_latest
 
-# Install build tools & nodeJS
-yum install -y gcc-c++ make nodejs wget unzip httpd jq
-
+# Install Oracle Instant Client
 yum -y install oracle-release-el7
 yum-config-manager --enable ol7_oracle_instantclient
 yum -y install oracle-instantclient$${ORACLE_CLIENT_VERSION}-basic oracle-instantclient$${ORACLE_CLIENT_VERSION}-jdbc oracle-instantclient$${ORACLE_CLIENT_VERSION}-sqlplus
+
+# Install NodeJs
+yum -y install oracle-nodejs-release-el7
+yum -y install nodejs
+
+# Install tools
+yum install -y unzip httpd jq
 
 # Enable and start services
 systemctl daemon-reload
