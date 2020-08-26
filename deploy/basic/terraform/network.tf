@@ -99,7 +99,7 @@ resource "oci_core_service_gateway" "mushop_main_service_gateway" {
 }
 
 resource "oci_core_service_gateway" "mushop_secondary_service_gateway" {
-  compartment_id = var.compartment_ocid
+  compartment_id = (var.lb_compartment_ocid != "") ? var.lb_compartment_ocid : var.compartment_ocid
   display_name   = "mushop-secondary-service-gateway-${random_string.deploy_id.result}"
   vcn_id         = oci_core_virtual_network.mushop_lb_vcn.id
   services {

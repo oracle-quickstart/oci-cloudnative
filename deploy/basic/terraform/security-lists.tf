@@ -35,8 +35,8 @@ resource "oci_core_security_list" "mushop_security_list" {
 }
 
 resource "oci_core_security_list" "mushop_lb_security_list" {
-  compartment_id = var.compartment_ocid
-  vcn_id         = oci_core_virtual_network.mushop_main_vcn.id
+  compartment_id = (var.lb_compartment_ocid != "") ? var.lb_compartment_ocid : var.compartment_ocid
+  vcn_id         = var.create_secondary_vcn ? oci_core_virtual_network.mushop_lb_vcn.id : oci_core_virtual_network.mushop_main_vcn.id
   display_name   = "mushop-lb-${random_string.deploy_id.result}"
   freeform_tags  = local.common_tags
 
