@@ -27,10 +27,12 @@ resource "oci_identity_policy" "mushop_basic_policies" {
       concat(
         local.allow_object_storage_lifecycle_statement,
         local.allow_object_storage_service_keys_statements,
+        local.allow_media_object_storage_service_keys_statements,
         local.allow_group_manage_vault_keys_statements
       )) : concat(
       local.allow_object_storage_lifecycle_statement,
-      local.allow_object_storage_service_keys_statements
+      local.allow_object_storage_service_keys_statements,
+      local.allow_media_object_storage_service_keys_statements
       )
   ) : local.allow_object_storage_lifecycle_statement)
   freeform_tags = local.common_tags
@@ -45,8 +47,8 @@ locals {
     "Allow service blockstorage, objectstorage-${var.region} to use keys in compartment id ${var.compartment_ocid}"
   ]
   allow_media_object_storage_service_keys_statements = [
-    "Allow service blockstorage, objectstorage-${var.region} to use vaults in compartment id ${var.object_storage_mushop_media_compartment_ocid}",
-    "Allow service blockstorage, objectstorage-${var.region} to use keys in compartment id ${var.object_storage_mushop_media_compartment_ocid}"
+    "Allow service blockstorage, objectstorage-${var.region} to use vaults in compartment id ${(var.object_storage_mushop_media_compartment_ocid != "") ? var.object_storage_mushop_media_compartment_ocid : var.compartment_ocid}",
+    "Allow service blockstorage, objectstorage-${var.region} to use keys in compartment id ${(var.object_storage_mushop_media_compartment_ocid != "") ? var.object_storage_mushop_media_compartment_ocid : var.compartment_ocid}"
   ]
   allow_group_manage_vault_keys_statements = [
     "Allow group ${var.user_admin_group_for_vault_policy} to manage vaults in compartment id ${var.compartment_ocid}",
