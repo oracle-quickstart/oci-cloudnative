@@ -64,10 +64,13 @@ resource "oci_core_route_table" "mushop_main_route_table" {
     network_entity_id = (var.instance_visibility == "Private") ? oci_core_nat_gateway.mushop_nat_gateway[0].id : oci_core_internet_gateway.mushop_internet_gateway.id
   }
 
-  route_rules {
-    destination       = lookup(var.network_cidrs, "LB-VCN-CIDR")
-    destination_type  = "CIDR_BLOCK"
-    network_entity_id = oci_core_local_peering_gateway.main_local_peering_gateway[0].id
+  dynamic "route_rules" {
+    for_each = var.create_secondary_vcn ? [1] : []
+    content {
+      destination       = lookup(var.network_cidrs, "LB-VCN-CIDR")
+      destination_type  = "CIDR_BLOCK"
+      network_entity_id = oci_core_local_peering_gateway.main_local_peering_gateway[0].id
+    }
   }
 }
 
@@ -83,10 +86,13 @@ resource "oci_core_route_table" "mushop_lb_route_table" {
     network_entity_id = oci_core_internet_gateway.mushop_internet_gateway.id
   }
 
-  route_rules {
-    destination       = lookup(var.network_cidrs, "MAIN-VCN-CIDR")
-    destination_type  = "CIDR_BLOCK"
-    network_entity_id = oci_core_local_peering_gateway.lb_local_peering_gateway[0].id
+  dynamic "route_rules" {
+    for_each = var.create_secondary_vcn ? [1] : []
+    content {
+      destination       = lookup(var.network_cidrs, "MAIN-VCN-CIDR")
+      destination_type  = "CIDR_BLOCK"
+      network_entity_id = oci_core_local_peering_gateway.lb_local_peering_gateway[0].id
+    }
   }
 }
 
@@ -131,4 +137,33 @@ resource "oci_core_local_peering_gateway" "lb_local_peering_gateway" {
   display_name   = "localPeeringGateway - lb"
 
   count = var.create_secondary_vcn ? 1 : 0
+}
+
+resource oci_core_network_security_group atp_nsg {
+  compartment_id = var.compartment_ocid
+  display_name   = "atp_nsg"
+  freeform_tags  = local.common_tags
+  vcn_id         = oci_core_virtual_network.mushop_main_vcn.id
+
+  count = (var.autonomous_database_visibility == "Private") ? 1 : 0
+}
+resource oci_core_network_security_group_security_rule atp_nsg_rule_1 {
+  destination_type          = ""
+  direction                 = "INGRESS"
+  network_security_group_id = oci_core_network_security_group.atp_nsg[0].id
+  protocol                  = "all"
+  source                    = lookup(var.network_cidrs, "MAIN-VCN-CIDR")
+  source_type               = "CIDR_BLOCK"
+
+  count = (var.autonomous_database_visibility == "Private") ? 1 : 0
+}
+resource oci_core_network_security_group_security_rule atp_nsg_rule_2 {
+  destination               = lookup(var.network_cidrs, "MAIN-VCN-CIDR")
+  destination_type          = "CIDR_BLOCK"
+  direction                 = "EGRESS"
+  network_security_group_id = oci_core_network_security_group.atp_nsg[0].id
+  protocol                  = "all"
+  source_type               = ""
+
+  count = (var.autonomous_database_visibility == "Private") ? 1 : 0
 }
