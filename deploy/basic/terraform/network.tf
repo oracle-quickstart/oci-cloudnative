@@ -72,6 +72,36 @@ resource "oci_core_route_table" "mushop_lb_route_table" {
   }
 }
 
+resource "oci_core_route_table" "mushop_main_lpg_route_table" {
+  compartment_id = var.compartment_ocid
+  vcn_id         = oci_core_virtual_network.mushop_main_vcn.id
+  display_name   = "mushop-main-lpg-${random_string.deploy_id.result}"
+  freeform_tags  = local.common_tags
+
+  route_rules {
+    destination       = lookup(var.network_cidrs, "LB-VCN-CIDR")
+    destination_type  = "CIDR_BLOCK"
+    network_entity_id = oci_core_local_peering_gateway.main_local_peering_gateway.id
+  }
+
+  count = var.create_secondary_vcn ? 1 : 0
+}
+
+resource "oci_core_route_table" "mushop_lb_lpg_route_table" {
+  compartment_id = (var.lb_compartment_ocid != "") ? var.lb_compartment_ocid : var.compartment_ocid
+  vcn_id         = oci_core_virtual_network.mushop_lb_vcn.id
+  display_name   = "mushop-lb-${random_string.deploy_id.result}"
+  freeform_tags  = local.common_tags
+
+  route_rules {
+    destination       = lookup(var.network_cidrs, "MAIN-VCN-CIDR")
+    destination_type  = "CIDR_BLOCK"
+    network_entity_id = oci_core_local_peering_gateway.lb_local_peering_gateway.id
+  }
+
+  count = var.create_secondary_vcn ? 1 : 0
+}
+
 resource "oci_core_nat_gateway" "mushop_nat_gateway" {
   block_traffic  = "false"
   compartment_id = var.compartment_ocid
@@ -89,7 +119,7 @@ resource "oci_core_internet_gateway" "mushop_internet_gateway" {
   freeform_tags  = local.common_tags
 }
 
-resource "oci_core_service_gateway" "mushop_main_service_gateway" {
+resource "oci_core_service_gateway" "mushop_service_gateway" {
   compartment_id = var.compartment_ocid
   display_name   = "mushop-service-gateway-${random_string.deploy_id.result}"
   vcn_id         = oci_core_virtual_network.mushop_main_vcn.id
@@ -98,13 +128,21 @@ resource "oci_core_service_gateway" "mushop_main_service_gateway" {
   }
 }
 
-resource "oci_core_service_gateway" "mushop_secondary_service_gateway" {
+resource "oci_core_local_peering_gateway" "main_local_peering_gateway" {
+  compartment_id = var.compartment_ocid
+  vcn_id         = oci_core_virtual_network.mushop_main_vcn.id
+  display_name   = "localPeeringGateway - main"
+  peer_id        = oci_core_local_peering_gateway.local_peering_gateway_lb.id
+  route_table_id = oci_core_route_table.mushop_main_lpg_route_table.id
+
+  count = var.create_secondary_vcn ? 1 : 0
+}
+
+resource "oci_core_local_peering_gateway" "lb_local_peering_gateway" {
   compartment_id = (var.lb_compartment_ocid != "") ? var.lb_compartment_ocid : var.compartment_ocid
-  display_name   = "mushop-secondary-service-gateway-${random_string.deploy_id.result}"
   vcn_id         = oci_core_virtual_network.mushop_lb_vcn.id
-  services {
-    service_id = lookup(data.oci_core_services.all_services.services[0], "id")
-  }
+  display_name   = "localPeeringGateway - lb"
+  route_table_id = oci_core_route_table.mushop_lb_lpg_route_table.id
 
   count = var.create_secondary_vcn ? 1 : 0
 }

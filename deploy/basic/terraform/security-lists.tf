@@ -10,12 +10,28 @@ resource "oci_core_security_list" "mushop_security_list" {
 
   egress_security_rules {
     protocol    = "6"
-    destination = "0.0.0.0/0"
+    destination = lookup(var.network_cidrs, "ALL-CIDR")
+  }
+
+  egress_security_rules {
+    protocol         = "all"
+    destination      = lookup(data.oci_core_services.all_services.services[0], "cidr_block")
+    destination_type = "SERVICE_CIDR_BLOCK"
+  }
+
+  egress_security_rules {
+    protocol    = "all"
+    destination = lookup(var.network_cidrs, "LB-VCN-CIDR")
+  }
+
+  ingress_security_rules {
+    protocol    = "all"
+    destination = lookup(var.network_cidrs, "LB-VCN-CIDR")
   }
 
   ingress_security_rules {
     protocol = "6"
-    source   = "0.0.0.0/0"
+    source   = lookup(var.network_cidrs, "ALL-CIDR")
 
     tcp_options {
       max = "80"
@@ -25,7 +41,7 @@ resource "oci_core_security_list" "mushop_security_list" {
 
   ingress_security_rules {
     protocol = "6"
-    source   = "0.0.0.0/0"
+    source   = lookup(var.network_cidrs, "ALL-CIDR")
 
     tcp_options {
       max = "22"
@@ -43,6 +59,16 @@ resource "oci_core_security_list" "mushop_lb_security_list" {
   egress_security_rules {
     protocol    = "6"
     destination = "0.0.0.0/0"
+  }
+
+  egress_security_rules {
+    protocol    = "all"
+    destination = lookup(var.network_cidrs, "MAIN-VCN-CIDR")
+  }
+
+  ingress_security_rules {
+    protocol    = "all"
+    destination = lookup(var.network_cidrs, "MAIN-VCN-CIDR")
   }
 
   ingress_security_rules {

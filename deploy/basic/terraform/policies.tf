@@ -24,8 +24,14 @@ resource "oci_identity_policy" "mushop_basic_policies" {
   compartment_id = var.compartment_ocid
   statements = (var.use_encryption_from_oci_vault ?
     (var.create_vault_policies_for_group ? (
-      concat(local.allow_object_storage_lifecycle_statement, local.allow_object_storage_service_keys_statements, local.allow_group_manage_vault_keys_statements)
-      ) : concat(local.allow_object_storage_lifecycle_statement, local.allow_object_storage_service_keys_statements)
+      concat(
+        local.allow_object_storage_lifecycle_statement,
+        local.allow_object_storage_service_keys_statements,
+        local.allow_group_manage_vault_keys_statements
+      )) : concat(
+      local.allow_object_storage_lifecycle_statement,
+      local.allow_object_storage_service_keys_statements
+      )
   ) : local.allow_object_storage_lifecycle_statement)
   freeform_tags = local.common_tags
 
@@ -45,5 +51,9 @@ locals {
   allow_group_manage_vault_keys_statements = [
     "Allow group ${var.user_admin_group_for_vault_policy} to manage vaults in compartment id ${var.compartment_ocid}",
     "Allow group ${var.user_admin_group_for_vault_policy} to manage keys in compartment id ${var.compartment_ocid}"
+  ]
+  allow_group_manage_local_peering_statements = [
+    "Allow group ${var.user_admin_group_for_vault_policy} to manage local-peering-gateways in compartment id ${var.compartment_ocid}",
+    "Allow group ${var.user_admin_group_for_vault_policy} to manage local-peering-gateways in compartment id ${(var.lb_compartment_ocid != "") ? var.lb_compartment_ocid : var.compartment_ocid}"
   ]
 }
