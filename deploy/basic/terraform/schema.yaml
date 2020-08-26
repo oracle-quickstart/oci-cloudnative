@@ -60,6 +60,7 @@ groupings:
   - title: "Advanced Resource Options - ATP"
     variables:
     - autonomous_database_is_free_tier
+    - autonomous_database_visibility
 
   - title: "Advanced Resource Options - Object Storage"
     variables:
@@ -315,6 +316,20 @@ variables:
     type: boolean
     title: "Use always free Autonomous Database?"
     description: "Uses Always Free Transaction Processing Autonomous Database. Unchecking this option will provision a regular 1 OCPU ATP instance with License."
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
+
+  autonomous_database_visibility:
+    type: enum
+    enum:
+    - "Public"
+    - "Private"
+    title: "Choose autonomous database visibility type"
+    description: "The autonomous database visibility will define if assign the ATP to a private subnet or allow secure access from everywhere."
     visible:
       and:
         - and:

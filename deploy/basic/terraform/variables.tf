@@ -82,6 +82,9 @@ variable "autonomous_database_cpu_core_count" {
 variable "autonomous_database_data_storage_size_in_tbs" {
   default = 1
 }
+variable "autonomous_database_visibility" {
+  default = "Public"
+}
 
 # Encryption (OCI Vault/Key Management/KMS)
 variable "is_pv_encryption_in_transit_enabled" {

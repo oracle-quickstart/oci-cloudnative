@@ -14,4 +14,7 @@ resource "oci_database_autonomous_database" "mushop_autonomous_database" {
   freeform_tags            = local.common_tags
   is_free_tier             = var.autonomous_database_is_free_tier
   license_model            = var.autonomous_database_license_model
+  nsg_ids                  = (var.autonomous_database_visibility == "Private") ? [oci_core_network_security_group.atp_nsg[0].id] : []
+  subnet_id                = (var.autonomous_database_visibility == "Private") ? oci_core_subnet.mushop_main_subnet.id : ""
+  #private_endpoint_label = "vobqmqdo"
 }
