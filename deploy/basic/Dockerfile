@@ -134,8 +134,8 @@ RUN yum --enablerepo=ol7_latest clean metadata && \
   yum clean all && \
   rm -rf /var/cache/yum
 
-COPY deploy/basic/httpd.conf /etc/httpd/conf/
-COPY deploy/basic/entrypoint.sh /
+COPY deploy/basic/terraform/scripts/httpd.conf /etc/httpd/conf/
+COPY deploy/basic/terraform/scripts/entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
 #    ----- Base Image ------  #
@@ -163,8 +163,8 @@ RUN mkdir /package && GZIP=-9 tar cvzf /package/mushop-basic.tar.gz /app
 COPY deploy/basic/VERSION /
 COPY deploy/basic/terraform /basic
 COPY src/catalogue/dbdata/atp_mushop_catalogue.sql /basic/scripts
-COPY deploy/basic/httpd.conf /basic/scripts
-COPY deploy/basic/entrypoint.sh /basic/scripts
+COPY deploy/basic/terraform/scripts/httpd.conf /basic/scripts
+COPY deploy/basic/terraform/scripts/entrypoint.sh /basic/scripts
 COPY --from=assets-builder /app/assets/dist /basic/images
 RUN cp /package/mushop-basic.tar.gz /basic/scripts && \
     cd /basic && zip -r /package/mushop-basic-stack.zip .
