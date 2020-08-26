@@ -265,6 +265,7 @@ variables:
     description: "A shape is a template that determines the number of CPUs, amount of memory, and other resources allocated to a newly created instance."
     dependsOn:
       compartmentId: compartment_ocid
+    required: true
     visible:
       and:
         - and:

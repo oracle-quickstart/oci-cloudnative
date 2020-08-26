@@ -53,9 +53,21 @@ resource "oci_core_route_table" "mushop_main_route_table" {
   freeform_tags  = local.common_tags
 
   route_rules {
+    destination       = lookup(data.oci_core_services.all_services.services[0], "cidr_block")
+    destination_type  = "SERVICE_CIDR_BLOCK"
+    network_entity_id = oci_core_service_gateway.mushop_service_gateway.id
+  }
+
+  route_rules {
     destination       = lookup(var.network_cidrs, "ALL-CIDR")
     destination_type  = "CIDR_BLOCK"
     network_entity_id = (var.instance_visibility == "Private") ? oci_core_nat_gateway.mushop_nat_gateway[0].id : oci_core_internet_gateway.mushop_internet_gateway.id
+  }
+
+  route_rules {
+    destination       = lookup(var.network_cidrs, "LB-VCN-CIDR")
+    destination_type  = "CIDR_BLOCK"
+    network_entity_id = oci_core_local_peering_gateway.main_local_peering_gateway.id
   }
 }
 
@@ -70,36 +82,12 @@ resource "oci_core_route_table" "mushop_lb_route_table" {
     destination_type  = "CIDR_BLOCK"
     network_entity_id = oci_core_internet_gateway.mushop_internet_gateway.id
   }
-}
-
-resource "oci_core_route_table" "mushop_main_lpg_route_table" {
-  compartment_id = var.compartment_ocid
-  vcn_id         = oci_core_virtual_network.mushop_main_vcn.id
-  display_name   = "mushop-main-lpg-${random_string.deploy_id.result}"
-  freeform_tags  = local.common_tags
-
-  route_rules {
-    destination       = lookup(var.network_cidrs, "LB-VCN-CIDR")
-    destination_type  = "CIDR_BLOCK"
-    network_entity_id = oci_core_local_peering_gateway.main_local_peering_gateway.id
-  }
-
-  count = var.create_secondary_vcn ? 1 : 0
-}
-
-resource "oci_core_route_table" "mushop_lb_lpg_route_table" {
-  compartment_id = (var.lb_compartment_ocid != "") ? var.lb_compartment_ocid : var.compartment_ocid
-  vcn_id         = oci_core_virtual_network.mushop_lb_vcn.id
-  display_name   = "mushop-lb-${random_string.deploy_id.result}"
-  freeform_tags  = local.common_tags
 
   route_rules {
     destination       = lookup(var.network_cidrs, "MAIN-VCN-CIDR")
     destination_type  = "CIDR_BLOCK"
     network_entity_id = oci_core_local_peering_gateway.lb_local_peering_gateway.id
   }
-
-  count = var.create_secondary_vcn ? 1 : 0
 }
 
 resource "oci_core_nat_gateway" "mushop_nat_gateway" {
