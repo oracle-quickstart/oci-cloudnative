@@ -38,6 +38,10 @@ locals {
     "Allow service blockstorage, objectstorage-${var.region} to use vaults in compartment id ${var.compartment_ocid}",
     "Allow service blockstorage, objectstorage-${var.region} to use keys in compartment id ${var.compartment_ocid}"
   ]
+  allow_media_object_storage_service_keys_statements = [
+    "Allow service blockstorage, objectstorage-${var.region} to use vaults in compartment id ${var.object_storage_mushop_media_compartment_ocid}",
+    "Allow service blockstorage, objectstorage-${var.region} to use keys in compartment id ${var.object_storage_mushop_media_compartment_ocid}"
+  ]
   allow_group_manage_vault_keys_statements = [
     "Allow group ${var.user_admin_group_for_vault_policy} to manage vaults in compartment id ${var.compartment_ocid}",
     "Allow group ${var.user_admin_group_for_vault_policy} to manage keys in compartment id ${var.compartment_ocid}"
