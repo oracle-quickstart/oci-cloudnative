@@ -329,7 +329,7 @@ variables:
     - "Public"
     - "Private"
     title: "Choose autonomous database visibility type"
-    description: "The autonomous database visibility will define if assign the ATP to a private subnet or allow secure access from everywhere."
+    description: "If Private, creates the ADB with private endpoint. The autonomous database visibility will define if assign the ATP to a private subnet or allow secure access from everywhere."
     visible:
       and:
         - and:
