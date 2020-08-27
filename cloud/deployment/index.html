@@ -713,13 +713,13 @@ secret to the <code>mushop-utilities</code> namespace:</p>
 </code></pre></div></li>
 <li>
 <p>Deploy the OCI service broker on your cluster. This is done with the <a href="https://github.com/oracle/oci-service-broker">Oracle OCI Service Broker</a> helm chart:</p>
-<pre><code class="language-shell--helm2" data-lang="shell--helm2">helm install https://github.com/oracle/oci-service-broker/releases/download/v1.4.0/oci-service-broker-1.4.0.tgz \
+<pre><code class="language-shell--helm2" data-lang="shell--helm2">helm install https://github.com/oracle/oci-service-broker/releases/download/v1.5.0/oci-service-broker-1.5.0.tgz \
   --namespace mushop-utilities \
   --name oci-broker \
   --set ociCredentials.secretName=oci-credentials \
   --set storage.etcd.useEmbedded=true \
   --set tls.enabled=false
-</code></pre><pre><code class="language-shell--helm3" data-lang="shell--helm3">helm install oci-broker https://github.com/oracle/oci-service-broker/releases/download/v1.4.0/oci-service-broker-1.4.0.tgz \
+</code></pre><pre><code class="language-shell--helm3" data-lang="shell--helm3">helm install oci-broker https://github.com/oracle/oci-service-broker/releases/download/v1.5.0/oci-service-broker-1.5.0.tgz \
   --namespace mushop-utilities \
   --set ociCredentials.secretName=oci-credentials \
   --set storage.etcd.useEmbedded=true \
