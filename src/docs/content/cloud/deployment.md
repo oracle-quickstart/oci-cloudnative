@@ -155,7 +155,7 @@ secret to the `mushop-utilities` namespace:
 1. Deploy the OCI service broker on your cluster. This is done with the [Oracle OCI Service Broker](https://github.com/oracle/oci-service-broker) helm chart:
 
     ```shell--helm2
-    helm install https://github.com/oracle/oci-service-broker/releases/download/v1.4.0/oci-service-broker-1.4.0.tgz \
+    helm install https://github.com/oracle/oci-service-broker/releases/download/v1.5.0/oci-service-broker-1.5.0.tgz \
       --namespace mushop-utilities \
       --name oci-broker \
       --set ociCredentials.secretName=oci-credentials \
@@ -164,7 +164,7 @@ secret to the `mushop-utilities` namespace:
     ```
 
     ```shell--helm3
-    helm install oci-broker https://github.com/oracle/oci-service-broker/releases/download/v1.4.0/oci-service-broker-1.4.0.tgz \
+    helm install oci-broker https://github.com/oracle/oci-service-broker/releases/download/v1.5.0/oci-service-broker-1.5.0.tgz \
       --namespace mushop-utilities \
       --set ociCredentials.secretName=oci-credentials \
       --set storage.etcd.useEmbedded=true \
