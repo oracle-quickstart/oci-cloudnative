@@ -1,329 +1,1330 @@
 ---
-apiVersion: extensions/v1beta1
-kind: Deployment
+# Source: mushop/templates/ingress-edge.yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
 metadata:
+  name: mushop
+  labels:
+    app.kubernetes.io/name: mushop
+    helm.sh/chart: mushop-0.1.1
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    # change this for user-specific ingress
+    - host: mushop.example.com
+      http:
+        paths:
+        - path: /
+          backend:
+            # intentionally w/o .Release.Name for metrics workshop
+            serviceName: edge
+            servicePort: 80
+---
+# Source: mushop/charts/carts/templates/oadb-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: carts-oadb-admin
+  labels: 
+    app.kubernetes.io/name: carts
+    helm.sh/chart: carts-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  oadb_admin_pw: ""
+---
+# Source: mushop/charts/carts/templates/oadb-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: carts-oadb-connection
+  labels: 
+    app.kubernetes.io/name: carts
+    helm.sh/chart: carts-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  oadb_wallet_pw: bW9jaw==
+  oadb_service: bW9jaw==
+---
+# Source: mushop/charts/carts/templates/oadb-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: carts-oadb-wallet
+  labels: 
+    app.kubernetes.io/name: carts
+    helm.sh/chart: carts-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  {}
+---
+# Source: mushop/charts/carts/templates/oadb-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: carts-oadb-credentials
+  labels: 
+    app.kubernetes.io/name: carts
+    helm.sh/chart: carts-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  oadb_user: dGVzdF9jYXJ0c191c2Vy
+  oadb_pw: Y2FydHNfZGVGQVVsdDMyMSM=
+---
+# Source: mushop/charts/catalogue/templates/oadb-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: catalogue-oadb-wallet
+  labels: 
+    app.kubernetes.io/name: catalogue
+    helm.sh/chart: catalogue-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  {}
+---
+# Source: mushop/charts/catalogue/templates/oadb-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: catalogue-oadb-credentials
+  labels: 
+    app.kubernetes.io/name: catalogue
+    helm.sh/chart: catalogue-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  oadb_user: dGVzdF9jYXRhbG9ndWVfdXNlcg==
+  oadb_pw: Y2F0YWxvZ3VlX2RlRkFVbHQzMjEj
+---
+# Source: mushop/charts/catalogue/templates/oadb-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: catalogue-oadb-connection
+  labels: 
+    app.kubernetes.io/name: catalogue
+    helm.sh/chart: catalogue-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  oadb_service: bW9jaw==
+---
+# Source: mushop/charts/catalogue/templates/oadb-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: catalogue-oadb-admin
+  labels: 
+    app.kubernetes.io/name: catalogue
+    helm.sh/chart: catalogue-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  oadb_admin_pw: ""
+---
+# Source: mushop/charts/orders/templates/oadb-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: orders-oadb-connection
+  labels: 
+    app.kubernetes.io/name: orders
+    helm.sh/chart: orders-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  oadb_wallet_pw: bW9jaw==
+  oadb_service: bW9jaw==
+---
+# Source: mushop/charts/orders/templates/oadb-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: orders-oadb-credentials
+  labels: 
+    app.kubernetes.io/name: orders
+    helm.sh/chart: orders-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  oadb_user: dGVzdF9vcmRlcnNfdXNlcg==
+  oadb_pw: b3JkZXJzX2RlRkFVbHQzMjEj
+---
+# Source: mushop/charts/orders/templates/oadb-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: orders-oadb-wallet
+  labels: 
+    app.kubernetes.io/name: orders
+    helm.sh/chart: orders-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  {}
+---
+# Source: mushop/charts/orders/templates/oadb-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: orders-oadb-admin
+  labels: 
+    app.kubernetes.io/name: orders
+    helm.sh/chart: orders-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  oadb_admin_pw: ""
+---
+# Source: mushop/charts/user/templates/oadb-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: user-oadb-wallet
+  labels: 
+    app.kubernetes.io/name: user
+    helm.sh/chart: user-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  {}
+---
+# Source: mushop/charts/user/templates/oadb-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: user-oadb-credentials
+  labels: 
+    app.kubernetes.io/name: user
+    helm.sh/chart: user-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  oadb_user: dGVzdF91c2VyX3VzZXI=
+  oadb_pw: dXNlcl9kZUZBVWx0MzIxIw==
+---
+# Source: mushop/charts/user/templates/oadb-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: user-oadb-admin
+  labels: 
+    app.kubernetes.io/name: user
+    helm.sh/chart: user-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  oadb_admin_pw: ""
+---
+# Source: mushop/charts/user/templates/oadb-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: user-oadb-connection
+  labels: 
+    app.kubernetes.io/name: user
+    helm.sh/chart: user-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  oadb_service: bW9jaw==
+---
+# Source: mushop/templates/oos-bucket-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mushop-bucket
+  labels: 
+    app.kubernetes.io/name: mushop
+    helm.sh/chart: mushop-0.1.1
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  region: ""
+  name: ""
+  namespace: ""
+  parUrl: ""
+---
+# Source: mushop/charts/carts/templates/oadb-init-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mushop-carts-init
+  labels: 
+    app.kubernetes.io/name: carts
+    helm.sh/chart: carts-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+data:
+  atp.init.sql: ""
+---
+# Source: mushop/charts/catalogue/templates/oadb-init-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mushop-catalogue-init
+  labels: 
+    app.kubernetes.io/name: catalogue
+    helm.sh/chart: catalogue-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+data:
+  atp.init.sql: ""
+---
+# Source: mushop/charts/edge/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mushop-edge
+  labels:
+    app.kubernetes.io/name: edge
+    helm.sh/chart: edge-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+data:
+  traefik.toml: |+
+    logLevel = "INFO"
+  
+    [web]
+    address = ":8888"
+  
+    [entryPoints]
+      [entryPoints.http]
+        address = ":8080"
+  
+    [ping]
+    entryPoint = "http"
+  
+    [file]
+      [backends]
+        # api
+        [backends.api]
+          [backends.api.loadbalancer]
+            method = "wrr"
+          [backends.api.servers.server1]
+            url = "http://mushop-api"
+        # web
+        [backends.web1]
+          [backends.web1.loadbalancer]
+            method = "wrr"
+          [backends.web1.servers.server1]
+            url = "http://mushop-storefront"
+        # media
+        [backends.assets1]
+          [backends.assets1.loadbalancer]
+            method = "wrr"
+          [backends.assets1.servers.server1]
+            url = "http://mushop-assets"
+  
+      [frontends]
+        [frontends.api]
+          backend = "api"
+          entrypoints = ["http"]
+          [frontends.api.routes.test1]
+            rule = "PathPrefix:/api/"
+        [frontends.assets1]
+          backend = "assets1"
+          entrypoints = ["http"]
+          [frontends.assets1.routes.test1]
+            rule = "PathPrefixStrip:/assets/"
+        [frontends.web1]
+          backend = "web1"
+          entrypoints = ["http"]
+---
+# Source: mushop/charts/orders/templates/oadb-init-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mushop-orders-init
+  labels: 
+    app.kubernetes.io/name: orders
+    helm.sh/chart: orders-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+data:
+  atp.init.sql: ""
+---
+# Source: mushop/charts/user/templates/oadb-init-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mushop-user-init
+  labels: 
+    app.kubernetes.io/name: user
+    helm.sh/chart: user-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+data:
+  atp.init.sql: ""
+---
+# Source: mushop/charts/api/templates/api-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mushop-api
+  labels:
+    app.kubernetes.io/name: api
+    helm.sh/chart: api-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    app.kubernetes.io/name: api
+    app.kubernetes.io/instance: mushop
+  ports:
+    - port: 80
+      name: http
+      targetPort: 3000
+---
+# Source: mushop/charts/assets/templates/assets-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mushop-assets
+  labels:
+    app.kubernetes.io/name: assets
+    helm.sh/chart: assets-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    app.kubernetes.io/name: assets
+    app.kubernetes.io/instance: mushop
+  ports:
+    - port: 80
+      name: http
+      targetPort: 3000
+---
+# Source: mushop/charts/carts/templates/carts-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mushop-carts
+  labels:
+    app.kubernetes.io/name: carts
+    helm.sh/chart: carts-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    app.kubernetes.io/name: carts
+    app.kubernetes.io/instance: mushop
+  ports:
+    - port: 80
+      name: http
+      targetPort: 80
+---
+# Source: mushop/charts/catalogue/templates/catalogue-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mushop-catalogue
+  labels:
+    app.kubernetes.io/name: catalogue
+    helm.sh/chart: catalogue-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    app.kubernetes.io/name: catalogue
+    app.kubernetes.io/instance: mushop
+  ports:
+    - port: 80
+      name: http
+      targetPort: 80
+---
+# Source: mushop/charts/edge/templates/edge-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  # intentionally w/o .Release.Name for metrics workshop
   name: edge
   labels:
-    name: edge
-    layer: client
+    app.kubernetes.io/name: edge
+    helm.sh/chart: edge-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
 spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        name: edge
-        layer: client
-    spec:
-      containers:
-      - name: edge
-        image: iad.ocir.io/oracle/ateam/mushop-edge-router:1
-        imagePullPolicy: Always
-        ports:
-        - name: http
-          containerPort: 8080
-        resources:
-          limits:
-            cpu: 100m
-            memory: 256Mi
-          requests:
-            cpu: 50m
-            memory: 128Mi
-        securityContext:
-          runAsNonRoot: true
-          runAsUser: 10001
-          capabilities:
-            drop:
-              - all
-            add:
-              - NET_BIND_SERVICE
-          readOnlyRootFilesystem: true
-        livenessProbe:
-          httpGet:
-            path: /ping
-            port: http
-        readinessProbe:
-          httpGet:
-            path: /ping
-            port: http
+  selector:
+    app.kubernetes.io/name: edge
+    app.kubernetes.io/instance: mushop
+  ports:
+    - port: 80
+      name: http
+      targetPort: 8080
 ---
+# Source: mushop/charts/fulfillment/templates/fulfillment-svc.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: edge
-  labels:
-    name: edge
-    layer: client
+  name: fulfillment
+  labels: 
+    app.kubernetes.io/name: fulfillment
+    helm.sh/chart: fulfillment-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+    run: fulfillment
 spec:
   selector:
-    name: edge
-    layer: client
+    app.kubernetes.io/name: fulfillment
+    app.kubernetes.io/instance: mushop
+    run: fulfillment
   ports:
-  - port: 80
-    targetPort: 8080
+    - port: 80
+      name: http
+      protocol: TCP
+      targetPort: 80
 ---
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: api
-  labels:
-    name: api
-    layer: client
-spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        name: api
-        layer: client
-    spec:
-      containers:
-      - name: api
-        image: iad.ocir.io/oracle/ateam/mushop-api:2.0.1
-        imagePullPolicy: Always
-        ports:
-        - name: http
-          containerPort: 3000
-        env:
-        - name: SESSION_REDIS
-          value: session
-        - name: CATALOGUE_URL
-          value: http://catalogue
-        - name: ORDERS_URL
-          value: http://orders
-        - name: CARTS_URL
-          value: http://carts
-        - name: USERS_URL
-          value: http://user
-        - name: STATIC_MEDIA_URL
-          value: 
-        resources:
-          limits:
-            cpu: 300m
-            memory: 300Mi
-          requests:
-            cpu: 100m
-            memory: 100Mi
-        securityContext:
-          runAsNonRoot: true
-          runAsUser: 10001
-          capabilities:
-            drop:
-              - all
-            add:
-              - NET_BIND_SERVICE
-          readOnlyRootFilesystem: true
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: http
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: http
----
+# Source: mushop/charts/nats/templates/nats-svc.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: api
+  name: mushop-nats
+  annotations:
+    prometheus.io/path: "/prometheus"
   labels:
-    name: api
-    layer: client
+    app.kubernetes.io/name: nats
+    helm.sh/chart: nats-0.1.0
+    app.kubernetes.io/instance: mushop
+    run: nats
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
 spec:
   selector:
-    name: api
-    layer: client
+    app.kubernetes.io/name: nats
+    app.kubernetes.io/instance: mushop
+    run: nats
   ports:
-  - port: 3000
-    targetPort: 3000
+    - name: client
+      port: 4222
+      protocol: TCP
+      targetPort: 4222
+    - name: routes
+      port: 6222
+      protocol: TCP
+      targetPort: 6222
+    - name: monitoring
+      port: 8222
+      protocol: TCP
+      targetPort: 8222
 ---
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: session
-  labels:
-    name: session
-    layer: client
-spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        name: session
-        layer: client
-    spec:
-      containers:
-      - name: session
-        image: redis:alpine
-        ports:
-        - name: redis
-          containerPort: 6379
-        securityContext:
-          capabilities:
-            drop:
-              - all
-            add:
-              - CHOWN
-              - SETGID
-              - SETUID
-          readOnlyRootFilesystem: true
-      nodeSelector:
-        beta.kubernetes.io/os: linux
----
+# Source: mushop/charts/orders/templates/orders-svc.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: session
+  name: mushop-orders
   labels:
-    name: session
-    layer: client
+    app.kubernetes.io/name: orders
+    helm.sh/chart: orders-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
 spec:
-  ports:
-  - port: 6379
   selector:
-    name: session
-    layer: client
+    app.kubernetes.io/name: orders
+    app.kubernetes.io/instance: mushop
+  ports:
+    - port: 80
+      name: http
+      targetPort: 80
 ---
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: carts
-  labels:
-    name: carts
-spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        name: carts
-    spec:
-      containers:
-      - name: carts
-        image: iad.ocir.io/oracle/ateam/mushop-carts:1.1.0
-        ports:
-         - containerPort: 80
-        env:
-        - name: ZIPKIN
-          value: zipkin.jaeger.svc.cluster.local
-        - name: JAVA_OPTS
-          value: -Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
-        - name: TNS_ADMIN
-          value: /app/config
-        - name: OADB_USER
-          valueFrom:
-            secretKeyRef:
-              name: carts-oadb-connection
-              key: oadb_user
-        - name: OADB_PW
-          valueFrom:
-            secretKeyRef:
-              name: carts-oadb-connection
-              key: oadb_pw
-        - name: OADB_SERVICE
-          valueFrom:
-            secretKeyRef:
-              name: carts-oadb-connection
-              key: oadb_service   
-        - name: ATP_TRUST_PASS
-          valueFrom:
-            secretKeyRef:
-              name: carts-oadb-connection
-              key: oadb_wallet_pw 
-        - name: ATP_KEY_PASS
-          valueFrom:
-            secretKeyRef:
-              name: carts-oadb-connection
-              key: oadb_wallet_pw
-        volumeMounts:
-        - mountPath: /tmp
-          name: tmp-volume
-        - mountPath: /app/config/keystore.jks
-          subPath: keystore.jks
-          name: wallet
-          readOnly: true
-        - mountPath: /app/config/truststore.jks
-          subPath: truststore.jks
-          name: wallet
-          readOnly: true
-        - mountPath: /app/config/tnsnames.ora
-          subPath: tnsnames.ora
-          name: wallet
-          readOnly: true
-      volumes:
-        - name: tmp-volume
-          emptyDir:
-            medium: Memory
-        - name: wallet
-          secret:
-            secretName: carts-oadb-wallet
-            defaultMode: 256
-      nodeSelector:
-        beta.kubernetes.io/os: linux
----
+# Source: mushop/charts/payment/templates/payment-svc.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: carts
-  labels:
-    name: carts
+  # TODO: update to payment.fullname when orders can receive variable
+  name: payment
+  labels: 
+    app.kubernetes.io/name: payment
+    helm.sh/chart: payment-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
 spec:
-  ports:
-  - port: 80
-    targetPort: 80
   selector:
-    name: carts
+    app.kubernetes.io/name: payment
+    app.kubernetes.io/instance: mushop
+  ports:
+    - port: 80
+      name: http
+      targetPort: 80
 ---
+# Source: mushop/charts/session/templates/session-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mushop-session
+  labels:
+    app.kubernetes.io/name: session
+    helm.sh/chart: session-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    app.kubernetes.io/name: session
+    app.kubernetes.io/instance: mushop
+  ports:
+    - port: 6379
+      name: redis
 ---
+# Source: mushop/charts/storefront/templates/storefront-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mushop-storefront
+  labels:
+    app.kubernetes.io/name: storefront
+    helm.sh/chart: storefront-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    app.kubernetes.io/name: storefront
+    app.kubernetes.io/instance: mushop
+  ports:
+    - port: 80
+      name: http
+      targetPort: 8080
+---
+# Source: mushop/charts/user/templates/user-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mushop-user
+  labels: 
+    app.kubernetes.io/name: user
+    helm.sh/chart: user-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    app.kubernetes.io/name: user
+    app.kubernetes.io/instance: mushop
+  ports:
+    - port: 80
+      name: http
+      targetPort: 3000
+---
+# Source: mushop/charts/api/templates/api-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: catalogue
+  name: mushop-api
   labels:
-    name: catalogue
+    app.kubernetes.io/name: api
+    helm.sh/chart: api-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: catalogue
+      app: api
+      app.kubernetes.io/name: api
+      app.kubernetes.io/instance: mushop
   template:
     metadata:
       labels:
-        name: catalogue
+        app: api
+        version: "2.2.1"
+        app.kubernetes.io/name: api
+        app.kubernetes.io/instance: mushop
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
+    spec:
+      containers:
+        - name: api
+          image: "iad.ocir.io/oracle/ateam/mushop-api:2.2.1"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 3000
+          env:
+          - name: MOCK_MODE
+            value: "catalogue"
+          - name: SESSION_REDIS
+            value: mushop-session
+          - name: CATALOGUE_URL
+            value: http://mushop-catalogue
+          - name: ORDERS_URL
+            value: http://mushop-orders
+          - name: CARTS_URL
+            value: http://mushop-carts
+          - name: USERS_URL
+            value: http://mushop-user
+          - name: EVENTS_URL
+            value: http://mushop-events
+          - name: STATIC_MEDIA_URL
+            value: /assets
+          - name: NEWSLETTER_SUBSCRIBE_URL
+            value: ""
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+          resources:
+            limits:
+              cpu: 300m
+              memory: 300Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          securityContext:
+            capabilities:
+              add:
+              - NET_BIND_SERVICE
+              drop:
+              - all
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 10001
+---
+# Source: mushop/charts/assets/templates/assets-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mushop-assets
+  labels:
+    app.kubernetes.io/name: assets
+    helm.sh/chart: assets-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: assets
+      app.kubernetes.io/name: assets
+      app.kubernetes.io/instance: mushop
+  template:
+    metadata:
+      labels:
+        app: assets
+        version: "1.0.1"
+        app.kubernetes.io/name: assets
+        app.kubernetes.io/instance: mushop
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
+    spec:
+      containers:
+        - name: assets
+          image: "iad.ocir.io/oracle/ateam/mushop-assets:1.0.1"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 3000
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+          resources:
+            limits:
+              cpu: 300m
+              memory: 300Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          securityContext:
+            capabilities:
+              add:
+              - NET_BIND_SERVICE
+              drop:
+              - all
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 10001
+---
+# Source: mushop/charts/carts/templates/carts-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mushop-carts
+  labels: 
+    app.kubernetes.io/name: carts
+    helm.sh/chart: carts-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: carts
+      app.kubernetes.io/name: carts
+      app.kubernetes.io/instance: mushop
+  template:
+    metadata:
+      labels:
+        app: carts
+        version: "1.5.0"
+        app.kubernetes.io/name: carts
+        app.kubernetes.io/instance: mushop
+        mockmode: "catalogue"
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "80"
+    spec:
+      initContainers:
+        
+      containers:
+        - name: carts
+          image: "iad.ocir.io/oracle/ateam/mushop-carts:1.5.0"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+          env:
+            - name: ZIPKIN
+              value: zipkin.jaeger.svc.cluster.local
+            - name: JAVA_OPTS
+              value: -Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+            - name: OADB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: carts-oadb-credentials
+                  key: oadb_user
+            - name: OADB_PW
+              valueFrom:
+                secretKeyRef:
+                  name: carts-oadb-credentials
+                  key: oadb_pw
+            - name: OADB_SERVICE
+              valueFrom:
+                secretKeyRef:
+                  name: carts-oadb-connection
+                  key: oadb_service
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp-volume
+            # for init container
+            - name: wallet
+              mountPath: /usr/lib/oracle/19.3/client64/lib/network/admin/
+              readOnly: true
+      volumes:
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory
+        
+        # local wallet
+        - name: wallet
+          secret:
+            secretName: carts-oadb-wallet
+            defaultMode: 256
+        # service init configMap
+        - name: initdb
+          configMap:
+            name: mushop-carts-init
+            items:
+            - key: atp.init.sql
+              path: service.sql
+      nodeSelector:
+          beta.kubernetes.io/os: linux
+---
+# Source: mushop/charts/catalogue/templates/catalogue-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mushop-catalogue
+  labels: 
+    app.kubernetes.io/name: catalogue
+    helm.sh/chart: catalogue-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: catalogue
+      app.kubernetes.io/name: catalogue
+      app.kubernetes.io/instance: mushop
+  template:
+    metadata:
+      labels:
+        app: catalogue
+        version: "1.2"
+        app.kubernetes.io/name: catalogue
+        app.kubernetes.io/instance: mushop
+        mockmode: "catalogue"
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
       terminationGracePeriodSeconds: 5
+      initContainers:
+        
       containers:
         - name: catalogue
-          image: iad.ocir.io/oracle/ateam/mushop-catalogue:1.2
-          imagePullPolicy: Always
+          image: "iad.ocir.io/oracle/ateam/mushop-catalogue:1.2"
+          imagePullPolicy: IfNotPresent
           command: ["/app"]
           args:
           - -port=80
           ports:
-          - containerPort: 80
+            - name: http
+              containerPort: 80
           env:
-          - name: ZIPKIN
-            value:
-          - name: OADB_USER
-            valueFrom:
-              secretKeyRef:
-                name: catalogue-oadb-connection
-                key: oadb_user
-          - name: OADB_PW
-            valueFrom:
-              secretKeyRef:
-                name: catalogue-oadb-connection
-                key: oadb_pw
-          - name: OADB_SERVICE
-            valueFrom:
-              secretKeyRef:
-                name: catalogue-oadb-connection
-                key: oadb_service
+            - name: ZIPKIN
+              value: 
+            - name: OADB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: catalogue-oadb-credentials
+                  key: oadb_user
+            - name: OADB_PW
+              valueFrom:
+                secretKeyRef:
+                  name: catalogue-oadb-credentials
+                  key: oadb_pw
+            - name: OADB_SERVICE
+              valueFrom:
+                secretKeyRef:
+                  name: catalogue-oadb-connection
+                  key: oadb_service
+          volumeMounts:
+            - name: wallet
+              mountPath: /usr/lib/oracle/19.3/client64/lib/network/admin/
+              readOnly: true
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 120
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          resources:
+            limits:
+              cpu: 200m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 64Mi
           securityContext:
             capabilities:
-              drop:
-                - all
               add:
-                - NET_BIND_SERVICE
+              - NET_BIND_SERVICE
+              drop:
+              - all
             readOnlyRootFilesystem: true
+      volumes:
+        
+        # local wallet
+        - name: wallet
+          secret:
+            secretName: catalogue-oadb-wallet
+            defaultMode: 256
+        # service init configMap
+        - name: initdb
+          configMap:
+            name: mushop-catalogue-init
+            items:
+            - key: atp.init.sql
+              path: service.sql
+---
+# Source: mushop/charts/edge/templates/edge-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mushop-edge
+  labels:
+    app.kubernetes.io/name: edge
+    helm.sh/chart: edge-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edge
+      app.kubernetes.io/name: edge
+      app.kubernetes.io/instance: mushop
+  template:
+    metadata:
+      labels:
+        app: edge
+        version: "1.1.0"
+        app.kubernetes.io/name: edge
+        app.kubernetes.io/instance: mushop
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
+    spec:
+      containers:
+        - name: edge
+          image: "iad.ocir.io/oracle/ateam/mushop-edge-router:1.1.0"
+          imagePullPolicy: IfNotPresent
+          args:
+          - --configfile=/config/traefik.toml
+          ports:
+            - name: http
+              containerPort: 8080
+          volumeMounts:
+            - mountPath: /config
+              name: config
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: http
+          resources:
+            limits:
+              cpu: 100m
+              memory: 256Mi
+            requests:
+              cpu: 50m
+              memory: 128Mi
+          securityContext:
+            capabilities:
+              add:
+              - NET_BIND_SERVICE
+              drop:
+              - all
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 10001
+      volumes:
+        - name: config
+          configMap:
+            name: mushop-edge
+---
+# Source: mushop/charts/fulfillment/templates/fulfillment-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mushop-fulfillment
+  labels:
+    app.kubernetes.io/name: fulfillment
+    helm.sh/chart: fulfillment-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+    run: fulfillment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fulfillment
+      app.kubernetes.io/name: fulfillment
+      app.kubernetes.io/instance: mushop
+      run: fulfillment
+  template:
+    metadata:
+      labels:
+        app: fulfillment
+        version: "1.1.0"
+        app.kubernetes.io/name: fulfillment
+        app.kubernetes.io/instance: mushop
+        run: fulfillment
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /prometheus
+        prometheus.io/port: "80"
+    spec:
+      containers:
+        - name: fulfillment
+          image: "iad.ocir.io/oracle/ateam/mushop-fulfillment:1.1.0"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+          env:
+            - name: NATS_HOST
+              value: "mushop-nats"
+            - name: NATS_PORT
+              value: "4222"
+            - name: ORDERS_NEW
+              value: "mushop-orders"
+            - name: ORDERS_SHIPPED
+              value: "mushop-shipments"
+            - name: SIMULATION_DELAY
+              value: "10000"
+---
+# Source: mushop/charts/nats/templates/nats-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mushop-nats
+  labels:
+    app.kubernetes.io/name: nats
+    helm.sh/chart: nats-0.1.0
+    app.kubernetes.io/instance: mushop
+    run: nats
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nats
+      app.kubernetes.io/name: nats
+      app.kubernetes.io/instance: mushop
+      run: nats
+  template:
+    metadata:
+      labels:
+        app: nats
+        version: "2.1.2"
+        app.kubernetes.io/name: nats
+        app.kubernetes.io/instance: mushop
+        run: nats
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "7777"
+    spec:
+      containers:
+        - name: nats
+          image: "nats:2.1.2"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: client
+              containerPort: 4222
+              protocol: TCP
+            - name: routes
+              containerPort: 6222
+              protocol: TCP
+            - name: monitoring
+              containerPort: 8222
+              protocol: TCP
+        - name: nats-exporter
+          image: "synadia/prometheus-nats-exporter:0.6.2"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 7777
+          args:
+            - -D 
+            - -varz 
+            - -channelz
+            - -connz
+            - -serverz
+            - -subz
+            - -gatewayz
+            - "http://localhost:8222"
+---
+# Source: mushop/charts/orders/templates/orders-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mushop-orders
+  labels: 
+    app.kubernetes.io/name: orders
+    helm.sh/chart: orders-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orders
+      app.kubernetes.io/name: orders
+      app.kubernetes.io/instance: mushop
+  template:
+    metadata:
+      labels:
+        app: orders
+        version: "2.2.2"
+        app.kubernetes.io/name: orders
+        app.kubernetes.io/instance: mushop
+        mockmode: "catalogue"
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "80"
+    spec:
+      initContainers:
+        
+      containers:
+        - name: orders
+          image: "iad.ocir.io/oracle/ateam/mushop-orders:2.2.2"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+          livenessProbe:
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            failureThreshold: 5
+            httpGet:
+              path: /actuator/health/liveness
+              port: http
+          readinessProbe:
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            httpGet:
+              path: /actuator/health/readiness
+              port: http
+
+          env:
+            - name: ZIPKIN
+              value: zipkin.jaeger.svc.cluster.local
+            - name: JAVA_OPTS
+              value: -Xms32m -Xmx150m -XX:MaxRAM=150m -Djava.security.egd=file:/dev/urandom -Doracle.jdbc.fanEnabled=false -XX:+UnlockExperimentalVMOptions -XX:+UseZGC -Dlogging.level.mushop.orders=INFO -Dspring.zipkin.enabled=false
+            - name: NATS_HOST
+              value: "mushop-nats"
+            - name: NATS_PORT
+              value: "4222"
+            - name: ORDERS_NEW
+              value: "mushop-orders"
+            - name: ORDERS_SHIPPED
+              value: "mushop-shipments"
+            - name: OADB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: orders-oadb-credentials
+                  key: oadb_user
+            - name: OADB_PW
+              valueFrom:
+                secretKeyRef:
+                  name: orders-oadb-credentials
+                  key: oadb_pw
+            - name: OADB_SERVICE
+              valueFrom:
+                secretKeyRef:
+                  name: orders-oadb-connection
+                  key: oadb_service
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp-volume
+            # for init container
+            - name: wallet
+              mountPath: /wallet/
+              readOnly: true
+      volumes:
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory
+        
+        # local wallet
+        - name: wallet
+          secret:
+            secretName: orders-oadb-wallet
+            defaultMode: 256
+        # service init configMap
+        - name: initdb
+          configMap:
+            name: mushop-orders-init
+            items:
+            - key: atp.init.sql
+              path: service.sql
+      nodeSelector:
+          beta.kubernetes.io/os: linux
+---
+# Source: mushop/charts/payment/templates/payment-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mushop-payment
+  labels:
+    app.kubernetes.io/name: payment
+    helm.sh/chart: payment-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment
+      app.kubernetes.io/name: payment
+      app.kubernetes.io/instance: mushop
+  template:
+    metadata:
+      labels:
+        app: payment
+        version: "0.0.1"
+        app.kubernetes.io/name: payment
+        app.kubernetes.io/instance: mushop
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
+    spec:
+      containers:
+        - name: payment
+          image: "iad.ocir.io/oracle/ateam/mushop-payment:0.0.1"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
           livenessProbe:
             httpGet:
               path: /health
@@ -337,520 +1338,401 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 5
           resources:
-            requests:
-              cpu: 100m
-              memory: 64Mi
             limits:
-              cpu: 200m
-              memory: 128Mi
-          volumeMounts:
-          - name: wallet
-            mountPath: "/usr/lib/oracle/19.3/client64/lib/network/admin"
-      volumes:
-      - name: wallet
-        secret:
-          secretName: catalogue-oadb-wallet
-          defaultMode: 256
+              cpu: 100m
+              memory: 100Mi
+            requests:
+              cpu: 99m
+              memory: 100Mi
+          securityContext:
+            capabilities:
+              add:
+              - NET_BIND_SERVICE
+              drop:
+              - all
+            readOnlyRootFilesystem: true
+      nodeSelector:
+          beta.kubernetes.io/os: linux
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: catalogue
-  labels:
-    name: catalogue
-spec:
-  ports:
-  - port: 80
-    targetPort: 80
-  selector:
-    name: catalogue
----
-apiVersion: extensions/v1beta1
+# Source: mushop/charts/session/templates/session-deployment.yaml
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: storefront
+  name: mushop-session
   labels:
-    name: storefront
-    layer: client
+    app.kubernetes.io/name: session
+    helm.sh/chart: session-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: session
+      app.kubernetes.io/name: session
+      app.kubernetes.io/instance: mushop
   template:
     metadata:
       labels:
-        name: storefront
-        layer: client
+        app: session
+        version: "alpine"
+        app.kubernetes.io/name: session
+        app.kubernetes.io/instance: mushop
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
       containers:
-      - name: storefront
-        image: iad.ocir.io/oracle/ateam/mushop-storefront:2.0.1
-        imagePullPolicy: Always
-        ports:
-        - name: http
-          containerPort: 8080
-        - name: status
-          containerPort: 8888
-        resources:
-          limits:
-            cpu: 300m
-            memory: 300Mi
-          requests:
-            cpu: 100m
-            memory: 100Mi
-        securityContext:
-          runAsNonRoot: true
-          runAsUser: 10001
-          capabilities:
-            drop:
+        - name: session
+          image: "redis:alpine"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: redis
+              containerPort: 6379
+          securityContext:
+            capabilities:
+              add:
+              - CHOWN
+              - SETGID
+              - SETUID
+              drop:
               - all
-            add:
+            readOnlyRootFilesystem: true
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+---
+# Source: mushop/charts/storefront/templates/storefront-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mushop-storefront
+  labels:
+    app.kubernetes.io/name: storefront
+    helm.sh/chart: storefront-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: storefront
+      app.kubernetes.io/name: storefront
+      app.kubernetes.io/instance: mushop
+  template:
+    metadata:
+      labels:
+        app: storefront
+        version: "2.1.2"
+        app.kubernetes.io/name: storefront
+        app.kubernetes.io/instance: mushop
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
+    spec:
+      containers:
+        - name: storefront
+          image: "iad.ocir.io/oracle/ateam/mushop-storefront:2.1.2"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+            - name: status
+              containerPort: 8888
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          volumeMounts:
+          - mountPath: /tmp
+            name: tmp-volume
+          resources:
+            limits:
+              cpu: 300m
+              memory: 300Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          securityContext:
+            capabilities:
+              add:
               - NET_BIND_SERVICE
               - CHOWN
               - SETGID
               - SETUID
-          readOnlyRootFilesystem: true
-        livenessProbe:
-          httpGet:
-            path: /
-            port: http
-        readinessProbe:
-          httpGet:
-            path: /
-            port: http
-        volumeMounts:
-        - mountPath: /tmp
-          name: tmp-volume
+              drop:
+              - all
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 10001
       volumes:
         - name: tmp-volume
           emptyDir:
             medium: Memory
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: storefront
-  labels:
-    name: storefront
-    layer: client
-spec:
-  selector:
-    name: storefront
-    layer: client
-  ports:
-  - port: 8080
-    targetPort: 8080
----
-apiVersion: extensions/v1beta1
+# Source: mushop/charts/user/templates/user-deployment.yaml
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: orders
-  labels:
-    name: orders
+  name: mushop-user
+  labels: 
+    app.kubernetes.io/name: user
+    helm.sh/chart: user-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: user
+      app.kubernetes.io/name: user
+      app.kubernetes.io/instance: mushop
   template:
     metadata:
       labels:
-        name: orders
-    spec: 
+        app: user
+        version: "1.1.0"
+        app.kubernetes.io/name: user
+        app.kubernetes.io/instance: mushop
+        mockmode: "catalogue"
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
+    spec:
+      initContainers:
+        
       containers:
-      - name: orders
-        image: iad.ocir.io/oracle/ateam/mushop-orders:1.0.3
-        imagePullPolicy: Always
-        env:
-        - name: ZIPKIN
-          value: zipkin.jaeger.svc.cluster.local
-        - name: JAVA_OPTS
-          value: -Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
-        - name: TNS_ADMIN
-          value: /app/config
-        - name: OADB_USER
-          valueFrom:
-            secretKeyRef:
-              name: orders-oadb-connection
-              key: oadb_user
-        - name: OADB_PW
-          valueFrom:
-            secretKeyRef:
-              name: orders-oadb-connection
-              key: oadb_pw
-        - name: OADB_SERVICE
-          valueFrom:
-            secretKeyRef:
-              name: orders-oadb-connection
-              key: oadb_service   
-        - name: ATP_TRUST_PASS
-          valueFrom:
-            secretKeyRef:
-              name: orders-oadb-connection
-              key: oadb_wallet_pw 
-        - name: ATP_KEY_PASS
-          valueFrom:
-            secretKeyRef:
-              name: orders-oadb-connection
-              key: oadb_wallet_pw
-        ports:
-        - containerPort: 80
-        volumeMounts:
-        - mountPath: /tmp
-          name: tmp-volume
-        - mountPath: /app/config/keystore.jks
-          subPath: keystore.jks
-          name: wallet
-          readOnly: true
-        - mountPath: /app/config/truststore.jks
-          subPath: truststore.jks
-          name: wallet
-          readOnly: true
-        - mountPath: /app/config/tnsnames.ora
-          subPath: tnsnames.ora
-          name: wallet
-          readOnly: true
+        - name: user
+          image: "iad.ocir.io/oracle/ateam/mushop-user:1.1.0"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 3000
+          env:
+            - name: OADB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: user-oadb-credentials
+                  key: oadb_user
+            - name: OADB_PW
+              valueFrom:
+                secretKeyRef:
+                  name: user-oadb-credentials
+                  key: oadb_pw
+            - name: OADB_SERVICE
+              valueFrom:
+                secretKeyRef:
+                  name: user-oadb-connection
+                  key: oadb_service
+          volumeMounts:
+            - name: wallet
+              mountPath: /usr/lib/oracle/19.3/client64/lib/network/admin/
+              readOnly: true
+          resources:
+            limits:
+              cpu: 300m
+              memory: 300Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          securityContext:
+            capabilities:
+              add:
+              - NET_BIND_SERVICE
+              drop:
+              - all
+            readOnlyRootFilesystem: true
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 120
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 5
       volumes:
-        - name: tmp-volume
-          emptyDir:
-            medium: Memory
+        
+        # local wallet
         - name: wallet
           secret:
-            secretName: orders-oadb-wallet
+            secretName: user-oadb-wallet
             defaultMode: 256
+        # service init configMap
+        - name: initdb
+          configMap:
+            name: mushop-user-init
+            items:
+            - key: atp.init.sql
+              path: service.sql
       nodeSelector:
         beta.kubernetes.io/os: linux
 ---
-apiVersion: v1
-kind: Service
+# Source: mushop/charts/api/templates/api-hpa.yaml
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
 metadata:
-  name: orders
-  labels:
-    name: orders
+  name: mushop-api
 spec:
-  ports:
-    # the port that this service should serve on
-  - port: 80
-    targetPort: 80
-  selector:
-    name: orders
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: mushop-api
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - resource:
+        name: cpu
+        target:
+          averageUtilization: 70
+          type: Utilization
+      type: Resource
 ---
-apiVersion: extensions/v1beta1
-kind: Deployment
+# Source: mushop/charts/assets/templates/assets-hpa.yaml
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
 metadata:
-  name: payment
-  labels:
-    name: payment
+  name: mushop-assets
 spec:
-  replicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: mushop-assets
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - resource:
+        name: cpu
+        target:
+          averageUtilization: 70
+          type: Utilization
+      type: Resource
+---
+# Source: mushop/charts/catalogue/templates/catalogue-hpa.yaml
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: mushop-catalogue
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: mushop-catalogue
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 70
+        type: Utilization
+    type: Resource
+---
+# Source: mushop/charts/edge/templates/edge-hpa.yaml
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: mushop-edge
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: mushop-edge
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 70
+        type: Utilization
+    type: Resource
+---
+# Source: mushop/charts/storefront/templates/storefront-hpa.yaml
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: mushop-storefront
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: mushop-storefront
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 70
+        type: Utilization
+    type: Resource
+---
+# Source: mushop/charts/user/templates/user-hpa.yaml
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: mushop-user
+  labels: 
+    app.kubernetes.io/name: user
+    helm.sh/chart: user-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: mushop-user
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 70
+        type: Utilization
+    type: Resource
+---
+# Source: mushop/charts/assets/templates/deploy-job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mushop-assets-deploy-1
+  labels: 
+    app.kubernetes.io/name: assets
+    helm.sh/chart: assets-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  ttlSecondsAfterFinished: 120
+  backoffLimit: 1
   template:
     metadata:
+      annotations:
+        sidecar.istio.io/inject: "false"
       labels:
-        name: payment
+        app.kubernetes.io/name: assets
+        app.kubernetes.io/instance: mushop
     spec:
+      restartPolicy: Never
       containers:
-      - name: payment
-        image: iad.ocir.io/oracle/ateam/mushop-payment:0.0.1
-        resources:
-          limits:
-            cpu: 100m
-            memory: 100Mi
-          requests:
-            cpu: 99m
-            memory: 100Mi
-        ports:
-        - containerPort: 80
-        securityContext:
-          capabilities:
-            drop:
-              - all
-            add:
-              - NET_BIND_SERVICE
-          readOnlyRootFilesystem: true
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 80
-          initialDelaySeconds: 120
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 80
-          initialDelaySeconds: 10
-          periodSeconds: 5
-      nodeSelector:
-        beta.kubernetes.io/os: linux
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: payment
-  labels:
-    name: payment
-spec:
-  ports:
-  - port: 80
-    targetPort: 80
-  selector:
-    name: payment
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  labels:
-    run: stream
-  name: stream
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      run: stream
-  template:
-    metadata:
-      labels:
-        run: stream
-    spec:
-      containers:
-      - image: iad.ocir.io/oracle/ateam/mushop-stream:1.0.0
-        imagePullPolicy: Always
-        name: stream
-        env:
-        - name: STREAM_NAME
-          valueFrom:
-            secretKeyRef:
-              name: oss-connection
-              key: streamName
-              optional: true
-        - name: STREAM_ID
-          valueFrom:
-            secretKeyRef:
-              name: oss-connection
-              key: streamId
-              optional: true
-        - name: OCI_TENANT_ID
-          valueFrom:
-            secretKeyRef:
-              name: streams-secret
-              key: oci_tenant_id
-        - name: OCI_USER_ID
-          valueFrom:
-            secretKeyRef:
-              name: streams-secret
-              key: oci_user_id
-        - name: OCI_FINGERPRINT
-          valueFrom:
-            secretKeyRef:
-              name: streams-secret
-              key: oci_fingerprint
-        - name: OCI_PASS_PHRASE
-          valueFrom:
-            secretKeyRef:
-              name: streams-secret
-              key: oci_pass_phrase
-              optional: true
-        - name: OCI_API_KEY
-          valueFrom:
-            secretKeyRef:
-              name: streams-secret
-              key: oci_api_key
-        - name: OCI_REGION
-          valueFrom:
-            secretKeyRef:
-              name: streams-secret
-              key: oci_region
-        - name: OCI_COMPARTMENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: streams-secret
-              key: oci_compartment_id
-        ports:
-        - containerPort: 80
-          protocol: TCP
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    run: stream
-  name: stream
-  annotations:
-    prometheus.io/path: "/prometheus"
-spec:
-  ports:
-  - port: 80
-    protocol: TCP
-    targetPort: 80
-    #nodePort: 30124
-  selector:
-    run: stream
-  type: NodePort
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  labels:
-    run: shipping
-  name: shipping
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      run: shipping
-  template:
-    metadata:
-      labels:
-        run: shipping
-    spec:
-      containers:
-      - image: iad.ocir.io/oracle/ateam/mushop-shipping:1.0.0
-        imagePullPolicy: Always
-        name: shipping
-        env:
-        - name: STREAM_NAME
-          valueFrom:
-            secretKeyRef:
-              name: oss-connection
-              key: streamName
-              optional: true
-        - name: STREAM_ID
-          valueFrom:
-            secretKeyRef:
-              name: oss-connection
-              key: streamId
-              optional: true
-        - name: OCI_TENANT_ID
-          valueFrom:
-            secretKeyRef:
-              name: streams-secret
-              key: oci_tenant_id
-        - name: OCI_USER_ID
-          valueFrom:
-            secretKeyRef:
-              name: streams-secret
-              key: oci_user_id
-        - name: OCI_FINGERPRINT
-          valueFrom:
-            secretKeyRef:
-              name: streams-secret
-              key: oci_fingerprint
-        - name: OCI_PASS_PHRASE
-          valueFrom:
-            secretKeyRef:
-              name: streams-secret
-              key: oci_pass_phrase
-              optional: true
-        - name: OCI_API_KEY
-          valueFrom:
-            secretKeyRef:
-              name: streams-secret
-              key: oci_api_key
-        - name: OCI_REGION
-          valueFrom:
-            secretKeyRef:
-              name: streams-secret
-              key: oci_region
-        - name: OCI_COMPARTMENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: streams-secret
-              key: oci_compartment_id
-        ports:
-        - containerPort: 80
-          protocol: TCP
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    run: shipping
-  name: shipping
-spec:
-  ports:
-  - port: 80
-    protocol: TCP
-    targetPort: 80
-  selector:
-    run: shipping
-  type: NodePort
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: user
-  labels:
-    name: user
-spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        name: user
-    spec:
-      containers:
-      - name: user
-        image: iad.ocir.io/oracle/ateam/mushop-user:1.0.0
-        imagePullPolicy: Always
-        ports:
-        - name: http
-          containerPort: 3000
-        env:
-        - name: OADB_USER
-          valueFrom:
-            secretKeyRef:
-              name: user-oadb-connection
-              key: oadb_user
-        - name: OADB_PW
-          valueFrom:
-            secretKeyRef:
-              name: user-oadb-connection
-              key: oadb_pw
-        - name: OADB_SERVICE
-          valueFrom:
-            secretKeyRef:
-              name: user-oadb-connection
-              key: oadb_service
-        resources:
-          limits:
-            cpu: 300m
-            memory: 300Mi
-          requests:
-            cpu: 100m
-            memory: 100Mi
-        securityContext:
-          capabilities:
-            drop:
-              - all
-            add:
-              - NET_BIND_SERVICE
-          readOnlyRootFilesystem: true
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: http
-          initialDelaySeconds: 300
-          periodSeconds: 30
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: http
-          initialDelaySeconds: 10
-          periodSeconds: 5
-        volumeMounts:
-        - name: wallet
-          mountPath: /usr/lib/oracle/19.3/client64/lib/network/admin
-          readOnly: true
-      volumes:
-      - name: wallet
-        secret:
-          secretName: user-oadb-wallet
-          defaultMode: 256
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: user
-  labels:
-    name: user
-spec:
-  ports:
-  - port: 80
-    targetPort: 3000
-  selector:
-    name: user
-
+        - name: init
+          image: "iad.ocir.io/oracle/ateam/mushop-assets:1.0.1"
+          imagePullPolicy: IfNotPresent
+          command: ["node", "deploy.js"]
+          env:
+            
+            - name: BUCKET_PAR
+              valueFrom:
+                secretKeyRef:
+                  name: mushop-bucket
+                  key: parUrl
+                  optional: true
