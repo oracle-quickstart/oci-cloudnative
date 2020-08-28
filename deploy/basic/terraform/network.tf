@@ -52,16 +52,22 @@ resource "oci_core_route_table" "mushop_main_route_table" {
   display_name   = "mushop-main-${random_string.deploy_id.result}"
   freeform_tags  = local.common_tags
 
-  route_rules {
-    destination       = lookup(data.oci_core_services.all_services.services[0], "cidr_block")
-    destination_type  = "SERVICE_CIDR_BLOCK"
-    network_entity_id = oci_core_service_gateway.mushop_service_gateway.id
+  dynamic "route_rules" {
+    for_each = (var.instance_visibility == "Private") ? [1] : []
+    content {
+      destination       = lookup(data.oci_core_services.all_services.services[0], "cidr_block")
+      destination_type  = "SERVICE_CIDR_BLOCK"
+      network_entity_id = oci_core_service_gateway.mushop_service_gateway.id
+    }
   }
 
-  route_rules {
-    destination       = lookup(var.network_cidrs, "ALL-CIDR")
-    destination_type  = "CIDR_BLOCK"
-    network_entity_id = (var.instance_visibility == "Private") ? oci_core_nat_gateway.mushop_nat_gateway[0].id : oci_core_internet_gateway.mushop_internet_gateway.id
+  dynamic "route_rules" {
+    for_each = (var.instance_visibility == "Private") ? [] : [1]
+    content {
+      destination       = lookup(var.network_cidrs, "ALL-CIDR")
+      destination_type  = "CIDR_BLOCK"
+      network_entity_id = oci_core_internet_gateway.mushop_internet_gateway.id
+    }
   }
 
   dynamic "route_rules" {
@@ -103,7 +109,7 @@ resource "oci_core_nat_gateway" "mushop_nat_gateway" {
   vcn_id         = oci_core_virtual_network.mushop_main_vcn.id
   freeform_tags  = local.common_tags
 
-  count = (var.instance_visibility == "Private") ? 1 : 0
+  count = (var.instance_visibility == "Private") ? 0 : 0
 }
 
 resource "oci_core_internet_gateway" "mushop_internet_gateway" {

@@ -8,45 +8,64 @@ resource "oci_core_security_list" "mushop_security_list" {
   display_name   = "mushop-main-${random_string.deploy_id.result}"
   freeform_tags  = local.common_tags
 
+  dynamic "ingress_security_rules" {
+    for_each = var.create_secondary_vcn ? [1] : []
+    content {
+      protocol = "all"
+      source   = lookup(var.network_cidrs, "LB-VCN-CIDR")
+    }
+  }
+
+  ingress_security_rules {
+    protocol = "all"
+    source   = lookup(var.network_cidrs, "MAIN-SUBNET-REGIONAL-CIDR")
+    stateless   = true
+  }
+
+
+  ingress_security_rules {
+    protocol = local.tcp_protocol_number
+    source   = (var.create_secondary_vcn ? "LB-SUBNET-REGIONAL-CIDR" : "MAIN-LB-SUBNET-REGIONAL-CIDR"))
+
+    tcp_options {
+      max = local.microservices_port_number
+      min = local.microservices_port_number
+    }
+  }
+
+  ingress_security_rules {
+    protocol = local.tcp_protocol_number
+    source   = ((var.instance_visibility == "Private") ? "MAIN-VCN-CIDR" : "ALL-CIDR"))
+
+    tcp_options {
+      max = local.ssh_port_number
+      min = local.ssh_port_number
+    }
+  }
+
+  dynamic "egress_security_rules" {
+    for_each = var.create_secondary_vcn ? [1] : []
+    content {
+      protocol = "all"
+      destination   = lookup(var.network_cidrs, "LB-VCN-CIDR")
+    }
+  }
+
   egress_security_rules {
-    protocol    = "6"
-    destination = lookup(var.network_cidrs, "ALL-CIDR")
+    protocol = "all"
+    destination   = lookup(var.network_cidrs, "MAIN-SUBNET-REGIONAL-CIDR")
+    stateless   = true
+  }
+
+  egress_security_rules {
+    protocol    = "all"
+    destination = ((var.instance_visibility == "Private") ? "MAIN-VCN-CIDR" : "ALL-CIDR"))
   }
 
   egress_security_rules {
     protocol         = "all"
     destination      = lookup(data.oci_core_services.all_services.services[0], "cidr_block")
     destination_type = "SERVICE_CIDR_BLOCK"
-  }
-
-  egress_security_rules {
-    protocol    = "all"
-    destination = lookup(var.network_cidrs, "LB-VCN-CIDR")
-  }
-
-  ingress_security_rules {
-    protocol = "all"
-    source   = lookup(var.network_cidrs, "LB-VCN-CIDR")
-  }
-
-  ingress_security_rules {
-    protocol = "6"
-    source   = lookup(var.network_cidrs, "ALL-CIDR")
-
-    tcp_options {
-      max = "80"
-      min = "80"
-    }
-  }
-
-  ingress_security_rules {
-    protocol = "6"
-    source   = lookup(var.network_cidrs, "ALL-CIDR")
-
-    tcp_options {
-      max = "22"
-      min = "22"
-    }
   }
 }
 
@@ -56,28 +75,69 @@ resource "oci_core_security_list" "mushop_lb_security_list" {
   display_name   = "mushop-lb-${random_string.deploy_id.result}"
   freeform_tags  = local.common_tags
 
-  egress_security_rules {
-    protocol    = "6"
-    destination = "0.0.0.0/0"
-  }
-
-  egress_security_rules {
-    protocol    = "all"
-    destination = lookup(var.network_cidrs, "MAIN-VCN-CIDR")
+  dynamic "ingress_security_rules" {
+    for_each = var.create_secondary_vcn ? [1] : []
+    content {
+      protocol = "all"
+      source   = lookup(var.network_cidrs, "MAIN-VCN-CIDR")
+    }
   }
 
   ingress_security_rules {
     protocol = "all"
-    source   = lookup(var.network_cidrs, "MAIN-VCN-CIDR")
+    source   = lookup(var.network_cidrs, "ALL-CIDR")
+    stateless   = true
   }
 
   ingress_security_rules {
-    protocol = "6"
-    source   = "0.0.0.0/0"
+    protocol = local.tcp_protocol_number
+    source   = lookup(var.network_cidrs, "ALL-CIDR")
 
     tcp_options {
-      max = "80"
-      min = "80"
+      max = local.http_port_number
+      min = local.http_port_number
     }
   }
+
+  ingress_security_rules {
+    protocol = local.tcp_protocol_number
+    source   = lookup(var.network_cidrs, "ALL-CIDR")
+
+    tcp_options {
+      max = local.https_port_number
+      min = local.https_port_number
+    }
+  }
+
+  dynamic "egress_security_rules" {
+    for_each = var.create_secondary_vcn ? [1] : []
+    content {
+      protocol = "all"
+      destination   = lookup(var.network_cidrs, "MAIN-VCN-CIDR")
+    }
+  }
+
+  egress_security_rules {
+    protocol = "all"
+    destination   = lookup(var.network_cidrs, "ALL-CIDR")
+    stateless   = true
+  }
+
+  egress_security_rules {
+    protocol    = local.tcp_protocol_number
+    destination = lookup(var.network_cidrs, "MAIN-SUBNET-REGIONAL-CIDR")
+
+    tcp_options {
+      max = local.microservices_port_number
+      min = local.microservices_port_number
+    }
+  }
+}
+
+locals {
+  http_port_number = "80"
+  https_port_number = "443"
+  microservices_port_number = "80"
+  ssh_port_number = "22"
+  tcp_protocol_number = "6"
 }
