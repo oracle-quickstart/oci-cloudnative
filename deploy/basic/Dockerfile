@@ -55,11 +55,11 @@ FROM node:12-alpine as api-builder
 WORKDIR /app/api
 COPY src/api/. .
 
-# Prune
-RUN rm -rf test scripts node_modules
+# Prune (prom-client removed to fix KBs for orm stack)
+RUN rm -rf test scripts && \
+    npm uninstall prom-client && \
+    npm prune --production
 
-# Fat package for private nodes
-RUN npm ci --production
 #    ----- API Gateway -----  #
 
 ###############################
