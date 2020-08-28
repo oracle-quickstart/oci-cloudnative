@@ -17,15 +17,15 @@ resource "oci_core_security_list" "mushop_security_list" {
   }
 
   ingress_security_rules {
-    protocol = local.all_protocols
-    source   = lookup(var.network_cidrs, "MAIN-SUBNET-REGIONAL-CIDR")
-    stateless   = true
+    protocol  = local.all_protocols
+    source    = lookup(var.network_cidrs, "MAIN-SUBNET-REGIONAL-CIDR")
+    stateless = true
   }
 
 
   ingress_security_rules {
     protocol = local.tcp_protocol_number
-    source   = (var.create_secondary_vcn ? "LB-SUBNET-REGIONAL-CIDR" : "MAIN-LB-SUBNET-REGIONAL-CIDR")
+    source   = lookup(var.network_cidrs, var.create_secondary_vcn ? "LB-SUBNET-REGIONAL-CIDR" : "MAIN-LB-SUBNET-REGIONAL-CIDR")
 
     tcp_options {
       max = local.microservices_port_number
@@ -35,7 +35,7 @@ resource "oci_core_security_list" "mushop_security_list" {
 
   ingress_security_rules {
     protocol = local.tcp_protocol_number
-    source   = ((var.instance_visibility == "Private") ? "MAIN-VCN-CIDR" : "ALL-CIDR")
+    source   = lookup(var.network_cidrs, (var.instance_visibility == "Private") ? "MAIN-VCN-CIDR" : "ALL-CIDR")
 
     tcp_options {
       max = local.ssh_port_number
@@ -46,20 +46,20 @@ resource "oci_core_security_list" "mushop_security_list" {
   dynamic "egress_security_rules" {
     for_each = var.create_secondary_vcn ? [1] : []
     content {
-      protocol = local.all_protocols
-      destination   = lookup(var.network_cidrs, "LB-VCN-CIDR")
+      protocol    = local.all_protocols
+      destination = lookup(var.network_cidrs, "LB-VCN-CIDR")
     }
   }
 
   egress_security_rules {
-    protocol = local.all_protocols
-    destination   = lookup(var.network_cidrs, "MAIN-SUBNET-REGIONAL-CIDR")
+    protocol    = local.all_protocols
+    destination = lookup(var.network_cidrs, "MAIN-SUBNET-REGIONAL-CIDR")
     stateless   = true
   }
 
   egress_security_rules {
     protocol    = local.all_protocols
-    destination = ((var.instance_visibility == "Private") ? "MAIN-VCN-CIDR" : "ALL-CIDR")
+    destination = lookup(var.network_cidrs, (var.instance_visibility == "Private") ? "MAIN-VCN-CIDR" : "ALL-CIDR")
   }
 
   egress_security_rules {
@@ -84,9 +84,9 @@ resource "oci_core_security_list" "mushop_lb_security_list" {
   }
 
   ingress_security_rules {
-    protocol = local.all_protocols
-    source   = lookup(var.network_cidrs, "ALL-CIDR")
-    stateless   = true
+    protocol  = local.all_protocols
+    source    = lookup(var.network_cidrs, "ALL-CIDR")
+    stateless = true
   }
 
   ingress_security_rules {
@@ -112,14 +112,14 @@ resource "oci_core_security_list" "mushop_lb_security_list" {
   dynamic "egress_security_rules" {
     for_each = var.create_secondary_vcn ? [1] : []
     content {
-      protocol = local.all_protocols
-      destination   = lookup(var.network_cidrs, "MAIN-VCN-CIDR")
+      protocol    = local.all_protocols
+      destination = lookup(var.network_cidrs, "MAIN-VCN-CIDR")
     }
   }
 
   egress_security_rules {
-    protocol = local.all_protocols
-    destination   = lookup(var.network_cidrs, "ALL-CIDR")
+    protocol    = local.all_protocols
+    destination = lookup(var.network_cidrs, "ALL-CIDR")
     stateless   = true
   }
 
@@ -135,10 +135,10 @@ resource "oci_core_security_list" "mushop_lb_security_list" {
 }
 
 locals {
-  http_port_number = "80"
-  https_port_number = "443"
+  http_port_number          = "80"
+  https_port_number         = "443"
   microservices_port_number = "80"
-  ssh_port_number = "22"
-  tcp_protocol_number = "6"
-  all_protocols = "all"
+  ssh_port_number           = "22"
+  tcp_protocol_number       = "6"
+  all_protocols             = "all"
 }
