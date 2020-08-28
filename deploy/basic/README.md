@@ -47,6 +47,18 @@ or under windows powershell:
 
 This creates a `.zip` file in your working directory that can be imported in to OCI Resource Manager.
 
+## Using local or cloudShell terraform instead of ORM stack
+
+After complete the Build steps, generate the binaries:
+
+- From the root of the repo execute the command:
+
+`docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic.tar.gz /transfer/deploy/basic/terraform/scripts/mushop-basic.tar.gz`
+
+And copy the updated script to create the catalogue schema:
+
+`docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /basic/scripts/atp_mushop_catalogue.sql /transfer/deploy/basic/terraform/scripts/atp_mushop_catalogue.sql`
+
 [oci]: https://cloud.oracle.com/en_US/cloud-infrastructure
 [orm]: https://docs.cloud.oracle.com/iaas/Content/ResourceManager/Concepts/resourcemanager.htm
 [tf]: https://www.terraform.io
