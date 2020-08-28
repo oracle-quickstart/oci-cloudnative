@@ -57,6 +57,9 @@ COPY src/api/. .
 
 # Prune
 RUN rm -rf test scripts node_modules
+
+# Fat package for private nodes
+RUN npm ci --production
 #    ----- API Gateway -----  #
 
 ###############################
@@ -121,7 +124,7 @@ RUN GO111MODULE=on GOARCH=amd64 GOOS=linux \
 # Base image with Oracle Instant Client Basic Lite
 FROM oraclelinux:7-slim AS base
 ARG oracleClientVersion
-RUN yum --enablerepo=ol7_latest clean metadata && \
+RUN yum clean metadata && \
   yum update -y && \
   yum -y install oracle-release-el7 && \
   yum-config-manager --enable ol7_oracle_instantclient && \
@@ -163,11 +166,10 @@ RUN mkdir /package && GZIP=-9 tar cvzf /package/mushop-basic.tar.gz /app
 COPY deploy/basic/VERSION /
 COPY deploy/basic/terraform /basic
 COPY src/catalogue/dbdata/atp_mushop_catalogue.sql /basic/scripts
-COPY deploy/basic/terraform/scripts/httpd.conf /basic/scripts
-COPY deploy/basic/terraform/scripts/entrypoint.sh /basic/scripts
 COPY --from=assets-builder /app/assets/dist /basic/images
-RUN cp /package/mushop-basic.tar.gz /basic/scripts && \
-    cd /basic && zip -r /package/mushop-basic-stack.zip .
+RUN cp /package/mushop-basic.tar.gz /basic/scripts
+WORKDIR /basic
+RUN zip -r /package/mushop-basic-stack.zip .
 
 VOLUME ["/usr/lib/oracle/${oracleClientVersion}/client64/lib/network/admin/"]
 VOLUME ["/transfer/"]
