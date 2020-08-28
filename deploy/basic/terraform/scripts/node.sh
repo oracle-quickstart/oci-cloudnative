@@ -30,6 +30,14 @@ get_object() {
 firewall-offline-cmd --add-port=80/tcp
 systemctl restart firewalld
 
+# Install the yum repo
+yum clean metadata
+yum-config-manager --enable ol7_latest
+
+# Install tools
+yum -y erase nodejs
+yum -y install unzip httpd jq
+
 # Get metadata
 ATP_DB_NAME=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".db_name")
 ATP_PW=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".atp_pw")
@@ -42,10 +50,6 @@ ASSETS_PAR=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".a
 ASSETS_URL=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".assets_url")
 ORACLE_CLIENT_VERSION=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".oracle_client_version")
 
-# Install the yum repo
-yum --enablerepo=ol7_latest clean metadata
-yum-config-manager --enable ol7_latest
-
 # Install Oracle Instant Client
 yum -y install oracle-release-el7
 yum-config-manager --enable ol7_oracle_instantclient
@@ -53,10 +57,7 @@ yum -y install oracle-instantclient$${ORACLE_CLIENT_VERSION}-basic oracle-instan
 
 # Install NodeJs
 yum -y install oracle-nodejs-release-el7
-yum -y install nodejs
-
-# Install tools
-yum install -y unzip httpd jq
+yum -y install --disablerepo=ol7_developer_EPEL nodejs
 
 # Enable and start services
 systemctl daemon-reload
@@ -83,7 +84,7 @@ get_object /root/entrypoint.sh $${ENTRYPOINT_URI}
 chmod +x /root/entrypoint.sh
 
 # Install node services
-cd /app/api && npm ci --production
+# cd /app/api && npm ci --production >/root/api.log 2>&1 &
 
 # Setup app variables
 export OADB_USER=catalogue_user
