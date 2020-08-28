@@ -34,8 +34,8 @@ resource "oci_core_instance" "app_instance" {
     mushop_app_par        = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.mushop_lite_preauth.access_uri}"
     wallet_par            = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.mushop_wallet_preauth.access_uri}"
     assets_par            = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.mushop_media_preauth.access_uri}"
-    assets_url            = "https://objectstorage.${var.region}.oraclecloud.com/n/${oci_objectstorage_bucket.mushop_media.namespace}/b/${oci_objectstorage_bucket.mushop_media.name}/o/"
-    oracle_client_version = "19.8"
+    assets_url            = ((var.object_storage_mushop_media_visibility == "Private") ? "" : "https://objectstorage.${var.region}.oraclecloud.com/n/${oci_objectstorage_bucket.mushop_media.namespace}/b/${oci_objectstorage_bucket.mushop_media.name}/o/")
+    oracle_client_version = var.oracle_client_version
   }
 
   is_pv_encryption_in_transit_enabled = var.is_pv_encryption_in_transit_enabled

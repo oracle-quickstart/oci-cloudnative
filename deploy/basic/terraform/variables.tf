@@ -85,6 +85,9 @@ variable "autonomous_database_data_storage_size_in_tbs" {
 variable "autonomous_database_visibility" {
   default = "Public"
 }
+variable "oracle_client_version" {
+  default = "19.8"
+}
 
 # Encryption (OCI Vault/Key Management/KMS)
 variable "is_pv_encryption_in_transit_enabled" {
@@ -135,4 +138,7 @@ variable "show_advanced" {
 # Object Storage
 variable "object_storage_mushop_media_compartment_ocid" {
   default = ""
+}
+variable "object_storage_mushop_media_visibility" {
+  default = "Public"
 }

@@ -65,6 +65,7 @@ groupings:
   - title: "Advanced Resource Options - Object Storage"
     variables:
     - object_storage_mushop_media_compartment_ocid
+    - object_storage_mushop_media_visibility
 
   - title: "Extras Hidden"
     variables:
@@ -80,7 +81,6 @@ groupings:
       - vault_key_display_name
       - vault_key_key_shape_algorithm
       - vault_key_key_shape_length
-      - object_storage_mushop_media_visibility
       - object_storage_mushop_media_read_par_expiration_date
       - network_cidrs
     visible: false
@@ -138,22 +138,6 @@ variables:
           - show_advanced
         - not:
           - generate_public_ssh_key
-
-  object_storage_mushop_media_visibility:
-    type: enum
-    enum:
-    - "Public"
-    - "Private"
-    title: "Select Object Storage visibility"
-    description: "Public creates a public bucket for the mushop media product images. Private creates a private bucket and creates a ObjectRead pre auth request to provide the images."
-    visible:
-      and:
-        - show_advanced
-
-  object_storage_mushop_media_read_par_expiration_date:
-    type: string
-    title: "Object Storage Media PAR expiration date"
-    description: "The name for the Autonomous Database instance."
 
   is_pv_encryption_in_transit_enabled:
     type: boolean
@@ -348,6 +332,31 @@ variables:
           - show_advanced
         - not:
           - use_only_always_free_elegible_resources
+
+  object_storage_mushop_media_visibility:
+    type: enum
+    enum:
+    - "Public"
+    - "Private"
+    title: "Select Object Storage visibility"
+    description: "Currently, if private, uses assets service. Future: Public creates a public bucket for the mushop media product images. Private creates a private bucket and creates a ObjectRead pre auth request to provide the images."
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
+
+  object_storage_mushop_media_read_par_expiration_date:
+    type: string
+    title: "Object Storage Media PAR expiration date"
+    description: "The name for the Autonomous Database instance."
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources       
 
 outputGroups:
   - title: "MuShop App details"
