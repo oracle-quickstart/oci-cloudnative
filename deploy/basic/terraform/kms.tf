@@ -11,6 +11,8 @@ resource "oci_kms_vault" "mushop_vault" {
 
   count      = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? 1 : 0) : 0
   depends_on = [oci_identity_policy.mushop_basic_policies]
+
+  provider = oci
 }
 
 # Creates OCI Vault key
@@ -26,4 +28,6 @@ resource "oci_kms_key" "mushop_key" {
   freeform_tags = local.common_tags
 
   count = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? 1 : 0) : 0
+
+  provider = oci
 }

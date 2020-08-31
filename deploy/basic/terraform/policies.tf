@@ -15,6 +15,8 @@ resource "oci_objectstorage_object_lifecycle_policy" "mushop_deploy_assets_lifec
     time_unit   = "DAYS"
   }
   depends_on = [oci_identity_policy.mushop_basic_policies, oci_objectstorage_object.mushop_wallet]
+
+  provider = oci
 }
 
 # Create policies for MuShop based on the features

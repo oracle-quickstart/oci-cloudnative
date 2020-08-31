@@ -16,4 +16,6 @@ resource "oci_database_autonomous_database" "mushop_autonomous_database" {
   license_model            = var.autonomous_database_license_model
   nsg_ids                  = (var.autonomous_database_visibility == "Private") ? [oci_core_network_security_group.atp_nsg[0].id] : []
   subnet_id                = (var.autonomous_database_visibility == "Private") ? oci_core_subnet.mushop_main_subnet.id : ""
+
+  provider = oci
 }

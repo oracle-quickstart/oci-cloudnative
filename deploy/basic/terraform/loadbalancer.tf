@@ -3,7 +3,6 @@
 # 
 
 resource "oci_load_balancer_load_balancer" "mushop_lb" {
-
   compartment_id = (var.lb_compartment_ocid != "") ? var.lb_compartment_ocid : var.compartment_ocid
   display_name   = "mushop-${random_string.deploy_id.result}"
   shape          = var.lb_shape
@@ -11,6 +10,7 @@ resource "oci_load_balancer_load_balancer" "mushop_lb" {
   is_private     = "false"
   freeform_tags  = local.common_tags
 
+  provider = oci
 }
 
 resource "oci_load_balancer_backend_set" "mushop_bes" {
@@ -28,6 +28,8 @@ resource "oci_load_balancer_backend_set" "mushop_bes" {
     timeout_in_millis   = 2000
     retries             = 10
   }
+
+  provider = oci
 }
 
 resource "oci_load_balancer_backend" "mushop-be" {
@@ -40,6 +42,8 @@ resource "oci_load_balancer_backend" "mushop-be" {
   drain            = false
   offline          = false
   weight           = 1
+
+  provider = oci
 }
 
 resource "oci_load_balancer_listener" "mushop_listener" {
@@ -54,4 +58,6 @@ resource "oci_load_balancer_listener" "mushop_listener" {
   connection_configuration {
     idle_timeout_in_seconds = "30"
   }
+
+  provider = oci
 }
