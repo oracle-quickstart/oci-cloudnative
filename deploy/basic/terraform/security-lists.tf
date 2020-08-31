@@ -68,7 +68,7 @@ resource "oci_core_security_list" "mushop_security_list" {
     destination_type = "SERVICE_CIDR_BLOCK"
   }
 
-  provider = oci
+  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "oci_core_security_list" "mushop_lb_security_list" {
@@ -135,7 +135,7 @@ resource "oci_core_security_list" "mushop_lb_security_list" {
     }
   }
 
-  provider = oci
+  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 locals {

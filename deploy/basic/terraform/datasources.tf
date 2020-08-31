@@ -6,13 +6,13 @@
 data "oci_identity_availability_domains" "ADs" {
   compartment_id = var.tenancy_ocid
 
-  provider = oci
+  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 data "oci_objectstorage_namespace" "user_namespace" {
   compartment_id = var.compartment_ocid
 
-  provider = oci
+  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 # Randoms
@@ -47,7 +47,7 @@ data "oci_database_autonomous_database_wallet" "autonomous_database_wallet" {
   password               = random_string.autonomous_database_wallet_password.result
   base64_encode_content  = "true"
 
-  provider = oci
+  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 data "oci_limits_services" "test_services" {
@@ -58,7 +58,7 @@ data "oci_limits_services" "test_services" {
     values = ["compute"]
   }
 
-  provider = oci
+  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 data "oci_limits_limit_values" "test_limit_values" {
@@ -70,7 +70,7 @@ data "oci_limits_limit_values" "test_limit_values" {
   name                = "vm-standard-e2-1-micro-count"
   scope_type          = "AD"
 
-  provider = oci
+  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "random_shuffle" "ad" {
@@ -87,7 +87,7 @@ data "oci_core_images" "compute_images" {
   sort_by                  = "TIMECREATED"
   sort_order               = "DESC"
 
-  provider = oci
+  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 data "template_file" "mushop" {
@@ -113,7 +113,7 @@ data "oci_core_services" "all_services" {
     regex  = true
   }
 
-  provider = oci
+  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 locals {

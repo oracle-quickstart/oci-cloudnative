@@ -9,7 +9,7 @@ resource "oci_core_virtual_network" "mushop_main_vcn" {
   dns_label      = "mushopmain${random_string.deploy_id.result}"
   freeform_tags  = local.common_tags
 
-  provider = oci
+  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "oci_core_virtual_network" "mushop_lb_vcn" {
@@ -21,7 +21,7 @@ resource "oci_core_virtual_network" "mushop_lb_vcn" {
 
   count = var.create_secondary_vcn ? 1 : 0
 
-  provider = oci
+  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "oci_core_subnet" "mushop_main_subnet" {
@@ -36,7 +36,7 @@ resource "oci_core_subnet" "mushop_main_subnet" {
   prohibit_public_ip_on_vnic = (var.instance_visibility == "Private") ? true : false
   freeform_tags              = local.common_tags
 
-  provider = oci
+  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "oci_core_subnet" "mushop_lb_subnet" {
@@ -51,7 +51,7 @@ resource "oci_core_subnet" "mushop_lb_subnet" {
   prohibit_public_ip_on_vnic = false
   freeform_tags              = local.common_tags
 
-  provider = oci
+  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "oci_core_route_table" "mushop_main_route_table" {
@@ -87,7 +87,7 @@ resource "oci_core_route_table" "mushop_main_route_table" {
     }
   }
 
-  provider = oci
+  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "oci_core_route_table" "mushop_lb_route_table" {
@@ -111,7 +111,7 @@ resource "oci_core_route_table" "mushop_lb_route_table" {
     }
   }
 
-  provider = oci
+  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "oci_core_nat_gateway" "mushop_nat_gateway" {
@@ -123,7 +123,7 @@ resource "oci_core_nat_gateway" "mushop_nat_gateway" {
 
   count = (var.instance_visibility == "Private") ? 0 : 0
 
-  provider = oci
+  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "oci_core_internet_gateway" "mushop_internet_gateway" {
@@ -132,7 +132,7 @@ resource "oci_core_internet_gateway" "mushop_internet_gateway" {
   vcn_id         = var.create_secondary_vcn ? oci_core_virtual_network.mushop_lb_vcn[0].id : oci_core_virtual_network.mushop_main_vcn.id
   freeform_tags  = local.common_tags
 
-  provider = oci
+  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "oci_core_service_gateway" "mushop_service_gateway" {
@@ -143,7 +143,7 @@ resource "oci_core_service_gateway" "mushop_service_gateway" {
     service_id = lookup(data.oci_core_services.all_services.services[0], "id")
   }
 
-  provider = oci
+  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "oci_core_local_peering_gateway" "main_local_peering_gateway" {
@@ -154,7 +154,7 @@ resource "oci_core_local_peering_gateway" "main_local_peering_gateway" {
 
   count = var.create_secondary_vcn ? 1 : 0
 
-  provider = oci
+  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "oci_core_local_peering_gateway" "lb_local_peering_gateway" {
@@ -164,7 +164,7 @@ resource "oci_core_local_peering_gateway" "lb_local_peering_gateway" {
 
   count = var.create_secondary_vcn ? 1 : 0
 
-  provider = oci
+  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource oci_core_network_security_group atp_nsg {
@@ -175,7 +175,7 @@ resource oci_core_network_security_group atp_nsg {
 
   count = (var.autonomous_database_visibility == "Private") ? 1 : 0
 
-  provider = oci
+  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 resource oci_core_network_security_group_security_rule atp_nsg_rule_1 {
   destination_type          = ""
@@ -187,7 +187,7 @@ resource oci_core_network_security_group_security_rule atp_nsg_rule_1 {
 
   count = (var.autonomous_database_visibility == "Private") ? 1 : 0
 
-  provider = oci
+  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 resource oci_core_network_security_group_security_rule atp_nsg_rule_2 {
   destination               = lookup(var.network_cidrs, "MAIN-VCN-CIDR")
@@ -199,5 +199,5 @@ resource oci_core_network_security_group_security_rule atp_nsg_rule_2 {
 
   count = (var.autonomous_database_visibility == "Private") ? 1 : 0
 
-  provider = oci
+  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
