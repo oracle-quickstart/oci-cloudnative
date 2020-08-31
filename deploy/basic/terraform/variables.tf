@@ -142,3 +142,6 @@ variable "object_storage_mushop_media_compartment_ocid" {
 variable "object_storage_mushop_media_visibility" {
   default = "Public"
 }
+variable "object_storage_mushop_media_custom_location" {
+  default = "https://objectstorage.us-ashburn-1.oraclecloud.com/n/ociateam/b/MuShop_1u82_Catalogue_Bucket/o/"
+}
