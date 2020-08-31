@@ -8,8 +8,6 @@ resource "oci_core_virtual_network" "mushop_main_vcn" {
   display_name   = "mushop-main-${random_string.deploy_id.result}"
   dns_label      = "mushopmain${random_string.deploy_id.result}"
   freeform_tags  = local.common_tags
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "oci_core_virtual_network" "mushop_lb_vcn" {
@@ -20,8 +18,6 @@ resource "oci_core_virtual_network" "mushop_lb_vcn" {
   freeform_tags  = local.common_tags
 
   count = var.create_secondary_vcn ? 1 : 0
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "oci_core_subnet" "mushop_main_subnet" {
@@ -35,8 +31,6 @@ resource "oci_core_subnet" "mushop_main_subnet" {
   dhcp_options_id            = oci_core_virtual_network.mushop_main_vcn.default_dhcp_options_id
   prohibit_public_ip_on_vnic = (var.instance_visibility == "Private") ? true : false
   freeform_tags              = local.common_tags
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "oci_core_subnet" "mushop_lb_subnet" {
@@ -50,8 +44,6 @@ resource "oci_core_subnet" "mushop_lb_subnet" {
   dhcp_options_id            = var.create_secondary_vcn ? oci_core_virtual_network.mushop_lb_vcn[0].default_dhcp_options_id : oci_core_virtual_network.mushop_main_vcn.default_dhcp_options_id
   prohibit_public_ip_on_vnic = false
   freeform_tags              = local.common_tags
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "oci_core_route_table" "mushop_main_route_table" {
@@ -86,8 +78,6 @@ resource "oci_core_route_table" "mushop_main_route_table" {
       network_entity_id = oci_core_local_peering_gateway.main_local_peering_gateway[0].id
     }
   }
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "oci_core_route_table" "mushop_lb_route_table" {
@@ -110,8 +100,6 @@ resource "oci_core_route_table" "mushop_lb_route_table" {
       network_entity_id = oci_core_local_peering_gateway.lb_local_peering_gateway[0].id
     }
   }
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "oci_core_nat_gateway" "mushop_nat_gateway" {
@@ -121,9 +109,7 @@ resource "oci_core_nat_gateway" "mushop_nat_gateway" {
   vcn_id         = oci_core_virtual_network.mushop_main_vcn.id
   freeform_tags  = local.common_tags
 
-  count = (var.instance_visibility == "Private") ? 0 : 0
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
+  count = var.use_only_always_free_elegible_resources ? 0 : ((var.instance_visibility == "Private") ? 0 : 0)
 }
 
 resource "oci_core_internet_gateway" "mushop_internet_gateway" {
@@ -131,8 +117,6 @@ resource "oci_core_internet_gateway" "mushop_internet_gateway" {
   display_name   = "mushop-internet-gateway-${random_string.deploy_id.result}"
   vcn_id         = var.create_secondary_vcn ? oci_core_virtual_network.mushop_lb_vcn[0].id : oci_core_virtual_network.mushop_main_vcn.id
   freeform_tags  = local.common_tags
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "oci_core_service_gateway" "mushop_service_gateway" {
@@ -143,7 +127,7 @@ resource "oci_core_service_gateway" "mushop_service_gateway" {
     service_id = lookup(data.oci_core_services.all_services.services[0], "id")
   }
 
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
+  count = var.use_only_always_free_elegible_resources ? 0 : 1
 }
 
 resource "oci_core_local_peering_gateway" "main_local_peering_gateway" {
@@ -153,8 +137,6 @@ resource "oci_core_local_peering_gateway" "main_local_peering_gateway" {
   peer_id        = oci_core_local_peering_gateway.lb_local_peering_gateway[0].id
 
   count = var.create_secondary_vcn ? 1 : 0
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "oci_core_local_peering_gateway" "lb_local_peering_gateway" {
@@ -163,8 +145,6 @@ resource "oci_core_local_peering_gateway" "lb_local_peering_gateway" {
   display_name   = "localPeeringGateway - lb"
 
   count = var.create_secondary_vcn ? 1 : 0
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource oci_core_network_security_group atp_nsg {
@@ -174,8 +154,6 @@ resource oci_core_network_security_group atp_nsg {
   vcn_id         = oci_core_virtual_network.mushop_main_vcn.id
 
   count = (var.autonomous_database_visibility == "Private") ? 1 : 0
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 resource oci_core_network_security_group_security_rule atp_nsg_rule_1 {
   destination_type          = ""
@@ -186,8 +164,6 @@ resource oci_core_network_security_group_security_rule atp_nsg_rule_1 {
   source_type               = "CIDR_BLOCK"
 
   count = (var.autonomous_database_visibility == "Private") ? 1 : 0
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 resource oci_core_network_security_group_security_rule atp_nsg_rule_2 {
   destination               = lookup(var.network_cidrs, "MAIN-VCN-CIDR")
@@ -198,6 +174,4 @@ resource oci_core_network_security_group_security_rule atp_nsg_rule_2 {
   source_type               = ""
 
   count = (var.autonomous_database_visibility == "Private") ? 1 : 0
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }

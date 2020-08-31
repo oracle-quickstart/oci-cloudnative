@@ -9,8 +9,6 @@ resource "oci_load_balancer_load_balancer" "mushop_lb" {
   subnet_ids     = [oci_core_subnet.mushop_lb_subnet.id]
   is_private     = "false"
   freeform_tags  = local.common_tags
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "oci_load_balancer_backend_set" "mushop_bes" {
@@ -28,8 +26,6 @@ resource "oci_load_balancer_backend_set" "mushop_bes" {
     timeout_in_millis   = 2000
     retries             = 10
   }
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "oci_load_balancer_backend" "mushop-be" {
@@ -42,8 +38,6 @@ resource "oci_load_balancer_backend" "mushop-be" {
   drain            = false
   offline          = false
   weight           = 1
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "oci_load_balancer_listener" "mushop_listener" {
@@ -58,6 +52,4 @@ resource "oci_load_balancer_listener" "mushop_listener" {
   connection_configuration {
     idle_timeout_in_seconds = "30"
   }
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }

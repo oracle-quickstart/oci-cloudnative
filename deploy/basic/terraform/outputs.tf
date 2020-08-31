@@ -30,6 +30,10 @@ output "deploy_id" {
   value = random_string.deploy_id.result
 }
 
+output "deployed_to_region" {
+  value = local.region_to_deploy
+}
+
 output "mushop_basic_source_code" {
   value = "https://github.com/oracle-quickstart/oci-cloudnative/tree/master/deploy/basic"
 }

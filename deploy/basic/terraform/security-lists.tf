@@ -67,8 +67,6 @@ resource "oci_core_security_list" "mushop_security_list" {
     destination      = lookup(data.oci_core_services.all_services.services[0], "cidr_block")
     destination_type = "SERVICE_CIDR_BLOCK"
   }
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "oci_core_security_list" "mushop_lb_security_list" {
@@ -134,8 +132,6 @@ resource "oci_core_security_list" "mushop_lb_security_list" {
       min = local.microservices_port_number
     }
   }
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 locals {

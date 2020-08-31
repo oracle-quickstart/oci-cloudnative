@@ -76,6 +76,7 @@ groupings:
       - autonomous_database_license_model
       - autonomous_database_cpu_core_count
       - autonomous_database_data_storage_size_in_tbs
+      - oracle_client_version
       - vault_display_name
       - vault_type
       - vault_key_display_name
@@ -83,6 +84,7 @@ groupings:
       - vault_key_key_shape_length
       - object_storage_mushop_media_read_par_expiration_date
       - network_cidrs
+      - object_storage_mushop_media_custom_location
     visible: false
 
 variables:
@@ -105,7 +107,7 @@ variables:
   autonomous_database_name:
     type: string
     title: "Database Name"
-    description: "The name for the Autonomous Database instance."
+    description: "The name for the Autonomous Database instance. The deployment id (4 characters random string) will be added to the end of the DB name."
     minLength: 1
     maxLength: 10
     pattern: "^[a-zA-Z][a-zA-Z0-9]+$"
@@ -311,9 +313,9 @@ variables:
     type: enum
     enum:
     - "Public"
-    - "Private"
+    # - "Private"
     title: "Choose autonomous database visibility type"
-    description: "If Private, creates the ADB with private endpoint. The autonomous database visibility will define if assign the ATP to a private subnet or allow secure access from everywhere."
+    description: "NOTE: Currently private endpoints are only supported if use local terraform. | If Private, creates the ADB with private endpoint. The autonomous database visibility will define if assign the ATP to a private subnet or allow secure access from everywhere."
     visible:
       and:
         - and:
@@ -337,7 +339,7 @@ variables:
     type: enum
     enum:
     - "Public"
-    - "Private"
+    # - "Private"
     title: "Select Object Storage visibility"
     description: "Currently, if private, uses assets service. Future: Public creates a public bucket for the mushop media product images. Private creates a private bucket and creates a ObjectRead pre auth request to provide the images."
     visible:
@@ -356,7 +358,7 @@ variables:
         - and:
           - show_advanced
         - not:
-          - use_only_always_free_elegible_resources       
+          - use_only_always_free_elegible_resources
 
 outputGroups:
   - title: "MuShop App details"
@@ -365,6 +367,7 @@ outputGroups:
       - autonomous_database_password
       - generated_private_key_pem
       - deploy_id
+      - deployed_to_region
       - mushop_basic_source_code
       - dev
       - comments
@@ -395,6 +398,11 @@ outputs:
   deploy_id:
     type: string
     title: "Deployment Id"
+    visible: true
+
+  deployed_to_region:
+    type: string
+    title: "Deployed using Region"
     visible: true
 
   mushop_basic_source_code:

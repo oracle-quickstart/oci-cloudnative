@@ -39,8 +39,6 @@ resource "oci_core_instance" "app_instance" {
   }
 
   is_pv_encryption_in_transit_enabled = var.is_pv_encryption_in_transit_enabled
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 locals {

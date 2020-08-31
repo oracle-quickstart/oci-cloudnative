@@ -5,14 +5,10 @@
 # Gets a list of Availability Domains
 data "oci_identity_availability_domains" "ADs" {
   compartment_id = var.tenancy_ocid
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 data "oci_objectstorage_namespace" "user_namespace" {
   compartment_id = var.compartment_ocid
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 # Randoms
@@ -46,8 +42,6 @@ data "oci_database_autonomous_database_wallet" "autonomous_database_wallet" {
   autonomous_database_id = oci_database_autonomous_database.mushop_autonomous_database.id
   password               = random_string.autonomous_database_wallet_password.result
   base64_encode_content  = "true"
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 data "oci_limits_services" "test_services" {
@@ -57,8 +51,6 @@ data "oci_limits_services" "test_services" {
     name   = "name"
     values = ["compute"]
   }
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 data "oci_limits_limit_values" "test_limit_values" {
@@ -69,8 +61,6 @@ data "oci_limits_limit_values" "test_limit_values" {
   availability_domain = data.oci_identity_availability_domains.ADs.availability_domains[count.index].name
   name                = "vm-standard-e2-1-micro-count"
   scope_type          = "AD"
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 resource "random_shuffle" "ad" {
@@ -86,8 +76,6 @@ data "oci_core_images" "compute_images" {
   shape                    = var.instance_shape
   sort_by                  = "TIMECREATED"
   sort_order               = "DESC"
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 data "template_file" "mushop" {
@@ -96,6 +84,8 @@ data "template_file" "mushop" {
 
 data "oci_identity_tenancy" "tenant_details" {
   tenancy_id = var.tenancy_ocid
+
+  provider = oci.current_region
 }
 
 data "oci_identity_regions" "home_region" {
@@ -103,6 +93,8 @@ data "oci_identity_regions" "home_region" {
     name   = "key"
     values = [data.oci_identity_tenancy.tenant_details.home_region_key]
   }
+
+  provider = oci.current_region
 }
 
 # Available Services
@@ -112,8 +104,6 @@ data "oci_core_services" "all_services" {
     values = ["All .* Services In Oracle Services Network"]
     regex  = true
   }
-
-  provider = var.use_only_always_free_elegible_resources ? oci.home_region : oci
 }
 
 locals {
