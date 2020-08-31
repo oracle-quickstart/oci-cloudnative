@@ -97,7 +97,7 @@ resource "oci_objectstorage_bucket" "mushop_media" {
   name           = "mushop-media-${random_string.deploy_id.result}"
   namespace      = data.oci_objectstorage_namespace.user_namespace.namespace
   freeform_tags  = local.common_tags
-  access_type    = "ObjectReadWithoutList"
+  access_type    = (var.object_storage_mushop_media_visibility == "Private") ? "NoPublicAccess" : "ObjectReadWithoutList"
   kms_key_id     = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? oci_kms_key.mushop_key[0].id : var.encryption_key_id) : null
 }
 
