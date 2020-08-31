@@ -164,11 +164,13 @@ RUN mkdir /package && GZIP=-9 tar cvzf /package/mushop-basic.tar.gz /app
 
 # Create ORM package
 COPY deploy/basic/VERSION /
-COPY deploy/basic/terraform /basic
-COPY src/catalogue/dbdata/atp_mushop_catalogue.sql /basic/scripts
-COPY --from=assets-builder /app/assets/dist /basic/images
-RUN cp /package/mushop-basic.tar.gz /basic/scripts
 WORKDIR /basic
+COPY deploy/basic/terraform/*.tf /basic/
+COPY deploy/basic/terraform/schema.yaml /basic/
+COPY deploy/basic/terraform/scripts /basic/scripts
+COPY src/catalogue/dbdata/atp_mushop_catalogue.sql /basic/scripts/
+COPY --from=assets-builder /app/assets/dist /basic/images
+RUN cp /package/mushop-basic.tar.gz /basic/scripts/
 RUN zip -r /package/mushop-basic-stack.zip .
 
 VOLUME ["/usr/lib/oracle/${oracleClientVersion}/client64/lib/network/admin/"]
