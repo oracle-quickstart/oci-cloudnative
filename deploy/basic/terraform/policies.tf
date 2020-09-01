@@ -22,22 +22,20 @@ resource "oci_identity_policy" "mushop_basic_policies" {
   name           = "mushop-basic-policies-${random_string.deploy_id.result}"
   description    = "Policies created by terraform for MuShop Basic"
   compartment_id = var.compartment_ocid
-  statements = (var.use_encryption_from_oci_vault ?
-    (var.create_vault_policies_for_group ? (
-      concat(
-        local.allow_object_storage_lifecycle_statement,
-        local.allow_object_storage_service_keys_statements,
-        local.allow_media_object_storage_service_keys_statements,
-        local.allow_group_manage_vault_keys_statements
-      )) : concat(
-      local.allow_object_storage_lifecycle_statement,
-      local.allow_object_storage_service_keys_statements,
-      local.allow_media_object_storage_service_keys_statements
-      )
-  ) : local.allow_object_storage_lifecycle_statement)
+  statements = local.mushop_basic_policies_statement
   freeform_tags = local.common_tags
 
   provider = oci.home_region
+}
+
+locals {
+    mushop_basic_policies_statement = concat(
+        local.allow_object_storage_lifecycle_statement,
+        var.use_encryption_from_oci_vault ? local.allow_object_storage_service_keys_statements : [],
+        var.use_encryption_from_oci_vault ? local.allow_media_object_storage_service_keys_statements : [],
+        var.create_vault_policies_for_group ? local.allow_group_manage_vault_keys_statements : [],
+        local.allow_group_manage_local_peering_statements
+    )
 }
 
 locals {
