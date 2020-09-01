@@ -50,6 +50,12 @@ variable "lb_compartment_ocid" {
 variable "create_secondary_vcn" {
   default = false
 }
+variable "create_lpg_policies_for_group" {
+  default = false
+}
+variable "user_admin_group_for_lpg_policy" {
+  default = "Administrators"
+}
 variable "network_cidrs" {
   type = map(string)
 
@@ -143,5 +149,5 @@ variable "object_storage_mushop_media_visibility" {
   default = "Public"
 }
 variable "object_storage_mushop_media_custom_location" {
-  default = "https://objectstorage.us-ashburn-1.oraclecloud.com/n/ociateam/b/MuShop_1u82_Catalogue_Bucket/o/"
+  default = ""
 }
