@@ -29,7 +29,6 @@ resource "oci_load_balancer_backend_set" "mushop_bes" {
 }
 
 resource "oci_load_balancer_backend" "mushop-be" {
-  count            = var.num_nodes
   load_balancer_id = oci_load_balancer_load_balancer.mushop_lb.id
   backendset_name  = oci_load_balancer_backend_set.mushop_bes.name
   ip_address       = element(oci_core_instance.app_instance.*.private_ip, count.index)
@@ -38,15 +37,27 @@ resource "oci_load_balancer_backend" "mushop-be" {
   drain            = false
   offline          = false
   weight           = 1
+
+  count            = var.num_nodes
 }
 
-resource "oci_load_balancer_listener" "mushop_listener" {
-  #Required
-
+resource "oci_load_balancer_listener" "mushop_listener_80" {
   load_balancer_id         = oci_load_balancer_load_balancer.mushop_lb.id
   default_backend_set_name = oci_load_balancer_backend_set.mushop_bes.name
-  name                     = "mushop-${random_string.deploy_id.result}"
+  name                     = "mushop-${random_string.deploy_id.result}-80"
   port                     = 80
+  protocol                 = "HTTP"
+
+  connection_configuration {
+    idle_timeout_in_seconds = "30"
+  }
+}
+
+resource "oci_load_balancer_listener" "mushop_listener_443" {
+  load_balancer_id         = oci_load_balancer_load_balancer.mushop_lb.id
+  default_backend_set_name = oci_load_balancer_backend_set.mushop_bes.name
+  name                     = "mushop-${random_string.deploy_id.result}-443"
+  port                     = 443
   protocol                 = "HTTP"
 
   connection_configuration {
