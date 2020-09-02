@@ -73,7 +73,7 @@ data "oci_limits_limit_values" "compute_limit_values" {
 
   count = length(data.oci_identity_availability_domains.ADs.availability_domains)
 }
-resource "random_shuffle" "ad" {
+resource "random_shuffle" "compute_ad" {
   input        = local.compute_available_limit_ad_list
   result_count = length(local.compute_available_limit_ad_list)
 }
