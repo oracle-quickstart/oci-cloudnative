@@ -38,7 +38,7 @@ resource "oci_load_balancer_backend" "mushop-be" {
   offline          = false
   weight           = 1
 
-  count            = var.num_nodes
+  count = var.num_nodes
 }
 
 resource "oci_load_balancer_listener" "mushop_listener_80" {

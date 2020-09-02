@@ -3,12 +3,12 @@
 # 
 
 resource "oci_core_instance" "app_instance" {
-  count               = var.num_nodes
-  availability_domain = random_shuffle.ad.result[count.index % length(random_shuffle.ad.result)]
-  compartment_id      = var.compartment_ocid
-  display_name        = "mushop-${random_string.deploy_id.result}-${count.index}"
-  shape               = var.instance_shape
-  freeform_tags       = local.common_tags
+  availability_domain                 = random_shuffle.ad.result[count.index % length(random_shuffle.ad.result)]
+  compartment_id                      = var.compartment_ocid
+  display_name                        = "mushop-${random_string.deploy_id.result}-${count.index}"
+  shape                               = var.instance_shape
+  is_pv_encryption_in_transit_enabled = var.is_pv_encryption_in_transit_enabled
+  freeform_tags                       = local.common_tags
 
   create_vnic_details {
     subnet_id        = oci_core_subnet.mushop_main_subnet.id
@@ -38,7 +38,7 @@ resource "oci_core_instance" "app_instance" {
     oracle_client_version = var.oracle_client_version
   }
 
-  is_pv_encryption_in_transit_enabled = var.is_pv_encryption_in_transit_enabled
+  count = var.num_nodes
 }
 
 ### Important Security Notice ###

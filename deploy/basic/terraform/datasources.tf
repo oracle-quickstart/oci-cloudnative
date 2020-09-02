@@ -57,7 +57,7 @@ data "oci_limits_services" "compute_services" {
 }
 data "oci_limits_limit_definitions" "compute_limit_definitions" {
   compartment_id = var.tenancy_ocid
-  service_name = data.oci_limits_services.compute_services.services.0.name
+  service_name   = data.oci_limits_services.compute_services.services.0.name
 
   filter {
     name   = "description"
@@ -65,21 +65,22 @@ data "oci_limits_limit_definitions" "compute_limit_definitions" {
   }
 }
 data "oci_limits_limit_values" "compute_limit_values" {
-  count          = length(data.oci_identity_availability_domains.ADs.availability_domains)
-  compartment_id = var.tenancy_ocid
-  service_name   = data.oci_limits_services.compute_services.services.0.name
+  compartment_id      = var.tenancy_ocid
+  service_name        = data.oci_limits_services.compute_services.services.0.name
   availability_domain = data.oci_identity_availability_domains.ADs.availability_domains[count.index].name
   name                = data.oci_limits_limit_definitions.compute_limit_definitions.limit_definitions[0].name
   scope_type          = "AD"
+
+  count = length(data.oci_identity_availability_domains.ADs.availability_domains)
 }
 resource "random_shuffle" "ad" {
-  input = local.compute_available_limit_ad_list
+  input        = local.compute_available_limit_ad_list
   result_count = length(local.compute_available_limit_ad_list)
 }
 locals {
   compute_available_limit_ad_list = [for limit in data.oci_limits_limit_values.compute_limit_values : limit.limit_values[0].availability_domain if limit.limit_values[0].value > 0]
   compute_available_limit_error = length(local.compute_available_limit_ad_list) == 0 ? (
-    file(  "ERROR: No limits available for the chosen compute shape")   ): 0
+  file("ERROR: No limits available for the chosen compute shape")) : 0
 }
 
 # Gets a list of supported images based on the shape, operating_system and operating_system_version provided
