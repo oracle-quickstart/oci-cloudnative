@@ -7,6 +7,7 @@ data "oci_identity_availability_domains" "ADs" {
   compartment_id = var.tenancy_ocid
 }
 
+# Gets ObjectStorage namespace
 data "oci_objectstorage_namespace" "user_namespace" {
   compartment_id = var.compartment_ocid
 }
@@ -44,7 +45,9 @@ data "oci_database_autonomous_database_wallet" "autonomous_database_wallet" {
   base64_encode_content  = "true"
 }
 
-data "oci_limits_services" "test_services" {
+# Check for resource limits
+## Check available compute shape
+data "oci_limits_services" "compute_services" {
   compartment_id = var.tenancy_ocid
 
   filter {
@@ -52,20 +55,31 @@ data "oci_limits_services" "test_services" {
     values = ["compute"]
   }
 }
+data "oci_limits_limit_definitions" "compute_limit_definitions" {
+  compartment_id = var.tenancy_ocid
+  service_name = data.oci_limits_services.compute_services.services.0.name
 
-data "oci_limits_limit_values" "test_limit_values" {
+  filter {
+    name   = "description"
+    values = [var.instance_shape]
+  }
+}
+data "oci_limits_limit_values" "compute_limit_values" {
   count          = length(data.oci_identity_availability_domains.ADs.availability_domains)
   compartment_id = var.tenancy_ocid
-  service_name   = data.oci_limits_services.test_services.services.0.name
-
+  service_name   = data.oci_limits_services.compute_services.services.0.name
   availability_domain = data.oci_identity_availability_domains.ADs.availability_domains[count.index].name
-  name                = "vm-standard-e2-1-micro-count"
+  name                = data.oci_limits_limit_definitions.compute_limit_definitions.limit_definitions[0].name
   scope_type          = "AD"
 }
-
 resource "random_shuffle" "ad" {
-  input        = [for ad in data.oci_identity_availability_domains.ADs.availability_domains : ad.name]
-  result_count = 1
+  input = local.compute_available_limit_ad_list
+  result_count = length(local.compute_available_limit_ad_list)
+}
+locals {
+  compute_available_limit_ad_list = [for limit in data.oci_limits_limit_values.compute_limit_values : limit.limit_values[0].availability_domain if limit.limit_values[0].value > 0]
+  compute_available_limit_error = length(local.compute_available_limit_ad_list) == 0 ? (
+    file(  "ERROR: No limits available for the chosen compute shape")   ): 0
 }
 
 # Gets a list of supported images based on the shape, operating_system and operating_system_version provided
@@ -108,6 +122,6 @@ data "oci_core_services" "all_services" {
 
 locals {
   common_tags = {
-    Reference = "Created by OCI QuickStart for Always-Free Tier"
+    Reference = "Created by OCI QuickStart for MuShop Basic demo"
   }
 }

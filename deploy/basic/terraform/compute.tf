@@ -4,7 +4,7 @@
 
 resource "oci_core_instance" "app_instance" {
   count               = var.num_nodes
-  availability_domain = local.availability_domain[0]
+  availability_domain = random_shuffle.ad.result[count.index % length(random_shuffle.ad.result)]
   compartment_id      = var.compartment_ocid
   display_name        = "mushop-${random_string.deploy_id.result}-${count.index}"
   shape               = var.instance_shape
@@ -39,13 +39,6 @@ resource "oci_core_instance" "app_instance" {
   }
 
   is_pv_encryption_in_transit_enabled = var.is_pv_encryption_in_transit_enabled
-}
-
-locals {
-  availability_domain = ((var.use_only_always_free_elegible_resources)
-    ? [for limit in data.oci_limits_limit_values.test_limit_values : limit.limit_values[0].availability_domain if limit.limit_values[0].value > 0]
-    : random_shuffle.ad.result
-  )
 }
 
 ### Important Security Notice ###
