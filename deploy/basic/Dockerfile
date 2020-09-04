@@ -166,6 +166,7 @@ RUN mkdir /package && GZIP=-9 tar cvzf /package/mushop-basic.tar.gz /app
 COPY deploy/basic/VERSION /
 WORKDIR /basic
 COPY deploy/basic/terraform/*.tf /basic/
+COPY deploy/basic/terraform/*.tfvars.example /basic/
 COPY deploy/basic/terraform/schema.yaml /basic/
 COPY deploy/basic/terraform/scripts /basic/scripts
 COPY src/catalogue/dbdata/atp_mushop_catalogue.sql /basic/scripts/
