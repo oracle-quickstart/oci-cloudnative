@@ -11,7 +11,8 @@ that creates all the required resources and configures the application on the cr
 ## Topology
 
 The application uses a typical topology for a 3-tier web application as follows
-![MuShop Basic Infra](../../images/basic/00-Topology.png)
+
+![MuShop Basic Infra](../../images/basic/00-Topology-v1.2.0.svg)
 
 ### Components
 
