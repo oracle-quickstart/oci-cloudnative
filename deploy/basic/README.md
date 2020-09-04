@@ -63,6 +63,11 @@ After complete the Build steps 1 and 2, generate the binaries:
 
 `docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /basic/image/*.png /transfer/deploy/basic/terraform/images/`
 
+- Rename the file `terraform.tfvars.example` to `terraform.tfvars`
+- Change the credentials variables to your user and any other desirable variable
+- Run `terraform init` to init the terraform providers
+- Run `terraform apply` to create the resources on OCI
+
 [oci]: https://cloud.oracle.com/en_US/cloud-infrastructure
 [orm]: https://docs.cloud.oracle.com/iaas/Content/ResourceManager/Concepts/resourcemanager.htm
 [tf]: https://www.terraform.io

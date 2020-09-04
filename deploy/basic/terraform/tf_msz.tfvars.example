@@ -10,12 +10,13 @@
 #############################################################################################################################
 
 # OCI authentication
-
 tenancy_ocid     = "ocid1.tenancy....."
-compartment_ocid = "ocid1.compartment...."
 fingerprint      = "" # e.g.: "5f:53:..." or leave blank if using CloudShell
 user_ocid        = "" # e.g.: "ocid1.user..." or leave blank if using CloudShell
 private_key_path = "" # e.g.: "/users/user/.oci/oci_api_key.pem" or leave blank if using CloudShell
+
+# Deployment compartment
+compartment_ocid = "ocid1.compartment...."
 
 # region
 region = "us-phoenix-1"
