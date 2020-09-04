@@ -30,10 +30,10 @@ groupings:
     - show_advanced
     - generate_public_ssh_key
     - public_ssh_key
+    - is_pv_encryption_in_transit_enabled
 
   - title: "Encryption using OCI Vault (KMS)"
     variables:
-    - is_pv_encryption_in_transit_enabled
     - use_encryption_from_oci_vault
     - create_new_encryption_key
     - encryption_key_id

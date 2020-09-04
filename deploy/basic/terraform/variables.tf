@@ -39,6 +39,9 @@ variable "image_operating_system_version" {
 variable "instance_visibility" {
   default = "Public"
 }
+variable "is_pv_encryption_in_transit_enabled" {
+  default = false
+}
 
 # Network Details
 variable "lb_shape" {
@@ -96,9 +99,6 @@ variable "oracle_client_version" {
 }
 
 # Encryption (OCI Vault/Key Management/KMS)
-variable "is_pv_encryption_in_transit_enabled" {
-  default = false
-}
 variable "use_encryption_from_oci_vault" {
   default = false
 }
