@@ -64,12 +64,11 @@ data "oci_limits_limit_definitions" "compute_limit_definitions" {
     values = [var.instance_shape]
   }
 }
-data "oci_limits_limit_values" "compute_limit_values" {
+data "oci_limits_resource_availability" "compute_resource_availability" {
   compartment_id      = var.tenancy_ocid
+  limit_name          = data.oci_limits_limit_definitions.compute_limit_definitions.limit_definitions[0].name
   service_name        = data.oci_limits_services.compute_services.services.0.name
   availability_domain = data.oci_identity_availability_domains.ADs.availability_domains[count.index].name
-  name                = data.oci_limits_limit_definitions.compute_limit_definitions.limit_definitions[0].name
-  scope_type          = "AD"
 
   count = length(data.oci_identity_availability_domains.ADs.availability_domains)
 }
@@ -78,9 +77,9 @@ resource "random_shuffle" "compute_ad" {
   result_count = length(local.compute_available_limit_ad_list)
 }
 locals {
-  compute_available_limit_ad_list = [for limit in data.oci_limits_limit_values.compute_limit_values : limit.limit_values[0].availability_domain if limit.limit_values[0].value > 0]
+  compute_available_limit_ad_list = [for limit in data.oci_limits_resource_availability.compute_resource_availability : limit.availability_domain if(limit.available - var.num_nodes) >= 0]
   compute_available_limit_error = length(local.compute_available_limit_ad_list) == 0 ? (
-  file("ERROR: No limits available for the chosen compute shape")) : 0
+  file(   "ERROR: No limits available for the chosen compute shape and number of nodes")   ): 0
 }
 
 # Gets a list of supported images based on the shape, operating_system and operating_system_version provided
