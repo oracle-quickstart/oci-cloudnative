@@ -365,9 +365,9 @@ variables:
     type: enum
     enum:
     - "Public"
-    # - "Private"
+    - "Private"
     title: "Select Object Storage visibility"
-    description: "Currently, if private, uses assets service. Future: Public creates a public bucket for the mushop media product images. Private creates a private bucket and creates a ObjectRead pre auth request to provide the images."
+    description: "Public creates a public bucket for the mushop media product images. Private creates a private bucket and populates the catalogue service with the images."
     visible:
       and:
         - and:
