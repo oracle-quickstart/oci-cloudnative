@@ -60,7 +60,6 @@ APACHE_CONF_URI=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -
 ENTRYPOINT_URI=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".entrypoint_par")
 MUSHOP_APP_URI=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".mushop_app_par")
 WALLET_URI=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".wallet_par")
-# ASSETS_PAR=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".assets_par")
 ASSETS_URL=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".assets_url")
 ORACLE_CLIENT_VERSION=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".oracle_client_version")
 MUSHOP_MEDIA_VISIBILITY=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".mushop_media_visibility")

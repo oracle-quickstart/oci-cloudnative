@@ -37,7 +37,6 @@ resource "oci_core_instance" "app_instance" {
     oracle_client_version      = var.oracle_client_version
     mushop_media_visibility    = var.object_storage_mushop_media_visibility
     mushop_media_pars_list_par = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.mushop_media_pars_list_preauth.access_uri}"
-    # assets_par            = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.mushop_media_preauth.access_uri}"
   }
 
   count = var.num_nodes

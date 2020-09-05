@@ -111,15 +111,6 @@ resource "oci_objectstorage_bucket" "mushop_media" {
   kms_key_id     = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? oci_kms_key.mushop_key[0].id : var.encryption_key_id) : null
 }
 
-# Static assets write PAR
-# resource "oci_objectstorage_preauthrequest" "mushop_media_preauth" {
-#   bucket       = oci_objectstorage_bucket.mushop_media.name
-#   namespace    = oci_objectstorage_bucket.mushop_media.namespace
-#   access_type  = "AnyObjectWrite"
-#   name         = "mushop_assets_preauth"
-#   time_expires = timeadd(timestamp(), "30m")
-# }
-
 # Static product media
 resource "oci_objectstorage_object" "mushop_media" {
   for_each = fileset("./images", "**")
