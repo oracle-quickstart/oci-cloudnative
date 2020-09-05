@@ -34,7 +34,7 @@ get_media_pars() {
     while [ "$field" -lt "$count" ]; do
             par_url=`cat $input_file | cut -d, -f$field`
             printf "."
-            curl -OLs --retry 9 ${par_url}
+            curl -OLs --retry 9 $par_url
             let "field+=1"
     done
     return $success
@@ -99,8 +99,8 @@ tar zxvf /root/mushop-bin.tar.gz -C /
 if [[ "$MUSHOP_MEDIA_VISIBILITY" == Private ]]; then
         echo "MuShop Media Private Visibility selected"
         get_object /root/mushop_media_pars_list.txt $${MUSHOP_MEDIA_PARS_LIST}
-        mkdir -p /app/catalogue/images
-        cd /app/catalogue/images        
+        mkdir -p /root/images
+        cd /root/images        
         echo "Loading MuShop Media Images to Catalogue..."
         get_media_pars /root/mushop_media_pars_list.txt
         echo "Images loaded"
