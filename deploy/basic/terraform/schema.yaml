@@ -86,7 +86,6 @@ groupings:
       - vault_key_key_shape_length
       - object_storage_mushop_media_read_par_expiration_date
       - network_cidrs
-      - object_storage_mushop_media_custom_location
     visible: false
 
 variables:

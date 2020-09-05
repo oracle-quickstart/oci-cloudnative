@@ -55,4 +55,3 @@ use_only_always_free_elegible_resources = true
 # Object Storage
 object_storage_mushop_media_compartment_ocid = "" # e.g.: "ocid1.compartment..."
 object_storage_mushop_media_visibility       = "Public"
-object_storage_mushop_media_custom_location  = "" # e.g.: "https://objectstorage.us-ashburn-1.oraclecloud.com/n/ociateam/b/MuShop_1u82_Catalogue_Bucket/o/"

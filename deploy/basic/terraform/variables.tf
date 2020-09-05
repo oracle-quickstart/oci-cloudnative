@@ -148,6 +148,3 @@ variable "object_storage_mushop_media_compartment_ocid" {
 variable "object_storage_mushop_media_visibility" {
   default = "Public"
 }
-variable "object_storage_mushop_media_custom_location" {
-  default = ""
-}
