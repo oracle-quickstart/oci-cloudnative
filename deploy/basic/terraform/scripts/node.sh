@@ -26,6 +26,20 @@ get_object() {
     return $success
 }
 
+get_media_pars() {
+    input_file=$1
+    field=1
+    success=1
+    count=`sed 's/[^,]//g' $input_file | wc -c`; let "count+=1"
+    while [ "$field" -lt "$count" ]; do
+            par_url=`cat $input_file | cut -d, -f$field`
+            printf "."
+            curl -OLs --retry 9 ${par_url}
+            let "field+=1"
+    done
+    return $success
+}
+
 # Configure firewall
 firewall-offline-cmd --add-port=80/tcp
 systemctl restart firewalld
@@ -46,9 +60,11 @@ APACHE_CONF_URI=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -
 ENTRYPOINT_URI=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".entrypoint_par")
 MUSHOP_APP_URI=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".mushop_app_par")
 WALLET_URI=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".wallet_par")
-ASSETS_PAR=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".assets_par")
+# ASSETS_PAR=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".assets_par")
 ASSETS_URL=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".assets_url")
 ORACLE_CLIENT_VERSION=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".oracle_client_version")
+MUSHOP_MEDIA_VISIBILITY=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".mushop_media_visibility")
+MUSHOP_MEDIA_PARS_LIST=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq -j ".mushop_media_pars_list_par")
 
 # Install Oracle Instant Client
 yum -y install oracle-release-el7
@@ -75,16 +91,24 @@ sqlplus admin/$${ATP_PW}@$${ATP_DB_NAME}_tp @/root/catalogue.sql
 # Get http server config
 get_object /etc/httpd/conf/httpd.conf $${APACHE_CONF_URI}
 
-#Get binaries
+# Get binaries
 get_object /root/mushop-bin.tar.gz $${MUSHOP_APP_URI}
 tar zxvf /root/mushop-bin.tar.gz -C /
+
+# If visibility set to private, get MuShop Media Assets
+if [[ "$MUSHOP_MEDIA_VISIBILITY" == Private ]]; then
+        echo "MuShop Media Private Visibility selected"
+        get_object /root/mushop_media_pars_list.txt $${MUSHOP_MEDIA_PARS_LIST}
+        mkdir -p /app/catalogue/images
+        cd /app/catalogue/images        
+        echo "Loading MuShop Media Images to Catalogue..."
+        get_media_pars /root/mushop_media_pars_list.txt
+        echo "Images loaded"
+fi
 
 # setup init script
 get_object /root/entrypoint.sh $${ENTRYPOINT_URI}
 chmod +x /root/entrypoint.sh
-
-# Install node services
-# cd /app/api && npm ci --production >/root/api.log 2>&1 &
 
 # Setup app variables
 export OADB_USER=catalogue_user

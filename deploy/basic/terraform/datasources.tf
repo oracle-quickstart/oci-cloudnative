@@ -79,7 +79,7 @@ resource "random_shuffle" "compute_ad" {
 locals {
   compute_available_limit_ad_list = [for limit in data.oci_limits_resource_availability.compute_resource_availability : limit.availability_domain if(limit.available - var.num_nodes) >= 0]
   compute_available_limit_error = length(local.compute_available_limit_ad_list) == 0 ? (
-  file(   "ERROR: No limits available for the chosen compute shape and number of nodes")   ): 0
+  file("ERROR: No limits available for the chosen compute shape and number of nodes")) : 0
 }
 
 # Gets a list of supported images based on the shape, operating_system and operating_system_version provided
@@ -94,6 +94,13 @@ data "oci_core_images" "compute_images" {
 
 data "template_file" "mushop" {
   template = "${file("./scripts/node.sh")}"
+}
+
+data "template_file" "mushop_media_pars_list" {
+  template = "${file("./scripts/mushop_media_pars_list.txt")}"
+  vars = {
+    content = local.mushop_media_pars
+  }
 }
 
 data "oci_identity_tenancy" "tenant_details" {

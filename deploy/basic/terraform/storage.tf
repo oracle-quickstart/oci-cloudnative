@@ -17,7 +17,6 @@ resource "oci_objectstorage_object" "mushop_wallet" {
   namespace = data.oci_objectstorage_namespace.user_namespace.namespace
   object    = "mushop_atp_wallet"
 }
-
 resource "oci_objectstorage_preauthrequest" "mushop_wallet_preauth" {
   access_type  = "ObjectRead"
   bucket       = oci_objectstorage_bucket.mushop.name
@@ -33,7 +32,6 @@ resource "oci_objectstorage_object" "catalogue_sql_script" {
   namespace = data.oci_objectstorage_namespace.user_namespace.namespace
   object    = "catalogue_sql_script"
 }
-
 resource "oci_objectstorage_preauthrequest" "catalogue_sql_script_preauth" {
   access_type  = "ObjectRead"
   bucket       = oci_objectstorage_bucket.mushop.name
@@ -49,7 +47,6 @@ resource "oci_objectstorage_object" "apache_conf" {
   namespace = data.oci_objectstorage_namespace.user_namespace.namespace
   object    = "apache_conf"
 }
-
 resource "oci_objectstorage_preauthrequest" "apache_conf_preauth" {
   access_type  = "ObjectRead"
   bucket       = oci_objectstorage_bucket.mushop.name
@@ -65,7 +62,6 @@ resource "oci_objectstorage_object" "entrypoint" {
   namespace = data.oci_objectstorage_namespace.user_namespace.namespace
   object    = "entrypoint"
 }
-
 resource "oci_objectstorage_preauthrequest" "entrypoint_preauth" {
   access_type  = "ObjectRead"
   bucket       = oci_objectstorage_bucket.mushop.name
@@ -81,7 +77,6 @@ resource "oci_objectstorage_object" "mushop_basic" {
   namespace = data.oci_objectstorage_namespace.user_namespace.namespace
   object    = "mushop_basic"
 }
-
 resource "oci_objectstorage_preauthrequest" "mushop_lite_preauth" {
   access_type  = "ObjectRead"
   bucket       = oci_objectstorage_bucket.mushop.name
@@ -89,6 +84,21 @@ resource "oci_objectstorage_preauthrequest" "mushop_lite_preauth" {
   namespace    = data.oci_objectstorage_namespace.user_namespace.namespace
   time_expires = timeadd(timestamp(), "30m")
   object       = oci_objectstorage_object.mushop_basic.object
+}
+
+resource "oci_objectstorage_object" "mushop_media_pars_list" {
+  bucket    = oci_objectstorage_bucket.mushop.name
+  content   = data.template_file.mushop_media_pars_list.rendered
+  namespace = data.oci_objectstorage_namespace.user_namespace.namespace
+  object    = "mushop_media_pars_list.txt"
+}
+resource "oci_objectstorage_preauthrequest" "mushop_media_pars_list_preauth" {
+  access_type  = "ObjectRead"
+  bucket       = oci_objectstorage_bucket.mushop.name
+  name         = "mushop_media_pars_list_preauth"
+  namespace    = data.oci_objectstorage_namespace.user_namespace.namespace
+  time_expires = timeadd(timestamp(), "30m")
+  object       = oci_objectstorage_object.mushop_media_pars_list.object
 }
 
 # Static assets bucket
@@ -102,13 +112,13 @@ resource "oci_objectstorage_bucket" "mushop_media" {
 }
 
 # Static assets write PAR
-resource "oci_objectstorage_preauthrequest" "mushop_media_preauth" {
-  bucket       = oci_objectstorage_bucket.mushop_media.name
-  namespace    = oci_objectstorage_bucket.mushop_media.namespace
-  access_type  = "AnyObjectWrite"
-  name         = "mushop_assets_preauth"
-  time_expires = timeadd(timestamp(), "30m")
-}
+# resource "oci_objectstorage_preauthrequest" "mushop_media_preauth" {
+#   bucket       = oci_objectstorage_bucket.mushop_media.name
+#   namespace    = oci_objectstorage_bucket.mushop_media.namespace
+#   access_type  = "AnyObjectWrite"
+#   name         = "mushop_assets_preauth"
+#   time_expires = timeadd(timestamp(), "30m")
+# }
 
 # Static product media
 resource "oci_objectstorage_object" "mushop_media" {
@@ -120,4 +130,20 @@ resource "oci_objectstorage_object" "mushop_media" {
   source        = "./images/${each.value}"
   content_type  = "image/png"
   cache_control = "max-age=604800, public, no-transform"
+}
+
+# Static product media pars for Private (Load to catalogue service)
+resource "oci_objectstorage_preauthrequest" "mushop_media_pars_preauth" {
+  for_each = oci_objectstorage_object.mushop_media
+
+  bucket       = oci_objectstorage_bucket.mushop_media.name
+  namespace    = oci_objectstorage_bucket.mushop_media.namespace
+  object       = each.value.object
+  name         = "mushop_media_pars_par"
+  access_type  = "ObjectRead"
+  time_expires = timeadd(timestamp(), "30m")
+}
+locals {
+  mushop_media_pars = join(",", [for media in oci_objectstorage_preauthrequest.mushop_media_pars_preauth :
+  "https://objectstorage.${var.region}.oraclecloud.com${media.access_uri}"])
 }
