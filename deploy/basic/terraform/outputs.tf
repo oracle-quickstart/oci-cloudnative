@@ -7,7 +7,7 @@ output "lb_public_url" {
 }
 
 output "autonomous_database_password" {
-  value = random_string.autonomous_database_wallet_password.result
+  value = random_string.autonomous_database_admin_password.result
 }
 
 ### Important Security Notice ###
@@ -19,11 +19,21 @@ output "generated_private_key_pem" {
 }
 
 output "dev" {
-  value = "Made with \u2764 by Oracle A-Team"
+  value = "Made with \u2764 by Oracle A-Team Alumni"
 }
 
 output "comments" {
   value = "The application URL will be unavailable for a few minutes after provisioning, while the application is configured"
 }
 
+output "deploy_id" {
+  value = random_string.deploy_id.result
+}
 
+output "deployed_to_region" {
+  value = local.region_to_deploy
+}
+
+output "mushop_basic_source_code" {
+  value = "https://github.com/oracle-quickstart/oci-cloudnative/tree/master/deploy/basic"
+}
