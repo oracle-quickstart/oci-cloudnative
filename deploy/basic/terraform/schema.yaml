@@ -2,12 +2,16 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
-title: "Three-tier web application using Always Free resources"
-description: "A demo eCommerce example app using Always Free Oracle Cloud Infrastructure"
+title: "Three-tier web application using Always-Free resources"
+description: "A demo eCommerce example app (MuShop Basic) using Always-Free Oracle Cloud Infrastructure"
 schemaVersion: 1.1.0
 version: "20190304"
-locale: "en"
 
+source:
+  type: quickstart
+logoUrl: data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgMTI4IDEyOCI+CiAgPGRlZnM+CiAgICA8ZmlsdGVyIGlkPSJQYXRoXzI3IiB4PSIwIiB5PSIwIiB3aWR0aD0iNjguMjciIGhlaWdodD0iNjIuOTUxIiBmaWx0ZXJVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8ZmVPZmZzZXQgZHg9IjEiIGR5PSIzIiBpbnB1dD0iU291cmNlQWxwaGEiLz4KICAgICAgPGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0iMyIgcmVzdWx0PSJibHVyIi8+CiAgICAgIDxmZUZsb29kIGZsb29kLW9wYWNpdHk9IjAuNTAyIi8+CiAgICAgIDxmZUNvbXBvc2l0ZSBvcGVyYXRvcj0iaW4iIGluMj0iYmx1ciIvPgogICAgICA8ZmVDb21wb3NpdGUgaW49IlNvdXJjZUdyYXBoaWMiLz4KICAgIDwvZmlsdGVyPgogICAgPGZpbHRlciBpZD0icGF0aDUiIHg9IjE3LjYzNyIgeT0iMTEuNCIgd2lkdGg9IjMyLjUzNyIgaGVpZ2h0PSIzOS4xNzMiIGZpbHRlclVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CiAgICAgIDxmZU9mZnNldCBkeT0iMyIgaW5wdXQ9IlNvdXJjZUFscGhhIi8+CiAgICAgIDxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjMiIHJlc3VsdD0iYmx1ci0yIi8+CiAgICAgIDxmZUZsb29kIGZsb29kLW9wYWNpdHk9IjAuMjc1Ii8+CiAgICAgIDxmZUNvbXBvc2l0ZSBvcGVyYXRvcj0iaW4iIGluMj0iYmx1ci0yIi8+CiAgICAgIDxmZUNvbXBvc2l0ZSBpbj0iU291cmNlR3JhcGhpYyIvPgogICAgPC9maWx0ZXI+CiAgPC9kZWZzPgogIDxnIGlkPSJHcm91cF81MCIgZGF0YS1uYW1lPSJHcm91cCA1MCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTIzIC0xNzUpIj4KICAgIDxnIGlkPSJHcm91cF80NCIgZGF0YS1uYW1lPSJHcm91cCA0NCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3IC0yMjcpIj4KICAgICAgPGcgaWQ9ImFpbHVyb3BoaWxlIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1Ni4xNDYgNDI0KSI+CiAgICAgICAgPHBhdGggaWQ9IlBhdGhfMjIiIGRhdGEtbmFtZT0iUGF0aCAyMiIgZD0iTTkyLjQxOSwzOS45M2MxLjM2Ni0zLjc1MywyLjQ1Mi05LjI4OC0uMTM0LTE0LjM0MkExNC4xNTcsMTQuMTU3LDAsMCwxLDkwLjgsMTkuMDc3Yy4wMzYtNi4wNzEuMTI4LTEyLjM5NS4yLTE2LjYzMUEyLjQsMi40LDAsMCwwLDg2Ljg4LjcyNmwtOS41MTUsOS43MjZhMjQuNDcxLDI0LjQ3MSwwLDAsMC0xNC4yOTMsMS4wMzVjLTIuNjg1LTIuNjA2LTcuNzE1LTcuMDI5LTEwLjYtOS41NGEyLjM3LDIuMzcsMCwwLDAtMi42MjMtLjM1MiwyLjQsMi40LDAsMCwwLTEuMzU4LDIuMjc1bC42ODEsMTUuMTUyYTQyLjQ2LDQyLjQ2LDAsMCwxLS43NjksMTAuMjQzQTU4LjY2NCw1OC42NjQsMCwwLDAsNDcuMiw0My40NTksMjYuNzE2LDI2LjcxNiwwLDAsMCwzMi44NzksNDkuNWMtNy44MDYsNi4zMjItMTIuODU3LDE2LjYyMS0xNS4wMTIsMzAuNjEzYTEuMTUsMS4xNSwwLDAsMCwyLjI3NC4zNUMyMi4yMDcsNjcuMDU3LDI2Ljk4LDU3LjI0MSwzNC4zMjcsNTEuMjljNi41NjgtNS4zMTksMTIuOS01LjU4OSwxNC4xLTUuNTg5YTEuMTUsMS4xNSwwLDAsMCwxLjE0Ni0xLjI0OCw1NC41NTksNTQuNTU5LDAsMCwxLDEuMDg4LTE0LjczNyw0NC43NDgsNDQuNzQ4LDAsMCwwLC44MTItMTAuOEw1MC43OTIsMy43NjZhLjA5MS4wOTEsMCwwLDEsLjA1OS0uMS4wODcuMDg3LDAsMCwxLC4xMTIuMDE1YzMuMDY3LDIuNjcxLDguNTc2LDcuNTE3LDExLjAyLDkuOTYyYTEuMTUsMS4xNSwwLDAsMCwxLjI0OC4yNTIsMjIuMDU5LDIyLjA1OSwwLDAsMSwxNC4xMDctMS4wNiwxLjE1MSwxLjE1MSwwLDAsMCwxLjE5Mi0uMjg1TDg4LjUyNCwyLjMzNWEuMDg5LjA4OSwwLDAsMSwuMTE2LS4wMjQuMDg2LjA4NiwwLDAsMSwuMDYzLjFjLS4wNzIsNC4yNDItLjE2NCwxMC41NzUtLjIsMTYuNjU2YTE2LjQ2OCwxNi40NjgsMCwwLDAsMS43MzMsNy41NzNjMi4yMDgsNC4zMTYsMS4yMyw5LjE4My4wMiwxMi41MDdhMTYuNzUyLDE2Ljc1MiwwLDAsMC0uNTA2LDkuNzVjMS42NTQsNi43NDQsMy4zNTgsMTkuOS0zLjgxNywzMi4yMjRhMS4xNSwxLjE1LDAsMSwwLDEuOTg4LDEuMTU3YzcuNTgxLTEzLjAyNCw1LjgtMjYuODQ4LDQuMDYzLTMzLjkzQTE0LjQ2MSwxNC40NjEsMCwwLDEsOTIuNDE5LDM5LjkzWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAwKSIvPgogICAgICAgIDxwYXRoIGlkPSJQYXRoXzIzIiBkYXRhLW5hbWU9IlBhdGggMjMiIGQ9Ik0yNDQuMDA4LDEyOS42ODVhMS4xNSwxLjE1LDAsMCwwLDIuMywwLDQuNyw0LjcsMCwwLDAtOS4zOTQsMCwxLjE1LDEuMTUsMCwwLDAsMi4zLDAsMi40LDIuNCwwLDAsMSw0Ljc5MywwWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ny4wNjIgLTEwMS4wMjUpIi8+CiAgICAgICAgPHBhdGggaWQ9IlBhdGhfMjQiIGRhdGEtbmFtZT0iUGF0aCAyNCIgZD0iTTMyNS42MTQsMTI0Ljk4OGE0LjcsNC43LDAsMCwwLTQuNyw0LjcsMS4xNSwxLjE1LDAsMSwwLDIuMywwLDIuNCwyLjQsMCwwLDEsNC43OTMsMCwxLjE1LDEuMTUsMCwxLDAsMi4zLDBBNC43LDQuNywwLDAsMCwzMjUuNjE0LDEyNC45ODhaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMjQ0Ljk2IC0xMDEuMDI1KSIvPgogICAgICAgIDxwYXRoIGlkPSJQYXRoXzI1IiBkYXRhLW5hbWU9IlBhdGggMjUiIGQ9Ik0yNzQuOTU3LDE4Mi41MTdhMS4xNSwxLjE1LDAsMCwwLTEuMTUsMS4xNSwzLjMsMy4zLDAsMSwxLTYuNjA2LDAsMS4xNSwxLjE1LDAsMCwwLTIuMywwLDMuMywzLjMsMCwxLDEtNi42MDYsMCwxLjE1LDEuMTUsMCwwLDAtMi4zLDAsNS42LDUuNiwwLDAsMCwxMC4wNTcsMy40LDUuNiw1LjYsMCwwLDAsMTAuMDU3LTMuNEExLjE1LDEuMTUsMCwwLDAsMjc0Ljk1NywxODIuNTE3WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE5Mi40ODMgLTE0Ny41MjUpIi8+CiAgICAgIDwvZz4KICAgIDwvZz4KICAgIDxnIGlkPSJjb252ZXJzYXRpb24tc3BlZWNoLWJ1YmJsZXMtIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5NSwgLTAuMTA1LCAwLjEwNSwgMC45OTUsIDMyLjI2NSwgMTk4LjYwMSkiPgogICAgICA8ZyB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5LCAwLjEsIC0wLjEsIDAuOTksIC02LjgyLCAtMTAuNjgpIiBmaWx0ZXI9InVybCgjUGF0aF8yNykiPgogICAgICAgIDxwYXRoIGlkPSJQYXRoXzI3LTIiIGRhdGEtbmFtZT0iUGF0aCAyNyIgZD0iTTIzLjE1NC45MzVjMTIuNzg4LDAsMjMuMTU0LDguMTg5LDIzLjE1NCwxOC4yODdhMTYuMzY0LDE2LjM2NCwwLDAsMS02LjEzMiwxMi40Yy4xNDYsMy4xNzUuOCw3LjQ0NCwzLjExNiw5LjY0Ni00LjQyMiwwLTguOTUxLTIuOTI2LTExLjYzNi01LjAzNGEyOC40NjMsMjguNDYzLDAsMCwxLTguNSwxLjI3N0MxMC4zNjYsMzcuNTA5LDAsMjkuMzIsMCwxOS4yMjJTMTAuMzY2LjkzNSwyMy4xNTQuOTM1WiIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OSwgLTAuMSwgMC4xLCAwLjk5LCA3LjksIDkuOTEpIiBvcGFjaXR5PSIwLjA5NyIvPgogICAgICA8L2c+CiAgICA8L2c+CiAgICA8ZyB0cmFuc2Zvcm09Im1hdHJpeCgxLCAwLCAwLCAxLCAyNC4zNiwgMTg4LjY5KSIgZmlsdGVyPSJ1cmwoI3BhdGg1KSI+CiAgICAgIDxwYXRoIGlkPSJwYXRoNS0yIiBkYXRhLW5hbWU9InBhdGg1IiBkPSJNMTYuODksMjQuNTA4aDBhMi4zNCwyLjM0LDAsMCwwLDIuNTI4LDIuMjEyQTMuMzMyLDMuMzMyLDAsMCwwLDIyLjEsMjUuM2MwLS4xNTgtLjE1OC0uNDc0LS4zMTYtLjQ3NHMtLjMxNi40NzQtMS4xMDYuNDc0Yy0xLjI2NCwwLTEuMjY0LTEuMjY0LTEuMjY0LTIuNjg2VjEyLjY1N2MtLjc5LDAtMS43MzguMzE2LTIuNTI4LjMxNlYyMy4wODZBNi4yMTksNi4yMTksMCwwLDEsMTIuNzgxLDI1LjNjLTEuOSwwLTIuMzctMS41OC0yLjM3LTMuNDc2VjE1LjY1OWMwLTEuMTA2LS4xNTgtMy0uMTU4LTMtLjk0OCwwLTEuOS4zMTYtMi42ODYuMzE2LDAsMCwuMzE2LDIuMzcuMzE2LDMuMzE4djUuODQ2YzAsMS45LjMxNiwzLjQ3Ni4zMTYsNC41ODIsMCwxLjktLjQ3NCwzLjMxOC0uNDc0LDUuMDU2QTIuMjE0LDIuMjE0LDAsMCwwLDkuNDYzLDMzLjgzYy43OSwwLDEuNDIyLS42MzIsMS40MjItMS45LDAtMS40MjItMS4xMDYtMy42MzQtMS4xMDYtNS42ODgsMC0uMTU4LjE1OC0uMzE2LjQ3NC0uMzE2YTIuMzY3LDIuMzY3LDAsMCwwLDEuOS43OUE1LjkyNCw1LjkyNCwwLDAsMCwxNi44OSwyNC41MDhaTTE2Ljg5LDI0LjUwOFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE5LjA3IDQuNzQpIi8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4=
+
+locale: "en"
 groupings:
   - title: "Basic Hidden"
     visible: false
@@ -18,34 +22,78 @@ groupings:
 
   - title: "General Configuration"
     variables:
-    - autonomous_database_name
     - num_nodes
 
   - title: "Optional Configuration"
     variables:
+    - autonomous_database_name
+    - show_advanced
     - generate_public_ssh_key
     - public_ssh_key
+    - is_pv_encryption_in_transit_enabled
+
+  - title: "Encryption using OCI Vault (KMS)"
+    variables:
+    - use_encryption_from_oci_vault
+    - create_new_encryption_key
+    - encryption_key_id
+    - create_vault_policies_for_group
+    - user_admin_group_for_vault_policy
+
+  - title: "Advanced Resource Options"
+    variables:
+    - use_only_always_free_elegible_resources
+
+  - title: "Advanced Resource Options - Load Balancer"
+    variables:
+    - lb_shape
+    - lb_compartment_ocid
+    - create_secondary_vcn
+    - create_lpg_policies_for_group
+    - user_admin_group_for_lpg_policy
+
+  - title: "Advanced Resource Options - Compute"
+    variables:
+    - instance_shape
+    - image_operating_system
+    - image_operating_system_version
+    - instance_visibility
+
+  - title: "Advanced Resource Options - ATP"
+    variables:
+    - autonomous_database_is_free_tier
+    - autonomous_database_visibility
+
+  - title: "Advanced Resource Options - Object Storage"
+    variables:
+    - object_storage_mushop_media_compartment_ocid
+    - object_storage_mushop_media_visibility
 
   - title: "Extras Hidden"
     variables:
       - user_ocid
       - fingerprint
+      - private_key_path
       - autonomous_database_db_version
       - autonomous_database_license_model
-      - autonomous_database_is_free_tier
-      - instance_shape
-      - lb_shape
-      - image_operating_system
-      - image_operating_system_version
+      - autonomous_database_cpu_core_count
+      - autonomous_database_data_storage_size_in_tbs
+      - oracle_client_version
+      - vault_display_name
+      - vault_type
+      - vault_key_display_name
+      - vault_key_key_shape_algorithm
+      - vault_key_key_shape_length
+      - object_storage_mushop_media_read_par_expiration_date
+      - network_cidrs
     visible: false
 
 variables:
   compartment_ocid:
     type: oci:identity:compartment:id
-    # type: string
     required: true
     title: "Compartment"
-    description: "The compartment in which to create compute instance(s)"
+    description: "The compartment in which to create compute instance(s) and ATP."
 
   num_nodes:
     type: enum
@@ -53,36 +101,290 @@ variables:
     - "1"
     - "2"
     title: "Node Count"
+    description: "Choose the number of compute instances to deploy."
     default: "2"
-    description: "Choose the number of compute instances to deploy"
     required: true
 
   autonomous_database_name:
     type: string
-    required: true
     title: "Database Name"
-    description: "The name for the Autonomous Database instance"
+    description: "The name for the Autonomous Database instance. The deployment id (4 characters random string) will be added to the end of the DB name."
     minLength: 1
-    maxLength: 14
+    maxLength: 10
     pattern: "^[a-zA-Z][a-zA-Z0-9]+$"
+    required: true
+
+  show_advanced:
+    type: boolean
+    title: "Show advanced options?"
+    description: "Shows advanced options, allowing enable customer managed encryption keys, select your ssh key, and other advanced options. NOTE: Only encryption and ssh key changes are available as Always Free resources, other advanced options may not be available on the Always Free."
+    visible: true
 
   generate_public_ssh_key:
     type: boolean
-    title: "Auto generate public ssh key?"
-    description: "Auto generate a public key and assign to the compute instances. Uncheck to provide your own public key or leave blank to not use any attach any key to the compute instance"
-    required: true
+    title: "Auto-generate public ssh key?"
+    description: "Auto-generate a public key and assign to the compute instances. Uncheck to provide your own public key or leave blank not to use any attach any key to the compute instance."
+    visible:
+      and:
+        - show_advanced
 
   public_ssh_key:
     type: oci:core:ssh:publickey
-    required: false
     title: "SSH Public Key"
-    description: "The public SSH key for the key-pair that you want to use, if you wish to login to the instances over SSH"
+    description: "The public SSH key for the key-pair that you want to use, if you wish to login to the instances over SSH."
     additionalProps:
       allowMultiple: true
     pattern: "((^(ssh-rsa AAAAB3NzaC1yc2|ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNT|ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzOD|ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1Mj|ssh-ed25519 AAAAC3NzaC1lZDI1NTE5|ssh-dss AAAAB3NzaC1kc3)[0-9A-Za-z+\/]+[=]{0,3})( [^,]*)?)(,((ssh-rsa AAAAB3NzaC1yc2|ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNT|ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzOD|ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1Mj|ssh-ed25519 AAAAC3NzaC1lZDI1NTE5|ssh-dss AAAAB3NzaC1kc3)[0-9A-Za-z+\/]+[=]{0,3})( [^,]*)?)*$"
     visible:
-      not:
-        - generate_public_ssh_key
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - generate_public_ssh_key
+
+  is_pv_encryption_in_transit_enabled:
+    type: boolean
+    title: "Use in-transit encryption?"
+    description: "Encrypts data in transit between the instance and the boot volume. In-transit encryption for boot and block volumes is only available for virtual machine (VM) instances launched from Oracle-provided images, it is not supported on bare metal instances."
+    visible:
+      and:
+        - show_advanced
+
+  use_encryption_from_oci_vault:
+    type: boolean
+    title: "Encrypt boot volume and object storage bucket with a key that you manage?"
+    description: "By default, Oracle manages the keys that encrypt the boot volume and object storage bucket, but you can choose a key from a vault that you have access to if you want greater control over the key's lifecycle and how it's used."
+    visible:
+      and:
+        - show_advanced
+
+  create_new_encryption_key:
+    type: boolean
+    title: "Create new vault and encryption key?"
+    description: "Creates new vault and key on OCI Vault/Key Management/KMS and assign to boot volume of compute and object storage bucket."
+    visible:
+      and:
+        - show_advanced
+        - use_encryption_from_oci_vault
+
+  encryption_key_id:
+    type: string
+    title: "Existent master encryption key"
+    description: "Use an existent master encryption key to encrypt boot volume and object storage bucket. NOTE: If the key resides in a different compartment or in a different tenancy, make sure you have the proper policies to access, or the provision of Object Storage and Compute will fail."
+    visible:
+      and:
+        - and:
+          - show_advanced
+          - use_encryption_from_oci_vault
+        - not:
+          - create_new_encryption_key
+
+  create_vault_policies_for_group:
+    type: boolean
+    title: "Create policies for the user group to manage vault and keys?"
+    description: "Creates policies to allow the user applying the stack to manage vault and keys. If you are on the Administrators group or already have the policies for a compartment, this policy is not needed. If you do not have access to allow the policy, ask your administrator to include it for you."
+    visible:
+      and:
+        - show_advanced
+        - use_encryption_from_oci_vault
+        - create_new_encryption_key
+
+  user_admin_group_for_vault_policy:
+    type: string
+    title: "Specific your group to include the policy"
+    description: "Identity Group to allow manage vault and keys."
+    visible:
+      and:
+        - show_advanced
+        - use_encryption_from_oci_vault
+        - create_new_encryption_key
+        - create_vault_policies_for_group
+
+  use_only_always_free_elegible_resources:
+    type: boolean
+    title: "Use only always free eligible resources?"
+    description: "*** Unchecking this may use options that are not included or supported by Always Free eligible resources."
+    visible:
+      and:
+        - show_advanced
+
+  lb_shape:
+    type: enum
+    enum:
+    - "10Mbps-Micro"
+    - "100Mbps"
+    - "400Mbps"
+    - "8000Mbps"
+    title: "Select a shape for the load balancer"
+    description: "A load balancer provides automated traffic distribution from one entry point to multiple servers in a backend set. The load balancer ensures that your services remain available by directing traffic only to healthy servers in the backend set."
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
+
+  lb_compartment_ocid:
+    type: oci:identity:compartment:id
+    title: "Load Balancer Compartment"
+    description: "The compartment in which to create the Public Load Balancer."
+    default: compartment_ocid
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
+
+  create_secondary_vcn:
+    type: boolean
+    title: "Create secondary VCN for LoadBalancer?"
+    description: "Creates a secondary VCN for the LoadBalancer with local peering to the main VCN."
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
+
+  create_lpg_policies_for_group:
+    type: boolean
+    title: "Create policies for the user group to manage vault and keys?"
+    description: "Creates policies to allow the user applying the stack to manage vault and keys. If you are on the Administrators group or already have the policies for a compartment, this policy is not needed. If you do not have access to allow the policy, ask your administrator to include it for you."
+    visible:
+      and:
+        - and:
+          - show_advanced
+          - create_secondary_vcn
+        - not:
+          - use_only_always_free_elegible_resources
+
+  user_admin_group_for_lpg_policy:
+    type: string
+    title: "Specific your group to include the policy"
+    description: "Identity Group to allow manage vault and keys."
+    visible:
+      and:
+        - and:
+          - show_advanced
+          - create_secondary_vcn
+          - create_lpg_policies_for_group
+        - not:
+          - use_only_always_free_elegible_resources
+
+  instance_shape:
+    type: oci:core:instanceshape:name
+    title: "Select a shape for the compute instances"
+    description: "A shape is a template that determines the number of CPUs, amount of memory, and other resources allocated to a newly created instance."
+    dependsOn:
+      compartmentId: compartment_ocid
+    required: true
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
+
+  image_operating_system:
+    type: string
+    title: "Compute Image OS"
+    description: "The OS/image installed on all compute instances."
+    required: true
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
+
+  image_operating_system_version:
+    type: string
+    title: "Compute Image OS Version"
+    description: "The OS/image version installed on all compute instances."
+    required: true
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
+
+  instance_visibility:
+    type: enum
+    enum:
+    - "Public"
+    - "Private"
+    title: "Choose instance visibility type"
+    description: "The instance visibility will define if assign a public ip address to the compute instance and if the subnet is public or private."
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
+  
+  autonomous_database_is_free_tier:
+    type: boolean
+    title: "Use always free Autonomous Database?"
+    description: "Uses Always Free Transaction Processing Autonomous Database. Unchecking this option will provision a regular 1 OCPU ATP instance with License."
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
+
+  autonomous_database_visibility:
+    type: enum
+    enum:
+    - "Public"
+    # - "Private"
+    title: "Choose autonomous database visibility type"
+    description: "NOTE: Currently private endpoints are only supported if use local terraform. | If Private, creates the ADB with private endpoint. The autonomous database visibility will define if assign the ATP to a private subnet or allow secure access from everywhere."
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
+
+  object_storage_mushop_media_compartment_ocid:
+    type: oci:identity:compartment:id
+    title: "Object Storage (MuShop Media) Compartment"
+    description: "The compartment in which to create the Public MuShop product images."
+    default: compartment_ocid
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
+
+  object_storage_mushop_media_visibility:
+    type: enum
+    enum:
+    - "Public"
+    - "Private"
+    title: "Select Object Storage visibility"
+    description: "Public creates a public bucket for the mushop media product images. Private creates a private bucket and populates the catalogue service with the images."
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
+
+  object_storage_mushop_media_read_par_expiration_date:
+    type: string
+    title: "Object Storage Media PAR expiration date"
+    description: "The name for the Autonomous Database instance."
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
 
 outputGroups:
   - title: "MuShop App details"
@@ -90,6 +392,9 @@ outputGroups:
       - lb_public_url
       - autonomous_database_password
       - generated_private_key_pem
+      - deploy_id
+      - deployed_to_region
+      - mushop_basic_source_code
       - dev
       - comments
 
@@ -101,8 +406,8 @@ outputs:
   
   autonomous_database_password:
     type: string
-    title: "Database Password"
-    displayText: "Autonomous Database Password"
+    title: "Database Admin Password"
+    displayText: "Autonomous Database Admin Password"
     visible: true
   
   generated_private_key_pem:
@@ -114,9 +419,23 @@ outputs:
   dev:
     type: string
     title: "Message"
-    displayText: "Made with \u2764 by Oracle A-Team"
     visible: true
   
+  deploy_id:
+    type: string
+    title: "Deployment Id"
+    visible: true
+
+  deployed_to_region:
+    type: string
+    title: "Deployed using Region"
+    visible: true
+
+  mushop_basic_source_code:
+    type: link
+    title: "MuShop Basic source code"
+    visible: true
+
   comments:
     type: string
     title: "Comments"

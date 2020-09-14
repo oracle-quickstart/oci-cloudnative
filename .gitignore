@@ -27,6 +27,7 @@ bin/
 installs/
 **/.idea/**
 **/node_modules/**
+deploy/basic/terraform/image*
 
 # Log file
 *.log
@@ -68,6 +69,7 @@ truststore.jks
 ### Terraform ###
 # Local .terraform directories
 **/.terraform/*
+**/.terrafor*
 
 # .tfstate files
 *.tfstate
