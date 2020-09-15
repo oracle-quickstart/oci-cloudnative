@@ -1,0 +1,49 @@
+#cloud-config
+
+write_files:
+# setup script
+  - path: "/root/setup.preflight.sh"
+    permissions: "0777"
+    encoding: "gzip+base64"
+    content: |
+      ${setup_preflight_sh_content}
+  - path: "/root/setup.sh"
+    permissions: "0777"
+    encoding: "gzip+base64"
+    content: |
+      ${setup_template_sh_content}
+  - path: "/root/deploy.sh"
+    permissions: "0777"
+    encoding: "gzip+base64"
+    content: |
+      ${deploy_template_content}
+  - path: "/root/catalogue.sql"
+    permissions: "0777"
+    encoding: "gzip+base64"
+    content: |
+      ${catalogue_sql_template_content}
+  - path: "/etc/httpd/conf/httpd.conf"
+    permissions: "0777"
+    encoding: "gzip+base64"
+    content: |
+      ${httpd_conf_content}
+  - path: "/root/entrypoint.sh"
+    permissions: "0777"
+    encoding: "gzip+base64"
+    content: |
+      ${entrypoint_content}
+  - path: "/root/mushop_media_pars_list.txt"
+    permissions: "0777"
+    encoding: "gzip+base64"
+    content: |
+      ${mushop_media_pars_list_content}
+
+runcmd:
+ - echo "Running prep scripts..."
+ - /root/setup.preflight.sh
+ - echo "Finished prep scripts."
+ - echo "Starting App..."
+ - /root/entrypoint.sh >/root/mushop.log 2>&1 &
+
+final_message: "The system is finally up, after $UPTIME seconds"
+output: {all: '| tee -a /root/cloud-init-output.log'}
