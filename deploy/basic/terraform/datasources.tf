@@ -102,17 +102,6 @@ data "oci_core_images" "compute_images" {
   sort_order               = "DESC"
 }
 
-data "template_file" "mushop" {
-  template = "${file("./scripts/node.sh")}"
-}
-
-data "template_file" "mushop_media_pars_list" {
-  template = "${file("./scripts/mushop_media_pars_list.txt")}"
-  vars = {
-    content = local.mushop_media_pars
-  }
-}
-
 data "oci_identity_tenancy" "tenant_details" {
   tenancy_id = var.tenancy_ocid
 
@@ -139,7 +128,6 @@ data "template_cloudinit_config" "nodes" {
     content      = data.template_file.cloud_init.rendered
   }
 }
-
 data "template_file" "cloud_init" {
   template = file("${path.module}/scripts/cloud-config.template.yaml")
 
@@ -153,11 +141,9 @@ data "template_file" "cloud_init" {
     mushop_media_pars_list_content = base64gzip(data.template_file.mushop_media_pars_list.rendered)
   }
 }
-
 data "template_file" "setup_preflight" {
   template = file("${path.module}/scripts/setup.preflight.sh")
 }
-
 data "template_file" "setup_template" {
   template = file("${path.module}/scripts/setup.template.sh")
 
@@ -165,7 +151,6 @@ data "template_file" "setup_template" {
     oracle_client_version = var.oracle_client_version
   }
 }
-
 data "template_file" "deploy_template" {
   template = file("${path.module}/scripts/deploy.template.sh")
 
@@ -178,7 +163,6 @@ data "template_file" "deploy_template" {
     wallet_par              = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.mushop_wallet_preauth.access_uri}"
   }
 }
-
 data "template_file" "catalogue_sql_template" {
   template = file("${path.module}/scripts/catalogue.template.sql")
 
@@ -186,11 +170,9 @@ data "template_file" "catalogue_sql_template" {
     catalogue_password = random_string.catalogue_db_password.result
   }
 }
-
 data "local_file" "httpd_conf" {
   filename = "${path.module}/scripts/httpd.conf"
 }
-
 data "template_file" "entrypoint" {
   template = file("${path.module}/scripts/entrypoint.sh")
 
@@ -200,6 +182,12 @@ data "template_file" "entrypoint" {
     mock_mode          = "carts,orders,users"
     db_name            = oci_database_autonomous_database.mushop_autonomous_database.db_name
     assets_url         = var.object_storage_mushop_media_visibility == "Private" ? "" : "https://objectstorage.${var.region}.oraclecloud.com/n/${oci_objectstorage_bucket.mushop_media.namespace}/b/${oci_objectstorage_bucket.mushop_media.name}/o/"
+  }
+}
+data "template_file" "mushop_media_pars_list" {
+  template = "${file("./scripts/mushop_media_pars_list.txt")}"
+  vars = {
+    content = local.mushop_media_pars
   }
 }
 
