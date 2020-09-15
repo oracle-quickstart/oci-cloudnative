@@ -39,6 +39,16 @@ resource "random_string" "autonomous_database_admin_password" {
   override_special = "{}#^*<>[]%~"
 }
 
+resource "random_string" "catalogue_db_password" {
+  length           = 16
+  special          = true
+  min_upper        = 3
+  min_lower        = 3
+  min_numeric      = 3
+  min_special      = 3
+  override_special = "{}#^*<>[]%~"
+}
+
 data "oci_database_autonomous_database_wallet" "autonomous_database_wallet" {
   autonomous_database_id = oci_database_autonomous_database.mushop_autonomous_database.id
   password               = random_string.autonomous_database_wallet_password.result
@@ -116,6 +126,81 @@ data "oci_identity_regions" "home_region" {
   }
 
   provider = oci.current_region
+}
+
+# Cloud Init
+data "template_cloudinit_config" "nodes" {
+  gzip          = true
+  base64_encode = true
+
+  part {
+    filename     = "cloud-config.yaml"
+    content_type = "text/cloud-config"
+    content      = data.template_file.cloud_init.rendered
+  }
+}
+
+data "template_file" "cloud_init" {
+  template = file("${path.module}/scripts/cloud-config.template.yaml")
+
+  vars = {
+    setup_preflight_sh_content     = base64gzip(data.template_file.setup_preflight.rendered)
+    setup_template_sh_content      = base64gzip(data.template_file.setup_template.rendered)
+    deploy_template_content        = base64gzip(data.template_file.deploy_template.rendered)
+    catalogue_sql_template_content = base64gzip(data.template_file.catalogue_sql_template.rendered)
+    httpd_conf_content             = base64gzip(data.local_file.httpd_conf.content)
+    entrypoint_content             = base64gzip(data.template_file.entrypoint.rendered)
+    mushop_media_pars_list_content = base64gzip(data.template_file.mushop_media_pars_list.rendered)
+  }
+}
+
+data "template_file" "setup_preflight" {
+  template = file("${path.module}/scripts/setup.preflight.sh")
+}
+
+data "template_file" "setup_template" {
+  template = file("${path.module}/scripts/setup.template.sh")
+
+  vars = {
+    oracle_client_version = var.oracle_client_version
+  }
+}
+
+data "template_file" "deploy_template" {
+  template = file("${path.module}/scripts/deploy.template.sh")
+
+  vars = {
+    oracle_client_version   = var.oracle_client_version
+    db_name                 = oci_database_autonomous_database.mushop_autonomous_database.db_name
+    atp_pw                  = random_string.autonomous_database_admin_password.result
+    mushop_media_visibility = var.object_storage_mushop_media_visibility
+    mushop_app_par          = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.mushop_lite_preauth.access_uri}"
+    wallet_par              = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.mushop_wallet_preauth.access_uri}"
+  }
+}
+
+data "template_file" "catalogue_sql_template" {
+  template = file("${path.module}/scripts/catalogue.template.sql")
+
+  vars = {
+    catalogue_password = random_string.catalogue_db_password.result
+  }
+}
+
+data "local_file" "httpd_conf" {
+  filename = "${path.module}/scripts/httpd.conf"
+}
+
+data "template_file" "entrypoint" {
+  template = file("${path.module}/scripts/entrypoint.sh")
+
+  vars = {
+    catalogue_password = random_string.catalogue_db_password.result
+    catalogue_port     = 3005
+    mock_mode          = "carts,orders,users"
+    db_name            = oci_database_autonomous_database.mushop_autonomous_database.db_name
+    assets_url         = var.object_storage_mushop_media_visibility == "Private" ? "" : "https://objectstorage.${var.region}.oraclecloud.com/n/${oci_objectstorage_bucket.mushop_media.namespace}/b/${oci_objectstorage_bucket.mushop_media.name}/o/"
+  }
 }
 
 # Available Services
