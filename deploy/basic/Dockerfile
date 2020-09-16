@@ -138,8 +138,8 @@ RUN yum clean metadata && \
   rm -rf /var/cache/yum
 
 COPY deploy/basic/terraform/scripts/httpd.conf /etc/httpd/conf/
-COPY deploy/basic/terraform/scripts/entrypoint.sh /
-RUN chmod +x /entrypoint.sh
+COPY deploy/basic/terraform/scripts/docker_entrypoint.sh /
+RUN chmod +x /docker_entrypoint.sh
 
 #    ----- Base Image ------  #
 
@@ -176,7 +176,7 @@ RUN zip -r /package/mushop-basic-stack.zip .
 
 VOLUME ["/usr/lib/oracle/${oracleClientVersion}/client64/lib/network/admin/"]
 VOLUME ["/transfer/"]
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/docker_entrypoint.sh"]
 EXPOSE 80
 EXPOSE 3000
 EXPOSE 3005

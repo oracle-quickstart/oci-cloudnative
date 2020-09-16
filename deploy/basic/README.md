@@ -56,10 +56,6 @@ After complete the Build steps 1 and 2, generate the binaries:
 
 `docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic.tar.gz /transfer/deploy/basic/terraform/scripts/mushop-basic.tar.gz`
 
-- Copy the latest sql script to create the catalogue service schema:
-
-`docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /basic/scripts/atp_mushop_catalogue.sql /transfer/deploy/basic/terraform/scripts/atp_mushop_catalogue.sql`
-
 - Copy mushop media images to populate the object storage:
 
 `docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /basic/image/*.png /transfer/deploy/basic/terraform/images/`

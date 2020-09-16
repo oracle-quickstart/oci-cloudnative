@@ -148,3 +148,8 @@ variable "object_storage_mushop_media_compartment_ocid" {
 variable "object_storage_mushop_media_visibility" {
   default = "Public"
 }
+
+# MuShop Services
+variable "services_in_mock_mode" {
+  default = "carts,orders,users"
+}
