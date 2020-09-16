@@ -139,6 +139,11 @@ data "template_file" "cloud_init" {
     httpd_conf_content             = base64gzip(data.local_file.httpd_conf.content)
     entrypoint_content             = base64gzip(data.template_file.entrypoint.rendered)
     mushop_media_pars_list_content = base64gzip(data.template_file.mushop_media_pars_list.rendered)
+    catalogue_password             = random_string.catalogue_db_password.result
+    catalogue_port                 = local.catalogue_port
+    mock_mode                      = var.services_in_mock_mode
+    db_name                        = oci_database_autonomous_database.mushop_autonomous_database.db_name
+    assets_url                     = var.object_storage_mushop_media_visibility == "Private" ? "" : "https://objectstorage.${var.region}.oraclecloud.com/n/${oci_objectstorage_bucket.mushop_media.namespace}/b/${oci_objectstorage_bucket.mushop_media.name}/o/"
   }
 }
 data "template_file" "setup_preflight" {
@@ -178,8 +183,8 @@ data "template_file" "entrypoint" {
 
   vars = {
     catalogue_password = random_string.catalogue_db_password.result
-    catalogue_port     = 3005
-    mock_mode          = "carts,orders,users"
+    catalogue_port     = local.catalogue_port
+    mock_mode          = var.services_in_mock_mode
     db_name            = oci_database_autonomous_database.mushop_autonomous_database.db_name
     assets_url         = var.object_storage_mushop_media_visibility == "Private" ? "" : "https://objectstorage.${var.region}.oraclecloud.com/n/${oci_objectstorage_bucket.mushop_media.namespace}/b/${oci_objectstorage_bucket.mushop_media.name}/o/"
   }
@@ -190,6 +195,10 @@ data "template_file" "mushop_media_pars_list" {
     content = local.mushop_media_pars
   }
 }
+locals {
+  catalogue_port = 3005
+}
+
 
 # Available Services
 data "oci_core_services" "all_services" {
