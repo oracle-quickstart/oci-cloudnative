@@ -27,11 +27,6 @@ write_files:
     encoding: "gzip+base64"
     content: |
       ${httpd_conf_content}
-  - path: "/root/entrypoint.sh"
-    permissions: "0777"
-    encoding: "gzip+base64"
-    content: |
-      ${entrypoint_content}
   - path: "/root/mushop_media_pars_list.txt"
     permissions: "0777"
     encoding: "gzip+base64"

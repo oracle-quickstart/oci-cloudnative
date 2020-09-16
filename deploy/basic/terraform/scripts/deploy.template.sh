@@ -60,8 +60,8 @@ chcon -R -t httpd_sys_content_t /app/storefront/
 MUSHOP_MEDIA_VISIBILITY=${mushop_media_visibility}
 if [[ "$MUSHOP_MEDIA_VISIBILITY" == Private ]]; then
         echo "MuShop Media Private Visibility selected"
-        mkdir -p /root/images
-        cd /root/images        
+        mkdir -p /images
+        cd /images        
         echo "Loading MuShop Media Images to Catalogue..."
         get_media_pars /root/mushop_media_pars_list.txt
         echo "Images loaded"
