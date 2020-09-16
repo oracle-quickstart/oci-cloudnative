@@ -29,6 +29,9 @@ yum -y install oracle-release-el7
 yum-config-manager --enable ol7_oracle_instantclient
 yum -y install oracle-instantclient${oracle_client_version}-basic oracle-instantclient${oracle_client_version}-jdbc oracle-instantclient${oracle_client_version}-sqlplus
 
+# Set httpd access SELinux
+setsebool -P httpd_can_network_connect 1
+
 # Enable and start services
 systemctl daemon-reload
 
