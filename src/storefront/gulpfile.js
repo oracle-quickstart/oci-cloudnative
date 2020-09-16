@@ -100,19 +100,20 @@ gulp.task('scripts', function() {
 
 // Images
 
-gulp.task('images', function() {
+gulp.task('images', function(done) {
   return gulp.src('src/images/**/*')
     .pipe(cache(imagemin([
       pngquant(),
       imagemin.gifsicle({interlaced: true}),
       imagemin.jpegtran({progressive: true}),
-      mozjpeg({quality: 85}),
       imagemin.svgo({
         plugins: [
           { removeViewBox: true },
         ]
-      })
-    ])))
+      }),
+      mozjpeg({quality: 85}),
+    ])
+    .on('error', e => done()).on('end', () => done())))
     .pipe(gulp.dest(`${opt.buildDir}/images`));
 });
 
