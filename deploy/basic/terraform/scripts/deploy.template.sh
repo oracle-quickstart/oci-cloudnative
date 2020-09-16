@@ -47,11 +47,14 @@ base64 --decode /root/wallet.64 > /root/wallet.zip
 unzip /root/wallet.zip -d /usr/lib/oracle/${oracle_client_version}/client64/lib/network/admin/
 
 # Init DB
-sqlplus ADMIN/\"${atp_pw}\"@${db_name}_tp @/root/catalogue.sql
+sqlplus ADMIN/"${atp_pw}"@${db_name}_tp @/root/catalogue.sql
 
 # Get binaries
 get_object /root/mushop-bin.tar.gz ${mushop_app_par}
 tar zxvf /root/mushop-bin.tar.gz -C /
+
+# Allow httpd access to storefront
+chcon -R -t httpd_sys_content_t /app/storefront/
 
 # If visibility set to private, get MuShop Media Assets
 MUSHOP_MEDIA_VISIBILITY=${mushop_media_visibility}
