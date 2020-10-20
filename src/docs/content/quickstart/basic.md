@@ -31,10 +31,10 @@ dir deploy/basic
 
 These steps outline the **Basic** deployment using Resource Manager:
 
-1. Download the latest [`mushop-basic-stack-v1.x.x.zip`](https://github.com/oracle-quickstart/oci-cloudnative/releases) file.
+1. Download the latest [`mushop-basic-stack-latest.zip`](https://github.com/oracle-quickstart/oci-cloudnative/releases) file.
 1. [Login](https://console.us-ashburn-1.oraclecloud.com/resourcemanager/stacks/create) to the console to import the stack.
     > Home > Solutions & Platform > Resource Manager > Stacks > Create Stack
-1. Upload the `mushop-basic-stack-v1.x.x.zip` file that was downloaded earlier, and provide a name and description for the stack.
+1. Upload the `mushop-basic-stack-latest.zip` file that was downloaded earlier, and provide a name and description for the stack.
 1. Specify configuration options:
    1. **Database Name** - You can choose to provide a database name (optional)
    1. **Node Count** - Select if you want to deploy one or two application instances.

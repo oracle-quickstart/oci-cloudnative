@@ -3,6 +3,31 @@ micronaut:
     name: fulfillment
   server:
     port: 80
+  metrics:
+    enabled: true
+    export:
+      prometheus:
+        enabled: true
+        descriptions: true
+        step: PT1M
+    binders:
+      jvm:
+        enabled: true
+      web:
+        enabled: true
+      uptime:
+        enabled: true
+      processor:
+        enabled: true
+
+
+
+endpoints:
+    prometheus:
+        enabled: true
+        sensitive: false
+
+        
 
 mushop:
   messaging:

@@ -33,3 +33,8 @@ dependencies:
     version: 0.15.1
     condition: cert-manager.enabled
     repository: https://charts.jetstack.io
+  # jenkins
+  - name: jenkins
+    version: 2.1.0
+    condition: jenkins.enabled
+    repository: https://kubernetes-charts.storage.googleapis.com

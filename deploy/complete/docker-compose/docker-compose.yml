@@ -112,7 +112,7 @@ services:
 
   # OCI Carts service
   carts:
-    image: iad.ocir.io/oracle/ateam/mushop-carts:1.4.0
+    image: iad.ocir.io/oracle/ateam/mushop-carts:1.5.0
     ports:
       - 8086:80
     hostname: carts
@@ -132,7 +132,7 @@ services:
 
   # OCI Orders service
   orders:
-    image: iad.ocir.io/oracle/ateam/mushop-orders:2.1.1
+    image: iad.ocir.io/oracle/ateam/mushop-orders:2.2.2
     ports:
       - 8085:80
     hostname: orders
@@ -152,7 +152,7 @@ services:
       - OADB_USER
       - OADB_PW
       - OADB_SERVICE=mock
-      - JAVA_OPTS=-Xms32m -Xmx256m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false -Doracle.jdbc.fanEnabled=false 
+      - JAVA_OPTS=-Xms32m -Xmx128m -XX:MaxRAM=128m -Dlogging.level.mushop.orders=INFO -Djava.security.egd=file:/dev/urandom -Doracle.jdbc.fanEnabled=false -XX:+UnlockExperimentalVMOptions -XX:+UseZGC 
 
   payment:
     image: iad.ocir.io/oracle/ateam/mushop-payment:0.0.1
@@ -195,7 +195,7 @@ services:
 
 # Fulfillment service
   fulfillment:
-    image: iad.ocir.io/oracle/ateam/mushop-fulfillment:1.0.1
+    image: iad.ocir.io/oracle/ateam/mushop-fulfillment:1.1.0
     ports: 
       - 8087:80
     hostname: fulfillment
@@ -214,4 +214,6 @@ services:
       - ORDERS_NEW=mushop-orders
       - ORDERS_SHIPPED=mushop-shipments
       - SIMULATION_DELAY=10000
+
+
 

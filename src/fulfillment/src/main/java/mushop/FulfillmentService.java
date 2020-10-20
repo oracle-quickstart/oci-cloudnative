@@ -6,9 +6,10 @@ package  mushop;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.micrometer.core.instrument.MeterRegistry;
 import io.micronaut.context.annotation.Value;
 import io.micronaut.core.annotation.Introspected;
-import io.micronaut.discovery.event.ServiceStartedEvent;
+import io.micronaut.discovery.event.ServiceReadyEvent;
 import io.micronaut.runtime.event.annotation.EventListener;
 import io.micronaut.scheduling.annotation.Async;
 import io.nats.client.Connection;
@@ -42,14 +43,16 @@ public class FulfillmentService {
     @Value("${mushop.messaging.simulation-delay}")
     private Long simulationDelay;
     private ExecutorService messageProcessingPool;
+    private MeterRegistry meterRegistry;
 
-    public FulfillmentService() {
+    public FulfillmentService(MeterRegistry meterRegistry) {
         messageProcessingPool = Executors.newCachedThreadPool();
+        this.meterRegistry = meterRegistry;
     }
 
     @EventListener
     @Async
-    public void connect(final ServiceStartedEvent event) throws InterruptedException {
+    public void connect(final ServiceReadyEvent event) throws InterruptedException {
         boolean connected = false;
         ExecutorService connect = Executors.newSingleThreadExecutor();
         while (!connected) {
@@ -61,6 +64,7 @@ public class FulfillmentService {
                         Dispatcher d = nc.createDispatcher((msg) -> {
                             try {
                                 OrderUpdate update = handleMessage(msg);
+                                meterRegistry.counter("orders.received","app","fulfillment").increment();
                                 fulfillOrder(update);
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -102,6 +106,7 @@ public class FulfillmentService {
                 String msg = objectMapper.writeValueAsString(order);
                 log.info("Sending shipment update {}", msg);
                 nc.publish(mushopShipmentsSubject, msg.getBytes(StandardCharsets.UTF_8));
+                meterRegistry.counter("orders.fulfilled","app","fulfillment").increment();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (JsonProcessingException e) {

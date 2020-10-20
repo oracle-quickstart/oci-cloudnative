@@ -1,19 +1,16 @@
 #
-# Copyright (c) 2019, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2019, 2020 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
 # Oracle Instant Client version
-ARG oracleClientVersion=19.3
-
-# Node version
-ARG nodeVersion=10
+ARG oracleClientVersion=19.8
 
 ###############################
 #    ----- STOREFRONT -----   #
 #    Build stage (node/npm)   #
 ###############################
-FROM node:10-alpine as storefront-builder
+FROM node:12-alpine as storefront-builder
 
 RUN apk update && apk add --no-cache \
     autoconf \
@@ -53,19 +50,22 @@ RUN npm run build
 #    ----- API Gateway -----  #
 #    Build stage (node/npm)   #
 ###############################
-FROM node:10-alpine as api-builder
+FROM node:12-alpine as api-builder
 
 WORKDIR /app/api
 COPY src/api/. .
 
-# Prune
-RUN rm -rf test scripts node_modules
+# Prune (prom-client removed to fix KBs for orm stack)
+RUN rm -rf test scripts && \
+    npm uninstall prom-client && \
+    npm prune --production
+
 #    ----- API Gateway -----  #
 
 ###############################
 #  ----- Image Assets -----   #
 ###############################
-FROM node:10-alpine as assets-builder
+FROM node:12-alpine as assets-builder
 
 RUN apk update && apk add --no-cache \
     autoconf \
@@ -99,7 +99,7 @@ RUN rm -rf node_modules products hero *.md
 ###############################
 
 # ##### Go Builder image
-FROM golang:1.13 AS catalogue-builder
+FROM golang:1.14 AS catalogue-builder
 WORKDIR /go/src/mushop/catalogue
 
 # # Catalogue Go Source
@@ -124,21 +124,22 @@ RUN GO111MODULE=on GOARCH=amd64 GOOS=linux \
 # Base image with Oracle Instant Client Basic Lite
 FROM oraclelinux:7-slim AS base
 ARG oracleClientVersion
-ARG nodeVersion
-RUN yum update -y && \
+RUN yum clean metadata && \
+  yum update -y && \
   yum -y install oracle-release-el7 && \
   yum-config-manager --enable ol7_oracle_instantclient && \
+  yum-config-manager --enable ol7_latest && \
   yum -y install oracle-instantclient${oracleClientVersion}-basiclite && \
-  yum install -y gcc-c++ make sudo zip && \
-  curl -sL https://rpm.nodesource.com/setup_${nodeVersion}.x | sudo -E bash - && \
+  yum -y install zip && \
+  yum -y install oracle-nodejs-release-el7 && \
   yum -y install nodejs && \
   yum -y install httpd && \
   yum clean all && \
   rm -rf /var/cache/yum
 
-COPY deploy/basic/httpd.conf /etc/httpd/conf/
-COPY deploy/basic/entrypoint.sh /
-RUN chmod +x /entrypoint.sh
+COPY deploy/basic/terraform/scripts/httpd.conf /etc/httpd/conf/
+COPY deploy/basic/terraform/scripts/docker_entrypoint.sh /
+RUN chmod +x /docker_entrypoint.sh
 
 #    ----- Base Image ------  #
 
@@ -150,29 +151,32 @@ RUN chmod +x /entrypoint.sh
 # Runtime Image
 FROM base
 ARG oracleClientVersion
-ARG nodeVersion
 WORKDIR /
 
 # Copy Services apps
 COPY --from=storefront-builder /app/storefront/build /app/storefront
 COPY --from=api-builder /app/api /app/api
 COPY --from=catalogue-builder /catalogue /app/catalogue/catalogue
+COPY src/catalogue/VERSION /app/catalogue/
 
 # Create zip package of the Apps and local images
 RUN mkdir /package && GZIP=-9 tar cvzf /package/mushop-basic.tar.gz /app
 
 # Create ORM package
-COPY deploy/basic/terraform /basic
-COPY src/catalogue/dbdata/atp_mushop_catalogue.sql /basic/scripts
-COPY deploy/basic/httpd.conf /basic/scripts
-COPY deploy/basic/entrypoint.sh /basic/scripts
+COPY deploy/basic/VERSION /
+WORKDIR /basic
+COPY deploy/basic/terraform/*.tf /basic/
+COPY deploy/basic/terraform/*.tfvars.example /basic/
+COPY deploy/basic/terraform/schema.yaml /basic/
+COPY deploy/basic/terraform/scripts /basic/scripts
+COPY src/catalogue/dbdata/atp_mushop_catalogue.sql /basic/scripts/
 COPY --from=assets-builder /app/assets/dist /basic/images
-RUN cp /package/mushop-basic.tar.gz /basic/scripts && \
-    cd /basic && zip -r /package/mushop-basic-stack.zip .
+RUN cp /package/mushop-basic.tar.gz /basic/scripts/
+RUN zip -r /package/mushop-basic-stack.zip .
 
 VOLUME ["/usr/lib/oracle/${oracleClientVersion}/client64/lib/network/admin/"]
 VOLUME ["/transfer/"]
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/docker_entrypoint.sh"]
 EXPOSE 80
 EXPOSE 3000
 EXPOSE 3005

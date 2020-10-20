@@ -20,6 +20,9 @@ spec:
         mockmode: {{ .Values.global.mock.service | quote }}
       annotations:
         sidecar.istio.io/rewriteAppHTTPProbers: "true"
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "80"
     spec:
       initContainers:
         {{- include "orders.init.wallet" . | nindent 8 }}
@@ -30,6 +33,20 @@ spec:
           ports:
             - name: http
               containerPort: 80
+          livenessProbe:
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            failureThreshold: 5
+            httpGet:
+              path: /actuator/health/liveness
+              port: http
+          readinessProbe:
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            httpGet:
+              path: /actuator/health/readiness
+              port: http
+
           env:
             - name: ZIPKIN
               value: {{ .Values.env.zipkin }}

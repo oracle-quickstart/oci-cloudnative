@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.helidon.applications</groupId>
+        <artifactId>helidon-se</artifactId>
+        <version>2.0.1</version>
+    </parent>
+
 
     <groupId>mushop</groupId>
     <artifactId>carts</artifactId>
@@ -13,14 +19,10 @@
     <description>Cart service</description>
 
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <helidon.version>1.4.1</helidon.version>
         <jsonb.version>1.0.2</jsonb.version>
         <yasson.version>1.0.6</yasson.version>
         <jdbc.version>19.6.0.0</jdbc.version>
         <soda.version>1.1.4</soda.version>
-        <junit.version>5.5.2</junit.version>
         <mainClass>mushop.carts.Main</mainClass>
         <libs.classpath.prefix>libs</libs.classpath.prefix>
         <copied.libs.dir>${project.build.directory}/${libs.classpath.prefix}</copied.libs.dir>
@@ -29,39 +31,32 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.helidon.bundles</groupId>
-            <artifactId>helidon-bundles-webserver</artifactId>
-            <version>${helidon.version}</version>
+            <groupId>io.helidon.webserver</groupId>
+            <artifactId>helidon-webserver</artifactId>
         </dependency>
         <dependency>
             <groupId>io.helidon.webserver</groupId>
             <artifactId>helidon-webserver-access-log</artifactId>
-            <version>${helidon.version}</version>
         </dependency>
         <dependency>
             <groupId>io.helidon.config</groupId>
             <artifactId>helidon-config-yaml</artifactId>
-            <version>${helidon.version}</version>
         </dependency>
         <dependency>
-            <groupId>io.helidon.media.jsonb</groupId>
-            <artifactId>helidon-media-jsonb-server</artifactId>
-            <version>${helidon.version}</version>
+            <groupId>io.helidon.media</groupId>
+            <artifactId>helidon-media-jsonb</artifactId>
         </dependency>
         <dependency>
             <groupId>io.helidon.health</groupId>
             <artifactId>helidon-health</artifactId>
-            <version>${helidon.version}</version>
         </dependency>
         <dependency>
             <groupId>io.helidon.health</groupId>
             <artifactId>helidon-health-checks</artifactId>
-            <version>${helidon.version}</version>
         </dependency>
         <dependency>
             <groupId>io.helidon.metrics</groupId>
             <artifactId>helidon-metrics</artifactId>
-            <version>${helidon.version}</version>
         </dependency>
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>
@@ -85,76 +80,40 @@
         </dependency>
         <dependency>
             <groupId>com.oracle.database.soda</groupId>
-            <artifactId>soda</artifactId>
+            <artifactId>orajsoda</artifactId>
             <version>${soda.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.version}</version>
+            <groupId>io.helidon.webclient</groupId>
+            <artifactId>helidon-webclient</artifactId>
             <scope>test</scope>
         </dependency>
 
     </dependencies>
 
+    <packaging>jar</packaging>
+
     <build>
+
+        <finalName>${project.artifactId}-${project.version}</finalName>
+
         <plugins>
-            <!-- Copy dependencies to target/libs -->    
+            <!-- Copy dependencies to target/libs -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>copy-dependencies</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${copied.libs.dir}</outputDirectory>
-                            <includeScope>runtime</includeScope>
-                        </configuration>
+                        <id>copy-libs</id>
                     </execution>
                 </executions>
             </plugin>
- 
-            <!-- Alter META-INF/MANIFEST.MF to make generated jar runnable -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.5</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>${libs.classpath.prefix}</classpathPrefix>
-                            <mainClass>${mainClass}</mainClass>
-                            <useUniqueVersions>false</useUniqueVersions>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
-
-            <!-- junit -->
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.0</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.junit.jupiter</groupId>
-                        <artifactId>junit-jupiter-engine</artifactId>
-                        <version>${junit.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-
-        </plugins>        
+        </plugins>
     </build>
 </project>

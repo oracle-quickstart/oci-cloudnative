@@ -10,7 +10,7 @@ theme = "redwood"
 [params]
 editURL = "https://github.com/oracle-quickstart/oci-cloudnative/tree/master/docs/content/"
 showVisitedLinks = false
-author = "Oracle A-Team"
+author = "Oracle A-Team Alumni"
 organization = "Oracle"
 description = "Oracle Cloud Native Workshop"
 keywords = ["Kubernetes", "OCI", "OKE", "Microservices"]

@@ -29,7 +29,7 @@ spec:
             {{- include "orders.oadb.connection" . | nindent 12 }}
             {{- include "orders.oadb.admin" . | nindent 12 }}
           volumeMounts:
-            {{- include "orders.mount.wallet" . | nindent 12 }}
+            {{- include "orders.mount.init.wallet" . | nindent 12 }}
             {{- include "orders.mount.initdb" . | nindent 12 }}
       volumes: {{- include "orders.volumes" . | nindent 8 }}
 {{- end }}

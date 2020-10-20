@@ -50,6 +50,7 @@ Revisit the application charts and connect to some Grafana dashboards:
 
     - [Kubernetes Cluster](https://grafana.com/grafana/dashboards/6417)
     - [Kubernetes Pods](https://grafana.com/grafana/dashboards/6336)
+    - [Spring Boot Applications](https://grafana.com/grafana/dashboards/12464)
 
     {{% alert style="primary" icon="info" %}}
     Many community dashboards exist, those above are some basic recommendations

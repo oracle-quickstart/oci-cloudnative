@@ -5,9 +5,10 @@
 package  mushop.orders.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
 import java.net.URI;
-
+@Configuration
 @ConfigurationProperties
 public class OrdersConfigurationProperties {
     private String domain = "";
