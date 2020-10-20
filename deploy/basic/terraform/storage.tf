@@ -26,51 +26,6 @@ resource "oci_objectstorage_preauthrequest" "mushop_wallet_preauth" {
   object       = oci_objectstorage_object.mushop_wallet.object
 }
 
-resource "oci_objectstorage_object" "catalogue_sql_script" {
-  bucket    = oci_objectstorage_bucket.mushop.name
-  content   = file("./scripts/atp_mushop_catalogue.sql")
-  namespace = data.oci_objectstorage_namespace.user_namespace.namespace
-  object    = "catalogue_sql_script"
-}
-resource "oci_objectstorage_preauthrequest" "catalogue_sql_script_preauth" {
-  access_type  = "ObjectRead"
-  bucket       = oci_objectstorage_bucket.mushop.name
-  name         = "catalogue_sql_script_preauth"
-  namespace    = data.oci_objectstorage_namespace.user_namespace.namespace
-  time_expires = timeadd(timestamp(), "30m")
-  object       = oci_objectstorage_object.catalogue_sql_script.object
-}
-
-resource "oci_objectstorage_object" "apache_conf" {
-  bucket    = oci_objectstorage_bucket.mushop.name
-  content   = file("./scripts/httpd.conf")
-  namespace = data.oci_objectstorage_namespace.user_namespace.namespace
-  object    = "apache_conf"
-}
-resource "oci_objectstorage_preauthrequest" "apache_conf_preauth" {
-  access_type  = "ObjectRead"
-  bucket       = oci_objectstorage_bucket.mushop.name
-  name         = "apache_conf_preauth"
-  namespace    = data.oci_objectstorage_namespace.user_namespace.namespace
-  time_expires = timeadd(timestamp(), "30m")
-  object       = oci_objectstorage_object.apache_conf.object
-}
-
-resource "oci_objectstorage_object" "entrypoint" {
-  bucket    = oci_objectstorage_bucket.mushop.name
-  content   = file("./scripts/entrypoint.sh")
-  namespace = data.oci_objectstorage_namespace.user_namespace.namespace
-  object    = "entrypoint"
-}
-resource "oci_objectstorage_preauthrequest" "entrypoint_preauth" {
-  access_type  = "ObjectRead"
-  bucket       = oci_objectstorage_bucket.mushop.name
-  name         = "entrypoint_preauth"
-  namespace    = data.oci_objectstorage_namespace.user_namespace.namespace
-  time_expires = timeadd(timestamp(), "30m")
-  object       = oci_objectstorage_object.entrypoint.object
-}
-
 resource "oci_objectstorage_object" "mushop_basic" {
   bucket    = oci_objectstorage_bucket.mushop.name
   source    = "./scripts/mushop-basic.tar.gz"

@@ -86,6 +86,7 @@ groupings:
       - vault_key_key_shape_length
       - object_storage_mushop_media_read_par_expiration_date
       - network_cidrs
+      - services_in_mock_mode
     visible: false
 
 variables:
@@ -249,8 +250,8 @@ variables:
 
   create_lpg_policies_for_group:
     type: boolean
-    title: "Create policies for the user group to manage vault and keys?"
-    description: "Creates policies to allow the user applying the stack to manage vault and keys. If you are on the Administrators group or already have the policies for a compartment, this policy is not needed. If you do not have access to allow the policy, ask your administrator to include it for you."
+    title: "Create policies for the user group to manage local peering gateways?"
+    description: "Creates policies to allow the user applying the stack to create a local peering gateway. If you are on the Administrators group or already have the policies for a compartment, this policy is not needed. If you do not have access to allow the policy, ask your administrator to include it for you."
     visible:
       and:
         - and:
@@ -262,7 +263,7 @@ variables:
   user_admin_group_for_lpg_policy:
     type: string
     title: "Specific your group to include the policy"
-    description: "Identity Group to allow manage vault and keys."
+    description: "Identity Group to allow manage local peering gateways."
     visible:
       and:
         - and:
