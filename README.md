@@ -92,6 +92,8 @@ The following diagram shows the topology created by this stack.
 
 ![MuShop Complete Infra](./images/complete/00-Topology.png)
 
+#### [![Deploy to Oracle Cloud][magic_button]][magic_mushop_stack]
+
 ## Questions
 
 If you have an issue or a question, please take a look at our [FAQs](./deploy/basic/FAQs.md) or [open an issue](https://github.com/oracle-quickstart/oci-cloudnative/issues/new).
