@@ -4,13 +4,9 @@ date: 2020-10-26 T16:04:15-06:00
 draft: false
 weight: 90
 tags:
-  - Monitoring
-  - Metrics
+  - OCI Monitoring
+  - OCI Observability
 ---
-
-{{% alert style="warning" icon="warning" %}}
-Note that this is **OPTIONAL**.  
-{{% /alert %}}
 
 ## Introduction
 
@@ -20,14 +16,14 @@ This section focuses on monitoring system metrics of OKE (Oracle Cloud Infrastru
 
 ## Pre-Requisites
 
-Deploy [Mushop]({{< ref "quickstart/kubernetes.md" >}})
+Deploy [MuShop]({{< ref "quickstart/kubernetes.md" >}})
 
 
 ## OKE Cluster Metrics
  
-Click Developer Services -> Kubernetes Clusters -> <Your_Cluster_Name>
+Navigate to ```Developer Services -> Kubernetes Clusters -> <Your_Cluster_Name>```
 
-Under Resources -> Metrics observe the following metrics
+Under ```Resources -> Metrics``` observe the following metrics
 
 - Unschedulable pods, which can be used to trigger node pool scale operations when there are insufficient resources on which to schedule pods
 - API Server requests per second, which is helpful to understand any underlying performance issues seen in the Kubernetes API server.
@@ -38,7 +34,7 @@ These metrics can also be viewed from OCI Monitoring console under "oci_oke" nam
 
 ## OKE Node Pool Metrics
 
-Click Developer Services -> Kubernetes Clusters -> <Your_Cluster_Name> -> Node Pools -> <Your_Node_Pool_Name>
+Navigate to ```Developer Services -> Kubernetes Clusters -> <Your_Cluster_Name> -> Node Pools -> <Your_Node_Pool_Name>```
 
 Observe the following node pool metrics:
 
@@ -49,7 +45,7 @@ Observe the following node pool metrics:
 
 ## OKE Worker Node Metrics
 
-Click Developer Services -> Kubernetes Clusters -> <Your_Cluster_Name> -> Node Pools -> <Your_Node_Pool_Name> -> Nodes -> <Your_Node_Name>
+Navigate to ```Developer Services -> Kubernetes Clusters -> <Your_Cluster_Name> -> Node Pools -> <Your_Node_Pool_Name> -> Nodes -> <Your_Node_Name>```
 
 Observe the following node metrics:
 
@@ -65,46 +61,8 @@ Observe the following node metrics:
 
 API Server Requests metric with a 5 minute interval accessed via the CLI (some of the telemetry data was manually removed in order for it to fit better on the page)
 
-  ```shell--macos-linux
-  $ oci monitoring metric-data summarize-metrics-data --namespace oci_oke --compartment-id ocid1.compartment.oc1... --query-text='(APIServerRequestCount[5m]{ clusterId="ocid1.cluster.oc1.eu-zurich-1"}.rate() )'
-{
-  "data": [
-    {
-      "aggregated-datapoints": [
-        {
-          "timestamp": "2020-03-12T15:47:00+00:00",
-          "value": 9.24907063197026
-        },
-        {
-          "timestamp": "2020-03-12T15:52:00+00:00",
-          "value": 9.20446096654275
-        },
-        {
-          "timestamp": "2020-03-12T15:57:00+00:00",
-          "value": 9.22962962962963
-        },
-      ],
-      "compartment-id": "ocid1.compartment.oc1..",
-      "dimensions": {
-        "clusterId": "ocid1.cluster.oc1.eu-zurich-1",
-        "resourceDisplayName": "monitoring",
-        "resourceId": "ocid1.cluster.oc1.eu-zurich-1"
-      },
-      "metadata": {
-        "displayName": "APIServer Requests",
-        "unit": "count"
-      },
-      "name": "APIServerRequestCount",
-      "namespace": "oci_oke",
-      "resolution": null,
-      "resource-group": null
-    }
-  ]
-}
-  ```
-
-  ```shell--win
-  $ oci monitoring metric-data summarize-metrics-data --namespace oci_oke --compartment-id ocid1.compartment.oc1... --query-text='(APIServerRequestCount[5m]{ clusterId="ocid1.cluster.oc1.eu-zurich-1"}.rate() )'
+```
+$ oci monitoring metric-data summarize-metrics-data --namespace oci_oke --compartment-id ocid1.compartment.oc1... --query-text='(APIServerRequestCount[5m]{ clusterId="ocid1.cluster.oc1.eu-zurich-1"}.rate() )'
 {
   "data": [
     {
@@ -143,7 +101,7 @@ API Server Requests metric with a 5 minute interval accessed via the CLI (some o
 
 ## Cleanup (Optional)
 
-Mushop Cleanup [refer]({{< ref "cleanup/_index.md" >}})
+MuShop Cleanup [refer]({{< ref "cleanup/_index.md" >}})
 
 
 ## References

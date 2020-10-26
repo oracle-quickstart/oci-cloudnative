@@ -10,6 +10,6 @@ showChildren: true
 
 Observability helps to understand and explain the state of your systems using a combination of logs, metrics and traces. It helps bringing better visibility into systems.
 
-Observability on OCI has a much broader scope, Read the recent [announcement](https://blogs.oracle.com/cloud-infrastructure/announcing-the-general-availability-of-oracle-cloud-infrastructure-logging) for more information.
+Observability on Oracle Cloud Infrastructure has a much broader scope, Read the [announcement](https://blogs.oracle.com/cloud-infrastructure/announcing-the-general-availability-of-oracle-cloud-infrastructure-logging) for more information.
 
-However, we will be limiting ourselves to the following services (Open source and OCI based) for Mushop application.
+However, we will be limiting ourselves to the following services (Open source and Oracle Cloud Infrastructure based) for Mushop application.

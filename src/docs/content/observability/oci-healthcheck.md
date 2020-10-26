@@ -1,24 +1,25 @@
 ---
-title: "OCI Health Check"
+title: "OCI Health Checks"
 date: 2020-10-26 T16:04:15-06:00
 draft: false
 weight: 0
 tags:
-  - Monitoring
-  - oci_healthcheck
+  - OCI Health Checks
+  - OCI Observability
 ---
 
-{{% alert style="warning" icon="warning" %}}
-Note that this is **OPTIONAL**.  
-{{% /alert %}}
 
 ## Introduction
 
 Monitors the health of IP addresses and hostnames, as measured from geographic vantage points of your choosing, using HTTP and ping probes. After configuring a health check, you can view the monitor's results. The results include the location from which the host was monitored, the availability of the endpoint, and the date and time the test was performed.
 
-## Create OCI HealthCheck
+## Pre-Requisites
 
-Click Monitoring -> Health Checks -> Create HealthCheck
+Deploy [MuShop]({{< ref "quickstart/kubernetes.md" >}})
+
+## Create Oracle Cloud Infrastructure Health Checks
+
+Navigate to ```Monitoring -> HealthChecks -> Create HealthChecks```
 
 ![OKE Cluster Metrics](../images/create-healthcheck.png)
 
@@ -32,16 +33,16 @@ Click Monitoring -> Health Checks -> Create HealthCheck
 - Protocol (Http or Ping)
 {{% /alert %}}
 	
-## Verifying OCI HealthCheck Results
+## Verifying Oracle Cloud Infrastructure Health Check Results
 
-Click Monitoring -> Health Checks -> <Your_HealthCheck_Name> -> Health Check History
+Navigate to ```Monitoring -> HealthChecks -> <Your_HealthChecks_Name> -> HealthChecks History```
 
 
 ![OKE Cluster Metrics](../images/view-healthcheck.png)
 
 ## Observe HTTP metric
 
-Click Monitoring -> Health Checks -> <Your_HealthCheck_Name> -> Metrics
+Navigate to ```Monitoring -> HealthChecks -> <Your_HealthChecks_Name> -> Metrics```
 
 Observe some of the Http metrics. For metric details [refer](https://docs.cloud.oracle.com/en-us/iaas/Content/HealthChecks/Reference/metricsalarms.htm)
 
@@ -51,5 +52,5 @@ Observe some of the Http metrics. For metric details [refer](https://docs.cloud.
 With every metric you have the ability to set Alarms to get notified on the metrics of concern.
 {{% /alert %}}
 
-Additionally, you can view these metrics under Monitoring -> Service Metrics -> Metric namespace = oci_healthchecks.
+Additionally, you can view these metrics under ```Monitoring -> Service Metrics -> Metric namespace = oci_healthchecks```
 
