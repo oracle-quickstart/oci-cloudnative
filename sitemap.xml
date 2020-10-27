@@ -32,7 +32,7 @@
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/extras/monitoring/</loc>
+    <loc>https://oracle-quickstart.github.io/oci-cloudnative/observability/monitoring/</loc>
     <lastmod>2020-03-09T16:05:08-06:00</lastmod>
   </url>
   
@@ -42,13 +42,17 @@
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/extras/istio/</loc>
+    <loc>https://oracle-quickstart.github.io/oci-cloudnative/observability/istio/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/extras/canary/</loc>
+    <loc>https://oracle-quickstart.github.io/oci-cloudnative/observability/canary/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://oracle-quickstart.github.io/oci-cloudnative/observability/oci-monitoring/</loc>
   </url>
   
   <url>
@@ -59,6 +63,11 @@
   <url>
     <loc>https://oracle-quickstart.github.io/oci-cloudnative/cloud/</loc>
     <lastmod>2020-03-09T13:33:46-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://oracle-quickstart.github.io/oci-cloudnative/observability/</loc>
+    <lastmod>2020-03-10T13:29:23-06:00</lastmod>
   </url>
   
   <url>
@@ -261,6 +270,22 @@
   
   <url>
     <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/ci/cd/</loc>
+  </url>
+  
+  <url>
+    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/oci-health-checks/</loc>
+  </url>
+  
+  <url>
+    <loc>https://oracle-quickstart.github.io/oci-cloudnative/observability/oci-healthcheck/</loc>
+  </url>
+  
+  <url>
+    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/oci-monitoring/</loc>
+  </url>
+  
+  <url>
+    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/oci-observability/</loc>
   </url>
   
 </urlset>

@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Grafana Monitoring :: MuShop</title>
+  
+  <meta name="application-name" content="MuShop"/>
+<meta name="description" content="Oracle Cloud Native Workshop">
+<meta name="keywords" content="Kubernetes,OCI,OKE,Microservices">
+
+<meta property="og:title" content="MuShop - Grafana Monitoring" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://oracle-quickstart.github.io/oci-cloudnative/observability/monitoring/" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/oci-cloudnative/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/oci-cloudnative/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/oci-cloudnative/icons/favicon-16x16.png">
+  <link rel="manifest" href="/oci-cloudnative/icons/site.webmanifest">
+  <link rel="mask-icon" href="/oci-cloudnative/icons/safari-pinned-tab.svg" color="#41727e">
+  <meta name="msapplication-TileColor" content="#c74634">
+  <meta name="theme-color" content="#fcfbfa">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="stylesheet" type="text/css" href="https://oracle-quickstart.github.io/oci-cloudnative/sass/main.min.a5311c1cb5fb9527f90976caffd8230c6a8d6cb6690b058aba37fdd0d7a66272.css" integrity="sha256-pTEcHLX7lSf5CXbK/9gjDGqNbLZpCwWKujf90NemYnI=">
+  <link rel="stylesheet" type="text/css" href="https://oracle-quickstart.github.io/oci-cloudnative/fonts/fonts.min.58744946497c59fa8a6ac77636ea480457079e54512cf3dcb552592b56503cc1.css" integrity="sha256-WHRJRkl8WfqKasd2NupIBFcHnlRRLPPctVJZK1ZQPME=">
+  <link rel="stylesheet" type="text/css" href="https://oracle-quickstart.github.io/oci-cloudnative/sass/mushop.min.c31ca585e7b3a90dfeb2fd0ac2d7d93ff0af82ea19b0cab20c8539d987761606.css" integrity="sha256-wxylheezqQ3&#43;sv0KwtfZP/CvguoZsMqyDIU52Yd2FgY=">
+</head>
+
+  <body class="" data-url="/oci-cloudnative/observability/monitoring/">
+    
+<div class="uk-navbar-container uk-hidden@s">
+  <div class="">
+    <nav role="navigation" class="uk-light uk-navbar" uk-navbar>
+      <div class="uk-navbar-left">
+        <a href="https://oracle-quickstart.github.io/oci-cloudnative/" class="uk-navbar-item uk-logo">
+          <img
+            alt="MuShop"
+            class="uk-width-small"
+            src="/oci-cloudnative/images/logo.dark.png">
+        </a>
+      </div>
+      <div class="uk-navbar-right">
+        <a class="uk-navbar-toggle" uk-navbar-toggle-icon uk-toggle="target: #navigation"></a>
+      </div>
+    </nav>
+  </div>
+</div>
+
+
+<div class="uk-grid">
+  
+  
+  <aside
+    id="navigation"
+    class="rw-sidebar uk-offcanvas uk-width-1-1 uk-width-1-3@s uk-width-1-4@m uk-width-1-5@l uk-width-1-6@xl uk-light uk-padding-remove"
+    uk-offcanvas="overlay: true;">
+    <div class="uk-offcanvas-bar uk-padding-small">
+      
+      
+      <section>
+        <div class="uk-margin-bottom uk-visible@s">
+          <a href="https://oracle-quickstart.github.io/oci-cloudnative/" class="uk-logo">
+            <img src="/oci-cloudnative/images/logo.dark.png" alt="MuShop">
+          </a>
+        </div>
+        <div class="uk-margin-bottom">
+          <form class="uk-search uk-search-default uk-width-expand">
+  <span class="uk-search-icon-flip" uk-search-icon></span>
+  <input id="search" class="uk-search-input uk-width-expand" type="search" placeholder="Search...">
+</form>
+<div id="search-results" class="uk-background-primary uk-text-small"></div>
+        </div>
+        <ul class="uk-nav uk-nav-primary" uk-nav="multiple: true; toggle: > a .uk-icon">
+          <li class="uk-nav-divider"></li>
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/oci-cloudnative/introduction/" title="Introduction" class="">
+    <a href="/oci-cloudnative/introduction/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Introduction</div>
+      </div>
+    </a>
+    
+    
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/oci-cloudnative/quickstart/" title="Getting Started" class=" uk-parent">
+    <a href="/oci-cloudnative/quickstart/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Getting Started</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
+      </div>
+    </a>
+    
+    
+    <ul class="uk-nav-sub">
+      
+      
+      
+      
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/quickstart/basic/" title="Always Free" class="">
+      <a href="/oci-cloudnative/quickstart/basic/" class="uk-text-truncate">
+        Always Free
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/quickstart/kubernetes/" title="Kubernetes Deployment" class="">
+      <a href="/oci-cloudnative/quickstart/kubernetes/" class="uk-text-truncate">
+        Kubernetes Deployment
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+    </ul>
+  
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/oci-cloudnative/cloud/" title="Cloud Infrastructure" class=" uk-parent">
+    <a href="/oci-cloudnative/cloud/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Cloud Infrastructure</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
+      </div>
+    </a>
+    
+    
+    <ul class="uk-nav-sub">
+      
+      
+      
+      
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/cloud/prerequisites/" title="Prerequisites" class="">
+      <a href="/oci-cloudnative/cloud/prerequisites/" class="uk-text-truncate">
+        Prerequisites
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/cloud/setup/" title="Setup" class="">
+      <a href="/oci-cloudnative/cloud/setup/" class="uk-text-truncate">
+        Setup
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/cloud/deployment/" title="Deployment" class="">
+      <a href="/oci-cloudnative/cloud/deployment/" class="uk-text-truncate">
+        Deployment
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+    </ul>
+  
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/oci-cloudnative/observability/" title="Observability" class=" uk-parent uk-open">
+    <a href="/oci-cloudnative/observability/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Observability</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
+      </div>
+    </a>
+    
+    
+    <ul class="uk-nav-sub">
+      
+      
+      
+      
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/observability/monitoring/" title="Grafana Monitoring" class="uk-active">
+      <a href="/oci-cloudnative/observability/monitoring/" class="uk-text-truncate">
+        Grafana Monitoring
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/observability/istio/" title="Istio Service Mesh" class="">
+      <a href="/oci-cloudnative/observability/istio/" class="uk-text-truncate">
+        Istio Service Mesh
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/observability/canary/" title="Canary Deployment" class="">
+      <a href="/oci-cloudnative/observability/canary/" class="uk-text-truncate">
+        Canary Deployment
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/observability/oci-monitoring/" title="OCI Monitoring" class="">
+      <a href="/oci-cloudnative/observability/oci-monitoring/" class="uk-text-truncate">
+        OCI Monitoring
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/observability/oci-healthcheck/" title="OCI Health Checks" class="">
+      <a href="/oci-cloudnative/observability/oci-healthcheck/" class="uk-text-truncate">
+        OCI Health Checks
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+    </ul>
+  
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/oci-cloudnative/extras/" title="Extras" class=" uk-parent">
+    <a href="/oci-cloudnative/extras/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Extras</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
+      </div>
+    </a>
+    
+    
+    <ul class="uk-nav-sub">
+      
+      
+      
+      
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/extras/jenkins/" title="Jenkins" class="">
+      <a href="/oci-cloudnative/extras/jenkins/" class="uk-text-truncate">
+        Jenkins
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+    </ul>
+  
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/oci-cloudnative/cleanup/" title="Cleanup" class="">
+    <a href="/oci-cloudnative/cleanup/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Cleanup</div>
+      </div>
+    </a>
+    
+    
+  </li>
+  
+
+ 
+
+          
+          <li class="uk-nav-divider"></li>
+        </ul>
+      </section>
+      
+      <section>
+        <ul class="uk-nav uk-nav-default" uk-nav>
+          
+          
+          <li>
+            <a title="More Information" href="https://oracle-quickstart.github.io/oci-cloudnative/resources" class="uk-text-truncate">
+              <span uk-icon='icon: info; ratio: 1.25'></span>
+              <span class="uk-text-middle">More Information</span>
+              
+            </a>
+          </li>
+          <li>
+            <a title="Acknowledgements" href="https://oracle-quickstart.github.io/oci-cloudnative/acknowledgements" class="uk-text-truncate">
+              <span uk-icon='icon: users; ratio: 1.25'></span>
+              <span class="uk-text-middle">Acknowledgements</span>
+              
+            </a>
+          </li>
+          <li>
+            <a title="Tags" href="https://oracle-quickstart.github.io/oci-cloudnative/tags" class="uk-text-truncate">
+              <span uk-icon='icon: tag; ratio: 1.25'></span>
+              <span class="uk-text-middle">Tags</span>
+              
+            </a>
+          </li>
+          <li>
+            <a title="GitHub Source" href="https://github.com/oracle-quickstart/oci-cloudnative" class="uk-text-truncate">
+              <span uk-icon='icon: github; ratio: 1.25'></span>
+              <span class="uk-text-middle">GitHub Source</span>
+              
+            </a>
+          </li>
+          <li>
+            <a title="Report Issue" href="https://github.com/oracle-quickstart/oci-cloudnative/issues" class="uk-text-truncate">
+              <span uk-icon='icon: warning; ratio: 1.25'></span>
+              <span class="uk-text-middle">Report Issue</span>
+              
+            </a>
+          </li>
+            <li>
+              <a title='Edit this page' href="https://github.com/oracle-quickstart/oci-cloudnative/tree/master/docs/content/observability/monitoring.md" target="blank">
+                <span uk-icon="pencil"></span>
+                <span class="uk-text-middle">Edit this page</span>
+              </a>
+            </li>
+            
+          
+        </ul>
+      </section>
+      <section class="uk-margin-top">
+        <hr>
+        <ul id="rw-settings" class="uk-nav uk-nav-default" uk-nav>
+  <li class="uk-grid uk-grid-small uk-flex-middle uk-flex-between uk-flex-nowrap uk-text-nowrap">
+  <div class="uk-width-1-4">
+    
+    <span>Theme</span>
+  </div>
+  <div class="uk-button-group rw-setting"
+    setting="theme"
+    target="html, .content-container" ><button class="uk-button uk-button-small uk-button-secondary
+    uk-active" toggle="uk-background-default" >
+      Light
+    </button><button class="uk-button uk-button-small uk-button-secondary
+    " toggle="uk-light uk-background-secondary" >
+      Dark
+    </button></div>
+</li>
+
+
+  <li class="uk-grid uk-grid-small uk-flex-middle uk-flex-between uk-flex-nowrap uk-text-nowrap">
+  <div class="uk-width-1-4">
+    
+    <span>OS</span>
+  </div>
+  <div class="uk-button-group rw-setting"
+    setting="platform"
+    target="html" ><button class="uk-button uk-button-small uk-button-secondary
+    uk-active" toggle="stg-os-macos" >
+      Mac
+    </button><button class="uk-button uk-button-small uk-button-secondary
+    " toggle="stg-os-linux" >
+      Linux
+    </button><button class="uk-button uk-button-small uk-button-secondary
+    " toggle="stg-os-windows" >
+      Windows
+    </button></div>
+</li>
+<li class="uk-grid uk-grid-small uk-flex-middle uk-flex-between uk-flex-nowrap uk-text-nowrap">
+  <div class="uk-width-1-4">
+    
+    <span>Helm</span>
+  </div>
+  <div class="uk-button-group rw-setting"
+    setting="helm"
+    target="html" ><button class="uk-button uk-button-small uk-button-secondary
+    uk-active" toggle="stg-helm-3" >
+      3.x
+    </button><button class="uk-button uk-button-small uk-button-secondary
+    " toggle="stg-helm-2" >
+      2.x
+    </button></div>
+</li>
+</ul>
+
+
+
+      </section>
+      <section class="uk-text-small uk-text-lighter uk-margin-top">
+        <hr>
+        <div class="uk-text-muted">
+  <div class="uk-margin-small">
+    Made with <span uk-icon="icon: heart; ratio: 0.75"></span> by Oracle A-Team Alumni
+  </div>
+  Copyright © 2020 Oracle and/or its affiliates. All rights reserved.
+</div>
+      </section>
+    </div>
+  </aside>
+  
+  <div class="uk-width-1-1 uk-width-1-3@s uk-width-1-4@m uk-width-1-5@l uk-width-1-6@xl uk-visible@s"></div>
+
+
+
+    <div class="content-container uk-width-expand">
+      <div class="uk-position-relative">
+        <div id="content" class="uk-grid uk-container-xlarge" uk-grid>
+          
+
+<div class="uk-flex-last uk-width-1-4 uk-visible@l">
+  <aside id="toc-nav" uk-sticky="offset: 40">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#prometheus-and-grafana">Prometheus and Grafana</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    <hr/>
+    
+  </aside>
+</div>
+
+
+          <main class="uk-width-expand">
+            <header>
+  
+  
+    <ul class="uk-breadcrumb uk-margin-top uk-text-small">
+    
+  
+  <li><a href='/oci-cloudnative/'>Home</a></li> <li><a href='/oci-cloudnative/observability/'>Observability</a></li> <li>Grafana Monitoring</li>
+    </ul></header>
+
+
+
+            <h1 class="rw-accent">Grafana Monitoring</h1>
+              
+  <h2 id="prometheus-and-grafana">Prometheus and Grafana</h2>
+<p>Prometheus and Grafana are installed part of the <a href="#setup"><code>setup</code></a> umbrella helm chart.
+Revisit the application charts and connect to some Grafana dashboards:</p>
+<ol>
+<li>
+<p>List helm releases:</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">helm list --all-namespaces
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">NAME                    NAMESPACE               REVISION        UPDATED                                 STATUS          CHART                           APP VERSION
+mushop                  mushop                  1               2020-01-31 21:14:48.511917 -0600 CST    deployed        mushop-0.1.0                    1.0
+mushop-utils            mushop-utilities        1               2020-01-31 20:32:05.864769 -0600 CST    deployed        mushop-setup-0.0.1              1.0
+</code></pre></div></li>
+<li>
+<p>Get the Grafana outputs from the <code>mushop-utils</code> (<code>setup</code> chart) installation:</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">helm status mushop-utils --namespace mushop-utilities
+
+## Grafana...
+# ...
+</code></pre></div></li>
+<li>
+<p>Get the auto-generated Grafana <code>admin</code> password:</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">kubectl get secret -n mushop-utilities mushop-utils-grafana \
+ -o jsonpath=&#34;{.data.admin-password}&#34; | base64 --decode ; echo
+</code></pre></div></li>
+<li>
+<p>Connect to the <a href="http://localhost:3000">dashboard</a> with <code>admin</code>/<code>&lt;password&gt;</code>:</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">kubectl port-forward -n mushop-utilities \
+  svc/mushop-utils-grafana 3000:80
+</code></pre></div><blockquote>
+<p>The Grafana dashboard will be accessible on <a href="http://localhost:3000">http://localhost:3000</a></p>
+</blockquote>
+</li>
+<li>
+<p>Import <a href="https://grafana.com/grafana/dashboards">dashboards</a> from Grafana:</p>
+<ul>
+<li><a href="https://grafana.com/grafana/dashboards/6417">Kubernetes Cluster</a></li>
+<li><a href="https://grafana.com/grafana/dashboards/6336">Kubernetes Pods</a></li>
+<li><a href="https://grafana.com/grafana/dashboards/12464">Spring Boot Applications</a></li>
+</ul>
+ <div uk-alert class="uk-alert-primary uk-grid uk-grid-collapse uk-flex-nowrap "><span uk-icon="icon: info; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span><div class="uk-width-expand">
+<p>Many community dashboards exist, those above are some basic recommendations</p>
+ </div></div>
+</li>
+</ol>
+
+
+            </main>
+          </div> 
+        </div> 
+      </div> 
+    </div> 
+    
+<footer class="uk-position-fixed uk-position-bottom">
+  <div class="uk-grid">
+    
+    
+    <div class="uk-width-1-1 uk-width-1-3@s uk-width-1-4@m uk-width-1-5@l uk-width-1-6@xl uk-visible@s"></div>
+    <div class="uk-width-expand">
+      <div>
+      
+      
+      
+      
+
+
+  
+    
+    
+  
+
+  
+  
+  
+    
+  
+
+  
+  
+    
+
+
+  
+    
+      
+      
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+
+
+  
+    
+
+
+  
+    
+    
+  
+
+  
+  
+  
+
+  
+  
+    
+
+
+  
+    
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+      
+      
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+
+
+        <div class="uk-flex uk-flex-between uk-margin-top">
+          <a href="/oci-cloudnative/observability/" title="Observability" class="rw-page-prev uk-flex-first uk-flex uk-flex-left uk-flex-middle uk-text-truncate">
+            <span uk-icon="icon: chevron-left; ratio: 2.5" class="uk-margin-small-right uk-flex-none"></span>
+            <label class="uk-visible@m">Observability</label>
+          </a><span></span>
+          <a href="/oci-cloudnative/observability/istio/" title="Istio Service Mesh" class="rw-page-next uk-flex-last uk-flex uk-flex-right uk-flex-middle uk-flex-last uk-text-truncate">
+            <label class="uk-visible@m">Istio Service Mesh</label>
+            <span uk-icon="icon: chevron-right; ratio: 2.5" class="uk-margin-small-left uk-flex-none"></span>
+          </a></div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <script type="text/javascript">
+  (function(w, s) {
+    Object.assign(s, {
+      BaseURL: 'https:\/\/oracle-quickstart.github.io\/oci-cloudnative\/',
+      RelURL: '\/oci-cloudnative',
+      cssConfig: {
+        table: 'uk-table uk-table-small uk-table-striped',
+        '#TableOfContents > ul': 'uk-nav uk-nav-default uk-nav-parent-icon',
+        '#TableOfContents > ul ul': 'uk-nav-sub',
+      },
+      uikit: {
+        '#TableOfContents > ul': ['scrollspyNav', { closest: 'li', offset: 10 }],
+        
+      }
+    });
+  })(window, window.Site = window.Site || {});
+</script>
+
+<script src="https://oracle-quickstart.github.io/oci-cloudnative/js/vendor.min.a006043ab5cd331e53cb8de3dd96832ba0dfc932bfbba4bb8b3c5172454cb642.js" ></script><script src="https://oracle-quickstart.github.io/oci-cloudnative/js/extras.min.9bf9f2a01e7cae8e8e4e8ee771bdca09d6d04b4265a0f9af5ce83a213b0961d2.js"  async></script><script src="https://oracle-quickstart.github.io/oci-cloudnative/js/site.min.d7973f1560bba2270850ebebf4e3a2a2e58e84e1f993191030325ddaef76a81c.js"  async></script>
+  </body>
+</html>

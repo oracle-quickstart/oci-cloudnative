@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Istio Service Mesh :: MuShop</title>
+  
+  <meta name="application-name" content="MuShop"/>
+<meta name="description" content="Oracle Cloud Native Workshop">
+<meta name="keywords" content="Kubernetes,OCI,OKE,Microservices">
+
+<meta property="og:title" content="MuShop - Istio Service Mesh" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://oracle-quickstart.github.io/oci-cloudnative/observability/istio/" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/oci-cloudnative/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/oci-cloudnative/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/oci-cloudnative/icons/favicon-16x16.png">
+  <link rel="manifest" href="/oci-cloudnative/icons/site.webmanifest">
+  <link rel="mask-icon" href="/oci-cloudnative/icons/safari-pinned-tab.svg" color="#41727e">
+  <meta name="msapplication-TileColor" content="#c74634">
+  <meta name="theme-color" content="#fcfbfa">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="stylesheet" type="text/css" href="https://oracle-quickstart.github.io/oci-cloudnative/sass/main.min.a5311c1cb5fb9527f90976caffd8230c6a8d6cb6690b058aba37fdd0d7a66272.css" integrity="sha256-pTEcHLX7lSf5CXbK/9gjDGqNbLZpCwWKujf90NemYnI=">
+  <link rel="stylesheet" type="text/css" href="https://oracle-quickstart.github.io/oci-cloudnative/fonts/fonts.min.58744946497c59fa8a6ac77636ea480457079e54512cf3dcb552592b56503cc1.css" integrity="sha256-WHRJRkl8WfqKasd2NupIBFcHnlRRLPPctVJZK1ZQPME=">
+  <link rel="stylesheet" type="text/css" href="https://oracle-quickstart.github.io/oci-cloudnative/sass/mushop.min.c31ca585e7b3a90dfeb2fd0ac2d7d93ff0af82ea19b0cab20c8539d987761606.css" integrity="sha256-wxylheezqQ3&#43;sv0KwtfZP/CvguoZsMqyDIU52Yd2FgY=">
+</head>
+
+  <body class="" data-url="/oci-cloudnative/observability/istio/">
+    
+<div class="uk-navbar-container uk-hidden@s">
+  <div class="">
+    <nav role="navigation" class="uk-light uk-navbar" uk-navbar>
+      <div class="uk-navbar-left">
+        <a href="https://oracle-quickstart.github.io/oci-cloudnative/" class="uk-navbar-item uk-logo">
+          <img
+            alt="MuShop"
+            class="uk-width-small"
+            src="/oci-cloudnative/images/logo.dark.png">
+        </a>
+      </div>
+      <div class="uk-navbar-right">
+        <a class="uk-navbar-toggle" uk-navbar-toggle-icon uk-toggle="target: #navigation"></a>
+      </div>
+    </nav>
+  </div>
+</div>
+
+
+<div class="uk-grid">
+  
+  
+  <aside
+    id="navigation"
+    class="rw-sidebar uk-offcanvas uk-width-1-1 uk-width-1-3@s uk-width-1-4@m uk-width-1-5@l uk-width-1-6@xl uk-light uk-padding-remove"
+    uk-offcanvas="overlay: true;">
+    <div class="uk-offcanvas-bar uk-padding-small">
+      
+      
+      <section>
+        <div class="uk-margin-bottom uk-visible@s">
+          <a href="https://oracle-quickstart.github.io/oci-cloudnative/" class="uk-logo">
+            <img src="/oci-cloudnative/images/logo.dark.png" alt="MuShop">
+          </a>
+        </div>
+        <div class="uk-margin-bottom">
+          <form class="uk-search uk-search-default uk-width-expand">
+  <span class="uk-search-icon-flip" uk-search-icon></span>
+  <input id="search" class="uk-search-input uk-width-expand" type="search" placeholder="Search...">
+</form>
+<div id="search-results" class="uk-background-primary uk-text-small"></div>
+        </div>
+        <ul class="uk-nav uk-nav-primary" uk-nav="multiple: true; toggle: > a .uk-icon">
+          <li class="uk-nav-divider"></li>
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/oci-cloudnative/introduction/" title="Introduction" class="">
+    <a href="/oci-cloudnative/introduction/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Introduction</div>
+      </div>
+    </a>
+    
+    
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/oci-cloudnative/quickstart/" title="Getting Started" class=" uk-parent">
+    <a href="/oci-cloudnative/quickstart/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Getting Started</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
+      </div>
+    </a>
+    
+    
+    <ul class="uk-nav-sub">
+      
+      
+      
+      
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/quickstart/basic/" title="Always Free" class="">
+      <a href="/oci-cloudnative/quickstart/basic/" class="uk-text-truncate">
+        Always Free
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/quickstart/kubernetes/" title="Kubernetes Deployment" class="">
+      <a href="/oci-cloudnative/quickstart/kubernetes/" class="uk-text-truncate">
+        Kubernetes Deployment
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+    </ul>
+  
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/oci-cloudnative/cloud/" title="Cloud Infrastructure" class=" uk-parent">
+    <a href="/oci-cloudnative/cloud/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Cloud Infrastructure</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
+      </div>
+    </a>
+    
+    
+    <ul class="uk-nav-sub">
+      
+      
+      
+      
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/cloud/prerequisites/" title="Prerequisites" class="">
+      <a href="/oci-cloudnative/cloud/prerequisites/" class="uk-text-truncate">
+        Prerequisites
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/cloud/setup/" title="Setup" class="">
+      <a href="/oci-cloudnative/cloud/setup/" class="uk-text-truncate">
+        Setup
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/cloud/deployment/" title="Deployment" class="">
+      <a href="/oci-cloudnative/cloud/deployment/" class="uk-text-truncate">
+        Deployment
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+    </ul>
+  
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/oci-cloudnative/observability/" title="Observability" class=" uk-parent uk-open">
+    <a href="/oci-cloudnative/observability/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Observability</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
+      </div>
+    </a>
+    
+    
+    <ul class="uk-nav-sub">
+      
+      
+      
+      
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/observability/monitoring/" title="Grafana Monitoring" class="">
+      <a href="/oci-cloudnative/observability/monitoring/" class="uk-text-truncate">
+        Grafana Monitoring
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/observability/istio/" title="Istio Service Mesh" class="uk-active">
+      <a href="/oci-cloudnative/observability/istio/" class="uk-text-truncate">
+        Istio Service Mesh
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/observability/canary/" title="Canary Deployment" class="">
+      <a href="/oci-cloudnative/observability/canary/" class="uk-text-truncate">
+        Canary Deployment
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/observability/oci-monitoring/" title="OCI Monitoring" class="">
+      <a href="/oci-cloudnative/observability/oci-monitoring/" class="uk-text-truncate">
+        OCI Monitoring
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/observability/oci-healthcheck/" title="OCI Health Checks" class="">
+      <a href="/oci-cloudnative/observability/oci-healthcheck/" class="uk-text-truncate">
+        OCI Health Checks
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+    </ul>
+  
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/oci-cloudnative/extras/" title="Extras" class=" uk-parent">
+    <a href="/oci-cloudnative/extras/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Extras</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
+      </div>
+    </a>
+    
+    
+    <ul class="uk-nav-sub">
+      
+      
+      
+      
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/extras/jenkins/" title="Jenkins" class="">
+      <a href="/oci-cloudnative/extras/jenkins/" class="uk-text-truncate">
+        Jenkins
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+    </ul>
+  
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/oci-cloudnative/cleanup/" title="Cleanup" class="">
+    <a href="/oci-cloudnative/cleanup/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Cleanup</div>
+      </div>
+    </a>
+    
+    
+  </li>
+  
+
+ 
+
+          
+          <li class="uk-nav-divider"></li>
+        </ul>
+      </section>
+      
+      <section>
+        <ul class="uk-nav uk-nav-default" uk-nav>
+          
+          
+          <li>
+            <a title="More Information" href="https://oracle-quickstart.github.io/oci-cloudnative/resources" class="uk-text-truncate">
+              <span uk-icon='icon: info; ratio: 1.25'></span>
+              <span class="uk-text-middle">More Information</span>
+              
+            </a>
+          </li>
+          <li>
+            <a title="Acknowledgements" href="https://oracle-quickstart.github.io/oci-cloudnative/acknowledgements" class="uk-text-truncate">
+              <span uk-icon='icon: users; ratio: 1.25'></span>
+              <span class="uk-text-middle">Acknowledgements</span>
+              
+            </a>
+          </li>
+          <li>
+            <a title="Tags" href="https://oracle-quickstart.github.io/oci-cloudnative/tags" class="uk-text-truncate">
+              <span uk-icon='icon: tag; ratio: 1.25'></span>
+              <span class="uk-text-middle">Tags</span>
+              
+            </a>
+          </li>
+          <li>
+            <a title="GitHub Source" href="https://github.com/oracle-quickstart/oci-cloudnative" class="uk-text-truncate">
+              <span uk-icon='icon: github; ratio: 1.25'></span>
+              <span class="uk-text-middle">GitHub Source</span>
+              
+            </a>
+          </li>
+          <li>
+            <a title="Report Issue" href="https://github.com/oracle-quickstart/oci-cloudnative/issues" class="uk-text-truncate">
+              <span uk-icon='icon: warning; ratio: 1.25'></span>
+              <span class="uk-text-middle">Report Issue</span>
+              
+            </a>
+          </li>
+            <li>
+              <a title='Edit this page' href="https://github.com/oracle-quickstart/oci-cloudnative/tree/master/docs/content/observability/istio.md" target="blank">
+                <span uk-icon="pencil"></span>
+                <span class="uk-text-middle">Edit this page</span>
+              </a>
+            </li>
+            
+          
+        </ul>
+      </section>
+      <section class="uk-margin-top">
+        <hr>
+        <ul id="rw-settings" class="uk-nav uk-nav-default" uk-nav>
+  <li class="uk-grid uk-grid-small uk-flex-middle uk-flex-between uk-flex-nowrap uk-text-nowrap">
+  <div class="uk-width-1-4">
+    
+    <span>Theme</span>
+  </div>
+  <div class="uk-button-group rw-setting"
+    setting="theme"
+    target="html, .content-container" ><button class="uk-button uk-button-small uk-button-secondary
+    uk-active" toggle="uk-background-default" >
+      Light
+    </button><button class="uk-button uk-button-small uk-button-secondary
+    " toggle="uk-light uk-background-secondary" >
+      Dark
+    </button></div>
+</li>
+
+
+  <li class="uk-grid uk-grid-small uk-flex-middle uk-flex-between uk-flex-nowrap uk-text-nowrap">
+  <div class="uk-width-1-4">
+    
+    <span>OS</span>
+  </div>
+  <div class="uk-button-group rw-setting"
+    setting="platform"
+    target="html" ><button class="uk-button uk-button-small uk-button-secondary
+    uk-active" toggle="stg-os-macos" >
+      Mac
+    </button><button class="uk-button uk-button-small uk-button-secondary
+    " toggle="stg-os-linux" >
+      Linux
+    </button><button class="uk-button uk-button-small uk-button-secondary
+    " toggle="stg-os-windows" >
+      Windows
+    </button></div>
+</li>
+<li class="uk-grid uk-grid-small uk-flex-middle uk-flex-between uk-flex-nowrap uk-text-nowrap">
+  <div class="uk-width-1-4">
+    
+    <span>Helm</span>
+  </div>
+  <div class="uk-button-group rw-setting"
+    setting="helm"
+    target="html" ><button class="uk-button uk-button-small uk-button-secondary
+    uk-active" toggle="stg-helm-3" >
+      3.x
+    </button><button class="uk-button uk-button-small uk-button-secondary
+    " toggle="stg-helm-2" >
+      2.x
+    </button></div>
+</li>
+</ul>
+
+
+
+      </section>
+      <section class="uk-text-small uk-text-lighter uk-margin-top">
+        <hr>
+        <div class="uk-text-muted">
+  <div class="uk-margin-small">
+    Made with <span uk-icon="icon: heart; ratio: 0.75"></span> by Oracle A-Team Alumni
+  </div>
+  Copyright © 2020 Oracle and/or its affiliates. All rights reserved.
+</div>
+      </section>
+    </div>
+  </aside>
+  
+  <div class="uk-width-1-1 uk-width-1-3@s uk-width-1-4@m uk-width-1-5@l uk-width-1-6@xl uk-visible@s"></div>
+
+
+
+    <div class="content-container uk-width-expand">
+      <div class="uk-position-relative">
+        <div id="content" class="uk-grid uk-container-xlarge" uk-grid>
+          
+
+<div class="uk-flex-last uk-width-1-4 uk-visible@l">
+  <aside id="toc-nav" uk-sticky="offset: 40">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#download-and-install-istio">Download and install Istio</a></li>
+        <li><a href="#creating-istio-resources">Creating Istio resources</a></li>
+        <li><a href="#kiali-dashboard">Kiali Dashboard</a></li>
+        <li><a href="#cleanup">Cleanup</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    <hr/>
+    
+  <div>
+    
+    <a class="uk-label" href="/oci-cloudnative/tags/istio">
+      <span uk-icon="tag"></span>
+      Istio
+    </a>
+    
+    <a class="uk-label" href="/oci-cloudnative/tags/service-mesh">
+      <span uk-icon="tag"></span>
+      Service Mesh
+    </a>
+    
+    <a class="uk-label" href="/oci-cloudnative/tags/kiali">
+      <span uk-icon="tag"></span>
+      Kiali
+    </a>
+    
+  </div>
+
+  </aside>
+</div>
+
+
+          <main class="uk-width-expand">
+            <header>
+  
+  
+    <ul class="uk-breadcrumb uk-margin-top uk-text-small">
+    
+  
+  <li><a href='/oci-cloudnative/'>Home</a></li> <li><a href='/oci-cloudnative/observability/'>Observability</a></li> <li>Istio Service Mesh</li>
+    </ul></header>
+
+
+
+            <h1 class="rw-accent">Istio Service Mesh</h1>
+              
+  <div uk-alert class="uk-alert-danger uk-grid uk-grid-collapse uk-flex-nowrap "><span uk-icon="icon: warning; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span><div class="uk-width-expand">
+<p>Note that this is <strong>OPTIONAL</strong>. If you don&rsquo;t want to install Istio service mesh, skip to the <a href="https://oracle-quickstart.github.io/oci-cloudnative/cloud/deployment/">deployment</a> section. Additionally, you don&rsquo;t need to install Grafana, Prometheus or the Ingress controller from the <code>setup</code> chart as they are already included in the Istio installation.</p>
+</div></div>
+<p>In this section you can install and configure Istio service mesh. The mesh needs to be installed before you deploy Mushop for the service mesh proxies to get injected next to each Mushop service.</p>
+<p>These sidecar proxies intercept the traffic between services and collect data on all requests as well as allow scenarios such as traffic routing and failure injection.</p>
+<h2 id="download-and-install-istio">Download and install Istio</h2>
+<ol>
+<li>
+<p>Download the latest Istio release (<code>1.4.6</code> at the time of writing this):</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">curl -L https://istio.io/downloadIstio <span class="p">|</span> sh -
+</code></pre></div></li>
+<li>
+<p>Go to the <code>istio-1.4.6</code> folder and add the <code>istioctl</code> to your path:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$PWD</span>/bin:<span class="nv">$PATH</span>
+</code></pre></div><p>Before you continue with Istio installation, run the <code>verify-install</code> command to make sure Istio can be installed on your cluster:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ istioctl verify-install
+...
+Install Pre-Check passed! The cluster is ready <span class="k">for</span> Istio installation.
+</code></pre></div><p>If you get the <code>Pre-Check passed</code> message, you can continue.</p>
+</li>
+<li>
+<p>Install the Istio <code>demo</code> profile:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">istioctl manifest apply --set <span class="nv">profile</span><span class="o">=</span>demo
+</code></pre></div> <div uk-alert class="uk-alert-primary uk-grid uk-grid-collapse uk-flex-nowrap "><span uk-icon="icon: warning; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span><div class="uk-width-expand">
+<p>Istio supports different installation profiles such as <em>default</em>, <em>demo</em>, <em>minimal</em>,
+<em>sds</em> and <em>remote</em>. In this lab we will be using the <em>demo</em> installation as it contains all components and it is designed to showcase Istio functionality. Note that <em>demo</em>
+profile is <strong>NOT</strong> an appropriate installation for production.</p>
+ </div></div>
+<p>The output of the above command should look something like this:</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">$ istioctl manifest apply --set profile=demo
+- Applying manifest for component Base...
+✔ Finished applying manifest for component Base.
+- Applying manifest for component EgressGateway...
+- Applying manifest for component Prometheus...
+- Applying manifest for component Pilot...
+- Applying manifest for component Tracing...
+- Applying manifest for component Citadel...
+- Applying manifest for component Injector...
+- Applying manifest for component Galley...
+- Applying manifest for component Kiali...
+- Applying manifest for component IngressGateway...
+- Applying manifest for component Policy...
+- Applying manifest for component Telemetry...
+- Applying manifest for component Grafana...
+✔ Finished applying manifest for component Galley.
+✔ Finished applying manifest for component Kiali.
+✔ Finished applying manifest for component Injector.
+✔ Finished applying manifest for component Prometheus.
+✔ Finished applying manifest for component Citadel.
+✔ Finished applying manifest for component Pilot.
+✔ Finished applying manifest for component Policy.
+✔ Finished applying manifest for component IngressGateway.
+✔ Finished applying manifest for component Tracing.
+✔ Finished applying manifest for component EgressGateway.
+✔ Finished applying manifest for component Telemetry.
+✔ Finished applying manifest for component Grafana.
+✔ Installation complete
+</code></pre></div><p>You also need to run <code>kubectl get pods -n istio-system</code> and ensure all pods are in the running state (the value of the <code>STATUS</code> column for each pod should be <code>Running</code>)</p>
+<p>Before continuing with the Mushop deployment, you also need to label the <code>mushop</code> namespace in order for Istio to automatically inject the Envoy sidecar proxy next to each Mushop service.</p>
+</li>
+<li>
+<p>Create the <code>mushop</code> namespace:</p>
+</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">kubectl create ns mushop
+</code></pre></div><ol>
+<li>Label the namespace with <code>istio-injection=enabled</code>:</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">kubectl label namespace mushop istio-injection<span class="o">=</span>enabled
+</code></pre></div><ol>
+<li>Follow the instructions for <a href="#deployment">deploying Mushop</a>.</li>
+</ol>
+<h2 id="creating-istio-resources">Creating Istio resources</h2>
+<p>In order to configure the traffic routing and the ingress gateway, you will need to deploy a Gateway resource and a VirtualService resource.</p>
+<ol>
+<li>
+<p>Deploy a Gateway resource:</p>
+<pre><code class="language-shell--macos-linux" data-lang="shell--macos-linux">cat &lt;&lt; EOF | kubectl apply -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: gateway
+  namespace: mushop
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - '*'
+EOF
+</code></pre><pre><code class="language-shell--win" data-lang="shell--win">&quot;apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: gateway
+  namespace: mushop
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - '*'&quot; | kubectl apply -f -
+</code></pre></li>
+<li>
+<p>Deploy a VirtualService:</p>
+<pre><code class="language-shell--macos-linux" data-lang="shell--macos-linux">cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: edge
+  namespace: mushop
+spec:
+  hosts:
+    - '*'
+  gateways:
+    - gateway
+  http:
+  - match:
+    - uri:
+        prefix: /api
+    route:
+    - destination:
+        host: mushop-api.mushop.svc.cluster.local
+  - match:
+    - uri:
+        prefix: /assets
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: mushop-assets.mushop.svc.cluster.local
+  - route:
+    - destination:
+        host: mushop-storefront.mushop.svc.cluster.local
+        port:
+          number: 80
+EOF
+</code></pre><pre><code class="language-shell--win" data-lang="shell--win">&quot;apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: edge
+  namespace: mushop
+spec:
+  hosts:
+    - '*'
+  gateways:
+    - gateway
+  http:
+  - match:
+    - uri:
+        prefix: /api
+    route:
+    - destination:
+        host: mushop-api.mushop.svc.cluster.local
+  - match:
+    - uri:
+        prefix: /assets
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: mushop-assets.mushop.svc.cluster.local
+  - route:
+    - destination:
+        host: mushop-storefront.mushop.svc.cluster.local
+        port:
+          number: 80&quot; | kubectl apply -f -
+</code></pre></li>
+<li>
+<p>Open a browser with the <code>EXTERNAL-IP</code> of the Instio ingress gateway:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">kubectl get svc istio-ingressgateway <span class="se">\
+</span><span class="se"></span>  --namespace istio-system
+</code></pre></div><blockquote>
+<p>Locating <code>EXTERNAL-IP</code> for Istio Ingress Gateway. <strong>NOTE</strong> this will be
+<a href="https://localhost">localhost</a> on local clusters.</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="kiali-dashboard">Kiali Dashboard</h2>
+<p>Kiali is a service mesh observability tool that allows you to understand the structure of your service mesh, visualize the service inside the mesh and provides the health of the mesh. Additionally, you can view detailed metrics using Grafana integration and distribute tracing with Jaeger integration.</p>
+<ol>
+<li>
+<p>From the terminal, open Kiali dashboard</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">istioctl dashboard kiali
+</code></pre></div></li>
+<li>
+<p>Click the <strong>Graph</strong> option from the sidebar.</p>
+</li>
+<li>
+<p>From the dropdown select the <em>mushop</em> namespace.</p>
+</li>
+<li>
+<p>You should see a service graph that looks similar to the figure below;</p>
+<p><img src="../images/mesh/sm-kiali-graph.png" alt="Kiali - service graph"></p>
+</li>
+</ol>
+<h2 id="cleanup">Cleanup</h2>
+<p>Uninstall Istio by passing the generated manifests into <code>kubectl delete</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">istioctl manifest generate --set <span class="nv">profile</span><span class="o">=</span>demo <span class="p">|</span> kubectl delete -f -
+</code></pre></div>
+
+            </main>
+          </div> 
+        </div> 
+      </div> 
+    </div> 
+    
+<footer class="uk-position-fixed uk-position-bottom">
+  <div class="uk-grid">
+    
+    
+    <div class="uk-width-1-1 uk-width-1-3@s uk-width-1-4@m uk-width-1-5@l uk-width-1-6@xl uk-visible@s"></div>
+    <div class="uk-width-expand">
+      <div>
+      
+      
+      
+      
+
+
+  
+    
+    
+  
+
+  
+  
+  
+    
+  
+
+  
+  
+    
+
+
+  
+    
+      
+      
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+
+
+  
+    
+
+
+  
+    
+    
+  
+
+  
+  
+  
+
+  
+  
+    
+
+
+  
+    
+      
+      
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+      
+      
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+
+
+        <div class="uk-flex uk-flex-between uk-margin-top">
+          <a href="/oci-cloudnative/observability/monitoring/" title="Grafana Monitoring" class="rw-page-prev uk-flex-first uk-flex uk-flex-left uk-flex-middle uk-text-truncate">
+            <span uk-icon="icon: chevron-left; ratio: 2.5" class="uk-margin-small-right uk-flex-none"></span>
+            <label class="uk-visible@m">Grafana Monitoring</label>
+          </a><span></span>
+          <a href="/oci-cloudnative/observability/canary/" title="Canary Deployment" class="rw-page-next uk-flex-last uk-flex uk-flex-right uk-flex-middle uk-flex-last uk-text-truncate">
+            <label class="uk-visible@m">Canary Deployment</label>
+            <span uk-icon="icon: chevron-right; ratio: 2.5" class="uk-margin-small-left uk-flex-none"></span>
+          </a></div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <script type="text/javascript">
+  (function(w, s) {
+    Object.assign(s, {
+      BaseURL: 'https:\/\/oracle-quickstart.github.io\/oci-cloudnative\/',
+      RelURL: '\/oci-cloudnative',
+      cssConfig: {
+        table: 'uk-table uk-table-small uk-table-striped',
+        '#TableOfContents > ul': 'uk-nav uk-nav-default uk-nav-parent-icon',
+        '#TableOfContents > ul ul': 'uk-nav-sub',
+      },
+      uikit: {
+        '#TableOfContents > ul': ['scrollspyNav', { closest: 'li', offset: 10 }],
+        
+      }
+    });
+  })(window, window.Site = window.Site || {});
+</script>
+
+<script src="https://oracle-quickstart.github.io/oci-cloudnative/js/vendor.min.a006043ab5cd331e53cb8de3dd96832ba0dfc932bfbba4bb8b3c5172454cb642.js" ></script><script src="https://oracle-quickstart.github.io/oci-cloudnative/js/extras.min.9bf9f2a01e7cae8e8e4e8ee771bdca09d6d04b4265a0f9af5ce83a213b0961d2.js"  async></script><script src="https://oracle-quickstart.github.io/oci-cloudnative/js/site.min.d7973f1560bba2270850ebebf4e3a2a2e58e84e1f993191030325ddaef76a81c.js"  async></script>
+  </body>
+</html>

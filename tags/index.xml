@@ -308,5 +308,32 @@
       <description></description>
     </item>
     
+    <item>
+      <title>OCI Health Checks</title>
+      <link>https://oracle-quickstart.github.io/oci-cloudnative/tags/oci-health-checks/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://oracle-quickstart.github.io/oci-cloudnative/tags/oci-health-checks/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>OCI Monitoring</title>
+      <link>https://oracle-quickstart.github.io/oci-cloudnative/tags/oci-monitoring/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://oracle-quickstart.github.io/oci-cloudnative/tags/oci-monitoring/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>OCI Observability</title>
+      <link>https://oracle-quickstart.github.io/oci-cloudnative/tags/oci-observability/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://oracle-quickstart.github.io/oci-cloudnative/tags/oci-observability/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

@@ -12,38 +12,6 @@
     
     
     <item>
-      <title>Monitoring</title>
-      <link>https://oracle-quickstart.github.io/oci-cloudnative/extras/monitoring/</link>
-      <pubDate>Mon, 09 Mar 2020 16:05:08 -0600</pubDate>
-      
-      <guid>https://oracle-quickstart.github.io/oci-cloudnative/extras/monitoring/</guid>
-      <description>Prometheus and Grafana Prometheus and Grafana are installed part of the setup umbrella helm chart. Revisit the application charts and connect to some Grafana dashboards:
-  List helm releases:
-helm list --all-namespaces NAME NAMESPACE REVISION UPDATED STATUS CHART APP VERSION mushop mushop 1 2020-01-31 21:14:48.511917 -0600 CST deployed mushop-0.1.0 1.0 mushop-utils mushop-utilities 1 2020-01-31 20:32:05.864769 -0600 CST deployed mushop-setup-0.0.1 1.0   Get the Grafana outputs from the mushop-utils (setup chart) installation:</description>
-    </item>
-    
-    <item>
-      <title>Istio Service Mesh</title>
-      <link>https://oracle-quickstart.github.io/oci-cloudnative/extras/istio/</link>
-      <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
-      
-      <guid>https://oracle-quickstart.github.io/oci-cloudnative/extras/istio/</guid>
-      <description>Note that this is OPTIONAL. If you don&amp;rsquo;t want to install Istio service mesh, skip to the deployment section. Additionally, you don&amp;rsquo;t need to install Grafana, Prometheus or the Ingress controller from the setup chart as they are already included in the Istio installation.
- In this section you can install and configure Istio service mesh. The mesh needs to be installed before you deploy Mushop for the service mesh proxies to get injected next to each Mushop service.</description>
-    </item>
-    
-    <item>
-      <title>Canary Deployment</title>
-      <link>https://oracle-quickstart.github.io/oci-cloudnative/extras/canary/</link>
-      <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
-      
-      <guid>https://oracle-quickstart.github.io/oci-cloudnative/extras/canary/</guid>
-      <description>Note that this is OPTIONAL. This section is only applicable if you have completed Istio service mesh section.
- Introduction In this section we will demonstrate canary deployment use case with MuShop Application.
-One of the benefits of the Istio project is that it provides the control needed to deploy canary services. The idea behind canary deployment (or rollout) is to introduce a new version of a service by first testing it using a small percentage of user traffic, and then if all goes well, increase, possibly gradually in increments, the percentage while simultaneously phasing out the old version.</description>
-    </item>
-    
-    <item>
       <title>Jenkins</title>
       <link>https://oracle-quickstart.github.io/oci-cloudnative/extras/jenkins/</link>
       <pubDate>Wed, 24 Jun 2020 16:48:49 -0700</pubDate>

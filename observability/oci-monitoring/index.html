@@ -2,15 +2,15 @@
 <html lang="en">
   <head>
   <meta charset="utf-8">
-  <title>Istio Service Mesh :: MuShop</title>
+  <title>OCI Monitoring :: MuShop</title>
   
   <meta name="application-name" content="MuShop"/>
 <meta name="description" content="Oracle Cloud Native Workshop">
 <meta name="keywords" content="Kubernetes,OCI,OKE,Microservices">
 
-<meta property="og:title" content="MuShop - Istio Service Mesh" />
+<meta property="og:title" content="MuShop - OCI Monitoring" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://oracle-quickstart.github.io/oci-cloudnative/extras/istio/" />
+<meta property="og:url" content="https://oracle-quickstart.github.io/oci-cloudnative/observability/oci-monitoring/" />
     <link rel="apple-touch-icon" sizes="180x180" href="/oci-cloudnative/icons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/oci-cloudnative/icons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/oci-cloudnative/icons/favicon-16x16.png">
@@ -24,7 +24,7 @@
   <link rel="stylesheet" type="text/css" href="https://oracle-quickstart.github.io/oci-cloudnative/sass/mushop.min.c31ca585e7b3a90dfeb2fd0ac2d7d93ff0af82ea19b0cab20c8539d987761606.css" integrity="sha256-wxylheezqQ3&#43;sv0KwtfZP/CvguoZsMqyDIU52Yd2FgY=">
 </head>
 
-  <body class="" data-url="/oci-cloudnative/extras/istio/">
+  <body class="" data-url="/oci-cloudnative/observability/oci-monitoring/">
     
 <div class="uk-navbar-container uk-hidden@s">
   <div class="">
@@ -243,10 +243,10 @@
   
   
   
-  <li data-nav-id="/oci-cloudnative/extras/" title="Extras" class=" uk-parent uk-open">
-    <a href="/oci-cloudnative/extras/">
+  <li data-nav-id="/oci-cloudnative/observability/" title="Observability" class=" uk-parent uk-open">
+    <a href="/oci-cloudnative/observability/">
       <div class="uk-flex uk-flex-between uk-flex-middle">
-        <div class="uk-text-truncate">Extras</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
+        <div class="uk-text-truncate">Observability</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
       </div>
     </a>
     
@@ -263,9 +263,9 @@
 
   
     
-    <li data-nav-id="/oci-cloudnative/extras/monitoring/" title="Monitoring" class="">
-      <a href="/oci-cloudnative/extras/monitoring/" class="uk-text-truncate">
-        Monitoring
+    <li data-nav-id="/oci-cloudnative/observability/monitoring/" title="Grafana Monitoring" class="">
+      <a href="/oci-cloudnative/observability/monitoring/" class="uk-text-truncate">
+        Grafana Monitoring
       </a>
     </li>
     
@@ -281,8 +281,8 @@
 
   
     
-    <li data-nav-id="/oci-cloudnative/extras/istio/" title="Istio Service Mesh" class="uk-active">
-      <a href="/oci-cloudnative/extras/istio/" class="uk-text-truncate">
+    <li data-nav-id="/oci-cloudnative/observability/istio/" title="Istio Service Mesh" class="">
+      <a href="/oci-cloudnative/observability/istio/" class="uk-text-truncate">
         Istio Service Mesh
       </a>
     </li>
@@ -299,8 +299,8 @@
 
   
     
-    <li data-nav-id="/oci-cloudnative/extras/canary/" title="Canary Deployment" class="">
-      <a href="/oci-cloudnative/extras/canary/" class="uk-text-truncate">
+    <li data-nav-id="/oci-cloudnative/observability/canary/" title="Canary Deployment" class="">
+      <a href="/oci-cloudnative/observability/canary/" class="uk-text-truncate">
         Canary Deployment
       </a>
     </li>
@@ -310,6 +310,70 @@
  
 
         
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/observability/oci-monitoring/" title="OCI Monitoring" class="uk-active">
+      <a href="/oci-cloudnative/observability/oci-monitoring/" class="uk-text-truncate">
+        OCI Monitoring
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/oci-cloudnative/observability/oci-healthcheck/" title="OCI Health Checks" class="">
+      <a href="/oci-cloudnative/observability/oci-healthcheck/" class="uk-text-truncate">
+        OCI Health Checks
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+    </ul>
+  
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/oci-cloudnative/extras/" title="Extras" class=" uk-parent">
+    <a href="/oci-cloudnative/extras/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Extras</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
+      </div>
+    </a>
+    
+    
+    <ul class="uk-nav-sub">
+      
+      
+      
+      
       
         
         
@@ -401,7 +465,7 @@
             </a>
           </li>
             <li>
-              <a title='Edit this page' href="https://github.com/oracle-quickstart/oci-cloudnative/tree/master/docs/content/extras/istio.md" target="blank">
+              <a title='Edit this page' href="https://github.com/oracle-quickstart/oci-cloudnative/tree/master/docs/content/observability/oci-monitoring.md" target="blank">
                 <span uk-icon="pencil"></span>
                 <span class="uk-text-middle">Edit this page</span>
               </a>
@@ -495,10 +559,14 @@
   <ul>
     <li>
       <ul>
-        <li><a href="#download-and-install-istio">Download and install Istio</a></li>
-        <li><a href="#creating-istio-resources">Creating Istio resources</a></li>
-        <li><a href="#kiali-dashboard">Kiali Dashboard</a></li>
-        <li><a href="#cleanup">Cleanup</a></li>
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#pre-requisites">Pre-Requisites</a></li>
+        <li><a href="#oke-cluster-metrics">OKE Cluster Metrics</a></li>
+        <li><a href="#oke-node-pool-metrics">OKE Node Pool Metrics</a></li>
+        <li><a href="#oke-worker-node-metrics">OKE Worker Node Metrics</a></li>
+        <li><a href="#accessing-via-cli">Accessing via CLI</a></li>
+        <li><a href="#cleanup-optional">Cleanup (Optional)</a></li>
+        <li><a href="#references">References</a></li>
       </ul>
     </li>
   </ul>
@@ -507,19 +575,14 @@
     
   <div>
     
-    <a class="uk-label" href="/oci-cloudnative/tags/istio">
+    <a class="uk-label" href="/oci-cloudnative/tags/oci-monitoring">
       <span uk-icon="tag"></span>
-      Istio
+      OCI Monitoring
     </a>
     
-    <a class="uk-label" href="/oci-cloudnative/tags/service-mesh">
+    <a class="uk-label" href="/oci-cloudnative/tags/oci-observability">
       <span uk-icon="tag"></span>
-      Service Mesh
-    </a>
-    
-    <a class="uk-label" href="/oci-cloudnative/tags/kiali">
-      <span uk-icon="tag"></span>
-      Kiali
+      OCI Observability
     </a>
     
   </div>
@@ -535,220 +598,96 @@
     <ul class="uk-breadcrumb uk-margin-top uk-text-small">
     
   
-  <li><a href='/oci-cloudnative/'>Home</a></li> <li><a href='/oci-cloudnative/extras/'>Extras</a></li> <li>Istio Service Mesh</li>
+  <li><a href='/oci-cloudnative/'>Home</a></li> <li><a href='/oci-cloudnative/observability/'>Observability</a></li> <li>OCI Monitoring</li>
     </ul></header>
 
 
 
-            <h1 class="rw-accent">Istio Service Mesh</h1>
+            <h1 class="rw-accent">OCI Monitoring</h1>
               
-  <div uk-alert class="uk-alert-danger uk-grid uk-grid-collapse uk-flex-nowrap "><span uk-icon="icon: warning; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span><div class="uk-width-expand">
-<p>Note that this is <strong>OPTIONAL</strong>. If you don&rsquo;t want to install Istio service mesh, skip to the <a href="https://oracle-quickstart.github.io/oci-cloudnative/cloud/deployment/">deployment</a> section. Additionally, you don&rsquo;t need to install Grafana, Prometheus or the Ingress controller from the <code>setup</code> chart as they are already included in the Istio installation.</p>
+  <h2 id="introduction">Introduction</h2>
+<p>The Oracle Cloud Infrastructure Monitoring service enables active and passive monitoring of cloud resources using the Metrics and Alarms features. Read more details <a href="https://docs.cloud.oracle.com/en-us/iaas/Content/Monitoring/Concepts/monitoringoverview.htm">here</a></p>
+<p>This section focuses on monitoring system metrics of OKE (Oracle Cloud Infrastructure Container Engine for Kubernetes).</p>
+<h2 id="pre-requisites">Pre-Requisites</h2>
+<p>Deploy <a href="https://oracle-quickstart.github.io/oci-cloudnative/quickstart/kubernetes/">MuShop</a></p>
+<h2 id="oke-cluster-metrics">OKE Cluster Metrics</h2>
+<p>Navigate to <code>Developer Services -&gt; Kubernetes Clusters -&gt; &lt;Your_Cluster_Name&gt;</code></p>
+<p>Under <code>Resources -&gt; Metrics</code> observe the following metrics</p>
+<ul>
+<li>Unschedulable pods, which can be used to trigger node pool scale operations when there are insufficient resources on which to schedule pods</li>
+<li>API Server requests per second, which is helpful to understand any underlying performance issues seen in the Kubernetes API server.</li>
+</ul>
+<p>These metrics can also be viewed from OCI Monitoring console under &ldquo;oci_oke&rdquo; namespace. Additionally, alarms can be created using industry standard statistics, trigger operators, and time intervals.</p>
+<p><img src="../images/cluster-metric.png" alt="OKE Cluster Metrics"></p>
+<h2 id="oke-node-pool-metrics">OKE Node Pool Metrics</h2>
+<p>Navigate to <code>Developer Services -&gt; Kubernetes Clusters -&gt; &lt;Your_Cluster_Name&gt; -&gt; Node Pools -&gt; &lt;Your_Node_Pool_Name&gt;</code></p>
+<p>Observe the following node pool metrics:</p>
+<ul>
+<li>Node State (If your worker nodes are in Active state as indicated by OCI Compute Service)</li>
+<li>Node condition (If your worker node are in Ready state as indicated by OKE API server)</li>
+</ul>
+<p><img src="../images/node-pool-metric.png" alt="OKE Node Pool Metrics"></p>
+<h2 id="oke-worker-node-metrics">OKE Worker Node Metrics</h2>
+<p>Navigate to <code>Developer Services -&gt; Kubernetes Clusters -&gt; &lt;Your_Cluster_Name&gt; -&gt; Node Pools -&gt; &lt;Your_Node_Pool_Name&gt; -&gt; Nodes -&gt; &lt;Your_Node_Name&gt;</code></p>
+<p>Observe the following node metrics:</p>
+<ul>
+<li>Activity level from CPU. Expressed as a percentage of total time (busy and idle) versus idle time. A typical alarm threshold is 90 percent.</li>
+<li>Space currently in use. Measured by pages. Expressed as a percentage of used pages versus unused pages. A typical alarm threshold is 85 percent.</li>
+<li>Activity level from I/O reads and writes. Expressed as reads/writes per second.</li>
+<li>Read/Write throughput. Expressed as bytes read/Write per second.</li>
+<li>Network receipt/transmit throughput. Expressed as bytes received/transmit per second.</li>
+</ul>
+<p><img src="../images/node-metric.png" alt="OKE Worker Node Metrics"></p>
+<h2 id="accessing-via-cli">Accessing via CLI</h2>
+<p>This is an example to show how metrics can also be accessed via OCI CLI.
+API Server Requests metric with a 5 minute interval accessed via the CLI (some of the telemetry data was manually removed in order for it to fit better on the page)</p>
+<pre><code>$ oci monitoring metric-data summarize-metrics-data --namespace oci_oke --compartment-id ocid1.compartment.oc1... --query-text='(APIServerRequestCount[5m]{ clusterId=&quot;ocid1.cluster.oc1.eu-zurich-1&quot;}.rate() )'
+{
+  &quot;data&quot;: [
+    {
+      &quot;aggregated-datapoints&quot;: [
+        {
+          &quot;timestamp&quot;: &quot;2020-03-12T15:47:00+00:00&quot;,
+          &quot;value&quot;: 9.24907063197026
+        },
+        {
+          &quot;timestamp&quot;: &quot;2020-03-12T15:52:00+00:00&quot;,
+          &quot;value&quot;: 9.20446096654275
+        },
+        {
+          &quot;timestamp&quot;: &quot;2020-03-12T15:57:00+00:00&quot;,
+          &quot;value&quot;: 9.22962962962963
+        },
+      ],
+      &quot;compartment-id&quot;: &quot;ocid1.compartment.oc1..&quot;,
+      &quot;dimensions&quot;: {
+        &quot;clusterId&quot;: &quot;ocid1.cluster.oc1.eu-zurich-1&quot;,
+        &quot;resourceDisplayName&quot;: &quot;monitoring&quot;,
+        &quot;resourceId&quot;: &quot;ocid1.cluster.oc1.eu-zurich-1&quot;
+      },
+      &quot;metadata&quot;: {
+        &quot;displayName&quot;: &quot;APIServer Requests&quot;,
+        &quot;unit&quot;: &quot;count&quot;
+      },
+      &quot;name&quot;: &quot;APIServerRequestCount&quot;,
+      &quot;namespace&quot;: &quot;oci_oke&quot;,
+      &quot;resolution&quot;: null,
+      &quot;resource-group&quot;: null
+    }
+  ]
+}
+</code></pre><div uk-alert class="uk-alert-primary uk-grid uk-grid-collapse uk-flex-nowrap "><span uk-icon="icon: warning; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span><div class="uk-width-expand">
+<p>OCI CLI has to be installed and configured before running the above command
+<a href="https://docs.cloud.oracle.com/en-us/iaas/Content/API/SDKDocs/cliinstall.htm">refer</a></p>
 </div></div>
-<p>In this section you can install and configure Istio service mesh. The mesh needs to be installed before you deploy Mushop for the service mesh proxies to get injected next to each Mushop service.</p>
-<p>These sidecar proxies intercept the traffic between services and collect data on all requests as well as allow scenarios such as traffic routing and failure injection.</p>
-<h2 id="download-and-install-istio">Download and install Istio</h2>
-<ol>
-<li>
-<p>Download the latest Istio release (<code>1.4.6</code> at the time of writing this):</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">curl -L https://istio.io/downloadIstio <span class="p">|</span> sh -
-</code></pre></div></li>
-<li>
-<p>Go to the <code>istio-1.4.6</code> folder and add the <code>istioctl</code> to your path:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$PWD</span>/bin:<span class="nv">$PATH</span>
-</code></pre></div><p>Before you continue with Istio installation, run the <code>verify-install</code> command to make sure Istio can be installed on your cluster:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ istioctl verify-install
-...
-Install Pre-Check passed! The cluster is ready <span class="k">for</span> Istio installation.
-</code></pre></div><p>If you get the <code>Pre-Check passed</code> message, you can continue.</p>
-</li>
-<li>
-<p>Install the Istio <code>demo</code> profile:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">istioctl manifest apply --set <span class="nv">profile</span><span class="o">=</span>demo
-</code></pre></div> <div uk-alert class="uk-alert-primary uk-grid uk-grid-collapse uk-flex-nowrap "><span uk-icon="icon: warning; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span><div class="uk-width-expand">
-<p>Istio supports different installation profiles such as <em>default</em>, <em>demo</em>, <em>minimal</em>,
-<em>sds</em> and <em>remote</em>. In this lab we will be using the <em>demo</em> installation as it contains all components and it is designed to showcase Istio functionality. Note that <em>demo</em>
-profile is <strong>NOT</strong> an appropriate installation for production.</p>
- </div></div>
-<p>The output of the above command should look something like this:</p>
-<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">$ istioctl manifest apply --set profile=demo
-- Applying manifest for component Base...
-✔ Finished applying manifest for component Base.
-- Applying manifest for component EgressGateway...
-- Applying manifest for component Prometheus...
-- Applying manifest for component Pilot...
-- Applying manifest for component Tracing...
-- Applying manifest for component Citadel...
-- Applying manifest for component Injector...
-- Applying manifest for component Galley...
-- Applying manifest for component Kiali...
-- Applying manifest for component IngressGateway...
-- Applying manifest for component Policy...
-- Applying manifest for component Telemetry...
-- Applying manifest for component Grafana...
-✔ Finished applying manifest for component Galley.
-✔ Finished applying manifest for component Kiali.
-✔ Finished applying manifest for component Injector.
-✔ Finished applying manifest for component Prometheus.
-✔ Finished applying manifest for component Citadel.
-✔ Finished applying manifest for component Pilot.
-✔ Finished applying manifest for component Policy.
-✔ Finished applying manifest for component IngressGateway.
-✔ Finished applying manifest for component Tracing.
-✔ Finished applying manifest for component EgressGateway.
-✔ Finished applying manifest for component Telemetry.
-✔ Finished applying manifest for component Grafana.
-✔ Installation complete
-</code></pre></div><p>You also need to run <code>kubectl get pods -n istio-system</code> and ensure all pods are in the running state (the value of the <code>STATUS</code> column for each pod should be <code>Running</code>)</p>
-<p>Before continuing with the Mushop deployment, you also need to label the <code>mushop</code> namespace in order for Istio to automatically inject the Envoy sidecar proxy next to each Mushop service.</p>
-</li>
-<li>
-<p>Create the <code>mushop</code> namespace:</p>
-</li>
-</ol>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">kubectl create ns mushop
-</code></pre></div><ol>
-<li>Label the namespace with <code>istio-injection=enabled</code>:</li>
-</ol>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">kubectl label namespace mushop istio-injection<span class="o">=</span>enabled
-</code></pre></div><ol>
-<li>Follow the instructions for <a href="#deployment">deploying Mushop</a>.</li>
-</ol>
-<h2 id="creating-istio-resources">Creating Istio resources</h2>
-<p>In order to configure the traffic routing and the ingress gateway, you will need to deploy a Gateway resource and a VirtualService resource.</p>
-<ol>
-<li>
-<p>Deploy a Gateway resource:</p>
-<pre><code class="language-shell--macos-linux" data-lang="shell--macos-linux">cat &lt;&lt; EOF | kubectl apply -f -
-apiVersion: networking.istio.io/v1alpha3
-kind: Gateway
-metadata:
-  name: gateway
-  namespace: mushop
-spec:
-  selector:
-    istio: ingressgateway
-  servers:
-    - port:
-        number: 80
-        name: http
-        protocol: HTTP
-      hosts:
-        - '*'
-EOF
-</code></pre><pre><code class="language-shell--win" data-lang="shell--win">&quot;apiVersion: networking.istio.io/v1alpha3
-kind: Gateway
-metadata:
-  name: gateway
-  namespace: mushop
-spec:
-  selector:
-    istio: ingressgateway
-  servers:
-    - port:
-        number: 80
-        name: http
-        protocol: HTTP
-      hosts:
-        - '*'&quot; | kubectl apply -f -
-</code></pre></li>
-<li>
-<p>Deploy a VirtualService:</p>
-<pre><code class="language-shell--macos-linux" data-lang="shell--macos-linux">cat &lt;&lt;EOF | kubectl apply -f -
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: edge
-  namespace: mushop
-spec:
-  hosts:
-    - '*'
-  gateways:
-    - gateway
-  http:
-  - match:
-    - uri:
-        prefix: /api
-    route:
-    - destination:
-        host: mushop-api.mushop.svc.cluster.local
-  - match:
-    - uri:
-        prefix: /assets
-    rewrite:
-      uri: /
-    route:
-    - destination:
-        host: mushop-assets.mushop.svc.cluster.local
-  - route:
-    - destination:
-        host: mushop-storefront.mushop.svc.cluster.local
-        port:
-          number: 80
-EOF
-</code></pre><pre><code class="language-shell--win" data-lang="shell--win">&quot;apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: edge
-  namespace: mushop
-spec:
-  hosts:
-    - '*'
-  gateways:
-    - gateway
-  http:
-  - match:
-    - uri:
-        prefix: /api
-    route:
-    - destination:
-        host: mushop-api.mushop.svc.cluster.local
-  - match:
-    - uri:
-        prefix: /assets
-    rewrite:
-      uri: /
-    route:
-    - destination:
-        host: mushop-assets.mushop.svc.cluster.local
-  - route:
-    - destination:
-        host: mushop-storefront.mushop.svc.cluster.local
-        port:
-          number: 80&quot; | kubectl apply -f -
-</code></pre></li>
-<li>
-<p>Open a browser with the <code>EXTERNAL-IP</code> of the Instio ingress gateway:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">kubectl get svc istio-ingressgateway <span class="se">\
-</span><span class="se"></span>  --namespace istio-system
-</code></pre></div><blockquote>
-<p>Locating <code>EXTERNAL-IP</code> for Istio Ingress Gateway. <strong>NOTE</strong> this will be
-<a href="https://localhost">localhost</a> on local clusters.</p>
-</blockquote>
-</li>
-</ol>
-<h2 id="kiali-dashboard">Kiali Dashboard</h2>
-<p>Kiali is a service mesh observability tool that allows you to understand the structure of your service mesh, visualize the service inside the mesh and provides the health of the mesh. Additionally, you can view detailed metrics using Grafana integration and distribute tracing with Jaeger integration.</p>
-<ol>
-<li>
-<p>From the terminal, open Kiali dashboard</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">istioctl dashboard kiali
-</code></pre></div></li>
-<li>
-<p>Click the <strong>Graph</strong> option from the sidebar.</p>
-</li>
-<li>
-<p>From the dropdown select the <em>mushop</em> namespace.</p>
-</li>
-<li>
-<p>You should see a service graph that looks similar to the figure below;</p>
-<p><img src="../images/mesh/sm-kiali-graph.png" alt="Kiali - service graph"></p>
-</li>
-</ol>
-<h2 id="cleanup">Cleanup</h2>
-<p>Uninstall Istio by passing the generated manifests into <code>kubectl delete</code></p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">istioctl manifest generate --set <span class="nv">profile</span><span class="o">=</span>demo <span class="p">|</span> kubectl delete -f -
-</code></pre></div>
+<h2 id="cleanup-optional">Cleanup (Optional)</h2>
+<p>MuShop Cleanup <a href="https://oracle-quickstart.github.io/oci-cloudnative/cleanup/">refer</a></p>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://blogs.oracle.com/cloudnative/container-engine-for-kubernetes-monitoring">https://blogs.oracle.com/cloudnative/container-engine-for-kubernetes-monitoring</a></li>
+<li><a href="https://docs.cloud.oracle.com/en-us/iaas/Content/ContEng/Reference/contengmetrics.htm">https://docs.cloud.oracle.com/en-us/iaas/Content/ContEng/Reference/contengmetrics.htm</a></li>
+</ul>
+
 
             </main>
           </div> 
@@ -951,6 +890,38 @@ spec:
 
   
     
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
     
   
 
@@ -981,6 +952,22 @@ spec:
   
 
 
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
   
     
 
@@ -1020,12 +1007,12 @@ spec:
 
 
         <div class="uk-flex uk-flex-between uk-margin-top">
-          <a href="/oci-cloudnative/extras/monitoring/" title="Monitoring" class="rw-page-prev uk-flex-first uk-flex uk-flex-left uk-flex-middle uk-text-truncate">
+          <a href="/oci-cloudnative/observability/canary/" title="Canary Deployment" class="rw-page-prev uk-flex-first uk-flex uk-flex-left uk-flex-middle uk-text-truncate">
             <span uk-icon="icon: chevron-left; ratio: 2.5" class="uk-margin-small-right uk-flex-none"></span>
-            <label class="uk-visible@m">Monitoring</label>
-          </a><span></span>
-          <a href="/oci-cloudnative/extras/canary/" title="Canary Deployment" class="rw-page-next uk-flex-last uk-flex uk-flex-right uk-flex-middle uk-flex-last uk-text-truncate">
             <label class="uk-visible@m">Canary Deployment</label>
+          </a><span></span>
+          <a href="/oci-cloudnative/observability/oci-healthcheck/" title="OCI Health Checks" class="rw-page-next uk-flex-last uk-flex uk-flex-right uk-flex-middle uk-flex-last uk-text-truncate">
+            <label class="uk-visible@m">OCI Health Checks</label>
             <span uk-icon="icon: chevron-right; ratio: 2.5" class="uk-margin-small-left uk-flex-none"></span>
           </a></div>
       </div>

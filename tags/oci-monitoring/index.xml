@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>OCI Monitoring on MuShop</title>
+    <link>https://oracle-quickstart.github.io/oci-cloudnative/tags/oci-monitoring/</link>
+    <description>Recent content in OCI Monitoring on MuShop</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="https://oracle-quickstart.github.io/oci-cloudnative/tags/oci-monitoring/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>OCI Monitoring</title>
+      <link>https://oracle-quickstart.github.io/oci-cloudnative/observability/oci-monitoring/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://oracle-quickstart.github.io/oci-cloudnative/observability/oci-monitoring/</guid>
+      <description>Introduction The Oracle Cloud Infrastructure Monitoring service enables active and passive monitoring of cloud resources using the Metrics and Alarms features. Read more details here
+This section focuses on monitoring system metrics of OKE (Oracle Cloud Infrastructure Container Engine for Kubernetes).
+Pre-Requisites Deploy MuShop
+OKE Cluster Metrics Navigate to Developer Services -&amp;gt; Kubernetes Clusters -&amp;gt; &amp;lt;Your_Cluster_Name&amp;gt;
+Under Resources -&amp;gt; Metrics observe the following metrics
+ Unschedulable pods, which can be used to trigger node pool scale operations when there are insufficient resources on which to schedule pods API Server requests per second, which is helpful to understand any underlying performance issues seen in the Kubernetes API server.</description>
+    </item>
+    
+  </channel>
+</rss>

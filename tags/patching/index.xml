@@ -13,10 +13,10 @@
     
     <item>
       <title>Canary Deployment</title>
-      <link>https://oracle-quickstart.github.io/oci-cloudnative/extras/canary/</link>
+      <link>https://oracle-quickstart.github.io/oci-cloudnative/observability/canary/</link>
       <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
       
-      <guid>https://oracle-quickstart.github.io/oci-cloudnative/extras/canary/</guid>
+      <guid>https://oracle-quickstart.github.io/oci-cloudnative/observability/canary/</guid>
       <description>Note that this is OPTIONAL. This section is only applicable if you have completed Istio service mesh section.
  Introduction In this section we will demonstrate canary deployment use case with MuShop Application.
 One of the benefits of the Istio project is that it provides the control needed to deploy canary services. The idea behind canary deployment (or rollout) is to introduce a new version of a service by first testing it using a small percentage of user traffic, and then if all goes well, increase, possibly gradually in increments, the percentage while simultaneously phasing out the old version.</description>

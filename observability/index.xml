@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Observability on MuShop</title>
+    <link>https://oracle-quickstart.github.io/oci-cloudnative/observability/</link>
+    <description>Recent content in Observability on MuShop</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 10 Mar 2020 13:29:23 -0600</lastBuildDate>
+    
+	<atom:link href="https://oracle-quickstart.github.io/oci-cloudnative/observability/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Grafana Monitoring</title>
+      <link>https://oracle-quickstart.github.io/oci-cloudnative/observability/monitoring/</link>
+      <pubDate>Mon, 09 Mar 2020 16:05:08 -0600</pubDate>
+      
+      <guid>https://oracle-quickstart.github.io/oci-cloudnative/observability/monitoring/</guid>
+      <description>Prometheus and Grafana Prometheus and Grafana are installed part of the setup umbrella helm chart. Revisit the application charts and connect to some Grafana dashboards:
+  List helm releases:
+helm list --all-namespaces NAME NAMESPACE REVISION UPDATED STATUS CHART APP VERSION mushop mushop 1 2020-01-31 21:14:48.511917 -0600 CST deployed mushop-0.1.0 1.0 mushop-utils mushop-utilities 1 2020-01-31 20:32:05.864769 -0600 CST deployed mushop-setup-0.0.1 1.0   Get the Grafana outputs from the mushop-utils (setup chart) installation:</description>
+    </item>
+    
+    <item>
+      <title>Istio Service Mesh</title>
+      <link>https://oracle-quickstart.github.io/oci-cloudnative/observability/istio/</link>
+      <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
+      
+      <guid>https://oracle-quickstart.github.io/oci-cloudnative/observability/istio/</guid>
+      <description>Note that this is OPTIONAL. If you don&amp;rsquo;t want to install Istio service mesh, skip to the deployment section. Additionally, you don&amp;rsquo;t need to install Grafana, Prometheus or the Ingress controller from the setup chart as they are already included in the Istio installation.
+ In this section you can install and configure Istio service mesh. The mesh needs to be installed before you deploy Mushop for the service mesh proxies to get injected next to each Mushop service.</description>
+    </item>
+    
+    <item>
+      <title>Canary Deployment</title>
+      <link>https://oracle-quickstart.github.io/oci-cloudnative/observability/canary/</link>
+      <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
+      
+      <guid>https://oracle-quickstart.github.io/oci-cloudnative/observability/canary/</guid>
+      <description>Note that this is OPTIONAL. This section is only applicable if you have completed Istio service mesh section.
+ Introduction In this section we will demonstrate canary deployment use case with MuShop Application.
+One of the benefits of the Istio project is that it provides the control needed to deploy canary services. The idea behind canary deployment (or rollout) is to introduce a new version of a service by first testing it using a small percentage of user traffic, and then if all goes well, increase, possibly gradually in increments, the percentage while simultaneously phasing out the old version.</description>
+    </item>
+    
+    <item>
+      <title>OCI Monitoring</title>
+      <link>https://oracle-quickstart.github.io/oci-cloudnative/observability/oci-monitoring/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://oracle-quickstart.github.io/oci-cloudnative/observability/oci-monitoring/</guid>
+      <description>Introduction The Oracle Cloud Infrastructure Monitoring service enables active and passive monitoring of cloud resources using the Metrics and Alarms features. Read more details here
+This section focuses on monitoring system metrics of OKE (Oracle Cloud Infrastructure Container Engine for Kubernetes).
+Pre-Requisites Deploy MuShop
+OKE Cluster Metrics Navigate to Developer Services -&amp;gt; Kubernetes Clusters -&amp;gt; &amp;lt;Your_Cluster_Name&amp;gt;
+Under Resources -&amp;gt; Metrics observe the following metrics
+ Unschedulable pods, which can be used to trigger node pool scale operations when there are insufficient resources on which to schedule pods API Server requests per second, which is helpful to understand any underlying performance issues seen in the Kubernetes API server.</description>
+    </item>
+    
+    <item>
+      <title>OCI Health Checks</title>
+      <link>https://oracle-quickstart.github.io/oci-cloudnative/observability/oci-healthcheck/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://oracle-quickstart.github.io/oci-cloudnative/observability/oci-healthcheck/</guid>
+      <description>Introduction Monitors the health of IP addresses and hostnames, as measured from geographic vantage points of your choosing, using HTTP and ping probes. After configuring a health check, you can view the monitor&amp;rsquo;s results. The results include the location from which the host was monitored, the availability of the endpoint, and the date and time the test was performed.
+Pre-Requisites Deploy MuShop
+Create Oracle Cloud Infrastructure Health Checks Navigate to Monitoring -&amp;gt; HealthChecks -&amp;gt; Create HealthChecks</description>
+    </item>
+    
+  </channel>
+</rss>
