@@ -1,5 +1,5 @@
 ---
-title: "Monitoring"
+title: "Grafana Monitoring"
 date: 2020-03-09T16:05:08-06:00
 weight: 40
 ---
