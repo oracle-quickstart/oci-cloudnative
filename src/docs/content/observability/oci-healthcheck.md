@@ -24,13 +24,12 @@ Navigate to ```Monitoring -> HealthChecks -> Create HealthChecks```
 ![OKE Cluster Metrics](../images/create-healthcheck.png)
 
 {{% alert style="primary" icon="warning" %}}
-- Target will be IP of ingress controller
+Target will be IP of ingress controller
 ```
-	kubectl get svc \
-	  mushop-utils-ingress-nginx-controller \
-	  --namespace mushop-utilities
+kubectl get svc \
+	mushop-utils-ingress-nginx-controller \
+	--namespace mushop-utilities
 ```
-- Protocol (Http or Ping)
 {{% /alert %}}
 	
 ## Verifying Oracle Cloud Infrastructure Health Check Results

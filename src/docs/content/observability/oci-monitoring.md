@@ -10,7 +10,7 @@ tags:
 
 ## Introduction
 
-The Oracle Cloud Infrastructure Monitoring service enables you to actively and passively monitor your cloud resources using the Metrics and Alarms features. Read more details [here](https://docs.cloud.oracle.com/en-us/iaas/Content/Monitoring/Concepts/monitoringoverview.htm)
+The Oracle Cloud Infrastructure Monitoring service enables active and passive monitoring of cloud resources using the Metrics and Alarms features. Read more details [here](https://docs.cloud.oracle.com/en-us/iaas/Content/Monitoring/Concepts/monitoringoverview.htm)
 
 This section focuses on monitoring system metrics of OKE (Oracle Cloud Infrastructure Container Engine for Kubernetes).
 
@@ -38,8 +38,8 @@ Navigate to ```Developer Services -> Kubernetes Clusters -> <Your_Cluster_Name> 
 
 Observe the following node pool metrics:
 
-- Node State (If your worker nodes are in Active state as indicated by OI Compute Service)
-- Node condition (If your worker node are in Ready state as indicated by API server)
+- Node State (If your worker nodes are in Active state as indicated by OCI Compute Service)
+- Node condition (If your worker node are in Ready state as indicated by OKE API server)
 
 ![OKE Node Pool Metrics](../images/node-pool-metric.png)
 
@@ -59,6 +59,7 @@ Observe the following node metrics:
 
 ## Accessing via CLI
 
+This is an example to show how metrics can also be accessed via OCI CLI.
 API Server Requests metric with a 5 minute interval accessed via the CLI (some of the telemetry data was manually removed in order for it to fit better on the page)
 
 ```
@@ -98,6 +99,11 @@ $ oci monitoring metric-data summarize-metrics-data --namespace oci_oke --compar
   ]
 }
 ```
+
+{{% alert style="primary" icon="warning" %}}
+OCI CLI has to be installed and configured before running the above command
+[refer](https://docs.cloud.oracle.com/en-us/iaas/Content/API/SDKDocs/cliinstall.htm)
+{{% /alert %}}
 
 ## Cleanup (Optional)
 
