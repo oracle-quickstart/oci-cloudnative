@@ -206,6 +206,39 @@ This creates two secrets managed by kubernetes, named `atp-db-creds` and `atp-jk
 The kubernetes deployment manifest `atp-spring-jpa.yml` references these secrets and provides them to the runtime environment of the containers. The application now references the properties through the environment variables instead of reading them from a file. Alternatively the config files themselves could have been provided and mounted as volumes in to the container.
 
 
+```bash
+kubectl create secret generic monitoring-secret \
+--from-literal=compartment_id="<your compartment_id>" \
+--from-literal=tenant_id="<your tenancy_id>" \
+--from-literal=user_id="<your user_id>" \
+--from-literal=fingerprint="<your fingerprint>" \
+--from-literal=passphrase="<your passphrase>" \
+--from-literal=monitoring_endpoint="<your monitoring endpoint>" \
+--from-literal=region="<your region>" \
+--from-file=oci_api_key=<your oci_api_key.pem>
+```
+
+The above secret is required to send out custom metric (payment failure) to OCI Monitoring using OCI Java SDK.
+
+### For Developer setup:
+
+# Build
+
+## Java: building application jar
+
+OCI-java-sdk is a dependency and needs to be manually uploaded to 
+the local maven repository. 
+* download oci-java-sdk 
+`wget https://github.com/oracle/oci-java-sdk/releases/download/v1.25.1/oci-java-sdk-1.25.1.zip`
+`unzip oci-java-sdk-1.25.1.zip`
+* install oci-java-sdk jar to local maven repository
+
+`mvn install:install-file -Dfile=shaded/lib/oci-java-sdk-full-shaded-1.25.1.jar -DgroupId=com.oracle.oci -DartifactId=oci-java-sdk -Dversion=1.25.1 -Dpackaging=jar`
+
+
+`gradle build`
+`gradle bootRun`
+
 [connection_info]: https://docs.oracle.com/en/cloud/paas/atp-cloud/atpug/connect-jdbc-thin-wallet.html#GUID-F1D7452F-5E67-4418-B16B-B6A7B92F26A4
 [spring_data_rest_sample]: https://github.com/spring-guides/gs-accessing-data-rest
 [download_client_creds]: https://docs.oracle.com/en/cloud/paas/atp-cloud/atpug/connect-download-wallet.html#GUID-B06202D2-0597-41AA-9481-3B174F75D4B1

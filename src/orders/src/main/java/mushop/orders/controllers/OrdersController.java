@@ -14,6 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import mushop.orders.config.MonitoringConfiguration;
+import com.oracle.bmc.monitoring.MonitoringClient;
+
 
 @RestController
 public class OrdersController {
@@ -38,7 +41,22 @@ public class OrdersController {
     @ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE)
     public static class PaymentDeclinedException extends IllegalStateException {
         public PaymentDeclinedException(String s) {
+            
             super(s);
+            // Send Payment failure metrics to OCI Monitoring..
+            try {
+                MonitoringConfiguration monitoringConfig = null;
+                MonitoringClient monitoringClient = monitoringConfig.initConnection();
+                String compartment = monitoringConfig.getCompartmentId();
+                String namespace = monitoringConfig.getNamespace();
+                String MetricName = "Payment-Failure";
+                String region = monitoringConfig.getRegion();
+                monitoringConfig.post(monitoringClient,compartment,namespace,MetricName,region);
+              } catch (Exception e) {
+                // TODO Auto-generated catch block
+                //e.printStackTrace();
+                System.out.println("Caught exception");
+              }
         }
     }
 
