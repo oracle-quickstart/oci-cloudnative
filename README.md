@@ -9,7 +9,7 @@ MuShop can be deployed in different ways to explore [Oracle Cloud Infrastructure
 
 | [Basic: `deploy/basic`](#Getting-Started-with-MuShop-Basic) | [Complete: `deploy/complete`](#Getting-Started-with-MuShop-Complete) |
 |--|--|
-| Simplified runtime utilizing **only** [Always Free](https://www.oracle.com/cloud/free/) resources. Deployed using [Terraform][tf] and [Resource Manager](https://www.oracle.com/cloud/systems-management/resource-manager/) or directly with Deploy to Oracle Cloud button: <br/><br/> [![Deploy to Oracle Cloud][magic_button]][magic_mushop_basic_stack] <br/> | Polyglot set of micro-services deployed on [Kubernetes](https://kubernetes.io/), showcasing Oracle [Cloud Native](https://www.oracle.com/cloud/cloud-native/) technologies and backing services. Deployed using [Helm](https://helm.sh/) or [Terraform][tf] or [Resource Manager](https://www.oracle.com/cloud/systems-management/resource-manager/) or directly with Deploy to Oracle Cloud button: <br/><br/> [![Deploy to Oracle Cloud][magic_button]][magic_mushop_stack] <br/> |
+| Simplified runtime utilizing **only** [Always Free](https://www.oracle.com/cloud/free/) resources. <br/> Deploy using: <br/> 1. [Terraform][tf] <br/> 2. [Resource Manager][orm_landing] <br/> 3.  Deploy to Oracle Cloud button (Recommended) <br/><br/> [![Deploy to Oracle Cloud][magic_button]][magic_mushop_basic_stack] <br/> | Polyglot set of micro-services deployed on [Kubernetes](https://kubernetes.io/), showcasing Oracle [Cloud Native](https://www.oracle.com/cloud/cloud-native/) technologies and backing services. <br/> Deploy using: <br/> 1. [Terraform][tf] <br/> 2. [Resource Manager][orm_landing] <br/> 3.  Deploy to Oracle Cloud button (Recommended) <br/><br/> [![Deploy to Oracle Cloud][magic_button]][magic_mushop_stack] <br/> |
 
 ```text
 mushop
@@ -101,6 +101,7 @@ If you have an issue or a question, please take a look at our [FAQs](./deploy/ba
 [oci]: https://cloud.oracle.com/en_US/cloud-infrastructure
 [orm]: https://docs.cloud.oracle.com/iaas/Content/ResourceManager/Concepts/resourcemanager.htm
 [tf]: https://www.terraform.io
+[orm_landing]:https://www.oracle.com/cloud/systems-management/resource-manager/
 [chartdocs]: https://github.com/oracle-quickstart/oci-cloudnative/tree/master/deploy/complete/helm-chart#setup
 [magic_button]: https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg
 [magic_mushop_basic_stack]: https://console.us-ashburn-1.oraclecloud.com/resourcemanager/stacks/create?region=home&zipUrl=https://github.com/oracle-quickstart/oci-cloudnative/releases/latest/download/mushop-basic-stack-latest.zip
