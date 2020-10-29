@@ -9,7 +9,7 @@ MuShop can be deployed in different ways to explore [Oracle Cloud Infrastructure
 
 | [Basic: `deploy/basic`](#Getting-Started-with-MuShop-Basic) | [Complete: `deploy/complete`](#Getting-Started-with-MuShop-Complete) |
 |--|--|
-| Simplified runtime utilizing **only** [Always Free](https://www.oracle.com/cloud/free/) resources. Deployed using [Terraform][tf] and [Resource Manager](https://www.oracle.com/cloud/systems-management/resource-manager/) <br/> [![Deploy to Oracle Cloud][magic_button]][magic_mushop_basic_stack] | Polyglot set of micro-services deployed on [Kubernetes](https://kubernetes.io/), showcasing Oracle [Cloud Native](https://www.oracle.com/cloud/cloud-native/) technologies and backing services <br/> [![Deploy to Oracle Cloud][magic_button]][magic_mushop_stack] |
+| Simplified runtime utilizing **only** [Always Free](https://www.oracle.com/cloud/free/) resources. Deployed using [Terraform][tf] and [Resource Manager](https://www.oracle.com/cloud/systems-management/resource-manager/) or directly with Deploy to Oracle Cloud button: <br/><br/> [![Deploy to Oracle Cloud][magic_button]][magic_mushop_basic_stack] <br/> | Polyglot set of micro-services deployed on [Kubernetes](https://kubernetes.io/), showcasing Oracle [Cloud Native](https://www.oracle.com/cloud/cloud-native/) technologies and backing services. Deployed using [Helm](https://helm.sh/) or [Terraform][tf] or [Resource Manager](https://www.oracle.com/cloud/systems-management/resource-manager/) or directly with Deploy to Oracle Cloud button: <br/><br/> [![Deploy to Oracle Cloud][magic_button]][magic_mushop_stack] <br/> |
 
 ```text
 mushop
