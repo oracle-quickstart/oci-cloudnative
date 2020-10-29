@@ -9,7 +9,7 @@ MuShop can be deployed in different ways to explore [Oracle Cloud Infrastructure
 
 | [Basic: `deploy/basic`](#Getting-Started-with-MuShop-Basic) | [Complete: `deploy/complete`](#Getting-Started-with-MuShop-Complete) |
 |--|--|
-| Simplified runtime utilizing **only** [Always Free](https://www.oracle.com/cloud/free/) resources. <br/> Deploy using: <br/> 1. [Terraform][tf] <br/> 2. [Resource Manager][orm_landing] <br/> 3.  Deploy to Oracle Cloud button (Recommended) <br/><br/> [![Deploy to Oracle Cloud][magic_button]][magic_mushop_basic_stack] <br/> | Polyglot set of micro-services deployed on [Kubernetes](https://kubernetes.io/), showcasing Oracle [Cloud Native](https://www.oracle.com/cloud/cloud-native/) technologies and backing services. <br/> Deploy using: <br/> 1. [Terraform][tf] <br/> 2. [Resource Manager][orm_landing] <br/> 3.  Deploy to Oracle Cloud button (Recommended) <br/><br/> [![Deploy to Oracle Cloud][magic_button]][magic_mushop_stack] <br/> |
+| Simplified runtime utilizing **only** [Always Free](https://www.oracle.com/cloud/free/) eligible resources. <br/> Deploy using: <br/>  1. [Terraform][tf] <br/>  2. [Resource Manager][orm_landing] <br/>  3.  [![Deploy to Oracle Cloud][magic_button]][magic_mushop_basic_stack] (Recommended) | Polyglot set of micro-services deployed on [Kubernetes](https://kubernetes.io/), showcasing [Oracle Cloud Native](https://www.oracle.com/cloud/cloud-native/) technologies and backing services. <br/> Deploy using: <br/>  1. [Helm](https://helm.sh) <br/> 2. [Terraform][tf] <br/>  3. [Resource Manager][orm_landing] <br/>  4.  [![Deploy to Oracle Cloud][magic_button]][magic_mushop_stack] (Recommended) |
 
 ```text
 mushop
