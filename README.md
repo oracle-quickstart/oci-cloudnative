@@ -1,6 +1,5 @@
-![MuShop Logo](./images/logo.png)
+# ![MuShop Logo](./images/logo.png)
 
----
 MuShop is a showcase of several [Oracle Cloud Infrastructure][oci] services in a unified reference application. The sample application implements an e-commerce platform built as a set of micro-services. The accompanying content can be used to get started with cloud native application development on [Oracle Cloud Infrastructure][oci].
 
 | ![home](./images/screenshot/mushop.home.png) | ![browse](./images/screenshot/mushop.browse.png) | ![cart](./images/screenshot/mushop.cart.png) | ![about](./images/screenshot/mushop.about.png) |
@@ -10,7 +9,7 @@ MuShop can be deployed in different ways to explore [Oracle Cloud Infrastructure
 
 | [Basic: `deploy/basic`](#Getting-Started-with-MuShop-Basic) | [Complete: `deploy/complete`](#Getting-Started-with-MuShop-Complete) |
 |--|--|
-| Simplified runtime utilizing **only** [Always Free](https://www.oracle.com/cloud/free/) resources. Deployed using [Terraform][tf] and [Resource Manager](https://www.oracle.com/cloud/systems-management/resource-manager/) | Polyglot set of micro-services deployed on [Kubernetes](https://kubernetes.io/), showcasing Oracle [Cloud Native](https://www.oracle.com/cloud/cloud-native/) technologies and backing services |
+| Simplified runtime utilizing **only** [Always Free](https://www.oracle.com/cloud/free/) resources. Deployed using [Terraform][tf] and [Resource Manager](https://www.oracle.com/cloud/systems-management/resource-manager/) <br/> [![Deploy to Oracle Cloud][magic_button]][magic_mushop_basic_stack] | Polyglot set of micro-services deployed on [Kubernetes](https://kubernetes.io/), showcasing Oracle [Cloud Native](https://www.oracle.com/cloud/cloud-native/) technologies and backing services <br/> [![Deploy to Oracle Cloud][magic_button]][magic_mushop_stack] |
 
 ```text
 mushop
@@ -91,7 +90,9 @@ The [helm chart documentation][chartdocs] walks through the deployment process a
 
 The following diagram shows the topology created by this stack.
 
-![MuShop Basic Infra](./images/complete/00-Topology.png)
+![MuShop Complete Infra](./images/complete/00-Topology.png)
+
+#### [![Deploy to Oracle Cloud][magic_button]][magic_mushop_stack]
 
 ## Questions
 
@@ -101,3 +102,6 @@ If you have an issue or a question, please take a look at our [FAQs](./deploy/ba
 [orm]: https://docs.cloud.oracle.com/iaas/Content/ResourceManager/Concepts/resourcemanager.htm
 [tf]: https://www.terraform.io
 [chartdocs]: https://github.com/oracle-quickstart/oci-cloudnative/tree/master/deploy/complete/helm-chart#setup
+[magic_button]: https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg
+[magic_mushop_basic_stack]: https://console.us-ashburn-1.oraclecloud.com/resourcemanager/stacks/create?region=home&zipUrl=https://github.com/oracle-quickstart/oci-cloudnative/releases/latest/download/mushop-basic-stack-latest.zip
+[magic_mushop_stack]: https://console.us-ashburn-1.oraclecloud.com/resourcemanager/stacks/create?region=home&zipUrl=https://github.com/oracle-quickstart/oci-cloudnative/releases/latest/download/mushop-stack-latest.zip
