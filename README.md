@@ -8,9 +8,9 @@ MuShop is a showcase of several [Oracle Cloud Infrastructure][oci] services in a
 MuShop can be deployed in different ways to explore [Oracle Cloud Infrastructure][oci] based on your subscription. Both deployment models can be used with trial subscriptions. However, [Oracle Cloud Infrastructure][oci] offers an *Always Free* tier with resources that can be used indefinitely.
 
 | [Basic: `deploy/basic`](#Getting-Started-with-MuShop-Basic) | [Complete: `deploy/complete`](#Getting-Started-with-MuShop-Complete) |
-|--|--|
-| Simplified runtime utilizing **only** [Always Free](https://www.oracle.com/cloud/free/) eligible resources. <br/> Deploy using: <br/>  1. [Terraform][tf] <br/>  2. [Resource Manager][orm_landing] following the steps below <br/>  3. (Recommended) Button below - launches in Resource Manager directly | Polyglot set of micro-services deployed on [Kubernetes](https://kubernetes.io/), showcasing [Oracle Cloud Native](https://www.oracle.com/cloud/cloud-native/) technologies and backing services. <br/> Deploy using: <br/>  1. [Helm](https://helm.sh) <br/> 2. [Terraform][tf] <br/>  3. [Resource Manager][orm_landing] <br/>  4. (Recommended) Button below - launches in Resource Manager directly |
-|[![Deploy to Oracle Cloud][magic_button]][magic_mushop_basic_stack]|[![Deploy to Oracle Cloud][magic_button]][magic_mushop_stack]|
+|---|---|
+| Simplified runtime utilizing **only** [Always Free](https://www.oracle.com/cloud/free/) eligible resources. <br/><br/> Deploy using: <br/>  1. [Terraform][tf] <br/>  2. [Resource Manager][orm_landing] following the steps below <br/>  3. (Recommended) Button below - launches in Resource Manager directly | Polyglot set of micro-services deployed on [Kubernetes](https://kubernetes.io/), showcasing [Oracle Cloud Native](https://www.oracle.com/cloud/cloud-native/) technologies and backing services. <br/><br/> Deploy using: <br/>  1. [Helm](https://helm.sh) <br/> 2. [Terraform][tf] <br/>  3. [Resource Manager][orm_landing] <br/>  4. (Recommended) Button below - launches in Resource Manager directly |
+| [![Deploy to Oracle Cloud][magic_button]][magic_mushop_basic_stack]| [![Deploy to Oracle Cloud][magic_button]][magic_mushop_stack]|
 
 ```text
 mushop
@@ -51,7 +51,7 @@ comments = The application URL will be unavailable for a few minutes after provi
 
 dev = Made with ❤ by Oracle A-Team
 
-lb_public_url = http://xxx.xxx.xxx.xxx 
+lb_public_url = http://xxx.xxx.xxx.xxx
 ```
 
 > The application is being deployed to the compute instances asynchronously, and it may take a couple of minutes for the URL to serve the application.
@@ -65,11 +65,15 @@ stack is also responsible for terminating the application.
 Follow these steps to completely remove all provisioned resources:
 
 1. Return to the Oracle Cloud Infrastructure [Console](https://console.us-ashburn-1.oraclecloud.com/resourcemanager/stacks)
+
   > `Home > Solutions & Platform > Resource Manager > Stacks`
+
 1. Select the stack created previously to open the Stack Details view
 1. From the Stack Details, select `Terraform Actions > Destroy`
 1. Confirm the **Destroy** job when prompted
+
   > The job status will be **In Progress** while resources are terminated
+
 1. Once the destroy job has succeeded, return to the Stack Details page
 1. Click `Delete Stack` and confirm when prompted
 
