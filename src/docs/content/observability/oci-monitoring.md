@@ -2,7 +2,7 @@
 title: "OCI Monitoring"
 date: 2020-10-26 T16:04:15-06:00
 draft: false
-weight: 90
+weight: 100
 tags:
   - OCI Monitoring
   - OCI Observability

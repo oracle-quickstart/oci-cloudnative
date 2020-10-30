@@ -7,12 +7,10 @@ package  mushop.orders.controllers;
 import mushop.orders.entities.HealthCheck;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.*;
 
 @RestController
 public class HealthCheckController {
-
 
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.GET, path = "/health")
@@ -25,8 +23,6 @@ public class HealthCheckController {
 
       HealthCheck app = new HealthCheck("orders", "OK", dateNow);
       HealthCheck database = new HealthCheck("orders-db", "OK", dateNow);
-
-      
 
       healthChecks.add(app);
       healthChecks.add(database);

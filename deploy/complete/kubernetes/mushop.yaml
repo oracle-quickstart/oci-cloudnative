@@ -1216,7 +1216,8 @@ spec:
         
       containers:
         - name: orders
-          image: "iad.ocir.io/oracle/ateam/mushop-orders:2.2.2"
+          #image: "iad.ocir.io/oracle/ateam/mushop-orders:2.2.2"
+          image: "phx.ocir.io/ociateam/mushop-orders:3.0"
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -1263,6 +1264,48 @@ spec:
                 secretKeyRef:
                   name: orders-oadb-connection
                   key: oadb_service
+                  
+            - name: OCI_TENANT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: monitoring-secret
+                  key: tenant_id
+            - name: OCI_USER_ID
+              valueFrom:
+                secretKeyRef:
+                  name: monitoring-secret
+                  key: user_id
+            - name: OCI_FINGERPRINT
+              valueFrom:
+                secretKeyRef:
+                  name: monitoring-secret
+                  key: fingerprint
+            - name: OCI_PASSPHRASE
+              valueFrom:
+                secretKeyRef:
+                  name: monitoring-secret
+                  key: passphrase     
+            - name: OCI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: monitoring-secret
+                  key: apikey
+            - name: OCI_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: monitoring-secret
+                  key: region
+            - name: OCI_COMPARTMENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: monitoring-secret
+                  key: compartment_id
+            - name: OCI_MONITORING_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: monitoring-secret
+                  key: monitorinig_endpoint
+
           volumeMounts:
             - mountPath: /tmp
               name: tmp-volume

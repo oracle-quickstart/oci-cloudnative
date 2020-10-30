@@ -1,8 +1,11 @@
-# Deploy in Kubernetes
-
-## Deploy using Helm Chart
-
-Refer to [helm-chart](../helm-chart/README.md)
+---
+title: "Setup"
+date: 2020-03-10T13:29:23-06:00
+draft: false
+weight: 1
+tags:
+  - mushop setup
+---
 
 ## Prerequisites
 
@@ -11,11 +14,12 @@ Refer to [helm-chart](../helm-chart/README.md)
 > NOTE: There are several options for ingress controllers in K8S. This demo uses the common `ingress-nginx`
 
 ```text
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/mandatory.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/provider/cloud-generic.yaml
 ```
 
-### Enable the monitoring capability by adding your OCI credentials:
+### Create a Secret for OCI Monitoring:
 
 ```bash
 kubectl create secret generic monitoring-secret \
@@ -31,13 +35,18 @@ kubectl create secret generic monitoring-secret \
 
 ## Deploy
 
-### Create Runtime in K8S
+```
+cd deploy/complete/kubernetes
+```
 
 ```text
 kubectl apply -f mushop.yaml
 ```
 
-> Verify with `kubectl get po`
+Verify if all the pods are in running status 
+```text
+kubectl get pods
+```
 
 ## Expose
 
@@ -51,15 +60,3 @@ kubectl port-forward svc/edge 8000:80
 ```
 
 Open browser [http://localhost:8000](http://localhost:8000);
-
-### Option B: K8S Ingress
-
-Better for development environments with nginx ingress controller installed.
-This involves creating the Ingress defined within `ingress/mushop-dev.yaml`
-
-```text
-kubectl apply -f ingress/mushop-dev.yaml
-```
-
-The application will become available on [https://localhost](https://localhost)
-_(with self-signed SSL)_

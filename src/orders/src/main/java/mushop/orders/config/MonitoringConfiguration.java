@@ -63,13 +63,19 @@ public class MonitoringConfiguration {
         final String userId = env.getProperty("OCI_USER_ID");
         final String fingerprint = env.getProperty("OCI_FINGERPRINT");
         final String privateKey = env.getProperty("OCI_API_KEY");
-        final String passPhrase = env.getProperty("OCI_PASS_PHRASE");
-        final String monitoringEndPoint = env.getProperty("MONITORING_ENDPOINT");
+        final String passPhrase = env.getProperty("OCI_PASSPHRASE");
+        final String monitoringEndPoint = env.getProperty("OCI_MONITORING_ENDPOINT");
         compartmentId = env.getProperty("OCI_COMPARTMENT_ID");
         namespace = "mushopnamespace";
         region = env.getProperty("OCI_REGION");
     
-        System.out.println("Started Initializing the Monitoring Service...");
+        System.out.println("Started Initializing the Monitoring Service...\nDetails below \n");
+        System.out.printf("%s,%s,%s,%s,%s,%s",tenantId,userId,fingerprint,privateKey,monitoringEndPoint,compartmentId);
+        
+        if (tenantId == null || userId == null || fingerprint == null || privateKey == null){
+                System.out.printf("Cannot send metrics to OCI Monitoring, Ensure you have set the required ENV variables tenantId, userId etc ..");
+                return null;
+        }
 
         AuthenticationDetailsProvider provider = null;
                 

@@ -24,6 +24,9 @@ import java.util.concurrent.*;
 import static mushop.orders.controllers.OrdersController.OrderFailedException;
 import static mushop.orders.controllers.OrdersController.PaymentDeclinedException;
 
+import mushop.orders.config.MonitoringConfiguration;
+import com.oracle.bmc.monitoring.MonitoringClient;
+
 @Service
 public class OrdersService {
 
@@ -42,6 +45,10 @@ public class OrdersService {
 
     @Autowired
     private MeterRegistry meterRegistry;
+
+    @Autowired
+    MonitoringConfiguration monitoringConfig = null;
+    MonitoringClient monitoringClient = null;
 
     @Value(value = "${http.timeout:5}")
     private long timeout;
@@ -93,6 +100,23 @@ public class OrdersService {
             }
             if (!paymentResponse.isAuthorised()) {
                 meterRegistry.counter("orders.rejected","cause","payment_declined").increment();
+                // Send Payment failure metrics to OCI Monitoring..
+                try {
+                    System.out.println("In Order Service, Setting up OCI Monitoring .. ");
+                    monitoringClient = monitoringConfig.initConnection();
+                    if (monitoringClient == null) {
+                        System.out.printf("Cannot send metrics to OCI Monitoring, Ensure you have set the required ENV variables tenantId, userId etc ..");
+                    }else {
+                        String compartment = monitoringConfig.getCompartmentId();
+                        String namespace = monitoringConfig.getNamespace();
+                        String MetricName = "Payment-Failure";
+                        String region = monitoringConfig.getRegion();
+                        monitoringConfig.post(monitoringClient,compartment,namespace,MetricName,region);
+                    } 
+                }catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println("Caught exception Order Service");
+                }
                 throw new PaymentDeclinedException(paymentResponse.getMessage());
             }
 
