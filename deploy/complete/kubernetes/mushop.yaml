@@ -1217,7 +1217,7 @@ spec:
       containers:
         - name: orders
           #image: "iad.ocir.io/oracle/ateam/mushop-orders:2.2.2"
-          image: "phx.ocir.io/ociateam/mushop-orders:3.0"
+          image: "phx.ocir.io/ociateam/mushop-orders:4.0"
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -1240,7 +1240,7 @@ spec:
             - name: ZIPKIN
               value: zipkin.jaeger.svc.cluster.local
             - name: JAVA_OPTS
-              value: -Xms32m -Xmx150m -XX:MaxRAM=150m -Djava.security.egd=file:/dev/urandom -Doracle.jdbc.fanEnabled=false -XX:+UnlockExperimentalVMOptions -XX:+UseZGC -Dlogging.level.mushop.orders=INFO -Dspring.zipkin.enabled=false
+              value: -Xms64m -Xmx300m -XX:MaxRAM=300m -Djava.security.egd=file:/dev/urandom -Doracle.jdbc.fanEnabled=false -XX:+UnlockExperimentalVMOptions -XX:+UseZGC -Dlogging.level.mushop.orders=INFO -Dspring.zipkin.enabled=false
             - name: NATS_HOST
               value: "mushop-nats"
             - name: NATS_PORT

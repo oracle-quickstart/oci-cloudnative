@@ -13,6 +13,9 @@ tags:
 
 > NOTE: There are several options for ingress controllers in K8S. This demo uses the common `ingress-nginx`
 
+```bash
+kubectl create namespace mushop
+```
 ```text
 
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/mandatory.yaml

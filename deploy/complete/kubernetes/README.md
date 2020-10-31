@@ -11,8 +11,12 @@ Refer to [helm-chart](../helm-chart/README.md)
 > NOTE: There are several options for ingress controllers in K8S. This demo uses the common `ingress-nginx`
 
 ```text
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/mandatory.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/provider/cloud-generic.yaml
+```
+
+```bash
+kubectl -n ingress-nginx get svc
 ```
 
 ### Enable the monitoring capability by adding your OCI credentials:

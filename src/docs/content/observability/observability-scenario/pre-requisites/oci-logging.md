@@ -51,7 +51,7 @@ Navigate to ```Identity -> Policies -> Create Policy```
 
 To enable Logging on OKE, perform the following actions:
 
-- Create a Log Group - This is a logical container for organizing logs, IAM policies can control who has access to a Log Group.
+- Create a Log Group - This is a logical container for organizing logs, Identity and Access Management (IAM) policies can control who has access to a Log Group.
 - Create a Custom Log - The Custom Log will contain all information that is uploaded by the Agent Configuration.
 - Create an Agent Configuration - Defines the Source Log location and relevant Parsers along with the Dynamic Group containing all the Instance to which the configuration should apply.
 
@@ -101,6 +101,6 @@ In production we could have 2 log groups (mushop-service and mushop-utilities) a
 ### Explore the logs
 
 Access the mushop application using either the Ingress controller or kubernetes port forwarding as mentioned under [setup]({{< ref "setup.md" >}}). 
-Perform some actions, Add items to ```cart -> Place Order```
+Perform some actions, Add items to ```Cart -> Place Order```
 
 Navigate to ```Logging -> Search``` and start exploring the logs.
