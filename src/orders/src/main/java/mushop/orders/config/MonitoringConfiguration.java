@@ -69,11 +69,11 @@ public class MonitoringConfiguration {
         namespace = "mushopnamespace";
         region = env.getProperty("OCI_REGION");
     
-        System.out.println("Started Initializing the Monitoring Service...\nDetails below \n");
-        System.out.printf("%s,%s,%s,%s,%s,%s",tenantId,userId,fingerprint,privateKey,monitoringEndPoint,compartmentId);
+        System.out.println("Started Initializing the Monitoring Service...");
+        //System.out.printf("%s,%s,%s,%s,%s,%s",tenantId,userId,fingerprint,privateKey,monitoringEndPoint,compartmentId);
         
         if (tenantId == null || userId == null || fingerprint == null || privateKey == null){
-                System.out.printf("Cannot send metrics to OCI Monitoring, Ensure you have set the required ENV variables tenantId, userId etc ..");
+                System.out.printf("Cannot send metrics to OCI Monitoring, Ensure you have set the required ENV variables tenantId, userId, fingerprint and privateKey ..");
                 return null;
         }
 

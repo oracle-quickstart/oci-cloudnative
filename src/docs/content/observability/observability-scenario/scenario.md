@@ -28,7 +28,7 @@ Select
     Dimension Name: pod-name
     Dimension Value: mushop-orders
 
-Note: The metric namespace "mushopnamespace" should be visible. Else, wait for some more time, send some more 406 requests and check back again.
+Note: The metric namespace "mushopnamespace" should be visible. Else, wait for some time, send some more 406 requests and check back again.
 
 Click on "Update Chart" with the above fields selected to see the metrics.
 
@@ -43,17 +43,25 @@ In Metric Explorer once you have chosen mushopnamespace and all its attributes, 
     Trigger rule: <value equal to 406 with trigger delay 0 minutes>
     Destination: <Select your notifications topic>
 
-#### send some more 406 requests and you will receive an email like this
+Send some more 406 requests and you will start receiving emails like this
 
 ![Alarms notification](../../images/alarm-mail.png)
 
 ### Analyze the logs
 
-Navigate to ```Logging -> Search```
+Navigate to ```Logging -> Search -> Show Advanced Mode```
 
-You will see a failure message on mushop-orders-xxxx pod :
+```
+search "ocid1.compartment.oc1..xxxx/ocid1.loggroup.oc1.phx.xxxx/ocid1.log.oc1.phx.xxxx" | subject='/var/log/containers/mushop-orders*' | sort by datetime desc
+```
+
+![log query](../../images/log-query)
+
+You will observe a failure message on mushop-orders-xxxx pod :
 
 ```Received payment response: PaymentResponse{authorised=false, message=Payment declined: amount exceeds 105.00}```
+
+![payment failure log](../../images/payment-failure-log)
 
 ### Summary
 

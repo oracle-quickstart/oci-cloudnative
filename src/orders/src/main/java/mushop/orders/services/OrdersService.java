@@ -105,7 +105,7 @@ public class OrdersService {
                     System.out.println("In Order Service, Setting up OCI Monitoring .. ");
                     monitoringClient = monitoringConfig.initConnection();
                     if (monitoringClient == null) {
-                        System.out.printf("Cannot send metrics to OCI Monitoring, Ensure you have set the required ENV variables tenantId, userId etc ..");
+                        System.out.printf("Cannot send metrics to OCI Monitoring, Ensure you have set the required ENV variables tenantId, userId, privateKey and fingerprint ..");
                     }else {
                         String compartment = monitoringConfig.getCompartmentId();
                         String namespace = monitoringConfig.getNamespace();
