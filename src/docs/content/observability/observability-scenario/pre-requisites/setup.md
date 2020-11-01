@@ -7,11 +7,9 @@ tags:
   - mushop setup
 ---
 
-## Prerequisites
+## Pre-requisites
 
 ### Install Ingress Controller
-
-> NOTE: There are several options for ingress controllers in K8S. This demo uses the common `ingress-nginx`
 
 ```bash
 kubectl create namespace mushop
@@ -22,7 +20,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/ngin
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/provider/cloud-generic.yaml
 ```
 
-### Create a Secret for OCI Monitoring:
+### Create a Secret for OCI Monitoring
 
 ```bash
 kubectl create secret generic monitoring-secret \
@@ -48,7 +46,7 @@ kubectl apply -f mushop.yaml
 
 Verify if all the pods are in running status 
 ```text
-kubectl get pods
+kubectl -n mushop get pods
 ```
 
 ## Expose

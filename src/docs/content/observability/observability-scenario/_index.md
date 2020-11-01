@@ -12,9 +12,10 @@ In this section we will try to understand Observability on Oracle Cloud Infrastr
 ![Failure-scenario](../images/observability-scenario.png)
 
 ## Scenario Details
-- User logs in to MuShop and Orders items more than 105.
+- User logs in to MuShop and Orders items with value more than $105.
 - User notices the Order processing failure.
-- User gets notified on the Payment failures. Note: In a production setup, application operations team would get paged.
+- User gets notified on the Payment failures. 
+  In a production setup, application operations team would get paged.
 - User analyzes the failure using Oracle Cloud Infrastructure(OCI) Observability Services.
 - User delivers the fix. 
 

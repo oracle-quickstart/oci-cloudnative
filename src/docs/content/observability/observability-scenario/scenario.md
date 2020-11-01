@@ -8,27 +8,26 @@ tags:
 
 ### Pre-Requisites
 
-Deploy [Mushop]({{< ref "pre-requisites/setup.md" >}})
-Setup Oracle Cloud Infrastructure (OCI) Logging [OCI Logging]({{< ref "pre-requisites/oci-logging.md" >}})
-Setup Oracle Cloud Infrastructure (OCI) Notifications [OCI Notifications]({{< ref "pre-requisites/oci-notifications.md" >}})
+- Deploy [Mushop]({{< ref "pre-requisites/setup.md" >}})
+- Setup Oracle Cloud Infrastructure (OCI) Logging [OCI Logging]({{< ref "pre-requisites/oci-logging.md" >}})
+- Setup Oracle Cloud Infrastructure (OCI) Notifications [OCI Notifications]({{< ref "pre-requisites/oci-notifications.md" >}})
 
 ### Scenario Details
 
-Navigate to MuShop and add items to cart to exceed the amount greater than 105.
+Navigate to MuShop and add items to cart to exceed the amount greater than $105
 The request will be denied with HTTP 406 Request Not Acceptable.
 
 ### Observe
 
 Navigate to OCI Console ``Monitoring -> Metrics Explorer``
 
-Select 
     Compartment: <Your_Compartment_Name>
     Metric Namespace: mushopnamespace
     Metric Name: Payment-Failure    
     Dimension Name: pod-name
     Dimension Value: mushop-orders
 
-Note: The metric namespace "mushopnamespace" should be visible. Else, wait for some time, send some more 406 requests and check back again.
+Note: The metric namespace "mushopnamespace" should be visible. Else, wait for some time, send some more HTTP Status 406 requests and check back again.
 
 Click on "Update Chart" with the above fields selected to see the metrics.
 
@@ -43,7 +42,7 @@ In Metric Explorer once you have chosen mushopnamespace and all its attributes, 
     Trigger rule: <value equal to 406 with trigger delay 0 minutes>
     Destination: <Select your notifications topic>
 
-Send some more 406 requests and you will start receiving emails like this
+Send some more HTTP Status 406 requests and you will start receiving emails like this
 
 ![Alarms notification](../../images/alarm-mail.png)
 
@@ -55,13 +54,13 @@ Navigate to ```Logging -> Search -> Show Advanced Mode```
 search "ocid1.compartment.oc1..xxxx/ocid1.loggroup.oc1.phx.xxxx/ocid1.log.oc1.phx.xxxx" | subject='/var/log/containers/mushop-orders*' | sort by datetime desc
 ```
 
-![log query](../../images/log-query)
+![log query](../../images/log-query.png)
 
-You will observe a failure message on mushop-orders-xxxx pod :
+You will observe a failure message on mushop-orders-xxxx pod as below
 
 ```Received payment response: PaymentResponse{authorised=false, message=Payment declined: amount exceeds 105.00}```
 
-![payment failure log](../../images/payment-failure-log)
+![payment failure log](../../images/payment-failure-log.png)
 
 ### Summary
 

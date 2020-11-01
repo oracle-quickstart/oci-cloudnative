@@ -95,7 +95,7 @@ Navigate to ```Logging -> Agent Configurations -> Create Agent Config```
         Log Name: <SelectLogName>
 
 {{% alert style="warning" icon="warning" %}}
-In production we could have 2 log groups (mushop-service and mushop-utilities) and create 2 Agent configurations with files paths /var/log/containers/*_mushop_* for mushop-service to collect all container logs from mushop namespace. Similarly, /var/log/containers/*_mushop-utilities_* to collect all container logs from mushop-utilities namespace.
+In production we could have 2 log groups (mushop-service and mushop-utilities) and create 2 Agent configurations with files paths /var/log/containers/\*\_mushop\_\* for mushop-service to collect all container logs from mushop namespace. Similarly, /var/log/containers/\*\_mushop-utilities\_\* to collect all container logs from mushop-utilities namespace.
 {{% /alert %}}
 
 ### Explore the logs

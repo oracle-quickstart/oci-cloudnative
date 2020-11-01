@@ -10,11 +10,11 @@ tags:
 
 ## Prepare Oracle Cloud Infrastructure (OCI) Notifications
 
-Navigate to ```Application Integration -> Notifications -> Create Topic```
+- Navigate to ```Application Integration -> Notifications -> Create Topic```
 
-Navigate to your Topic and ```Create Subscription -> Email```
+- Navigate to your Topic and ```Create Subscription -> Email```
 
-Add you Email and create. The Email subscription will change to pending state. 
+- Add you Email and create. The Email subscription will change to pending state. 
 
 Sample Email you receive would look like this:
 
