@@ -1,7 +1,8 @@
 ---
-title: "Observability Scenario"
+title: "Observability Example"
 date: 2020-10-26 T16:04:15-06:00
 draft: false
+weight: 110
 showChildren: true
 ---
 

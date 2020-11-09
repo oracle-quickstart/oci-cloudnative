@@ -1,24 +1,24 @@
 ---
-title: "Scenario"
+title: "Use Case"
 date: 2020-03-10T13:29:23-06:00
 draft: false
 tags:
   - observability in action
+  - observability use case
+  - observability example
+  - MuShop Payment Failures
 ---
 
-### Pre-Requisites
+### Prerequisites
 
-- Deploy [Mushop]({{< ref "pre-requisites/setup.md" >}})
-- Setup Oracle Cloud Infrastructure (OCI) Logging [OCI Logging]({{< ref "pre-requisites/oci-logging.md" >}})
-- Setup Oracle Cloud Infrastructure (OCI) Notifications [OCI Notifications]({{< ref "pre-requisites/oci-notifications.md" >}})
-- Setup Oracle Cloud Infrastructure (OCI) Service Connector Hub [OCI Service Connector Hub]({{< ref "pre-requisites/oci-service-connector.md" >}})
+- Complete the [Setup]({{< ref "setup.md" >}})
 
 ### Payment Failures
 
-Navigate to MuShop application at [http://localhost:8000](http://localhost:8000) if using ```kubectl port-forward``` as discussed under [Mushop]({{< ref "pre-requisites/setup.md" >}}) and add items to cart to exceed the amount greater than $105.
+Navigate to MuShop application at [http://localhost:8000](http://localhost:8000) if using `kubectl port-forward` as discussed under [Setup]({{< ref "setup.md" >}}) and add items to cart to exceed the amount greater than $105 and `place order`.
 The request will be denied with HTTP 406 "Request Not Acceptable"
 
-Click on "place order" 4-5 times just to create some additional failure log data.
+Click on `place order` 4-5 times just to create some additional failure log data.
 
 ### Observe
 
@@ -64,11 +64,12 @@ Note: Notice the logContent.data which are nicely formatted based on our regex e
 
 ### Summary
 
-We setup the OCI logging agents on the OKE worker nodes to send pod logs on to OCI logging.
-We setup service connector between OCI logging and OCI monitoring with a new monitoring namespace.
-Simulated the payment failures on MuShop application. 
+We performed the following actions:
+- Setup the OCI logging agents on the OKE worker nodes to send pod logs on to OCI logging.
+- Setup service connector between OCI logging and OCI monitoring with a new custom monitoring namespace.
+- Simulated the payment failures on MuShop application. 
 
 The orders service logs the payment failure details and the agent config filters the specific message that we setup as part of OCI logging agent setup (fluentd regexp parser).
 
-Service connector helped to send the payment failures onto OCI Monitoring which helped us view the metrics on a dashboard. We then set alarm for that metric to get alerts. 
-We also, analyzed the logs to find out what the issue was "Payment above 105 were getting declined".
+Service connector helps to send the payment failures onto OCI Monitoring which then helped us to view the metrics on a dashboard. We then set alarm for that metric to get alerts on our email. 
+We also, analyzed the logs to root cause the issue which was "Payment above 105 were getting declined".

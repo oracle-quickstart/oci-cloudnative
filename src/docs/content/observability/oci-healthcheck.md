@@ -2,7 +2,7 @@
 title: "OCI Health Checks"
 date: 2020-10-26 T16:04:15-06:00
 draft: false
-weight: 0
+weight: 100
 tags:
   - OCI Health Checks
   - OCI Observability
