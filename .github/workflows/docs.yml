@@ -4,6 +4,7 @@ on:
   push:
     branches: 
     - master
+    - docs_update
     paths:
     - 'src/docs/**'
 jobs:

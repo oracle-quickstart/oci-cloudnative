@@ -6,6 +6,7 @@ baseURL = "https://oracle-quickstart.github.io/oci-cloudnative/"
 languageCode = "en-us"
 title = "MuShop"
 theme = "redwood"
+relativeURLs = true
 
 [params]
 editURL = "https://github.com/oracle-quickstart/oci-cloudnative/tree/master/docs/content/"
