@@ -3,7 +3,7 @@
   <div class="">
     <nav role="navigation" class="uk-light uk-navbar" uk-navbar>
       <div class="uk-navbar-left">
-        <a href="{{ .Site.BaseURL }}" class="uk-navbar-item uk-logo">
+        <a href="{{ .Site.BaseURL }}/index.html" class="uk-navbar-item uk-logo">
           <img
             alt="{{ .Site.Title }}"
             class="uk-width-small"
@@ -30,7 +30,7 @@
       {{ $currentNode := . }}
       <section>
         <div class="uk-margin-bottom uk-visible@s">
-          <a href="{{ .Site.BaseURL }}" class="uk-logo">
+          <a href="{{ .Site.BaseURL }}/index.html" class="uk-logo">
             <img src="{{ .Site.Params.logo | default "images/oracle.svg" | relURL }}" alt="{{ .Site.Title }}">
           </a>
         </div>
