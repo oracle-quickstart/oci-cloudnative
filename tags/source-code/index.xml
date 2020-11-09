@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Source code on MuShop</title>
-    <link>https://oracle-quickstart.github.io/oci-cloudnative/tags/source-code/</link>
+    <link>/tags/source-code/</link>
     <description>Recent content in Source code on MuShop</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 05 Mar 2020 15:34:14 -0700</lastBuildDate>
     
-	<atom:link href="https://oracle-quickstart.github.io/oci-cloudnative/tags/source-code/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/source-code/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Getting Started</title>
-      <link>https://oracle-quickstart.github.io/oci-cloudnative/quickstart/</link>
+      <link>/quickstart/</link>
       <pubDate>Thu, 05 Mar 2020 15:34:14 -0700</pubDate>
       
-      <guid>https://oracle-quickstart.github.io/oci-cloudnative/quickstart/</guid>
+      <guid>/quickstart/</guid>
       <description>This project supports deployment modes for the purposes of demonstrating different functionality on Oracle Cloud Infrastructure. While the source code is identical across these options, certain services are omitted in the basic deployment.
    Basic: deploy/basic Cloud Native: deploy/complete     Simplified runtime utilizing only Always Free resources deployed with Resource Manager Full-featured Kubernetes microservices deployment showcasing Oracle Cloud Native technologies and backing services    mushop └── deploy ├── basic └── complete Clone Repository Each topic in this material references the source code, which should be cloned to a personal workspace.</description>
     </item>

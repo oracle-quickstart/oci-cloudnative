@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Compartment on MuShop</title>
-    <link>https://oracle-quickstart.github.io/oci-cloudnative/tags/compartment/</link>
+    <link>/tags/compartment/</link>
     <description>Recent content in Compartment on MuShop</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 09 Mar 2020 14:51:01 -0600</lastBuildDate>
     
-	<atom:link href="https://oracle-quickstart.github.io/oci-cloudnative/tags/compartment/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/compartment/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Prerequisites</title>
-      <link>https://oracle-quickstart.github.io/oci-cloudnative/cloud/prerequisites/</link>
+      <link>/cloud/prerequisites/</link>
       <pubDate>Mon, 09 Mar 2020 14:51:01 -0600</pubDate>
       
-      <guid>https://oracle-quickstart.github.io/oci-cloudnative/cloud/prerequisites/</guid>
+      <guid>/cloud/prerequisites/</guid>
       <description>In order connect the MuShop application with services in Oracle Cloud Infrastructure, several configurations are necessary. These tenancy configurations will be used to properly provision and/or connect cloud services: Create a file with the following information to simplify lookups later:
 region:# Region where resources will be provisioned (ex us-phoenix-1)tenancy:# Tenancy OCID valueuser:# API User OCID valuecompartment:# Compartment OCID valuekey:# Private API Key file path (ex /Users/jdoe/.oci/oci_key.pem)fingerprint:# Public API Key fingerprint (ex 43:65:2c.</description>
     </item>

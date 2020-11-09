@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>OCI Health Checks on MuShop</title>
-    <link>https://oracle-quickstart.github.io/oci-cloudnative/tags/oci-health-checks/</link>
+    <link>/tags/oci-health-checks/</link>
     <description>Recent content in OCI Health Checks on MuShop</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	<atom:link href="https://oracle-quickstart.github.io/oci-cloudnative/tags/oci-health-checks/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/oci-health-checks/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>OCI Health Checks</title>
-      <link>https://oracle-quickstart.github.io/oci-cloudnative/observability/oci-healthcheck/</link>
+      <link>/observability/oci-healthcheck/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://oracle-quickstart.github.io/oci-cloudnative/observability/oci-healthcheck/</guid>
+      <guid>/observability/oci-healthcheck/</guid>
       <description>Introduction Monitors the health of IP addresses and hostnames, as measured from geographic vantage points of your choosing, using HTTP and ping probes. After configuring a health check, you can view the monitor&amp;rsquo;s results. The results include the location from which the host was monitored, the availability of the endpoint, and the date and time the test was performed.
 Pre-Requisites Deploy MuShop
 Create Oracle Cloud Infrastructure Health Checks Navigate to Monitoring -&amp;gt; HealthChecks -&amp;gt; Create HealthChecks</description>

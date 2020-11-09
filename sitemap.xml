@@ -3,289 +3,289 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/introduction/</loc>
+    <loc>/introduction/</loc>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/cloud/prerequisites/</loc>
+    <loc>/cloud/prerequisites/</loc>
     <lastmod>2020-03-09T14:51:01-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/quickstart/</loc>
+    <loc>/quickstart/</loc>
     <lastmod>2020-03-05T15:34:14-07:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/cloud/setup/</loc>
+    <loc>/cloud/setup/</loc>
     <lastmod>2020-03-09T15:49:36-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/quickstart/basic/</loc>
+    <loc>/quickstart/basic/</loc>
     <lastmod>2020-03-06T12:28:12-07:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/quickstart/kubernetes/</loc>
+    <loc>/quickstart/kubernetes/</loc>
     <lastmod>2020-03-06T12:27:43-07:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/observability/monitoring/</loc>
+    <loc>/observability/monitoring/</loc>
     <lastmod>2020-03-09T16:05:08-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/cloud/deployment/</loc>
+    <loc>/cloud/deployment/</loc>
     <lastmod>2020-03-09T13:32:46-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/observability/istio/</loc>
+    <loc>/observability/istio/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/observability/canary/</loc>
+    <loc>/observability/canary/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/observability/oci-monitoring/</loc>
+    <loc>/observability/oci-monitoring/</loc>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/extras/jenkins/</loc>
+    <loc>/extras/jenkins/</loc>
     <lastmod>2020-06-24T16:48:49-07:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/cloud/</loc>
+    <loc>/cloud/</loc>
     <lastmod>2020-03-09T13:33:46-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/observability/</loc>
+    <loc>/observability/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/extras/</loc>
+    <loc>/extras/</loc>
     <lastmod>2020-03-09T16:04:15-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/cleanup/</loc>
+    <loc>/cleanup/</loc>
     <lastmod>2020-03-09T16:06:00-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/automation/</loc>
+    <loc>/tags/automation/</loc>
     <lastmod>2020-06-24T16:48:49-07:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/jenkins/</loc>
+    <loc>/tags/jenkins/</loc>
     <lastmod>2020-06-24T16:48:49-07:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/patching/</loc>
+    <loc>/tags/patching/</loc>
     <lastmod>2020-06-24T16:48:49-07:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/</loc>
+    <loc>/tags/</loc>
     <lastmod>2020-06-24T16:48:49-07:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/canary/</loc>
+    <loc>/tags/canary/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/istio/</loc>
+    <loc>/tags/istio/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/kiali/</loc>
+    <loc>/tags/kiali/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/service-mesh/</loc>
+    <loc>/tags/service-mesh/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/usage/</loc>
+    <loc>/usage/</loc>
     <lastmod>2020-03-10T10:02:31-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/cleanup/</loc>
+    <loc>/tags/cleanup/</loc>
     <lastmod>2020-03-09T16:06:00-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/deprovision/</loc>
+    <loc>/tags/deprovision/</loc>
     <lastmod>2020-03-09T16:06:00-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/uninstall/</loc>
+    <loc>/tags/uninstall/</loc>
     <lastmod>2020-03-09T16:06:00-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/helm/</loc>
+    <loc>/tags/helm/</loc>
     <lastmod>2020-03-09T15:49:36-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/kubernetes/</loc>
+    <loc>/tags/kubernetes/</loc>
     <lastmod>2020-03-09T15:49:36-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/setup/</loc>
+    <loc>/tags/setup/</loc>
     <lastmod>2020-03-09T15:49:36-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/api-key/</loc>
+    <loc>/tags/api-key/</loc>
     <lastmod>2020-03-09T14:51:01-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/compartment/</loc>
+    <loc>/tags/compartment/</loc>
     <lastmod>2020-03-09T14:51:01-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/policies/</loc>
+    <loc>/tags/policies/</loc>
     <lastmod>2020-03-09T14:51:01-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/region/</loc>
+    <loc>/tags/region/</loc>
     <lastmod>2020-03-09T14:51:01-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/cloud-services/</loc>
+    <loc>/tags/cloud-services/</loc>
     <lastmod>2020-03-09T13:33:46-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/deployment/</loc>
+    <loc>/tags/deployment/</loc>
     <lastmod>2020-03-09T13:33:46-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/oci/</loc>
+    <loc>/tags/oci/</loc>
     <lastmod>2020-03-09T13:33:46-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/provision/</loc>
+    <loc>/tags/provision/</loc>
     <lastmod>2020-03-09T13:32:46-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/secrets/</loc>
+    <loc>/tags/secrets/</loc>
     <lastmod>2020-03-09T13:32:46-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/serverless/</loc>
+    <loc>/tags/serverless/</loc>
     <lastmod>2020-03-09T13:32:46-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/service-broker/</loc>
+    <loc>/tags/service-broker/</loc>
     <lastmod>2020-03-09T13:32:46-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/atp/</loc>
+    <loc>/tags/atp/</loc>
     <lastmod>2020-03-06T12:28:12-07:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/free/</loc>
+    <loc>/tags/free/</loc>
     <lastmod>2020-03-06T12:28:12-07:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/resource-manager/</loc>
+    <loc>/tags/resource-manager/</loc>
     <lastmod>2020-03-06T12:28:12-07:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/terraform/</loc>
+    <loc>/tags/terraform/</loc>
     <lastmod>2020-03-06T12:28:12-07:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/mock-mode/</loc>
+    <loc>/tags/mock-mode/</loc>
     <lastmod>2020-03-06T12:27:43-07:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/oke/</loc>
+    <loc>/tags/oke/</loc>
     <lastmod>2020-03-06T12:27:43-07:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/quickstart/</loc>
+    <loc>/tags/quickstart/</loc>
     <lastmod>2020-03-05T15:34:14-07:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/source-code/</loc>
+    <loc>/tags/source-code/</loc>
     <lastmod>2020-03-05T15:34:14-07:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/resources/</loc>
+    <loc>/resources/</loc>
     <lastmod>2020-03-03T12:51:44-07:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/</loc>
+    <loc>/</loc>
     <lastmod>2020-02-28T08:19:07-07:00</lastmod>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/acknowledgements/</loc>
+    <loc>/acknowledgements/</loc>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/categories/</loc>
+    <loc>/categories/</loc>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/ci/cd/</loc>
+    <loc>/tags/ci/cd/</loc>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/oci-health-checks/</loc>
+    <loc>/tags/oci-health-checks/</loc>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/observability/oci-healthcheck/</loc>
+    <loc>/observability/oci-healthcheck/</loc>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/oci-monitoring/</loc>
+    <loc>/tags/oci-monitoring/</loc>
   </url>
   
   <url>
-    <loc>https://oracle-quickstart.github.io/oci-cloudnative/tags/oci-observability/</loc>
+    <loc>/tags/oci-observability/</loc>
   </url>
   
 </urlset>

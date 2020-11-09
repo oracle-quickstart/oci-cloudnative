@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Resource Manager on MuShop</title>
-    <link>https://oracle-quickstart.github.io/oci-cloudnative/tags/resource-manager/</link>
+    <link>/tags/resource-manager/</link>
     <description>Recent content in Resource Manager on MuShop</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 06 Mar 2020 12:28:12 -0700</lastBuildDate>
     
-	<atom:link href="https://oracle-quickstart.github.io/oci-cloudnative/tags/resource-manager/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/resource-manager/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Always Free</title>
-      <link>https://oracle-quickstart.github.io/oci-cloudnative/quickstart/basic/</link>
+      <link>/quickstart/basic/</link>
       <pubDate>Fri, 06 Mar 2020 12:28:12 -0700</pubDate>
       
-      <guid>https://oracle-quickstart.github.io/oci-cloudnative/quickstart/basic/</guid>
+      <guid>/quickstart/basic/</guid>
       <description>Basic Deployment This deployment is designed to run on Oracle Cloud Infrastructure using only Always Free resources. It uses MuShop source code and the Oracle Cloud Infrastructure Terraform Provider to produce a Resource Manager stack, that provisions all required resources and configures the application on those resources.
 cd deploy/basic dir deploy/basic  Source directory for basic deployment build/configuration
  These steps outline the Basic deployment using Resource Manager:

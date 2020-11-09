@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>OCI Monitoring on MuShop</title>
-    <link>https://oracle-quickstart.github.io/oci-cloudnative/tags/oci-monitoring/</link>
+    <link>/tags/oci-monitoring/</link>
     <description>Recent content in OCI Monitoring on MuShop</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	<atom:link href="https://oracle-quickstart.github.io/oci-cloudnative/tags/oci-monitoring/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/oci-monitoring/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>OCI Monitoring</title>
-      <link>https://oracle-quickstart.github.io/oci-cloudnative/observability/oci-monitoring/</link>
+      <link>/observability/oci-monitoring/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://oracle-quickstart.github.io/oci-cloudnative/observability/oci-monitoring/</guid>
+      <guid>/observability/oci-monitoring/</guid>
       <description>Introduction The Oracle Cloud Infrastructure Monitoring service enables active and passive monitoring of cloud resources using the Metrics and Alarms features. Read more details here
 This section focuses on monitoring system metrics of OKE (Oracle Cloud Infrastructure Container Engine for Kubernetes).
 Pre-Requisites Deploy MuShop
