@@ -42,4 +42,4 @@ hugo server --buildDrafts
 
 ### Usage
 
-Open [http://localhost:3131/oci-coudnative/usage](http://localhost:3131/oci-coudnative/usage)
+Open [http://localhost:1313/usage](http://localhost:1313/usage)
