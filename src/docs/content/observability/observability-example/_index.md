@@ -10,7 +10,7 @@ showChildren: true
 
 In this section we will try to understand Observability on Oracle Cloud Infrastructure (OCI) by simulating a failure scenario on MuShop application.
 
-![Failure-scenario](../images/observability-scenario.png)
+![observability-scenario](../images/observability-scenario.png)
 
 ## Scenario Details
 - User logs in to MuShop and Orders items with value more than $105.

@@ -14,7 +14,15 @@ tags:
   - notifications
 ---
 
+### Introduction
+
+In this section we will deploy MuShop, Oracle Cloud Infrastructure (OCI) Notifications, Logging and Service Connector Hub.
+
 ### Deploy MuShop
+
+{{% alert style="information" icon="warning" %}}
+We will be deploying MuShop on Oracle Cloud Infrastructure Container Engine for Kubernetes (OKE)
+{{% /alert %}}
 
 - Create kubernetes namespace
 ```bash
@@ -145,11 +153,11 @@ Navigate to `Logging -> Agent Configurations -> Create Agent Config`
         Log Group: <SelectLogGroup>
         Log Name: <SelectLogName>
 
-![Agent-Config](../../images/agent-config.png)
+![agent-config](../../images/agent-config.png)
 
 - Advanced Parser Options
 
-![Advanced Parser](../../images/regex-parser.png)
+![regex-parser](../../images/regex-parser.png)
 
 {{% alert style="information" icon="warning" %}}
 The regexp parser is looking for a specific payment failure message which is logged by mushop-orders pod.
@@ -227,4 +235,4 @@ Navigate to `Logging -> Service Connectors -> Create Connector`
     metricnamespace: <MetricNameSpace>
     metric: <MetricName>
 
-![Service Connector](../../images/service-connector.png)
+![service-connector](../../images/service-connector.png)

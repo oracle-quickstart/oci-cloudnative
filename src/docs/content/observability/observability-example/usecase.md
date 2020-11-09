@@ -34,7 +34,7 @@ Note: The metric namespace "<your_mushopnamespace>" should be visible. Else, wai
 
 Click on "Update Chart" with the above fields selected to see the metrics.
 
-![Metric Explorer](../../images/metric-explorer.png)
+![metric-explorer](../../images/metric-explorer.png)
 
 ### Setting Alarms
 
@@ -47,18 +47,18 @@ In Metric Explorer once you have chosen mushopnamespace and all its attributes, 
 
 Send some more HTTP Status 406 requests and you will start receiving emails like this
 
-![Alarms notification](../../images/alarm-mail.png)
+![alarm-mail](../../images/alarm-mail.png)
 
 ### Analyze the logs
 
 Navigate to ```Agent Configurations -> <your_agent_config> -> Explore log```
 
-![logs](../../images/agent-logs.png)
+![agent-logs](../../images/agent-logs.png)
 
 You will see a failure in the logs as below:
 ```Payment declined: amount exceeds 105.00```
 
-![Detailed logs](../../images/json-log-details.png)
+![json-log-details](../../images/json-log-details.png)
 
 Note: Notice the logContent.data which are nicely formatted based on our regex expression we provided during agent configuration.
 
