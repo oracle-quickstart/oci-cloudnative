@@ -18,4 +18,4 @@ In this section we will try to understand Observability on Oracle Cloud Infrastr
 - User gets notified on the Payment failures. 
 - User analyzes the failure using Oracle Cloud Infrastructure(OCI) Observability Services.
 
-## Following topics will be covered
+## Next

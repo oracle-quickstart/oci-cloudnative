@@ -88,7 +88,7 @@ Log File Content Format:  {"log":"<message>","stream":"<stdout|stderr>","time":"
 Ensure that the worker nodes are running OL 7.6 and above.
 {{% /alert %}}
 
-- Create a Dynamic Group
+1. Create a Dynamic Group
 
 Create a dynamic group and add your worker nodes.
 Navigate to `Identity -> Dynamic Groups -> Create Dynamic Group`
@@ -97,7 +97,7 @@ Navigate to `Identity -> Dynamic Groups -> Create Dynamic Group`
     Description: <DynamicGroupDescription>
     Matching Rules: any {instance.compartment.id = 'CompartmentOCID'}
 
-- Create a IAM Policy
+2. Create a IAM Policy
 
 Navigate to `Identity -> Policies -> Create Policy` 
 
@@ -106,7 +106,7 @@ Navigate to `Identity -> Policies -> Create Policy`
     Policy Versioning: Keep version current
     Statement: allow dynamic-group <DynamicGroupName> to use log-content in tenancy
 
-- Enable Logging
+3. Enable Logging
 
 To enable Logging on OKE, perform the following actions:
 
@@ -114,7 +114,7 @@ To enable Logging on OKE, perform the following actions:
 - Create a Custom Log - The Custom Log will contain all information that is uploaded by the Agent Configuration.
 - Create an Agent Configuration - Defines the Source Log location and relevant Parsers along with the Dynamic Group containing all the Instance to which the configuration should apply.
 
-- Create a Log Group
+4. Create a Log Group
 
 Navigate to `Logging -> Log Groups -> Create Log Group`
 
@@ -122,7 +122,7 @@ Navigate to `Logging -> Log Groups -> Create Log Group`
     Name: <LogGroupName>
     Description:  <LogGroupDescription>
 
-- Create a Custom Log
+5. Create a Custom Log
 
 Navigate to `Logging -> Logs -> Create Custom Log`
 
@@ -132,7 +132,7 @@ Navigate to `Logging -> Logs -> Create Custom Log`
     Show Additional Option:
     Select Log Retention: 1, 2, 3, 4, 5 or 6 months
 
-- Create Agent Configuration
+6. Create Agent Configuration
 
 Navigate to `Logging -> Agent Configurations -> Create Agent Config`
 
@@ -155,7 +155,7 @@ Navigate to `Logging -> Agent Configurations -> Create Agent Config`
 
 ![agent-config](../../images/agent-config.png)
 
-- Advanced Parser Options
+7. Advanced Parser Options
 
 ![regex-parser](../../images/regex-parser.png)
 
@@ -168,7 +168,7 @@ The regexp parser is looking for a specific payment failure message which is log
 Here we are targetting all the pods by using /var/log/containers/\*.log. However, we can also target a specific pod. Example: /var/log/containers/mushop-orders\*.log in this case.
 {{% /alert %}}
 
-- Verify the fluentd.conf
+8. Verify the fluentd.conf
 
 ssh into worker node where the `mushop-orders` pod is running
 
@@ -183,7 +183,7 @@ ssh opc@<IP_OF_WORKER_NODE>
 cat /etc/unified-monitoring-agent/conf.d/fluentd_config/fluentd.conf
 ```
 
-- Example output:
+>> Example output:
 
 ```text
 worker-node-1$ cat /etc/unified-monitoring-agent/conf.d/fluentd_config/fluentd.conf

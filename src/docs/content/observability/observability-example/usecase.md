@@ -3,10 +3,13 @@ title: "Use Case"
 date: 2020-03-10T13:29:23-06:00
 draft: false
 tags:
-  - observability in action
-  - observability use case
-  - observability example
-  - MuShop Payment Failures
+  - observability
+  - Monitoring
+  - Metrics Explorer
+  - Custom Logging
+  - Logging
+  - Alarms
+  - Notifications
 ---
 
 ### Prerequisites
