@@ -18,22 +18,22 @@ tags:
 
 ### Payment Failures
 
-Navigate to MuShop application at [http://localhost:8000](http://localhost:8000) if using `kubectl port-forward` as discussed under [Setup]({{< ref "setup.md" >}}) and add items to cart to exceed the amount greater than $105 and `place order`.
+Navigate to MuShop application at [http://localhost:8000](http://localhost:8000) if using `kubectl port-forward` as discussed under [Setup]({{< ref "setup.md" >}}) and add items to cart to exceed the amount greater than $105 and `PLACE ORDER`.
 The request will be denied with HTTP 406 "Request Not Acceptable"
 
-Click on `place order` 4-5 times just to create some additional failure log data.
+Click on `PLACE ORDER` 9-10 times just to create some additional failure log data.
 
 ### Observe
 
 Navigate to OCI Console ``Monitoring -> Metrics Explorer``
 
     Compartment: <Your_Compartment_Name>
-    Metric Namespace: <Your_mushopnamespace>
-    Metric Name: Payment-Failure    
-    Dimension Name: pod-name
-    Dimension Value: mushop-orders
+    Metric Namespace: <Your_MetricNamespace>
+    Metric Name: <Your_MetricName>  
+    Dimension Name: <Optional_DimensionName>
+    Dimension Value: <Optional_DimensionValue>
 
-Note: The metric namespace "<your_mushopnamespace>" should be visible. Else, wait for some time, send some more HTTP Status 406 requests and check back again.
+Note: The custom metric namespace is create during [Setup]({{< ref "setup.md" >}}) and it should be visible here. Else, wait for some time, send some more HTTP Status 406 requests (By placing orders above $105 as discussed) and check back again.
 
 Click on "Update Chart" with the above fields selected to see the metrics.
 
@@ -41,14 +41,14 @@ Click on "Update Chart" with the above fields selected to see the metrics.
 
 ### Setting Alarms
 
-In Metric Explorer once you have chosen mushopnamespace and all its attributes, select create alarm
+In Metric Explorer once you have chosen the metric namespace and all its attributes, select create alarm
 
     Alarm Name: <Name_Of_Your_Alarm>
-    Metric Namespace: mushopnamespace
-    Trigger rule: <value equal to 406 with trigger delay 0 minutes>
+    Metric Namespace: <Your_MetricNamespace>
+    Trigger rule: <value equal to 1 with trigger delay 0 minutes>
     Destination: <Select your notifications topic>
 
-Send some more HTTP Status 406 requests and you will start receiving emails like this
+Send some more HTTP Status 406 requests (By placing orders above $105 as discussed) and you will start receiving emails like this
 
 ![alarm-mail](../../images/alarm-mail.png)
 
@@ -63,7 +63,7 @@ You will see a failure in the logs as below:
 
 ![json-log-details](../../images/json-log-details.png)
 
-Note: Notice the logContent.data which are nicely formatted based on our regex expression we provided during agent configuration.
+Note: Notice the logContent.data which are nicely formatted based on our regex expression we provided during agent configuration (Advanced parser).
 
 ### Summary
 

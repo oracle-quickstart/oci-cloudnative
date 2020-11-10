@@ -41,6 +41,7 @@ kubectl -n mushop get pods
 ```
 
 - Expose
+
 This command exposes the edge service on `localhost`.
 
 ```text
@@ -155,10 +156,6 @@ Navigate to `Logging -> Agent Configurations -> Create Agent Config`
 
 ![agent-config](../../images/agent-config.png)
 
-7. Advanced Parser Options
-
-![regex-parser](../../images/regex-parser.png)
-
 {{% alert style="information" icon="warning" %}}
 The regexp parser is looking for a specific payment failure message which is logged by mushop-orders pod.
 {{% /alert %}}
@@ -168,7 +165,7 @@ The regexp parser is looking for a specific payment failure message which is log
 Here we are targetting all the pods by using /var/log/containers/\*.log. However, we can also target a specific pod. Example: /var/log/containers/mushop-orders\*.log in this case.
 {{% /alert %}}
 
-8. Verify the fluentd.conf
+7. Verify the fluentd.conf
 
 ssh into worker node where the `mushop-orders` pod is running
 
@@ -182,6 +179,7 @@ ssh opc@<IP_OF_WORKER_NODE>
 ```
 cat /etc/unified-monitoring-agent/conf.d/fluentd_config/fluentd.conf
 ```
+
 
 >> Example output:
 
