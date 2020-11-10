@@ -24,30 +24,38 @@ In this section we will deploy MuShop, Oracle Cloud Infrastructure (OCI) Notific
 We will be deploying MuShop on Oracle Cloud Infrastructure Container Engine for Kubernetes (OKE)
 {{% /alert %}}
 
-- Create kubernetes namespace
-```bash
-kubectl create namespace mushop
-```
-- Deploy
-```
-cd deploy/complete/kubernetes
-```
-```text
-kubectl -n mushop apply -f mushop.yaml
-```
-- Verify if all the pods are in running status 
-```text
-kubectl -n mushop get pods
-```
+{{< switcher left=true tabs="Setup|Deploy|Expose" >}}
+- 
+    Perform just Setup instructions from here [MuShop Setup]({{< ref "quickstart/kubernetes.md" >}})
+- 
+    ```
+    cd deploy/complete/kubernetes
+    ```
+    ```text
+    kubectl -n mushop apply -f mushop.yaml
+    ```
+    Wait for services to be Ready 
+    ```text
+    kubectl get pod --watch --namespace mushop
+    ```
+- 
+   Option-1: Using port-forward
+   
+   ```bash
+     kubectl port-forward \
+     --namespace mushop \
+     svc/edge 8000:80
+   ```
+   Open browser [http://localhost:8000](http://localhost:8000);
+   
+   OR,
 
-- Expose
-
-This command exposes the edge service on `localhost`.
-
-```text
-kubectl -n mushop port-forward svc/edge 8000:80
-```
-Open browser [http://localhost:8000](http://localhost:8000);
+   Option-2: Using External IP
+   ```bash
+   kubectl get svc mushop-utils-ingress-nginx-controller \
+  --namespace mushop-utilities
+   ```
+{{< /switcher >}}
 
 ### Oracle Cloud Infrastructure (OCI) Notifications
 
