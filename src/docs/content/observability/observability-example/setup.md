@@ -18,7 +18,7 @@ tags:
 
 In this section we will deploy MuShop, Oracle Cloud Infrastructure (OCI) Notifications, Logging and Service Connector Hub.
 
-### Setup MuShop
+### Deploy MuShop
 
 {{% alert style="information" icon="warning" %}}
 We will be deploying MuShop on Oracle Cloud Infrastructure Container Engine for Kubernetes (OKE)
