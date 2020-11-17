@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Observability Example on MuShop</title>
+    <link>/observability/observability-example/</link>
+    <description>Recent content in Observability Example on MuShop</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 10 Mar 2020 13:29:23 -0600</lastBuildDate>
+    
+	<atom:link href="/observability/observability-example/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Setup</title>
+      <link>/observability/observability-example/setup/</link>
+      <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
+      
+      <guid>/observability/observability-example/setup/</guid>
+      <description>Introduction In this section we will deploy MuShop, Oracle Cloud Infrastructure (OCI) Notifications, Logging and Service Connector Hub.
+Deploy MuShop We will be deploying MuShop on Oracle Cloud Infrastructure Container Engine for Kubernetes (OKE)
+   Perform just the Setup instructions from here MuShop Setup
+  Deploy
+cd deploy/complete/kubernetes kubectl -n mushop apply -f mushop.yaml Wait for services to be Ready
+kubectl get pod --watch --namespace mushop   Expose</description>
+    </item>
+    
+    <item>
+      <title>Use Case</title>
+      <link>/observability/observability-example/usecase/</link>
+      <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
+      
+      <guid>/observability/observability-example/usecase/</guid>
+      <description>Prerequisites  Complete the Setup  Payment Failures Navigate to MuShop application at http://localhost:8000 if using kubectl port-forward as discussed under Setup and add items to cart to exceed the amount greater than $105 and PLACE ORDER. The request will be denied with HTTP 406 &amp;ldquo;Request Not Acceptable&amp;rdquo;
+Click on PLACE ORDER 9-10 times just to create some additional failure log data.
+Observe Navigate to OCI Console Monitoring -&amp;gt; Metrics Explorer</description>
+    </item>
+    
+  </channel>
+</rss>

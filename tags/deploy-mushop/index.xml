@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Deploy MuShop on MuShop</title>
+    <link>/tags/deploy-mushop/</link>
+    <description>Recent content in Deploy MuShop on MuShop</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 10 Mar 2020 13:29:23 -0600</lastBuildDate>
+    
+	<atom:link href="/tags/deploy-mushop/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Setup</title>
+      <link>/observability/observability-example/setup/</link>
+      <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
+      
+      <guid>/observability/observability-example/setup/</guid>
+      <description>Introduction In this section we will deploy MuShop, Oracle Cloud Infrastructure (OCI) Notifications, Logging and Service Connector Hub.
+Deploy MuShop We will be deploying MuShop on Oracle Cloud Infrastructure Container Engine for Kubernetes (OKE)
+   Perform just the Setup instructions from here MuShop Setup
+  Deploy
+cd deploy/complete/kubernetes kubectl -n mushop apply -f mushop.yaml Wait for services to be Ready
+kubectl get pod --watch --namespace mushop   Expose</description>
+    </item>
+    
+  </channel>
+</rss>

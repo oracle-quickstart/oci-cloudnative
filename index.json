@@ -24,6 +24,14 @@
 	"content": "This project supports deployment modes for the purposes of demonstrating different functionality on Oracle Cloud Infrastructure. While the source code is identical across these options, certain services are omitted in the basic deployment.\n   Basic: deploy/basic Cloud Native: deploy/complete     Simplified runtime utilizing only Always Free resources deployed with Resource Manager Full-featured Kubernetes microservices deployment showcasing Oracle Cloud Native technologies and backing services    mushop └── deploy ├── basic └── complete Clone Repository Each topic in this material references the source code, which should be cloned to a personal workspace.\ngit clone https://github.com/oracle-quickstart/oci-cloudnative.git mushop cd mushop git clone https://github.com/oracle-quickstart/oci-cloudnative.git dir mushop Structure The source code will look something like the following:\n#\u0026gt; mushop ├── deploy │ ├── basic │ └── complete │ ├── docker-compose │ ├── helm-chart │ └── kubernetes └── src ├── api ├── assets ├── carts ├── catalogue ├── edge-router ├── events ├── fulfillment ├── dbtools ├── load ├── orders ├── payment ├── storefront └── user  deploy: Collection of application deployment resources. src: Individual service source code, Dockerfiles, etc.  "
 },
 {
+	"uri": "/observability/observability-example/setup/",
+  "title": "Setup",
+  "section": "observability",
+	"tags": ["OCI Logging", "OCI Notifications", "OCI Service Connector Hub", "Deploy MuShop", "fluentd", "logging", "alarms", "notifications"],
+	"description": "",
+	"content": "Introduction In this section we will deploy MuShop, Oracle Cloud Infrastructure (OCI) Notifications, Logging and Service Connector Hub.\nDeploy MuShop We will be deploying MuShop on Oracle Cloud Infrastructure Container Engine for Kubernetes (OKE)\n   Perform just the Setup instructions from here MuShop Setup\n  Deploy\ncd deploy/complete/kubernetes kubectl -n mushop apply -f mushop.yaml Wait for services to be Ready\nkubectl get pod --watch --namespace mushop   Expose\n  LocalIngress   Use port-forward to expose the service\nkubectl port-forward \\  --namespace mushop \\  svc/edge 8000:80 Open browser http://localhost:8000;\n  Fetch the External IP\nkubectl get svc mushop-utils-ingress-nginx-controller \\ --namespace mushop-utilities Open browser http://\u0026lt;EXTERNAL-IP\u0026gt;:8000\n    Oracle Cloud Infrastructure (OCI) Notifications   Navigate to Application Integration -\u0026gt; Notifications -\u0026gt; Create Topic\n  Navigate to your Topic and Create Subscription -\u0026gt; Email\n  Add you Email and create. The Email subscription will change to pending state.\n  Sample Email you receive would look like this:\n You have chosen to subscribe to the topic: Mushop-Topic (Topic OCID: ocid1.onstopic.oc1.phx.xxx)\n  To confirm this subscription, click or visit the link below (If this was in error, you can ignore this message): Confirm subscription\n  \u0026ndash; Please do not reply directly to this email. If you have any questions or comments regarding this email, contact \u0026gt; your account administrator.\n Once you confirm the subscription it changes to Active state.\nOracle Cloud Infrastructure (OCI) Logging The Oracle Cloud Infrastructure (OCI) Logging service is a highly scalable and fully managed single pane of glass for all the logs in a tenancy.\nIn this section we will be enabling OCI (Oracle Cloud Infrastructure) logging for OKE (Oracle Cloud Infrastructure Container Engine for Kubernetes) worker nodes.\nAll the OKE pod logs (stdout and stderr) are written to /var/log/containers in a JSON format by default.\nExample:\nLog File Name Format: \u0026lt;Pod\u0026gt;_\u0026lt;NameSpace\u0026gt;_\u0026lt;ContainerName\u0026gt;-\u0026lt;ContainerID\u0026gt;.log Log File Content Format: {\u0026quot;log\u0026quot;:\u0026quot;\u0026lt;message\u0026gt;\u0026quot;,\u0026quot;stream\u0026quot;:\u0026quot;\u0026lt;stdout|stderr\u0026gt;\u0026quot;,\u0026quot;time\u0026quot;:\u0026quot;\u0026lt;timestamp\u0026gt;\u0026quot;} Ensure that the worker nodes are running OL 7.6 and above.\n  Create a Dynamic Group  Create a dynamic group and add your worker nodes. Navigate to Identity -\u0026gt; Dynamic Groups -\u0026gt; Create Dynamic Group\nName: \u0026lt;DynamicGroupName\u0026gt; Description: \u0026lt;DynamicGroupDescription\u0026gt; Matching Rules: any {instance.compartment.id = 'CompartmentOCID'}  Create a IAM Policy  Navigate to Identity -\u0026gt; Policies -\u0026gt; Create Policy\nName: \u0026lt;PolicyName\u0026gt; Description: \u0026lt;PolicyDescription\u0026gt; Policy Versioning: Keep version current Statement: allow dynamic-group \u0026lt;DynamicGroupName\u0026gt; to use log-content in tenancy  Enable Logging  To enable Logging on OKE, perform the following actions:\n Create a Log Group - This is a logical container for organizing logs, Identity and Access Management (IAM) policies can control who has access to a Log Group. Create a Custom Log - The Custom Log will contain all information that is uploaded by the Agent Configuration. Create an Agent Configuration - Defines the Source Log location and relevant Parsers along with the Dynamic Group containing all the Instance to which the configuration should apply.  Create a Log Group  Navigate to Logging -\u0026gt; Log Groups -\u0026gt; Create Log Group\nCompartment: \u0026lt;SelectCompartment Name: \u0026lt;LogGroupName\u0026gt; Description: \u0026lt;LogGroupDescription\u0026gt;  Create a Custom Log  Navigate to Logging -\u0026gt; Logs -\u0026gt; Create Custom Log\nCustom Log Name: \u0026lt;CustomLogName\u0026gt; Compartment: \u0026lt;SelectCompartment\u0026gt; Log Group: \u0026lt;SelectLogGroup\u0026gt; Show Additional Option: Select Log Retention: 1, 2, 3, 4, 5 or 6 months  Create Agent Configuration  Navigate to Logging -\u0026gt; Agent Configurations -\u0026gt; Create Agent Config\nConfiguration Name: \u0026lt;ConfigurationName\u0026gt; Compartment: \u0026lt;SelectCompartment\u0026gt; Group Type: Dynamic Group Group: \u0026lt;SelectDynamicGroup\u0026gt; Configure Log Inputs: Input Type: Log Path Input Name: \u0026lt;InputName\u0026gt; File Paths: /var/log/containers/*.log Advanced Parser Options: Parser: REGEXP Expression: ^\\{\\\u0026quot;log\\\u0026quot;\\:\\\u0026quot;(?\u0026lt;logtime\u0026gt;[^INFO]*) (?\u0026lt;log_level\u0026gt;[^ ]*).*\\]\\s(?\u0026lt;name\u0026gt;[^ ]*).*message\\=(?\u0026lt;message\u0026gt;[^\\}\\n\\\u0026quot;]*) Time Format: %Y-%m-%dT%H:%M:%S.%NZ Select Log Destination: Compartment: \u0026lt;SelectCompartment\u0026gt; Log Group: \u0026lt;SelectLogGroup\u0026gt; Log Name: \u0026lt;SelectLogName\u0026gt;  The regexp parser is looking for a specific payment failure message which is logged by mushop-orders pod.\n Here we are targetting all the pods by using /var/log/containers/*.log. However, we can also target a specific pod. Example: /var/log/containers/mushop-orders*.log in this case.\n Verify the fluentd.conf  ssh into worker node where the mushop-orders pod is running\nkubectl -n mushop get pods,nodes -o wide ssh opc@\u0026lt;IP_OF_WORKER_NODE\u0026gt; cat /etc/unified-monitoring-agent/conf.d/fluentd_config/fluentd.conf   Example output:\n  worker-node-1$ cat /etc/unified-monitoring-agent/conf.d/fluentd_config/fluentd.conf \u0026lt;source\u0026gt; @type tail tag 677561.varlogcontainers path /var/log/containers/*.log pos_file /etc/unifiedmonitoringagent/pos/677561-varlogcontainers.pos path_key tailed_path \u0026lt;parse\u0026gt; @type regexp time_format %Y-%m-%dT%H:%M:%S.%NZ expression ^\\{\\\u0026#34;log\\\u0026#34;\\:\\\u0026#34;(?\u0026lt;logtime\u0026gt;[^INFO]*) (?\u0026lt;log_level\u0026gt;[^ ]*).*\\]\\s(?\u0026lt;name\u0026gt;[^ ]*).*message\\=(?\u0026lt;message\u0026gt;[^\\}\\n\\\u0026#34;]*) \u0026lt;/parse\u0026gt; \u0026lt;/source\u0026gt; \u0026lt;match 677561.**\u0026gt; @type oci_logging log_object_id ocid1.log.oc1.phx.xxxx \u0026lt;buffer tag\u0026gt; @type file retry_timeout 3h path /opt/unifiedmonitoringagent/run/buffer/677561 disable_chunk_backup true chunk_limit_size 5MB flush_interval 180s total_limit_size 1GB overflow_action throw_exception retry_type exponential_backoff \u0026lt;/buffer\u0026gt; \u0026lt;/match\u0026gt; If you dont see your defined agent config then wait for few more minutes for the agent config to get uploaded onto the worker nodes. Impatient users can restart the unified-monitoring-agent_config_downloader.timer service to download the config immediately.\nOracle Cloud Infrastructure (OCI) Service Connector Hub Service Connector Hub orchestrates data movement between services in Oracle Cloud Infrastructure.\nData is moved using service connectors. A service connector specifies the source service that contains the data to be moved, tasks to run on the data, and the target service for delivery of data when tasks are complete.\nNavigate to Logging -\u0026gt; Service Connectors -\u0026gt; Create Connector\nName: \u0026lt;Service Connector Name\u0026gt; Description: \u0026lt;Service Connector Description\u0026gt; source: Logging target: Monitoring loggroups: \u0026lt;LogGroupName\u0026gt; logs: \u0026lt;LogName\u0026gt; metricnamespace: \u0026lt;MetricNameSpace\u0026gt; metric: \u0026lt;MetricName\u0026gt;  "
+},
+{
 	"uri": "/cloud/setup/",
   "title": "Setup",
   "section": "cloud",
@@ -96,6 +104,22 @@
 	"content": "Introduction In this section we will demonstrate how to run leverage your kubernetes cluster for CI/CD tasks using Jenkins.\nNote that Jenkins is OPTIONAL and disabled by default. To enable it, see setup section.\n When enabled, a Jenkins server is installed on the kubernetes cluster and is setup to utilize the Jenkins Kubernetes plugin. The plugin enables Jenkins to create worker nodes on demand as pods on the kubernetes cluster to run jobs, then terminates the pods when the job is completed. This also lets the system run any arbitrary job since all job related dependencies (say, building an application that requires a specific version of java) are contained within the definition of a docker container that executes the step.\nMore information on the kubernetes plugin and the extensions it provides for the Jenkins pipeline are described here\nAccessing Jenkins Once installation is completed, you can access the Jenkins server using the ingress controller (if one was configured), or using a port forward.\nTo use the ingress, first find the external IP for the Load Balancer that was created :\nkubectl get svc mushop-utils-ingress-nginx-controller \\  --namespace mushop-utilities Ensure that Jenkins is up and ready\nkubectl get deployment -n mushop-utilities mushop-utils-jenkins Once Jenkins is ready, navigate to http:///jenkins\nThe default username is admin. The default password is generated and stored as a kubernetes secret.\nkubectl get secret -n mushop-utilities mushop-utils-jenkins \\ -o jsonpath=\u0026#34;{.data.jenkins-admin-password}\u0026#34; | base64 --decode ; echo A simple build job Once logged in, we can test a simple pipeline by creating a multi-branch pipeline based on the repository\nhttps://github.com/jeevanjoseph/jenkins-k8s-pipeline.git\nThe repository contains a Jenkinsfile that describes how it should be built and this is the only information that Jenkins requires in order to run the build. In this example, the build defines its execution environment to include a terraform container to run terraform code, and a docker container to build docker images.\n"
 },
 {
+	"uri": "/observability/oci-healthcheck/",
+  "title": "OCI Health Checks",
+  "section": "observability",
+	"tags": ["OCI Health Checks", "OCI Observability"],
+	"description": "",
+	"content": "Introduction Monitors the health of IP addresses and hostnames, as measured from geographic vantage points of your choosing, using HTTP and ping probes. After configuring a health check, you can view the monitor\u0026rsquo;s results. The results include the location from which the host was monitored, the availability of the endpoint, and the date and time the test was performed.\nPre-Requisites Deploy MuShop\nCreate Oracle Cloud Infrastructure Health Checks Navigate to Monitoring -\u0026gt; HealthChecks -\u0026gt; Create HealthChecks\nTarget will be IP of ingress controller\nkubectl get svc \\ mushop-utils-ingress-nginx-controller \\ --namespace mushop-utilities  Verifying Oracle Cloud Infrastructure Health Check Results Navigate to Monitoring -\u0026gt; HealthChecks -\u0026gt; \u0026lt;Your_HealthChecks_Name\u0026gt; -\u0026gt; HealthChecks History\nObserve HTTP metric Navigate to Monitoring -\u0026gt; HealthChecks -\u0026gt; \u0026lt;Your_HealthChecks_Name\u0026gt; -\u0026gt; Metrics\nObserve some of the Http metrics. For metric details refer\nWith every metric you have the ability to set Alarms to get notified on the metrics of concern.\n Additionally, you can view these metrics under Monitoring -\u0026gt; Service Metrics -\u0026gt; Metric namespace = oci_healthchecks\n"
+},
+{
+	"uri": "/observability/observability-example/",
+  "title": "Observability Example",
+  "section": "observability",
+	"tags": [],
+	"description": "",
+	"content": "Introduction In this section we will try to understand Observability on Oracle Cloud Infrastructure (OCI) by simulating a failure scenario on MuShop application.\nScenario Details  User logs in to MuShop and orders items with value more than $105. Currently, payment service is configured to decline all the orders above $105. User notices the order processing failure. User gets notified on the payment failure. User analyzes the failure using Oracle Cloud Infrastructure(OCI) Observability Services.  Next "
+},
+{
 	"uri": "/cloud/",
   "title": "Cloud Infrastructure",
   "section": "cloud",
@@ -160,8 +184,40 @@
 	"content": ""
 },
 {
+	"uri": "/tags/alarms/",
+  "title": "alarms",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
 	"uri": "/tags/canary/",
   "title": "Canary",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "/tags/custom-logging/",
+  "title": "Custom Logging",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "/tags/deploy-mushop/",
+  "title": "Deploy MuShop",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "/tags/fluentd/",
+  "title": "fluentd",
   "section": "tags",
 	"tags": [],
 	"description": "",
@@ -184,12 +240,92 @@
 	"content": ""
 },
 {
+	"uri": "/tags/logging/",
+  "title": "logging",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "/tags/metrics-explorer/",
+  "title": "Metrics Explorer",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "/tags/monitoring/",
+  "title": "Monitoring",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "/tags/notifications/",
+  "title": "notifications",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "/tags/observability/",
+  "title": "observability",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "/tags/oci/",
+  "title": "OCI",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "/tags/oci-logging/",
+  "title": "OCI Logging",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "/tags/oci-notifications/",
+  "title": "OCI Notifications",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "/tags/oci-service-connector-hub/",
+  "title": "OCI Service Connector Hub",
+  "section": "tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
 	"uri": "/tags/service-mesh/",
   "title": "Service Mesh",
   "section": "tags",
 	"tags": [],
 	"description": "",
 	"content": ""
+},
+{
+	"uri": "/observability/observability-example/usecase/",
+  "title": "Use Case",
+  "section": "observability",
+	"tags": ["observability", "Monitoring", "Metrics Explorer", "Custom Logging", "Logging", "Alarms", "Notifications"],
+	"description": "",
+	"content": "Prerequisites  Complete the Setup  Payment Failures Navigate to MuShop application at http://localhost:8000 if using kubectl port-forward as discussed under Setup and add items to cart to exceed the amount greater than $105 and PLACE ORDER. The request will be denied with HTTP 406 \u0026ldquo;Request Not Acceptable\u0026rdquo;\nClick on PLACE ORDER 9-10 times just to create some additional failure log data.\nObserve Navigate to OCI Console Monitoring -\u0026gt; Metrics Explorer\nCompartment: \u0026lt;Your_Compartment_Name\u0026gt; Metric Namespace: \u0026lt;Your_MetricNamespace\u0026gt; Metric Name: \u0026lt;Your_MetricName\u0026gt; Dimension Name: \u0026lt;Optional_DimensionName\u0026gt; Dimension Value: \u0026lt;Optional_DimensionValue\u0026gt;  Note: The custom metric namespace is create during Setup and it should be visible here. Else, wait for some time, send some more HTTP Status 406 requests (By placing orders above $105 as discussed) and check back again.\nClick on \u0026ldquo;Update Chart\u0026rdquo; with the above fields selected to see the metrics.\nSetting Alarms In Metric Explorer once you have chosen the metric namespace and all its attributes, select create alarm\nAlarm Name: \u0026lt;Name_Of_Your_Alarm\u0026gt; Metric Namespace: \u0026lt;Your_MetricNamespace\u0026gt; Trigger rule: \u0026lt;value equal to 1 with trigger delay 0 minutes\u0026gt; Destination: \u0026lt;Select your notifications topic\u0026gt;  Send some more HTTP Status 406 requests (By placing orders above $105 as discussed) and you will start receiving emails like this\nAnalyze the logs Navigate to Agent Configurations -\u0026gt; \u0026lt;your_agent_config\u0026gt; -\u0026gt; Explore log\nYou will see a failure in the logs as below: Payment declined: amount exceeds 105.00\nNote: Notice the logContent.data which are nicely formatted based on our regex expression we provided during agent configuration (Advanced parser).\nSummary We performed the following actions:\n Setup the OCI logging agents on the OKE worker nodes to send pod logs on to OCI logging. Setup service connector between OCI logging and OCI monitoring with a new custom monitoring namespace. Simulated the payment failures on MuShop application.  The orders service logs the payment failure details and the agent config filters the specific message that we setup as part of OCI logging agent setup (fluentd regexp parser).\nService connector helps to send the payment failures onto OCI Monitoring which then helped us to view the metrics on a dashboard. We then set alarm for that metric to get alerts on our email. We also, analyzed the logs to root cause the issue which was \u0026ldquo;Payment above 105 were getting declined\u0026rdquo;.\n"
 },
 {
 	"uri": "/tags/cleanup/",
@@ -282,14 +418,6 @@
 {
 	"uri": "/tags/deployment/",
   "title": "Deployment",
-  "section": "tags",
-	"tags": [],
-	"description": "",
-	"content": ""
-},
-{
-	"uri": "/tags/oci/",
-  "title": "OCI",
   "section": "tags",
 	"tags": [],
 	"description": "",
@@ -413,7 +541,7 @@
   "section": "",
 	"tags": [],
 	"description": "",
-	"content": "Community This project, and its associative materials utilizes many excellent projects from the open source community. While there are numerous, the following projects deserve some special recognition:\n Sock Shop: Comprehensive microservices demo from Weaveworks Hugo: Documentation tool used to create this documentation Reveal.js: HTML presentation tool used to develop workshop materials Roman Chekurov: Inspiration and basis for MuShop UI  Contributors Thanks to all our contributors for their commitment to open source!\n @junior 559 contributions     @mvandervliet 551 contributions     @jeevanjoseph 436 contributions     @peterj 147 contributions     @juliocamara 50 contributions     @naikvenu 19 contributions     @kd7edg 15 contributions     @jjspiegel 14 contributions     @dependabot[bot] 12 contributions     @gvenzl 2 contributions     @sumikr 2 contributions     @benofben 1 contributions     @rml1997 1 contributions     "
+	"content": "Community This project, and its associative materials utilizes many excellent projects from the open source community. While there are numerous, the following projects deserve some special recognition:\n Sock Shop: Comprehensive microservices demo from Weaveworks Hugo: Documentation tool used to create this documentation Reveal.js: HTML presentation tool used to develop workshop materials Roman Chekurov: Inspiration and basis for MuShop UI  Contributors Thanks to all our contributors for their commitment to open source!\n @junior 559 contributions     @mvandervliet 555 contributions     @jeevanjoseph 436 contributions     @peterj 147 contributions     @juliocamara 50 contributions     @naikvenu 29 contributions     @dependabot[bot] 16 contributions     @kd7edg 15 contributions     @jjspiegel 14 contributions     @gvenzl 2 contributions     @sumikr 2 contributions     @benofben 1 contributions     @rml1997 1 contributions     "
 },
 {
 	"uri": "/categories/",
@@ -438,14 +566,6 @@
 	"tags": [],
 	"description": "",
 	"content": ""
-},
-{
-	"uri": "/observability/oci-healthcheck/",
-  "title": "OCI Health Checks",
-  "section": "observability",
-	"tags": ["OCI Health Checks", "OCI Observability"],
-	"description": "",
-	"content": "Introduction Monitors the health of IP addresses and hostnames, as measured from geographic vantage points of your choosing, using HTTP and ping probes. After configuring a health check, you can view the monitor\u0026rsquo;s results. The results include the location from which the host was monitored, the availability of the endpoint, and the date and time the test was performed.\nPre-Requisites Deploy MuShop\nCreate Oracle Cloud Infrastructure Health Checks Navigate to Monitoring -\u0026gt; HealthChecks -\u0026gt; Create HealthChecks\nTarget will be IP of ingress controller\nkubectl get svc \\ mushop-utils-ingress-nginx-controller \\ --namespace mushop-utilities  Verifying Oracle Cloud Infrastructure Health Check Results Navigate to Monitoring -\u0026gt; HealthChecks -\u0026gt; \u0026lt;Your_HealthChecks_Name\u0026gt; -\u0026gt; HealthChecks History\nObserve HTTP metric Navigate to Monitoring -\u0026gt; HealthChecks -\u0026gt; \u0026lt;Your_HealthChecks_Name\u0026gt; -\u0026gt; Metrics\nObserve some of the Http metrics. For metric details refer\nWith every metric you have the ability to set Alarms to get notified on the metrics of concern.\n Additionally, you can view these metrics under Monitoring -\u0026gt; Service Metrics -\u0026gt; Metric namespace = oci_healthchecks\n"
 },
 {
 	"uri": "/tags/oci-monitoring/",

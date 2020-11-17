@@ -39,11 +39,47 @@
     </item>
     
     <item>
+      <title>alarms</title>
+      <link>/tags/alarms/</link>
+      <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
+      
+      <guid>/tags/alarms/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Canary</title>
       <link>/tags/canary/</link>
       <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
       
       <guid>/tags/canary/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Custom Logging</title>
+      <link>/tags/custom-logging/</link>
+      <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
+      
+      <guid>/tags/custom-logging/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Deploy MuShop</title>
+      <link>/tags/deploy-mushop/</link>
+      <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
+      
+      <guid>/tags/deploy-mushop/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>fluentd</title>
+      <link>/tags/fluentd/</link>
+      <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
+      
+      <guid>/tags/fluentd/</guid>
       <description></description>
     </item>
     
@@ -62,6 +98,87 @@
       <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
       
       <guid>/tags/kiali/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>logging</title>
+      <link>/tags/logging/</link>
+      <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
+      
+      <guid>/tags/logging/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Metrics Explorer</title>
+      <link>/tags/metrics-explorer/</link>
+      <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
+      
+      <guid>/tags/metrics-explorer/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Monitoring</title>
+      <link>/tags/monitoring/</link>
+      <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
+      
+      <guid>/tags/monitoring/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>notifications</title>
+      <link>/tags/notifications/</link>
+      <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
+      
+      <guid>/tags/notifications/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>observability</title>
+      <link>/tags/observability/</link>
+      <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
+      
+      <guid>/tags/observability/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>OCI</title>
+      <link>/tags/oci/</link>
+      <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
+      
+      <guid>/tags/oci/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>OCI Logging</title>
+      <link>/tags/oci-logging/</link>
+      <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
+      
+      <guid>/tags/oci-logging/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>OCI Notifications</title>
+      <link>/tags/oci-notifications/</link>
+      <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
+      
+      <guid>/tags/oci-notifications/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>OCI Service Connector Hub</title>
+      <link>/tags/oci-service-connector-hub/</link>
+      <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
+      
+      <guid>/tags/oci-service-connector-hub/</guid>
       <description></description>
     </item>
     
@@ -179,15 +296,6 @@
       <pubDate>Mon, 09 Mar 2020 13:33:46 -0600</pubDate>
       
       <guid>/tags/deployment/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>OCI</title>
-      <link>/tags/oci/</link>
-      <pubDate>Mon, 09 Mar 2020 13:33:46 -0600</pubDate>
-      
-      <guid>/tags/oci/</guid>
       <description></description>
     </item>
     

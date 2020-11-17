@@ -17,6 +17,11 @@
   </url>
   
   <url>
+    <loc>/observability/observability-example/setup/</loc>
+    <lastmod>2020-03-10T13:29:23-06:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/cloud/setup/</loc>
     <lastmod>2020-03-09T15:49:36-06:00</lastmod>
   </url>
@@ -61,6 +66,15 @@
   </url>
   
   <url>
+    <loc>/observability/oci-healthcheck/</loc>
+  </url>
+  
+  <url>
+    <loc>/observability/observability-example/</loc>
+    <lastmod>2020-03-10T13:29:23-06:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/cloud/</loc>
     <lastmod>2020-03-09T13:33:46-06:00</lastmod>
   </url>
@@ -101,7 +115,27 @@
   </url>
   
   <url>
+    <loc>/tags/alarms/</loc>
+    <lastmod>2020-03-10T13:29:23-06:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/tags/canary/</loc>
+    <lastmod>2020-03-10T13:29:23-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/custom-logging/</loc>
+    <lastmod>2020-03-10T13:29:23-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/deploy-mushop/</loc>
+    <lastmod>2020-03-10T13:29:23-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/fluentd/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
   </url>
   
@@ -116,7 +150,57 @@
   </url>
   
   <url>
+    <loc>/tags/logging/</loc>
+    <lastmod>2020-03-10T13:29:23-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/metrics-explorer/</loc>
+    <lastmod>2020-03-10T13:29:23-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/monitoring/</loc>
+    <lastmod>2020-03-10T13:29:23-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/notifications/</loc>
+    <lastmod>2020-03-10T13:29:23-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/observability/</loc>
+    <lastmod>2020-03-10T13:29:23-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/oci/</loc>
+    <lastmod>2020-03-10T13:29:23-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/oci-logging/</loc>
+    <lastmod>2020-03-10T13:29:23-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/oci-notifications/</loc>
+    <lastmod>2020-03-10T13:29:23-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/oci-service-connector-hub/</loc>
+    <lastmod>2020-03-10T13:29:23-06:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/tags/service-mesh/</loc>
+    <lastmod>2020-03-10T13:29:23-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/observability/observability-example/usecase/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
   </url>
   
@@ -182,11 +266,6 @@
   
   <url>
     <loc>/tags/deployment/</loc>
-    <lastmod>2020-03-09T13:33:46-06:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/oci/</loc>
     <lastmod>2020-03-09T13:33:46-06:00</lastmod>
   </url>
   
@@ -274,10 +353,6 @@
   
   <url>
     <loc>/tags/oci-health-checks/</loc>
-  </url>
-  
-  <url>
-    <loc>/observability/oci-healthcheck/</loc>
   </url>
   
   <url>
