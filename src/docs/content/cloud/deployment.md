@@ -105,7 +105,7 @@ Follow the steps outlined below to provision and configure the cluster with clou
       --from-literal=parUrl=<PRE_AUTHENTICATED_REQUEST_URL>
     ```
 
-    > **Object Storage Namespace** may be found with the CLI `oci os ns get` or from the [tenancy information page](https://console.us-ashburn-1.oraclecloud.com/a/tenancy)
+    > **Object Storage Namespace** may be found with the CLI `oci os ns get` or from the [tenancy information page](https://cloud.oracle.com/a/tenancy)
 
 #### Verify
 
@@ -197,7 +197,7 @@ secret to the `mushop-utilities` namespace:
       --set global.osb.objectstoragenamespace=<OBJECT_STORAGE_NAMESPACE>
     ```
 
-    > **Object Storage Namespace** may be found with the CLI `oci os ns get` or from the [tenancy information page](https://console.us-ashburn-1.oraclecloud.com/a/tenancy)
+    > **Object Storage Namespace** may be found with the CLI `oci os ns get` or from the [tenancy information page](https://cloud.oracle.com/a/tenancy)
 
 1. It will take a few minutes for the services database to provision, and the respective bindings to become available. Verify `serviceinstances` and `servicebindings` are **READY**:
 
