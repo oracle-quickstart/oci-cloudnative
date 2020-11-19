@@ -28,7 +28,7 @@ The repository contains the application code as well as the [Terraform][tf] code
 The steps below guide you through deploying the application on your tenancy using the OCI Resource Manager.
 
 1. Download the latest [`mushop-basic-stack-latest.zip`](../../releases/latest/download/mushop-basic-stack-latest.zip) file.
-2. [Login](https://console.us-ashburn-1.oraclecloud.com/resourcemanager/stacks/create) to Oracle Cloud Infrastructure to import the stack
+2. [Login](https://cloud.oracle.com/resourcemanager/stacks/create) to Oracle Cloud Infrastructure to import the stack
     > `Home > Solutions & Platform > Resource Manager > Stacks > Create Stack`
 3. Upload the `mushop-basic-stack-latest.zip` file that was downloaded earlier, and provide a name and description for the stack
 4. Configure the stack
@@ -64,7 +64,7 @@ stack is also responsible for terminating the application.
 
 Follow these steps to completely remove all provisioned resources:
 
-1. Return to the Oracle Cloud Infrastructure [Console](https://console.us-ashburn-1.oraclecloud.com/resourcemanager/stacks)
+1. Return to the Oracle Cloud Infrastructure [Console](https://cloud.oracle.com/resourcemanager/stacks)
 
   > `Home > Solutions & Platform > Resource Manager > Stacks`
 
@@ -109,5 +109,5 @@ If you have an issue or a question, please take a look at our [FAQs](./deploy/ba
 [orm_landing]:https://www.oracle.com/cloud/systems-management/resource-manager/
 [chartdocs]: https://github.com/oracle-quickstart/oci-cloudnative/tree/master/deploy/complete/helm-chart#setup
 [magic_button]: https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg
-[magic_mushop_basic_stack]: https://console.us-ashburn-1.oraclecloud.com/resourcemanager/stacks/create?region=home&zipUrl=https://github.com/oracle-quickstart/oci-cloudnative/releases/latest/download/mushop-basic-stack-latest.zip
-[magic_mushop_stack]: https://console.us-ashburn-1.oraclecloud.com/resourcemanager/stacks/create?region=home&zipUrl=https://github.com/oracle-quickstart/oci-cloudnative/releases/latest/download/mushop-stack-latest.zip
+[magic_mushop_basic_stack]: https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/oracle-quickstart/oci-cloudnative/releases/latest/download/mushop-basic-stack-latest.zip
+[magic_mushop_stack]: https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/oracle-quickstart/oci-cloudnative/releases/latest/download/mushop-stack-latest.zip
