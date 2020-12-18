@@ -11,19 +11,10 @@ Licensed under the MIT license
 
 -------------------------------------------------------
 
-## gopkg.in/goracle.v2 v2.20.1 (Apache 2.0)
+## github.com/godror/godror v0.22.2 (UPL-1.0)
 
 ```
-Copyright 2017 Tamás Gulácsi
-Licensed under the Apache License, Version 2.0
-```
-
--------------------------------------------------------
-
-## github.com/godror/godror v0.12.1 (UPL-1.0)
-
-```
-Copyright 2019, 2020 The Godror Authors
+Copyright 2019, 2020 Tamás Gulácsi
 Licensed under Universal Permissive License, Version 1.0
 ```
 
@@ -47,7 +38,7 @@ Licensed under the Apache License, Version 2.0
 
 -------------------------------------------------------
 
-## github.com/prometheus/client_golang v1.1.0 (Apache 2.0)
+## github.com/prometheus/client_golang v1.7.1 (Apache 2.0)
 
 ```
 Copyright [yyyy] [name of copyright owner] - https://github.com/prometheus/client_golang/blob/master/LICENSE
@@ -65,7 +56,7 @@ Licensed under the MIT license
 
 -------------------------------------------------------
 
-## github.com/gorilla/mux v1.7.3 (BSD-3-Clause)
+## github.com/gorilla/mux v1.8.0 (BSD-3-Clause)
 
 ```
 Copyright (c) 2012-2018 The Gorilla Authors
@@ -546,7 +537,7 @@ Licensed under the Apache License, Version 2.0
 
 -------------------------------------------------------
 
-## github.com/DATA-DOG/go-sqlmock v1.4.1 (BSD-3-Clause)
+## github.com/DATA-DOG/go-sqlmock v1.5.0 (BSD-3-Clause)
 
 ```
 Copyright (c) 2013-2019, DATA-DOG team
