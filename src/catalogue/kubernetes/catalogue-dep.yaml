@@ -21,7 +21,7 @@ spec:
       terminationGracePeriodSeconds: 5
       initContainers:
       - name: decode-wallet
-        image: oraclelinux:7.6
+        image: oraclelinux:8-slim
         command: ["/bin/sh","-c"]
         args: 
         - for i in `ls -1 /tmp/wallet | grep -v user_name`; do cat /tmp/wallet/$i  | base64 --decode > /wallet/$i; done; ls -l /wallet/*;
@@ -32,7 +32,7 @@ spec:
         - name: wallet
           mountPath: /wallet
       - name: init-service-database
-        image: iad.ocir.io/oracle/ateam/mushop-dbtools:1.0.1
+        image: iad.ocir.io/oracle/ateam/mushop-dbtools:21
         command: ["/bin/sh","-c"]
         args: 
         - sqlplus ADMIN/\"$( echo "$OADB_ADMIN_PW" | jq -r 'keys[0] as $k | "\(.[$k])"' )\"@$OADB_SERVICE @service.sql ${OADB_USER^^} $OADB_PW
@@ -59,15 +59,15 @@ spec:
                 key: oadb_admin_pw
         volumeMounts:
           - name: wallet
-            mountPath: /usr/lib/oracle/19.3/client64/lib/network/admin/
+            mountPath: /usr/lib/oracle/21/client64/lib/network/admin/
             readOnly: true
           - name: service-sql
             mountPath: /work/
       containers:
         - name: catalogue
-          image: iad.ocir.io/oracle/ateam/mushop-catalogue:1.2
+          image: iad.ocir.io/oracle/ateam/mushop-catalogue:1.3
           imagePullPolicy: Always
-          command: ["/app"]
+          command: ["/catalogue"]
           args:
           - -port=80
           ports:
@@ -118,7 +118,7 @@ spec:
               memory: 128Mi
           volumeMounts:
           - name: wallet
-            mountPath: /usr/lib/oracle/19.3/client64/lib/network/admin/
+            mountPath: /usr/lib/oracle/21/client64/lib/network/admin/
             readOnly: true
       volumes:
       - name: wallet-raw
