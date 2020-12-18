@@ -54,16 +54,20 @@ Send some more HTTP Status 406 requests (By placing orders above $105 as discuss
 
 ### Analyze the logs
 
-Navigate to ```Agent Configurations -> <your_agent_config> -> Explore log```
+Navigate to ```Logging -> Search``` and navigate through all the logs.
 
-![agent-logs](../../images/agent-logs.png)
+For this example, Switch to Advanced mode:
 
+Enter the following query
+```
+search "ocid1.compartment.oc1..xxxx/ocid1.loggroup.oc1.phx.xxxx/ocid1.log.oc1.phx.xxxx" |  logContent='*Payment declined*' and subject='/var/log/containers/*_mushop_*.log' 
+```
 You will see a failure in the logs as below:
 ```Payment declined: amount exceeds 105.00```
 
 ![json-log-details](../../images/json-log-details.png)
 
-Note: Notice the logContent.data which are nicely formatted based on our regex expression we provided during agent configuration (Advanced parser).
+Note: Notice the logContent.data which are nicely formatted based on our json parser we used during agent configuration.
 
 ### Summary
 
@@ -72,7 +76,6 @@ We performed the following actions:
 - Setup service connector between OCI logging and OCI monitoring with a new custom monitoring namespace.
 - Simulated the payment failures on MuShop application. 
 
-The orders service logs the payment failure details and the agent config filters the specific message that we setup as part of OCI logging agent setup (fluentd regexp parser).
-
-Service connector helps to send the payment failures onto OCI Monitoring which then helped us to view the metrics on a dashboard. We then set alarm for that metric to get alerts on our email. 
+The MuShop orders service logs the payment failure details and the `OCI Console -> agent config` helped to send all the pod logs to OCI logging.
+Service connector then helps to filter just the payment failures and sends onto OCI Monitoring which then helped us to view the metrics on a dashboard. We then set alarm for that metric to get alerts on our email. 
 We also, analyzed the logs to root cause the issue which was "Payment above 105 were getting declined".

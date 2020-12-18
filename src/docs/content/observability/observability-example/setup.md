@@ -156,8 +156,7 @@ Navigate to `Logging -> Agent Configurations -> Create Agent Config`
         Input Name: <InputName>
         File Paths: /var/log/containers/*.log
     Advanced Parser Options:
-        Parser: REGEXP
-        Expression: ^\{\"log\"\:\"(?<logtime>[^INFO]*) (?<log_level>[^ ]*).*\]\s(?<name>[^ ]*).*message\=(?<message>[^\}\n\"]*)
+        Parser: JSON
         Time Format: %Y-%m-%dT%H:%M:%S.%NZ
     Select Log Destination:
         Compartment: <SelectCompartment>
@@ -167,12 +166,12 @@ Navigate to `Logging -> Agent Configurations -> Create Agent Config`
 ![agent-config](../../images/agent-config.png)
 
 {{% alert style="information" icon="warning" %}}
-The regexp parser is looking for a specific payment failure message which is logged by mushop-orders pod.
+The json parser helps analyze the the pod logs format.
 {{% /alert %}}
 
 
 {{% alert style="information" icon="warning" %}}
-Here we are targetting all the pods by using /var/log/containers/\*.log. However, we can also target a specific pod. Example: /var/log/containers/mushop-orders\*.log in this case.
+Here we are targetting all the pod logs by using /var/log/containers/\*.log. However, we can also target a specific pod. Example: /var/log/containers/mushop-orders\*.log in this case.
 {{% /alert %}}
 
 7. Verify the fluentd.conf
@@ -202,9 +201,9 @@ worker-node-1$ cat /etc/unified-monitoring-agent/conf.d/fluentd_config/fluentd.c
         pos_file  /etc/unifiedmonitoringagent/pos/677561-varlogcontainers.pos
         path_key  tailed_path
         <parse>
-            @type regexp
+            @type json
+            time_type  string
             time_format  %Y-%m-%dT%H:%M:%S.%NZ
-            expression  ^\{\"log\"\:\"(?<logtime>[^INFO]*) (?<log_level>[^ ]*).*\]\s(?<name>[^ ]*).*message\=(?<message>[^\}\n\"]*)
         </parse>
     </source>
 
@@ -232,15 +231,17 @@ Service Connector Hub orchestrates data movement between services in Oracle Clou
 
 Data is moved using service connectors. A service connector specifies the source service that contains the data to be moved, tasks to run on the data, and the target service for delivery of data when tasks are complete.
 
+In this case, we are filtering "Payment declined" messages and sending out the metrics to OCI Monitoring on a custom metric named "payment-declined".
+
 Navigate to `Logging -> Service Connectors -> Create Connector`
 
     Name: <Service Connector Name>
     Description: <Service Connector Description>
     source: Logging
     target: Monitoring
-    loggroups: <LogGroupName>
-    logs: <LogName>
-    metricnamespace: <MetricNameSpace>
-    metric: <MetricName>
+    Switch to Advanced mode:
+      search "ocid1.compartment.oc1..xxxx/ocid1.loggroup.oc1.phx.xxxx/ocid1.log.oc1.phx.xxxx" |  logContent='*Payment declined*' and subject='/var/log/containers/*_mushop_*.log' 
+    metricnamespace: <CustomMetricNameSpace>
+    metric: <CustomMetricName>
 
 ![service-connector](../../images/service-connector.png)
