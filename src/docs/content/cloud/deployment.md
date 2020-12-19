@@ -40,8 +40,10 @@ kubectl create secret generic oci-credentials \
 
 > **NOTE:** The passphrase entry is **required**. If you do not have passphrase for your key, just leave empty.
 
-### Manual Steps
+{{< switcher border=true tabs="Manual Steps|Automated (Using OCI Service Broker)" >}}
 
+<ul>
+<li>
 Follow the steps outlined below to provision and configure the cluster with cloud service connection details.
 
 #### ATP Database
@@ -125,7 +127,8 @@ Follow the steps outlined below to provision and configure the cluster with clou
     oss-connection    Opaque    2      3m
     ```
 
-### Using Service Broker
+</li>
+<li>
 
 As an alternative to manually provisioning, the included [`provision`](https://github.com/oracle-quickstart/oci-cloudnative/tree/master/deploy/complete/helm-chart/provision)
 chart is an application of the open-source [OCI Service Broker](https://github.com/oracle/oci-service-broker)
@@ -155,7 +158,8 @@ secret to the `mushop-utilities` namespace:
 1. Deploy the OCI service broker on your cluster. This is done with the [Oracle OCI Service Broker](https://github.com/oracle/oci-service-broker) helm chart:
 
     ```shell--helm2
-    helm install https://github.com/oracle/oci-service-broker/releases/download/v1.5.0/oci-service-broker-1.5.0.tgz \
+    helm install \
+      https://github.com/oracle/oci-service-broker/releases/download/v1.5.1/oci-service-broker-1.5.1.tgz \
       --namespace mushop-utilities \
       --name oci-broker \
       --set ociCredentials.secretName=oci-credentials \
@@ -164,7 +168,8 @@ secret to the `mushop-utilities` namespace:
     ```
 
     ```shell--helm3
-    helm install oci-broker https://github.com/oracle/oci-service-broker/releases/download/v1.5.0/oci-service-broker-1.5.0.tgz \
+    helm install oci-broker \
+      https://github.com/oracle/oci-service-broker/releases/download/v1.5.1/oci-service-broker-1.5.1.tgz \
       --namespace mushop-utilities \
       --set ociCredentials.secretName=oci-credentials \
       --set storage.etcd.useEmbedded=true \
@@ -173,12 +178,10 @@ secret to the `mushop-utilities` namespace:
 
     > The above command will deploy the OCI Service Broker using an embedded etcd instance. It is not recommended to deploy the OCI Service Broker using an embedded etcd instance and tls disabled in production environments, instead a separate etcd cluster should be setup and used by the OCI Service Broker.
 
-    {{% alert style="danger" icon="warning" %}}
-    For the mushop `helm` deployment, the OCI Service Broker **MUST** be installed
-    on the same namespace used by the `setup` chart. For convenience, the documentation
-    commands defaults both the `setup` and OCI Service Broker charts to use
-    the `mushop-utilities` namespace.
-    {{% /alert %}}
+    > For the mushop `helm` deployment, the OCI Service Broker **MUST** be installed
+    > on the same namespace used by the `setup` chart. For convenience, the documentation
+    > commands defaults both the `setup` and OCI Service Broker charts to use
+    > the `mushop-utilities` namespace.
   
 1. Next utilize the OCI Service Broker implementation to provision services by installing the included `provision` chart:
 
@@ -222,6 +225,11 @@ secret to the `mushop-utilities` namespace:
     mushop-oadb-wallet-binding   mushop-atp             mushop-oadb-wallet-binding   Ready    1d
     mushop-oss-binding           mushop-oss             mushop-oss-binding           Ready    1d
     ```
+
+</li>
+</ul>
+
+{{< /switcher >}}
 
 ## API Gateway, OCI Functions and Email Delivery
 
@@ -273,6 +281,7 @@ To deploy a function to an app, you can run the following command within the fun
 ```shell
 fn deploy --app [APP_NAME]
 ```
+
 >Note: use `fn -v deploy --app [APP_NAME]` to get verbose output in case you're running into issues.
 
 In the remainder of the document, we will use `mushop-app` for the application name.
@@ -330,7 +339,7 @@ When deployment completes, navigate to it to get the URL for the gateway. Click 
 https://aaaaaaaaa.apigateway.us-ashburn-1.oci.customer-oci.com/newsletter/subscribe
 ```
 
-You will use this URL in `values-dev.yaml` when creating the deployment. 
+You will use this URL in `values-dev.yaml` when creating the deployment.
 
 ## Deployment
 
