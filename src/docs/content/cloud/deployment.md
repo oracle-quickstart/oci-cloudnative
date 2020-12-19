@@ -320,7 +320,7 @@ The quickest way to create a gateway is through the OCI console:
 1. Make sure **From Scratch** option is selected at the top and enter the following values (you can leave the other values as they are - i.e. no need to enable CORS, Authentication or Rate Limiting):
     - Name: **newsletter-subscription**
     - Path prefix: **/newsletter**
-    - Compartment: <Pick your compartment>
+    - Compartment: < Pick your compartment >
     - Execution log: **Enabled**
     - Log level: **Error**
 1. Click **Next** to define the route
