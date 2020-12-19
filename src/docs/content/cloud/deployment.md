@@ -19,10 +19,6 @@ Provisioning these services may be done manually of course, but can also be done
 through the use of [OCI Service Broker](https://github.com/oracle/oci-service-broker). You are
 encouraged to explore each approach.
 
-| [Manual](#manual-steps) | [Automated](#using-service-broker) |
-|--|--|
-| Provides steps for provisioning and connecting cloud services to the application | Uses OCI Service Broker to _provision_ **and** _connect_ the Autonomous Transaction Processing database |
-
 In all cases, begin by adding tenancy credentials to manage and
 connect services from within the cluster. Create a secret containing these
 values:
@@ -40,13 +36,18 @@ kubectl create secret generic oci-credentials \
 
 > **NOTE:** The passphrase entry is **required**. If you do not have passphrase for your key, just leave empty.
 
+| Manual | Automated |
+|--|--|
+| Provides steps for provisioning and connecting cloud services to the application | Uses OCI Service Broker to _provision_ **and** _connect_ the Autonomous Transaction Processing database |
+
 {{< switcher border=true tabs="Manual Steps|Automated (Using OCI Service Broker)" >}}
 
 <ul>
 <li>
+
 Follow the steps outlined below to provision and configure the cluster with cloud service connection details.
 
-#### ATP Database
+### ATP Database
 
 1. Provision an Autonomous Transaction Processing (ATP) database. The default options will work well, as will an **Always Free** shape if available. Once **RUNNING** download the DB Connection Wallet and configure secrets as follows:
     - Create `oadb-admin` secret containing the database administrator password. Used once for schema initializations.
@@ -83,7 +84,7 @@ Follow the steps outlined below to provision and configure the cluster with clou
     - `orders`
     - `user`
 
-#### Streaming Service
+### Streaming Service
 
 1. Provision a Streaming instance from the Oracle Cloud Infrastructure [Console](https://console.us-phoenix-1.oraclecloud.com/storage/streaming), and make note of the created Stream `OCID` value. Then create an `oss-connection` secret containing the Stream connection details.
 
@@ -94,7 +95,7 @@ Follow the steps outlined below to provision and configure the cluster with clou
       --from-literal=messageEndpoint='<MESSAGE_ENDPOINT_URL>'
     ```
 
-#### Object Storage
+### Object Storage
 
 1. **Optional**: Provision a **Public** Object Storage Bucket, and create a Pre-Authenticated Request for the bucket. With the information, create a secret called `oos-bucket` as follows:
 
@@ -109,7 +110,7 @@ Follow the steps outlined below to provision and configure the cluster with clou
 
     > **Object Storage Namespace** may be found with the CLI `oci os ns get` or from the [tenancy information page](https://cloud.oracle.com/a/tenancy)
 
-#### Verify
+### Verify
 
 1. Verify the secrets are created and available in the `mushop` namespace:
 
@@ -178,10 +179,10 @@ secret to the `mushop-utilities` namespace:
 
     > The above command will deploy the OCI Service Broker using an embedded etcd instance. It is not recommended to deploy the OCI Service Broker using an embedded etcd instance and tls disabled in production environments, instead a separate etcd cluster should be setup and used by the OCI Service Broker.
 
-    > For the mushop `helm` deployment, the OCI Service Broker **MUST** be installed
-    > on the same namespace used by the `setup` chart. For convenience, the documentation
-    > commands defaults both the `setup` and OCI Service Broker charts to use
-    > the `mushop-utilities` namespace.
+    **Note:** For the mushop `helm` deployment, the OCI Service Broker **MUST** be installed
+    on the same namespace used by the `setup` chart. For convenience, the documentation
+    commands defaults both the `setup` and OCI Service Broker charts to use
+    the `mushop-utilities` namespace.
   
 1. Next utilize the OCI Service Broker implementation to provision services by installing the included `provision` chart:
 
