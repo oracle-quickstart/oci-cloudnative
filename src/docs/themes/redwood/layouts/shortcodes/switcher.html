@@ -1,8 +1,9 @@
 {{- $uid := index (shuffle (seq 0 300)) 0 -}}
 {{- $left := .Get "left" -}}
+{{- $border := .Get "border" -}}
 {{- $content := .Inner | markdownify -}}
 
-<div uk-grid class="uk-margin-bottom uk-grid-small {{ .Get "class" }}">
+<div uk-grid class="{{ with $border }}switcher-border{{ end }} uk-margin-bottom uk-grid-small {{ .Get "class" }}">
   <div class="uk-width-1-1 {{ with $left }}uk-width-auto@m{{ end }}">
     <ul class="uk-tab{{ with $left }}-left uk-text-large{{ end }}" uk-tab="connect: #switcher-{{ $uid }}">
       {{- with .Get "tabs" -}}
