@@ -166,12 +166,12 @@ Navigate to `Logging -> Agent Configurations -> Create Agent Config`
 ![agent-config](../../images/agent-config.png)
 
 {{% alert style="information" icon="warning" %}}
-The json parser helps analyze the the pod logs format.
+The JSON parser helps analyze the the pod logs format.
 {{% /alert %}}
 
 
 {{% alert style="information" icon="warning" %}}
-Here we are targetting all the pod logs by using /var/log/containers/\*.log. However, we can also target a specific pod. Example: /var/log/containers/mushop-orders\*.log in this case.
+Here we are targeting all the pod logs by using /var/log/containers/\*.log. However, we can also target a specific pod. Example: /var/log/containers/mushop-orders\*.log in this case.
 {{% /alert %}}
 
 7. Verify the fluentd.conf

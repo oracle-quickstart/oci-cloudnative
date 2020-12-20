@@ -67,7 +67,7 @@ You will see a failure in the logs as below:
 
 ![json-log-details](../../images/json-log-details.png)
 
-Note: Notice the logContent.data which are nicely formatted based on our json parser we used during agent configuration.
+Note: Notice the logContent.data which are nicely formatted by the JSON parser used during agent configuration.
 
 ### Summary
 
@@ -76,6 +76,6 @@ We performed the following actions:
 - Setup service connector between OCI logging and OCI monitoring with a new custom monitoring namespace.
 - Simulated the payment failures on MuShop application. 
 
-The MuShop orders service logs the payment failure details and the `OCI Console -> agent config` helped to send all the pod logs to OCI logging.
-Service connector then helps to filter just the payment failures and sends onto OCI Monitoring which then helped us to view the metrics on a dashboard. We then set alarm for that metric to get alerts on our email. 
-We also, analyzed the logs to root cause the issue which was "Payment above 105 were getting declined".
+Using the OCI console `Logging -> Agent Configurations` we configured the Oracle Cloud Infrastructure Container Engine for Kubernetes(OKE) worker nodes to send all the pod logs to OCI logging.
+Service connector helped to filter just the MuShop payment failures messages and send those logs onto OCI Monitoring which then helped us to view the metrics on a dashboard. We set alarm for that metric to get alerts on our email. 
+We also, analyzed the logs using the OCI console `Logging -> Search` to root cause the issue which was "Payment above 105 were getting declined".
