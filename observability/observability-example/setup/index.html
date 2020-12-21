@@ -728,10 +728,10 @@
 </ul>
 <div uk-grid class="uk-margin-bottom uk-grid-small ">
   <div class="uk-width-1-1 uk-width-auto@m">
-    <ul class="uk-tab-left uk-text-large" uk-tab="connect: #switcher-191"><li><a href="#">Local</a></li><li><a href="#">Ingress</a></li></ul>
+    <ul class="uk-tab-left uk-text-large" uk-tab="connect: #switcher-90"><li><a href="#">Local</a></li><li><a href="#">Ingress</a></li></ul>
   </div>
   <div class="uk-width-expand@m">
-    <ul id='switcher-191' class='uk-switcher'>
+    <ul id='switcher-90' class='uk-switcher'>
 <li>
 <p>Use port-forward to expose the service</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">  kubectl port-forward <span class="se">\
@@ -842,8 +842,7 @@ Configure Log Inputs:
     Input Name: &lt;InputName&gt;
     File Paths: /var/log/containers/*.log
 Advanced Parser Options:
-    Parser: REGEXP
-    Expression: ^\{\&quot;log\&quot;\:\&quot;(?&lt;logtime&gt;[^INFO]*) (?&lt;log_level&gt;[^ ]*).*\]\s(?&lt;name&gt;[^ ]*).*message\=(?&lt;message&gt;[^\}\n\&quot;]*)
+    Parser: JSON
     Time Format: %Y-%m-%dT%H:%M:%S.%NZ
 Select Log Destination:
     Compartment: &lt;SelectCompartment&gt;
@@ -852,10 +851,10 @@ Select Log Destination:
 </code></pre>
 <p><img src="../../images/agent-config.png" alt="agent-config"></p>
 <div uk-alert class="uk-alert-information uk-grid uk-grid-collapse uk-flex-nowrap "><span uk-icon="icon: warning; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span><div class="uk-width-expand">
-<p>The regexp parser is looking for a specific payment failure message which is logged by mushop-orders pod.</p>
+<p>The JSON parser helps analyze the the pod logs format.</p>
 </div></div>
 <div uk-alert class="uk-alert-information uk-grid uk-grid-collapse uk-flex-nowrap "><span uk-icon="icon: warning; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span><div class="uk-width-expand">
-<p>Here we are targetting all the pods by using /var/log/containers/*.log. However, we can also target a specific pod. Example: /var/log/containers/mushop-orders*.log in this case.</p>
+<p>Here we are targeting all the pod logs by using /var/log/containers/*.log. However, we can also target a specific pod. Example: /var/log/containers/mushop-orders*.log in this case.</p>
 </div></div>
 <ol start="7">
 <li>Verify the fluentd.conf</li>
@@ -877,9 +876,9 @@ Select Log Destination:
         pos_file  /etc/unifiedmonitoringagent/pos/677561-varlogcontainers.pos
         path_key  tailed_path
         &lt;parse&gt;
-            @type regexp
+            @type json
+            time_type  string
             time_format  %Y-%m-%dT%H:%M:%S.%NZ
-            expression  ^\{\&#34;log\&#34;\:\&#34;(?&lt;logtime&gt;[^INFO]*) (?&lt;log_level&gt;[^ ]*).*\]\s(?&lt;name&gt;[^ ]*).*message\=(?&lt;message&gt;[^\}\n\&#34;]*)
         &lt;/parse&gt;
     &lt;/source&gt;
 
@@ -902,15 +901,16 @@ Select Log Destination:
 <h3 id="oracle-cloud-infrastructure-oci-service-connector-hub">Oracle Cloud Infrastructure (OCI) Service Connector Hub</h3>
 <p>Service Connector Hub orchestrates data movement between services in Oracle Cloud Infrastructure.</p>
 <p>Data is moved using service connectors. A service connector specifies the source service that contains the data to be moved, tasks to run on the data, and the target service for delivery of data when tasks are complete.</p>
+<p>In this case, we are filtering &ldquo;Payment declined&rdquo; messages and sending out the metrics to OCI Monitoring on a custom metric named &ldquo;payment-declined&rdquo;.</p>
 <p>Navigate to <code>Logging -&gt; Service Connectors -&gt; Create Connector</code></p>
 <pre><code>Name: &lt;Service Connector Name&gt;
 Description: &lt;Service Connector Description&gt;
 source: Logging
 target: Monitoring
-loggroups: &lt;LogGroupName&gt;
-logs: &lt;LogName&gt;
-metricnamespace: &lt;MetricNameSpace&gt;
-metric: &lt;MetricName&gt;
+Switch to Advanced mode:
+  search &quot;ocid1.compartment.oc1..xxxx/ocid1.loggroup.oc1.phx.xxxx/ocid1.log.oc1.phx.xxxx&quot; |  logContent='*Payment declined*' and subject='/var/log/containers/*_mushop_*.log' 
+metricnamespace: &lt;CustomMetricNameSpace&gt;
+metric: &lt;CustomMetricName&gt;
 </code></pre>
 <p><img src="../../images/service-connector.png" alt="service-connector"></p>
 

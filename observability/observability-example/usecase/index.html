@@ -730,12 +730,14 @@ Destination: &lt;Select your notifications topic&gt;
 <p>Send some more HTTP Status 406 requests (By placing orders above $105 as discussed) and you will start receiving emails like this</p>
 <p><img src="../../images/alarm-mail.png" alt="alarm-mail"></p>
 <h3 id="analyze-the-logs">Analyze the logs</h3>
-<p>Navigate to <code>Agent Configurations -&gt; &lt;your_agent_config&gt; -&gt; Explore log</code></p>
-<p><img src="../../images/agent-logs.png" alt="agent-logs"></p>
-<p>You will see a failure in the logs as below:
+<p>Navigate to <code>Logging -&gt; Search</code> and navigate through all the logs.</p>
+<p>For this example, Switch to Advanced mode:</p>
+<p>Enter the following query</p>
+<pre><code>search &quot;ocid1.compartment.oc1..xxxx/ocid1.loggroup.oc1.phx.xxxx/ocid1.log.oc1.phx.xxxx&quot; |  logContent='*Payment declined*' and subject='/var/log/containers/*_mushop_*.log' 
+</code></pre><p>You will see a failure in the logs as below:
 <code>Payment declined: amount exceeds 105.00</code></p>
 <p><img src="../../images/json-log-details.png" alt="json-log-details"></p>
-<p>Note: Notice the logContent.data which are nicely formatted based on our regex expression we provided during agent configuration (Advanced parser).</p>
+<p>Note: Notice the logContent.data which are nicely formatted by the JSON parser used during agent configuration.</p>
 <h3 id="summary">Summary</h3>
 <p>We performed the following actions:</p>
 <ul>
@@ -743,9 +745,9 @@ Destination: &lt;Select your notifications topic&gt;
 <li>Setup service connector between OCI logging and OCI monitoring with a new custom monitoring namespace.</li>
 <li>Simulated the payment failures on MuShop application.</li>
 </ul>
-<p>The orders service logs the payment failure details and the agent config filters the specific message that we setup as part of OCI logging agent setup (fluentd regexp parser).</p>
-<p>Service connector helps to send the payment failures onto OCI Monitoring which then helped us to view the metrics on a dashboard. We then set alarm for that metric to get alerts on our email.
-We also, analyzed the logs to root cause the issue which was &ldquo;Payment above 105 were getting declined&rdquo;.</p>
+<p>Using the OCI console <code>Logging -&gt; Agent Configurations</code> we configured the Oracle Cloud Infrastructure Container Engine for Kubernetes(OKE) worker nodes to send all the pod logs to OCI logging.
+Service connector helped to filter just the MuShop payment failures messages and send those logs onto OCI Monitoring which then helped us to view the metrics on a dashboard. We set alarm for that metric to get alerts on our email.
+We also, analyzed the logs using the OCI console <code>Logging -&gt; Search</code> to root cause the issue which was &ldquo;Payment above 105 were getting declined&rdquo;.</p>
 
 
             </main>
