@@ -19,7 +19,7 @@
   <meta name="msapplication-TileColor" content="#c74634">
   <meta name="theme-color" content="#fcfbfa">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <link rel="stylesheet" type="text/css" href="../../sass/main.min.a5311c1cb5fb9527f90976caffd8230c6a8d6cb6690b058aba37fdd0d7a66272.css" integrity="sha256-pTEcHLX7lSf5CXbK/9gjDGqNbLZpCwWKujf90NemYnI=">
+  <link rel="stylesheet" type="text/css" href="../../sass/main.min.1cfa9655311242a0a659a59ecabdb240453b9a3299947792014d86ff1644a477.css" integrity="sha256-HPqWVTESQqCmWaWeyr2yQEU7mjKZlHeSAU2G/xZEpHc=">
   <link rel="stylesheet" type="text/css" href="../../fonts/fonts.min.58744946497c59fa8a6ac77636ea480457079e54512cf3dcb552592b56503cc1.css" integrity="sha256-WHRJRkl8WfqKasd2NupIBFcHnlRRLPPctVJZK1ZQPME=">
   <link rel="stylesheet" type="text/css" href="../../sass/mushop.min.c31ca585e7b3a90dfeb2fd0ac2d7d93ff0af82ea19b0cab20c8539d987761606.css" integrity="sha256-wxylheezqQ3&#43;sv0KwtfZP/CvguoZsMqyDIU52Yd2FgY=">
 </head>
@@ -627,19 +627,7 @@
   <ul>
     <li>
       <ul>
-        <li><a href="#provisioning">Provisioning</a>
-          <ul>
-            <li><a href="#manual-steps">Manual Steps</a>
-              <ul>
-                <li><a href="#atp-database">ATP Database</a></li>
-                <li><a href="#streaming-service">Streaming Service</a></li>
-                <li><a href="#object-storage">Object Storage</a></li>
-                <li><a href="#verify">Verify</a></li>
-              </ul>
-            </li>
-            <li><a href="#using-service-broker">Using Service Broker</a></li>
-          </ul>
-        </li>
+        <li><a href="#provisioning">Provisioning</a></li>
         <li><a href="#api-gateway-oci-functions-and-email-delivery">API Gateway, OCI Functions and Email Delivery</a>
           <ul>
             <li><a href="#configure-email-delivery">Configure Email Delivery</a></li>
@@ -717,20 +705,6 @@
 Provisioning these services may be done manually of course, but can also be done <em>automatically</em>
 through the use of <a href="https://github.com/oracle/oci-service-broker">OCI Service Broker</a>. You are
 encouraged to explore each approach.</p>
-<table>
-<thead>
-<tr>
-<th><a href="#manual-steps">Manual</a></th>
-<th><a href="#using-service-broker">Automated</a></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Provides steps for provisioning and connecting cloud services to the application</td>
-<td>Uses OCI Service Broker to <em>provision</em> <strong>and</strong> <em>connect</em> the Autonomous Transaction Processing database</td>
-</tr>
-</tbody>
-</table>
 <p>In all cases, begin by adding tenancy credentials to manage and
 connect services from within the cluster. Create a secret containing these
 values:</p>
@@ -745,9 +719,29 @@ values:</p>
 </code></pre></div><blockquote>
 <p><strong>NOTE:</strong> The passphrase entry is <strong>required</strong>. If you do not have passphrase for your key, just leave empty.</p>
 </blockquote>
-<h3 id="manual-steps">Manual Steps</h3>
+<table>
+<thead>
+<tr>
+<th>Manual</th>
+<th>Automated</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Provides steps for provisioning and connecting cloud services to the application</td>
+<td>Uses OCI Service Broker to <em>provision</em> <strong>and</strong> <em>connect</em> the Autonomous Transaction Processing database</td>
+</tr>
+</tbody>
+</table>
+<div uk-grid class="switcher-border uk-margin-bottom uk-grid-small ">
+  <div class="uk-width-1-1 ">
+    <ul class="uk-tab" uk-tab="connect: #switcher-57"><li><a href="#">Manual Steps</a></li><li><a href="#">Automated (Using OCI Service Broker)</a></li></ul>
+  </div>
+  <div class="">
+    <ul id='switcher-57' class='uk-switcher'>
+<li>
 <p>Follow the steps outlined below to provision and configure the cluster with cloud service connection details.</p>
-<h4 id="atp-database">ATP Database</h4>
+<h3 id="atp-database">ATP Database</h3>
 <ol>
 <li>
 <p>Provision an Autonomous Transaction Processing (ATP) database. The default options will work well, as will an <strong>Always Free</strong> shape if available. Once <strong>RUNNING</strong> download the DB Connection Wallet and configure secrets as follows:</p>
@@ -786,7 +780,7 @@ values:</p>
 </ul>
 </li>
 </ol>
-<h4 id="streaming-service">Streaming Service</h4>
+<h3 id="streaming-service">Streaming Service</h3>
 <ol>
 <li>
 <p>Provision a Streaming instance from the Oracle Cloud Infrastructure <a href="https://console.us-phoenix-1.oraclecloud.com/storage/streaming">Console</a>, and make note of the created Stream <code>OCID</code> value. Then create an <code>oss-connection</code> secret containing the Stream connection details.</p>
@@ -796,7 +790,7 @@ values:</p>
 </span><span class="se"></span>  --from-literal<span class="o">=</span><span class="nv">messageEndpoint</span><span class="o">=</span><span class="s1">&#39;&lt;MESSAGE_ENDPOINT_URL&gt;&#39;</span>
 </code></pre></div></li>
 </ol>
-<h4 id="object-storage">Object Storage</h4>
+<h3 id="object-storage">Object Storage</h3>
 <ol>
 <li>
 <p><strong>Optional</strong>: Provision a <strong>Public</strong> Object Storage Bucket, and create a Pre-Authenticated Request for the bucket. With the information, create a secret called <code>oos-bucket</code> as follows:</p>
@@ -811,7 +805,7 @@ values:</p>
 </blockquote>
 </li>
 </ol>
-<h4 id="verify">Verify</h4>
+<h3 id="verify">Verify</h3>
 <ol>
 <li>
 <p>Verify the secrets are created and available in the <code>mushop</code> namespace:</p>
@@ -825,7 +819,8 @@ oos-bucket        Opaque    4      3m
 oss-connection    Opaque    2      3m
 </code></pre></div></li>
 </ol>
-<h3 id="using-service-broker">Using Service Broker</h3>
+</li>
+<li>
 <p>As an alternative to manually provisioning, the included <a href="https://github.com/oracle-quickstart/oci-cloudnative/tree/master/deploy/complete/helm-chart/provision"><code>provision</code></a>
 chart is an application of the open-source <a href="https://github.com/oracle/oci-service-broker">OCI Service Broker</a>
 for <em>provisioning</em> Oracle Cloud Infrastructure services. This implementation utilizes <a href="https://github.com/openservicebrokerapi/servicebroker/blob/v2.14/spec.md">Open Service Broker</a> in Oracle Container Engine for Kubernetes or in other Kubernetes clusters.</p>
@@ -845,13 +840,15 @@ secret to the <code>mushop-utilities</code> namespace:</p>
 </code></pre></div></li>
 <li>
 <p>Deploy the OCI service broker on your cluster. This is done with the <a href="https://github.com/oracle/oci-service-broker">Oracle OCI Service Broker</a> helm chart:</p>
-<pre><code class="language-shell--helm2" data-lang="shell--helm2">helm install https://github.com/oracle/oci-service-broker/releases/download/v1.5.0/oci-service-broker-1.5.0.tgz \
+<pre><code class="language-shell--helm2" data-lang="shell--helm2">helm install \
+  https://github.com/oracle/oci-service-broker/releases/download/v1.5.2/oci-service-broker-1.5.2.tgz \
   --namespace mushop-utilities \
   --name oci-broker \
   --set ociCredentials.secretName=oci-credentials \
   --set storage.etcd.useEmbedded=true \
   --set tls.enabled=false
-</code></pre><pre><code class="language-shell--helm3" data-lang="shell--helm3">helm install oci-broker https://github.com/oracle/oci-service-broker/releases/download/v1.5.0/oci-service-broker-1.5.0.tgz \
+</code></pre><pre><code class="language-shell--helm3" data-lang="shell--helm3">helm install oci-broker \
+  https://github.com/oracle/oci-service-broker/releases/download/v1.5.2/oci-service-broker-1.5.2.tgz \
   --namespace mushop-utilities \
   --set ociCredentials.secretName=oci-credentials \
   --set storage.etcd.useEmbedded=true \
@@ -859,12 +856,10 @@ secret to the <code>mushop-utilities</code> namespace:</p>
 </code></pre><blockquote>
 <p>The above command will deploy the OCI Service Broker using an embedded etcd instance. It is not recommended to deploy the OCI Service Broker using an embedded etcd instance and tls disabled in production environments, instead a separate etcd cluster should be setup and used by the OCI Service Broker.</p>
 </blockquote>
- <div uk-alert class="uk-alert-danger uk-grid uk-grid-collapse uk-flex-nowrap "><span uk-icon="icon: warning; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span><div class="uk-width-expand">
-<p>For the mushop <code>helm</code> deployment, the OCI Service Broker <strong>MUST</strong> be installed
+<p><strong>Note:</strong> For the mushop <code>helm</code> deployment, the OCI Service Broker <strong>MUST</strong> be installed
 on the same namespace used by the <code>setup</code> chart. For convenience, the documentation
 commands defaults both the <code>setup</code> and OCI Service Broker charts to use
 the <code>mushop-utilities</code> namespace.</p>
- </div></div>
 </li>
 <li>
 <p>Next utilize the OCI Service Broker implementation to provision services by installing the included <code>provision</code> chart:</p>
@@ -895,6 +890,10 @@ mushop-oadb-wallet-binding   mushop-atp             mushop-oadb-wallet-binding  
 mushop-oss-binding           mushop-oss             mushop-oss-binding           Ready    1d
 </code></pre></div></li>
 </ol>
+</li>
+</ul>
+  </div>
+</div>
 <h2 id="api-gateway-oci-functions-and-email-delivery">API Gateway, OCI Functions and Email Delivery</h2>
 <div uk-alert class="uk-alert-primary uk-grid uk-grid-collapse uk-flex-nowrap "><span uk-icon="icon: info; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span><div class="uk-width-expand">
 <p>Note that this is <strong>OPTIONAL</strong>. If you don&rsquo;t want to configure Email Delivery and deploy a function with API Gateway, skip to the <a href="#deployment">deployment</a> section.</p>
@@ -959,7 +958,7 @@ fn config function mushop-app newsletter-subscription APPROVED_SENDER_EMAIL &lt;
 <ul>
 <li>Name: <strong>newsletter-subscription</strong></li>
 <li>Path prefix: <strong>/newsletter</strong></li>
-<li>Compartment: <Pick your compartment></li>
+<li>Compartment: &lt; Pick your compartment &gt;</li>
 <li>Execution log: <strong>Enabled</strong></li>
 <li>Log level: <strong>Error</strong></li>
 </ul>
@@ -1501,6 +1500,6 @@ directly to the <code>edge</code> service resource:</p>
   })(window, window.Site = window.Site || {});
 </script>
 
-<script src="../../js/vendor.min.a006043ab5cd331e53cb8de3dd96832ba0dfc932bfbba4bb8b3c5172454cb642.js" ></script><script src="../../js/extras.min.9bf9f2a01e7cae8e8e4e8ee771bdca09d6d04b4265a0f9af5ce83a213b0961d2.js"  async></script><script src="../../js/site.min.d7973f1560bba2270850ebebf4e3a2a2e58e84e1f993191030325ddaef76a81c.js"  async></script>
+<script src="../../js/vendor.min.fd8aa0fb9c94151c2852ab3e234df953e85e68bfe4d1183421e17b4d111944ed.js" ></script><script src="../../js/extras.min.88dc65673919eb6e8151f4f309d54cecb7ba304c48d378ff4d9b858b6b1d2742.js"  async></script><script src="../../js/site.min.d7973f1560bba2270850ebebf4e3a2a2e58e84e1f993191030325ddaef76a81c.js"  async></script>
   </body>
 </html>

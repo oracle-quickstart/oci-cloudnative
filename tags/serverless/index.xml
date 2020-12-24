@@ -18,7 +18,8 @@
       
       <guid>/cloud/deployment/</guid>
       <description>Provisioning Deploying the full application requires cloud backing services from Oracle Cloud Infrastructure. Provisioning these services may be done manually of course, but can also be done automatically through the use of OCI Service Broker. You are encouraged to explore each approach.
-   Manual Automated     Provides steps for provisioning and connecting cloud services to the application Uses OCI Service Broker to provision and connect the Autonomous Transaction Processing database    In all cases, begin by adding tenancy credentials to manage and connect services from within the cluster.</description>
+In all cases, begin by adding tenancy credentials to manage and connect services from within the cluster. Create a secret containing these values:
+kubectl create secret generic oci-credentials \  --namespace mushop \  --from-literal=tenancy=&amp;lt;TENANCY_OCID&amp;gt; \  --from-literal=user=&amp;lt;USER_OCID&amp;gt; \  --from-literal=region=&amp;lt;USER_OCI_REGION&amp;gt; \  --from-literal=fingerprint=&amp;lt;PUBLIC_API_KEY_FINGERPRINT&amp;gt; \  --from-literal=passphrase=&amp;lt;PRIVATE_API_KEY_PASSPHRASE&amp;gt; \  --from-file=privatekey=&amp;lt;PATH_OF_PRIVATE_API_KEY&amp;gt;  NOTE: The passphrase entry is required.</description>
     </item>
     
   </channel>
