@@ -65,7 +65,7 @@ kubectl --namespace=mushop-dev create secret generic ocicredentials \
 ### 5) Install OCI Service Broker
 
 ```shell
-helm install https://github.com/oracle/oci-service-broker/releases/download/v1.5.1/oci-service-broker-1.5.1.tgz  --name oci-service-broker \
+helm install https://github.com/oracle/oci-service-broker/releases/download/v1.5.2/oci-service-broker-1.5.2.tgz  --name oci-service-broker \
   --namespace mushop-dev \
   --set ociCredentials.secretName=ocicredentials \
   --set storage.etcd.useEmbedded=true \
