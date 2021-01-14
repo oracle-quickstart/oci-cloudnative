@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2020, 2021 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -26,10 +26,11 @@ data "oci_containerengine_cluster_kube_config" "oke_cluster_kube_config" {
 locals {
   # Helm repos
   helm_repository = {
-    stable        = "https://kubernetes-charts.storage.googleapis.com"
+    stable        = "https://charts.helm.sh/stable"
     ingress_nginx = "https://kubernetes.github.io/ingress-nginx"
     jetstack      = "https://charts.jetstack.io"                        # cert-manager
-    svc_catalog   = "https://svc-catalog-charts.storage.googleapis.com" # Service Catalog
+    svc_catalog   = "https://kubernetes-sigs.github.io/service-catalog" # Service Catalog
+    grafana = "https://grafana.github.io/helm-charts"
   }
 }
 
