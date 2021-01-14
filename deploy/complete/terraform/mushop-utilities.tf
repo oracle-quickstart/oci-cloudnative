@@ -30,12 +30,12 @@ resource "helm_release" "prometheus" {
   count = var.prometheus_enabled ? 1 : 0
 }
 
-## https://github.com/helm/charts/blob/master/stable/grafana/README.md
+## https://github.com/grafana/helm-charts/blob/main/charts/grafana/README.md
 resource "helm_release" "grafana" {
   name       = "mushop-utils-grafana" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.stable
   chart      = "grafana"
-  version    = "5.1.4"
+  version    = "6.1.17"
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
   wait       = false
 
