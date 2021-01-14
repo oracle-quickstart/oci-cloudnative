@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2020, 2021 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -12,7 +12,7 @@ variable "user_ocid" {
 variable "fingerprint" {
   default = ""
 }
-variable "public_ssh_key" {
+variable "private_key_path" {
   default = ""
 }
 
@@ -53,7 +53,7 @@ variable "node_pool_name" {
 }
 
 variable "k8s_version" {
-  default = "v1.15.7"
+  default = "v1.18.10"
 }
 variable "num_pool_workers" {
   default = 3
@@ -65,10 +65,13 @@ variable "image_operating_system" {
   default = "Oracle Linux"
 }
 variable "image_operating_system_version" {
-  default = "7.8"
+  default = "7.9"
 }
 variable "generate_public_ssh_key" {
   default = true
+}
+variable "public_ssh_key" {
+  default = ""
 }
 
 # Network Details
@@ -136,7 +139,7 @@ variable "autonomous_database_data_storage_size_in_tbs" {
 }
 
 variable "autonomous_database_data_safe_status" {
-  default = "REGISTERED" # REGISTERED || NOT_REGISTERED
+  default = "NOT_REGISTERED" # REGISTERED || NOT_REGISTERED
 }
 
 variable "autonomous_database_db_version" {
@@ -144,7 +147,7 @@ variable "autonomous_database_db_version" {
 }
 
 variable "autonomous_database_license_model" {
-  default = "BRING_YOUR_OWN_LICENSE"
+  default = "BRING_YOUR_OWN_LICENSE" # LICENSE_INCLUDED || BRING_YOUR_OWN_LICENSE
 }
 
 variable "autonomous_database_is_auto_scaling_enabled" {
@@ -154,7 +157,9 @@ variable "autonomous_database_is_auto_scaling_enabled" {
 variable "autonomous_database_is_free_tier" {
   default = false
 }
-
+variable "autonomous_database_visibility" {
+  default = "Public"
+}
 variable "autonomous_database_wallet_generate_type" {
   default = "SINGLE"
 }
