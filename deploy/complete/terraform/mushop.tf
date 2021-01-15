@@ -17,7 +17,7 @@ resource "helm_release" "mushop" {
   namespace = kubernetes_namespace.mushop_namespace.id
   wait      = false
 
-  set_string {
+  set {
     name  = "global.mock.service"
     value = var.mushop_mock_mode_all ? "all" : "false"
   }
