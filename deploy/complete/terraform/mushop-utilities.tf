@@ -76,7 +76,12 @@ resource "helm_release" "ingress_nginx" {
   wait       = true
 
   set {
-    name  = "controller.metrics.enable"
+    name  = "controller.metrics\\.enable"
+    value = true
+  }
+
+  set {
+    name  = "controller.service.annotations\\.enable"
     value = true
   }
 
@@ -99,6 +104,7 @@ resource "helm_release" "svc-cat" {
 }
 
 ## https://github.com/jetstack/cert-manager/blob/master/README.md
+## https://artifacthub.io/packages/helm/jetstack/cert-manager
 resource "helm_release" "cert_manager" {
   name       = "cert-manager"
   repository = local.helm_repository.jetstack
