@@ -51,7 +51,6 @@ variable "encryption_key_id" {
 variable "node_pool_name" {
   default = "pool1"
 }
-
 variable "k8s_version" {
   default = "v1.18.10"
 }
