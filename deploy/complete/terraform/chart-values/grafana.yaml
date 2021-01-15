@@ -8,7 +8,7 @@ datasources:
     datasources:
     - name: Prometheus
       type: prometheus
-      url: http://prometheus-server.mushop-utilities.svc.cluster.local
+      url: http://prometheus-community-server.mushop-utilities.svc.cluster.local
       access: proxy
       isDefault: true
       disableDeletion: true
