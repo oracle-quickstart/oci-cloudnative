@@ -12,7 +12,7 @@ resource "kubernetes_namespace" "mushop_utilities_namespace" {
 
 # MuShop Utilities helm charts
 
-## https://github.com/helm/charts/blob/master/stable/prometheus/README.md
+## https://github.com/prometheus-community/helm-charts/blob/main/charts/prometheus/README.md
 resource "helm_release" "prometheus" {
   name       = "prometheus-community"
   repository = local.helm_repository.prometheus
@@ -53,7 +53,7 @@ resource "helm_release" "metrics_server" {
   name       = "metrics-server"
   repository = local.helm_repository.stable
   chart      = "metrics-server"
-  version    = "2.11.1"
+  version    = "2.11.4"
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
   wait       = false
 
@@ -71,7 +71,7 @@ resource "helm_release" "ingress_nginx" {
   name       = "mushop-utils-ingress-nginx" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.ingress_nginx
   chart      = "ingress-nginx"
-  version    = "2.4.0"
+  version    = "3.20.1"
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
   wait       = true
 
@@ -89,7 +89,7 @@ resource "helm_release" "svc-cat" {
   name       = "svc-cat"
   repository = local.helm_repository.svc_catalog
   chart      = "catalog"
-  version    = "0.3.0"
+  version    = "0.3.1"
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
   wait       = false
 
@@ -103,7 +103,7 @@ resource "helm_release" "cert_manager" {
   name       = "cert-manager"
   repository = local.helm_repository.jetstack
   chart      = "cert-manager"
-  version    = "0.15.1"
+  version    = "1.1.0"
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
   wait       = false
 
