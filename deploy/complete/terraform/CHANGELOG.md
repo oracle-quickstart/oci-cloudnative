@@ -7,6 +7,8 @@
 - Terraform Providers updated
 - ORM Schema updated
 - Fixes and improvements
+- Ability to change lb shapes for the ingress
+- Supporting services updated
 
 2020-06-10
 
