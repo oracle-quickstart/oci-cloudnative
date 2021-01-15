@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2020, 2021 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -146,8 +146,10 @@ variables:
   k8s_version:
     type: enum
     enum:
-    - "v1.15.7"
-    - "v1.14.8"
+    - "v1.18.10"
+    - "v1.17.13"
+    - "v1.16.15"
+    - "v1.15.12"
     title: "Kubernetes Version"
     description: "Kubernetes version installed on your master and worker nodes"
     required: true
