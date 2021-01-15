@@ -80,6 +80,7 @@ variable "public_ssh_key" {
 }
 
 # Network Details
+## CIDRs
 variable "network_cidrs" {
   type = map(string)
 
@@ -91,6 +92,10 @@ variable "network_cidrs" {
     PODS-CIDR               = "10.244.0.0/16"
     KUBERNETES-SERVICE-CIDR = "10.96.0.0/16"
   }
+}
+## Ingress/LoadBalancer
+variable "ingress_load_balancer_shape" {
+  default = "100Mbps"
 }
 
 # MuShop

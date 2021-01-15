@@ -76,13 +76,14 @@ resource "helm_release" "ingress_nginx" {
   wait       = true
 
   set {
-    name  = "controller.metrics\\.enable"
+    name  = "controller.metrics.enable"
     value = true
   }
 
   set {
-    name  = "controller.service.annotations\\.enable"
-    value = true
+    name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/oci-load-balancer-shape"
+    value = var.ingress_load_balancer_shape
+    type      = "string"
   }
 
   timeout = 1800 # workaround to wait the node be active for other charts
