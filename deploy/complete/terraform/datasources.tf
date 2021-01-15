@@ -55,16 +55,6 @@ data "kubernetes_secret" "mushop_utils_grafana" {
 }
 
 # OCI Services
-## Autonomous Database
-### Wallet
-data "oci_database_autonomous_database_wallet" "autonomous_database_wallet" {
-  count                  = var.mushop_mock_mode_all ? 0 : 1
-  autonomous_database_id = oci_database_autonomous_database.mushop_autonomous_database[0].id
-  password               = random_string.autonomous_database_wallet_password.result
-  generate_type          = var.autonomous_database_wallet_generate_type
-  base64_encode_content  = true
-}
-
 ## Available Services
 data "oci_core_services" "all_services" {
   filter {

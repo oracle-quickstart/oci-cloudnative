@@ -19,6 +19,14 @@ resource "oci_database_autonomous_database" "mushop_autonomous_database" {
   is_auto_scaling_enabled  = var.autonomous_database_is_auto_scaling_enabled
   is_free_tier             = var.autonomous_database_is_free_tier
 }
+### Wallet
+resource "oci_database_autonomous_database_wallet" "autonomous_database_wallet" {
+  count                  = var.mushop_mock_mode_all ? 0 : 1
+  autonomous_database_id = oci_database_autonomous_database.mushop_autonomous_database[0].id
+  password               = random_string.autonomous_database_wallet_password.result
+  generate_type          = var.autonomous_database_wallet_generate_type
+  base64_encode_content  = true
+}
 
 resource "kubernetes_secret" "oadb-admin" {
   count = var.mushop_mock_mode_all ? 0 : 1
@@ -53,7 +61,7 @@ resource "kubernetes_secret" "oadb_wallet_zip" {
     namespace = kubernetes_namespace.mushop_namespace.id
   }
   data = {
-    wallet = data.oci_database_autonomous_database_wallet.autonomous_database_wallet[0].content
+    wallet = oci_database_autonomous_database_wallet.autonomous_database_wallet[0].content
   }
   type = "Opaque"
 }
