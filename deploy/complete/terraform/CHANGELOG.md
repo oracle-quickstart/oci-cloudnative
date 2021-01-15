@@ -1,4 +1,14 @@
-2020-06-xx
+# CHANGELOG
+
+2021-01-15 (v2.0.5)
+
+- Helm Repo Repos updated
+- Terraform updated to 0.13
+- Terraform Providers updated
+- ORM Schema updated
+- Fixes and improvements
+
+2020-06-10
 
 - Hability to enable/disable the deployment option of the common services of MuShop Utilities
 
