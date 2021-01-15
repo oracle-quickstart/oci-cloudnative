@@ -60,6 +60,12 @@ variable "num_pool_workers" {
 variable "node_pool_shape" {
   default = "VM.Standard2.1"
 }
+variable "node_pool_node_shape_config_memory_in_gbs" {
+  default = "16" # Only used if flex shape is selected
+}
+variable "node_pool_node_shape_config_ocpus" {
+  default = "1" # Only used if flex shape is selected
+}
 variable "image_operating_system" {
   default = "Oracle Linux"
 }
