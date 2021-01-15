@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2020, 2021 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -30,10 +30,10 @@ output "grafana_admin_password" {
 # Use of this resource for production deployments is not recommended. 
 # Instead, generate a private key file outside of Terraform and distribute it securely to the system where Terraform will be run.
 output "generated_private_key_pem" {
-  value = var.generate_public_ssh_key ? tls_private_key.compute_ssh_key.private_key_pem : "No Keys Auto Generated"
+  value = var.generate_public_ssh_key ? tls_private_key.oke_worker_node_ssh_key.private_key_pem : "No Keys Auto Generated"
 }
 output "dev" {
-  value = "Made with \u2764 by Oracle A-Team"
+  value = "Made with \u2764 by Oracle Developers"
 }
 output "comments" {
   value = "The application URL will be unavailable for a few minutes after provisioning, while the application is configured"
