@@ -14,10 +14,10 @@ resource "kubernetes_namespace" "mushop_utilities_namespace" {
 
 ## https://github.com/helm/charts/blob/master/stable/prometheus/README.md
 resource "helm_release" "prometheus" {
-  name       = "prometheus"
-  repository = local.helm_repository.stable
+  name       = "prometheus-community"
+  repository = local.helm_repository.prometheus
   chart      = "prometheus"
-  version    = "11.4.0"
+  version    = "13.2.1"
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
   wait       = false
 
