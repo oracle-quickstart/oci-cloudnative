@@ -33,7 +33,7 @@ resource "helm_release" "prometheus" {
 ## https://github.com/grafana/helm-charts/blob/main/charts/grafana/README.md
 resource "helm_release" "grafana" {
   name       = "mushop-utils-grafana" # mushop-utils included to be backwards compatible to the docs and setup chart install
-  repository = local.helm_repository.stable
+  repository = local.helm_repository.grafana
   chart      = "grafana"
   version    = "6.1.17"
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
