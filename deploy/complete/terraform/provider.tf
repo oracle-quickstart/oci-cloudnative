@@ -2,15 +2,6 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
-terraform {
-  required_version = ">= 0.12.16"
-  # required_providers {
-  #   kubernetes = ">= 1.8"
-  #   helm = ">= 1.1.1"
-  #   oci = ">= 3.73"
-  # }
-}
-
 provider "oci" {
   tenancy_ocid = var.tenancy_ocid
   region       = var.region
