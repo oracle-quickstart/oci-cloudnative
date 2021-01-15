@@ -47,10 +47,14 @@ resource "oci_containerengine_node_pool" "oke_mushop_node_pool" {
     size = var.num_pool_workers
   }
 
+  # node_shape_config {
+  #       memory_in_gbs = var.node_pool_node_shape_config_memory_in_gbs
+  #       ocpus = var.node_pool_node_shape_config_ocpus
+  # }
 
   node_source_details {
     source_type = "IMAGE"
-    image_id    = lookup(data.oci_core_images.node_pool_images.images[0], "id")
+    image_id    = lookup(data.oci_core_images.node_pool_images.images[1], "id")
   }
 
   initial_node_labels {

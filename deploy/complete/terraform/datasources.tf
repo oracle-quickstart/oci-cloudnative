@@ -30,8 +30,8 @@ locals {
     ingress_nginx = "https://kubernetes.github.io/ingress-nginx"
     jetstack      = "https://charts.jetstack.io"                        # cert-manager
     svc_catalog   = "https://kubernetes-sigs.github.io/service-catalog" # Service Catalog
-    grafana = "https://grafana.github.io/helm-charts"
-    prometheus = "https://prometheus-community.github.io/helm-charts"
+    grafana       = "https://grafana.github.io/helm-charts"
+    prometheus    = "https://prometheus-community.github.io/helm-charts"
   }
 }
 
