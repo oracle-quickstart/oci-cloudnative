@@ -93,8 +93,12 @@ variableGroups:
     variables:
       - user_ocid
       - fingerprint
+      - private_key_path
       - network_cidrs
       - cluster_options_admission_controller_options_is_pod_security_policy_enabled
+      - node_pool_node_shape_config_memory_in_gbs
+      - node_pool_node_shape_config_ocpus
+      - ingress_load_balancer_shape
     visible: false
 
   - title: "OCI Services Hidden"
@@ -107,6 +111,7 @@ variableGroups:
       - autonomous_database_is_auto_scaling_enabled
       - autonomous_database_is_free_tier
       - autonomous_database_wallet_generate_type
+      - autonomous_database_visibility
       - db_admin_name
       - db_connection_name
       - db_wallet_name
