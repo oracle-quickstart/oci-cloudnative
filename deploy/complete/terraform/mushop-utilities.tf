@@ -15,7 +15,7 @@ resource "kubernetes_namespace" "mushop_utilities_namespace" {
 ## https://github.com/prometheus-community/helm-charts/blob/main/charts/prometheus/README.md
 ## https://artifacthub.io/packages/helm/prometheus-community/prometheus
 resource "helm_release" "prometheus" {
-  name       = "prometheus-community"
+  name       = "prometheus"
   repository = local.helm_repository.prometheus
   chart      = "prometheus"
   version    = "13.2.1"
