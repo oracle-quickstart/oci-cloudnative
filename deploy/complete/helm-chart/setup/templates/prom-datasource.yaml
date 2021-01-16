@@ -17,4 +17,4 @@ data:
       type: prometheus
       access: proxy
       orgId: 1
-      url: http://{{ .Release.Name }}-prometheus-server.{{ .Release.Namespace }}.svc.cluster.local
+      url: http://{{ .Release.Name }}-prometheus-community-server.{{ .Release.Namespace }}.svc.cluster.local
