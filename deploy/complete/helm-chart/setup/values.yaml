@@ -7,7 +7,8 @@ metrics-server:
     --kubelet-preferred-address-types=InternalIP
   ]
 
-# https://github.com/helm/charts/blob/master/stable/prometheus/README.md
+# https://github.com/prometheus-community/helm-charts/blob/main/charts/prometheus/README.md
+# https://artifacthub.io/packages/helm/prometheus-community/prometheus
 prometheus:
   enabled: true
   extraScrapeConfigs: |
@@ -24,6 +25,7 @@ catalog:
   enabled: true
 
 # https://kubernetes.github.io/ingress-nginx/
+# https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx
 ingress-nginx:
   enabled: true
   controller:
@@ -31,11 +33,13 @@ ingress-nginx:
       enabled: true
 
 # https://github.com/jetstack/cert-manager/blob/master/README.md
+# https://artifacthub.io/packages/helm/jetstack/cert-manager
 cert-manager:
   enabled: true
   installCRDs: true
 
-# https://github.com/helm/charts/blob/master/stable/grafana/README.md
+# https://github.com/grafana/helm-charts/blob/main/charts/grafana/README.md
+# https://artifacthub.io/packages/helm/grafana/grafana
 grafana:
   enabled: true
   dashboards:

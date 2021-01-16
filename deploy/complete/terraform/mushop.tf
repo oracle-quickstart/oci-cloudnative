@@ -17,7 +17,7 @@ resource "helm_release" "mushop" {
   namespace = kubernetes_namespace.mushop_namespace.id
   wait      = false
 
-  set_string {
+  set {
     name  = "global.mock.service"
     value = var.mushop_mock_mode_all ? "all" : "false"
   }
@@ -46,7 +46,7 @@ resource "helm_release" "mushop" {
     value = var.mushop_mock_mode_all ? false : false
   }
 
-  depends_on = [helm_release.ingress-nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
+  depends_on = [helm_release.ingress_nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
 
   timeout = 500
 }

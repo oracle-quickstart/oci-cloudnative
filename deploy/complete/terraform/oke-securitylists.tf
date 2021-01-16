@@ -2,7 +2,7 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
-resource oci_core_security_list oke_mushop_security_list {
+resource "oci_core_security_list" "oke_mushop_security_list" {
   compartment_id = var.compartment_ocid
   display_name   = "oke-mushop-wkr-seclist-${random_string.deploy_id.result}"
   vcn_id         = oci_core_virtual_network.oke_mushop_vcn[0].id
@@ -49,7 +49,7 @@ resource oci_core_security_list oke_mushop_security_list {
   count = var.create_new_oke_cluster ? 1 : 0
 }
 
-resource oci_core_security_list oke_mushop_lb_security_list {
+resource "oci_core_security_list" "oke_mushop_lb_security_list" {
   compartment_id = var.compartment_ocid
   display_name   = "oke-mushop-wkr-lb-seclist-${random_string.deploy_id.result}"
   vcn_id         = oci_core_virtual_network.oke_mushop_vcn[0].id

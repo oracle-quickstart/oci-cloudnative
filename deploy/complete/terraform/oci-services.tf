@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2020, 2021 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -18,6 +18,14 @@ resource "oci_database_autonomous_database" "mushop_autonomous_database" {
   license_model            = var.autonomous_database_license_model
   is_auto_scaling_enabled  = var.autonomous_database_is_auto_scaling_enabled
   is_free_tier             = var.autonomous_database_is_free_tier
+}
+### Wallet
+resource "oci_database_autonomous_database_wallet" "autonomous_database_wallet" {
+  count                  = var.mushop_mock_mode_all ? 0 : 1
+  autonomous_database_id = oci_database_autonomous_database.mushop_autonomous_database[0].id
+  password               = random_string.autonomous_database_wallet_password.result
+  generate_type          = var.autonomous_database_wallet_generate_type
+  base64_encode_content  = true
 }
 
 resource "kubernetes_secret" "oadb-admin" {
@@ -53,7 +61,7 @@ resource "kubernetes_secret" "oadb_wallet_zip" {
     namespace = kubernetes_namespace.mushop_namespace.id
   }
   data = {
-    wallet = data.oci_database_autonomous_database_wallet.autonomous_database_wallet[0].content
+    wallet = oci_database_autonomous_database_wallet.autonomous_database_wallet[0].content
   }
   type = "Opaque"
 }

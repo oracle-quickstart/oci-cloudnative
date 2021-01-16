@@ -1,21 +1,24 @@
 dependencies:
 - name: prometheus
-  repository: https://kubernetes-charts.storage.googleapis.com
-  version: 11.3.0
+  repository: https://prometheus-community.github.io/helm-charts
+  version: 13.2.1
 - name: grafana
-  repository: https://kubernetes-charts.storage.googleapis.com
-  version: 5.0.25
+  repository: https://grafana.github.io/helm-charts
+  version: 6.1.17
 - name: metrics-server
-  repository: https://kubernetes-charts.storage.googleapis.com
-  version: 2.11.1
+  repository: https://charts.helm.sh/stable
+  version: 2.11.4
 - name: ingress-nginx
   repository: https://kubernetes.github.io/ingress-nginx
-  version: 2.1.0
+  version: 3.20.1
 - name: catalog
-  repository: https://svc-catalog-charts.storage.googleapis.com
-  version: 0.3.0-beta.2
+  repository: https://kubernetes-sigs.github.io/service-catalog
+  version: 0.3.1
 - name: cert-manager
   repository: https://charts.jetstack.io
-  version: v0.15.0
-digest: sha256:920a4254b36b9dc3b68fcba8b51931ba7a6dd150c40ce065857c2a584237b5b0
-generated: "2020-05-18T19:46:04.576498-05:00"
+  version: v1.1.0
+- name: jenkins
+  repository: https://charts.helm.sh/stable
+  version: 2.1.0
+digest: sha256:7f9fa4370df00aa3eb4c82074360da54e522d18df1ef59dc63c21883308ef185
+generated: "2021-01-15T21:00:29.421265-06:00"
