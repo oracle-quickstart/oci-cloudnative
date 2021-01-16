@@ -23,6 +23,10 @@ dashboards:
       gnetId: 6336
       revision: 1
       datasource: Prometheus
+    spring-boot:
+      gnetId: 12464
+      revision: 2
+      datasource: Prometheus
 dashboardProviders:
    dashboardproviders.yaml:
      apiVersion: 1
