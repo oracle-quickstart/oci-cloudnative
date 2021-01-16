@@ -13,6 +13,7 @@ resource "kubernetes_namespace" "mushop_utilities_namespace" {
 # MuShop Utilities helm charts
 
 ## https://github.com/prometheus-community/helm-charts/blob/main/charts/prometheus/README.md
+## https://artifacthub.io/packages/helm/prometheus-community/prometheus
 resource "helm_release" "prometheus" {
   name       = "prometheus-community"
   repository = local.helm_repository.prometheus
@@ -31,6 +32,7 @@ resource "helm_release" "prometheus" {
 }
 
 ## https://github.com/grafana/helm-charts/blob/main/charts/grafana/README.md
+## https://artifacthub.io/packages/helm/grafana/grafana
 resource "helm_release" "grafana" {
   name       = "mushop-utils-grafana" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.grafana
@@ -67,6 +69,7 @@ resource "helm_release" "metrics_server" {
 }
 
 ## https://kubernetes.github.io/ingress-nginx/
+## https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx
 resource "helm_release" "ingress_nginx" {
   name       = "mushop-utils-ingress-nginx" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.ingress_nginx
