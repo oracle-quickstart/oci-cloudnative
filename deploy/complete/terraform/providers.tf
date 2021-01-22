@@ -1,15 +1,6 @@
-# Copyright (c) 2020 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2020, 2021 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
-
-terraform {
-  required_version = ">= 0.12.16"
-  # required_providers {
-  #   kubernetes = ">= 1.8"
-  #   helm = ">= 1.1.1"
-  #   oci = ">= 3.73"
-  # }
-}
 
 provider "oci" {
   tenancy_ocid = var.tenancy_ocid
@@ -37,7 +28,6 @@ provider "kubernetes" {
 # https://docs.cloud.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengdownloadkubeconfigfile.htm#notes
 provider "helm" {
   kubernetes {
-    load_config_file       = "false"
     cluster_ca_certificate = base64decode(yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["clusters"][0]["cluster"]["certificate-authority-data"])
     host                   = yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["clusters"][0]["cluster"]["server"]
     exec {
@@ -52,4 +42,28 @@ provider "helm" {
       command = yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["command"]
     }
   }
+}
+
+terraform {
+  required_providers {
+    helm = {
+      source = "hashicorp/helm"
+    }
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+    }
+    local = {
+      source = "hashicorp/local"
+    }
+    oci = {
+      source = "hashicorp/oci"
+    }
+    random = {
+      source = "hashicorp/random"
+    }
+    tls = {
+      source = "hashicorp/tls"
+    }
+  }
+  required_version = ">= 0.13"
 }

@@ -55,7 +55,7 @@ umbrella chart included here. Either complete the setup, or follow these instruc
 1. Install the OCI service broker referencing the credentials above:
 
     ```text
-    helm install oci-service-broker https://github.com/oracle/oci-service-broker/releases/download/v1.5.0/oci-service-broker-1.5.0.tgz \
+    helm install oci-service-broker https://github.com/oracle/oci-service-broker/releases/download/v1.5.2/oci-service-broker-1.5.2.tgz \
       --namespace mushop \
       --set ociCredentials.secretName=oci-credentials \
       --set storage.etcd.useEmbedded=true \

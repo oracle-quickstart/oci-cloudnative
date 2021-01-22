@@ -17,7 +17,12 @@ resource "oci_containerengine_cluster" "oke_mushop_cluster" {
     admission_controller_options {
       is_pod_security_policy_enabled = var.cluster_options_admission_controller_options_is_pod_security_policy_enabled
     }
+    kubernetes_network_config {
+      services_cidr = lookup(var.network_cidrs, "KUBERNETES-SERVICE-CIDR")
+      pods_cidr     = lookup(var.network_cidrs, "PODS-CIDR")
+    }
   }
+  kms_key_id = var.use_encryption ? var.encryption_key_id : null
 
   count = var.create_new_oke_cluster ? 1 : 0
 }
@@ -42,10 +47,14 @@ resource "oci_containerengine_node_pool" "oke_mushop_node_pool" {
     size = var.num_pool_workers
   }
 
+  # node_shape_config {
+  #       memory_in_gbs = var.node_pool_node_shape_config_memory_in_gbs
+  #       ocpus = var.node_pool_node_shape_config_ocpus
+  # }
 
   node_source_details {
     source_type = "IMAGE"
-    image_id    = lookup(data.oci_core_images.node_pool_images.images[0], "id")
+    image_id    = lookup(data.oci_core_images.node_pool_images.images[1], "id")
   }
 
   initial_node_labels {

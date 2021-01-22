@@ -10,9 +10,9 @@
   "license": "UPL-1.0",
   "dependencies": {
     "autocomplete.js": "^0.37.1",
-    "lunr": "^2.3.8",
-    "mermaid": "^8.4.8",
-    "uikit": "^3.3.3",
-    "whatwg-fetch": "^3.0.0"
+    "lunr": "^2.3.9",
+    "mermaid": "^8.8.4",
+    "uikit": "3.6.5",
+    "whatwg-fetch": "^3.5.0"
   }
 }

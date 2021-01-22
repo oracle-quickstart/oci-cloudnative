@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2020, 2021 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -26,10 +26,12 @@ data "oci_containerengine_cluster_kube_config" "oke_cluster_kube_config" {
 locals {
   # Helm repos
   helm_repository = {
-    stable        = "https://kubernetes-charts.storage.googleapis.com"
-    ingress-nginx = "https://kubernetes.github.io/ingress-nginx"
+    stable        = "https://charts.helm.sh/stable"
+    ingress_nginx = "https://kubernetes.github.io/ingress-nginx"
     jetstack      = "https://charts.jetstack.io"                        # cert-manager
-    svc-cat       = "https://svc-catalog-charts.storage.googleapis.com" # Service Catalog
+    svc_catalog   = "https://kubernetes-sigs.github.io/service-catalog" # Service Catalog
+    grafana       = "https://grafana.github.io/helm-charts"
+    prometheus    = "https://prometheus-community.github.io/helm-charts"
   }
 }
 
@@ -40,7 +42,7 @@ data "kubernetes_service" "mushop_ingress" {
     name      = "mushop-utils-ingress-nginx-controller" # mushop-utils name included to be backwards compatible to the docs and setup chart install
     namespace = kubernetes_namespace.mushop_utilities_namespace.id
   }
-  depends_on = [helm_release.ingress-nginx]
+  depends_on = [helm_release.ingress_nginx]
 }
 
 ## Kubernetes Secret: Grafana Admin Password
@@ -53,16 +55,6 @@ data "kubernetes_secret" "mushop_utils_grafana" {
 }
 
 # OCI Services
-## Autonomous Database
-### Wallet
-data "oci_database_autonomous_database_wallet" "autonomous_database_wallet" {
-  count                  = var.mushop_mock_mode_all ? 0 : 1
-  autonomous_database_id = oci_database_autonomous_database.mushop_autonomous_database[0].id
-  password               = random_string.autonomous_database_wallet_password.result
-  generate_type          = var.autonomous_database_wallet_generate_type
-  base64_encode_content  = true
-}
-
 ## Available Services
 data "oci_core_services" "all_services" {
   filter {

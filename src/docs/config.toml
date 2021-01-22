@@ -2,10 +2,11 @@
 # Copyright (c) 2020, Oracle and/or its affiliates. All rights reserved.
 # The Universal Permissive License (UPL), Version 1.0
 #
-baseURL = "https://oracle-quickstart.github.io/oci-cloudnative/"
+baseURL = ""
 languageCode = "en-us"
 title = "MuShop"
 theme = "redwood"
+relativeURLs = true
 
 [params]
 editURL = "https://github.com/oracle-quickstart/oci-cloudnative/tree/master/docs/content/"

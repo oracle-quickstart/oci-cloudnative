@@ -1,4 +1,4 @@
-![MuShop Logo](../../images/logo.png)
+# ![MuShop Logo](../../images/logo.png)        [![Deploy to Oracle Cloud][magic_button]][magic_mushop_basic_stack]
 
 This is a Terraform configuration that deploys the MuShop basic sample application on [Oracle Cloud Infrastructure (OCI)][oci].
 
@@ -79,3 +79,5 @@ After complete the Build steps 1 and 2, generate the binaries:
 [adb]: https://docs.cloud.oracle.com/iaas/Content/Database/Concepts/adboverview.htm
 [inst]: https://docs.cloud.oracle.com/iaas/Content/Compute/Concepts/computeoverview.htm
 [kms]: https://docs.cloud.oracle.com/en-us/iaas/Content/KeyManagement/Concepts/keyoverview.htm
+[magic_button]: https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg
+[magic_mushop_basic_stack]: https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/oracle-quickstart/oci-cloudnative/releases/latest/download/mushop-basic-stack-latest.zip

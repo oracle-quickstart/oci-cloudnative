@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2020, 2021 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -27,6 +27,9 @@ variableGroups:
     - cluster_name
     - k8s_version
     - cluster_visibility
+    - use_encryption
+    - create_new_encryption_key
+    - encryption_key_id
     visible: true
   - title: "OKE Worker Nodes"
     variables:
@@ -46,6 +49,18 @@ variableGroups:
     - mushop_atp
     - mushop_oss
     visible: true
+  - title: "MuShop Utilities"
+    variables:
+    - grafana_enabled
+    - prometheus_enabled
+    - ingress_nginx_enabled
+    - cert_manager_enabled
+    - metrics_server_enabled
+    - catalog_enabled
+    visible:
+      eq:
+      - ${show_advanced}
+      - Yes
   - title: "Advanced Options"
     variables:
     - show_advanced
@@ -53,7 +68,9 @@ variableGroups:
     - public_ssh_key
     - image_operating_system
     - image_operating_system_version
-    visible: true
+    visible: #($create_new_oke_cluster = true)
+      and:
+        - create_new_oke_cluster
   - title: "Network Configuration"
     variables:
       - network_strategy 
@@ -76,8 +93,12 @@ variableGroups:
     variables:
       - user_ocid
       - fingerprint
+      - private_key_path
       - network_cidrs
       - cluster_options_admission_controller_options_is_pod_security_policy_enabled
+      - node_pool_node_shape_config_memory_in_gbs
+      - node_pool_node_shape_config_ocpus
+      - ingress_load_balancer_shape
     visible: false
 
   - title: "OCI Services Hidden"
@@ -90,6 +111,7 @@ variableGroups:
       - autonomous_database_is_auto_scaling_enabled
       - autonomous_database_is_free_tier
       - autonomous_database_wallet_generate_type
+      - autonomous_database_visibility
       - db_admin_name
       - db_connection_name
       - db_wallet_name
@@ -129,8 +151,10 @@ variables:
   k8s_version:
     type: enum
     enum:
-    - "v1.15.7"
-    - "v1.14.8"
+    - "v1.18.10"
+    - "v1.17.13"
+    - "v1.16.15"
+    - "v1.15.12"
     title: "Kubernetes Version"
     description: "Kubernetes version installed on your master and worker nodes"
     required: true
@@ -149,6 +173,30 @@ variables:
     visible: #($create_new_oke_cluster = true)
       and:
         - create_new_oke_cluster
+
+  use_encryption:
+      type: boolean
+      title: "Use Encryption"
+      visible: #($show_advanced  == ""Yes"")
+        eq:
+          - show_advanced 
+          - "Yes"
+
+  create_new_encryption_key:
+      type: boolean
+      title: "Create new Vault and Key"
+      visible: #($show_advanced  == ""Yes"")
+        eq:
+          - show_advanced 
+          - "Yes"
+
+  encryption_key_id:
+      type: string
+      title: "Existent Encryption Key OCID"
+      visible: #($show_advanced  == ""Yes"")
+        eq:
+          - show_advanced 
+          - "Yes"
 
   node_pool_shape:
     type: oci:core:instanceshape:name
@@ -203,10 +251,13 @@ variables:
         - "Yes"
 
   public_ssh_key:
-    type: string
-    title: "Input SSH public key"
+    type: oci:core:ssh:publickey
+    title: "Import your own SSH public key"
+    additionalProps:
+      allowMultiple: true
     description: "In order to access your private nodes with a public SSH key you will need to set up a bastion host (a.k.a. jump box). If using public nodes, bastion is not needed. Left blank to not import keys."
     required: false
+    pattern: "((^(ssh-rsa AAAAB3NzaC1yc2|ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNT|ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzOD|ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1Mj|ssh-ed25519 AAAAC3NzaC1lZDI1NTE5|ssh-dss AAAAB3NzaC1kc3)[0-9A-Za-z+\/]+[=]{0,3})( [^,]*)?)(,((ssh-rsa AAAAB3NzaC1yc2|ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNT|ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzOD|ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1Mj|ssh-ed25519 AAAAC3NzaC1lZDI1NTE5|ssh-dss AAAAB3NzaC1kc3)[0-9A-Za-z+\/]+[=]{0,3})( [^,]*)?)*$"
     visible: #($show_advanced  == ""Yes"") + ($generate_public_ssh_key  == "false")
       and:
         - eq:
@@ -243,6 +294,36 @@ variables:
     required: true
     title: "Enable Mock Mode"
     description: "Enable Mock Mode for MuShop all Services"
+
+  grafana_enabled:
+    type: boolean
+    title: "Grafana"
+    description: "Enable Grafana Dashboards"
+
+  prometheus_enabled:
+    type: boolean
+    title: "Prometheus"
+    description: "Enable Prometheus"
+
+  metrics_server_enabled:
+    type: boolean
+    title: "Metrics Server"
+    description: "Enable Metrics Server for Auto Scaling"
+
+  catalog_enabled:
+    type: boolean
+    title: "Service Catalog"
+    description: "Enable Service Catalog to use with OCI Service Broker"
+
+  ingress_nginx_enabled:
+      type: boolean
+      title: "Ingress NGINX"
+      description: "Enable Ingress Nginx for Services (Provision a Load Balancer)"
+
+  cert_manager_enabled:
+    type: boolean
+    title: "Certificate Management"
+    description: "Enable x509 Certificate Management"
 
   # mushop_atp:
   #   visible: yes
@@ -340,7 +421,7 @@ outputs:
   mushop_url_button:
       type: link
       title: MuShop URL Button
-      displayText: MuShop Storefront
+      displayText: Open MuShop
   mushop_url:
     type: link
     title: MuShop
