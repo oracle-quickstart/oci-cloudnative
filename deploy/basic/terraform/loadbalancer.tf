@@ -9,6 +9,14 @@ resource "oci_load_balancer_load_balancer" "mushop_lb" {
   subnet_ids     = [oci_core_subnet.mushop_lb_subnet.id]
   is_private     = "false"
   freeform_tags  = local.common_tags
+
+  dynamic "shape_details" {
+    for_each = var.lb_shape == "flexible" ? [1] : []
+    content {
+      minimum_bandwidth_in_mbps = var.lb_shape_details_minimum_bandwidth_in_mbps
+      maximum_bandwidth_in_mbps = var.lb_shape_details_maximum_bandwidth_in_mbps
+    }
+  }
 }
 
 resource "oci_load_balancer_backend_set" "mushop_bes" {
