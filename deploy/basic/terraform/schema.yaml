@@ -217,6 +217,7 @@ variables:
     enum:
     - "flexible"
     - "10Mbps-Micro"
+    - "10Mbps"
     - "100Mbps"
     - "400Mbps"
     - "8000Mbps"
@@ -234,28 +235,32 @@ variables:
     minimum: 10
     maximum: 8000
     title: "Choose the minimum bandwidth"
-    description: "Enter the minimum size of the flexible shape. The maximum service limit is set by your tenancy limits."
+    description: "Enter the minimum size of the flexible shape."
     visible:
       and:
         - and:
           - show_advanced
-          - lb_shape == "flexible"
         - not:
           - use_only_always_free_elegible_resources
+        - eq:
+          - lb_shape 
+          - "flexible"
 
   lb_shape_details_maximum_bandwidth_in_mbps:
     type: integer
     minimum: 10
     maximum: 8000
     title: "Choose the maximum bandwidth"
-    description: "Enter the maximum size of the flexible shape. The maximum service limit is set by your tenancy limits."
+    description: "Enter the maximum size of the flexible shape (Should be bigger than minimum size). The maximum service limit is set by your tenancy limits."
     visible:
       and:
         - and:
           - show_advanced
-          - lb_shape == "flexible"
         - not:
           - use_only_always_free_elegible_resources
+        - eq:
+          - lb_shape 
+          - "flexible"
 
   lb_compartment_ocid:
     type: oci:identity:compartment:id
