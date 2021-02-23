@@ -80,6 +80,7 @@ groupings:
       - autonomous_database_license_model
       - autonomous_database_cpu_core_count
       - autonomous_database_data_storage_size_in_tbs
+      - autonomous_database_wallet_generate_type
       - oracle_client_version
       - vault_display_name
       - vault_type

@@ -100,6 +100,9 @@ variable "autonomous_database_data_storage_size_in_tbs" {
 variable "autonomous_database_visibility" {
   default = "Public"
 }
+variable "autonomous_database_wallet_generate_type" {
+  default = "SINGLE"
+}
 variable "oracle_client_version" {
   default = "19.8"
 }
