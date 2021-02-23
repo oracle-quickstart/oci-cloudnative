@@ -47,6 +47,8 @@ groupings:
   - title: "Advanced Resource Options - Load Balancer"
     variables:
     - lb_shape
+    - lb_shape_details_minimum_bandwidth_in_mbps
+    - lb_shape_details_maximum_bandwidth_in_mbps
     - lb_compartment_ocid
     - create_secondary_vcn
     - create_lpg_policies_for_group
@@ -212,6 +214,7 @@ variables:
   lb_shape:
     type: enum
     enum:
+    - "flexible"
     - "10Mbps-Micro"
     - "100Mbps"
     - "400Mbps"
@@ -222,6 +225,34 @@ variables:
       and:
         - and:
           - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
+
+  lb_shape_details_minimum_bandwidth_in_mbps:
+    type: integer
+    minimum: 10
+    maximum: 8000
+    title: "Choose the minimum bandwidth"
+    description: "Enter the minimum size of the flexible shape. The maximum service limit is set by your tenancy limits."
+    visible:
+      and:
+        - and:
+          - show_advanced
+          - lb_shape == "flexible"
+        - not:
+          - use_only_always_free_elegible_resources
+
+  lb_shape_details_maximum_bandwidth_in_mbps:
+    type: integer
+    minimum: 10
+    maximum: 8000
+    title: "Choose the maximum bandwidth"
+    description: "Enter the maximum size of the flexible shape. The maximum service limit is set by your tenancy limits."
+    visible:
+      and:
+        - and:
+          - show_advanced
+          - lb_shape == "flexible"
         - not:
           - use_only_always_free_elegible_resources
 
