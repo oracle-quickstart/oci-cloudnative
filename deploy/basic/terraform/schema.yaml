@@ -1,4 +1,4 @@
-# Copyright (c) 2019, 2020 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2019-2021 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -47,6 +47,8 @@ groupings:
   - title: "Advanced Resource Options - Load Balancer"
     variables:
     - lb_shape
+    - lb_shape_details_minimum_bandwidth_in_mbps
+    - lb_shape_details_maximum_bandwidth_in_mbps
     - lb_compartment_ocid
     - create_secondary_vcn
     - create_lpg_policies_for_group
@@ -78,6 +80,7 @@ groupings:
       - autonomous_database_license_model
       - autonomous_database_cpu_core_count
       - autonomous_database_data_storage_size_in_tbs
+      - autonomous_database_wallet_generate_type
       - oracle_client_version
       - vault_display_name
       - vault_type
@@ -212,7 +215,9 @@ variables:
   lb_shape:
     type: enum
     enum:
+    - "flexible"
     - "10Mbps-Micro"
+    - "10Mbps"
     - "100Mbps"
     - "400Mbps"
     - "8000Mbps"
@@ -224,6 +229,38 @@ variables:
           - show_advanced
         - not:
           - use_only_always_free_elegible_resources
+
+  lb_shape_details_minimum_bandwidth_in_mbps:
+    type: integer
+    minimum: 10
+    maximum: 8000
+    title: "Choose the minimum bandwidth"
+    description: "Enter the minimum size of the flexible shape."
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
+        - eq:
+          - lb_shape 
+          - "flexible"
+
+  lb_shape_details_maximum_bandwidth_in_mbps:
+    type: integer
+    minimum: 10
+    maximum: 8000
+    title: "Choose the maximum bandwidth"
+    description: "Enter the maximum size of the flexible shape (Should be bigger than minimum size). The maximum service limit is set by your tenancy limits."
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
+        - eq:
+          - lb_shape 
+          - "flexible"
 
   lb_compartment_ocid:
     type: oci:identity:compartment:id

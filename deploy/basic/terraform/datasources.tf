@@ -1,4 +1,4 @@
-# Copyright (c) 2019, 2020 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2019-2021 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -47,12 +47,6 @@ resource "random_string" "catalogue_db_password" {
   min_numeric      = 3
   min_special      = 3
   override_special = "{}#^*<>[]%~"
-}
-
-data "oci_database_autonomous_database_wallet" "autonomous_database_wallet" {
-  autonomous_database_id = oci_database_autonomous_database.mushop_autonomous_database.id
-  password               = random_string.autonomous_database_wallet_password.result
-  base64_encode_content  = "true"
 }
 
 # Check for resource limits
@@ -178,7 +172,7 @@ data "local_file" "httpd_conf" {
   filename = "${path.module}/scripts/httpd.conf"
 }
 data "template_file" "mushop_media_pars_list" {
-  template = "${file("./scripts/mushop_media_pars_list.txt")}"
+  template = file("./scripts/mushop_media_pars_list.txt")
   vars = {
     content = local.mushop_media_pars
   }

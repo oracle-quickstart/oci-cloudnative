@@ -1,4 +1,4 @@
-# Copyright (c) 2019, 2020 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2019-2021 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -34,7 +34,7 @@ variable "image_operating_system" {
   default = "Oracle Linux"
 }
 variable "image_operating_system_version" {
-  default = "7.8"
+  default = "7.9"
 }
 variable "instance_visibility" {
   default = "Public"
@@ -45,7 +45,13 @@ variable "is_pv_encryption_in_transit_enabled" {
 
 # Network Details
 variable "lb_shape" {
-  default = "10Mbps-Micro"
+  default = "flexible"
+}
+variable "lb_shape_details_minimum_bandwidth_in_mbps" {
+  default = 10
+}
+variable "lb_shape_details_maximum_bandwidth_in_mbps" {
+  default = 10
 }
 variable "lb_compartment_ocid" {
   default = ""
@@ -94,6 +100,9 @@ variable "autonomous_database_data_storage_size_in_tbs" {
 variable "autonomous_database_visibility" {
   default = "Public"
 }
+variable "autonomous_database_wallet_generate_type" {
+  default = "SINGLE"
+}
 variable "oracle_client_version" {
   default = "19.8"
 }
@@ -118,7 +127,7 @@ variable "vault_display_name" {
   default = "MuShop Vault"
 }
 variable "vault_type" {
-  type    = list
+  type    = list(any)
   default = ["DEFAULT", "VIRTUAL_PRIVATE"]
 }
 variable "vault_key_display_name" {

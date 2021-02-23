@@ -147,7 +147,7 @@ resource "oci_core_local_peering_gateway" "lb_local_peering_gateway" {
   count = var.create_secondary_vcn ? 1 : 0
 }
 
-resource oci_core_network_security_group atp_nsg {
+resource "oci_core_network_security_group" "atp_nsg" {
   compartment_id = var.compartment_ocid
   display_name   = "atp_nsg"
   freeform_tags  = local.common_tags
@@ -155,7 +155,7 @@ resource oci_core_network_security_group atp_nsg {
 
   count = (var.autonomous_database_visibility == "Private") ? 1 : 0
 }
-resource oci_core_network_security_group_security_rule atp_nsg_rule_1 {
+resource "oci_core_network_security_group_security_rule" "atp_nsg_rule_1" {
   destination_type          = ""
   direction                 = "INGRESS"
   network_security_group_id = oci_core_network_security_group.atp_nsg[0].id
@@ -165,7 +165,7 @@ resource oci_core_network_security_group_security_rule atp_nsg_rule_1 {
 
   count = (var.autonomous_database_visibility == "Private") ? 1 : 0
 }
-resource oci_core_network_security_group_security_rule atp_nsg_rule_2 {
+resource "oci_core_network_security_group_security_rule" "atp_nsg_rule_2" {
   destination               = lookup(var.network_cidrs, "MAIN-VCN-CIDR")
   destination_type          = "CIDR_BLOCK"
   direction                 = "EGRESS"
