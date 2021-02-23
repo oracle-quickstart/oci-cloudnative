@@ -34,7 +34,7 @@ variable "image_operating_system" {
   default = "Oracle Linux"
 }
 variable "image_operating_system_version" {
-  default = "7.8"
+  default = "7.9"
 }
 variable "instance_visibility" {
   default = "Public"
@@ -45,7 +45,13 @@ variable "is_pv_encryption_in_transit_enabled" {
 
 # Network Details
 variable "lb_shape" {
-  default = "10Mbps-Micro"
+  default = "flexible"
+}
+variable "lb_shape_details_minimum_bandwidth_in_mbps" {
+  default = 10
+}
+variable "lb_shape_details_maximum_bandwidth_in_mbps" {
+  default = 10
 }
 variable "lb_compartment_ocid" {
   default = ""
@@ -118,7 +124,7 @@ variable "vault_display_name" {
   default = "MuShop Vault"
 }
 variable "vault_type" {
-  type    = list
+  type    = list(any)
   default = ["DEFAULT", "VIRTUAL_PRIVATE"]
 }
 variable "vault_key_display_name" {
