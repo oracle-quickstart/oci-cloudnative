@@ -164,9 +164,9 @@ variable "use_only_always_free_elegible_resources" {
 }
 ## Always Free Locals
 locals {
-  instance_shape = var.use_only_always_free_elegible_resources ? "VM.Standard.E2.1.Micro" : var.instance_shape
-  lb_shape = var.use_only_always_free_elegible_resources ? "flexible" : var.lb_shape
+  instance_shape                             = var.use_only_always_free_elegible_resources ? "VM.Standard.E2.1.Micro" : var.instance_shape
+  lb_shape                                   = var.use_only_always_free_elegible_resources ? "flexible" : var.lb_shape
   lb_shape_details_minimum_bandwidth_in_mbps = var.use_only_always_free_elegible_resources ? 10 : var.lb_shape_details_minimum_bandwidth_in_mbps
   lb_shape_details_maximum_bandwidth_in_mbps = var.use_only_always_free_elegible_resources ? 10 : var.lb_shape_details_maximum_bandwidth_in_mbps
-  autonomous_database_is_free_tier = var.use_only_always_free_elegible_resources ? true : var.autonomous_database_is_free_tier
+  autonomous_database_is_free_tier           = var.use_only_always_free_elegible_resources ? true : var.autonomous_database_is_free_tier
 }
