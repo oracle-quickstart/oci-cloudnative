@@ -11,9 +11,9 @@ resource "oci_core_instance" "app_instance" {
   freeform_tags                       = local.common_tags
 
   dynamic "shape_config" {
-    for_each = local.instance_shape == "VM.Standard.E3.Flex" ? [1] : []
+    for_each = local.is_flexible_instance_shape ? [1] : []
     content {
-      ocpus = var.instance_ocpus
+      ocpus         = var.instance_ocpus
       memory_in_gbs = var.instance_shape_config_memory_in_gbs
     }
   }
