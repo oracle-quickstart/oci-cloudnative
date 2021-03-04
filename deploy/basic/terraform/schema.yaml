@@ -44,6 +44,8 @@ groupings:
   - title: "Advanced Resource Options - Compute"
     variables:
     - instance_shape
+    - instance_ocpus
+    - instance_shape_config_memory_in_gbs
     - image_operating_system
     - image_operating_system_version
     - instance_visibility
