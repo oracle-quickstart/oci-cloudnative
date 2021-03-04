@@ -89,7 +89,7 @@ variable "autonomous_database_license_model" {
   default = "LICENSE_INCLUDED"
 }
 variable "autonomous_database_is_free_tier" {
-  default = true
+  default = false
 }
 variable "autonomous_database_cpu_core_count" {
   default = 1
@@ -168,11 +168,5 @@ locals {
   lb_shape = var.use_only_always_free_elegible_resources ? "flexible" : var.lb_shape
   lb_shape_details_minimum_bandwidth_in_mbps = var.use_only_always_free_elegible_resources ? 10 : var.lb_shape_details_minimum_bandwidth_in_mbps
   lb_shape_details_maximum_bandwidth_in_mbps = var.use_only_always_free_elegible_resources ? 10 : var.lb_shape_details_maximum_bandwidth_in_mbps
-}
-
-variable "lb_shape_details_minimum_bandwidth_in_mbps" {
-  default = 10
-}
-variable "lb_shape_details_maximum_bandwidth_in_mbps" {
-  default = 10
+  autonomous_database_is_free_tier = var.use_only_always_free_elegible_resources ? true : var.autonomous_database_is_free_tier
 }
