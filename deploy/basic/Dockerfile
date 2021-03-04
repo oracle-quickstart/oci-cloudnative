@@ -99,13 +99,17 @@ RUN rm -rf node_modules products hero *.md
 ###############################
 
 # ##### Go Builder image
-FROM golang:1.14 AS catalogue-builder
+FROM golang:1.16 AS catalogue-builder
 WORKDIR /go/src/mushop/catalogue
 
 # # Catalogue Go Source
 COPY src/catalogue/cmd/cataloguesvc/*.go cmd/cataloguesvc/
 COPY src/catalogue/*.go ./
 COPY src/catalogue/go.mod ./
+
+# # Get Go Modules
+RUN go get .
+RUN go get mushop/catalogue/cmd/cataloguesvc
 
 # # Build Catalogue service
 RUN GO111MODULE=on GOARCH=amd64 GOOS=linux \
