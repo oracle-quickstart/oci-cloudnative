@@ -28,7 +28,13 @@ variable "generate_public_ssh_key" {
   default = true
 }
 variable "instance_shape" {
-  default = "VM.Standard2.1"
+  default = "VM.Standard.E3.Flex"
+}
+variable "instance_ocpus" {
+  default = 1
+}
+variable "instance_shape_config_memory_in_gbs" {
+  default = 16
 }
 variable "image_operating_system" {
   default = "Oracle Linux"

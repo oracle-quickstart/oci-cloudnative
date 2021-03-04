@@ -10,17 +10,25 @@ resource "oci_core_instance" "app_instance" {
   is_pv_encryption_in_transit_enabled = var.is_pv_encryption_in_transit_enabled
   freeform_tags                       = local.common_tags
 
-  create_vnic_details {
-    subnet_id        = oci_core_subnet.mushop_main_subnet.id
-    display_name     = "primaryvnic"
-    assign_public_ip = (var.instance_visibility == "Private") ? false : true
-    hostname_label   = "mushop-${random_string.deploy_id.result}-${count.index}"
+  dynamic "shape_config" {
+    for_each = local.instance_shape == "VM.Standard.E3.Flex" ? [1] : []
+    content {
+      ocpus = var.instance_ocpus
+      memory_in_gbs = var.instance_shape_config_memory_in_gbs
+    }
   }
 
   source_details {
     source_type = "image"
     source_id   = lookup(data.oci_core_images.compute_images.images[0], "id")
     kms_key_id  = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? oci_kms_key.mushop_key[0].id : var.encryption_key_id) : null
+  }
+
+  create_vnic_details {
+    subnet_id        = oci_core_subnet.mushop_main_subnet.id
+    display_name     = "primaryvnic"
+    assign_public_ip = (var.instance_visibility == "Private") ? false : true
+    hostname_label   = "mushop-${random_string.deploy_id.result}-${count.index}"
   }
 
   metadata = {
