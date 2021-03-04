@@ -30,9 +30,11 @@ public_ssh_key                      = ""
 is_pv_encryption_in_transit_enabled = true
 
 # Network Details
-lb_shape             = "100Mbps"
-lb_compartment_ocid  = "" # e.g.: "ocid1.compartment..." The lb_compartment_ocid need to point to a non-MSZ compartment that allow IG
-create_secondary_vcn = true
+lb_shape                                   = "flexible"
+lb_shape_details_minimum_bandwidth_in_mbps = 100
+lb_shape_details_maximum_bandwidth_in_mbps = 100
+lb_compartment_ocid                        = "" # e.g.: "ocid1.compartment..." The lb_compartment_ocid need to point to a non-MSZ compartment that allow IG
+create_secondary_vcn                       = true
 
 # Autonomous Database
 autonomous_database_license_model            = "LICENSE_INCLUDED" # LICENSE_INCLUDED or BRING_YOUR_OWN_LICENSE
