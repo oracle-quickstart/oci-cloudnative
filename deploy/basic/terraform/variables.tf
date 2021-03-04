@@ -28,7 +28,7 @@ variable "generate_public_ssh_key" {
   default = true
 }
 variable "instance_shape" {
-  default = "VM.Standard.E2.1.Micro"
+  default = "VM.Standard2.1"
 }
 variable "image_operating_system" {
   default = "Oracle Linux"
@@ -51,7 +51,7 @@ variable "lb_shape_details_minimum_bandwidth_in_mbps" {
   default = 10
 }
 variable "lb_shape_details_maximum_bandwidth_in_mbps" {
-  default = 10
+  default = 100
 }
 variable "lb_compartment_ocid" {
   default = ""
@@ -140,11 +140,6 @@ variable "vault_key_key_shape_length" {
   default = 32
 }
 
-# Always Free only or support other shapes
-variable "use_only_always_free_elegible_resources" {
-  default = true
-}
-
 # ORM Schema visual control variables
 variable "show_advanced" {
   default = false
@@ -161,4 +156,23 @@ variable "object_storage_mushop_media_visibility" {
 # MuShop Services
 variable "services_in_mock_mode" {
   default = "carts,orders,users"
+}
+
+# Always Free only or support other shapes
+variable "use_only_always_free_elegible_resources" {
+  default = true
+}
+## Always Free Locals
+locals {
+  instance_shape = var.use_only_always_free_elegible_resources ? "VM.Standard.E2.1.Micro" : var.instance_shape
+  lb_shape = var.use_only_always_free_elegible_resources ? "flexible" : var.lb_shape
+  lb_shape_details_minimum_bandwidth_in_mbps = var.use_only_always_free_elegible_resources ? 10 : var.lb_shape_details_minimum_bandwidth_in_mbps
+  lb_shape_details_maximum_bandwidth_in_mbps = var.use_only_always_free_elegible_resources ? 10 : var.lb_shape_details_maximum_bandwidth_in_mbps
+}
+
+variable "lb_shape_details_minimum_bandwidth_in_mbps" {
+  default = 10
+}
+variable "lb_shape_details_maximum_bandwidth_in_mbps" {
+  default = 10
 }
