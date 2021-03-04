@@ -24,6 +24,8 @@ region = "us-phoenix-1"
 # Compute
 num_nodes                           = 2
 instance_shape                      = "VM.Standard.E2.1.Micro"
+instance_ocpus                      = 1 # instance_ocpus only used when instance_shape is a flex compute shape
+instance_shape_config_memory_in_gbs = 16 # instance_shape_config_memory_in_gbs only used when instance_shape is a flex compute shape
 instance_visibility                 = "Public"
 generate_public_ssh_key             = true
 public_ssh_key                      = ""
