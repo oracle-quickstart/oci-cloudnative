@@ -13,8 +13,8 @@ resource "oci_load_balancer_load_balancer" "mushop_lb" {
   dynamic "shape_details" {
     for_each = local.lb_shape == "flexible" ? [1] : []
     content {
-      minimum_bandwidth_in_mbps = var.lb_shape_details_minimum_bandwidth_in_mbps
-      maximum_bandwidth_in_mbps = var.lb_shape_details_maximum_bandwidth_in_mbps
+      minimum_bandwidth_in_mbps = local.lb_shape_details_minimum_bandwidth_in_mbps
+      maximum_bandwidth_in_mbps = local.lb_shape_details_maximum_bandwidth_in_mbps
     }
   }
 }
