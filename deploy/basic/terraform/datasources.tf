@@ -65,7 +65,7 @@ data "oci_limits_limit_definitions" "compute_limit_definitions" {
 
   filter {
     name   = "description"
-    values = [var.instance_shape]
+    values = [local.instance_shape]
   }
 }
 data "oci_limits_resource_availability" "compute_resource_availability" {
@@ -91,7 +91,7 @@ data "oci_core_images" "compute_images" {
   compartment_id           = var.compartment_ocid
   operating_system         = var.image_operating_system
   operating_system_version = var.image_operating_system_version
-  shape                    = var.instance_shape
+  shape                    = local.instance_shape
   sort_by                  = "TIMECREATED"
   sort_order               = "DESC"
 }
