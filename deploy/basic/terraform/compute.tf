@@ -1,4 +1,4 @@
-# Copyright (c) 2019, 2020 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2019-2021 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -48,4 +48,8 @@ resource "oci_core_instance" "app_instance" {
 resource "tls_private_key" "compute_ssh_key" {
   algorithm = "RSA"
   rsa_bits  = 2048
+}
+
+locals {
+  is_flexible_instance_shape = (local.instance_shape == local.compute_shape_flexible) ? true : false
 }
