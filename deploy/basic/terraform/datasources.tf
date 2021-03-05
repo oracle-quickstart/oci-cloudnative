@@ -63,9 +63,20 @@ data "oci_limits_limit_definitions" "compute_limit_definitions" {
   compartment_id = var.tenancy_ocid
   service_name   = data.oci_limits_services.compute_services.services.0.name
 
-  filter {
-    name   = "description"
-    values = [var.instance_shape]
+  dynamic "filter" {
+    for_each = local.is_flexible_instance_shape ? [1] : []
+    content {
+      name   = "description"
+      values = [local.compute_shape_flexible_description]
+    }
+  }
+
+  dynamic "filter" {
+    for_each = local.is_flexible_instance_shape ? [] : [1]
+    content {
+      name   = "description"
+      values = [local.instance_shape]
+    }
   }
 }
 data "oci_limits_resource_availability" "compute_resource_availability" {
@@ -81,9 +92,10 @@ resource "random_shuffle" "compute_ad" {
   result_count = length(local.compute_available_limit_ad_list)
 }
 locals {
-  compute_available_limit_ad_list = [for limit in data.oci_limits_resource_availability.compute_resource_availability : limit.availability_domain if(limit.available - var.num_nodes) >= 0]
-  compute_available_limit_error = length(local.compute_available_limit_ad_list) == 0 ? (
-  file("ERROR: No limits available for the chosen compute shape and number of nodes")) : 0
+  compute_multiplier_nodes_ocpus  = (local.instance_shape == local.compute_shape_flexible) ? (var.num_nodes * var.instance_ocpus) : var.num_nodes
+  compute_available_limit_ad_list = [for limit in data.oci_limits_resource_availability.compute_resource_availability : limit.availability_domain if(limit.available - local.compute_multiplier_nodes_ocpus) >= 0]
+  compute_available_limit_check = length(local.compute_available_limit_ad_list) == 0 ? (
+  file("ERROR: No limits available for the chosen compute shape and number of nodes or OCPUs")) : 0
 }
 
 # Gets a list of supported images based on the shape, operating_system and operating_system_version provided
@@ -91,7 +103,7 @@ data "oci_core_images" "compute_images" {
   compartment_id           = var.compartment_ocid
   operating_system         = var.image_operating_system
   operating_system_version = var.image_operating_system_version
-  shape                    = var.instance_shape
+  shape                    = local.instance_shape
   sort_by                  = "TIMECREATED"
   sort_order               = "DESC"
 }

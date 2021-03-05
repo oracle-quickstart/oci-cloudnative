@@ -28,7 +28,13 @@ variable "generate_public_ssh_key" {
   default = true
 }
 variable "instance_shape" {
-  default = "VM.Standard.E2.1.Micro"
+  default = "VM.Standard.E3.Flex"
+}
+variable "instance_ocpus" {
+  default = 1
+}
+variable "instance_shape_config_memory_in_gbs" {
+  default = 16
 }
 variable "image_operating_system" {
   default = "Oracle Linux"
@@ -51,7 +57,7 @@ variable "lb_shape_details_minimum_bandwidth_in_mbps" {
   default = 10
 }
 variable "lb_shape_details_maximum_bandwidth_in_mbps" {
-  default = 10
+  default = 100
 }
 variable "lb_compartment_ocid" {
   default = ""
@@ -89,7 +95,7 @@ variable "autonomous_database_license_model" {
   default = "LICENSE_INCLUDED"
 }
 variable "autonomous_database_is_free_tier" {
-  default = true
+  default = false
 }
 variable "autonomous_database_cpu_core_count" {
   default = 1
@@ -140,11 +146,6 @@ variable "vault_key_key_shape_length" {
   default = 32
 }
 
-# Always Free only or support other shapes
-variable "use_only_always_free_elegible_resources" {
-  default = true
-}
-
 # ORM Schema visual control variables
 variable "show_advanced" {
   default = false
@@ -161,4 +162,25 @@ variable "object_storage_mushop_media_visibility" {
 # MuShop Services
 variable "services_in_mock_mode" {
   default = "carts,orders,users"
+}
+
+# Always Free only or support other shapes
+variable "use_only_always_free_elegible_resources" {
+  default = true
+}
+## Always Free Locals
+locals {
+  instance_shape                             = var.use_only_always_free_elegible_resources ? local.compute_shape_micro : var.instance_shape
+  lb_shape                                   = var.use_only_always_free_elegible_resources ? local.lb_shape_flexible : var.lb_shape
+  lb_shape_details_minimum_bandwidth_in_mbps = var.use_only_always_free_elegible_resources ? 10 : var.lb_shape_details_minimum_bandwidth_in_mbps
+  lb_shape_details_maximum_bandwidth_in_mbps = var.use_only_always_free_elegible_resources ? 10 : var.lb_shape_details_maximum_bandwidth_in_mbps
+  autonomous_database_is_free_tier           = var.use_only_always_free_elegible_resources ? true : var.autonomous_database_is_free_tier
+}
+
+# Shapes
+locals {
+  compute_shape_micro                = "VM.Standard.E2.1.Micro"
+  compute_shape_flexible             = "VM.Standard.E3.Flex"
+  compute_shape_flexible_description = "Cores for Standard.E3.Flex and BM.Standard.E3.128 Instances"
+  lb_shape_flexible                  = "flexible"
 }

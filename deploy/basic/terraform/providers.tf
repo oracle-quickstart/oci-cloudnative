@@ -3,12 +3,24 @@
 # 
 
 terraform {
-  required_version = ">= 0.12.29"
-  # required_providers {
-  #   oci = ">= 3.90"
-  #   tls = ">= 2.0"
-  #   random = ">= 2.1"
-  # }
+  required_providers {
+    local = {
+      source = "hashicorp/local"
+    }
+    oci = {
+      source = "hashicorp/oci"
+    }
+    random = {
+      source = "hashicorp/random"
+    }
+    template = {
+      source = "hashicorp/template"
+    }
+    tls = {
+      source = "hashicorp/tls"
+    }
+  }
+  required_version = ">= 0.14"
 }
 
 provider "oci" {

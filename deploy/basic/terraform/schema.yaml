@@ -27,6 +27,7 @@ groupings:
   - title: "Optional Configuration"
     variables:
     - autonomous_database_name
+    - use_only_always_free_elegible_resources
     - show_advanced
     - generate_public_ssh_key
     - public_ssh_key
@@ -40,9 +41,14 @@ groupings:
     - create_vault_policies_for_group
     - user_admin_group_for_vault_policy
 
-  - title: "Advanced Resource Options"
+  - title: "Advanced Resource Options - Compute"
     variables:
-    - use_only_always_free_elegible_resources
+    - instance_shape
+    - instance_ocpus
+    - instance_shape_config_memory_in_gbs
+    - image_operating_system
+    - image_operating_system_version
+    - instance_visibility
 
   - title: "Advanced Resource Options - Load Balancer"
     variables:
@@ -53,13 +59,6 @@ groupings:
     - create_secondary_vcn
     - create_lpg_policies_for_group
     - user_admin_group_for_lpg_policy
-
-  - title: "Advanced Resource Options - Compute"
-    variables:
-    - instance_shape
-    - image_operating_system
-    - image_operating_system_version
-    - instance_visibility
 
   - title: "Advanced Resource Options - ATP"
     variables:
@@ -208,9 +207,84 @@ variables:
     type: boolean
     title: "Use only always free eligible resources?"
     description: "*** Unchecking this may use options that are not included or supported by Always Free eligible resources."
+    visible: true
+
+  instance_shape:
+    type: oci:core:instanceshape:name
+    title: "Select a shape for the compute instances"
+    description: "A shape is a template that determines the number of CPUs, amount of memory, and other resources allocated to a newly created instance."
+    dependsOn:
+      compartmentId: compartment_ocid
+    required: true
+    visible:
+      not:
+        - use_only_always_free_elegible_resources
+
+  instance_ocpus:
+    type: integer
+    minimum: 1
+    maximum: 64
+    title: "Number of OCPUs"
+    description: "You can customize the number of OCPUs to a flexible shape."
     visible:
       and:
-        - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
+        - eq:
+          - instance_shape 
+          - "VM.Standard.E3.Flex"
+
+  instance_shape_config_memory_in_gbs:
+    type: integer
+    minimum: 1
+    maximum: 1024
+    title: "Amount of memory (GB)"
+    description: "You can customize the amount of memory allocated to a flexible shape."
+    visible:
+      and:
+        - not:
+          - use_only_always_free_elegible_resources
+        - eq:
+          - instance_shape 
+          - "VM.Standard.E3.Flex"
+
+  image_operating_system:
+    type: string
+    title: "Compute Image OS"
+    description: "The OS/image installed on all compute instances."
+    required: true
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
+
+  image_operating_system_version:
+    type: string
+    title: "Compute Image OS Version"
+    description: "The OS/image version installed on all compute instances."
+    required: true
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
+
+  instance_visibility:
+    type: enum
+    enum:
+    - "Public"
+    - "Private"
+    title: "Choose instance visibility type"
+    description: "The instance visibility will define if assign a public ip address to the compute instance and if the subnet is public or private."
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - not:
+          - use_only_always_free_elegible_resources
 
   lb_shape:
     type: enum
@@ -310,58 +384,6 @@ variables:
         - not:
           - use_only_always_free_elegible_resources
 
-  instance_shape:
-    type: oci:core:instanceshape:name
-    title: "Select a shape for the compute instances"
-    description: "A shape is a template that determines the number of CPUs, amount of memory, and other resources allocated to a newly created instance."
-    dependsOn:
-      compartmentId: compartment_ocid
-    required: true
-    visible:
-      and:
-        - and:
-          - show_advanced
-        - not:
-          - use_only_always_free_elegible_resources
-
-  image_operating_system:
-    type: string
-    title: "Compute Image OS"
-    description: "The OS/image installed on all compute instances."
-    required: true
-    visible:
-      and:
-        - and:
-          - show_advanced
-        - not:
-          - use_only_always_free_elegible_resources
-
-  image_operating_system_version:
-    type: string
-    title: "Compute Image OS Version"
-    description: "The OS/image version installed on all compute instances."
-    required: true
-    visible:
-      and:
-        - and:
-          - show_advanced
-        - not:
-          - use_only_always_free_elegible_resources
-
-  instance_visibility:
-    type: enum
-    enum:
-    - "Public"
-    - "Private"
-    title: "Choose instance visibility type"
-    description: "The instance visibility will define if assign a public ip address to the compute instance and if the subnet is public or private."
-    visible:
-      and:
-        - and:
-          - show_advanced
-        - not:
-          - use_only_always_free_elegible_resources
-  
   autonomous_database_is_free_tier:
     type: boolean
     title: "Use always free Autonomous Database?"
