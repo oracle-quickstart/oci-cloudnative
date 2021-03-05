@@ -23,7 +23,7 @@ region = "us-phoenix-1"
 
 # Compute
 num_nodes                           = 2
-instance_shape                      = "VM.Standard.E2.1.Micro"
+instance_shape                      = "VM.Standard.E2.1.Micro" # Micro shape for Always-free shape. If want to use flexible, change to "VM.Standard.E3.Flex"
 instance_ocpus                      = 1 # instance_ocpus only used when instance_shape is a flex compute shape
 instance_shape_config_memory_in_gbs = 16 # instance_shape_config_memory_in_gbs only used when instance_shape is a flex compute shape
 instance_visibility                 = "Public"
