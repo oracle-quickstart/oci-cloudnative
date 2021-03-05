@@ -170,10 +170,17 @@ variable "use_only_always_free_elegible_resources" {
 }
 ## Always Free Locals
 locals {
-  instance_shape                             = var.use_only_always_free_elegible_resources ? "VM.Standard.E2.1.Micro" : var.instance_shape
-  lb_shape                                   = var.use_only_always_free_elegible_resources ? "flexible" : var.lb_shape
+  instance_shape                             = var.use_only_always_free_elegible_resources ? local.compute_shape_micro : var.instance_shape
+  lb_shape                                   = var.use_only_always_free_elegible_resources ? local.lb_shape_flexible : var.lb_shape
   lb_shape_details_minimum_bandwidth_in_mbps = var.use_only_always_free_elegible_resources ? 10 : var.lb_shape_details_minimum_bandwidth_in_mbps
   lb_shape_details_maximum_bandwidth_in_mbps = var.use_only_always_free_elegible_resources ? 10 : var.lb_shape_details_maximum_bandwidth_in_mbps
   autonomous_database_is_free_tier           = var.use_only_always_free_elegible_resources ? true : var.autonomous_database_is_free_tier
-  is_flexible_instance_shape                 = (var.instance_shape == "VM.Standard.E3.Flex") ? true : false
+}
+
+# Shapes
+locals {
+  compute_shape_micro                = "VM.Standard.E2.1.Micro"
+  compute_shape_flexible             = "VM.Standard.E3.Flex"
+  compute_shape_flexible_description = "Cores for Standard.E3.Flex and BM.Standard.E3.128 Instances"
+  lb_shape_flexible                  = "flexible"
 }
