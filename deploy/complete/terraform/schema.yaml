@@ -408,14 +408,17 @@ outputGroups:
       - mushop_url
       - grafana_url
       - external_ip
-  - title: Passwords
+  - title: Passwords and Keys
     outputs:
       - autonomous_database_password
       - grafana_admin_password
+      - generated_private_key_pem
   - title: Comments
     outputs:
       - comments
       - dev
+      - deploy_id
+      - mushop_source_code
 
 outputs:
   mushop_url_button:
@@ -447,7 +450,7 @@ outputs:
   dev:
     type: string
     title: dev
-    displayText: dev note from A-Team
+    displayText: dev note from Oracle Developers
   kubeconfig_for_kubectl:
     type: string
     title: kubeconfig
