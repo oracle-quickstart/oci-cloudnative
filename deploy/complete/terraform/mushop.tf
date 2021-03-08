@@ -19,7 +19,7 @@ resource "helm_release" "mushop" {
 
   set {
     name  = "global.mock.service"
-    value = var.mushop_mock_mode_all ? "all" : "false"
+    value = var.mushop_mock_mode_all ? "all" : "none"
   }
   set {
     name  = "global.oadbAdminSecret"
