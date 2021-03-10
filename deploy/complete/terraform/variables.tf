@@ -176,5 +176,5 @@ variable "autonomous_database_wallet_generate_type" {
 
 # Locals
 locals {
-  compute_shape_flexible             = "VM.Standard.E3.Flex"
+  compute_flexible_shapes = ["VM.Standard.E3.Flex"]
 }

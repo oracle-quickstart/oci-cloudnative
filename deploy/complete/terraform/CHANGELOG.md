@@ -1,5 +1,15 @@
 # CHANGELOG
 
+2021-03-08 (v2.0.6)
+
+- Helm Repo Repos updated
+- Terraform updated to 0.14
+- Terraform Providers updated
+- ORM Schema updated
+- Fixes and improvements
+- Supporting services updated
+- Support for more flex shapes
+
 2021-01-15 (v2.0.5)
 
 - Helm Repo Repos updated
