@@ -36,6 +36,8 @@ variableGroups:
     - node_pool_shape
     - num_pool_workers
     - node_pool_name
+    - node_pool_node_shape_config_ocpus
+    - node_pool_node_shape_config_memory_in_gbs
     visible: #($create_new_oke_cluster = true)
       and:
         - create_new_oke_cluster
@@ -96,8 +98,6 @@ variableGroups:
       - private_key_path
       - network_cidrs
       - cluster_options_admission_controller_options_is_pod_security_policy_enabled
-      - node_pool_node_shape_config_memory_in_gbs
-      - node_pool_node_shape_config_ocpus
       - ingress_load_balancer_shape
     visible: false
 
@@ -205,6 +205,28 @@ variables:
     required: true
     dependsOn:
       compartmentId: ${compartment_ocid}
+
+  node_pool_node_shape_config_ocpus:
+    type: integer
+    minimum: 1
+    maximum: 64
+    title: "Number of OCPUs"
+    description: "You can customize the number of OCPUs to a flexible shape."
+    visible:
+      eq:
+        - instance_shape 
+        - "VM.Standard.E3.Flex"
+
+  node_pool_node_shape_config_memory_in_gbs:
+    type: integer
+    minimum: 1
+    maximum: 1024
+    title: "Amount of memory (GB)"
+    description: "You can customize the amount of memory allocated to a flexible shape."
+    visible:
+      eq:
+        - instance_shape 
+        - "VM.Standard.E3.Flex"
 
   num_pool_workers:
     type: integer
