@@ -16,6 +16,10 @@ datasources:
 dashboards:
   default:
     cluster-metrics:
+      gnetId: 11663
+      revision: 1
+      datasource: Prometheus
+    cluster-metrics-simple:
       gnetId: 6417
       revision: 1
       datasource: Prometheus
