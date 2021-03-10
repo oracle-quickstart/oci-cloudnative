@@ -51,5 +51,5 @@ resource "tls_private_key" "compute_ssh_key" {
 }
 
 locals {
-  is_flexible_instance_shape = (local.instance_shape == local.compute_shape_flexible) ? true : false
+  is_flexible_instance_shape = contains(local.compute_flexible_shapes, local.instance_shape)
 }

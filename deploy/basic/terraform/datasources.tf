@@ -92,7 +92,7 @@ resource "random_shuffle" "compute_ad" {
   result_count = length(local.compute_available_limit_ad_list)
 }
 locals {
-  compute_multiplier_nodes_ocpus  = (local.instance_shape == local.compute_shape_flexible) ? (var.num_nodes * var.instance_ocpus) : var.num_nodes
+  compute_multiplier_nodes_ocpus  = local.is_flexible_instance_shape ? (var.num_nodes * var.instance_ocpus) : var.num_nodes
   compute_available_limit_ad_list = [for limit in data.oci_limits_resource_availability.compute_resource_availability : limit.availability_domain if(limit.available - local.compute_multiplier_nodes_ocpus) >= 0]
   compute_available_limit_check = length(local.compute_available_limit_ad_list) == 0 ? (
   file("ERROR: No limits available for the chosen compute shape and number of nodes or OCPUs")) : 0
