@@ -82,5 +82,5 @@ resource "tls_private_key" "oke_worker_node_ssh_key" {
 
 # Checks if is using Flexible Compute Shapes
 locals {
-  is_flexible_node_shape = (var.node_pool_shape == local.compute_shape_flexible) ? true : false
+  is_flexible_node_shape = contains(local.compute_flexible_shapes, var.node_pool_shape)
 }
