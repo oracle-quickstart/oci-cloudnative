@@ -173,3 +173,8 @@ variable "autonomous_database_visibility" {
 variable "autonomous_database_wallet_generate_type" {
   default = "SINGLE"
 }
+
+# Locals
+locals {
+  compute_shape_flexible             = "VM.Standard.E3.Flex"
+}
