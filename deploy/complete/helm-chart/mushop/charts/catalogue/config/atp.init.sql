@@ -25,7 +25,7 @@ BEGIN
 							PASSWORD_LOCK_TIME UNLIMITED
 							INACTIVE_ACCOUNT_TIME UNLIMITED';
 		ELSE
-			DBMS_OUTPUT.PUT_LINE ('Profile = mushop_services exists, steps ignored');
+			DBMS_OUTPUT.PUT_LINE ('Profile = MUSHOP_SERVICES exists, steps ignored');
 		END IF;
 	END;
 
