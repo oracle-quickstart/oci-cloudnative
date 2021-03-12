@@ -23,7 +23,7 @@ resource "helm_release" "prometheus" {
   wait       = false
 
   values = [
-    file("${path.module}/chart-values/prometheus.yaml"),
+    file("${path.module}/chart-values/prometheus-values.yaml"),
   ]
 
   depends_on = [helm_release.ingress_nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
@@ -41,8 +41,14 @@ resource "helm_release" "grafana" {
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
   wait       = false
 
+  set {
+    name  = "grafana\\.ini.server.root_url"
+    value = "%(protocol)s://%(domain)s:%(http_port)s/grafana"
+    type  = "string"
+  }
+
   values = [
-    file("${path.module}/chart-values/grafana.yaml"),
+    file("${path.module}/chart-values/grafana-values.yaml"),
   ]
 
   depends_on = [helm_release.ingress_nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
@@ -79,7 +85,7 @@ resource "helm_release" "ingress_nginx" {
   wait       = true
 
   set {
-    name  = "controller.metrics.enable"
+    name  = "controller.metrics.enabled"
     value = true
   }
 
