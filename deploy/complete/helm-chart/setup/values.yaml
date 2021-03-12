@@ -44,17 +44,41 @@ grafana:
   enabled: true
   dashboards:
     default:
-      cluster-metrics:
+      k8s-cluster:
+        gnetId: 7249
+        revision: 1
+        datasource: Prometheus
+      k8s-cluster-metrics:
+        gnetId: 11663
+        revision: 1
+        datasource: Prometheus
+      k8s-cluster-metrics-simple:
         gnetId: 6417
         revision: 1
         datasource: Prometheus
-      pods:
+      k8s-pods-monitoring:
+        gnetId: 13498
+        revision: 1
+        datasource: Prometheus
+      k8s-memory:
+        gnetId: 13421
+        revision: 1
+        datasource: Prometheus
+      k8s-networking:
+        gnetId: 12658
+        revision: 1
+        datasource: Prometheus
+      k8s-pods:
         gnetId: 6336
         revision: 1
         datasource: Prometheus
       spring-boot:
         gnetId: 12464
         revision: 2
+        datasource: Prometheus
+      nginx-ingress-controller:
+        gnetId: 9614
+        revision: 1
         datasource: Prometheus
   dashboardProviders:
     dashboardproviders.yaml:
