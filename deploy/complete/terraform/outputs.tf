@@ -32,7 +32,7 @@ output "external_ip" {
   depends_on = [helm_release.ingress_nginx]
 }
 output "autonomous_database_password" {
-  value     = random_string.autonomous_database_wallet_password.result
+  value     = random_string.autonomous_database_admin_password.result
   sensitive = false
 }
 output "grafana_admin_password" {
