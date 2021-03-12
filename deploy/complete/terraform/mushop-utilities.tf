@@ -18,12 +18,12 @@ resource "helm_release" "prometheus" {
   name       = "prometheus"
   repository = local.helm_repository.prometheus
   chart      = "prometheus"
-  version    = "13.2.1"
+  version    = "13.5.0"
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
   wait       = false
 
   values = [
-    file("${path.module}/chart-values/prometheus.yaml"),
+    file("${path.module}/chart-values/prometheus-values.yaml"),
   ]
 
   depends_on = [helm_release.ingress_nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
@@ -37,12 +37,18 @@ resource "helm_release" "grafana" {
   name       = "mushop-utils-grafana" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.grafana
   chart      = "grafana"
-  version    = "6.1.17"
+  version    = "6.4.8"
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
   wait       = false
 
+  set {
+    name  = "grafana\\.ini.server.root_url"
+    value = "%(protocol)s://%(domain)s:%(http_port)s/grafana"
+    type  = "string"
+  }
+
   values = [
-    file("${path.module}/chart-values/grafana.yaml"),
+    file("${path.module}/chart-values/grafana-values.yaml"),
   ]
 
   depends_on = [helm_release.ingress_nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
@@ -74,12 +80,12 @@ resource "helm_release" "ingress_nginx" {
   name       = "mushop-utils-ingress-nginx" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.ingress_nginx
   chart      = "ingress-nginx"
-  version    = "3.20.1"
+  version    = "3.23.0"
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
   wait       = true
 
   set {
-    name  = "controller.metrics.enable"
+    name  = "controller.metrics.enabled"
     value = true
   }
 
@@ -113,7 +119,7 @@ resource "helm_release" "cert_manager" {
   name       = "cert-manager"
   repository = local.helm_repository.jetstack
   chart      = "cert-manager"
-  version    = "1.1.0"
+  version    = "1.2.0"
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
   wait       = false
 

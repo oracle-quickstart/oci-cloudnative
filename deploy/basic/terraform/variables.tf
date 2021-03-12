@@ -180,7 +180,7 @@ locals {
 # Shapes
 locals {
   compute_shape_micro                = "VM.Standard.E2.1.Micro"
-  compute_shape_flexible             = "VM.Standard.E3.Flex"
+  compute_flexible_shapes           = ["VM.Standard.E3.Flex"]
   compute_shape_flexible_description = "Cores for Standard.E3.Flex and BM.Standard.E3.128 Instances"
   lb_shape_flexible                  = "flexible"
 }

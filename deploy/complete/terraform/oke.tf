@@ -47,14 +47,17 @@ resource "oci_containerengine_node_pool" "oke_mushop_node_pool" {
     size = var.num_pool_workers
   }
 
-  # node_shape_config {
-  #       memory_in_gbs = var.node_pool_node_shape_config_memory_in_gbs
-  #       ocpus = var.node_pool_node_shape_config_ocpus
-  # }
+  dynamic "node_shape_config" {
+    for_each = local.is_flexible_node_shape ? [1] : []
+    content {
+      ocpus         = var.node_pool_node_shape_config_ocpus
+      memory_in_gbs = var.node_pool_node_shape_config_memory_in_gbs
+    }
+  }
 
   node_source_details {
     source_type = "IMAGE"
-    image_id    = lookup(data.oci_core_images.node_pool_images.images[1], "id")
+    image_id    = lookup(data.oci_core_images.node_pool_images.images[0], "id")
   }
 
   initial_node_labels {
@@ -75,4 +78,9 @@ resource "local_file" "kubeconfig" {
 resource "tls_private_key" "oke_worker_node_ssh_key" {
   algorithm = "RSA"
   rsa_bits  = 2048
+}
+
+# Checks if is using Flexible Compute Shapes
+locals {
+  is_flexible_node_shape = contains(local.compute_flexible_shapes, var.node_pool_shape)
 }
