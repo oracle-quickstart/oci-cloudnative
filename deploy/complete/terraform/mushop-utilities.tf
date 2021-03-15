@@ -44,7 +44,6 @@ resource "helm_release" "grafana" {
   set {
     name  = "grafana\\.ini.server.root_url"
     value = "%(protocol)s://%(domain)s:%(http_port)s/grafana"
-    type  = "string"
   }
 
   values = [
@@ -92,7 +91,6 @@ resource "helm_release" "ingress_nginx" {
   set {
     name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/oci-load-balancer-shape"
     value = var.ingress_load_balancer_shape
-    type  = "string"
   }
 
   timeout = 1800 # workaround to wait the node be active for other charts
