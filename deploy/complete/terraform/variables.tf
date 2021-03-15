@@ -16,7 +16,8 @@ variable "private_key_path" {
   default = ""
 }
 
-# OKE Cluster Details
+# OKE Variables
+## OKE Cluster Details
 variable "cluster_name" {
   default = "MuShop-cluster"
 }
@@ -36,6 +37,8 @@ variable "create_new_oke_cluster" {
 variable "existent_oke_cluster_id" {
   default = ""
 }
+
+## OKE Encryption details
 variable "use_encryption" {
   default     = false
   description = "Uses standard block storage encryption or encrypt using customer-managed keys"
@@ -47,7 +50,18 @@ variable "encryption_key_id" {
   default = ""
 }
 
-# OKE Node Pool Details
+## OKE Autoscaler
+variable "cluster_autoscaler_enabled" {
+  default = true
+}
+variable "cluster_autoscaler_min_nodes" {
+  default = 1
+}
+variable "cluster_autoscaler_max_nodes" {
+  default = 10
+}
+
+## OKE Node Pool Details
 variable "node_pool_name" {
   default = "pool1"
 }
@@ -55,10 +69,10 @@ variable "k8s_version" {
   default = "v1.18.10"
 }
 variable "num_pool_workers" {
-  default = 3
+  default = 1
 }
 variable "node_pool_shape" {
-  default = "VM.Standard2.1"
+  default = "VM.Standard.E3.Flex" # "VM.Standard2.1"
 }
 variable "node_pool_node_shape_config_memory_in_gbs" {
   default = "16" # Only used if flex shape is selected
