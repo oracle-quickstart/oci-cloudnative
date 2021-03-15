@@ -1,5 +1,12 @@
 # CHANGELOG
 
+2021-03-15 (v2.1.0.alpha1)
+
+- Kubernetes Cluster Autoscaler for OKE
+- Retriaval of Current and Home regions for Identity requests
+- Support for versioning TF providers
+- Support for OLD TF Providers to match ORM support
+
 2021-03-11 (v2.0.6)
 
 - Helm Repo Repos updated
