@@ -7,7 +7,7 @@ locals {
   cluster_autoscaler_image_version                    = "2021.02"
   cluster_autoscaler_image                            = "iad.ocir.io/oracle/oci-cluster-autoscaler:${local.k8s_major_minor_version}-${local.cluster_autoscaler_image_version}"
   cluster_autoscaler_app_version                      = 4
-  cluster_autoscaler_node_pool                        = oci_containerengine_node_pool.oke_mushop_node_pool.id
+  cluster_autoscaler_node_pool                        = oci_containerengine_node_pool.oke_mushop_node_pool[0].id
   cluster_autoscaler_min_nodes                        = var.cluster_autoscaler_min_nodes
   cluster_autoscaler_max_nodes                        = var.cluster_autoscaler_max_nodes
   cluster_autoscaler_max_node_provision_time          = "25m"
@@ -224,11 +224,11 @@ resource "kubernetes_deployment" "cluster_autoscaler_deployment" {
           name  = "cluster-autoscaler"
 
           resources {
-            limits = {
+            limits {
               cpu    = "100m"
               memory = "300Mi"
             }
-            requests = {
+            requests {
               cpu    = "100m"
               memory = "300Mi"
             }
