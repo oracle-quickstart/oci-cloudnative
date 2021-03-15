@@ -63,6 +63,6 @@ output "mushop_source_code" {
   value = "https://github.com/oracle-quickstart/oci-cloudnative/tree/master/deploy/complete"
 }
 locals {
-  mushop_ingress_ip       = data.kubernetes_service.mushop_ingress.status.0.load_balancer.0.ingress.0.ip
-  mushop_ingress_hostname = data.kubernetes_service.mushop_ingress.status.0.load_balancer.0.ingress.0.hostname == "" ? data.kubernetes_service.mushop_ingress.status.0.load_balancer.0.ingress.0.ip : data.kubernetes_service.mushop_ingress.status.0.load_balancer.0.ingress.0.hostname
+  mushop_ingress_ip       = data.kubernetes_service.mushop_ingress.load_balancer_ingress[0].ip
+  mushop_ingress_hostname = data.kubernetes_service.mushop_ingress.load_balancer_ingress[0].hostname == "" ? data.kubernetes_service.mushop_ingress.load_balancer_ingress[0].ip : data.kubernetes_service.mushop_ingress.load_balancer_ingress[0].hostname
 }
