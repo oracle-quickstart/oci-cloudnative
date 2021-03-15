@@ -20,17 +20,22 @@ variableGroups:
     - tenancy_ocid
     - region
     visible: false
-  - title: "OKE General Configuration"
+
+  - title: "OKE Cluster Configuration"
     variables:
     - create_new_oke_cluster
     - existent_oke_cluster_id
     - cluster_name
     - k8s_version
     - cluster_visibility
+    - cluster_autoscaler_enabled
+    - cluster_autoscaler_min_nodes
+    - cluster_autoscaler_max_nodes
     - use_encryption
     - create_new_encryption_key
     - encryption_key_id
     visible: true
+
   - title: "OKE Worker Nodes"
     variables:
     - node_pool_shape
@@ -41,16 +46,19 @@ variableGroups:
     visible: #($create_new_oke_cluster = true)
       and:
         - create_new_oke_cluster
+
   - title: "Add Ons"
     variables:
     - cluster_options_add_ons_is_kubernetes_dashboard_enabled
     visible: true
+
   - title: "MuShop Features"
     variables:
     - mushop_mock_mode_all
     - mushop_atp
     - mushop_oss
     visible: true
+
   - title: "MuShop Utilities"
     variables:
     - grafana_enabled
@@ -63,6 +71,7 @@ variableGroups:
       eq:
       - ${show_advanced}
       - Yes
+
   - title: "Advanced Options"
     variables:
     - show_advanced
@@ -73,6 +82,7 @@ variableGroups:
     visible: #($create_new_oke_cluster = true)
       and:
         - create_new_oke_cluster
+
   - title: "Network Configuration"
     variables:
       - network_strategy 
@@ -174,6 +184,31 @@ variables:
       and:
         - create_new_oke_cluster
 
+  cluster_autoscaler_enabled:
+    type: boolean
+    title: "Enable Cluster Austoscaler"
+    description: "Enables OKE cluster autoscaler. Node pools will auto scale based on the resources usage."        
+
+  cluster_autoscaler_min_nodes:
+    type: integer
+    minimum: 1
+    maximum: 1000
+    title: "Autoscaler: Minimum number of nodes"
+    description: "Minimum number of nodes on the node pool to be scheduled by the Kubernetes."
+    visible: #($cluster_autoscaler_enabled = true)
+      and:
+        - cluster_autoscaler_enabled
+
+  cluster_autoscaler_max_nodes:
+    type: integer
+    minimum: 1
+    maximum: 1000
+    title: "Autoscaler: Maximum number of node"
+    description: "Maximum number of nodes on the node pool to be scheduled by the Kubernetes."
+    visible: #($cluster_autoscaler_enabled = true)
+      and:
+        - cluster_autoscaler_enabled
+
   use_encryption:
       type: boolean
       title: "Use Encryption"
@@ -214,7 +249,7 @@ variables:
     description: "You can customize the number of OCPUs to a flexible shape."
     visible:
       eq:
-        - instance_shape 
+        - node_pool_shape 
         - "VM.Standard.E3.Flex"
 
   node_pool_node_shape_config_memory_in_gbs:
@@ -225,7 +260,7 @@ variables:
     description: "You can customize the amount of memory allocated to a flexible shape."
     visible:
       eq:
-        - instance_shape 
+        - node_pool_shape 
         - "VM.Standard.E3.Flex"
 
   num_pool_workers:
@@ -430,49 +465,91 @@ outputGroups:
       - mushop_url
       - grafana_url
       - external_ip
+      - mushop_url_https
+
   - title: Passwords and Keys
     outputs:
       - autonomous_database_password
       - grafana_admin_password
       - generated_private_key_pem
+
   - title: Comments
     outputs:
       - comments
-      - dev
       - deploy_id
+      - deployed_to_region
+      - mushop_source_code
+
+  - title: Dev Notes
+    outputs:
+      - dev
       - mushop_source_code
 
 outputs:
   mushop_url_button:
-      type: link
-      title: MuShop URL Button
-      displayText: Open MuShop
+    type: link
+    title: MuShop URL Button
+    displayText: Open MuShop
+    visible: true
+
   mushop_url:
     type: link
     title: MuShop
     displayText: Storefront
+    visible: true
+
+  mushop_url_https:
+    type: string
+    title: MuShop URL with HTTPS and Hostname
+    displayText: https://<hostname>
+    visible: false
+
+  external_ip:
+    type: string
+    title: Ingress LoadBalancer External IP
+    displayText: Ingress Nginx LoadBalancer External IP Address
+    visible: true
+
   grafana_url:
     type: link
     title: Grafana
     displayText: Dashboards
+    visible: true
+
   autonomous_database_password:
     type: string
     title: DB Admin Password
     displayText: Autonomous Database Admin Password
-    sensitive: true
+    visible: true
+
   grafana_admin_password:
     type: string
     title: Grafana Admin Password
     displayText: Grafana Admin Password
-    sensitive: true
+    visible: true
+
+  deploy_id:
+    type: string
+    title: "Deployment Id"
+    visible: true
+
+  deployed_to_region:
+    type: string
+    title: "Deployed using Region"
+    visible: true
+
   comments:
     type: string
     title: Comments
     displayText: Comments
+    visible: true
+
   dev:
     type: string
     title: dev
     displayText: dev note from Oracle Developers
+    visible: true
+
   kubeconfig_for_kubectl:
     type: string
     title: kubeconfig
