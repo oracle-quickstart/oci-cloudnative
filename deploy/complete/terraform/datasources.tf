@@ -17,6 +17,22 @@ data "oci_identity_availability_domains" "ADs" {
   compartment_id = var.tenancy_ocid
 }
 
+# Gets home and current regions
+data "oci_identity_tenancy" "tenant_details" {
+  tenancy_id = var.tenancy_ocid
+
+  provider = oci.current_region
+}
+
+data "oci_identity_regions" "home_region" {
+  filter {
+    name   = "key"
+    values = [data.oci_identity_tenancy.tenant_details.home_region_key]
+  }
+
+  provider = oci.current_region
+}
+
 # Gets kubeconfig
 data "oci_containerengine_cluster_kube_config" "oke_cluster_kube_config" {
   cluster_id = var.create_new_oke_cluster ? oci_containerengine_cluster.oke_mushop_cluster[0].id : var.existent_oke_cluster_id
