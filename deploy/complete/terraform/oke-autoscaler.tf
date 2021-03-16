@@ -28,6 +28,7 @@ resource "kubernetes_service_account" "cluster_autoscaler_sa" {
       k8s-app   = "cluster-autoscaler"
     }
   }
+  automount_service_account_token = true # workaround to support ORM deprecated terraform providers
 
   depends_on = [oci_containerengine_node_pool.oke_mushop_node_pool]
 }
@@ -219,9 +220,28 @@ resource "kubernetes_deployment" "cluster_autoscaler_deployment" {
 
       spec {
         service_account_name = "cluster-autoscaler"
+
+        # < workaround to support ORM deprecated terraform providers
+        volume {
+          name = kubernetes_service_account.cluster_autoscaler_sa[0].default_secret_name
+
+          secret {
+            secret_name = kubernetes_service_account.cluster_autoscaler_sa[0].default_secret_name
+          }
+        }
+        # />
+
         container {
           image = local.cluster_autoscaler_image
           name  = "cluster-autoscaler"
+
+          # < workaround to support ORM deprecated terraform providers
+          volume_mount {
+            mount_path = "/var/run/secrets/kubernetes.io/serviceaccount"
+            name       = kubernetes_service_account.cluster_autoscaler_sa[0].default_secret_name
+            read_only  = true
+          }
+          # />
 
           resources {
             limits {
