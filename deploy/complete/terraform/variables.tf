@@ -60,6 +60,9 @@ variable "cluster_autoscaler_min_nodes" {
 variable "cluster_autoscaler_max_nodes" {
   default = 10
 }
+variable "existent_oke_nodepool_id_for_autoscaler" {
+  default = ""
+}
 
 ## OKE Node Pool Details
 variable "node_pool_name" {
