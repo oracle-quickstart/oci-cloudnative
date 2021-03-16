@@ -161,10 +161,10 @@ variables:
   k8s_version:
     type: enum
     enum:
+    - "v1.19.7"
     - "v1.18.10"
     - "v1.17.13"
     - "v1.16.15"
-    - "v1.15.12"
     title: "Kubernetes Version"
     description: "Kubernetes version installed on your master and worker nodes"
     required: true
