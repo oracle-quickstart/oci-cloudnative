@@ -3,9 +3,9 @@
 # 
 
 # OCI authentication
-tenancy_ocid = "ocid1.tenancy....."
-fingerprint = "" # e.g.: "5f:53:..." or leave blank if using CloudShell
-user_ocid = ""  # e.g.: "ocid1.user..." or leave blank if using CloudShell
+tenancy_ocid     = "ocid1.tenancy....."
+fingerprint      = "" # e.g.: "5f:53:..." or leave blank if using CloudShell
+user_ocid        = "" # e.g.: "ocid1.user..." or leave blank if using CloudShell
 private_key_path = "" # e.g.: "/users/user/.oci/oci_api_key.pem" or leave blank if using CloudShell
 
 # Deployment compartment
@@ -18,13 +18,13 @@ region = "us-ashburn-1"
 ## cluster_visibility
 cluster_visibility = "Private"
 ## create_new_oke_cluster
-create_new_oke_cluster = true
-existent_oke_cluster_id         = ""  # e.g.: ocid1.cluster.oc1...
+create_new_oke_cluster  = true
+existent_oke_cluster_id = "" # e.g.: ocid1.cluster.oc1...
 ## Enable Cluster Autoscaler
 cluster_autoscaler_enabled              = true
 cluster_autoscaler_min_nodes            = 1
 cluster_autoscaler_max_nodes            = 8
-existent_oke_nodepool_id_for_autoscaler = ""  # e,g,: ocid1.nodepool.oc1...
+existent_oke_nodepool_id_for_autoscaler = "" # e,g,: ocid1.nodepool.oc1...
 ## Encryption (OCI Vault/Key Management/KMS)
 use_encryption            = false
 create_new_encryption_key = false
@@ -33,16 +33,21 @@ encryption_key_id         = "" # e.g.: "ocid1.key.oc1..."
 # OKE Worker Nodes (Compute)
 num_pool_workers        = 3
 node_pool_shape         = "VM.Standard2.1"
+node_pool_node_shape_config_ocpus         = 1
+node_pool_node_shape_config_memory_in_gbs = 16
 generate_public_ssh_key = true # if true, auto generate public and private keys and assign to the node pool.
-public_ssh_key          = "" # if generate_public_ssh_key=true, public_ssh_key is ignored. if generate_public_ssh_key=false, assign public_ssh_key, that can be nothing if ""
+public_ssh_key          = ""   # if generate_public_ssh_key=true, public_ssh_key is ignored. if generate_public_ssh_key=false, assign public_ssh_key, that can be nothing if ""
+
+# Ingress Loadbalancer
+ingress_load_balancer_shape = "100Mbps"
 
 # MuShop
 ## Enable Mock Mode
 mushop_mock_mode_all = false # Set to true if do not want to provision ATP, ObjectStorage and mock all services
 ## Common Services (MuShop Utilities)
-grafana_enabled = true
-prometheus_enabled = true
+grafana_enabled        = true
+prometheus_enabled     = true
 metrics_server_enabled = true
-catalog_enabled = true
-ingress_nginx_enabled = true
-cert_manager_enabled = true
+catalog_enabled        = true
+ingress_nginx_enabled  = true
+cert_manager_enabled   = true
