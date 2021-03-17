@@ -23,6 +23,11 @@ variable "cluster_name" {
 }
 variable "cluster_visibility" {
   default = "Private"
+
+  validation {
+    condition     = var.cluster_visibility == "Private" || var.cluster_visibility == "Public"
+    error_message = "Sorry, but cluster visibility can only be Private or Public."
+  }
 }
 variable "cluster_options_add_ons_is_kubernetes_dashboard_enabled" {
   default = false
@@ -69,7 +74,7 @@ variable "node_pool_name" {
   default = "pool1"
 }
 variable "k8s_version" {
-  default = "v1.18.10"
+  default = "v1.19.7"
 }
 variable "num_pool_workers" {
   default = 1
@@ -167,6 +172,11 @@ variable "autonomous_database_data_storage_size_in_tbs" {
 
 variable "autonomous_database_data_safe_status" {
   default = "NOT_REGISTERED" # REGISTERED || NOT_REGISTERED
+
+  validation {
+    condition     = var.autonomous_database_license_model == "REGISTERED" || var.autonomous_database_license_model == "NOT_REGISTERED"
+    error_message = "Sorry, but database license model can only be REGISTERED or NOT_REGISTERED."
+  }
 }
 
 variable "autonomous_database_db_version" {
@@ -175,6 +185,11 @@ variable "autonomous_database_db_version" {
 
 variable "autonomous_database_license_model" {
   default = "BRING_YOUR_OWN_LICENSE" # LICENSE_INCLUDED || BRING_YOUR_OWN_LICENSE
+
+  validation {
+    condition     = var.autonomous_database_license_model == "BRING_YOUR_OWN_LICENSE" || var.autonomous_database_license_model == "LICENSE_INCLUDED"
+    error_message = "Sorry, but database license model can only be BRING_YOUR_OWN_LICENSE or LICENSE_INCLUDED."
+  }
 }
 
 variable "autonomous_database_is_auto_scaling_enabled" {
@@ -186,6 +201,11 @@ variable "autonomous_database_is_free_tier" {
 }
 variable "autonomous_database_visibility" {
   default = "Public"
+
+  validation {
+    condition     = var.autonomous_database_visibility == "Private" || var.autonomous_database_visibility == "Public"
+    error_message = "Sorry, but database visibility can only be Private or Public."
+  }
 }
 variable "autonomous_database_wallet_generate_type" {
   default = "SINGLE"
