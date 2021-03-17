@@ -31,6 +31,7 @@ variableGroups:
     - cluster_autoscaler_enabled
     - cluster_autoscaler_min_nodes
     - cluster_autoscaler_max_nodes
+    - existent_oke_nodepool_id_for_autoscaler
     - use_encryption
     - create_new_encryption_key
     - encryption_key_id
@@ -147,7 +148,7 @@ variables:
     required: true
     visible: #($create_new_oke_cluster = false)
       not:
-        - create_new_oke_cluster
+        - create_new_oke_cluster        
 
   cluster_name:
     type: string
@@ -208,6 +209,18 @@ variables:
     visible: #($cluster_autoscaler_enabled = true)
       and:
         - cluster_autoscaler_enabled
+
+  existent_oke_nodepool_id_for_autoscaler:
+    type: string
+    title: "OKE Nodepool id"
+    description: "Nodepool Id of the existent OKE to use with Cluster Autoscaler"
+    required: true
+    visible: #($cluster_autoscaler_enabled  = true) + ($create_new_oke_cluster  = false)
+      and:
+        - and:
+          - cluster_autoscaler_enabled
+        - not:
+          - create_new_oke_cluster
 
   use_encryption:
       type: boolean
