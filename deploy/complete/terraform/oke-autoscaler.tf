@@ -166,7 +166,7 @@ resource "kubernetes_role_binding" "cluster_autoscaler_rb" {
   count = local.cluster_autoscaler_enabled ? 1 : 0
 
   metadata {
-    name = "cluster-autoscaler"
+    name      = "cluster-autoscaler"
     namespace = "kube-system"
     labels = {
       k8s-addon = "cluster-autoscaler.addons.k8s.io"

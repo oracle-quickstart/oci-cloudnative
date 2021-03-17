@@ -7,7 +7,7 @@ resource "oci_identity_dynamic_group" "cluster_autoscaler_dg" {
   description    = "MuShop Cluster Autoscaler Dynamic Group"
   compartment_id = var.tenancy_ocid
   matching_rule  = "ALL {instance.compartment.id = '${var.compartment_ocid}'}"
-  
+
   provider = oci.home_region
 }
 resource "oci_identity_policy" "cluster_autoscaler_policies" {
@@ -17,7 +17,7 @@ resource "oci_identity_policy" "cluster_autoscaler_policies" {
   statements     = local.cluster_autoscaler_policies_statement
 
   depends_on = [oci_identity_dynamic_group.cluster_autoscaler_dg]
-  
+
   provider = oci.home_region
 }
 
