@@ -38,7 +38,7 @@ resource "oci_core_subnet" "mushop_lb_subnet" {
   display_name               = "mushop-lb-${random_string.deploy_id.result}"
   dns_label                  = "mushoplb${random_string.deploy_id.result}"
   # If WAF is to be used, do not use the security list - instead the NSG will be applied
-  security_list_ids          = var.enable_waf ? [] : [oci_core_security_list.mushop_lb_security_list.id]
+  security_list_ids          = var.enable_waf ? null : [oci_core_security_list.mushop_lb_security_list.id]
   compartment_id             = (var.lb_compartment_ocid != "") ? var.lb_compartment_ocid : var.compartment_ocid
   vcn_id                     = var.create_secondary_vcn ? oci_core_virtual_network.mushop_lb_vcn[0].id : oci_core_virtual_network.mushop_main_vcn.id
   route_table_id             = oci_core_route_table.mushop_lb_route_table.id

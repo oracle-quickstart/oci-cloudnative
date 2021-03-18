@@ -14,7 +14,7 @@ resource oci_waas_waas_policy mushop_waf_policy {
 
   compartment_id = var.lb_compartment_ocid
   display_name = "mushop-waf-policy-${random_string.deploy_id.result}"
-  domain       = "store.${var.dns_zone_name}"
+  domain       = "${var.dns_waf_entry}.${var.dns_zone_name}"
   origin_groups {
     label = "Default Group"
     origin_group {
@@ -26,7 +26,7 @@ resource oci_waas_waas_policy mushop_waf_policy {
     http_port  = "80"
     https_port = "443"
     label      = "mushop"
-    uri        = "mushop-internal.${var.dns_zone_name}"
+    uri        = "${var.dns_lb_entry}.${var.dns_zone_name}"
   }
   policy_config {
     certificate_id        = oci_waas_certificate.mushop_waf_certificate[0].id

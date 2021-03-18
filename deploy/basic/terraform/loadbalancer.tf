@@ -78,7 +78,7 @@ resource "oci_load_balancer_listener" "mushop_listener_443" {
     for_each = var.enable_acme_certificate ? [1] : []
     content {
       #Required
-      certificate_name = oci_load_balancer_certificate.mushop_certificate.certificate_name
+      certificate_name = oci_load_balancer_certificate.mushop_certificate[0].certificate_name
       verify_peer_certificate = false
     }
   }

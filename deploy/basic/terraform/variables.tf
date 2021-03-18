@@ -200,14 +200,13 @@ variable "dns_waf_entry" {
 }
 
 locals {
-  dns_lb_domain = var.dns_lb_entry.var.dns_zone_name
-  dns_waf_domain = var.dns_waf_entry.var.dns_zone_name
+  dns_lb_domain = "${var.dns_lb_entry}.${var.dns_zone_name}"
+  dns_waf_domain = "${var.dns_waf_entry}.${var.dns_zone_name}"
 }
 
 # Certificate
 variable "certificate_certificate_name" {
-  #default = "mushop-lets-encrypt-certificate"
-  default = "mushop-exp-06-10-2021"
+  default = "mushop-lets-encrypt-certificate"
 }
 
 variable "enable_acme_certificate" {

@@ -26,14 +26,11 @@ resource "acme_certificate" "certificate" {
     provider = "oraclecloud"
     config = {
       OCI_PRIVKEY_FILE="/home/andrew_gre/.oci/oci_api_key.pem"
-      OCI_TENANCY_OCID="ocid1.tenancy.oc1..aaaaaaaa5arrzhx6wibc7iotaztfkt5bofbrfkw4x56kaplt36tat63lexgq"
-      OCI_USER_OCID="ocid1.user.oc1..aaaaaaaaradfpfpjogoytgqvbi3u2mpqolhw67nqo5ixdvk73ddhvma3fc2a"
-      OCI_PUBKEY_FINGERPRINT="5b:0a:43:58:38:3c:47:e7:77:e9:9e:4b:78:46:cb:54"
-      OCI_REGION="us-ashburn-1"
-      OCI_COMPARTMENT_OCID="ocid1.compartment.oc1..aaaaaaaab43r2p524h5pkbefi4h4t4gc7opza22u732sk66wdanfbetiewoq"
-#      OCI_POLLING_INTERVAL=10
-#      OCI_PROPAGATION_TIMEOUT=600
-#      OCI_TTL=30
+      OCI_TENANCY_OCID=var.tenancy_ocid
+      OCI_USER_OCID=var.user_ocid
+      OCI_PUBKEY_FINGERPRINT=var.fingerprint
+      OCI_REGION=var.region
+      OCI_COMPARTMENT_OCID=var.lb_compartment_ocid
     }
   }
 }
