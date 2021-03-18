@@ -184,3 +184,83 @@ locals {
   compute_shape_flexible_description = "Cores for Standard.E3.Flex and BM.Standard.E3.128 Instances"
   lb_shape_flexible                  = "flexible"
 }
+
+# Additional stuff for extra demo (DNS, Cert, WAF, Traffic)
+# DNS Entries
+variable "enable_dns_zone" {
+  default = false
+}
+
+variable "dns_lb_entry" {
+  default = "internal-lb"
+}
+
+variable "dns_waf_entry" {
+  default = "store"
+}
+
+locals {
+  dns_lb_domain = var.dns_lb_entry.var.dns_zone_name
+  dns_waf_domain = var.dns_waf_entry.var.dns_zone_name
+}
+
+# Certificate
+variable "certificate_certificate_name" {
+  #default = "mushop-lets-encrypt-certificate"
+  default = "mushop-exp-06-10-2021"
+}
+
+variable "enable_acme_certificate" {
+  default = false
+}
+
+variable "acme_email" {
+  default = ""
+}
+
+variable "acme_server_url" {
+  default = "https://acme-staging-v02.api.letsencrypt.org/directory"
+}
+
+variable "dns_zone_name" {
+  default = "mushop.agregory.page"
+}
+
+variable "enable_waf" {
+  default = "false"
+}
+
+# CAPTCHA variables
+
+variable "enable_captcha_challenge" {
+  default = "false"
+}
+
+variable "waas_policy_waf_config_captchas_failure_message" {
+  default = "Incorrect CAPTCHA"
+}
+
+variable "waas_policy_waf_config_captchas_session_expiration_in_seconds" {
+  default = "3600"
+}
+
+variable "waas_policy_waf_config_captchas_submit_label" {
+  default = "Show me the Products!"
+}
+
+variable "waas_policy_waf_config_captchas_title" {
+  default = "Quickly before you browse products..."
+}
+
+variable "waas_policy_waf_config_captchas_url" {
+  default = "/product.html"
+}
+
+variable "waas_policy_waf_config_captchas_footer_text" {
+  default = "Enter the letters and numbers as they are shown in the image above."
+}
+
+variable "waas_policy_waf_config_captchas_header_text" { 
+  default = "Help us keep pet product shopping safe please."
+}
+

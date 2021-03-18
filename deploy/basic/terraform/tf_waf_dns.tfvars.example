@@ -1,0 +1,86 @@
+# Copyright (c) 2020 Oracle and/or its affiliates. All rights reserved.
+# Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
+#
+
+#############################################################################################################################
+# NOTE: Before use the terraform local or CloudShell, you need to build the binaries of the application.                    #
+#       Instructions here: https://github.com/oracle-quickstart/oci-cloudnative/blob/master/deploy/basic/README.md#build    #
+#                                                                                                                           #
+#       If using Oracle Resource Manager, the stack already include the binaries. ORM does not use the tfvars               #
+#############################################################################################################################
+
+# OCI authentication
+tenancy_ocid     = "ocid1.tenancy.oc1..xxx"
+fingerprint      = "xx:xx" # e.g.: "5f:53:..." or leave blank if using CloudShell
+user_ocid        = "ocid1.user.oc1..xx"
+private_key_path = "~/.oci/oci_api_key.pem" # e.g.: "/users/user/.oci/oci_api_key.pem" or leave blank if using CloudShell
+
+# Deployment compartment
+compartment_ocid = "ocid1.compartment.oc1..xxx"
+
+# region
+region = "us-ashburn-1"
+
+# Compute
+num_nodes                           = 3
+#instance_shape                      = "VM.Standard2.1"
+instance_shape                      = "VM.Standard.E3.Flex"
+instance_visibility                 = "Private"
+generate_public_ssh_key             = false
+public_ssh_key                      = "ssh-rsa AAAA"
+is_pv_encryption_in_transit_enabled = true
+
+# Network Details
+lb_shape             = "100Mbps"
+lb_compartment_ocid  = "ocid1.compartment.oc1..xxx" # e.g.: "ocid1.compartment..."
+create_secondary_vcn = true
+
+# Autonomous Database
+autonomous_database_license_model            = "BRING_YOUR_OWN_LICENSE" # LICENSE_INCLUDED or BRING_YOUR_OWN_LICENSE
+autonomous_database_is_free_tier             = false
+autonomous_database_visibility               = "Private"
+autonomous_database_name                     = "MuShopDB"
+autonomous_database_db_version               = "19c"
+autonomous_database_cpu_core_count           = 1
+autonomous_database_data_storage_size_in_tbs = 1
+
+
+# Encryption (OCI Vault/Key Management/KMS)
+use_encryption_from_oci_vault = true
+create_new_encryption_key     = false
+encryption_key_id             = "ocid1.key.oc1.iad.xxx"
+
+# Always Free only or support other shapes
+use_only_always_free_elegible_resources = false
+
+# Object Storage
+object_storage_mushop_media_compartment_ocid = "ocid1.compartment.oc1..xxx" # e.g.: "ocid1.compartment..."
+object_storage_mushop_media_visibility       = "Private"
+
+# Added for networking Demo (DNS, Cert, WAF)
+# Certificate Generation
+enable_acme_certificate = true
+acme_email = "a.a@oracle.com"
+# This allows use of staging vs production Lets encrypt servers
+# By default it is the staging URL
+acme_server_url = "https://acme-v02.api.letsencrypt.org/directory"
+
+# If DNS is disabled, the ACME certificate is not enabled either, and WAF cannot be used
+enable_dns_zone = true
+dns_zone_name = "mushop.my.domain"
+
+# An entry into DNS for the MuShop Load Balancer
+# This will be accessible directly if WAF is disabled
+dns_lb_entry = "mushop-internal"
+
+# Whether to use WAF and add a challenge
+# If you enable WAF, you will get the following changes
+# 1) WAF certificate will be generated from ACME / Let's Encrypt
+# 2) WAF policy will be created with HTTPS redirect
+#
+enable_waf = true
+dns_waf_entry = "store"
+
+# If enabled, a simple CAPTCHA is used within WAF rules
+# See variables.tf for defaults and to add new entries here.
+enable_captcha_challenge = true

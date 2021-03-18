@@ -9,6 +9,7 @@ resource "oci_load_balancer_load_balancer" "mushop_lb" {
   subnet_ids     = [oci_core_subnet.mushop_lb_subnet.id]
   is_private     = "false"
   freeform_tags  = local.common_tags
+  network_security_group_ids = var.enable_waf? ["${oci_core_network_security_group.waf_nsg.id}"] : []
 
   dynamic "shape_details" {
     for_each = local.lb_shape == "flexible" ? [1] : []
@@ -71,4 +72,31 @@ resource "oci_load_balancer_listener" "mushop_listener_443" {
   connection_configuration {
     idle_timeout_in_seconds = "30"
   }
+
+  # Added for Certificate  - conditional
+  dynamic "ssl_configuration" {
+    for_each = var.enable_acme_certificate ? [1] : []
+    content {
+      #Required
+      certificate_name = oci_load_balancer_certificate.mushop_certificate.certificate_name
+      verify_peer_certificate = false
+    }
+  }
 }
+
+resource "oci_load_balancer_certificate" "mushop_certificate" {
+  # Conditional on toggle
+  count = var.enable_acme_certificate ? 1 : 0
+
+  # Required
+  certificate_name = var.certificate_certificate_name
+  load_balancer_id = oci_load_balancer_load_balancer.mushop_lb.id
+
+  private_key = acme_certificate.certificate[0].private_key_pem
+  public_certificate = acme_certificate.certificate[0].certificate_pem
+  ca_certificate = acme_certificate.certificate[0].issuer_pem
+  lifecycle {
+      create_before_destroy = true
+  }
+}
+

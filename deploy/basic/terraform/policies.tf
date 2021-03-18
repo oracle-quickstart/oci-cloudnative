@@ -54,6 +54,6 @@ locals {
   ]
   allow_group_manage_local_peering_statements = [
     "Allow group ${var.user_admin_group_for_vault_policy} to manage local-peering-gateways in compartment id ${var.compartment_ocid}",
-    "Allow group ${var.user_admin_group_for_vault_policy} to manage local-peering-gateways in compartment id ${(var.lb_compartment_ocid != "") ? var.lb_compartment_ocid : var.compartment_ocid}"
+  #  "Allow group ${var.user_admin_group_for_vault_policy} to manage local-peering-gateways in compartment id ${(var.lb_compartment_ocid != "") ? var.lb_compartment_ocid : var.compartment_ocid}"
   ]
 }
