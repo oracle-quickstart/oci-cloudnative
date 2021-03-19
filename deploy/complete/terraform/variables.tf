@@ -160,7 +160,7 @@ variable "autonomous_database_data_safe_status" {
   default = "NOT_REGISTERED" # REGISTERED || NOT_REGISTERED
 
   validation {
-    condition     = var.autonomous_database_license_model == "REGISTERED" || var.autonomous_database_license_model == "NOT_REGISTERED"
+    condition     = var.autonomous_database_data_safe_status == "REGISTERED" || var.autonomous_database_data_safe_status == "NOT_REGISTERED"
     error_message = "Sorry, but database license model can only be REGISTERED or NOT_REGISTERED."
   }
 }
