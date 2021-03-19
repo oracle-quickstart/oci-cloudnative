@@ -41,6 +41,8 @@ prompt> nohup terraform apply -auto-approve >> apply.txt 2>&1 &
 prompt> tail -f apply.txt
 ```
 
+Once the terraform completes, the WAF Policy and DNS Zone should reflect correctly, and you can hit the external URL, such as `store.mushop.example.com`.  The browser should indicate a clean certificate, and the information dialog for it should show what is configured.  Finally, if the CAPTCHA challenge for WAF is enabled, test that by navigating the store to any product page, and it will challenge you before displaying content.
+
 [oci]: https://cloud.oracle.com/en_US/cloud-infrastructure
 [orm]: https://docs.cloud.oracle.com/iaas/Content/ResourceManager/Concepts/resourcemanager.htm
 [tf]: https://www.terraform.io
