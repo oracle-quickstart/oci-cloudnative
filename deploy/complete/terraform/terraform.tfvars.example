@@ -27,7 +27,7 @@ encryption_key_id         = "" # e.g.: "ocid1.key.oc1..."
 
 # OKE Worker Nodes (Compute)
 num_pool_workers                          = 3
-node_pool_shape                           = "VM.Standard2.1"
+node_pool_shape                           = "VM.Standard.E3.Flex"
 node_pool_node_shape_config_ocpus         = 1
 node_pool_node_shape_config_memory_in_gbs = 16
 generate_public_ssh_key                   = true # if true, auto generate public and private keys and assign to the node pool.
