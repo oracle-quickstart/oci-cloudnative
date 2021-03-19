@@ -20,11 +20,6 @@ cluster_visibility = "Private"
 ## create_new_oke_cluster
 create_new_oke_cluster  = true
 existent_oke_cluster_id = "" # e.g.: ocid1.cluster.oc1...
-## Enable Cluster Autoscaler
-cluster_autoscaler_enabled              = true
-cluster_autoscaler_min_nodes            = 1
-cluster_autoscaler_max_nodes            = 16
-existent_oke_nodepool_id_for_autoscaler = "" # e,g,: ocid1.nodepool.oc1...
 ## Encryption (OCI Vault/Key Management/KMS)
 use_encryption            = false
 create_new_encryption_key = false
