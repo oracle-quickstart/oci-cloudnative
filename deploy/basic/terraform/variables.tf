@@ -179,8 +179,16 @@ locals {
 
 # Shapes
 locals {
-  compute_shape_micro                = "VM.Standard.E2.1.Micro"
-  compute_flexible_shapes           = ["VM.Standard.E3.Flex"]
-  compute_shape_flexible_description = "Cores for Standard.E3.Flex and BM.Standard.E3.128 Instances"
-  lb_shape_flexible                  = "flexible"
+  compute_shape_micro = "VM.Standard.E2.1.Micro"
+  compute_flexible_shapes = [
+    "VM.Standard.E3.Flex",
+    "VM.Standard.E4.Flex"
+  ]
+  compute_shape_flexible_descriptions = [
+    "Cores for Standard.E3.Flex and BM.Standard.E3.128 Instances",
+    "Cores for Standard.E4.Flex and BM.Standard.E4.128 Instances"
+  ]
+  compute_shape_flexible_vs_descriptions = zipmap(local.compute_flexible_shapes, local.compute_shape_flexible_descriptions)
+  compute_shape_description              = lookup(local.compute_shape_flexible_vs_descriptions, local.instance_shape, local.instance_shape)
+  lb_shape_flexible                      = "flexible"
 }
