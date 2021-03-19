@@ -261,9 +261,13 @@ variables:
     title: "Number of OCPUs"
     description: "You can customize the number of OCPUs to a flexible shape."
     visible:
-      eq:
-        - node_pool_shape 
-        - "VM.Standard.E3.Flex"
+      or:
+        - eq:
+          - instance_shape 
+          - "VM.Standard.E3.Flex"
+        - eq:
+          - instance_shape 
+          - "VM.Standard.E4.Flex"
 
   node_pool_node_shape_config_memory_in_gbs:
     type: integer
@@ -272,9 +276,13 @@ variables:
     title: "Amount of memory (GB)"
     description: "You can customize the amount of memory allocated to a flexible shape."
     visible:
-      eq:
-        - node_pool_shape 
-        - "VM.Standard.E3.Flex"
+      or:
+        - eq:
+          - instance_shape 
+          - "VM.Standard.E3.Flex"
+        - eq:
+          - instance_shape 
+          - "VM.Standard.E4.Flex"
 
   num_pool_workers:
     type: integer
