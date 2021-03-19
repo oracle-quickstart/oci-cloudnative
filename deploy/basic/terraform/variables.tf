@@ -221,9 +221,7 @@ variable "acme_server_url" {
   default = "https://acme-staging-v02.api.letsencrypt.org/directory"
 }
 
-variable "dns_zone_name" {
-  default = "mushop.agregory.page"
-}
+variable "dns_zone_name" {}
 
 variable "enable_waf" {
   default = "false"
