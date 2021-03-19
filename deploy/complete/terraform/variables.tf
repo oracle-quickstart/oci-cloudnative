@@ -55,20 +55,6 @@ variable "encryption_key_id" {
   default = ""
 }
 
-## OKE Autoscaler
-variable "cluster_autoscaler_enabled" {
-  default = true
-}
-variable "cluster_autoscaler_min_nodes" {
-  default = 1
-}
-variable "cluster_autoscaler_max_nodes" {
-  default = 10
-}
-variable "existent_oke_nodepool_id_for_autoscaler" {
-  default = ""
-}
-
 ## OKE Node Pool Details
 variable "node_pool_name" {
   default = "pool1"

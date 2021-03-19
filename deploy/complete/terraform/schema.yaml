@@ -185,42 +185,42 @@ variables:
       and:
         - create_new_oke_cluster
 
-  cluster_autoscaler_enabled:
-    type: boolean
-    title: "Enable Cluster Austoscaler"
-    description: "Enables OKE cluster autoscaler. Node pools will auto scale based on the resources usage."        
+  # cluster_autoscaler_enabled:
+  #   type: boolean
+  #   title: "Enable Cluster Austoscaler"
+  #   description: "Enables OKE cluster autoscaler. Node pools will auto scale based on the resources usage."        
 
-  cluster_autoscaler_min_nodes:
-    type: integer
-    minimum: 1
-    maximum: 1000
-    title: "Autoscaler: Minimum number of nodes"
-    description: "Minimum number of nodes on the node pool to be scheduled by the Kubernetes."
-    visible: #($cluster_autoscaler_enabled = true)
-      and:
-        - cluster_autoscaler_enabled
+  # cluster_autoscaler_min_nodes:
+  #   type: integer
+  #   minimum: 1
+  #   maximum: 1000
+  #   title: "Autoscaler: Minimum number of nodes"
+  #   description: "Minimum number of nodes on the node pool to be scheduled by the Kubernetes."
+  #   visible: #($cluster_autoscaler_enabled = true)
+  #     and:
+  #       - cluster_autoscaler_enabled
 
-  cluster_autoscaler_max_nodes:
-    type: integer
-    minimum: 1
-    maximum: 1000
-    title: "Autoscaler: Maximum number of node"
-    description: "Maximum number of nodes on the node pool to be scheduled by the Kubernetes."
-    visible: #($cluster_autoscaler_enabled = true)
-      and:
-        - cluster_autoscaler_enabled
+  # cluster_autoscaler_max_nodes:
+  #   type: integer
+  #   minimum: 1
+  #   maximum: 1000
+  #   title: "Autoscaler: Maximum number of node"
+  #   description: "Maximum number of nodes on the node pool to be scheduled by the Kubernetes."
+  #   visible: #($cluster_autoscaler_enabled = true)
+  #     and:
+  #       - cluster_autoscaler_enabled
 
-  existent_oke_nodepool_id_for_autoscaler:
-    type: string
-    title: "OKE Nodepool id"
-    description: "Nodepool Id of the existent OKE to use with Cluster Autoscaler"
-    required: true
-    visible: #($cluster_autoscaler_enabled  = true) + ($create_new_oke_cluster  = false)
-      and:
-        - and:
-          - cluster_autoscaler_enabled
-        - not:
-          - create_new_oke_cluster
+  # existent_oke_nodepool_id_for_autoscaler:
+  #   type: string
+  #   title: "OKE Nodepool id"
+  #   description: "Nodepool Id of the existent OKE to use with Cluster Autoscaler"
+  #   required: true
+  #   visible: #($cluster_autoscaler_enabled  = true) + ($create_new_oke_cluster  = false)
+  #     and:
+  #       - and:
+  #         - cluster_autoscaler_enabled
+  #       - not:
+  #         - create_new_oke_cluster
 
   use_encryption:
       type: boolean
