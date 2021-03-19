@@ -5,12 +5,12 @@
 dependencies:
   # Prometheus
   - name: prometheus
-    version: 13.5.0
+    version: 13.6.0
     condition: prometheus.enabled
     repository: https://prometheus-community.github.io/helm-charts
   # Grafana
   - name: grafana
-    version: 6.4.8
+    version: 6.6.3
     condition: grafana.enabled
     repository: https://grafana.github.io/helm-charts
   # HPA Metrics
@@ -20,7 +20,7 @@ dependencies:
     repository: https://charts.helm.sh/stable
   # Ingress Controller
   - name: ingress-nginx
-    version: 3.23.0
+    version: 3.24.0
     condition: ingress-nginx.enabled
     repository: https://kubernetes.github.io/ingress-nginx
   # Service Catalog
