@@ -18,7 +18,7 @@ resource "helm_release" "prometheus" {
   name       = "prometheus"
   repository = local.helm_repository.prometheus
   chart      = "prometheus"
-  version    = "13.5.0"
+  version    = "13.6.0"
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
   wait       = false
 
@@ -37,7 +37,7 @@ resource "helm_release" "grafana" {
   name       = "mushop-utils-grafana" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.grafana
   chart      = "grafana"
-  version    = "6.4.8"
+  version    = "6.6.3"
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
   wait       = false
 
@@ -79,7 +79,7 @@ resource "helm_release" "ingress_nginx" {
   name       = "mushop-utils-ingress-nginx" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.ingress_nginx
   chart      = "ingress-nginx"
-  version    = "3.23.0"
+  version    = "3.24.0"
   namespace  = kubernetes_namespace.mushop_utilities_namespace.id
   wait       = true
 
