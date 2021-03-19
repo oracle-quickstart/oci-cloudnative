@@ -19,13 +19,13 @@ resource "acme_certificate" "certificate" {
   count = var.enable_acme_certificate ? 1 : 0
 
   account_key_pem           = "${acme_registration.reg[0].account_key_pem}"
-  common_name               = "store.mushop.agregory.page"
-  subject_alternative_names = ["mushop-internal.mushop.agregory.page"]
+  common_name               = local.dns_waf_domain
+  subject_alternative_names = [local.dns_lb_domain]
 
   dns_challenge {
     provider = "oraclecloud"
     config = {
-      OCI_PRIVKEY_FILE="/home/andrew_gre/.oci/oci_api_key.pem"
+      OCI_PRIVKEY_FILE=var.private_key_path
       OCI_TENANCY_OCID=var.tenancy_ocid
       OCI_USER_OCID=var.user_ocid
       OCI_PUBKEY_FINGERPRINT=var.fingerprint
@@ -35,9 +35,12 @@ resource "acme_certificate" "certificate" {
   }
 }
 
+output "public_certificate_common_name" {
+  value = var.enable_acme_certificate ? "${acme_certificate.certificate[0].certificate_domain}" : null
+}
 output "private_key_pem" {
-  value = "${acme_certificate.certificate[0].private_key_pem}"
+  value = var.enable_acme_certificate ? "${acme_certificate.certificate[0].private_key_pem}" : null
 }
 output "certificate_pem" {
-  value = "${acme_certificate.certificate[0].certificate_pem}${acme_certificate.certificate[0].issuer_pem}"
+  value = var.enable_acme_certificate ? "${acme_certificate.certificate[0].certificate_pem}${acme_certificate.certificate[0].issuer_pem}" : null
 }

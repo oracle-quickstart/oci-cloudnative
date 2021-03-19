@@ -59,3 +59,33 @@ use_only_always_free_elegible_resources = false
 # Object Storage
 object_storage_mushop_media_compartment_ocid = "" # e.g.: "ocid1.compartment..."
 object_storage_mushop_media_visibility       = "Private"
+
+# Additional networking Demo (DNS, Cert, WAF)
+# Certificate Generation
+enable_acme_certificate = true
+acme_email = "a.a@oracle.com"
+
+# This allows use of staging vs production Lets encrypt servers
+# Only un-comment this when ready to use the real certificate server
+# By default it is the staging URL
+# acme_server_url = "https://acme-v02.api.letsencrypt.org/directory"
+#
+# If DNS is disabled, the ACME certificate is not enabled either, and WAF cannot be used
+enable_dns_zone = true
+dns_zone_name = "mushop.my.domain"
+
+# An entry into DNS for the MuShop Load Balancer
+# This will be accessible directly if WAF is disabled
+dns_lb_entry = "mushop-internal"
+
+# Whether to use WAF and add a challenge
+# If you enable WAF, you will get the following changes
+# 1) WAF certificate will be generated from ACME / Let's Encrypt
+# 2) WAF policy will be created with HTTPS redirect
+# 3) NSG with WAF IPs will be added to the LB and it will no longer be accessible directly
+enable_waf = true
+dns_waf_entry = "store"
+
+# If enabled, a simple CAPTCHA is used within WAF rules
+# See variables.tf for defaults and to add new entries here.
+enable_captcha_challenge = true

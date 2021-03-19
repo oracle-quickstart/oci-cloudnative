@@ -71,5 +71,5 @@ resource oci_waas_waas_policy mushop_waf_policy {
 
 ######################
 locals {
-  waf_certificate_data = "${acme_certificate.certificate[0].certificate_pem}${acme_certificate.certificate[0].issuer_pem}"
+  waf_certificate_data = var.enable_waf ? "{acme_certificate.certificate[0].certificate_pem}${acme_certificate.certificate[0].issuer_pem}" : null
 }
