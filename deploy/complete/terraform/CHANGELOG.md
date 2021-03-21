@@ -6,6 +6,8 @@
 - Support for versioning TF providers
 - Support for OLD TF Providers to match ORM support
 - Support for new E4.flex shapes
+- Terraform Variables validation
+- Helm chart updates: remove deprecated grafana oci-datasource
 
 2021-03-11 (v2.0.6)
 
