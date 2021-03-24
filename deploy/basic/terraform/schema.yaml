@@ -70,16 +70,30 @@ groupings:
     - object_storage_mushop_media_compartment_ocid
     - object_storage_mushop_media_visibility
 
-  - title: "Advanced Resource Options - Networking"
+  - title: "Advanced Resource Options - DNS"
+    variables:
+    - enable_dns_zone
+    - dns_zone_name
+    - dns_lb_entry
+
+  - title: "Advanced Resource Options - Certificate Generation"
     variables:
     - enable_acme_certificate
     - acme_email
     - acme_server_url
-    - dns_zone_name
-    - dns_lb_entry
+
+  - title: "Advanced Resource Options - Web Application Firewall"
+    variables:
     - enable_waf
     - dns_waf_entry
     - enable_captcha_challenge
+    - waas_policy_waf_config_captchas_failure_message
+    - waas_policy_waf_config_captchas_session_expiration_in_seconds
+    - waas_policy_waf_config_captchas_submit_label
+    - waas_policy_waf_config_captchas_title
+    - waas_policy_waf_config_captchas_url
+    - waas_policy_waf_config_captchas_footer_text
+    - waas_policy_waf_config_captchas_header_text
 
   - title: "Extras Hidden"
     variables:
@@ -100,6 +114,8 @@ groupings:
       - object_storage_mushop_media_read_par_expiration_date
       - network_cidrs
       - services_in_mock_mode
+      - certificate_certificate_name
+
     visible: false
 
 variables:
@@ -468,8 +484,9 @@ variables:
   dns_zone_name:
     type: string
     title: "DNS Zone name"
-    description: "Name of the subdomain.domain to create.  For example, if you own example.com, set this to mushop.example.com, and then delegate the NS records for mushop to Oracle DNS using your domain's DNS panel."
+    description: "Name of the subdomain to create as an OCI DNS Zone.  For example, if you own <example.com>, set this to mushop.example.com, and then delegate the NS records for mushop to Oracle DNS using your domain's DNS panel. NOTE - you MUST own a domain name and have access to delegate NS records for a subdomain to OCI DNS."
     pattern: ^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$
+    default: "mushop.example.com"
     visible: 
       and:
         - show_advanced
@@ -545,6 +562,76 @@ variables:
         - enable_dns_zone
         - enable_waf
 
+  waas_policy_waf_config_captchas_failure_message:
+    type: string
+    title: "Failure message for CAPTCHA"
+    visible:
+      and:
+        - show_advanced
+        - enable_dns_zone
+        - enable_waf
+        - enable_captcha_challenge
+
+  waas_policy_waf_config_captchas_session_expiration_in_seconds:
+    type: integer
+    title: "Session expiration for CAPTCHA"
+    visible:
+      and:
+        - show_advanced
+        - enable_dns_zone
+        - enable_waf
+        - enable_captcha_challenge
+
+  waas_policy_waf_config_captchas_submit_label:
+    type: string
+    title: "Button label for CAPTCHA"
+    visible:
+      and:
+        - show_advanced
+        - enable_dns_zone
+        - enable_waf
+        - enable_captcha_challenge
+
+  waas_policy_waf_config_captchas_title:
+    type: string
+    title: "Title for CAPTCHA"
+    visible:
+      and:
+        - show_advanced
+        - enable_dns_zone
+        - enable_waf
+        - enable_captcha_challenge
+
+  waas_policy_waf_config_captchas_url:
+    type: string
+    title: "URL for CAPTCHA"
+    visible:
+      and:
+        - show_advanced
+        - enable_dns_zone
+        - enable_waf
+        - enable_captcha_challenge
+
+  waas_policy_waf_config_captchas_footer_text:
+    type: string
+    title: "Footer message for CAPTCHA"
+    visible:
+      and:
+        - show_advanced
+        - enable_dns_zone
+        - enable_waf
+        - enable_captcha_challenge
+
+  waas_policy_waf_config_captchas_header_text:
+    type: string
+    title: "Header message for CAPTCHA"
+    visible:
+      and:
+        - show_advanced
+        - enable_dns_zone
+        - enable_waf
+        - enable_captcha_challenge
+  
 outputGroups:
   - title: "MuShop App details"
     outputs:
