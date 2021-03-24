@@ -70,6 +70,17 @@ groupings:
     - object_storage_mushop_media_compartment_ocid
     - object_storage_mushop_media_visibility
 
+  - title: "Advanced Resource Options - Networking"
+    variables:
+    - enable_acme_certificate
+    - acme_email
+    - acme_server_url
+    - dns_zone_name
+    - dns_lb_entry
+    - enable_waf
+    - dns_waf_entry
+    - enable_captcha_challenge
+
   - title: "Extras Hidden"
     variables:
       - user_ocid
@@ -445,6 +456,94 @@ variables:
           - show_advanced
         - not:
           - use_only_always_free_elegible_resources
+
+  enable_dns_zone:
+    type: boolean
+    title: "DNS Zone enabled?"
+    description: "Whether to add a DNS Zone to the LB compartment"
+    visible:
+      and:
+        - show_advanced
+
+  dns_zone_name:
+    type: string
+    title: "DNS Zone name"
+    description: "Name of the subdomain.domain to create.  For example, if you own example.com, set this to mushop.example.com, and then delegate the NS records for mushop to Oracle DNS using your domain's DNS panel."
+    pattern: ^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$
+    visible: 
+      and:
+        - show_advanced
+        - enable_dns_zone
+ 
+  enable_acme_certificate:
+    type: boolean
+    title: "Enable Lets Encrypt Certificate?"
+    description: "Whether to create a certificate using Lets Encrypt and apply it to the Load Balancer SSL Listener"
+    visible: 
+      and:
+        - show_advanced
+        - enable_dns_zone
+
+  acme_email:
+    type: string
+    title: "Email address for ACME/Lets Encrypt"
+    description: "Provide a valid email address for Lets Encrypt certificate generation"
+    pattern: "^(?:(?!.*?[.]{2})[a-zA-Z0-9](?:[a-zA-Z0-9.+!%-]{1,64}|)|\"[a-zA-Z0-9.+!% -]{1,64}\")@[a-zA-Z0-9][a-zA-Z0-9.-]+(.[a-z]{2,}|.[0-9]{1,})$"
+    visible: 
+      and:
+        - show_advanced
+        - enable_dns_zone
+        - enable_acme_certificate
+  acme_server_url:
+    type: enum
+    enum:
+    - "https://acme-staging-v02.api.letsencrypt.org/directory"
+    - "https://acme-v02.api.letsencrypt.org/directory"    
+    title: "URL for ACME/Lets Encrypt"
+    description: "Choose Staging or Production for Lets Encrypt certificate generation"
+    visible: 
+      and:
+        - show_advanced
+        - enable_dns_zone
+        - enable_acme_certificate
+
+  dns_lb_entry:
+    type: string
+    title: "Name for DNS Entry for Load Balancer"
+    description: "DNS record name.  This will be prepended to the DNS Zone name and give the resolvable address for the Load Balancer"
+    visible: 
+      and:
+        - show_advanced
+        - enable_dns_zone
+
+  enable_waf:
+    type: boolean
+    title: "Enable Web Application Firewall?"
+    description: "Whether to configure WAF"
+    visible: 
+      and:
+        - show_advanced
+        - enable_dns_zone
+
+  dns_waf_entry:
+    type: string
+    title: "Name for DNS Entry for Load Balancer"
+    description: "DNS record name.  This will be prepended to the DNS Zone name and give the resolvable address for the WAF URL - ie what users will hit."
+    visible: 
+      and:
+        - show_advanced
+        - enable_dns_zone
+        - enable_waf
+  
+  enable_captcha_challenge:
+    type: boolean
+    title: "Enable Web Application Firewall - Captcha challenge?"
+    description: "Whether to configure WAF with a challenge on the product pages"
+    visible: 
+      and:
+        - show_advanced
+        - enable_dns_zone
+        - enable_waf
 
 outputGroups:
   - title: "MuShop App details"
