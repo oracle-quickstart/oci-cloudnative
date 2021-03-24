@@ -541,6 +541,7 @@ variables:
       and:
         - show_advanced
         - enable_dns_zone
+        - enable_acme_certificate
 
   dns_waf_entry:
     type: string
