@@ -12,6 +12,7 @@
 - Subject-oriented terraform variables
 - Option to create a new sub-compartment for OKE, Nodes, Services
 - Kubernetes API Endpoint options (Public or Private)
+- Terraform resources re-organized
 
 2021-03-11 (v2.0.6)
 
