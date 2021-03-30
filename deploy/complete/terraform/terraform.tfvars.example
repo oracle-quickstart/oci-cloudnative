@@ -15,8 +15,8 @@ compartment_ocid = "ocid1.compartment...."
 region = "us-ashburn-1"
 
 # OKE Cluster
-## cluster_visibility
-cluster_visibility = "Private"
+## Cluster Workers visibility
+cluster_workers_visibility = "Private"
 ## create_new_oke_cluster
 create_new_oke_cluster  = true
 existent_oke_cluster_id = "" # e.g.: ocid1.cluster.oc1...

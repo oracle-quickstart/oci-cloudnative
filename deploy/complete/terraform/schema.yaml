@@ -27,7 +27,7 @@ variableGroups:
     - existent_oke_cluster_id
     - cluster_name
     - k8s_version
-    - cluster_visibility
+    - cluster_workers_visibility
     - cluster_autoscaler_enabled
     - cluster_autoscaler_min_nodes
     - cluster_autoscaler_max_nodes
@@ -173,7 +173,7 @@ variables:
       and:
         - create_new_oke_cluster
 
-  cluster_visibility:
+  cluster_workers_visibility:
     type: enum
     enum:
     - "Private"
