@@ -4,6 +4,9 @@
 
 # OKE Variables
 ## OKE Cluster Details
+variable "app_name" {
+  default = "MuShop"
+}
 variable "cluster_name" {
   default = "MuShop-cluster"
 }
@@ -43,11 +46,8 @@ variable "existent_oke_cluster_id" {
 variable "create_new_compartment_for_oke" {
   default = true
 }
-variable "oke_compartment_name" {
-  default = "MuShop"
-}
 variable "oke_compartment_description" {
-  default = "MuShop Compartment for OKE, Nodes and Services"
+  default = "Compartment for OKE, Nodes and Services"
 }
 
 ## OKE Encryption details

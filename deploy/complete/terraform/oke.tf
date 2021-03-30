@@ -74,8 +74,8 @@ resource "oci_containerengine_node_pool" "oke_node_pool" {
 
 resource "oci_identity_compartment" "oke_compartment" {
   compartment_id = var.compartment_ocid
-  name           = "${var.oke_compartment_name}-${random_string.deploy_id.result}"
-  description    = "${var.oke_compartment_description} (Deployment ${random_string.deploy_id.result})"
+  name           = "${trimspace(var.app_name)}-${random_string.deploy_id.result}"
+  description    = "${var.app_name} ${var.oke_compartment_description} (Deployment ${random_string.deploy_id.result})"
   enable_delete  = true
 
   count = var.create_new_compartment_for_oke ? 1 : 0
