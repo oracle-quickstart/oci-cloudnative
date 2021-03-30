@@ -2,11 +2,11 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
-resource "oci_containerengine_cluster" "oke_mushop_cluster" {
+resource "oci_containerengine_cluster" "oke_cluster" {
   compartment_id     = local.oke_compartment_ocid
   kubernetes_version = var.k8s_version
   name               = "${var.cluster_name}-${random_string.deploy_id.result}"
-  vcn_id             = oci_core_virtual_network.oke_mushop_vcn[0].id
+  vcn_id             = oci_core_virtual_network.oke_vcn[0].id
 
   endpoint_config {
         is_public_ip_enabled = var.cluster_endpoint_config_is_public_ip_enabled
@@ -31,8 +31,8 @@ resource "oci_containerengine_cluster" "oke_mushop_cluster" {
   count = var.create_new_oke_cluster ? 1 : 0
 }
 
-resource "oci_containerengine_node_pool" "oke_mushop_node_pool" {
-  cluster_id         = oci_containerengine_cluster.oke_mushop_cluster[0].id
+resource "oci_containerengine_node_pool" "oke_node_pool" {
+  cluster_id         = oci_containerengine_cluster.oke_cluster[0].id
   compartment_id     = local.oke_compartment_ocid
   kubernetes_version = var.k8s_version
   name               = var.node_pool_name

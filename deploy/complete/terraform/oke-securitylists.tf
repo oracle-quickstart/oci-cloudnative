@@ -5,7 +5,7 @@
 resource "oci_core_security_list" "oke_mushop_security_list" {
   compartment_id = local.oke_compartment_ocid
   display_name   = "oke-mushop-wkr-seclist-${random_string.deploy_id.result}"
-  vcn_id         = oci_core_virtual_network.oke_mushop_vcn[0].id
+  vcn_id         = oci_core_virtual_network.oke_vcn[0].id
 
   ingress_security_rules {
     description = "Allow pods on one worker node to communicate with pods on other worker nodes"
@@ -45,16 +45,18 @@ resource "oci_core_security_list" "oke_mushop_security_list" {
   }
 
   egress_security_rules {
+    description = "Worker Nodes access to Internet"
     destination      = lookup(var.network_cidrs, "ALL-CIDR")
     destination_type = "CIDR_BLOCK"
-    protocol         = "all"
+    protocol         = local.all_protocols
     stateless        = false
   }
 
   egress_security_rules {
+    description = "Allow nodes to communicate with OKE to ensure correct start-up and continued functioning"
     destination      = lookup(data.oci_core_services.all_services.services[0], "cidr_block")
     destination_type = "SERVICE_CIDR_BLOCK"
-    protocol         = "all"
+    protocol         = local.all_protocols
   }
 
   count = var.create_new_oke_cluster ? 1 : 0
@@ -63,7 +65,7 @@ resource "oci_core_security_list" "oke_mushop_security_list" {
 resource "oci_core_security_list" "oke_mushop_lb_security_list" {
   compartment_id = local.oke_compartment_ocid
   display_name   = "oke-mushop-wkr-lb-seclist-${random_string.deploy_id.result}"
-  vcn_id         = oci_core_virtual_network.oke_mushop_vcn[0].id
+  vcn_id         = oci_core_virtual_network.oke_vcn[0].id
 
   egress_security_rules {
     destination      = lookup(var.network_cidrs, "ALL-CIDR")

@@ -1,6 +1,6 @@
 # CHANGELOG
 
-2021-03-15 (v2.0.7)
+2021-03-30 (v2.1.0)
 
 - Retrieval of Current and Home regions for Identity requests
 - Support for versioning TF providers
@@ -9,7 +9,9 @@
 - Terraform Variables validation
 - Helm chart updates: remove deprecated grafana oci-datasource
 - Introduction to grafana oci logs and metrics plugins
-- subject-oriented terraform variables
+- Subject-oriented terraform variables
+- Option to create a new sub-compartment for OKE, Nodes, Services
+- Kubernetes API Endpoint options (Public or Private)
 
 2021-03-11 (v2.0.6)
 
