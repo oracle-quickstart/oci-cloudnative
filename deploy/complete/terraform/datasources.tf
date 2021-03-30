@@ -38,38 +38,6 @@ data "oci_containerengine_cluster_kube_config" "oke_cluster_kube_config" {
   cluster_id = var.create_new_oke_cluster ? oci_containerengine_cluster.oke_cluster[0].id : var.existent_oke_cluster_id
 }
 
-
-locals {
-  # Helm repos
-  helm_repository = {
-    stable        = "https://charts.helm.sh/stable"
-    ingress_nginx = "https://kubernetes.github.io/ingress-nginx"
-    jetstack      = "https://charts.jetstack.io"                        # cert-manager
-    svc_catalog   = "https://kubernetes-sigs.github.io/service-catalog" # Service Catalog
-    grafana       = "https://grafana.github.io/helm-charts"
-    prometheus    = "https://prometheus-community.github.io/helm-charts"
-  }
-}
-
-# MuShop
-## Kubernetes Service: mushop-utils-ingress-nginx-controller
-data "kubernetes_service" "mushop_ingress" {
-  metadata {
-    name      = "mushop-utils-ingress-nginx-controller" # mushop-utils name included to be backwards compatible to the docs and setup chart install
-    namespace = kubernetes_namespace.mushop_utilities_namespace.id
-  }
-  depends_on = [helm_release.ingress_nginx]
-}
-
-## Kubernetes Secret: Grafana Admin Password
-data "kubernetes_secret" "mushop_utils_grafana" {
-  metadata {
-    name      = "mushop-utils-grafana"
-    namespace = kubernetes_namespace.mushop_utilities_namespace.id
-  }
-  depends_on = [helm_release.grafana, helm_release.mushop]
-}
-
 # OCI Services
 ## Available Services
 data "oci_core_services" "all_services" {
