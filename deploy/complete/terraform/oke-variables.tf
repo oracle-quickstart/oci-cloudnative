@@ -109,3 +109,36 @@ variable "network_cidrs" {
     KUBERNETES-SERVICE-CIDR = "10.96.0.0/16"
   }
 }
+
+# OCI Provider
+variable "tenancy_ocid" {}
+variable "compartment_ocid" {}
+variable "region" {}
+variable "user_ocid" {
+  default = ""
+}
+variable "fingerprint" {
+  default = ""
+}
+variable "private_key_path" {
+  default = ""
+}
+
+# Create Dynamic Group and Policies
+variable "create_dynamic_group_for_nodes_in_compartment" {
+  default = false
+}
+variable "create_compartment_policies" {
+  default = false
+}
+variable "create_tenancy_policies" {
+  default = false
+}
+
+# Dictionary Locals
+locals {
+  compute_flexible_shapes = [
+    "VM.Standard.E3.Flex",
+    "VM.Standard.E4.Flex"
+  ]
+}
