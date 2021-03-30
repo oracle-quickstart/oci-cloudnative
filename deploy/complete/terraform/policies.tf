@@ -4,7 +4,7 @@
 
 resource "oci_identity_dynamic_group" "oke_nodes_dg" {
   count          = var.create_dynamic_group_for_nodes_in_compartment ? 1 : 0
-  name           = "${lower(var.app_name)}-oke-cluster-dg-${random_string.deploy_id.result}"
+  name           = "${lower(trimspace(var.app_name))}-oke-cluster-dg-${random_string.deploy_id.result}"
   description    = "${var.app_name} Cluster Dynamic Group"
   compartment_id = var.tenancy_ocid
   matching_rule  = "ALL {instance.compartment.id = '${local.oke_compartment_ocid}'}"
@@ -13,7 +13,7 @@ resource "oci_identity_dynamic_group" "oke_nodes_dg" {
 }
 resource "oci_identity_policy" "oke_compartment_policies" {
   count          = var.create_compartment_policies ? 1 : 0
-  name           = "${lower(var.app_name)}-oke-cluster-policies-${random_string.deploy_id.result}"
+  name           = "${lower(trimspace(var.app_name))}-oke-cluster-policies-${random_string.deploy_id.result}"
   description    = "${var.app_name} OKE Cluster Policies"
   compartment_id = local.oke_compartment_ocid
   statements     = local.oke_compartment_policies_statement
