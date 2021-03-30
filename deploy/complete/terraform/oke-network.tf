@@ -20,7 +20,7 @@ resource "oci_core_subnet" "oke_k8s_endpoint_subnet" {
   prohibit_public_ip_on_vnic = (var.cluster_endpoint_visibility == "Private") ? true : false
   route_table_id             = oci_core_route_table.oke_route_table[0].id
   dhcp_options_id            = oci_core_virtual_network.oke_vcn[0].default_dhcp_options_id
-  security_list_ids          = [oci_core_security_list.oke_nodes_security_list[0].id]
+  security_list_ids          = [oci_core_security_list.oke_endpoint_security_list[0].id]
 
   count = var.create_new_oke_cluster ? 1 : 0
 }
