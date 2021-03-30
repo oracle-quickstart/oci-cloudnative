@@ -13,7 +13,7 @@ resource "oci_containerengine_cluster" "oke_cluster" {
         subnet_id = oci_core_subnet.oke_k8s_endpoint_subnet[0].id
     }
   options {
-    service_lb_subnet_ids = [oci_core_subnet.oke_mushop_lb_subnet[0].id]
+    service_lb_subnet_ids = [oci_core_subnet.oke_lb_subnet[0].id]
     add_ons {
       is_kubernetes_dashboard_enabled = var.cluster_options_add_ons_is_kubernetes_dashboard_enabled
       is_tiller_enabled               = false # Default is false, left here for reference
@@ -45,7 +45,7 @@ resource "oci_containerengine_node_pool" "oke_node_pool" {
 
       content {
         availability_domain = placement_configs.value.name
-        subnet_id           = oci_core_subnet.oke_mushop_subnet[0].id
+        subnet_id           = oci_core_subnet.oke_nodes_subnet[0].id
       }
     }
     size = var.num_pool_workers
