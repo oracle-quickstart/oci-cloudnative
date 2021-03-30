@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2020, 2021 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -66,6 +66,14 @@ resource "oci_containerengine_node_pool" "oke_mushop_node_pool" {
   }
 
   count = var.create_new_oke_cluster ? 1 : 0
+}
+
+resource "oci_identity_compartment" "oke_compartment" {
+  compartment_id = var.compartment_ocid
+  name           = "${var.oke_compartment_name}-${random_string.deploy_id.result}"
+  description    = "${var.oke_compartment_description} (Deployment ${random_string.deploy_id.result})"
+
+  count = var.create_new_compartment_for_oke ? 1 : 0
 }
 
 # Local kubeconfig for when using Terraform locally. Not used by Oracle Resource Manager
