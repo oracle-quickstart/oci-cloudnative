@@ -4,7 +4,7 @@
 
 resource "oci_core_security_list" "oke_nodes_security_list" {
   compartment_id = local.oke_compartment_ocid
-  display_name   = "oke-mushop-wkr-seclist-${random_string.deploy_id.result}"
+  display_name   = "oke-nodes-wkr-seclist-${lower(var.app_name)}-${random_string.deploy_id.result}"
   vcn_id         = oci_core_virtual_network.oke_vcn[0].id
 
   ingress_security_rules {
@@ -64,7 +64,7 @@ resource "oci_core_security_list" "oke_nodes_security_list" {
 
 resource "oci_core_security_list" "oke_lb_security_list" {
   compartment_id = local.oke_compartment_ocid
-  display_name   = "oke-mushop-wkr-lb-seclist-${random_string.deploy_id.result}"
+  display_name   = "oke-lb-seclist-${lower(var.app_name)}-${random_string.deploy_id.result}"
   vcn_id         = oci_core_virtual_network.oke_vcn[0].id
 
   egress_security_rules {
