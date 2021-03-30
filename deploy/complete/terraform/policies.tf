@@ -3,6 +3,7 @@
 # 
 
 resource "oci_identity_dynamic_group" "oke_mushop_dg" {
+  count          = var.create_dynamic_group_for_nodes_in_compartment ? 1 : 0
   name           = "mushop-oke-cluster-dg-${random_string.deploy_id.result}"
   description    = "MuShop Cluster Dynamic Group"
   compartment_id = var.tenancy_ocid
@@ -10,7 +11,8 @@ resource "oci_identity_dynamic_group" "oke_mushop_dg" {
 
   provider = oci.home_region
 }
-resource "oci_identity_policy" "mushop_oke_policies" {
+resource "oci_identity_policy" "mushop_oke_compartment_policies" {
+  count          = var.create_compartment_policies ? 1 : 0
   name           = "mushop-oke-cluster-policies-${random_string.deploy_id.result}"
   description    = "MuShop OKE Cluster Policies"
   compartment_id = var.compartment_ocid
@@ -30,19 +32,19 @@ locals {
 
 locals {
   oci_grafana_metrics_policies_statement = [
-    "Allow dynamic-group ${oci_identity_dynamic_group.oke_mushop_dg.name} to read metrics in compartment id ${var.compartment_ocid}",
-    "Allow dynamic-group ${oci_identity_dynamic_group.oke_mushop_dg.name} to read compartments in compartment id ${var.compartment_ocid}"
+    "Allow dynamic-group ${oci_identity_dynamic_group.oke_mushop_dg.0.name} to read metrics in compartment id ${var.compartment_ocid}",
+    "Allow dynamic-group ${oci_identity_dynamic_group.oke_mushop_dg.0.name} to read compartments in compartment id ${var.compartment_ocid}"
   ]
   oci_grafana_logs_policies_statement = [
-    "Allow dynamic-group ${oci_identity_dynamic_group.oke_mushop_dg.name} to read log-groups in compartment id ${var.compartment_ocid}",
-    "Allow dynamic-group ${oci_identity_dynamic_group.oke_mushop_dg.name} to read log-content in compartment id ${var.compartment_ocid}"
+    "Allow dynamic-group ${oci_identity_dynamic_group.oke_mushop_dg.0.name} to read log-groups in compartment id ${var.compartment_ocid}",
+    "Allow dynamic-group ${oci_identity_dynamic_group.oke_mushop_dg.0.name} to read log-content in compartment id ${var.compartment_ocid}"
   ]
   cluster_autoscaler_policies_statement = [
-    "Allow dynamic-group ${oci_identity_dynamic_group.oke_mushop_dg.name} to manage cluster-node-pools in compartment id ${var.compartment_ocid}",
-    "Allow dynamic-group ${oci_identity_dynamic_group.oke_mushop_dg.name} to manage instance-family in compartment id ${var.compartment_ocid}",
-    "Allow dynamic-group ${oci_identity_dynamic_group.oke_mushop_dg.name} to use subnets in compartment id ${var.compartment_ocid}",
-    "Allow dynamic-group ${oci_identity_dynamic_group.oke_mushop_dg.name} to read virtual-network-family in compartment id ${var.compartment_ocid}",
-    "Allow dynamic-group ${oci_identity_dynamic_group.oke_mushop_dg.name} to use vnics in compartment id ${var.compartment_ocid}",
-    "Allow dynamic-group ${oci_identity_dynamic_group.oke_mushop_dg.name} to inspect compartments in compartment id ${var.compartment_ocid}"
+    "Allow dynamic-group ${oci_identity_dynamic_group.oke_mushop_dg.0.name} to manage cluster-node-pools in compartment id ${var.compartment_ocid}",
+    "Allow dynamic-group ${oci_identity_dynamic_group.oke_mushop_dg.0.name} to manage instance-family in compartment id ${var.compartment_ocid}",
+    "Allow dynamic-group ${oci_identity_dynamic_group.oke_mushop_dg.0.name} to use subnets in compartment id ${var.compartment_ocid}",
+    "Allow dynamic-group ${oci_identity_dynamic_group.oke_mushop_dg.0.name} to read virtual-network-family in compartment id ${var.compartment_ocid}",
+    "Allow dynamic-group ${oci_identity_dynamic_group.oke_mushop_dg.0.name} to use vnics in compartment id ${var.compartment_ocid}",
+    "Allow dynamic-group ${oci_identity_dynamic_group.oke_mushop_dg.0.name} to inspect compartments in compartment id ${var.compartment_ocid}"
   ]
 }
