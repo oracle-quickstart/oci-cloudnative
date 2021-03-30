@@ -3,11 +3,15 @@
 # 
 
 resource "oci_containerengine_cluster" "oke_mushop_cluster" {
-  compartment_id     = var.compartment_ocid
+  compartment_id     = local.oke_compartment_ocid
   kubernetes_version = var.k8s_version
   name               = "${var.cluster_name}-${random_string.deploy_id.result}"
   vcn_id             = oci_core_virtual_network.oke_mushop_vcn[0].id
 
+  endpoint_config {
+        is_public_ip_enabled = var.cluster_endpoint_config_is_public_ip_enabled
+        subnet_id = oci_core_subnet.oke_k8s_endpoint_subnet[0].id
+    }
   options {
     service_lb_subnet_ids = [oci_core_subnet.oke_mushop_lb_subnet[0].id]
     add_ons {
@@ -29,7 +33,7 @@ resource "oci_containerengine_cluster" "oke_mushop_cluster" {
 
 resource "oci_containerengine_node_pool" "oke_mushop_node_pool" {
   cluster_id         = oci_containerengine_cluster.oke_mushop_cluster[0].id
-  compartment_id     = var.compartment_ocid
+  compartment_id     = local.oke_compartment_ocid
   kubernetes_version = var.k8s_version
   name               = var.node_pool_name
   node_shape         = var.node_pool_shape
@@ -72,8 +76,12 @@ resource "oci_identity_compartment" "oke_compartment" {
   compartment_id = var.compartment_ocid
   name           = "${var.oke_compartment_name}-${random_string.deploy_id.result}"
   description    = "${var.oke_compartment_description} (Deployment ${random_string.deploy_id.result})"
+  enable_delete  = true
 
   count = var.create_new_compartment_for_oke ? 1 : 0
+}
+locals {
+  oke_compartment_ocid = oci_identity_compartment.oke_compartment.0.id ? 1 : var.compartment_ocid
 }
 
 # Local kubeconfig for when using Terraform locally. Not used by Oracle Resource Manager
