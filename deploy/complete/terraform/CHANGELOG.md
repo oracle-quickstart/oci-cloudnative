@@ -8,7 +8,8 @@
 - Support for new E4.flex shapes
 - Terraform Variables validation
 - Helm chart updates: remove deprecated grafana oci-datasource
-- introduction to grafana oci logs and metrics plugins
+- Introduction to grafana oci logs and metrics plugins
+- subject-oriented terraform variables
 
 2021-03-11 (v2.0.6)
 
