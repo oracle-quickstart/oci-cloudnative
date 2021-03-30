@@ -4,19 +4,19 @@
 
 resource "oci_identity_dynamic_group" "oke_nodes_dg" {
   count          = var.create_dynamic_group_for_nodes_in_compartment ? 1 : 0
-  name           = "mushop-oke-cluster-dg-${random_string.deploy_id.result}"
-  description    = "MuShop Cluster Dynamic Group"
+  name           = "${lower(var.app_name)}-oke-cluster-dg-${random_string.deploy_id.result}"
+  description    = "${var.app_name} Cluster Dynamic Group"
   compartment_id = var.tenancy_ocid
   matching_rule  = "ALL {instance.compartment.id = '${local.oke_compartment_ocid}'}"
 
   provider = oci.home_region
 }
-resource "oci_identity_policy" "mushop_oke_compartment_policies" {
+resource "oci_identity_policy" "oke_compartment_policies" {
   count          = var.create_compartment_policies ? 1 : 0
-  name           = "mushop-oke-cluster-policies-${random_string.deploy_id.result}"
-  description    = "MuShop OKE Cluster Policies"
+  name           = "${lower(var.app_name)}-oke-cluster-policies-${random_string.deploy_id.result}"
+  description    = "${var.app_name} OKE Cluster Policies"
   compartment_id = local.oke_compartment_ocid
-  statements     = local.mushop_policies_statement
+  statements     = local.oke_compartment_policies_statement
 
   depends_on = [oci_identity_dynamic_group.oke_nodes_dg]
 
@@ -24,7 +24,7 @@ resource "oci_identity_policy" "mushop_oke_compartment_policies" {
 }
 
 locals {
-  mushop_policies_statement = concat(
+  oke_compartment_policies_statement = concat(
     local.oci_grafana_metrics_policies_statement,
     local.oci_grafana_logs_policies_statement
   )
