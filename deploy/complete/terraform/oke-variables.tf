@@ -7,13 +7,25 @@
 variable "cluster_name" {
   default = "MuShop-cluster"
 }
-variable "cluster_visibility" {
+variable "cluster_workers_visibility" {
   default = "Private"
 
   validation {
-    condition     = var.cluster_visibility == "Private" || var.cluster_visibility == "Public"
+    condition     = var.cluster_workers_visibility == "Private" || var.cluster_workers_visibility == "Public"
     error_message = "Sorry, but cluster visibility can only be Private or Public."
   }
+}
+
+variable "cluster_endpoint_visibility" {
+  default = "Public"
+
+  validation {
+    condition     = var.cluster_endpoint_visibility == "Private" || var.cluster_endpoint_visibility == "Public"
+    error_message = "Sorry, but cluster endpoint visibility can only be Private or Public."
+  }
+}
+variable "cluster_endpoint_config_is_public_ip_enabled" {
+  default = true
 }
 variable "cluster_options_add_ons_is_kubernetes_dashboard_enabled" {
   default = false
@@ -91,6 +103,7 @@ variable "network_cidrs" {
     VCN-CIDR                = "10.20.0.0/16"
     SUBNET-REGIONAL-CIDR    = "10.20.10.0/24"
     LB-SUBNET-REGIONAL-CIDR = "10.20.20.0/24"
+    ENDPOINT-SUBNET-REGIONAL-CIDR = "10.20.0.0/28"
     ALL-CIDR                = "0.0.0.0/0"
     PODS-CIDR               = "10.244.0.0/16"
     KUBERNETES-SERVICE-CIDR = "10.96.0.0/16"
