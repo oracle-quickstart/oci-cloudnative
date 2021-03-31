@@ -49,21 +49,21 @@ resource "oci_core_security_list" "oke_nodes_security_list" {
 
   # Egresses
   egress_security_rules {
-    description = "Allow pods on one worker node to communicate with pods on other worker nodes"
+    description      = "Allow pods on one worker node to communicate with pods on other worker nodes"
     destination      = lookup(var.network_cidrs, "SUBNET-REGIONAL-CIDR")
     destination_type = "CIDR_BLOCK"
     protocol         = local.all_protocols
     stateless        = false
   }
   egress_security_rules {
-    description = "Worker Nodes access to Internet"
+    description      = "Worker Nodes access to Internet"
     destination      = lookup(var.network_cidrs, "ALL-CIDR")
     destination_type = "CIDR_BLOCK"
     protocol         = local.all_protocols
     stateless        = false
   }
   egress_security_rules {
-    description = "Allow nodes to communicate with OKE to ensure correct start-up and continued functioning"
+    description      = "Allow nodes to communicate with OKE to ensure correct start-up and continued functioning"
     destination      = lookup(data.oci_core_services.all_services.services[0], "cidr_block")
     destination_type = "SERVICE_CIDR_BLOCK"
     protocol         = local.tcp_protocol_number
@@ -75,7 +75,7 @@ resource "oci_core_security_list" "oke_nodes_security_list" {
     }
   }
   egress_security_rules {
-    description = "ICMP Access from Kubernetes Control Plane"
+    description      = "ICMP Access from Kubernetes Control Plane"
     destination      = lookup(var.network_cidrs, "ALL-CIDR")
     destination_type = "CIDR_BLOCK"
     protocol         = local.icmp_protocol_number
@@ -87,7 +87,7 @@ resource "oci_core_security_list" "oke_nodes_security_list" {
     }
   }
   egress_security_rules {
-    description = "Access to Kubernetes API Endpoint"
+    description      = "Access to Kubernetes API Endpoint"
     destination      = lookup(var.network_cidrs, "ENDPOINT-SUBNET-REGIONAL-CIDR")
     destination_type = "CIDR_BLOCK"
     protocol         = local.tcp_protocol_number
@@ -99,7 +99,7 @@ resource "oci_core_security_list" "oke_nodes_security_list" {
     }
   }
   egress_security_rules {
-    description = "Kubernetes worker to control plane communication"
+    description      = "Kubernetes worker to control plane communication"
     destination      = lookup(var.network_cidrs, "ENDPOINT-SUBNET-REGIONAL-CIDR")
     destination_type = "CIDR_BLOCK"
     protocol         = local.tcp_protocol_number
@@ -111,7 +111,7 @@ resource "oci_core_security_list" "oke_nodes_security_list" {
     }
   }
   egress_security_rules {
-    description = "Path discovery"
+    description      = "Path discovery"
     destination      = lookup(var.network_cidrs, "ENDPOINT-SUBNET-REGIONAL-CIDR")
     destination_type = "CIDR_BLOCK"
     protocol         = local.icmp_protocol_number
@@ -193,7 +193,7 @@ resource "oci_core_security_list" "oke_endpoint_security_list" {
   # Egresses
 
   egress_security_rules {
-    description = "Allow Kubernetes Control Plane to communicate with OKE"
+    description      = "Allow Kubernetes Control Plane to communicate with OKE"
     destination      = lookup(data.oci_core_services.all_services.services[0], "cidr_block")
     destination_type = "SERVICE_CIDR_BLOCK"
     protocol         = local.tcp_protocol_number
@@ -205,14 +205,14 @@ resource "oci_core_security_list" "oke_endpoint_security_list" {
     }
   }
   egress_security_rules {
-    description = "All traffic to worker nodes"
+    description      = "All traffic to worker nodes"
     destination      = lookup(var.network_cidrs, "SUBNET-REGIONAL-CIDR")
     destination_type = "CIDR_BLOCK"
     protocol         = local.tcp_protocol_number
     stateless        = false
   }
   egress_security_rules {
-    description = "Path discovery"
+    description      = "Path discovery"
     destination      = lookup(var.network_cidrs, "SUBNET-REGIONAL-CIDR")
     destination_type = "CIDR_BLOCK"
     protocol         = local.icmp_protocol_number
@@ -228,12 +228,12 @@ resource "oci_core_security_list" "oke_endpoint_security_list" {
 }
 
 locals {
-  http_port_number          = "80"
-  https_port_number         = "443"
-  k8s_api_endpoint_port_number = "6443"
+  http_port_number                        = "80"
+  https_port_number                       = "443"
+  k8s_api_endpoint_port_number            = "6443"
   k8s_worker_to_control_plane_port_number = "12250"
-  ssh_port_number           = "22"
-  tcp_protocol_number       = "6"
-  icmp_protocol_number       = "1"
-  all_protocols             = "all"
+  ssh_port_number                         = "22"
+  tcp_protocol_number                     = "6"
+  icmp_protocol_number                    = "1"
+  all_protocols                           = "all"
 }

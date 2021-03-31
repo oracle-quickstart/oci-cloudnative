@@ -10,7 +10,7 @@ resource "oci_identity_dynamic_group" "oke_nodes_dg" {
 
   provider = oci.home_region
 
-  count          = var.create_dynamic_group_for_nodes_in_compartment ? 1 : 0
+  count = var.create_dynamic_group_for_nodes_in_compartment ? 1 : 0
 }
 resource "oci_identity_policy" "oke_compartment_policies" {
   name           = "${lower(trimspace(var.app_name))}-oke-cluster-policies-${random_string.deploy_id.result}"
@@ -22,7 +22,7 @@ resource "oci_identity_policy" "oke_compartment_policies" {
 
   provider = oci.home_region
 
-  count          = var.create_compartment_policies ? 1 : 0
+  count = var.create_compartment_policies ? 1 : 0
 }
 
 locals {

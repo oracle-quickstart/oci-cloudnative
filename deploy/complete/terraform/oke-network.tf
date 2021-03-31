@@ -53,19 +53,18 @@ resource "oci_core_subnet" "oke_lb_subnet" {
 }
 
 resource "oci_core_route_table" "oke_private_route_table" {
-  description = "Traffic to/from internet"
   compartment_id = local.oke_compartment_ocid
   vcn_id         = oci_core_virtual_network.oke_vcn[0].id
   display_name   = "oke-private-route-table-${lower(var.app_name)}-${random_string.deploy_id.result}"
 
   route_rules {
-    description = "Traffic to the internet"
+    description       = "Traffic to the internet"
     destination       = lookup(var.network_cidrs, "ALL-CIDR")
     destination_type  = "CIDR_BLOCK"
     network_entity_id = oci_core_nat_gateway.oke_nat_gateway[0].id
   }
   route_rules {
-    description = "Traffic to OCI services"
+    description       = "Traffic to OCI services"
     destination       = lookup(data.oci_core_services.all_services.services[0], "cidr_block")
     destination_type  = "SERVICE_CIDR_BLOCK"
     network_entity_id = oci_core_service_gateway.oke_service_gateway[0].id
@@ -79,7 +78,7 @@ resource "oci_core_route_table" "oke_public_route_table" {
   display_name   = "oke-public-route-table-${lower(var.app_name)}-${random_string.deploy_id.result}"
 
   route_rules {
-    description = "Traffic to/from internet"
+    description       = "Traffic to/from internet"
     destination       = lookup(var.network_cidrs, "ALL-CIDR")
     destination_type  = "CIDR_BLOCK"
     network_entity_id = oci_core_internet_gateway.oke_internet_gateway[0].id

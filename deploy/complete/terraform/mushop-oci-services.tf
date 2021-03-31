@@ -18,7 +18,7 @@ resource "oci_database_autonomous_database" "mushop_autonomous_database" {
   is_auto_scaling_enabled  = var.autonomous_database_is_auto_scaling_enabled
   is_free_tier             = var.autonomous_database_is_free_tier
 
-  count                    = var.mushop_mock_mode_all ? 0 : 1
+  count = var.mushop_mock_mode_all ? 0 : 1
 }
 ### Wallet
 resource "oci_database_autonomous_database_wallet" "autonomous_database_wallet" {
@@ -27,7 +27,7 @@ resource "oci_database_autonomous_database_wallet" "autonomous_database_wallet" 
   generate_type          = var.autonomous_database_wallet_generate_type
   base64_encode_content  = true
 
-  count                  = var.mushop_mock_mode_all ? 0 : 1
+  count = var.mushop_mock_mode_all ? 0 : 1
 }
 
 resource "kubernetes_secret" "oadb-admin" {
@@ -58,7 +58,7 @@ resource "kubernetes_secret" "oadb-connection" {
 }
 
 ### OADB Wallet extraction <>
-resource "kubernetes_secret" "oadb_wallet_zip" {  
+resource "kubernetes_secret" "oadb_wallet_zip" {
   metadata {
     name      = "oadb-wallet-zip"
     namespace = kubernetes_namespace.mushop_namespace.id
@@ -182,7 +182,7 @@ resource "oci_objectstorage_bucket" "mushop_catalogue_bucket" {
   name           = "mushop-catalogue-bucket-${random_string.deploy_id.result}"
   access_type    = "ObjectReadWithoutList"
 
-  count          = var.mushop_mock_mode_all ? 0 : 1
+  count = var.mushop_mock_mode_all ? 0 : 1
 }
 
 resource "oci_objectstorage_preauthrequest" "mushop_catalogue_bucket_par" {
@@ -192,7 +192,7 @@ resource "oci_objectstorage_preauthrequest" "mushop_catalogue_bucket_par" {
   access_type  = "AnyObjectWrite"
   time_expires = timeadd(timestamp(), "60m")
 
-  count        = var.mushop_mock_mode_all ? 0 : 1
+  count = var.mushop_mock_mode_all ? 0 : 1
 }
 
 resource "kubernetes_secret" "oos_bucket" {
