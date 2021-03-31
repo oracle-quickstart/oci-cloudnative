@@ -6,7 +6,6 @@
 ## Autonomous Database
 ### creates an ATP database
 resource "oci_database_autonomous_database" "mushop_autonomous_database" {
-  count                    = var.mushop_mock_mode_all ? 0 : 1
   admin_password           = random_string.autonomous_database_admin_password.result
   compartment_id           = local.oke_compartment_ocid
   cpu_core_count           = var.autonomous_database_cpu_core_count
@@ -18,18 +17,20 @@ resource "oci_database_autonomous_database" "mushop_autonomous_database" {
   license_model            = var.autonomous_database_license_model
   is_auto_scaling_enabled  = var.autonomous_database_is_auto_scaling_enabled
   is_free_tier             = var.autonomous_database_is_free_tier
+
+  count                    = var.mushop_mock_mode_all ? 0 : 1
 }
 ### Wallet
 resource "oci_database_autonomous_database_wallet" "autonomous_database_wallet" {
-  count                  = var.mushop_mock_mode_all ? 0 : 1
   autonomous_database_id = oci_database_autonomous_database.mushop_autonomous_database[0].id
   password               = random_string.autonomous_database_wallet_password.result
   generate_type          = var.autonomous_database_wallet_generate_type
   base64_encode_content  = true
+
+  count                  = var.mushop_mock_mode_all ? 0 : 1
 }
 
 resource "kubernetes_secret" "oadb-admin" {
-  count = var.mushop_mock_mode_all ? 0 : 1
   metadata {
     name      = var.db_admin_name
     namespace = kubernetes_namespace.mushop_namespace.id
@@ -38,10 +39,11 @@ resource "kubernetes_secret" "oadb-admin" {
     oadb_admin_pw = random_string.autonomous_database_admin_password.result
   }
   type = "Opaque"
+
+  count = var.mushop_mock_mode_all ? 0 : 1
 }
 
 resource "kubernetes_secret" "oadb-connection" {
-  count = var.mushop_mock_mode_all ? 0 : 1
   metadata {
     name      = var.db_connection_name
     namespace = kubernetes_namespace.mushop_namespace.id
@@ -51,11 +53,12 @@ resource "kubernetes_secret" "oadb-connection" {
     oadb_service   = "mushopdb${random_string.deploy_id.result}_TP"
   }
   type = "Opaque"
+
+  count = var.mushop_mock_mode_all ? 0 : 1
 }
 
 ### OADB Wallet extraction <>
-resource "kubernetes_secret" "oadb_wallet_zip" {
-  count = var.mushop_mock_mode_all ? 0 : 1
+resource "kubernetes_secret" "oadb_wallet_zip" {  
   metadata {
     name      = "oadb-wallet-zip"
     namespace = kubernetes_namespace.mushop_namespace.id
@@ -64,9 +67,10 @@ resource "kubernetes_secret" "oadb_wallet_zip" {
     wallet = oci_database_autonomous_database_wallet.autonomous_database_wallet[0].content
   }
   type = "Opaque"
+
+  count = var.mushop_mock_mode_all ? 0 : 1
 }
 resource "kubernetes_cluster_role" "secret_creator" {
-  count = var.mushop_mock_mode_all ? 0 : 1
   metadata {
     name = "secret-creator"
   }
@@ -75,9 +79,10 @@ resource "kubernetes_cluster_role" "secret_creator" {
     resources  = ["secrets"]
     verbs      = ["create"]
   }
+
+  count = var.mushop_mock_mode_all ? 0 : 1
 }
 resource "kubernetes_cluster_role_binding" "wallet_extractor_crb" {
-  count = var.mushop_mock_mode_all ? 0 : 1
   metadata {
     name = "wallet-extractor-crb"
   }
@@ -91,16 +96,18 @@ resource "kubernetes_cluster_role_binding" "wallet_extractor_crb" {
     name      = kubernetes_service_account.wallet_extractor_sa[0].metadata.0.name
     namespace = kubernetes_namespace.mushop_namespace.id
   }
+
+  count = var.mushop_mock_mode_all ? 0 : 1
 }
 resource "kubernetes_service_account" "wallet_extractor_sa" {
-  count = var.mushop_mock_mode_all ? 0 : 1
   metadata {
     name      = "wallet-extractor-sa"
     namespace = kubernetes_namespace.mushop_namespace.id
   }
+
+  count = var.mushop_mock_mode_all ? 0 : 1
 }
 resource "kubernetes_job" "wallet_extractor_job" {
-  count = var.mushop_mock_mode_all ? 0 : 1
   metadata {
     name      = "wallet-extractor-job"
     namespace = kubernetes_namespace.mushop_namespace.id
@@ -163,29 +170,32 @@ resource "kubernetes_job" "wallet_extractor_job" {
     backoff_limit = 1
     # ttl_seconds_after_finished = 120 # Not supported by TF K8s provider 1.8. ORM need to update provider
   }
+
+  count = var.mushop_mock_mode_all ? 0 : 1
 }
 ### OADB Wallet extraction </>
 
 ## Object Storage
 resource "oci_objectstorage_bucket" "mushop_catalogue_bucket" {
-  count          = var.mushop_mock_mode_all ? 0 : 1
   compartment_id = local.oke_compartment_ocid
   namespace      = data.oci_objectstorage_namespace.ns.namespace
   name           = "mushop-catalogue-bucket-${random_string.deploy_id.result}"
   access_type    = "ObjectReadWithoutList"
+
+  count          = var.mushop_mock_mode_all ? 0 : 1
 }
 
 resource "oci_objectstorage_preauthrequest" "mushop_catalogue_bucket_par" {
-  count        = var.mushop_mock_mode_all ? 0 : 1
   namespace    = data.oci_objectstorage_namespace.ns.namespace
   bucket       = oci_objectstorage_bucket.mushop_catalogue_bucket[0].name
   name         = "mushop-catalogue-bucket-par-${random_string.deploy_id.result}"
   access_type  = "AnyObjectWrite"
   time_expires = timeadd(timestamp(), "60m")
+
+  count        = var.mushop_mock_mode_all ? 0 : 1
 }
 
 resource "kubernetes_secret" "oos_bucket" {
-  count = var.mushop_mock_mode_all ? 0 : 1
   metadata {
     name      = var.oos_bucket_name
     namespace = kubernetes_namespace.mushop_namespace.id
@@ -197,4 +207,6 @@ resource "kubernetes_secret" "oos_bucket" {
     parUrl    = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.mushop_catalogue_bucket_par[0].access_uri}"
   }
   type = "Opaque"
+
+  count = var.mushop_mock_mode_all ? 0 : 1
 }

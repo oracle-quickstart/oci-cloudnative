@@ -224,8 +224,6 @@ resource "oci_core_security_list" "oke_endpoint_security_list" {
     }
   }
 
-
-
   count = var.create_new_oke_cluster ? 1 : 0
 }
 
