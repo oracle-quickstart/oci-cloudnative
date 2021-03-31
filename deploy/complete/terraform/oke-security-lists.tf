@@ -46,18 +46,6 @@ resource "oci_core_security_list" "oke_nodes_security_list" {
       code = "4"
     }
   }
-  # ingress_security_rules {
-  #   description = "10256"
-  #   source      = lookup(var.network_cidrs, "LB-SUBNET-REGIONAL-CIDR")
-  #   source_type = "CIDR_BLOCK"
-  #   protocol    = local.tcp_protocol_number
-  #   stateless   = false
-
-  #   tcp_options {
-  #     max = "10256"
-  #     min = "10256"
-  #   }
-  # }
 
   # Egresses
   egress_security_rules {
@@ -78,7 +66,7 @@ resource "oci_core_security_list" "oke_nodes_security_list" {
     description = "Allow nodes to communicate with OKE to ensure correct start-up and continued functioning"
     destination      = lookup(data.oci_core_services.all_services.services[0], "cidr_block")
     destination_type = "SERVICE_CIDR_BLOCK"
-    protocol         = local.all_protocols
+    protocol         = local.tcp_protocol_number
     stateless        = false
 
     tcp_options {
@@ -143,21 +131,100 @@ resource "oci_core_security_list" "oke_lb_security_list" {
   display_name   = "oke-lb-seclist-${lower(var.app_name)}-${random_string.deploy_id.result}"
   vcn_id         = oci_core_virtual_network.oke_vcn[0].id
 
+  count = var.create_new_oke_cluster ? 1 : 0
+}
+
+resource "oci_core_security_list" "oke_endpoint_security_list" {
+  compartment_id = local.oke_compartment_ocid
+  display_name   = "oke-k8s-api-endpoint-seclist-${lower(var.app_name)}-${random_string.deploy_id.result}"
+  vcn_id         = oci_core_virtual_network.oke_vcn[0].id
+
+  # Ingresses
+
+  ingress_security_rules {
+    description = "External access to Kubernetes API endpoint"
+    source      = lookup(var.network_cidrs, (var.cluster_endpoint_visibility == "Private") ? "VCN-CIDR" : "ALL-CIDR")
+    source_type = "CIDR_BLOCK"
+    protocol    = local.tcp_protocol_number
+    stateless   = false
+
+    tcp_options {
+      max = local.k8s_api_endpoint_port_number
+      min = local.k8s_api_endpoint_port_number
+    }
+  }
+  ingress_security_rules {
+    description = "Kubernetes worker to Kubernetes API endpoint communication"
+    source      = lookup(var.network_cidrs, "SUBNET-REGIONAL-CIDR")
+    source_type = "CIDR_BLOCK"
+    protocol    = local.tcp_protocol_number
+    stateless   = false
+
+    tcp_options {
+      max = local.k8s_api_endpoint_port_number
+      min = local.k8s_api_endpoint_port_number
+    }
+  }
+  ingress_security_rules {
+    description = "Kubernetes worker to control plane communication"
+    source      = lookup(var.network_cidrs, "SUBNET-REGIONAL-CIDR")
+    source_type = "CIDR_BLOCK"
+    protocol    = local.tcp_protocol_number
+    stateless   = false
+
+    tcp_options {
+      max = local.k8s_worker_to_control_plane_port_number
+      min = local.k8s_worker_to_control_plane_port_number
+    }
+  }
+  ingress_security_rules {
+    description = "Path discovery"
+    source      = lookup(var.network_cidrs, "SUBNET-REGIONAL-CIDR")
+    source_type = "CIDR_BLOCK"
+    protocol    = local.icmp_protocol_number
+    stateless   = false
+
+    icmp_options {
+      type = "3"
+      code = "4"
+    }
+  }
+
   # Egresses
 
-  # egress_security_rules {
-  #   destination      = lookup(var.network_cidrs, "ALL-CIDR")
-  #   destination_type = "CIDR_BLOCK"
-  #   protocol         = "6"
-  #   stateless        = true
-  # }
+  egress_security_rules {
+    description = "Allow Kubernetes Control Plane to communicate with OKE"
+    destination      = lookup(data.oci_core_services.all_services.services[0], "cidr_block")
+    destination_type = "SERVICE_CIDR_BLOCK"
+    protocol         = local.tcp_protocol_number
+    stateless        = false
 
-  # ingress_security_rules {
-  #   source      = lookup(var.network_cidrs, "ALL-CIDR")
-  #   source_type = "CIDR_BLOCK"
-  #   protocol    = "6"
-  #   stateless   = true
-  # }
+    tcp_options {
+      max = local.https_port_number
+      min = local.https_port_number
+    }
+  }
+  egress_security_rules {
+    description = "All traffic to worker nodes"
+    destination      = lookup(var.network_cidrs, "SUBNET-REGIONAL-CIDR")
+    destination_type = "CIDR_BLOCK"
+    protocol         = local.tcp_protocol_number
+    stateless        = false
+  }
+  egress_security_rules {
+    description = "Path discovery"
+    destination      = lookup(var.network_cidrs, "SUBNET-REGIONAL-CIDR")
+    destination_type = "CIDR_BLOCK"
+    protocol         = local.icmp_protocol_number
+    stateless        = false
+
+    icmp_options {
+      type = "3"
+      code = "4"
+    }
+  }
+
+
 
   count = var.create_new_oke_cluster ? 1 : 0
 }
