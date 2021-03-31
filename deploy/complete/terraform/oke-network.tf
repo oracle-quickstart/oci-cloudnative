@@ -15,7 +15,7 @@ resource "oci_core_subnet" "oke_k8s_endpoint_subnet" {
   cidr_block                 = lookup(var.network_cidrs, "ENDPOINT-SUBNET-REGIONAL-CIDR")
   compartment_id             = local.oke_compartment_ocid
   display_name               = "oke-k8s-endpoint-subnet-${lower(var.app_name)}-${random_string.deploy_id.result}"
-  dns_label                  = "okek8ssubnet${random_string.deploy_id.result}"
+  dns_label                  = "okek8sn${random_string.deploy_id.result}"
   vcn_id                     = oci_core_virtual_network.oke_vcn[0].id
   prohibit_public_ip_on_vnic = (var.cluster_endpoint_visibility == "Private") ? true : false
   route_table_id             = (var.cluster_endpoint_visibility == "Private") ? oci_core_route_table.oke_private_route_table[0].id : oci_core_route_table.oke_public_route_table[0].id
@@ -28,7 +28,7 @@ resource "oci_core_subnet" "oke_nodes_subnet" {
   cidr_block                 = lookup(var.network_cidrs, "SUBNET-REGIONAL-CIDR")
   compartment_id             = local.oke_compartment_ocid
   display_name               = "oke-nodes-subnet-${lower(var.app_name)}-${random_string.deploy_id.result}"
-  dns_label                  = "okesubnet${random_string.deploy_id.result}"
+  dns_label                  = "okenodesn${random_string.deploy_id.result}"
   vcn_id                     = oci_core_virtual_network.oke_vcn[0].id
   prohibit_public_ip_on_vnic = (var.cluster_workers_visibility == "Private") ? true : false
   route_table_id             = (var.cluster_workers_visibility == "Private") ? oci_core_route_table.oke_private_route_table[0].id : oci_core_route_table.oke_public_route_table[0].id
@@ -42,7 +42,7 @@ resource "oci_core_subnet" "oke_lb_subnet" {
   cidr_block                 = lookup(var.network_cidrs, "LB-SUBNET-REGIONAL-CIDR")
   compartment_id             = local.oke_compartment_ocid
   display_name               = "oke-lb-subnet-${lower(var.app_name)}-${random_string.deploy_id.result}"
-  dns_label                  = "okelbsubnet${random_string.deploy_id.result}"
+  dns_label                  = "okelbsn${random_string.deploy_id.result}"
   vcn_id                     = oci_core_virtual_network.oke_vcn[0].id
   prohibit_public_ip_on_vnic = false
   route_table_id             = oci_core_route_table.oke_public_route_table[0].id
