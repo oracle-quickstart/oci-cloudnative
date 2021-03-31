@@ -93,7 +93,7 @@ resource "oci_core_nat_gateway" "oke_nat_gateway" {
   display_name   = "oke-nat-gateway-${lower(var.app_name)}-${random_string.deploy_id.result}"
   vcn_id         = oci_core_virtual_network.oke_vcn[0].id
 
-  count = var.create_new_oke_cluster ? ((var.cluster_workers_visibility == "Private") ? 1 : 0) : 0
+  count = var.create_new_oke_cluster ? 1 : 0
 }
 
 resource "oci_core_internet_gateway" "oke_internet_gateway" {
@@ -113,5 +113,5 @@ resource "oci_core_service_gateway" "oke_service_gateway" {
     service_id = lookup(data.oci_core_services.all_services.services[0], "id")
   }
 
-  count = var.create_new_oke_cluster ? (var.mushop_mock_mode_all ? 0 : 1) : 0
+  count = var.create_new_oke_cluster ? 1 : 0
 }

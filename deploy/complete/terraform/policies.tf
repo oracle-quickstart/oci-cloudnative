@@ -33,20 +33,21 @@ locals {
 }
 
 locals {
+  oke_nodes_dg = var.create_dynamic_group_for_nodes_in_compartment ? oci_identity_dynamic_group.oke_nodes_dg.0.name : "void"
   oci_grafana_metrics_policies_statement = [
-    "Allow dynamic-group ${oci_identity_dynamic_group.oke_nodes_dg.0.name} to read metrics in compartment id ${local.oke_compartment_ocid}",
-    "Allow dynamic-group ${oci_identity_dynamic_group.oke_nodes_dg.0.name} to read compartments in compartment id ${local.oke_compartment_ocid}"
+    "Allow dynamic-group ${local.oke_nodes_dg} to read metrics in compartment id ${local.oke_compartment_ocid}",
+    "Allow dynamic-group ${local.oke_nodes_dg} to read compartments in compartment id ${local.oke_compartment_ocid}"
   ]
   oci_grafana_logs_policies_statement = [
-    "Allow dynamic-group ${oci_identity_dynamic_group.oke_nodes_dg.0.name} to read log-groups in compartment id ${local.oke_compartment_ocid}",
-    "Allow dynamic-group ${oci_identity_dynamic_group.oke_nodes_dg.0.name} to read log-content in compartment id ${local.oke_compartment_ocid}"
+    "Allow dynamic-group ${local.oke_nodes_dg} to read log-groups in compartment id ${local.oke_compartment_ocid}",
+    "Allow dynamic-group ${local.oke_nodes_dg} to read log-content in compartment id ${local.oke_compartment_ocid}"
   ]
   cluster_autoscaler_policies_statement = [
-    "Allow dynamic-group ${oci_identity_dynamic_group.oke_nodes_dg.0.name} to manage cluster-node-pools in compartment id ${local.oke_compartment_ocid}",
-    "Allow dynamic-group ${oci_identity_dynamic_group.oke_nodes_dg.0.name} to manage instance-family in compartment id ${local.oke_compartment_ocid}",
-    "Allow dynamic-group ${oci_identity_dynamic_group.oke_nodes_dg.0.name} to use subnets in compartment id ${local.oke_compartment_ocid}",
-    "Allow dynamic-group ${oci_identity_dynamic_group.oke_nodes_dg.0.name} to read virtual-network-family in compartment id ${local.oke_compartment_ocid}",
-    "Allow dynamic-group ${oci_identity_dynamic_group.oke_nodes_dg.0.name} to use vnics in compartment id ${local.oke_compartment_ocid}",
-    "Allow dynamic-group ${oci_identity_dynamic_group.oke_nodes_dg.0.name} to inspect compartments in compartment id ${local.oke_compartment_ocid}"
+    "Allow dynamic-group ${local.oke_nodes_dg} to manage cluster-node-pools in compartment id ${local.oke_compartment_ocid}",
+    "Allow dynamic-group ${local.oke_nodes_dg} to manage instance-family in compartment id ${local.oke_compartment_ocid}",
+    "Allow dynamic-group ${local.oke_nodes_dg} to use subnets in compartment id ${local.oke_compartment_ocid}",
+    "Allow dynamic-group ${local.oke_nodes_dg} to read virtual-network-family in compartment id ${local.oke_compartment_ocid}",
+    "Allow dynamic-group ${local.oke_nodes_dg} to use vnics in compartment id ${local.oke_compartment_ocid}",
+    "Allow dynamic-group ${local.oke_nodes_dg} to inspect compartments in compartment id ${local.oke_compartment_ocid}"
   ]
 }
