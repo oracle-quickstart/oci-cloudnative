@@ -81,7 +81,7 @@ resource "oci_identity_compartment" "oke_compartment" {
   count = var.create_new_compartment_for_oke ? 1 : 0
 }
 locals {
-  oke_compartment_ocid = oci_identity_compartment.oke_compartment.0.id ? 1 : var.compartment_ocid
+  oke_compartment_ocid = var.create_new_compartment_for_oke ? oci_identity_compartment.oke_compartment.0.id : var.compartment_ocid
 }
 
 # Local kubeconfig for when using Terraform locally. Not used by Oracle Resource Manager
