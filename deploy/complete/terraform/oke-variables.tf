@@ -29,7 +29,7 @@ variable "cluster_endpoint_visibility" {
 }
 variable "cluster_endpoint_config_is_public_ip_enabled" {
   default = true
-}
+} # Local?
 variable "cluster_options_add_ons_is_kubernetes_dashboard_enabled" {
   default = false
 }
@@ -44,7 +44,7 @@ variable "existent_oke_cluster_id" {
   default = ""
 }
 variable "create_new_compartment_for_oke" {
-  default = true
+  default = false
 }
 variable "oke_compartment_description" {
   default = "Compartment for OKE, Nodes and Services"
