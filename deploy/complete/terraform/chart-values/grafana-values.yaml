@@ -2,17 +2,6 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
-datasources: 
-  datasources.yaml:
-    apiVersion: 1
-    datasources:
-    - name: Prometheus
-      type: prometheus
-      url: http://prometheus-server.mushop-utilities.svc.cluster.local
-      access: proxy
-      isDefault: true
-      disableDeletion: true
-      editable: false
 dashboards:
   default:
     k8s-cluster:
@@ -51,6 +40,14 @@ dashboards:
       gnetId: 9614
       revision: 1
       datasource: Prometheus
+    oci-compute:
+      gnetId: 13596
+      revision: 1
+      datasource: Oracle Cloud Infrastructure Metrics
+    oci-oke:
+      gnetId: 13594
+      revision: 1
+      datasource: Oracle Cloud Infrastructure Metrics
 dashboardProviders:
    dashboardproviders.yaml:
      apiVersion: 1
