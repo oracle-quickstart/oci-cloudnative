@@ -24,7 +24,7 @@ variable "metrics_server_enabled" {
   default = true
 }
 variable "catalog_enabled" {
-  default = true
+  default = false
 }
 variable "ingress_nginx_enabled" {
   default = true
