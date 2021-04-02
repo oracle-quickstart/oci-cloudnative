@@ -12,6 +12,13 @@ data "oci_core_images" "node_pool_images" {
   sort_order               = "DESC"
 }
 
+data "oci_containerengine_cluster_option" "oke" {
+  cluster_option_id = "all"
+}
+data "oci_containerengine_node_pool_option" "oke" {
+  node_pool_option_id = "all"
+}
+
 # Gets a list of Availability Domains
 data "oci_identity_availability_domains" "ADs" {
   compartment_id = var.tenancy_ocid
