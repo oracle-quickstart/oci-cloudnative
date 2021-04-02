@@ -59,7 +59,7 @@ variable "cluster_endpoint_visibility" {
 ## OKE Encryption details
 variable "use_encryption_from_oci_vault" {
   default     = false
-  description = "By default, Oracle manages the keys that encrypt the boot volume, but you can choose a key from a vault that you have access to if you want greater control over the key's lifecycle and how it's used"
+  description = "By default, Oracle manages the keys that encrypts Kubernetes Secrets at Rest in Etcd, but you can choose a key from a vault that you have access to, if you want greater control over the key's lifecycle and how it's used"
 }
 variable "create_new_encryption_key" {
   default     = false
@@ -150,13 +150,17 @@ variable "create_dynamic_group_for_nodes_in_compartment" {
   default     = true
   description = "Creates dynamic group of Nodes in the compartment. Note: You need to have proper rights on the Tenancy. If you only have rights in a compartment, uncheck and ask you administrator to create the Dynamic Group for you"
 }
+variable "existent_dynamic_group_for_nodes_in_compartment" {
+  default     = ""
+  description = "Uses previous created Dynamic Group for the policies"
+}
 variable "create_compartment_policies" {
   default     = true
-  description = "Creates policies that will reside on the compartment. e.g.: Cluster Autoscaler, OCI Logging datasource for Grafana"
+  description = "Creates policies that will reside on the compartment. e.g.: Policies to support Cluster Autoscaler, OCI Logging datasource on Grafana"
 }
 variable "create_tenancy_policies" {
   default     = true
-  description = "Creates policies that need to reside on the tenancy. e.g.: OCI Metrics datasource for Grafana"
+  description = "Creates policies that need to reside on the tenancy. e.g.: Policies to support OCI Metrics datasource on Grafana"
 }
 
 # Dictionary Locals

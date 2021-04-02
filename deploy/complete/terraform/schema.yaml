@@ -144,7 +144,7 @@ variables:
   show_advanced:
     type: boolean
     title: "Show advanced options?"
-    description: "Shows advanced options, allowing enable customer managed encryption keys, select your ssh key, and other advanced options"
+    description: "Shows advanced options, allowing enable customer-managed encryption keys, select your ssh key, select/unselect cluster utilities, do not create policies, and other advanced options"
     visible: true
 
   create_new_oke_cluster:
