@@ -69,7 +69,7 @@ locals {
   ]
   allow_oke_use_oci_vault_keys_statements = [
     "Allow dynamic-group ${local.oke_nodes_dg} to use keys in compartment id ${local.oke_compartment_ocid} where target.key.id = '${local.oci_vault_key_id}'",
-    "Allow service oke to use vaults in compartment id ${local.oke_compartment_ocid} where target.key.id = '${local.oci_vault_key_id}'",
+    "Allow service oke to use vaults in compartment id ${local.oke_compartment_ocid}",
     "Allow service oke to use keys in compartment id ${local.oke_compartment_ocid} where target.key.id = '${local.oci_vault_key_id}'"
   ]
   allow_group_manage_vault_keys_statements = [
