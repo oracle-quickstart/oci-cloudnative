@@ -83,16 +83,16 @@ variableGroups:
 
   - title: "Network Configuration"
     variables:
-      - network_strategy 
-      - vcn_id 
-      - vcn_display_name 
-      - vcn_cidr_block 
-      - vcn_dns_label            
-      - subnet_type 
-      - subnet_span 
-      - subnet_id 
-      - subnet_display_name       
-      - subnet_cidr_block      
+      - network_strategy
+      - vcn_id
+      - vcn_display_name
+      - vcn_cidr_block
+      - vcn_dns_label
+      - subnet_type
+      - subnet_span
+      - subnet_id
+      - subnet_display_name
+      - subnet_cidr_block
       - subnet_dns_label
     visible:
       and:
@@ -110,11 +110,6 @@ variableGroups:
       - ingress_load_balancer_shape
       - node_pool_boot_volume_size_in_gbs
       - oke_compartment_description
-      - vault_display_name
-      - vault_type
-      - vault_key_display_name
-      - vault_key_key_shape_algorithm
-      - vault_key_key_shape_length
     visible: false
 
   - title: "OCI Services Hidden"
