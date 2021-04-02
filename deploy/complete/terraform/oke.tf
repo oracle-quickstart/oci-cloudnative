@@ -26,7 +26,7 @@ resource "oci_containerengine_cluster" "oke_cluster" {
       pods_cidr     = lookup(var.network_cidrs, "PODS-CIDR")
     }
   }
-  kms_key_id = var.use_encryption_from_oci_vault ? var.encryption_key_id : null
+  kms_key_id = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? oci_kms_key.mushop_key[0].id : var.existent_encryption_key_id) : null
 
   count = var.create_new_oke_cluster ? 1 : 0
 }
