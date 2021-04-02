@@ -17,13 +17,20 @@ region = "us-ashburn-1"
 # OKE Cluster
 ## Cluster Workers visibility
 cluster_workers_visibility = "Private"
+## Cluster API Endpoint visibility
+cluster_endpoint_visibility = "Public"
 ## create_new_oke_cluster
-create_new_oke_cluster  = true
-existent_oke_cluster_id = "" # e.g.: ocid1.cluster.oc1...
+create_new_oke_cluster         = true
+existent_oke_cluster_id        = "" # e.g.: ocid1.cluster.oc1...
+create_new_compartment_for_oke = false
+## Create Dynamic group and Policies for Autoscaler and OCI Metrics and Logging
+create_dynamic_group_for_nodes_in_compartment = true
+create_compartment_policies                   = true
+create_tenancy_policies                       = true
 ## Encryption (OCI Vault/Key Management/KMS)
-use_encryption_from_oci_vault            = false
-create_new_encryption_key = false
-encryption_key_id         = "" # e.g.: "ocid1.key.oc1..."
+use_encryption_from_oci_vault = false
+create_new_encryption_key     = false
+encryption_key_id             = "" # e.g.: "ocid1.key.oc1..."
 
 # OKE Worker Nodes (Compute)
 num_pool_workers                          = 3
