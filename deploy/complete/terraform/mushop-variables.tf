@@ -10,33 +10,33 @@ variable "ingress_load_balancer_shape" {
 
 ## Features
 variable "mushop_mock_mode_all" {
-  default = false
+  default     = false
   description = "Enable Mock Mode for MuShop all Services"
 }
 
 ## Common Services (MuShop Utilities)
 variable "grafana_enabled" {
-  default = true
+  default     = true
   description = "Enable Grafana Dashboards. Includes example dashboards and Prometheus, OCI Logging and OCI Metrics datasources"
 }
 variable "prometheus_enabled" {
-  default = true
+  default     = true
   description = "Enable Prometheus"
 }
 variable "metrics_server_enabled" {
-  default = true
+  default     = true
   description = "Enable Metrics Server for Auto Scaling"
 }
 variable "catalog_enabled" {
-  default = false
+  default     = false
   description = "Enable Service Catalog to use with OCI Service Broker"
 }
 variable "ingress_nginx_enabled" {
-  default = true
+  default     = true
   description = "Enable Ingress Nginx for Services (Provision a Load Balancer)"
 }
 variable "cert_manager_enabled" {
-  default = true
+  default     = true
   description = "Enable x509 Certificate Management"
 }
 

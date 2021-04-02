@@ -47,7 +47,7 @@ resource "helm_release" "grafana" {
   }
 
   values = [
-    file("${path.module}/chart-values/grafana-values.yaml"),<<EOF
+    file("${path.module}/chart-values/grafana-values.yaml"), <<EOF
 datasources: 
   datasources.yaml:
     apiVersion: 1

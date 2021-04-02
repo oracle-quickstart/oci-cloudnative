@@ -60,8 +60,8 @@ resource "oci_containerengine_node_pool" "oke_node_pool" {
   }
 
   node_source_details {
-    source_type = "IMAGE"
-    image_id    = lookup(data.oci_core_images.node_pool_images.images[0], "id")
+    source_type             = "IMAGE"
+    image_id                = lookup(data.oci_core_images.node_pool_images.images[0], "id")
     boot_volume_size_in_gbs = var.node_pool_boot_volume_size_in_gbs
   }
 
@@ -99,7 +99,7 @@ resource "tls_private_key" "oke_worker_node_ssh_key" {
 
 # Get OKE options
 locals {
-  cluster_k8s_latest_version = reverse(sort(data.oci_containerengine_cluster_option.oke.kubernetes_versions))[0]
+  cluster_k8s_latest_version   = reverse(sort(data.oci_containerengine_cluster_option.oke.kubernetes_versions))[0]
   node_pool_k8s_latest_version = reverse(sort(data.oci_containerengine_node_pool_option.oke.kubernetes_versions))[0]
 }
 
