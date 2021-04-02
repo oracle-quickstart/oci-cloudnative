@@ -30,7 +30,7 @@ create_tenancy_policies                       = true
 ## Encryption (OCI Vault/Key Management/KMS)
 use_encryption_from_oci_vault = false
 create_new_encryption_key     = false
-encryption_key_id             = "" # e.g.: "ocid1.key.oc1..."
+existent_encryption_key_id    = "" # e.g.: "ocid1.key.oc1..."
 
 # OKE Worker Nodes (Compute)
 num_pool_workers                          = 3

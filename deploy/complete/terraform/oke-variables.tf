@@ -65,7 +65,7 @@ variable "create_new_encryption_key" {
   default     = false
   description = "Creates new vault and key on OCI Vault/Key Management/KMS and assign to boot volume of the worker nodes"
 }
-variable "encryption_key_id" {
+variable "existent_encryption_key_id" {
   default     = ""
   description = "Use an existent master encryption key to encrypt boot volume and object storage bucket. NOTE: If the key resides in a different compartment or in a different tenancy, make sure you have the proper policies to access, or the provision of the worker nodes will fail."
 }
