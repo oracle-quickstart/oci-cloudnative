@@ -67,7 +67,7 @@ variable "node_pool_name" {
   default = "pool1"
 }
 variable "k8s_version" {
-  default = "v1.19.7"
+  default = "Latest"
 }
 variable "num_pool_workers" {
   default = 1
