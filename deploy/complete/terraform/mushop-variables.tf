@@ -25,7 +25,7 @@ variable "prometheus_enabled" {
 }
 variable "metrics_server_enabled" {
   default     = true
-  description = "Enable Metrics Server for Auto Scaling"
+  description = "Enable Metrics Server for Metrics, HPA, VPA and Cluster Auto Scaling"
 }
 variable "catalog_enabled" {
   default     = false
