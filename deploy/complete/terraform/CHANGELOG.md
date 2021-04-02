@@ -16,6 +16,7 @@
 - Kubernetes API Endpoint options (Public or Private)
 - Terraform resources re-organized
 - Revamped ORM Schema
+- KMS/OCI Vault initial support
 
 2021-03-11 (v2.0.6)
 
