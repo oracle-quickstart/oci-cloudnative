@@ -70,7 +70,7 @@ variable "k8s_version" {
   default = "Latest"
 }
 variable "num_pool_workers" {
-  default = 1
+  default = 3
 }
 variable "node_pool_shape" {
   default = "VM.Standard.E3.Flex" # "VM.Standard2.1"
