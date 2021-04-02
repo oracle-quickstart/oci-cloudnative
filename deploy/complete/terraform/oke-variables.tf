@@ -77,22 +77,6 @@ variable "user_admin_group_for_vault_policy" {
   default = "Administrators"
   description = "User Identity Group to allow manage vault and keys. The user running the Terraform scripts or Applying the ORM Stack need to be on this group"
 }
-variable "vault_display_name" {
-  default = "MuShop Vault"
-}
-variable "vault_type" {
-  type    = list(any)
-  default = ["DEFAULT", "VIRTUAL_PRIVATE"]
-}
-variable "vault_key_display_name" {
-  default = "MuShop Key"
-}
-variable "vault_key_key_shape_algorithm" {
-  default = "AES"
-}
-variable "vault_key_key_shape_length" {
-  default = 32
-}
 
 ## OKE Node Pool Details
 variable "node_pool_name" {
