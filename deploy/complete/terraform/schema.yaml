@@ -452,7 +452,7 @@ variables:
     visible: yes
     type: boolean
     required: true
-    title: "Enable Mock Mode"
+    title: "Enable Mock Mode (Do not provision ATP Database and Object Storage and simulate data)"
 
   # Cluster Utilities
   grafana_enabled:

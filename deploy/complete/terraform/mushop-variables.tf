@@ -11,7 +11,7 @@ variable "ingress_load_balancer_shape" {
 ## Features
 variable "mushop_mock_mode_all" {
   default     = false
-  description = "Enable Mock Mode for MuShop all Services"
+  description = "If enabled, will not provision ATP Database, Object Storage or Streaming. The services will connect to in-memory database and the data will not persist"
 }
 
 ## Common Services (MuShop Utilities)
