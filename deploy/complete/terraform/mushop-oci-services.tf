@@ -217,11 +217,10 @@ resource "oci_kms_vault" "mushop_vault" {
   compartment_id = local.oke_compartment_ocid
   display_name   = "${local.vault_display_name} - ${random_string.deploy_id.result}"
   vault_type     = local.vault_type[0]
-  freeform_tags  = local.common_tags
 
-  depends_on = [oci_identity_policy.oke_compartment_policies]
+  depends_on = [oci_identity_policy.kms_compartment_policies]
 
-  count      = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? 1 : 0) : 0
+  count = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? 1 : 0) : 0
 }
 ### OCI Vault key
 resource "oci_kms_key" "mushop_key" {
@@ -233,7 +232,6 @@ resource "oci_kms_key" "mushop_key" {
     algorithm = local.vault_key_key_shape_algorithm
     length    = local.vault_key_key_shape_length
   }
-  freeform_tags = local.common_tags
 
   count = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? 1 : 0) : 0
 }
@@ -241,9 +239,9 @@ resource "oci_kms_key" "mushop_key" {
 ### Vault and Key definitions
 
 locals {
-  vault_display_name = "MuShop Vault"
-  vault_key_display_name = "MuShop Key"
+  vault_display_name            = "MuShop Vault"
+  vault_key_display_name        = "MuShop Key"
   vault_key_key_shape_algorithm = "AES"
-  vault_key_key_shape_length = 32
-  vault_type = ["DEFAULT", "VIRTUAL_PRIVATE"]
+  vault_key_key_shape_length    = 32
+  vault_type                    = ["DEFAULT", "VIRTUAL_PRIVATE"]
 }
