@@ -65,7 +65,9 @@ variableGroups:
     variables:
     - use_encryption_from_oci_vault
     - create_new_encryption_key
-    - existent_encryption_key_id    
+    - existent_encryption_key_id
+    - create_vault_policies_for_group
+    - user_admin_group_for_vault_policy
 
   - title: "Cluster Utilities (MuShop Utilities)"
     variables:
@@ -108,6 +110,11 @@ variableGroups:
       - ingress_load_balancer_shape
       - node_pool_boot_volume_size_in_gbs
       - oke_compartment_description
+      - vault_display_name
+      - vault_type
+      - vault_key_display_name
+      - vault_key_key_shape_algorithm
+      - vault_key_key_shape_length
     visible: false
 
   - title: "OCI Services Hidden"
@@ -366,11 +373,16 @@ variables:
   existent_dynamic_group_for_nodes_in_compartment:
     type: string
     required: true
-    title: "Image OS Version"
+    title: "Existent Dynamic Group"
     visible:
       and:
-        - create_new_oke_cluster
-        - show_advanced
+        - and:
+          - show_advanced
+        - or:
+          - create_compartment_policies
+          - create_tenancy_policies
+        - not:
+          - create_dynamic_group_for_nodes_in_compartment
         
   create_compartment_policies:
     type: boolean
@@ -418,6 +430,27 @@ variables:
           - use_encryption_from_oci_vault
         - not:
           - create_new_encryption_key
+
+  create_vault_policies_for_group:
+    type: boolean
+    title: "Create policies for the user group to manage vault and keys"
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
+        - use_encryption_from_oci_vault
+        - create_new_encryption_key
+
+  user_admin_group_for_vault_policy:
+    type: string
+    title: "Specify your group to include the policy"
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
+        - use_encryption_from_oci_vault
+        - create_new_encryption_key
+        - create_vault_policies_for_group
 
   # MuShop
   mushop_mock_mode_all:
