@@ -65,7 +65,7 @@ locals {
 
 locals {
   oke_nodes_dg     = var.create_dynamic_group_for_nodes_in_compartment ? oci_identity_dynamic_group.oke_nodes_dg.0.name : "void"
-  oci_vault_key_id = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? oci_kms_key.mushop_key[0].id : var.existent_encryption_key_id) : null
+  oci_vault_key_id = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? oci_kms_key.mushop_key[0].id : var.existent_encryption_key_id) : "void"
   oci_grafana_metrics_statements = [
     "Allow dynamic-group ${local.oke_nodes_dg} to read metrics in tenancy",
     "Allow dynamic-group ${local.oke_nodes_dg} to read compartments in tenancy"
