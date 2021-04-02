@@ -3,7 +3,7 @@
 # 
 
 # Create namespace mushop-utilities for supporting services
-resource "kubernetes_namespace" "mushop_utilities_namespace" {
+resource "kubernetes_namespace" "cluster_utilities_namespace" {
   metadata {
     name = "mushop-utilities"
   }
@@ -19,7 +19,7 @@ resource "helm_release" "prometheus" {
   repository = local.helm_repository.prometheus
   chart      = "prometheus"
   version    = "13.6.0"
-  namespace  = kubernetes_namespace.mushop_utilities_namespace.id
+  namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
   values = [
@@ -38,7 +38,7 @@ resource "helm_release" "grafana" {
   repository = local.helm_repository.grafana
   chart      = "grafana"
   version    = "6.7.1"
-  namespace  = kubernetes_namespace.mushop_utilities_namespace.id
+  namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
   set {
@@ -54,7 +54,7 @@ datasources:
     datasources:
     - name: Prometheus
       type: prometheus
-      url: http://prometheus-server.${kubernetes_namespace.mushop_utilities_namespace.id}.svc.cluster.local
+      url: http://prometheus-server.${kubernetes_namespace.cluster_utilities_namespace.id}.svc.cluster.local
       access: proxy
       isDefault: true
       disableDeletion: true
@@ -91,7 +91,7 @@ resource "helm_release" "metrics_server" {
   repository = local.helm_repository.stable
   chart      = "metrics-server"
   version    = "2.11.4"
-  namespace  = kubernetes_namespace.mushop_utilities_namespace.id
+  namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
   values = [
@@ -110,7 +110,7 @@ resource "helm_release" "ingress_nginx" {
   repository = local.helm_repository.ingress_nginx
   chart      = "ingress-nginx"
   version    = "3.26.0"
-  namespace  = kubernetes_namespace.mushop_utilities_namespace.id
+  namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = true
 
   set {
@@ -133,7 +133,7 @@ resource "helm_release" "svc-cat" {
   repository = local.helm_repository.svc_catalog
   chart      = "catalog"
   version    = "0.3.1"
-  namespace  = kubernetes_namespace.mushop_utilities_namespace.id
+  namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
   depends_on = [helm_release.ingress_nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
@@ -148,7 +148,7 @@ resource "helm_release" "cert_manager" {
   repository = local.helm_repository.jetstack
   chart      = "cert-manager"
   version    = "1.2.0"
-  namespace  = kubernetes_namespace.mushop_utilities_namespace.id
+  namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
   set {
@@ -166,7 +166,7 @@ resource "helm_release" "cert_manager" {
 data "kubernetes_service" "mushop_ingress" {
   metadata {
     name      = "mushop-utils-ingress-nginx-controller" # mushop-utils name included to be backwards compatible to the docs and setup chart install
-    namespace = kubernetes_namespace.mushop_utilities_namespace.id
+    namespace = kubernetes_namespace.cluster_utilities_namespace.id
   }
   depends_on = [helm_release.ingress_nginx]
 }
@@ -175,7 +175,7 @@ data "kubernetes_service" "mushop_ingress" {
 data "kubernetes_secret" "mushop_utils_grafana" {
   metadata {
     name      = "mushop-utils-grafana"
-    namespace = kubernetes_namespace.mushop_utilities_namespace.id
+    namespace = kubernetes_namespace.cluster_utilities_namespace.id
   }
   depends_on = [helm_release.grafana, helm_release.mushop]
 }
