@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2019, 2021 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -18,3 +18,21 @@ data:
       access: proxy
       orgId: 1
       url: http://{{ .Release.Name }}-prometheus-server.{{ .Release.Namespace }}.svc.cluster.local
+    - name: Oracle Cloud Infrastructure Metrics
+      type: oci-metrics-datasource
+      access: proxy
+      disableDeletion: true
+      editable: true
+      jsonData:
+        tenancyOCID: 
+        defaultRegion: 
+        environment: "OCI Instance"
+    - name: Oracle Cloud Infrastructure Logs
+      type: oci-logs-datasource
+      access: proxy
+      disableDeletion: true
+      editable: true
+      jsonData:
+        tenancyOCID: 
+        defaultRegion: 
+        environment: "OCI Instance"

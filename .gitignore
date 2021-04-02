@@ -15,6 +15,10 @@ Wallet_*
 deploy/helm-chart/**/secrets/*
 !deploy/helm-chart/**/secrets/*.md
 
+## helm
+# lockfiles for requirements.yaml for dependent charts
+requirements.lock
+
 ## Folders
 bin/
 **/.gradle/**

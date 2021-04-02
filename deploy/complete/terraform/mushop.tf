@@ -7,7 +7,7 @@ resource "kubernetes_namespace" "mushop_namespace" {
   metadata {
     name = "mushop"
   }
-  depends_on = [oci_containerengine_node_pool.oke_mushop_node_pool]
+  depends_on = [oci_containerengine_node_pool.oke_node_pool]
 }
 
 # Deploy mushop chart

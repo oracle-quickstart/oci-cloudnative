@@ -4,7 +4,7 @@
 
 # Gets a list of supported images based on the shape, operating_system and operating_system_version provided
 data "oci_core_images" "node_pool_images" {
-  compartment_id           = var.compartment_ocid
+  compartment_id           = local.oke_compartment_ocid
   operating_system         = var.image_operating_system
   operating_system_version = var.image_operating_system_version
   shape                    = var.node_pool_shape
@@ -12,46 +12,37 @@ data "oci_core_images" "node_pool_images" {
   sort_order               = "DESC"
 }
 
+data "oci_containerengine_cluster_option" "oke" {
+  cluster_option_id = "all"
+}
+data "oci_containerengine_node_pool_option" "oke" {
+  node_pool_option_id = "all"
+}
+
 # Gets a list of Availability Domains
 data "oci_identity_availability_domains" "ADs" {
   compartment_id = var.tenancy_ocid
 }
 
+# Gets home and current regions
+data "oci_identity_tenancy" "tenant_details" {
+  tenancy_id = var.tenancy_ocid
+
+  provider = oci.current_region
+}
+
+data "oci_identity_regions" "home_region" {
+  filter {
+    name   = "key"
+    values = [data.oci_identity_tenancy.tenant_details.home_region_key]
+  }
+
+  provider = oci.current_region
+}
+
 # Gets kubeconfig
 data "oci_containerengine_cluster_kube_config" "oke_cluster_kube_config" {
-  cluster_id = var.create_new_oke_cluster ? oci_containerengine_cluster.oke_mushop_cluster[0].id : var.existent_oke_cluster_id
-}
-
-
-locals {
-  # Helm repos
-  helm_repository = {
-    stable        = "https://charts.helm.sh/stable"
-    ingress_nginx = "https://kubernetes.github.io/ingress-nginx"
-    jetstack      = "https://charts.jetstack.io"                        # cert-manager
-    svc_catalog   = "https://kubernetes-sigs.github.io/service-catalog" # Service Catalog
-    grafana       = "https://grafana.github.io/helm-charts"
-    prometheus    = "https://prometheus-community.github.io/helm-charts"
-  }
-}
-
-# MuShop
-## Kubernetes Service: mushop-utils-ingress-nginx-controller
-data "kubernetes_service" "mushop_ingress" {
-  metadata {
-    name      = "mushop-utils-ingress-nginx-controller" # mushop-utils name included to be backwards compatible to the docs and setup chart install
-    namespace = kubernetes_namespace.mushop_utilities_namespace.id
-  }
-  depends_on = [helm_release.ingress_nginx]
-}
-
-## Kubernetes Secret: Grafana Admin Password
-data "kubernetes_secret" "mushop_utils_grafana" {
-  metadata {
-    name      = "mushop-utils-grafana"
-    namespace = kubernetes_namespace.mushop_utilities_namespace.id
-  }
-  depends_on = [helm_release.grafana, helm_release.mushop]
+  cluster_id = var.create_new_oke_cluster ? oci_containerengine_cluster.oke_cluster[0].id : var.existent_oke_cluster_id
 }
 
 # OCI Services
@@ -66,7 +57,7 @@ data "oci_core_services" "all_services" {
 
 ## Object Storage
 data "oci_objectstorage_namespace" "ns" {
-  compartment_id = var.compartment_ocid
+  compartment_id = local.oke_compartment_ocid
 }
 
 # Randoms

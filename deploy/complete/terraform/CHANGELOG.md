@@ -1,5 +1,23 @@
 # CHANGELOG
 
+2021-04-02 (v2.1.0)
+
+- Retrieval of Current and Home regions for Identity requests
+- Support for versioning TF providers
+- Support for OLD TF Providers to match ORM support
+- Support for new E4.flex shapes
+- Terraform Variables validation
+- Helm chart updates: remove deprecated Grafana oci-datasource
+- Introduction to OCI Metrics and OCI Logging plugins for Grafana
+- Pre-configured OCI Metrics and OCI Logging datasources
+- New pre-loaded Grafana Dashboards
+- Subject-oriented terraform variables
+- Option to create a new sub-compartment for OKE, Nodes, Services
+- Kubernetes API Endpoint options (Public or Private)
+- Terraform resources re-organized
+- Revamped ORM Schema
+- KMS/OCI Vault initial support
+
 2021-03-11 (v2.0.6)
 
 - Helm Repo Repos updated

@@ -23,22 +23,10 @@ Oracle Cloud Infrastructure or enable certain features within the application.
 
     > This is necessary because chart binaries are not included inside the source code
 
-1. Create namespace:
-
-    ```bash
-    kubectl create ns mushop-setup
-    ```
-
 1. Install `setup` chart:
 
     ```bash
-    helm install mushop-setup setup --namespace mushop-setup
-    ```
-
-    If using Helm v2:
-
-    ```text
-    helm install setup --name mushop-setup --namespace mushop-setup
+    helm install mushop-utiils setup --namespace mushop-utilities --create-namespace
     ```
 
     > **NOTE:** It is possible that certain services may conflict with pre-existing installs. If so, try setting `--set <chart>.enabled=false` for any conflicting charts.
@@ -53,8 +41,8 @@ The installed dependencies are listed below. Note that any can be disabled as ne
 
 | Chart                                                                                                      | Purpose                                | Option                   |
 | ---------------------------------------------------------------------------------------------------------- | -------------------------------------- | ------------------------ |
-| [Prometheus](https://github.com/helm/charts/blob/master/stable/prometheus/README.md)                       | Service metrics aggregation            | `prometheus.enabled`     |
-| [Grafana](https://github.com/helm/charts/blob/master/stable/grafana/README.md)                             | Infra/Service visualization dashboards | `grafana.enabled`        |
+| [Prometheus](https://github.com/prometheus-community/helm-charts/blob/main/charts/prometheus/README.md)                       | Service metrics aggregation            | `prometheus.enabled`     |
+| [Grafana](https://github.com/grafana/helm-charts/blob/main/charts/grafana/README.md)                             | Infra/Service visualization dashboards | `grafana.enabled`        |
 | [Metrics Server](https://github.com/helm/charts/blob/master/stable/metrics-server/README.md)               | Support for Horizontal Pod Autoscaling | `metrics-server.enabled` |
 | [Service Catalog](https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md) | Interface for Oracle Service Broker    | `catalog.enabled`        |
 | [Ingress Nginx](https://kubernetes.github.io/ingress-nginx/)                 | Load Balancer ingress control          | `ingress-nginx.enabled`  |
@@ -70,12 +58,6 @@ See [./provision/README.md](./provision/README.md) for complete usage details.
 
 ## Installation
 
-Create a Kubernetes namespace where MuShop will be deployed:
-
-```shell
-kubectl create ns mushop
-```
-
 ### QuickStart
 
 For an installation without connecting Oracle Cloud Infrastructure services, use the following:
@@ -83,15 +65,8 @@ For an installation without connecting Oracle Cloud Infrastructure services, use
 ```bash
 helm install mymushop mushop \
   --namespace mushop \
+  --create-namespace \
   --set global.mock.service=all
-```
-
-If using Helm v2:
-
-```bash
-helm install mushop --name mymushop \
-    --namespace mushop \
-    --set global.mock.service=all
 ```
 
 ### Configuration
@@ -200,12 +175,6 @@ Before installing the chart, ensure all [configurations](#configuration) are com
 helm install -f myvalues.yaml mymushop mushop
 ```
 
-If using Helm v2:
-
-```bash
-helm install mushop --name mymushop -f myvalues.yaml
-```
-
 If you want to troubleshoot the chart, add the `--dry-run` and `--debug` flags and re-run the command again. For example:
 
 ```bash
@@ -275,10 +244,4 @@ If you don't want to deploy the charts, you can also render the template and get
 
 ```bash
 helm template -f <VALUES_FILE> mymushop mushop --output-dir <SOME_DIR>
-```
-
-If using Helm v2:
-
-```bash
-helm template mushop --output-dir <SOME_DIR> -f <VALUES_FILE> --name mymushop
 ```
