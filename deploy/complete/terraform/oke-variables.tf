@@ -62,11 +62,11 @@ variable "use_encryption_from_oci_vault" {
   description = "By default, Oracle manages the keys that encrypt the boot volume, but you can choose a key from a vault that you have access to if you want greater control over the key's lifecycle and how it's used"
 }
 variable "create_new_encryption_key" {
-  default = false
+  default     = false
   description = "Creates new vault and key on OCI Vault/Key Management/KMS and assign to boot volume of the worker nodes"
 }
 variable "encryption_key_id" {
-  default = ""
+  default     = ""
   description = "Use an existent master encryption key to encrypt boot volume and object storage bucket. NOTE: If the key resides in a different compartment or in a different tenancy, make sure you have the proper policies to access, or the provision of the worker nodes will fail."
 }
 
@@ -147,15 +147,15 @@ variable "private_key_path" {
 
 # Create Dynamic Group and Policies
 variable "create_dynamic_group_for_nodes_in_compartment" {
-  default     = false
+  default     = true
   description = "Creates dynamic group of Nodes in the compartment. Note: You need to have proper rights on the Tenancy. If you only have rights in a compartment, uncheck and ask you administrator to create the Dynamic Group for you"
 }
 variable "create_compartment_policies" {
-  default     = false
+  default     = true
   description = "Creates policies that will reside on the compartment. e.g.: Cluster Autoscaler, OCI Logging datasource for Grafana"
 }
 variable "create_tenancy_policies" {
-  default     = false
+  default     = true
   description = "Creates policies that need to reside on the tenancy. e.g.: OCI Metrics datasource for Grafana"
 }
 
