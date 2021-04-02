@@ -9,7 +9,7 @@ resource "oci_containerengine_cluster" "oke_cluster" {
   vcn_id             = oci_core_virtual_network.oke_vcn[0].id
 
   endpoint_config {
-    is_public_ip_enabled = var.cluster_endpoint_config_is_public_ip_enabled
+    is_public_ip_enabled = (var.cluster_endpoint_visibility == "Private") ? false : true
     subnet_id            = oci_core_subnet.oke_k8s_endpoint_subnet[0].id
   }
   options {
