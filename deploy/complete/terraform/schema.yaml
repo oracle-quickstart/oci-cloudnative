@@ -28,6 +28,7 @@ variableGroups:
     - cluster_name
     - k8s_version
     - cluster_workers_visibility
+    - cluster_endpoint_visibility
     - cluster_autoscaler_enabled
     - cluster_autoscaler_min_nodes
     - cluster_autoscaler_max_nodes
@@ -35,6 +36,7 @@ variableGroups:
     - use_encryption
     - create_new_encryption_key
     - encryption_key_id
+    - create_new_compartment_for_oke
     visible: true
 
   - title: "OKE Worker Nodes"
@@ -48,10 +50,15 @@ variableGroups:
       and:
         - create_new_oke_cluster
 
-  - title: "Add Ons"
+  - title: "Dynamic Group and Policies"
     variables:
-    - cluster_options_add_ons_is_kubernetes_dashboard_enabled
-    visible: true
+    - create_dynamic_group_for_nodes_in_compartment
+    - create_compartment_policies
+    - create_tenancy_policies
+    visible:
+      eq:
+      - ${show_advanced}
+      - Yes
 
   - title: "MuShop Features"
     variables:
@@ -108,8 +115,12 @@ variableGroups:
       - fingerprint
       - private_key_path
       - network_cidrs
+      - app_name
       - cluster_options_admission_controller_options_is_pod_security_policy_enabled
+      - cluster_options_add_ons_is_kubernetes_dashboard_enabled
       - ingress_load_balancer_shape
+      - node_pool_boot_volume_size_in_gbs
+      - oke_compartment_description
     visible: false
 
   - title: "OCI Services Hidden"
@@ -166,6 +177,7 @@ variables:
     - "v1.19.7"
     - "v1.18.10"
     - "v1.17.13"
+    - "v1.16.15"
     title: "Kubernetes Version"
     description: "Kubernetes version installed on your master and worker nodes"
     required: true
@@ -178,8 +190,20 @@ variables:
     enum:
     - "Private"
     - "Public"
-    title: "Choose visibility type"
+    title: "Choose Worker Nodes visibility type"
     description: "The Kubernetes worker nodes that are created will be hosted in public or private subnet(s)"
+    required: true
+    visible: #($create_new_oke_cluster = true)
+      and:
+        - create_new_oke_cluster
+
+  cluster_endpoint_visibility:
+    type: enum
+    enum:
+    - "Private"
+    - "Public"
+    title: "Choose Kubernetes API Endpoint visibility type"
+    description: "The Kubernetes cluster that is created will be hosted on a public subnet with a public IP address auto-assigned or on a private subnet. If Private, additional configuration will be necessary to run kubectl commands."
     required: true
     visible: #($create_new_oke_cluster = true)
       and:
@@ -241,6 +265,14 @@ variables:
   encryption_key_id:
       type: string
       title: "Existent Encryption Key OCID"
+      visible: #($show_advanced  == ""Yes"")
+        eq:
+          - show_advanced 
+          - "Yes"
+
+  create_new_compartment_for_oke:
+      type: boolean
+      title: "Create new compartment for OKE Nodes and OCI Services deployed"
       visible: #($show_advanced  == ""Yes"")
         eq:
           - show_advanced 
@@ -309,6 +341,34 @@ variables:
       and:
         - create_new_oke_cluster
 
+  # Dynamic Groups and Policies for Instance Principals and Autoscaler
+  create_dynamic_group_for_nodes_in_compartment:
+    type: boolean
+    title: "Create dynamic group for Node in a compartment. Note: You need to have proper rights on the Tenancy. If you only have rights in a compartment, uncheck and ask you administrator to create the Dynamic Group for you"
+    required: true
+    visible: #($show_advanced  == ""Yes"")
+      eq:
+        - show_advanced 
+        - "Yes"
+
+  create_compartment_policies:
+    type: boolean
+    title: "Create policies that will reside on the compartment. e.g.: Cluster Autoscaler, OCI Logging datasource for Grafana"
+    required: true
+    visible: #($show_advanced  == ""Yes"")
+      eq:
+        - show_advanced 
+        - "Yes"
+
+  create_tenancy_policies:
+    type: boolean
+    title: "Create policies that need to reside on the tenancy. e.g.: OCI Metrics datasource for Grafana"
+    required: true
+    visible: #($show_advanced  == ""Yes"")
+      eq:
+        - show_advanced 
+        - "Yes"
+
   # Advanced Options
   show_advanced:
     type: enum
@@ -376,7 +436,7 @@ variables:
   grafana_enabled:
     type: boolean
     title: "Grafana"
-    description: "Enable Grafana Dashboards"
+    description: "Enable Grafana Dashboards. Includes example dashboards and Prometheus, OCI Logging and OCI Metrics datasources"
 
   prometheus_enabled:
     type: boolean
@@ -388,20 +448,20 @@ variables:
     title: "Metrics Server"
     description: "Enable Metrics Server for Auto Scaling"
 
-  catalog_enabled:
-    type: boolean
-    title: "Service Catalog"
-    description: "Enable Service Catalog to use with OCI Service Broker"
-
   ingress_nginx_enabled:
-      type: boolean
-      title: "Ingress NGINX"
-      description: "Enable Ingress Nginx for Services (Provision a Load Balancer)"
+    type: boolean
+    title: "Ingress NGINX"
+    description: "Enable Ingress Nginx for Services (Provision a Load Balancer)"
 
   cert_manager_enabled:
     type: boolean
     title: "Certificate Management"
     description: "Enable x509 Certificate Management"
+
+  catalog_enabled:
+    type: boolean
+    title: "Service Catalog"
+    description: "Enable Service Catalog to use with OCI Service Broker"
 
   # mushop_atp:
   #   visible: yes
@@ -500,6 +560,7 @@ outputGroups:
       - deploy_id
       - deployed_to_region
       - mushop_source_code
+      - deployed_oke_kubernetes_version
 
   - title: Dev Notes
     outputs:
@@ -557,6 +618,11 @@ outputs:
   deployed_to_region:
     type: string
     title: "Deployed using Region"
+    visible: true
+
+  deployed_oke_kubernetes_version:
+    type: string
+    title: "OKE Kubernetes version deployed"
     visible: true
 
   comments:
