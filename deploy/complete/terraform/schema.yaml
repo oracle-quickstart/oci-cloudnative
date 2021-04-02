@@ -2,8 +2,8 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
-title: "MuShop App"
-description: "Oracle Container Engine (OKE) stack for MuShop CloudNative App"
+title: "MuShop Cloud Native App"
+description: "MuShop: eCommerce microservices demo App for Oracle's Container Engine for Kubernetes (OKE)"
 schemaVersion: 1.1.0
 version: "20190304"
 
@@ -25,7 +25,10 @@ variableGroups:
     variables:
     - cluster_name   
     - show_advanced
-
+    - mushop_mock_mode_all
+    # - mushop_atp
+    # - mushop_oss
+    
   - title: "OKE Cluster Configuration"
     variables:
     - create_new_oke_cluster
@@ -63,13 +66,7 @@ variableGroups:
     - create_compartment_policies
     - create_tenancy_policies
 
-  - title: "MuShop Features"
-    variables:
-    - mushop_mock_mode_all
-    # - mushop_atp
-    # - mushop_oss
-
-  - title: "MuShop Utilities"
+  - title: "Cluster Utilities (MuShop Utilities)"
     variables:
     - grafana_enabled
     - prometheus_enabled
@@ -458,68 +455,69 @@ variables:
   #   description: "Enable Oracle Streaming for all Services"
 
   # Network Type Options
-  network_strategy:
-    type: enum
-    title: Network Strategy
-    description: Create or use existing Network Stack (VCN and Subnet)
-    enum:
-      - "Create New VCN and Subnet"
-      # - "Use Existing VCN and Subnet"
-    required: true
-    default: "Create New VCN and Subnet"
-    visible:
-      and:
-        - show_advanced
+  # network_strategy:
+  #   type: enum
+  #   title: Network Strategy
+  #   description: Create or use existing Network Stack (VCN and Subnet)
+  #   enum:
+  #     - "Create New VCN and Subnet"
+  #     # - "Use Existing VCN and Subnet"
+  #   required: true
+  #   default: "Create New VCN and Subnet"
+  #   visible:
+  #     and:
+  #       - create_new_oke_cluster
+  #       - show_advanced
 
-  subnet_type:
-    visible: #($network_strategy  == ""Create New VCN and Subnet"")
-      eq:
-        - network_strategy 
-        - "Create New VCN and Subnet"
-    type: enum
-    title: Subnet Type
-    description: Choose between private and public subnets
-    enum:
-      - "Private Subnet"
-      - "Public Subnet"
-    required: true
-    default: "Private Subnet"
+  # subnet_type:
+  #   visible: #($network_strategy  == ""Create New VCN and Subnet"")
+  #     eq:
+  #       - network_strategy 
+  #       - "Create New VCN and Subnet"
+  #   type: enum
+  #   title: Subnet Type
+  #   description: Choose between private and public subnets
+  #   enum:
+  #     - "Private Subnet"
+  #     - "Public Subnet"
+  #   required: true
+  #   default: "Private Subnet"
 
-  vcn_id:
-    visible: #($network_strategy  == "Use Existing VCN and Subnet")
-      eq:
-        - network_strategy 
-        - "Use Existing VCN and Subnet"
-    type: oci:core:vcn:id
-    dependsOn:
-      compartmentId: compartment_ocid 
-    required: true
-    title: Existing Network
-    description: An existing Virtual Cloud Network (VCN) in which to create the compute instances, network resources, and load balancers. If not specified, a new VCN is created.
+  # vcn_id:
+  #   visible: #($network_strategy  == "Use Existing VCN and Subnet")
+  #     eq:
+  #       - network_strategy 
+  #       - "Use Existing VCN and Subnet"
+  #   type: oci:core:vcn:id
+  #   dependsOn:
+  #     compartmentId: compartment_ocid 
+  #   required: true
+  #   title: Existing Network
+  #   description: An existing Virtual Cloud Network (VCN) in which to create the compute instances, network resources, and load balancers. If not specified, a new VCN is created.
 
-  vcn_cidr_block:
-    visible: #($network_strategy  == ""Create New VCN and Subnet"")
-      eq:
-        - network_strategy 
-        - "Create New VCN and Subnet"
-    type: string
-    required: true
-    default: 10.20.0.0/16
-    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
-    title: VCN CIDR BLOCK
-    description: The CIDR of the new Virtual Cloud Network (VCN). If you plan to peer this VCN with another VCN, the VCNs must not have overlapping CIDRs.
+  # vcn_cidr_block:
+  #   visible: #($network_strategy  == ""Create New VCN and Subnet"")
+  #     eq:
+  #       - network_strategy 
+  #       - "Create New VCN and Subnet"
+  #   type: string
+  #   required: true
+  #   default: 10.20.0.0/16
+  #   pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+  #   title: VCN CIDR BLOCK
+  #   description: The CIDR of the new Virtual Cloud Network (VCN). If you plan to peer this VCN with another VCN, the VCNs must not have overlapping CIDRs.
 
-  subnet_cidr_block:
-    visible: #($network_strategy  == ""Create New VCN and Subnet"")
-      eq:
-        - network_strategy 
-        - "Create New VCN and Subnet"
-    type: string
-    default: 10.20.10.0/24
-    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
-    required: true
-    title: Subnet CIDR
-    description: The CIDR of the new Subnet. The new subnet's CIDR should not overlap with any other subnet CIDRs.
+  # subnet_cidr_block:
+  #   visible: #($network_strategy  == ""Create New VCN and Subnet"")
+  #     eq:
+  #       - network_strategy 
+  #       - "Create New VCN and Subnet"
+  #   type: string
+  #   default: 10.20.10.0/24
+  #   pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+  #   required: true
+  #   title: Subnet CIDR
+  #   description: The CIDR of the new Subnet. The new subnet's CIDR should not overlap with any other subnet CIDRs.
 
 outputGroups:
   - title: Mushop endpoints
