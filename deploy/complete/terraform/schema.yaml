@@ -150,12 +150,10 @@ variables:
   create_new_oke_cluster:
     type: boolean
     title: "Create new OKE Cluster"
-    description: "Creates a new OKE cluster, node pool and network resources"
 
   existent_oke_cluster_id:
     type: string
     title: "OKE Cluster id"
-    description: "Cluster Id of the existent OKE"
     required: true
     visible: #($create_new_oke_cluster = false)
       not:
@@ -164,7 +162,6 @@ variables:
   cluster_name:
     type: string
     title: "Cluster Name Prefix"
-    description: "OKE cluster name prefix"
     required: true
     visible: #($create_new_oke_cluster = true)
       and:
@@ -179,7 +176,6 @@ variables:
     - "v1.17.13"
     - "v1.16.15"
     title: "Kubernetes Version"
-    description: "Kubernetes version installed on your master and worker nodes"
     required: true
     visible: #($create_new_oke_cluster = true)
       and:
@@ -191,7 +187,6 @@ variables:
     - "Private"
     - "Public"
     title: "Choose Worker Nodes visibility type"
-    description: "The Kubernetes worker nodes that are created will be hosted in public or private subnet(s)"
     required: true
     visible: #($create_new_oke_cluster = true)
       and:
@@ -203,7 +198,6 @@ variables:
     - "Private"
     - "Public"
     title: "Choose Kubernetes API Endpoint visibility type"
-    description: "The Kubernetes cluster that is created will be hosted on a public subnet with a public IP address auto-assigned or on a private subnet. If Private, additional configuration will be necessary to run kubectl commands."
     required: true
     visible: #($create_new_oke_cluster = true)
       and:
@@ -247,41 +241,40 @@ variables:
   #         - create_new_oke_cluster
 
   use_encryption:
-      type: boolean
-      title: "Use Encryption"
-      visible: #($show_advanced  == ""Yes"")
-        eq:
-          - show_advanced 
-          - "Yes"
+    type: boolean
+    title: "Use Encryption"
+    visible: #($show_advanced  == ""Yes"")
+      eq:
+        - show_advanced 
+        - "Yes"
 
   create_new_encryption_key:
-      type: boolean
-      title: "Create new Vault and Key"
-      visible: #($show_advanced  == ""Yes"")
-        eq:
-          - show_advanced 
-          - "Yes"
+    type: boolean
+    title: "Create new Vault and Key"
+    visible: #($show_advanced  == ""Yes"")
+      eq:
+        - show_advanced 
+        - "Yes"
 
   encryption_key_id:
-      type: string
-      title: "Existent Encryption Key OCID"
-      visible: #($show_advanced  == ""Yes"")
-        eq:
-          - show_advanced 
-          - "Yes"
+    type: string
+    title: "Existent Encryption Key OCID"
+    visible: #($show_advanced  == ""Yes"")
+      eq:
+        - show_advanced 
+        - "Yes"
 
   create_new_compartment_for_oke:
-      type: boolean
-      title: "Create new compartment for OKE Nodes and OCI Services deployed"
-      visible: #($show_advanced  == ""Yes"")
-        eq:
-          - show_advanced 
-          - "Yes"
+    type: boolean
+    title: "Create new Compartment"
+    visible: #($show_advanced  == ""Yes"")
+      eq:
+        - show_advanced 
+        - "Yes"
 
   node_pool_shape:
     type: oci:core:instanceshape:name
     title: "Worker Node Shape"
-    description: "The shape for all nodes in the node pool."
     required: true
     dependsOn:
       compartmentId: ${compartment_ocid}
@@ -291,7 +284,6 @@ variables:
     minimum: 1
     maximum: 64
     title: "Number of OCPUs"
-    description: "You can customize the number of OCPUs to a flexible shape."
     visible:
       or:
         - eq:
@@ -306,7 +298,6 @@ variables:
     minimum: 1
     maximum: 1024
     title: "Amount of memory (GB)"
-    description: "You can customize the amount of memory allocated to a flexible shape."
     visible:
       or:
         - eq:
@@ -319,7 +310,6 @@ variables:
   num_pool_workers:
     type: integer
     title: "Number of Worker Nodes"
-    description: "The number of worker nodes in the node pool."
     minimum: 1
     maximum: 1000
     required: true
@@ -327,7 +317,6 @@ variables:
   node_pool_name:
     type: string
     title: "Node Pool Name"
-    description: "Name of the node pool"
     required: true
     visible: #($show_advanced  == ""Yes"")
       eq:
@@ -344,7 +333,7 @@ variables:
   # Dynamic Groups and Policies for Instance Principals and Autoscaler
   create_dynamic_group_for_nodes_in_compartment:
     type: boolean
-    title: "Create dynamic group for Node in a compartment. Note: You need to have proper rights on the Tenancy. If you only have rights in a compartment, uncheck and ask you administrator to create the Dynamic Group for you"
+    title: "Create Dynamic Group of Node in the Compartment"
     required: true
     visible: #($show_advanced  == ""Yes"")
       eq:
@@ -353,7 +342,7 @@ variables:
 
   create_compartment_policies:
     type: boolean
-    title: "Create policies that will reside on the compartment. e.g.: Cluster Autoscaler, OCI Logging datasource for Grafana"
+    title: "Create Compartment Policies"
     required: true
     visible: #($show_advanced  == ""Yes"")
       eq:
@@ -362,7 +351,7 @@ variables:
 
   create_tenancy_policies:
     type: boolean
-    title: "Create policies that need to reside on the tenancy. e.g.: OCI Metrics datasource for Grafana"
+    title: "Create Tenancy Policies"
     required: true
     visible: #($show_advanced  == ""Yes"")
       eq:
@@ -393,7 +382,6 @@ variables:
     title: "Import your own SSH public key"
     additionalProps:
       allowMultiple: true
-    description: "In order to access your private nodes with a public SSH key you will need to set up a bastion host (a.k.a. jump box). If using public nodes, bastion is not needed. Left blank to not import keys."
     required: false
     pattern: "((^(ssh-rsa AAAAB3NzaC1yc2|ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNT|ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzOD|ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1Mj|ssh-ed25519 AAAAC3NzaC1lZDI1NTE5|ssh-dss AAAAB3NzaC1kc3)[0-9A-Za-z+\/]+[=]{0,3})( [^,]*)?)(,((ssh-rsa AAAAB3NzaC1yc2|ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNT|ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzOD|ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1Mj|ssh-ed25519 AAAAC3NzaC1lZDI1NTE5|ssh-dss AAAAB3NzaC1kc3)[0-9A-Za-z+\/]+[=]{0,3})( [^,]*)?)*$"
     visible: #($show_advanced  == ""Yes"") + ($generate_public_ssh_key  == "false")
@@ -407,7 +395,6 @@ variables:
   image_operating_system:
     type: enum
     title: "Image OS"
-    description: "The OS/image installed on all nodes in the node pool."
     enum:
       - "Oracle Linux"
     required: true
@@ -420,7 +407,6 @@ variables:
     type: string
     required: true
     title: "Image OS Version"
-    description: "The OS/image version installed on all nodes in the node pool."
     visible: #($show_advanced  == ""Yes"")
       eq:
         - show_advanced 
@@ -431,37 +417,30 @@ variables:
     type: boolean
     required: true
     title: "Enable Mock Mode"
-    description: "Enable Mock Mode for MuShop all Services"
 
   grafana_enabled:
     type: boolean
     title: "Grafana"
-    description: "Enable Grafana Dashboards. Includes example dashboards and Prometheus, OCI Logging and OCI Metrics datasources"
 
   prometheus_enabled:
     type: boolean
     title: "Prometheus"
-    description: "Enable Prometheus"
 
   metrics_server_enabled:
     type: boolean
     title: "Metrics Server"
-    description: "Enable Metrics Server for Auto Scaling"
 
   ingress_nginx_enabled:
     type: boolean
     title: "Ingress NGINX"
-    description: "Enable Ingress Nginx for Services (Provision a Load Balancer)"
 
   cert_manager_enabled:
     type: boolean
     title: "Certificate Management"
-    description: "Enable x509 Certificate Management"
 
   catalog_enabled:
     type: boolean
     title: "Service Catalog"
-    description: "Enable Service Catalog to use with OCI Service Broker"
 
   # mushop_atp:
   #   visible: yes
