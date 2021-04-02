@@ -67,7 +67,31 @@ variable "create_new_encryption_key" {
 }
 variable "existent_encryption_key_id" {
   default     = ""
-  description = "Use an existent master encryption key to encrypt boot volume and object storage bucket. NOTE: If the key resides in a different compartment or in a different tenancy, make sure you have the proper policies to access, or the provision of the worker nodes will fail."
+  description = "Use an existent master encryption key to encrypt boot volume and object storage bucket. NOTE: If the key resides in a different compartment or in a different tenancy, make sure you have the proper policies to access, or the provision of the worker nodes will fail"
+}
+variable "create_vault_policies_for_group" {
+  default = false
+  description = "Creates policies to allow the user applying the stack to manage vault and keys. If you are on the Administrators group or already have the policies for a compartment, this policy is not needed. If you do not have access to allow the policy, ask your administrator to include it for you"
+}
+variable "user_admin_group_for_vault_policy" {
+  default = "Administrators"
+  description = "User Identity Group to allow manage vault and keys. The user running the Terraform scripts or Applying the ORM Stack need to be on this group"
+}
+variable "vault_display_name" {
+  default = "MuShop Vault"
+}
+variable "vault_type" {
+  type    = list(any)
+  default = ["DEFAULT", "VIRTUAL_PRIVATE"]
+}
+variable "vault_key_display_name" {
+  default = "MuShop Key"
+}
+variable "vault_key_key_shape_algorithm" {
+  default = "AES"
+}
+variable "vault_key_key_shape_length" {
+  default = 32
 }
 
 ## OKE Node Pool Details
@@ -152,7 +176,7 @@ variable "create_dynamic_group_for_nodes_in_compartment" {
 }
 variable "existent_dynamic_group_for_nodes_in_compartment" {
   default     = ""
-  description = "Uses previous created Dynamic Group for the policies"
+  description = "Enter previous created Dynamic Group for the policies"
 }
 variable "create_compartment_policies" {
   default     = true
@@ -161,6 +185,11 @@ variable "create_compartment_policies" {
 variable "create_tenancy_policies" {
   default     = true
   description = "Creates policies that need to reside on the tenancy. e.g.: Policies to support OCI Metrics datasource on Grafana"
+}
+
+# ORM Schema visual control variables
+variable "show_advanced" {
+  default = false
 }
 
 # Dictionary Locals
