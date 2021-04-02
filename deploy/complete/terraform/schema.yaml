@@ -21,51 +21,53 @@ variableGroups:
     - region
     visible: false
 
+  - title: "General Configuration"
+    variables:
+    - cluster_name   
+    - show_advanced
+
   - title: "OKE Cluster Configuration"
     variables:
     - create_new_oke_cluster
     - existent_oke_cluster_id
-    - cluster_name
     - k8s_version
     - cluster_workers_visibility
     - cluster_endpoint_visibility
-    - cluster_autoscaler_enabled
-    - cluster_autoscaler_min_nodes
-    - cluster_autoscaler_max_nodes
-    - existent_oke_nodepool_id_for_autoscaler
-    - use_encryption
-    - create_new_encryption_key
-    - encryption_key_id
+    # - cluster_autoscaler_enabled
+    # - cluster_autoscaler_min_nodes
+    # - cluster_autoscaler_max_nodes
+    # - existent_oke_nodepool_id_for_autoscaler
     - create_new_compartment_for_oke
-    visible: true
 
   - title: "OKE Worker Nodes"
     variables:
-    - node_pool_shape
     - num_pool_workers
-    - node_pool_name
+    - node_pool_shape
     - node_pool_node_shape_config_ocpus
     - node_pool_node_shape_config_memory_in_gbs
-    visible: #($create_new_oke_cluster = true)
-      and:
-        - create_new_oke_cluster
+    - generate_public_ssh_key
+    - public_ssh_key
+    - image_operating_system
+    - image_operating_system_version
+    - node_pool_name
+
+  - title: "Encryption using OCI Vault (KMS)"
+    variables:
+    - use_encryption_from_oci_vault
+    - create_new_encryption_key
+    - encryption_key_id
 
   - title: "Dynamic Group and Policies"
     variables:
     - create_dynamic_group_for_nodes_in_compartment
     - create_compartment_policies
     - create_tenancy_policies
-    visible:
-      eq:
-      - ${show_advanced}
-      - Yes
 
   - title: "MuShop Features"
     variables:
     - mushop_mock_mode_all
-    - mushop_atp
-    - mushop_oss
-    visible: true
+    # - mushop_atp
+    # - mushop_oss
 
   - title: "MuShop Utilities"
     variables:
@@ -76,20 +78,8 @@ variableGroups:
     - metrics_server_enabled
     - catalog_enabled
     visible:
-      eq:
-      - ${show_advanced}
-      - Yes
-
-  - title: "Advanced Options"
-    variables:
-    - show_advanced
-    - generate_public_ssh_key
-    - public_ssh_key
-    - image_operating_system
-    - image_operating_system_version
-    visible: #($create_new_oke_cluster = true)
       and:
-        - create_new_oke_cluster
+        - show_advanced
 
   - title: "Network Configuration"
     variables:
@@ -105,9 +95,8 @@ variableGroups:
       - subnet_cidr_block      
       - subnet_dns_label
     visible:
-      eq:
-      - ${show_advanced}
-      - Yes
+      and:
+        - show_advanced
 
   - title: "Extras Hidden"
     variables:
@@ -147,6 +136,20 @@ variables:
     description: "The compartment in which to create compute instance(s)"
     required: true
 
+  cluster_name:
+    type: string
+    title: "Cluster Name Prefix"
+    required: true
+    visible:
+      and:
+        - create_new_oke_cluster
+
+  show_advanced:
+    type: boolean
+    title: "Show advanced options?"
+    description: "Shows advanced options, allowing enable customer managed encryption keys, select your ssh key, and other advanced options"
+    visible: true
+
   create_new_oke_cluster:
     type: boolean
     title: "Create new OKE Cluster"
@@ -155,21 +158,13 @@ variables:
     type: string
     title: "OKE Cluster id"
     required: true
-    visible: #($create_new_oke_cluster = false)
+    visible:
       not:
         - create_new_oke_cluster        
 
-  cluster_name:
-    type: string
-    title: "Cluster Name Prefix"
-    required: true
-    visible: #($create_new_oke_cluster = true)
-      and:
-        - create_new_oke_cluster
-
   k8s_version:
     type: enum
-    enum:
+    enum: # Necessary hardcode supported versions, as ORM does not retrieve the versions.
     - "Latest"
     - "v1.19.7"
     - "v1.18.10"
@@ -177,9 +172,10 @@ variables:
     - "v1.16.15"
     title: "Kubernetes Version"
     required: true
-    visible: #($create_new_oke_cluster = true)
+    visible:
       and:
         - create_new_oke_cluster
+        - show_advanced
 
   cluster_workers_visibility:
     type: enum
@@ -188,7 +184,7 @@ variables:
     - "Public"
     title: "Choose Worker Nodes visibility type"
     required: true
-    visible: #($create_new_oke_cluster = true)
+    visible:
       and:
         - create_new_oke_cluster
 
@@ -199,7 +195,7 @@ variables:
     - "Public"
     title: "Choose Kubernetes API Endpoint visibility type"
     required: true
-    visible: #($create_new_oke_cluster = true)
+    visible:
       and:
         - create_new_oke_cluster
 
@@ -240,72 +236,43 @@ variables:
   #       - not:
   #         - create_new_oke_cluster
 
-  use_encryption:
+  use_encryption_from_oci_vault:
     type: boolean
-    title: "Use Encryption"
-    visible: #($show_advanced  == ""Yes"")
-      eq:
-        - show_advanced 
-        - "Yes"
+    title: "Encrypt using Customer-Managed Keys instead of Oracle Managed Encryption"
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
 
   create_new_encryption_key:
     type: boolean
     title: "Create new Vault and Key"
-    visible: #($show_advanced  == ""Yes"")
-      eq:
-        - show_advanced 
-        - "Yes"
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
+        - use_encryption_from_oci_vault
 
   encryption_key_id:
     type: string
     title: "Existent Encryption Key OCID"
-    visible: #($show_advanced  == ""Yes"")
-      eq:
-        - show_advanced 
-        - "Yes"
+    required: true
+    visible:
+      and:
+        - and:
+          - create_new_oke_cluster
+          - show_advanced
+          - use_encryption_from_oci_vault
+        - not:
+          - create_new_encryption_key
 
   create_new_compartment_for_oke:
     type: boolean
     title: "Create new Compartment"
-    visible: #($show_advanced  == ""Yes"")
-      eq:
-        - show_advanced 
-        - "Yes"
-
-  node_pool_shape:
-    type: oci:core:instanceshape:name
-    title: "Worker Node Shape"
-    required: true
-    dependsOn:
-      compartmentId: ${compartment_ocid}
-
-  node_pool_node_shape_config_ocpus:
-    type: integer
-    minimum: 1
-    maximum: 64
-    title: "Number of OCPUs"
     visible:
-      or:
-        - eq:
-          - instance_shape 
-          - "VM.Standard.E3.Flex"
-        - eq:
-          - instance_shape 
-          - "VM.Standard.E4.Flex"
-
-  node_pool_node_shape_config_memory_in_gbs:
-    type: integer
-    minimum: 1
-    maximum: 1024
-    title: "Amount of memory (GB)"
-    visible:
-      or:
-        - eq:
-          - instance_shape 
-          - "VM.Standard.E3.Flex"
-        - eq:
-          - instance_shape 
-          - "VM.Standard.E4.Flex"
+      and:
+        - create_new_oke_cluster
+        - show_advanced
 
   num_pool_workers:
     type: integer
@@ -313,69 +280,101 @@ variables:
     minimum: 1
     maximum: 1000
     required: true
+    visible:
+      and:
+        - create_new_oke_cluster
+
+  node_pool_shape:
+    type: oci:core:instanceshape:name
+    title: "Select a shape for the Worker Nodes instances"
+    required: true
+    dependsOn:
+      compartmentId: compartment_ocid
+    visible:
+      and:
+        - create_new_oke_cluster
+
+  node_pool_node_shape_config_ocpus:
+    type: integer
+    minimum: 1
+    maximum: 64
+    title: "Number of OCPUs"
+    visible:
+      and:
+        - and:
+          - create_new_oke_cluster
+        - or:
+          - eq:
+            - node_pool_shape 
+            - "VM.Standard.E3.Flex"
+          - eq:
+            - node_pool_shape 
+            - "VM.Standard.E4.Flex"
+
+  node_pool_node_shape_config_memory_in_gbs:
+    type: integer
+    minimum: 1
+    maximum: 1024
+    title: "Amount of memory (GB)"
+    visible:
+      and:
+        - and:
+          - create_new_oke_cluster
+        - or:
+          - eq:
+            - node_pool_shape 
+            - "VM.Standard.E3.Flex"
+          - eq:
+            - node_pool_shape 
+            - "VM.Standard.E4.Flex"
 
   node_pool_name:
     type: string
     title: "Node Pool Name"
     required: true
-    visible: #($show_advanced  == ""Yes"")
-      eq:
-        - show_advanced 
-        - "Yes"
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
 
   cluster_options_add_ons_is_kubernetes_dashboard_enabled:
     type: boolean
     title: "Kubernetes Dashboard Enabled"
-    visible: #($create_new_oke_cluster = true)
-      and:
-        - create_new_oke_cluster
+    visible: false
 
   # Dynamic Groups and Policies for Instance Principals and Autoscaler
   create_dynamic_group_for_nodes_in_compartment:
     type: boolean
-    title: "Create Dynamic Group of Node in the Compartment"
+    title: "Create Dynamic Group for Worker Nodes in the Compartment"
     required: true
-    visible: #($show_advanced  == ""Yes"")
-      eq:
-        - show_advanced 
-        - "Yes"
+    visible:
+      and:
+        - show_advanced
 
   create_compartment_policies:
     type: boolean
     title: "Create Compartment Policies"
     required: true
-    visible: #($show_advanced  == ""Yes"")
-      eq:
-        - show_advanced 
-        - "Yes"
+    visible:
+      and:
+        - show_advanced
 
   create_tenancy_policies:
     type: boolean
     title: "Create Tenancy Policies"
     required: true
-    visible: #($show_advanced  == ""Yes"")
-      eq:
-        - show_advanced 
-        - "Yes"
-
-  # Advanced Options
-  show_advanced:
-    type: enum
-    enum:
-    - "No"
-    - "Yes"
-    default: "No"
-    title: "Open Advanced Options"
-    required: true
+    visible:
+      and:
+        - show_advanced
 
   generate_public_ssh_key:
     type: boolean
     title: "Auto generate public ssh key?"
     required: true
-    visible: #($show_advanced  == ""Yes"")
-      eq:
-        - show_advanced 
-        - "Yes"
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
 
   public_ssh_key:
     type: oci:core:ssh:publickey
@@ -384,11 +383,11 @@ variables:
       allowMultiple: true
     required: false
     pattern: "((^(ssh-rsa AAAAB3NzaC1yc2|ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNT|ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzOD|ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1Mj|ssh-ed25519 AAAAC3NzaC1lZDI1NTE5|ssh-dss AAAAB3NzaC1kc3)[0-9A-Za-z+\/]+[=]{0,3})( [^,]*)?)(,((ssh-rsa AAAAB3NzaC1yc2|ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNT|ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzOD|ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1Mj|ssh-ed25519 AAAAC3NzaC1lZDI1NTE5|ssh-dss AAAAB3NzaC1kc3)[0-9A-Za-z+\/]+[=]{0,3})( [^,]*)?)*$"
-    visible: #($show_advanced  == ""Yes"") + ($generate_public_ssh_key  == "false")
+    visible:
       and:
-        - eq:
-          - show_advanced 
-          - "Yes"
+        - and:
+          - create_new_oke_cluster
+          - show_advanced
         - not:
           - generate_public_ssh_key
 
@@ -398,19 +397,19 @@ variables:
     enum:
       - "Oracle Linux"
     required: true
-    visible: #($show_advanced  == ""Yes"")
-      eq:
-        - show_advanced 
-        - "Yes"
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
 
   image_operating_system_version:
     type: string
     required: true
     title: "Image OS Version"
-    visible: #($show_advanced  == ""Yes"")
-      eq:
-        - show_advanced 
-        - "Yes"
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
 
   mushop_mock_mode_all:
     visible: yes
@@ -468,6 +467,9 @@ variables:
       # - "Use Existing VCN and Subnet"
     required: true
     default: "Create New VCN and Subnet"
+    visible:
+      and:
+        - show_advanced
 
   subnet_type:
     visible: #($network_strategy  == ""Create New VCN and Subnet"")
