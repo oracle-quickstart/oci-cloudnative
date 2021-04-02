@@ -81,6 +81,9 @@ variable "node_pool_node_shape_config_memory_in_gbs" {
 variable "node_pool_node_shape_config_ocpus" {
   default = "1" # Only used if flex shape is selected
 }
+variable "node_pool_boot_volume_size_in_gbs" {
+  default = "60"
+}
 variable "image_operating_system" {
   default = "Oracle Linux"
 }

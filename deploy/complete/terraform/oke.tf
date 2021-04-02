@@ -62,6 +62,7 @@ resource "oci_containerengine_node_pool" "oke_node_pool" {
   node_source_details {
     source_type = "IMAGE"
     image_id    = lookup(data.oci_core_images.node_pool_images.images[0], "id")
+    boot_volume_size_in_gbs = var.node_pool_boot_volume_size_in_gbs
   }
 
   initial_node_labels {
