@@ -70,11 +70,11 @@ variable "existent_encryption_key_id" {
   description = "Use an existent master encryption key to encrypt boot volume and object storage bucket. NOTE: If the key resides in a different compartment or in a different tenancy, make sure you have the proper policies to access, or the provision of the worker nodes will fail"
 }
 variable "create_vault_policies_for_group" {
-  default = false
+  default     = false
   description = "Creates policies to allow the user applying the stack to manage vault and keys. If you are on the Administrators group or already have the policies for a compartment, this policy is not needed. If you do not have access to allow the policy, ask your administrator to include it for you"
 }
 variable "user_admin_group_for_vault_policy" {
-  default = "Administrators"
+  default     = "Administrators"
   description = "User Identity Group to allow manage vault and keys. The user running the Terraform scripts or Applying the ORM Stack need to be on this group"
 }
 
