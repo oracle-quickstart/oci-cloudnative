@@ -21,7 +21,7 @@ variable "existent_oke_cluster_id" {
 }
 variable "create_new_compartment_for_oke" {
   default     = false
-  description = "Creates new compartment for OKE Nodes and OCI Services deployed"
+  description = "Creates new compartment for OKE Nodes and OCI Services deployed.  NOTE: The creation of the compartment increases the deployment time by at least 3 minutes, and can increate by 15 minutes when destroying"
 }
 variable "oke_compartment_description" {
   default = "Compartment for OKE, Nodes and Services"
@@ -57,15 +57,17 @@ variable "cluster_endpoint_visibility" {
 }
 
 ## OKE Encryption details
-variable "use_encryption" {
+variable "use_encryption_from_oci_vault" {
   default     = false
-  description = "Uses standard block storage encryption or encrypt using customer-managed keys"
+  description = "By default, Oracle manages the keys that encrypt the boot volume, but you can choose a key from a vault that you have access to if you want greater control over the key's lifecycle and how it's used"
 }
 variable "create_new_encryption_key" {
   default = false
+  description = "Creates new vault and key on OCI Vault/Key Management/KMS and assign to boot volume of the worker nodes"
 }
 variable "encryption_key_id" {
   default = ""
+  description = "Use an existent master encryption key to encrypt boot volume and object storage bucket. NOTE: If the key resides in a different compartment or in a different tenancy, make sure you have the proper policies to access, or the provision of the worker nodes will fail."
 }
 
 ## OKE Node Pool Details
@@ -83,7 +85,7 @@ variable "num_pool_workers" {
 }
 variable "node_pool_shape" {
   default     = "VM.Standard.E3.Flex"
-  description = "The shape for all nodes in the node pool"
+  description = "A shape is a template that determines the number of CPUs, amount of memory, and other resources allocated to a newly created instance for the Worker Node"
 }
 variable "node_pool_node_shape_config_ocpus" {
   default     = "1" # Only used if flex shape is selected
@@ -146,7 +148,7 @@ variable "private_key_path" {
 # Create Dynamic Group and Policies
 variable "create_dynamic_group_for_nodes_in_compartment" {
   default     = false
-  description = "Creates dynamic group of Nodes in the compartment. Note: You need to have proper rights on the Tenancy. If you only have rights in a compartment, uncheck and ask you administrator to create the Dynamic Group for you. NOTE: The creation of the compartment increases the deployment time by at least 3 minutes, and can increate by 15 minutes when destroying"
+  description = "Creates dynamic group of Nodes in the compartment. Note: You need to have proper rights on the Tenancy. If you only have rights in a compartment, uncheck and ask you administrator to create the Dynamic Group for you"
 }
 variable "create_compartment_policies" {
   default     = false
