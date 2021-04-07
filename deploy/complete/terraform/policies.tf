@@ -6,7 +6,7 @@ resource "oci_identity_dynamic_group" "oke_nodes_dg" {
   name           = "${lower(trimspace(var.app_name))}-oke-cluster-dg-${random_string.deploy_id.result}"
   description    = "${var.app_name} Cluster Dynamic Group"
   compartment_id = var.tenancy_ocid
-  matching_rule = "ANY {ALL {instance.compartment.id = '${local.oke_compartment_ocid}'},ALL {resource.type = 'cluster', resource.compartment.id = '${local.oke_compartment_ocid}'}}"
+  matching_rule  = "ANY {ALL {instance.compartment.id = '${local.oke_compartment_ocid}'},ALL {resource.type = 'cluster', resource.compartment.id = '${local.oke_compartment_ocid}'}}"
 
   provider = oci.home_region
 
