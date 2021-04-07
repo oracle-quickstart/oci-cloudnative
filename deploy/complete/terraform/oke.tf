@@ -48,7 +48,7 @@ resource "oci_containerengine_node_pool" "oke_node_pool" {
         subnet_id           = oci_core_subnet.oke_nodes_subnet[0].id
       }
     }
-    size = var.num_pool_workers
+    size = var.cluster_autoscaler_enabled ? var.cluster_autoscaler_min_nodes : var.num_pool_workers
   }
 
   dynamic "node_shape_config" {
