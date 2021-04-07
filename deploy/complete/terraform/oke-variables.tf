@@ -78,6 +78,20 @@ variable "user_admin_group_for_vault_policy" {
   description = "User Identity Group to allow manage vault and keys. The user running the Terraform scripts or Applying the ORM Stack need to be on this group"
 }
 
+## OKE Autoscaler
+variable "cluster_autoscaler_enabled" {
+  default = true
+}
+variable "cluster_autoscaler_min_nodes" {
+  default = 1
+}
+variable "cluster_autoscaler_max_nodes" {
+  default = 10
+}
+variable "existent_oke_nodepool_id_for_autoscaler" {
+  default = ""
+}
+
 ## OKE Node Pool Details
 variable "node_pool_name" {
   default     = "pool1"
