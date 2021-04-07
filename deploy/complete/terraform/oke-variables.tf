@@ -81,15 +81,19 @@ variable "user_admin_group_for_vault_policy" {
 ## OKE Autoscaler
 variable "cluster_autoscaler_enabled" {
   default = true
+  description = "Enables OKE cluster autoscaler. Node pools will auto scale based on the resources usage" 
 }
 variable "cluster_autoscaler_min_nodes" {
-  default = 1
+  default = 3
+  description = "Minimum number of nodes on the node pool to be scheduled by the Kubernetes"
 }
 variable "cluster_autoscaler_max_nodes" {
   default = 10
+  description = "Maximum number of nodes on the node pool to be scheduled by the Kubernetes"
 }
 variable "existent_oke_nodepool_id_for_autoscaler" {
   default = ""
+  description = "Nodepool Id of the existent OKE to use with Cluster Autoscaler"
 }
 
 ## OKE Node Pool Details
@@ -103,7 +107,7 @@ variable "k8s_version" {
 }
 variable "num_pool_workers" {
   default     = 3
-  description = "The number of worker nodes in the node pool"
+  description = "The number of worker nodes in the node pool. If select Cluster Autoscaler, will assume the minimum number of nodes configured"
 }
 variable "node_pool_shape" {
   default     = "VM.Standard.E3.Flex"
