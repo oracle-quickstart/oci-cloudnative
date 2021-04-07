@@ -4,7 +4,7 @@
 
 locals {
   cluster_autoscaler_supported_k8s_versions           = ["1.17", "1.18", "1.19", "1.20", "1.21"]
-  cluster_autoscaler_image_version                    = "2021.02"
+  cluster_autoscaler_image_version                    = "2021.03"
   cluster_autoscaler_image                            = "iad.ocir.io/oracle/oci-cluster-autoscaler:${local.k8s_major_minor_version}-${local.cluster_autoscaler_image_version}"
   cluster_autoscaler_app_version                      = 4
   cluster_autoscaler_node_pool                        = var.create_new_oke_cluster ? oci_containerengine_node_pool.oke_node_pool[0].id : var.existent_oke_nodepool_id_for_autoscaler
