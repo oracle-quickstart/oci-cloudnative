@@ -36,15 +36,15 @@ variableGroups:
     - k8s_version
     - cluster_workers_visibility
     - cluster_endpoint_visibility
-    # - cluster_autoscaler_enabled
-    # - cluster_autoscaler_min_nodes
-    # - cluster_autoscaler_max_nodes
-    # - existent_oke_nodepool_id_for_autoscaler
     - create_new_compartment_for_oke
 
   - title: "OKE Worker Nodes"
     variables:
+    - cluster_autoscaler_enabled
     - num_pool_workers
+    - cluster_autoscaler_min_nodes
+    - cluster_autoscaler_max_nodes
+    - existent_oke_nodepool_id_for_autoscaler
     - node_pool_shape
     - node_pool_node_shape_config_ocpus
     - node_pool_node_shape_config_memory_in_gbs
@@ -199,43 +199,6 @@ variables:
       and:
         - create_new_oke_cluster
 
-  # cluster_autoscaler_enabled:
-  #   type: boolean
-  #   title: "Enable Cluster Austoscaler"
-  #   description: "Enables OKE cluster autoscaler. Node pools will auto scale based on the resources usage."        
-
-  # cluster_autoscaler_min_nodes:
-  #   type: integer
-  #   minimum: 1
-  #   maximum: 1000
-  #   title: "Autoscaler: Minimum number of nodes"
-  #   description: "Minimum number of nodes on the node pool to be scheduled by the Kubernetes."
-  #   visible: #($cluster_autoscaler_enabled = true)
-  #     and:
-  #       - cluster_autoscaler_enabled
-
-  # cluster_autoscaler_max_nodes:
-  #   type: integer
-  #   minimum: 1
-  #   maximum: 1000
-  #   title: "Autoscaler: Maximum number of node"
-  #   description: "Maximum number of nodes on the node pool to be scheduled by the Kubernetes."
-  #   visible: #($cluster_autoscaler_enabled = true)
-  #     and:
-  #       - cluster_autoscaler_enabled
-
-  # existent_oke_nodepool_id_for_autoscaler:
-  #   type: string
-  #   title: "OKE Nodepool id"
-  #   description: "Nodepool Id of the existent OKE to use with Cluster Autoscaler"
-  #   required: true
-  #   visible: #($cluster_autoscaler_enabled  = true) + ($create_new_oke_cluster  = false)
-  #     and:
-  #       - and:
-  #         - cluster_autoscaler_enabled
-  #       - not:
-  #         - create_new_oke_cluster
-
   create_new_compartment_for_oke:
     type: boolean
     title: "Create new Compartment"
@@ -243,6 +206,10 @@ variables:
       and:
         - create_new_oke_cluster
         - show_advanced
+
+  cluster_autoscaler_enabled:
+    type: boolean
+    title: "Enable Cluster Austoscaler"    
 
   num_pool_workers:
     type: integer
@@ -252,7 +219,41 @@ variables:
     required: true
     visible:
       and:
-        - create_new_oke_cluster
+        - and:
+          - create_new_oke_cluster
+        - not:
+          - cluster_autoscaler_enabled
+
+  cluster_autoscaler_min_nodes:
+    type: integer
+    title: "Autoscaler: Minimum number of nodes"
+    minimum: 1
+    maximum: 1000
+    required: true
+    visible:
+      and:
+        - cluster_autoscaler_enabled
+
+  cluster_autoscaler_max_nodes:
+    type: integer
+    title: "Autoscaler: Maximum number of node"
+    minimum: 1
+    maximum: 1000
+    required: true
+    visible:
+      and:
+        - cluster_autoscaler_enabled
+
+  existent_oke_nodepool_id_for_autoscaler:
+    type: string
+    title: "OKE Nodepool id"
+    required: true
+    visible:
+      and:
+        - and:
+          - cluster_autoscaler_enabled
+        - not:
+          - create_new_oke_cluster
 
   node_pool_shape:
     type: oci:core:instanceshape:name
