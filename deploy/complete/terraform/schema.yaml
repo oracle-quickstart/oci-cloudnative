@@ -23,7 +23,7 @@ variableGroups:
 
   - title: "General Configuration"
     variables:
-    - cluster_name   
+    - app_name   
     - show_advanced
     - mushop_mock_mode_all
     # - mushop_atp
@@ -104,7 +104,6 @@ variableGroups:
       - fingerprint
       - private_key_path
       - network_cidrs
-      - app_name
       - cluster_options_admission_controller_options_is_pod_security_policy_enabled
       - cluster_options_add_ons_is_kubernetes_dashboard_enabled
       - ingress_load_balancer_shape
@@ -136,7 +135,7 @@ variables:
     description: "The compartment in which to create compute instance(s)"
     required: true
 
-  cluster_name:
+  app_name:
     type: string
     title: "Cluster Name Prefix"
     required: true

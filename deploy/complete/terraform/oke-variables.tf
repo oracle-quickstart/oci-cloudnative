@@ -5,11 +5,8 @@
 # OKE Variables
 ## OKE Cluster Details
 variable "app_name" {
-  default = "MuShop"
-}
-variable "cluster_name" {
-  default     = "MuShop-cluster"
-  description = "OKE cluster name prefix"
+  default     = "MuShop App"
+  description = "Application name. Will be used as prefix to identify resources, such as OKE, VCN, ATP, and others"
 }
 variable "create_new_oke_cluster" {
   default     = true
@@ -192,6 +189,12 @@ variable "create_tenancy_policies" {
 # ORM Schema visual control variables
 variable "show_advanced" {
   default = false
+}
+
+# App Name Locals
+locals {
+  app_name_normalized = substr(replace(lower(var.app_name), " ", "-"), 0, 10)
+  app_name_for_db     = regex("[[:alnum:]]{1,10}", var.app_name)
 }
 
 # Dictionary Locals
