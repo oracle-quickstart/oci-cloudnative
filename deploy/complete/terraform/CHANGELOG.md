@@ -5,6 +5,7 @@
 - OKE Cluster Autoscaler support
 - Improved KMS support
 - Private Kubernetes API Endpoint support from standalone Terraform
+- App Name usage updated
 
 2021-04-02 (v2.1.0)
 
