@@ -56,7 +56,8 @@ locals {
   )
   oke_compartment_statements = concat(
     local.oci_grafana_logs_statements,
-    var.use_encryption_from_oci_vault ? local.allow_oke_use_oci_vault_keys_statements : []
+    var.use_encryption_from_oci_vault ? local.allow_oke_use_oci_vault_keys_statements : [],
+    var.cluster_autoscaler_enabled ? local.cluster_autoscaler_statements : []
   )
   kms_compartment_statements = concat(
     local.allow_group_manage_vault_keys_statements

@@ -193,7 +193,7 @@ variable "show_advanced" {
 
 # App Name Locals
 locals {
-  app_name_normalized = substr(replace(lower(var.app_name), " ", "-"), 0, 10)
+  app_name_normalized = substr(replace(lower(var.app_name), " ", "-"), 0, 6)
   app_name_for_db     = regex("[[:alnum:]]{1,10}", var.app_name)
 }
 
