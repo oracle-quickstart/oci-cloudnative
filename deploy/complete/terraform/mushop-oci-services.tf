@@ -12,8 +12,8 @@ resource "oci_database_autonomous_database" "mushop_autonomous_database" {
   data_storage_size_in_tbs = var.autonomous_database_data_storage_size_in_tbs
   data_safe_status         = var.autonomous_database_data_safe_status
   db_version               = var.autonomous_database_db_version
-  db_name                  = "mushopdb${random_string.deploy_id.result}"
-  display_name             = "${var.cluster_name}-Db-${random_string.deploy_id.result}"
+  db_name                  = "${local.app_name_for_db}${random_string.deploy_id.result}"
+  display_name             = "${var.app_name} Db (${random_string.deploy_id.result})"
   license_model            = var.autonomous_database_license_model
   is_auto_scaling_enabled  = var.autonomous_database_is_auto_scaling_enabled
   is_free_tier             = var.autonomous_database_is_free_tier
