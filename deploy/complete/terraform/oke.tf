@@ -5,7 +5,7 @@
 resource "oci_containerengine_cluster" "oke_cluster" {
   compartment_id     = local.oke_compartment_ocid
   kubernetes_version = (var.k8s_version == "Latest") ? local.cluster_k8s_latest_version : var.k8s_version
-  name               = "${var.cluster_name}-${random_string.deploy_id.result}"
+  name               = "${var.app_name} (${random_string.deploy_id.result})"
   vcn_id             = oci_core_virtual_network.oke_vcn[0].id
 
   endpoint_config {
@@ -75,7 +75,7 @@ resource "oci_containerengine_node_pool" "oke_node_pool" {
 
 resource "oci_identity_compartment" "oke_compartment" {
   compartment_id = var.compartment_ocid
-  name           = "${trimspace(var.app_name)}-${random_string.deploy_id.result}"
+  name           = "${local.app_name_normalized}-${random_string.deploy_id.result}"
   description    = "${var.app_name} ${var.oke_compartment_description} (Deployment ${random_string.deploy_id.result})"
   enable_delete  = true
 
