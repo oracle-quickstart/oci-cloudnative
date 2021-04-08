@@ -15,7 +15,7 @@ locals {
   cluster_autoscaler_scale_down_unneeded_time         = "10m"
   cluster_autoscaler_unremovable_node_recheck_timeout = "5m"
   cluster_autoscaler_enabled                          = contains(local.cluster_autoscaler_supported_k8s_versions, local.k8s_major_minor_version) ? var.cluster_autoscaler_enabled : false
-  k8s_major_minor_version                             = regex("\\d+(?:\\.(?:\\d+|x)(?:))", var.k8s_version)
+  k8s_major_minor_version                             = regex("\\d+(?:\\.(?:\\d+|x)(?:))", (var.k8s_version == "Latest") ? local.node_pool_k8s_latest_version : var.k8s_version)
 }
 resource "kubernetes_service_account" "cluster_autoscaler_sa" {
   count = local.cluster_autoscaler_enabled ? 1 : 0

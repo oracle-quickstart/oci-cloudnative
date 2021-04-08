@@ -4,7 +4,7 @@
 
 resource "oci_containerengine_cluster" "oke_cluster" {
   compartment_id     = local.oke_compartment_ocid
-  kubernetes_version = var.k8s_version == "Latest" ? local.cluster_k8s_latest_version : var.k8s_version
+  kubernetes_version = (var.k8s_version == "Latest") ? local.cluster_k8s_latest_version : var.k8s_version
   name               = "${var.cluster_name}-${random_string.deploy_id.result}"
   vcn_id             = oci_core_virtual_network.oke_vcn[0].id
 
@@ -34,7 +34,7 @@ resource "oci_containerengine_cluster" "oke_cluster" {
 resource "oci_containerengine_node_pool" "oke_node_pool" {
   cluster_id         = oci_containerengine_cluster.oke_cluster[0].id
   compartment_id     = local.oke_compartment_ocid
-  kubernetes_version = var.k8s_version == "Latest" ? local.node_pool_k8s_latest_version : var.k8s_version
+  kubernetes_version = (var.k8s_version == "Latest") ? local.node_pool_k8s_latest_version : var.k8s_version
   name               = var.node_pool_name
   node_shape         = var.node_pool_shape
   ssh_public_key     = var.generate_public_ssh_key ? tls_private_key.oke_worker_node_ssh_key.public_key_openssh : var.public_ssh_key
