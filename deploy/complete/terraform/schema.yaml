@@ -191,7 +191,7 @@ variables:
   cluster_endpoint_visibility:
     type: enum
     enum:
-    - "Private"
+    # - "Private"
     - "Public"
     title: "Choose Kubernetes API Endpoint visibility type"
     required: true

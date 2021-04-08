@@ -1,5 +1,11 @@
 # CHANGELOG
 
+2021-04-07 (v2.2.0)
+
+- OKE Cluster Autoscaler support
+- Improved KMS support
+- Private Kubernetes API Endpoint support from standalone Terraform
+
 2021-04-02 (v2.1.0)
 
 - Retrieval of Current and Home regions for Identity requests
