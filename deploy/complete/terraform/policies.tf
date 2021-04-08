@@ -3,7 +3,7 @@
 # 
 
 resource "oci_identity_dynamic_group" "oke_nodes_dg" {
-  name           = "${lower(trimspace(var.app_name))}-oke-cluster-dg-${random_string.deploy_id.result}"
+  name           = "${local.app_name_normalized}-oke-cluster-dg-${random_string.deploy_id.result}"
   description    = "${var.app_name} Cluster Dynamic Group"
   compartment_id = var.tenancy_ocid
   matching_rule  = "ANY {ALL {instance.compartment.id = '${local.oke_compartment_ocid}'},ALL {resource.type = 'cluster', resource.compartment.id = '${local.oke_compartment_ocid}'}}"
@@ -13,7 +13,7 @@ resource "oci_identity_dynamic_group" "oke_nodes_dg" {
   count = var.create_dynamic_group_for_nodes_in_compartment ? 1 : 0
 }
 resource "oci_identity_policy" "oke_compartment_policies" {
-  name           = "${lower(trimspace(var.app_name))}-oke-cluster-compartment-policies-${random_string.deploy_id.result}"
+  name           = "${local.app_name_normalized}-oke-cluster-compartment-policies-${random_string.deploy_id.result}"
   description    = "${var.app_name} OKE Cluster Compartment Policies"
   compartment_id = local.oke_compartment_ocid
   statements     = local.oke_compartment_statements
@@ -25,7 +25,7 @@ resource "oci_identity_policy" "oke_compartment_policies" {
   count = var.create_compartment_policies ? 1 : 0
 }
 resource "oci_identity_policy" "kms_compartment_policies" {
-  name           = "${lower(trimspace(var.app_name))}-kms-compartment-policies-${random_string.deploy_id.result}"
+  name           = "${local.app_name_normalized}-kms-compartment-policies-${random_string.deploy_id.result}"
   description    = "${var.app_name} KMS Compartment Policies"
   compartment_id = local.oke_compartment_ocid
   statements     = local.kms_compartment_statements
@@ -38,7 +38,7 @@ resource "oci_identity_policy" "kms_compartment_policies" {
 }
 
 resource "oci_identity_policy" "oke_tenancy_policies" {
-  name           = "${lower(trimspace(var.app_name))}-oke-cluster-tenancy-policies-${random_string.deploy_id.result}"
+  name           = "${local.app_name_normalized}-oke-cluster-tenancy-policies-${random_string.deploy_id.result}"
   description    = "${var.app_name} OKE Cluster Tenancy Policies"
   compartment_id = var.tenancy_ocid
   statements     = local.oke_tenancy_statements
