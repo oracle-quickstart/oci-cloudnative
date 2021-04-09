@@ -18,7 +18,7 @@ variable "existent_oke_cluster_id" {
 }
 variable "create_new_compartment_for_oke" {
   default     = false
-  description = "Creates new compartment for OKE Nodes and OCI Services deployed.  NOTE: The creation of the compartment increases the deployment time by at least 3 minutes, and can increate by 15 minutes when destroying"
+  description = "Creates new compartment for OKE Nodes and OCI Services deployed.  NOTE: The creation of the compartment increases the deployment time by at least 3 minutes, and can increase by 15 minutes when destroying"
 }
 variable "oke_compartment_description" {
   default = "Compartment for OKE, Nodes and Services"
@@ -108,7 +108,7 @@ variable "num_pool_workers" {
 }
 variable "node_pool_shape" {
   default     = "VM.Standard.E3.Flex"
-  description = "A shape is a template that determines the number of CPUs, amount of memory, and other resources allocated to a newly created instance for the Worker Node"
+  description = "A shape is a template that determines the number of OCPUs, amount of memory, and other resources allocated to a newly created instance for the Worker Node"
 }
 variable "node_pool_node_shape_config_ocpus" {
   default     = "1" # Only used if flex shape is selected
