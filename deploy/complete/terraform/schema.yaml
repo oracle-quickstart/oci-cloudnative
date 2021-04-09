@@ -4,6 +4,7 @@
 
 title: "MuShop Cloud Native App"
 description: "MuShop: eCommerce microservices demo App for Oracle's Container Engine for Kubernetes (OKE)"
+informationalText: "The application URL will be unavailable for a few minutes after provisioning while the application is configured and deployed to Kubernetes"
 schemaVersion: 1.1.0
 version: "20190304"
 
@@ -32,6 +33,7 @@ variableGroups:
   - title: "OKE Cluster Configuration"
     variables:
     - create_new_oke_cluster
+    - existent_oke_cluster_compartment_ocid
     - existent_oke_cluster_id
     - k8s_version
     - cluster_workers_visibility
@@ -161,13 +163,25 @@ variables:
     type: boolean
     title: "Create new OKE Cluster"
 
-  existent_oke_cluster_id:
-    type: string
-    title: "OKE Cluster id"
+  existent_oke_cluster_compartment_ocid:
+    type: oci:identity:compartment:id
+    title: "Existent OKE Cluster Compartment"
+    description: "The compartment where you find the existent OKE Cluster"
+    default: compartment_ocid
     required: true
     visible:
       not:
-        - create_new_oke_cluster        
+        - create_new_oke_cluster
+
+  existent_oke_cluster_id:
+    type: oci:container:cluster:id
+    title: "Existent OKE Cluster id"
+    required: true
+    dependsOn:
+      compartmentId: existent_oke_cluster_compartment_ocid
+    visible:
+      not:
+        - create_new_oke_cluster
 
   k8s_version:
     type: enum
