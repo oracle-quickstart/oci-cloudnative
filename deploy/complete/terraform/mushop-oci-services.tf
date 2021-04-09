@@ -50,7 +50,7 @@ resource "kubernetes_secret" "oadb-connection" {
   }
   data = {
     oadb_wallet_pw = random_string.autonomous_database_wallet_password.result
-    oadb_service   = "mushopdb${random_string.deploy_id.result}_TP"
+    oadb_service   = "${local.app_name_for_db}${random_string.deploy_id.result}_TP"
   }
   type = "Opaque"
 
