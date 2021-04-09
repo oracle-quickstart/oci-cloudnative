@@ -175,7 +175,7 @@ variables:
 
   existent_oke_cluster_id:
     type: oci:container:cluster:id
-    title: "Existent OKE Cluster id"
+    title: "Existent OKE Cluster"
     required: true
     dependsOn:
       compartmentId: existent_oke_cluster_compartment_ocid

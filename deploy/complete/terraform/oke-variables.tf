@@ -14,7 +14,7 @@ variable "create_new_oke_cluster" {
 }
 variable "existent_oke_cluster_id" {
   default     = ""
-  description = "Cluster Id of the existent OKE"
+  description = "Using existent OKE Cluster. Only the application and services will be provisioned. If select cluster autoscaler feature, you need to get the node pool id and enter when required"
 }
 variable "create_new_compartment_for_oke" {
   default     = false
