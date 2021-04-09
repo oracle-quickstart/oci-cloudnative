@@ -594,7 +594,6 @@ outputGroups:
       - comments
       - deploy_id
       - deployed_to_region
-      - mushop_source_code
       - deployed_oke_kubernetes_version
 
   - title: Dev Notes
@@ -670,6 +669,11 @@ outputs:
     type: string
     title: dev
     displayText: dev note from Oracle Developers
+    visible: true
+
+  mushop_source_code:
+    type: link
+    title: MuShop Repo with sources and deployment scripts
     visible: true
 
   kubeconfig_for_kubectl:
