@@ -13,7 +13,7 @@ output "dev" {
   value = "Made with \u2764 by Oracle Developers"
 }
 output "comments" {
-  value = "The application URL will be unavailable for a few minutes after provisioning, while the application is configured"
+  value = "The application URL will be unavailable for a few minutes after provisioning while the application is configured and deployed to Kubernetes"
 }
 output "deploy_id" {
   value = random_string.deploy_id.result
