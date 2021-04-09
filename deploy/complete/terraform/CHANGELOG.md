@@ -1,5 +1,12 @@
 # CHANGELOG
 
+2021-04-08 (v2.2.0)
+
+- OKE Cluster Autoscaler support
+- Improved KMS support
+- Private Kubernetes API Endpoint support from standalone Terraform
+- App Name usage updated
+
 2021-04-02 (v2.1.0)
 
 - Retrieval of Current and Home regions for Identity requests
@@ -41,11 +48,11 @@
 
 2020-06-10
 
-- Hability to enable/disable the deployment option of the common services of MuShop Utilities
+- Ability to enable/disable the deployment option of the common services of MuShop Utilities
 
 2020-06-03
 
-- Hability to re-use an existent OKE cluster
+- Ability to re-use an existent OKE cluster
 - schema updated to reflect the terraform scripts feature for OKE new vs existent
 
 2020-06-02
@@ -57,4 +64,4 @@
 
 - Terraform scripts to deploy OKE and MuShop App without manual steps
 - Oracle Resource Manager (ORM) stack for easy deployment using the OCI console
-- Deployment of the Oracle Autonomous Database Trasaction Processing (ATP) for MuShop data
+- Deployment of the Oracle Autonomous Database Transaction Processing (ATP) for MuShop data

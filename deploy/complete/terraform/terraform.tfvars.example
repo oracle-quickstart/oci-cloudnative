@@ -37,8 +37,14 @@ use_encryption_from_oci_vault = false
 create_new_encryption_key     = false
 existent_encryption_key_id    = "" # e.g.: "ocid1.key.oc1..."
 
+# Enable Cluster Autoscaler
+cluster_autoscaler_enabled              = true
+cluster_autoscaler_min_nodes            = 3
+cluster_autoscaler_max_nodes            = 10
+existent_oke_nodepool_id_for_autoscaler = "" # e.g.: ocid1.nodepool.oc1...
+
 # OKE Worker Nodes (Compute)
-num_pool_workers                          = 3
+num_pool_workers                          = 3 # If autoscaler is enabled, uses the value from cluster_autoscaler_min_nodes for the initial node pool number of nodes
 node_pool_shape                           = "VM.Standard.E3.Flex"
 node_pool_node_shape_config_ocpus         = 1
 node_pool_node_shape_config_memory_in_gbs = 16

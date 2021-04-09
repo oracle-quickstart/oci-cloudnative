@@ -14,7 +14,7 @@ resource "oci_core_virtual_network" "oke_vcn" {
 resource "oci_core_subnet" "oke_k8s_endpoint_subnet" {
   cidr_block                 = lookup(var.network_cidrs, "ENDPOINT-SUBNET-REGIONAL-CIDR")
   compartment_id             = local.oke_compartment_ocid
-  display_name               = "oke-k8s-endpoint-subnet-${lower(var.app_name)}-${random_string.deploy_id.result}"
+  display_name               = "oke-k8s-endpoint-subnet-${local.app_name_normalized}-${random_string.deploy_id.result}"
   dns_label                  = "okek8sn${random_string.deploy_id.result}"
   vcn_id                     = oci_core_virtual_network.oke_vcn[0].id
   prohibit_public_ip_on_vnic = (var.cluster_endpoint_visibility == "Private") ? true : false
@@ -27,7 +27,7 @@ resource "oci_core_subnet" "oke_k8s_endpoint_subnet" {
 resource "oci_core_subnet" "oke_nodes_subnet" {
   cidr_block                 = lookup(var.network_cidrs, "SUBNET-REGIONAL-CIDR")
   compartment_id             = local.oke_compartment_ocid
-  display_name               = "oke-nodes-subnet-${lower(var.app_name)}-${random_string.deploy_id.result}"
+  display_name               = "oke-nodes-subnet-${local.app_name_normalized}-${random_string.deploy_id.result}"
   dns_label                  = "okenodesn${random_string.deploy_id.result}"
   vcn_id                     = oci_core_virtual_network.oke_vcn[0].id
   prohibit_public_ip_on_vnic = (var.cluster_workers_visibility == "Private") ? true : false
@@ -41,7 +41,7 @@ resource "oci_core_subnet" "oke_nodes_subnet" {
 resource "oci_core_subnet" "oke_lb_subnet" {
   cidr_block                 = lookup(var.network_cidrs, "LB-SUBNET-REGIONAL-CIDR")
   compartment_id             = local.oke_compartment_ocid
-  display_name               = "oke-lb-subnet-${lower(var.app_name)}-${random_string.deploy_id.result}"
+  display_name               = "oke-lb-subnet-${local.app_name_normalized}-${random_string.deploy_id.result}"
   dns_label                  = "okelbsn${random_string.deploy_id.result}"
   vcn_id                     = oci_core_virtual_network.oke_vcn[0].id
   prohibit_public_ip_on_vnic = false
@@ -55,7 +55,7 @@ resource "oci_core_subnet" "oke_lb_subnet" {
 resource "oci_core_route_table" "oke_private_route_table" {
   compartment_id = local.oke_compartment_ocid
   vcn_id         = oci_core_virtual_network.oke_vcn[0].id
-  display_name   = "oke-private-route-table-${lower(var.app_name)}-${random_string.deploy_id.result}"
+  display_name   = "oke-private-route-table-${local.app_name_normalized}-${random_string.deploy_id.result}"
 
   route_rules {
     description       = "Traffic to the internet"
@@ -75,7 +75,7 @@ resource "oci_core_route_table" "oke_private_route_table" {
 resource "oci_core_route_table" "oke_public_route_table" {
   compartment_id = local.oke_compartment_ocid
   vcn_id         = oci_core_virtual_network.oke_vcn[0].id
-  display_name   = "oke-public-route-table-${lower(var.app_name)}-${random_string.deploy_id.result}"
+  display_name   = "oke-public-route-table-${local.app_name_normalized}-${random_string.deploy_id.result}"
 
   route_rules {
     description       = "Traffic to/from internet"
@@ -90,7 +90,7 @@ resource "oci_core_route_table" "oke_public_route_table" {
 resource "oci_core_nat_gateway" "oke_nat_gateway" {
   block_traffic  = "false"
   compartment_id = local.oke_compartment_ocid
-  display_name   = "oke-nat-gateway-${lower(var.app_name)}-${random_string.deploy_id.result}"
+  display_name   = "oke-nat-gateway-${local.app_name_normalized}-${random_string.deploy_id.result}"
   vcn_id         = oci_core_virtual_network.oke_vcn[0].id
 
   count = var.create_new_oke_cluster ? 1 : 0
@@ -98,7 +98,7 @@ resource "oci_core_nat_gateway" "oke_nat_gateway" {
 
 resource "oci_core_internet_gateway" "oke_internet_gateway" {
   compartment_id = local.oke_compartment_ocid
-  display_name   = "oke-internet-gateway-${lower(var.app_name)}-${random_string.deploy_id.result}"
+  display_name   = "oke-internet-gateway-${local.app_name_normalized}-${random_string.deploy_id.result}"
   enabled        = true
   vcn_id         = oci_core_virtual_network.oke_vcn[0].id
 
@@ -107,7 +107,7 @@ resource "oci_core_internet_gateway" "oke_internet_gateway" {
 
 resource "oci_core_service_gateway" "oke_service_gateway" {
   compartment_id = local.oke_compartment_ocid
-  display_name   = "oke-service-gateway-${lower(var.app_name)}-${random_string.deploy_id.result}"
+  display_name   = "oke-service-gateway-${local.app_name_normalized}-${random_string.deploy_id.result}"
   vcn_id         = oci_core_virtual_network.oke_vcn[0].id
   services {
     service_id = lookup(data.oci_core_services.all_services.services[0], "id")

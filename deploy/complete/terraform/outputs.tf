@@ -39,6 +39,9 @@ output "grafana_admin_password" {
   value     = data.kubernetes_secret.mushop_utils_grafana.data.admin-password
   sensitive = false
 }
+output "mushop_source_code" {
+  value = "https://github.com/oracle-quickstart/oci-cloudnative/"
+}
 locals {
   mushop_ingress_ip       = data.kubernetes_service.mushop_ingress.load_balancer_ingress[0].ip
   mushop_ingress_hostname = data.kubernetes_service.mushop_ingress.load_balancer_ingress[0].hostname == "" ? data.kubernetes_service.mushop_ingress.load_balancer_ingress[0].ip : data.kubernetes_service.mushop_ingress.load_balancer_ingress[0].hostname

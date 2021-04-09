@@ -4,6 +4,7 @@
 
 title: "MuShop Cloud Native App"
 description: "MuShop: eCommerce microservices demo App for Oracle's Container Engine for Kubernetes (OKE)"
+informationalText: "This stack provision a new OKE cluster (optionally can re-use an existent one), enable Kubernetes cluster autoscaler, provision ATP database and create the necessary tables for the app to run, provision Object Storage with catalogue service images. Deploy the MuShop Complete App. It also allows you to change advanced features for the Kubernetes cluster and the app, such as Node Pool details, Customer-Managed Encryption Keys with OCI Vault (KMS), and more"
 schemaVersion: 1.1.0
 version: "20190304"
 
@@ -23,7 +24,7 @@ variableGroups:
 
   - title: "General Configuration"
     variables:
-    - cluster_name   
+    - app_name   
     - show_advanced
     - mushop_mock_mode_all
     # - mushop_atp
@@ -32,19 +33,20 @@ variableGroups:
   - title: "OKE Cluster Configuration"
     variables:
     - create_new_oke_cluster
+    - existent_oke_cluster_compartment_ocid
     - existent_oke_cluster_id
     - k8s_version
     - cluster_workers_visibility
     - cluster_endpoint_visibility
-    # - cluster_autoscaler_enabled
-    # - cluster_autoscaler_min_nodes
-    # - cluster_autoscaler_max_nodes
-    # - existent_oke_nodepool_id_for_autoscaler
     - create_new_compartment_for_oke
 
   - title: "OKE Worker Nodes"
     variables:
+    - cluster_autoscaler_enabled
     - num_pool_workers
+    - cluster_autoscaler_min_nodes
+    - cluster_autoscaler_max_nodes
+    - existent_oke_nodepool_id_for_autoscaler
     - node_pool_shape
     - node_pool_node_shape_config_ocpus
     - node_pool_node_shape_config_memory_in_gbs
@@ -104,7 +106,6 @@ variableGroups:
       - fingerprint
       - private_key_path
       - network_cidrs
-      - app_name
       - cluster_options_admission_controller_options_is_pod_security_policy_enabled
       - cluster_options_add_ons_is_kubernetes_dashboard_enabled
       - ingress_load_balancer_shape
@@ -136,7 +137,7 @@ variables:
     description: "The compartment in which to create compute instance(s)"
     required: true
 
-  cluster_name:
+  app_name:
     type: string
     title: "Cluster Name Prefix"
     required: true
@@ -150,21 +151,41 @@ variables:
     description: "Shows advanced options, allowing enable customer-managed encryption keys, select your ssh key, select/unselect cluster utilities, do not create policies, and other advanced options"
     visible: true
 
+  # MuShop
+  mushop_mock_mode_all:
+    visible: yes
+    type: boolean
+    required: true
+    title: "Enable Mock Mode (If enabled, does NOT provision ATP Database, Streaming or Object Storage)"
+
+  # OKE Cluster
   create_new_oke_cluster:
     type: boolean
     title: "Create new OKE Cluster"
 
-  existent_oke_cluster_id:
-    type: string
-    title: "OKE Cluster id"
+  existent_oke_cluster_compartment_ocid:
+    type: oci:identity:compartment:id
+    title: "Existent OKE Cluster Compartment"
+    description: "The compartment where you find the existent OKE Cluster"
+    default: compartment_ocid
     required: true
     visible:
       not:
-        - create_new_oke_cluster        
+        - create_new_oke_cluster
+
+  existent_oke_cluster_id:
+    type: oci:container:cluster:id
+    title: "Existent OKE Cluster id"
+    required: true
+    dependsOn:
+      compartmentId: existent_oke_cluster_compartment_ocid
+    visible:
+      not:
+        - create_new_oke_cluster
 
   k8s_version:
     type: enum
-    enum: # Necessary hardcode supported versions, as ORM does not retrieve the versions.
+    enum: # Necessary hardcoded supported versions, as ORM does not retrieve the versions from OKE.
     - "Latest"
     - "v1.19.7"
     - "v1.18.10"
@@ -191,50 +212,13 @@ variables:
   cluster_endpoint_visibility:
     type: enum
     enum:
-    - "Private"
+    # - "Private"
     - "Public"
     title: "Choose Kubernetes API Endpoint visibility type"
     required: true
     visible:
       and:
         - create_new_oke_cluster
-
-  # cluster_autoscaler_enabled:
-  #   type: boolean
-  #   title: "Enable Cluster Austoscaler"
-  #   description: "Enables OKE cluster autoscaler. Node pools will auto scale based on the resources usage."        
-
-  # cluster_autoscaler_min_nodes:
-  #   type: integer
-  #   minimum: 1
-  #   maximum: 1000
-  #   title: "Autoscaler: Minimum number of nodes"
-  #   description: "Minimum number of nodes on the node pool to be scheduled by the Kubernetes."
-  #   visible: #($cluster_autoscaler_enabled = true)
-  #     and:
-  #       - cluster_autoscaler_enabled
-
-  # cluster_autoscaler_max_nodes:
-  #   type: integer
-  #   minimum: 1
-  #   maximum: 1000
-  #   title: "Autoscaler: Maximum number of node"
-  #   description: "Maximum number of nodes on the node pool to be scheduled by the Kubernetes."
-  #   visible: #($cluster_autoscaler_enabled = true)
-  #     and:
-  #       - cluster_autoscaler_enabled
-
-  # existent_oke_nodepool_id_for_autoscaler:
-  #   type: string
-  #   title: "OKE Nodepool id"
-  #   description: "Nodepool Id of the existent OKE to use with Cluster Autoscaler"
-  #   required: true
-  #   visible: #($cluster_autoscaler_enabled  = true) + ($create_new_oke_cluster  = false)
-  #     and:
-  #       - and:
-  #         - cluster_autoscaler_enabled
-  #       - not:
-  #         - create_new_oke_cluster
 
   create_new_compartment_for_oke:
     type: boolean
@@ -244,6 +228,10 @@ variables:
         - create_new_oke_cluster
         - show_advanced
 
+  cluster_autoscaler_enabled:
+    type: boolean
+    title: "Enable Cluster Autoscaler"    
+
   num_pool_workers:
     type: integer
     title: "Number of Worker Nodes"
@@ -252,7 +240,41 @@ variables:
     required: true
     visible:
       and:
-        - create_new_oke_cluster
+        - and:
+          - create_new_oke_cluster
+        - not:
+          - cluster_autoscaler_enabled
+
+  cluster_autoscaler_min_nodes:
+    type: integer
+    title: "Autoscaler: Minimum number of nodes"
+    minimum: 1
+    maximum: 1000
+    required: true
+    visible:
+      and:
+        - cluster_autoscaler_enabled
+
+  cluster_autoscaler_max_nodes:
+    type: integer
+    title: "Autoscaler: Maximum number of node"
+    minimum: 1
+    maximum: 1000
+    required: true
+    visible:
+      and:
+        - cluster_autoscaler_enabled
+
+  existent_oke_nodepool_id_for_autoscaler:
+    type: string
+    title: "OKE Nodepool id"
+    required: true
+    visible:
+      and:
+        - and:
+          - cluster_autoscaler_enabled
+        - not:
+          - create_new_oke_cluster
 
   node_pool_shape:
     type: oci:core:instanceshape:name
@@ -447,13 +469,6 @@ variables:
         - create_new_encryption_key
         - create_vault_policies_for_group
 
-  # MuShop
-  mushop_mock_mode_all:
-    visible: yes
-    type: boolean
-    required: true
-    title: "Enable Mock Mode (Do not provision ATP Database and Object Storage and simulate data)"
-
   # Cluster Utilities
   grafana_enabled:
     type: boolean
@@ -579,7 +594,6 @@ outputGroups:
       - comments
       - deploy_id
       - deployed_to_region
-      - mushop_source_code
       - deployed_oke_kubernetes_version
 
   - title: Dev Notes
@@ -655,6 +669,11 @@ outputs:
     type: string
     title: dev
     displayText: dev note from Oracle Developers
+    visible: true
+
+  mushop_source_code:
+    type: link
+    title: MuShop Repo with sources and deployment scripts
     visible: true
 
   kubeconfig_for_kubectl:

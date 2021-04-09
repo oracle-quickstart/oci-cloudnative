@@ -110,7 +110,7 @@ variable "autonomous_database_wallet_generate_type" {
   default = "SINGLE"
 }
 variable "oracle_client_version" {
-  default = "19.8"
+  default = "19.10"
 }
 
 # Encryption (OCI Vault/Key Management/KMS)

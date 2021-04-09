@@ -5,11 +5,8 @@
 # OKE Variables
 ## OKE Cluster Details
 variable "app_name" {
-  default = "MuShop"
-}
-variable "cluster_name" {
-  default     = "MuShop-cluster"
-  description = "OKE cluster name prefix"
+  default     = "MuShop App"
+  description = "Application name. Will be used as prefix to identify resources, such as OKE, VCN, ATP, and others"
 }
 variable "create_new_oke_cluster" {
   default     = true
@@ -21,7 +18,7 @@ variable "existent_oke_cluster_id" {
 }
 variable "create_new_compartment_for_oke" {
   default     = false
-  description = "Creates new compartment for OKE Nodes and OCI Services deployed.  NOTE: The creation of the compartment increases the deployment time by at least 3 minutes, and can increate by 15 minutes when destroying"
+  description = "Creates new compartment for OKE Nodes and OCI Services deployed.  NOTE: The creation of the compartment increases the deployment time by at least 3 minutes, and can increase by 15 minutes when destroying"
 }
 variable "oke_compartment_description" {
   default = "Compartment for OKE, Nodes and Services"
@@ -78,6 +75,24 @@ variable "user_admin_group_for_vault_policy" {
   description = "User Identity Group to allow manage vault and keys. The user running the Terraform scripts or Applying the ORM Stack need to be on this group"
 }
 
+## OKE Autoscaler
+variable "cluster_autoscaler_enabled" {
+  default     = true
+  description = "Enables OKE cluster autoscaler. Node pools will auto scale based on the resources usage"
+}
+variable "cluster_autoscaler_min_nodes" {
+  default     = 3
+  description = "Minimum number of nodes on the node pool to be scheduled by the Kubernetes"
+}
+variable "cluster_autoscaler_max_nodes" {
+  default     = 10
+  description = "Maximum number of nodes on the node pool to be scheduled by the Kubernetes"
+}
+variable "existent_oke_nodepool_id_for_autoscaler" {
+  default     = ""
+  description = "Nodepool Id of the existent OKE to use with Cluster Autoscaler"
+}
+
 ## OKE Node Pool Details
 variable "node_pool_name" {
   default     = "pool1"
@@ -89,11 +104,11 @@ variable "k8s_version" {
 }
 variable "num_pool_workers" {
   default     = 3
-  description = "The number of worker nodes in the node pool"
+  description = "The number of worker nodes in the node pool. If select Cluster Autoscaler, will assume the minimum number of nodes configured"
 }
 variable "node_pool_shape" {
   default     = "VM.Standard.E3.Flex"
-  description = "A shape is a template that determines the number of CPUs, amount of memory, and other resources allocated to a newly created instance for the Worker Node"
+  description = "A shape is a template that determines the number of OCPUs, amount of memory, and other resources allocated to a newly created instance for the Worker Node"
 }
 variable "node_pool_node_shape_config_ocpus" {
   default     = "1" # Only used if flex shape is selected
@@ -174,6 +189,12 @@ variable "create_tenancy_policies" {
 # ORM Schema visual control variables
 variable "show_advanced" {
   default = false
+}
+
+# App Name Locals
+locals {
+  app_name_normalized = substr(replace(lower(var.app_name), " ", "-"), 0, 6)
+  app_name_for_db     = regex("[[:alnum:]]{1,10}", var.app_name)
 }
 
 # Dictionary Locals

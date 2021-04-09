@@ -4,8 +4,8 @@
 
 resource "oci_containerengine_cluster" "oke_cluster" {
   compartment_id     = local.oke_compartment_ocid
-  kubernetes_version = var.k8s_version == "Latest" ? local.cluster_k8s_latest_version : var.k8s_version
-  name               = "${var.cluster_name}-${random_string.deploy_id.result}"
+  kubernetes_version = (var.k8s_version == "Latest") ? local.cluster_k8s_latest_version : var.k8s_version
+  name               = "${var.app_name} (${random_string.deploy_id.result})"
   vcn_id             = oci_core_virtual_network.oke_vcn[0].id
 
   endpoint_config {
@@ -34,7 +34,7 @@ resource "oci_containerengine_cluster" "oke_cluster" {
 resource "oci_containerengine_node_pool" "oke_node_pool" {
   cluster_id         = oci_containerengine_cluster.oke_cluster[0].id
   compartment_id     = local.oke_compartment_ocid
-  kubernetes_version = var.k8s_version == "Latest" ? local.node_pool_k8s_latest_version : var.k8s_version
+  kubernetes_version = (var.k8s_version == "Latest") ? local.node_pool_k8s_latest_version : var.k8s_version
   name               = var.node_pool_name
   node_shape         = var.node_pool_shape
   ssh_public_key     = var.generate_public_ssh_key ? tls_private_key.oke_worker_node_ssh_key.public_key_openssh : var.public_ssh_key
@@ -48,7 +48,7 @@ resource "oci_containerengine_node_pool" "oke_node_pool" {
         subnet_id           = oci_core_subnet.oke_nodes_subnet[0].id
       }
     }
-    size = var.num_pool_workers
+    size = var.cluster_autoscaler_enabled ? var.cluster_autoscaler_min_nodes : var.num_pool_workers
   }
 
   dynamic "node_shape_config" {
@@ -75,7 +75,7 @@ resource "oci_containerengine_node_pool" "oke_node_pool" {
 
 resource "oci_identity_compartment" "oke_compartment" {
   compartment_id = var.compartment_ocid
-  name           = "${trimspace(var.app_name)}-${random_string.deploy_id.result}"
+  name           = "${local.app_name_normalized}-${random_string.deploy_id.result}"
   description    = "${var.app_name} ${var.oke_compartment_description} (Deployment ${random_string.deploy_id.result})"
   enable_delete  = true
 
