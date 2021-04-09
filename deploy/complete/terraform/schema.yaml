@@ -4,7 +4,7 @@
 
 title: "MuShop Cloud Native App"
 description: "MuShop: eCommerce microservices demo App for Oracle's Container Engine for Kubernetes (OKE)"
-informationalText: "This stack provision a new OKE cluster (optionally can re-use an existent one),  enable Kubernetes cluster autoscaler, provision ATP database and create the necessary tables for the app to run, provision Object Storage with catalogue service images. Deploy the MuShop Complete App. It also allows you to change advanced features for the Kubernetes cluster and for the app"
+informationalText: "This stack provision a new OKE cluster (optionally can re-use an existent one), enable Kubernetes cluster autoscaler, provision ATP database and create the necessary tables for the app to run, provision Object Storage with catalogue service images. Deploy the MuShop Complete App. It also allows you to change advanced features for the Kubernetes cluster and the app, such as Node Pool details, Customer-Managed Encryption Keys with OCI Vault (KMS), and more"
 schemaVersion: 1.1.0
 version: "20190304"
 
