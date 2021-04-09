@@ -37,7 +37,7 @@ resource "helm_release" "grafana" {
   name       = "mushop-utils-grafana" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.grafana
   chart      = "grafana"
-  version    = "6.7.1"
+  version    = "6.7.3"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
@@ -109,7 +109,7 @@ resource "helm_release" "ingress_nginx" {
   name       = "mushop-utils-ingress-nginx" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.ingress_nginx
   chart      = "ingress-nginx"
-  version    = "3.26.0"
+  version    = "3.29.0"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = true
 
@@ -125,6 +125,9 @@ resource "helm_release" "ingress_nginx" {
 
   timeout = 1800 # workaround to wait the node be active for other charts
 
+  depends_on = [kubernetes_deployment.cluster_autoscaler_deployment]
+
+  count = var.ingress_nginx_enabled ? 1 : 0
 }
 
 ## https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md
@@ -147,7 +150,7 @@ resource "helm_release" "cert_manager" {
   name       = "cert-manager"
   repository = local.helm_repository.jetstack
   chart      = "cert-manager"
-  version    = "1.2.0"
+  version    = "1.3.0"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 

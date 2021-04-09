@@ -25,7 +25,7 @@ variable "prometheus_enabled" {
 }
 variable "metrics_server_enabled" {
   default     = true
-  description = "Enable Metrics Server for Metrics, HPA, VPA and Cluster Auto Scaling"
+  description = "Enable Metrics Server for Metrics, HPA, VPA and Cluster Auto Scaler"
 }
 variable "catalog_enabled" {
   default     = false
@@ -33,7 +33,7 @@ variable "catalog_enabled" {
 }
 variable "ingress_nginx_enabled" {
   default     = true
-  description = "Enable Ingress Nginx for Services (Provision a Load Balancer)"
+  description = "Enable Ingress Nginx for Kubernetes Services (This option provision a Load Balancer)"
 }
 variable "cert_manager_enabled" {
   default     = true
