@@ -149,6 +149,14 @@ variables:
     description: "Shows advanced options, allowing enable customer-managed encryption keys, select your ssh key, select/unselect cluster utilities, do not create policies, and other advanced options"
     visible: true
 
+  # MuShop
+  mushop_mock_mode_all:
+    visible: yes
+    type: boolean
+    required: true
+    title: "Enable Mock Mode (If enabled, does NOT provision ATP Database, Streaming or Object Storage)"
+
+  # OKE Cluster
   create_new_oke_cluster:
     type: boolean
     title: "Create new OKE Cluster"
@@ -163,7 +171,7 @@ variables:
 
   k8s_version:
     type: enum
-    enum: # Necessary hardcode supported versions, as ORM does not retrieve the versions.
+    enum: # Necessary hardcoded supported versions, as ORM does not retrieve the versions from OKE.
     - "Latest"
     - "v1.19.7"
     - "v1.18.10"
@@ -208,7 +216,7 @@ variables:
 
   cluster_autoscaler_enabled:
     type: boolean
-    title: "Enable Cluster Austoscaler"    
+    title: "Enable Cluster Autoscaler"    
 
   num_pool_workers:
     type: integer
@@ -446,13 +454,6 @@ variables:
         - use_encryption_from_oci_vault
         - create_new_encryption_key
         - create_vault_policies_for_group
-
-  # MuShop
-  mushop_mock_mode_all:
-    visible: yes
-    type: boolean
-    required: true
-    title: "Enable Mock Mode (Do not provision ATP Database and Object Storage and simulate data)"
 
   # Cluster Utilities
   grafana_enabled:
