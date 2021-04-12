@@ -257,9 +257,13 @@ variables:
       and:
         - not:
           - use_only_always_free_elegible_resources
-        - eq:
-          - instance_shape 
-          - "VM.Standard.E3.Flex"
+        - or:
+          - eq:
+            - instance_shape 
+            - "VM.Standard.E3.Flex"
+          - eq:
+            - instance_shape 
+            - "VM.Standard.E4.Flex"
 
   instance_shape_config_memory_in_gbs:
     type: integer
@@ -271,9 +275,13 @@ variables:
       and:
         - not:
           - use_only_always_free_elegible_resources
-        - eq:
-          - instance_shape 
-          - "VM.Standard.E3.Flex"
+        - or:
+          - eq:
+            - instance_shape 
+            - "VM.Standard.E3.Flex"
+          - eq:
+            - instance_shape 
+            - "VM.Standard.E4.Flex"
 
   image_operating_system:
     type: string

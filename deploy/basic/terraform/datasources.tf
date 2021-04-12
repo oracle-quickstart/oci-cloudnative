@@ -63,20 +63,9 @@ data "oci_limits_limit_definitions" "compute_limit_definitions" {
   compartment_id = var.tenancy_ocid
   service_name   = data.oci_limits_services.compute_services.services.0.name
 
-  dynamic "filter" {
-    for_each = local.is_flexible_instance_shape ? [1] : []
-    content {
-      name   = "description"
-      values = [local.compute_shape_flexible_description]
-    }
-  }
-
-  dynamic "filter" {
-    for_each = local.is_flexible_instance_shape ? [] : [1]
-    content {
-      name   = "description"
-      values = [local.instance_shape]
-    }
+  filter {
+    name   = "description"
+    values = [local.compute_shape_description]
   }
 }
 data "oci_limits_resource_availability" "compute_resource_availability" {
