@@ -13,7 +13,7 @@ interoperable [Cloud Native](https://www.oracle.com/cloud/cloud-native/) service
 a number of cloud native methodologies.
 
 The premise of MuShop is an e-commerce website offering a variety of cat
-products. It represents a polyglot microservice application, with **actual use case**
+products. It represents a polyglot microservices application, with **actual use case**
 scenarios for many Oracle Cloud Infrastructure services.
 
 Each microservice in MuShop is designed to highlight its own, or common high-level
