@@ -29,6 +29,6 @@ jobs:
     - name: Publish to Github Pages
       uses: peaceiris/actions-gh-pages@v3
       env:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
         publish_branch: gh-pages
         publish_dir: src/docs/public
