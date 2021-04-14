@@ -5,10 +5,6 @@
     <link>/introduction/</link>
     <description>Recent content in Introduction on MuShop</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    
-	<atom:link href="/introduction/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>en-us</language><atom:link href="/introduction/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

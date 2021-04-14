@@ -6,11 +6,7 @@
     <description>Recent content in Service Broker on MuShop</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 09 Mar 2020 13:32:46 -0600</lastBuildDate>
-    
-	<atom:link href="/tags/service-broker/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 09 Mar 2020 13:32:46 -0600</lastBuildDate><atom:link href="/tags/service-broker/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Deployment</title>
       <link>/cloud/deployment/</link>

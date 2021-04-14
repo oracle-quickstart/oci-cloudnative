@@ -6,11 +6,7 @@
     <description>Recent content in Source code on MuShop</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 05 Mar 2020 15:34:14 -0700</lastBuildDate>
-    
-	<atom:link href="/tags/source-code/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 05 Mar 2020 15:34:14 -0700</lastBuildDate><atom:link href="/tags/source-code/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Getting Started</title>
       <link>/quickstart/</link>

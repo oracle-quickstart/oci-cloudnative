@@ -1,366 +1,218 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
     <loc>/introduction/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/cloud/prerequisites/</loc>
     <lastmod>2020-03-09T14:51:01-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/quickstart/</loc>
     <lastmod>2020-03-05T15:34:14-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/observability/observability-example/setup/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/cloud/setup/</loc>
     <lastmod>2020-03-09T15:49:36-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/quickstart/basic/</loc>
     <lastmod>2020-03-06T12:28:12-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/quickstart/kubernetes/</loc>
     <lastmod>2020-03-06T12:27:43-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/observability/monitoring/</loc>
     <lastmod>2020-03-09T16:05:08-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/cloud/deployment/</loc>
     <lastmod>2020-03-09T13:32:46-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/observability/istio/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/observability/canary/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/observability/oci-monitoring/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/extras/jenkins/</loc>
     <lastmod>2020-06-24T16:48:49-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/observability/oci-healthcheck/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/observability/observability-example/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/cloud/</loc>
     <lastmod>2020-03-09T13:33:46-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/observability/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/extras/</loc>
     <lastmod>2020-03-09T16:04:15-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/cleanup/</loc>
     <lastmod>2020-03-09T16:06:00-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/automation/</loc>
     <lastmod>2020-06-24T16:48:49-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/jenkins/</loc>
     <lastmod>2020-06-24T16:48:49-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/patching/</loc>
     <lastmod>2020-06-24T16:48:49-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/</loc>
     <lastmod>2020-06-24T16:48:49-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/alarms/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/canary/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/custom-logging/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/deploy-mushop/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/fluentd/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/istio/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/kiali/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/logging/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/metrics-explorer/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/monitoring/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/notifications/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/observability/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/oci/</loc>
-    <lastmod>2020-03-10T13:29:23-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/oci-logging/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/oci-notifications/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/oci-service-connector-hub/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/service-mesh/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/observability/observability-example/usecase/</loc>
     <lastmod>2020-03-10T13:29:23-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/usage/</loc>
     <lastmod>2020-03-10T10:02:31-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/cleanup/</loc>
     <lastmod>2020-03-09T16:06:00-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/deprovision/</loc>
     <lastmod>2020-03-09T16:06:00-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/uninstall/</loc>
     <lastmod>2020-03-09T16:06:00-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/helm/</loc>
     <lastmod>2020-03-09T15:49:36-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/kubernetes/</loc>
     <lastmod>2020-03-09T15:49:36-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/setup/</loc>
     <lastmod>2020-03-09T15:49:36-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/api-key/</loc>
     <lastmod>2020-03-09T14:51:01-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/compartment/</loc>
     <lastmod>2020-03-09T14:51:01-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/policies/</loc>
     <lastmod>2020-03-09T14:51:01-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/region/</loc>
     <lastmod>2020-03-09T14:51:01-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/cloud-services/</loc>
     <lastmod>2020-03-09T13:33:46-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/deployment/</loc>
     <lastmod>2020-03-09T13:33:46-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
+    <loc>/tags/oci/</loc>
+    <lastmod>2020-03-09T13:33:46-06:00</lastmod>
+  </url><url>
     <loc>/tags/provision/</loc>
     <lastmod>2020-03-09T13:32:46-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/secrets/</loc>
     <lastmod>2020-03-09T13:32:46-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/serverless/</loc>
     <lastmod>2020-03-09T13:32:46-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/service-broker/</loc>
     <lastmod>2020-03-09T13:32:46-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/atp/</loc>
     <lastmod>2020-03-06T12:28:12-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/free/</loc>
     <lastmod>2020-03-06T12:28:12-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/resource-manager/</loc>
     <lastmod>2020-03-06T12:28:12-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/terraform/</loc>
     <lastmod>2020-03-06T12:28:12-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/mock-mode/</loc>
     <lastmod>2020-03-06T12:27:43-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/oke/</loc>
     <lastmod>2020-03-06T12:27:43-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/quickstart/</loc>
     <lastmod>2020-03-05T15:34:14-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/source-code/</loc>
     <lastmod>2020-03-05T15:34:14-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/resources/</loc>
     <lastmod>2020-03-03T12:51:44-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/</loc>
     <lastmod>2020-02-28T08:19:07-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/acknowledgements/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/categories/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/ci/cd/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/oci-health-checks/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/oci-monitoring/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/oci-observability/</loc>
   </url>
-  
 </urlset>

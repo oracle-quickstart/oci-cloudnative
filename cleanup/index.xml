@@ -6,10 +6,6 @@
     <description>Recent content in Cleanup on MuShop</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 09 Mar 2020 16:06:00 -0600</lastBuildDate>
-    
-	<atom:link href="/cleanup/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 09 Mar 2020 16:06:00 -0600</lastBuildDate><atom:link href="/cleanup/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

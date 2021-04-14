@@ -6,11 +6,7 @@
     <description>Recent content in Tags on MuShop</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 24 Jun 2020 16:48:49 -0700</lastBuildDate>
-    
-	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Wed, 24 Jun 2020 16:48:49 -0700</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Automation</title>
       <link>/tags/automation/</link>
@@ -143,15 +139,6 @@
       <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
       
       <guid>/tags/observability/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>OCI</title>
-      <link>/tags/oci/</link>
-      <pubDate>Tue, 10 Mar 2020 13:29:23 -0600</pubDate>
-      
-      <guid>/tags/oci/</guid>
       <description></description>
     </item>
     
@@ -296,6 +283,15 @@
       <pubDate>Mon, 09 Mar 2020 13:33:46 -0600</pubDate>
       
       <guid>/tags/deployment/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>OCI</title>
+      <link>/tags/oci/</link>
+      <pubDate>Mon, 09 Mar 2020 13:33:46 -0600</pubDate>
+      
+      <guid>/tags/oci/</guid>
       <description></description>
     </item>
     
