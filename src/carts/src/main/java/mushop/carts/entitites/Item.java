@@ -1,4 +1,4 @@
-package mushop.carts;
+package mushop.carts.entitites;
 
 import java.math.BigDecimal;
 import java.util.UUID;

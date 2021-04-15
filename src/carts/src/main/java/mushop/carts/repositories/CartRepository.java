@@ -1,4 +1,6 @@
-package mushop.carts;
+package mushop.carts.repositories;
+
+import mushop.carts.entitites.Cart;
 
 import java.util.List;
 

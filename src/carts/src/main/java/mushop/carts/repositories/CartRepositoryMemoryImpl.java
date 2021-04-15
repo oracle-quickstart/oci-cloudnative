@@ -1,5 +1,11 @@
-package mushop.carts;
+package mushop.carts.repositories;
 
+import io.micronaut.context.annotation.Secondary;
+import mushop.carts.entitites.Cart;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -7,9 +13,18 @@ import java.util.List;
 /**
  * Implements the CartRepository in-memory.
  */
+@Singleton
+@Secondary
 public class CartRepositoryMemoryImpl implements CartRepository {
 
-    List<Cart> carts = new ArrayList<Cart>();
+    public static final Logger LOG = LoggerFactory.getLogger(CartRepositoryMemoryImpl.class);
+
+    private final List<Cart> carts;
+
+    public CartRepositoryMemoryImpl() {
+        LOG.info("Using in-memory repository.");
+        this.carts = new ArrayList<Cart>();
+    }
 
     @Override
     public void save(Cart cart) {

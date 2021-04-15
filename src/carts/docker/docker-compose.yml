@@ -2,23 +2,17 @@ version: '2'
 
 services:
     carts:
-        build:
-            context: ..
-            dockerfile: ./Dockerfile
-        image: mushop/carts
+        image: iad.ocir.io/cloudnative-devrel/micronaut-showcase/mushop/carts:1.0.0-SNAPSHOT
         hostname: carts
         restart: always
         read_only: true
         tmpfs:
         - /tmp:rw,noexec,nosuid
         environment:
-            - reschedule=on-node-failure
-            - OADB_USER=carts_user
-            - OADB_PW=Default_Password123#
-            - OADB_SERVICE=mcarts_tp
-            - TNS_ADMIN=/app/config
-            - ATP_TRUST_PASS=Welcome_123
-            - ATP_KEY_PASS=Welcome_123
+            - ORACLECLOUD_ATP_OCID=ocid1.autonomousdatabase.oc1.iad.abuwcljsz4vwqssbgdihm334cjjv46xf4msw4yty6zrf4mmrvpxod7zgpaaq
+            - ORACLECLOUD_ATP_WALLET_PASSWORD=Palko.123
+            - ORACLECLOUD_ATP_USERNAME=micronaut
+            - ORACLECLOUD_ATP_PASSWORD=R8SGn1g.3N4x
         ports:
-            - "8081:80"
+            - "8080:80"
 

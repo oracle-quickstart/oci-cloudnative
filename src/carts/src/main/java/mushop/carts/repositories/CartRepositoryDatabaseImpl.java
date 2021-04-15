@@ -1,18 +1,13 @@
-package mushop.carts;
+package mushop.carts.repositories;
 
-import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.io.InputStream;
-
-import javax.json.Json;
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
-
-import io.helidon.config.Config;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.micronaut.context.annotation.Primary;
+import io.micronaut.context.annotation.Requires;
+import io.micronaut.context.annotation.Value;
+import io.micronaut.context.env.Environment;
+import io.micronaut.context.event.StartupEvent;
+import io.micronaut.runtime.event.annotation.EventListener;
+import mushop.carts.entitites.Cart;
 import oracle.jdbc.OracleConnection;
 import oracle.soda.OracleCollection;
 import oracle.soda.OracleCursor;
@@ -20,47 +15,72 @@ import oracle.soda.OracleDatabase;
 import oracle.soda.OracleDocument;
 import oracle.soda.rdbms.OracleRDBMSClient;
 import oracle.ucp.jdbc.PoolDataSource;
-import oracle.ucp.jdbc.PoolDataSourceFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import javax.json.Json;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
 
 /**
  * Implements CartRepository using Oracle Database JSON collections. SODA is the
  * simple CRUD-based API that allows the application to interact with document
  * collections in the autonomous database.
  */
+@Singleton
+@Primary
+@Requires(env = Environment.ORACLE_CLOUD)
 public class CartRepositoryDatabaseImpl implements CartRepository {
 
-    /** Factory for SODA (simple oracle document access) api */
+    public static final Logger LOG = LoggerFactory.getLogger(CartRepositoryDatabaseImpl.class);
+
+    /**
+     * Factory for SODA (simple oracle document access) api
+     */
     private static final OracleRDBMSClient SODA;
 
-    /** The name of the backing collection */
-    private final String collectionName;
+    static {
+        // Optimization: cache collection metadata to avoid extra roundtrips
+        // to the database when opening a collection
+        Properties props = new Properties();
+        props.put("oracle.soda.sharedMetadataCache", "true");
+        SODA = new OracleRDBMSClient(props);
+    }
 
-    /** Pool of reusable database connections */
+    /**
+     * The name of the backing collection
+     */
+    @Value("${carts.collection}")
+    private String collectionName;
+
+    /**
+     * Pool of reusable database connections
+     */
+    @Inject
     protected PoolDataSource pool;
 
-    /** Used to automatically convert a Cart object to and from JSON */
-    private Jsonb jsonb;
+    /**
+     * Used to automatically convert a Cart object to and from JSON
+     */
+    @Inject
+    private ObjectMapper objectMapper;
 
-    private final static Logger log = Logger.getLogger(CartService.class.getName());
-
-    public CartRepositoryDatabaseImpl(Config config) {
+    @EventListener
+    public void onStartupEvent(StartupEvent startupEvent) {
         try {
-            System.setProperty("oracle.jdbc.fanEnabled", "false");
-            String dbName = config.get("OADB_SERVICE").asString().get();
-            String url = "jdbc:oracle:thin:@" + dbName + "?TNS_ADMIN=${TNS_ADMIN}";
-            pool = PoolDataSourceFactory.getPoolDataSource();
-            pool.setMaxStatements(50);
-            pool.setConnectionFactoryClassName("oracle.jdbc.pool.OracleDataSource");
-            pool.setURL(url);
-            pool.setUser(config.get("OADB_USER").asString().get());
-            pool.setPassword(config.get("OADB_PW").asString().get());
-            collectionName = config.get("OADB_CARTS_COLLECTION").asString().get();
-
             // Create the carts collection if it does not exist
             try (OracleConnection con = (OracleConnection) pool.getConnection()) {
                 OracleDatabase db = SODA.getDatabase(con);
+                LOG.info("Initializing DB connection...");
                 OracleCollection col = db.openCollection(collectionName);
                 if (col == null) {
+                    LOG.info("Collection '{}' not exists, creating...", collectionName);
                     // Create a collection (see src/main/resources/metadata.json)
                     // It is OK if multiple processes try to create the collection at the
                     // same time. The collection will simply be returned by createCollection() if it
@@ -70,13 +90,11 @@ public class CartRepositoryDatabaseImpl implements CartRepository {
                     metaData.close();
                     col = db.admin().createCollection(collectionName, collMeta);
                 }
-                log.info("Connected to " + dbName);
+                LOG.info("Connected to database.");
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-        jsonb = JsonbBuilder.create();
     }
 
     @Override
@@ -97,7 +115,7 @@ public class CartRepositoryDatabaseImpl implements CartRepository {
             OracleDatabase db = SODA.getDatabase(con);
             OracleCollection col = db.openCollection(collectionName);
             OracleDocument doc = col.findOne(id);
-            return doc == null ? null : jsonb.fromJson(doc.getContentAsString(), Cart.class);
+            return doc == null ? null : objectMapper.readValue(doc.getContentAsString(), Cart.class);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -118,7 +136,7 @@ public class CartRepositoryDatabaseImpl implements CartRepository {
     public void save(Cart cart) {
         try (Connection con = pool.getConnection()) {
             OracleDatabase db = SODA.getDatabase(con);
-            OracleDocument cartDoc = db.createDocumentFromString(cart.getId(), jsonb.toJson(cart));
+            OracleDocument cartDoc = db.createDocumentFromString(cart.getId(), objectMapper.writeValueAsString(cart));
             OracleCollection col = db.openCollection(collectionName);
             col.save(cartDoc);
         } catch (Exception e) {
@@ -126,7 +144,9 @@ public class CartRepositoryDatabaseImpl implements CartRepository {
         }
     }
 
-    /** Selects carts based on a "query by example" */
+    /**
+     * Selects carts based on a "query by example"
+     */
     private List<Cart> getCarts(String filter) {
         try (Connection con = pool.getConnection()) {
             OracleDatabase db = SODA.getDatabase(con);
@@ -138,7 +158,7 @@ public class CartRepositoryDatabaseImpl implements CartRepository {
             List<Cart> result = new ArrayList<Cart>();
             while (carts.hasNext()) {
                 OracleDocument doc = carts.next();
-                Cart cart = jsonb.fromJson(doc.getContentAsString(), Cart.class);
+                Cart cart = objectMapper.readValue(doc.getContentAsString(), Cart.class);
                 result.add(cart);
             }
             return result;
@@ -147,6 +167,7 @@ public class CartRepositoryDatabaseImpl implements CartRepository {
         }
     }
 
+    // TODO: SODA healthcheck endpoint
     @Override
     public boolean healthCheck() {
         try (Connection con = pool.getConnection()) {
@@ -155,16 +176,9 @@ public class CartRepositoryDatabaseImpl implements CartRepository {
             String name = col.admin().getName();
             return name != null;
         } catch (Exception e) {
-            log.log(Level.SEVERE, "DB health-check failed.", e);
+            LOG.info("DB health-check failed.", e);
             return false;
         }
     }
 
-    static {
-        // Optimization: cache collection metadata to avoid extra roundtrips
-        // to the database when opening a collection
-        Properties props = new Properties();
-        props.put("oracle.soda.sharedMetadataCache", "true");
-        SODA = new OracleRDBMSClient(props);
-    }
 }

@@ -1,7 +1,8 @@
-package mushop.carts;
+package mushop.carts.entitites;
+
+import io.micronaut.core.annotation.Introspected;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,7 +47,7 @@ public class Cart {
     }
 
     public boolean removeItem(String itemId) {
-        return items.removeIf(item -> itemId.equals(item.getItemId()));
+        return items.removeIf(item -> itemId.equalsIgnoreCase(item.getItemId()));
     }
 
     public void merge(Cart cart) {

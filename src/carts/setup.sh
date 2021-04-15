@@ -1,0 +1,6 @@
+export ORACLECLOUD_ATP_OCID=ocid1.autonomousdatabase.oc1.iad.abuwcljsz4vwqssbgdihm334cjjv46xf4msw4yty6zrf4mmrvpxod7zgpaaq
+export ORACLECLOUD_ATP_WALLET_PASSWORD=Palko.123
+export ORACLECLOUD_ATP_USERNAME=micronaut
+export ORACLECLOUD_ATP_PASSWORD="R8SGn1g.3N4x"
+
+MICRONAUT_ENVIRONMENTS=oraclecloud ./mvnw test
