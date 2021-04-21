@@ -7,7 +7,7 @@ terraform {
   required_providers {
     oci = {
       source  = "hashicorp/oci"
-      version = ">= 4.20.0"
+      version = ">= 4.23.0"
     }
     local = {
       source  = "hashicorp/local"
@@ -18,7 +18,7 @@ terraform {
       version = "2.3.0" # Latest version as March 2021 = 3.1.0. Using 2.3.0 (July, 2020) for ORM compatibility
     }
     template = {
-      source = "hashicorp/template"
+      source  = "hashicorp/template"
       version = "2.1.2" # (Deprecated) Latest version as March 2021 = 2.2.0. Using 2.3.0 (July, 2020) for ORM compatibility
     }
     tls = {
