@@ -165,16 +165,16 @@ variable "services_in_mock_mode" {
 }
 
 # Always Free only or support other shapes
-variable "use_only_always_free_elegible_resources" {
+variable "use_only_always_free_eligible_resources" {
   default = true
 }
 ## Always Free Locals
 locals {
-  instance_shape                             = var.use_only_always_free_elegible_resources ? local.compute_shape_micro : var.instance_shape
-  lb_shape                                   = var.use_only_always_free_elegible_resources ? local.lb_shape_flexible : var.lb_shape
-  lb_shape_details_minimum_bandwidth_in_mbps = var.use_only_always_free_elegible_resources ? 10 : var.lb_shape_details_minimum_bandwidth_in_mbps
-  lb_shape_details_maximum_bandwidth_in_mbps = var.use_only_always_free_elegible_resources ? 10 : var.lb_shape_details_maximum_bandwidth_in_mbps
-  autonomous_database_is_free_tier           = var.use_only_always_free_elegible_resources ? true : var.autonomous_database_is_free_tier
+  instance_shape                             = var.use_only_always_free_eligible_resources ? local.compute_shape_micro : var.instance_shape
+  lb_shape                                   = var.use_only_always_free_eligible_resources ? local.lb_shape_flexible : var.lb_shape
+  lb_shape_details_minimum_bandwidth_in_mbps = var.use_only_always_free_eligible_resources ? 10 : var.lb_shape_details_minimum_bandwidth_in_mbps
+  lb_shape_details_maximum_bandwidth_in_mbps = var.use_only_always_free_eligible_resources ? 10 : var.lb_shape_details_maximum_bandwidth_in_mbps
+  autonomous_database_is_free_tier           = var.use_only_always_free_eligible_resources ? true : var.autonomous_database_is_free_tier
 }
 
 # Shapes

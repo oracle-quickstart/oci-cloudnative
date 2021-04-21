@@ -53,5 +53,5 @@ provider "oci" {
 }
 
 locals {
-  region_to_deploy = var.use_only_always_free_elegible_resources ? lookup(data.oci_identity_regions.home_region.regions[0], "name") : var.region
+  region_to_deploy = var.use_only_always_free_eligible_resources ? lookup(data.oci_identity_regions.home_region.regions[0], "name") : var.region
 }

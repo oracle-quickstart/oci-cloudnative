@@ -109,7 +109,7 @@ resource "oci_core_nat_gateway" "mushop_nat_gateway" {
   vcn_id         = oci_core_virtual_network.mushop_main_vcn.id
   freeform_tags  = local.common_tags
 
-  count = var.use_only_always_free_elegible_resources ? 0 : ((var.instance_visibility == "Private") ? 0 : 0)
+  count = var.use_only_always_free_eligible_resources ? 0 : ((var.instance_visibility == "Private") ? 0 : 0)
 }
 
 resource "oci_core_internet_gateway" "mushop_internet_gateway" {
@@ -127,7 +127,7 @@ resource "oci_core_service_gateway" "mushop_service_gateway" {
     service_id = lookup(data.oci_core_services.all_services.services[0], "id")
   }
 
-  count = var.use_only_always_free_elegible_resources ? 0 : 1
+  count = var.use_only_always_free_eligible_resources ? 0 : 1
 }
 
 resource "oci_core_local_peering_gateway" "main_local_peering_gateway" {
