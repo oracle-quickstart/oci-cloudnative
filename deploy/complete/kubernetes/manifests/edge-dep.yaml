@@ -1,26 +1,47 @@
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: edge
   labels:
     name: edge
     layer: client
+    app.kubernetes.io/name: edge
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: edge
+      app.kubernetes.io/name: edge
   template:
     metadata:
       labels:
         name: edge
         layer: client
+        app.kubernetes.io/name: edge
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
       containers:
       - name: edge
         image: iad.ocir.io/oracle/ateam/mushop-edge-router:1
         imagePullPolicy: Always
+        args:
+          - --configfile=/config/traefik.toml
         ports:
         - name: http
           containerPort: 8080
+        volumeMounts:
+          - mountPath: /config
+            name: config
+        livenessProbe:
+          httpGet:
+            path: /ping
+            port: http
+        readinessProbe:
+          httpGet:
+            path: /ping
+            port: http
         resources:
           limits:
             cpu: 100m
@@ -37,11 +58,7 @@ spec:
             add:
               - NET_BIND_SERVICE
           readOnlyRootFilesystem: true
-        livenessProbe:
-          httpGet:
-            path: /ping
-            port: http
-        readinessProbe:
-          httpGet:
-            path: /ping
-            port: http
+      volumes:
+        - name: config
+          configMap:
+            name: edge

@@ -5,11 +5,14 @@ metadata:
   name: api
   labels:
     name: api
+    app.kubernetes.io/name: api
     layer: client
 spec:
   selector:
     name: api
+    app.kubernetes.io/name: api
     layer: client
   ports:
   - port: 3000
+    name: http
     targetPort: 3000

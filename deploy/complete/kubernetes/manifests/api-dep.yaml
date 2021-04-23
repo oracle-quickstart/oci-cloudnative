@@ -1,23 +1,32 @@
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: api
   labels:
     name: api
+    app.kubernetes.io/name: api
     layer: client
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: api
+      app.kubernetes.io/name: api
   template:
     metadata:
       labels:
         name: api
         layer: client
+        version: "2.2.1"
+        app.kubernetes.io/name: api
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
       containers:
       - name: api
-        image: iad.ocir.io/oracle/ateam/mushop-api:2.0
-        imagePullPolicy: Always
+        image: "iad.ocir.io/oracle/ateam/mushop-api:2.2.1"
+        imagePullPolicy: IfNotPresent
         ports:
         - name: http
           containerPort: 3000
@@ -32,24 +41,12 @@ spec:
           value: http://carts
         - name: USERS_URL
           value: http://user
+        - name: EVENTS_URL
+          value: http://mushop-events
         - name: STATIC_MEDIA_URL
-          value: 
-        resources:
-          limits:
-            cpu: 300m
-            memory: 300Mi
-          requests:
-            cpu: 100m
-            memory: 100Mi
-        securityContext:
-          runAsNonRoot: true
-          runAsUser: 10001
-          capabilities:
-            drop:
-              - all
-            add:
-              - NET_BIND_SERVICE
-          readOnlyRootFilesystem: true
+          value: /assets
+        - name: NEWSLETTER_SUBSCRIBE_URL
+          value: ""
         livenessProbe:
           httpGet:
             path: /health
@@ -58,3 +55,19 @@ spec:
           httpGet:
             path: /health
             port: http
+        resources:
+          limits:
+            cpu: 300m
+            memory: 300Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        securityContext:
+          capabilities:
+            add:
+              - NET_BIND_SERVICE
+            drop:
+              - all
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 10001

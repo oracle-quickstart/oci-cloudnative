@@ -1,75 +1,76 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: carts
   labels:
     name: carts
+    app.kubernetes.io/name: carts
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: carts
+      app.kubernetes.io/name: carts
   template:
     metadata:
       labels:
         name: carts
+        app.kubernetes.io/name: carts
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "80"
     spec:
       containers:
       - name: carts
-        image: iad.ocir.io/oracle/ateam/mushop-carts:1.4.0
+        image: iad.ocir.io/oracle/ateam/mushop-carts:1.5.0
+        imagePullPolicy: IfNotPresent
         ports:
-         - containerPort: 80
+            - name: http
+              containerPort: 80
         env:
         - name: ZIPKIN
           value: zipkin.jaeger.svc.cluster.local
         - name: JAVA_OPTS
           value: -Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
-        - name: TNS_ADMIN
-          value: /app/config
         - name: OADB_USER
           valueFrom:
             secretKeyRef:
-              name: carts-oadb-connection
+              name: carts-oadb-credentials
               key: oadb_user
         - name: OADB_PW
           valueFrom:
             secretKeyRef:
-              name: carts-oadb-connection
+              name: carts-oadb-credentials
               key: oadb_pw
         - name: OADB_SERVICE
           valueFrom:
             secretKeyRef:
               name: carts-oadb-connection
               key: oadb_service   
-        - name: ATP_TRUST_PASS
-          valueFrom:
-            secretKeyRef:
-              name: carts-oadb-connection
-              key: oadb_wallet_pw 
-        - name: ATP_KEY_PASS
-          valueFrom:
-            secretKeyRef:
-              name: carts-oadb-connection
-              key: oadb_wallet_pw
         volumeMounts:
         - mountPath: /tmp
           name: tmp-volume
-        - mountPath: /app/config/keystore.jks
-          subPath: keystore.jks
-          name: wallet
-          readOnly: true
-        - mountPath: /app/config/truststore.jks
-          subPath: truststore.jks
-          name: wallet
-          readOnly: true
-        - mountPath: /app/config/tnsnames.ora
-          subPath: tnsnames.ora
-          name: wallet
+        # for init container
+        - name: wallet
+          mountPath: /usr/lib/oracle/19.3/client64/lib/network/admin/
           readOnly: true
       volumes:
         - name: tmp-volume
           emptyDir:
             medium: Memory
+        # local wallet
         - name: wallet
           secret:
             secretName: carts-oadb-wallet
             defaultMode: 256
+        # service init configMap
+        - name: initdb
+          configMap:
+            name: mushop-carts-init
+            items:
+            - key: atp.init.sql
+              path: service.sql
       nodeSelector:
         beta.kubernetes.io/os: linux
