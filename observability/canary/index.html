@@ -703,7 +703,7 @@ Later during the procedure we will use the exact build version.</p>
 </li>
 </ul>
 <pre><code class="language-shell--macos-linux" data-lang="shell--macos-linux">  cat &lt;&lt; EOF | kubectl apply -f -
-  apiVersion: extensions/v1beta1
+  apiVersion: apps/v1
   kind: Deployment
   metadata:
     labels:
@@ -731,7 +731,7 @@ Later during the procedure we will use the exact build version.</p>
           imagePullPolicy: Always
           name: storefront
 EOF
-</code></pre><pre><code class="language-shell--win" data-lang="shell--win">&quot;apiVersion: extensions/v1beta1
+</code></pre><pre><code class="language-shell--win" data-lang="shell--win">&quot;apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
