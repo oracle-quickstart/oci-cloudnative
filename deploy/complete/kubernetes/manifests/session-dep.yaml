@@ -1,22 +1,31 @@
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: session
   labels:
     name: session
     layer: client
+    app.kubernetes.io/name: session
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: session
+      app.kubernetes.io/name: session
   template:
     metadata:
       labels:
         name: session
         layer: client
+        app.kubernetes.io/name: session
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
       containers:
       - name: session
         image: redis:alpine
+        imagePullPolicy: IfNotPresent
         ports:
         - name: redis
           containerPort: 6379
@@ -31,3 +40,4 @@ spec:
           readOnlyRootFilesystem: true
       nodeSelector:
         beta.kubernetes.io/os: linux
+        

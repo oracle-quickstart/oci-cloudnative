@@ -5,9 +5,13 @@ metadata:
   name: payment
   labels:
     name: payment
+    app.kubernetes.io/name: payment
 spec:
-  ports:
-  - port: 80
-    targetPort: 80
   selector:
     name: payment
+    app.kubernetes.io/name: payment
+  ports:
+    - port: 80
+      name: http
+      targetPort: 80
+    
