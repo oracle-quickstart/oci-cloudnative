@@ -1,0 +1,57 @@
+---
+# Source: mushop/charts/edge/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: edge
+  labels:
+    app.kubernetes.io/name: edge
+data:
+  traefik.toml: |+
+    logLevel = "INFO"
+  
+    [web]
+    address = ":8888"
+  
+    [entryPoints]
+      [entryPoints.http]
+        address = ":8080"
+  
+    [ping]
+    entryPoint = "http"
+  
+    [file]
+      [backends]
+        # api
+        [backends.api]
+          [backends.api.loadbalancer]
+            method = "wrr"
+          [backends.api.servers.server1]
+            url = "http://api"
+        # web
+        [backends.web1]
+          [backends.web1.loadbalancer]
+            method = "wrr"
+          [backends.web1.servers.server1]
+            url = "http://storefront"
+        # media
+        [backends.assets1]
+          [backends.assets1.loadbalancer]
+            method = "wrr"
+          [backends.assets1.servers.server1]
+            url = "http://assets"
+  
+      [frontends]
+        [frontends.api]
+          backend = "api"
+          entrypoints = ["http"]
+          [frontends.api.routes.test1]
+            rule = "PathPrefix:/api/"
+        [frontends.assets1]
+          backend = "assets1"
+          entrypoints = ["http"]
+          [frontends.assets1.routes.test1]
+            rule = "PathPrefixStrip:/assets/"
+        [frontends.web1]
+          backend = "web1"
+          entrypoints = ["http"]

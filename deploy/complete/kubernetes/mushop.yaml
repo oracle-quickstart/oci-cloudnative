@@ -59,7 +59,7 @@ data:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: carts-oadb-wallet
+  name: carts-oadb-credentials
   labels: 
     app.kubernetes.io/name: carts
     helm.sh/chart: carts-0.1.0
@@ -68,13 +68,14 @@ metadata:
     app.kubernetes.io/managed-by: Helm
 type: Opaque
 data:
-  {}
+  oadb_user: bW9jaw==
+  oadb_pw: bW9jaw==
 ---
 # Source: mushop/charts/carts/templates/oadb-secrets.yaml
 apiVersion: v1
 kind: Secret
 metadata:
-  name: carts-oadb-credentials
+  name: carts-oadb-wallet
   labels: 
     app.kubernetes.io/name: carts
     helm.sh/chart: carts-0.1.0
@@ -85,52 +86,6 @@ type: Opaque
 data:
   oadb_user: dGVzdF9jYXJ0c191c2Vy
   oadb_pw: Y2FydHNfZGVGQVVsdDMyMSM=
----
-# Source: mushop/charts/catalogue/templates/oadb-secrets.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: catalogue-oadb-wallet
-  labels: 
-    app.kubernetes.io/name: catalogue
-    helm.sh/chart: catalogue-0.1.0
-    app.kubernetes.io/instance: mushop
-    app.kubernetes.io/version: "0.1.0"
-    app.kubernetes.io/managed-by: Helm
-type: Opaque
-data:
-  {}
----
-# Source: mushop/charts/catalogue/templates/oadb-secrets.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: catalogue-oadb-credentials
-  labels: 
-    app.kubernetes.io/name: catalogue
-    helm.sh/chart: catalogue-0.1.0
-    app.kubernetes.io/instance: mushop
-    app.kubernetes.io/version: "0.1.0"
-    app.kubernetes.io/managed-by: Helm
-type: Opaque
-data:
-  oadb_user: dGVzdF9jYXRhbG9ndWVfdXNlcg==
-  oadb_pw: Y2F0YWxvZ3VlX2RlRkFVbHQzMjEj
----
-# Source: mushop/charts/catalogue/templates/oadb-secrets.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: catalogue-oadb-connection
-  labels: 
-    app.kubernetes.io/name: catalogue
-    helm.sh/chart: catalogue-0.1.0
-    app.kubernetes.io/instance: mushop
-    app.kubernetes.io/version: "0.1.0"
-    app.kubernetes.io/managed-by: Helm
-type: Opaque
-data:
-  oadb_service: bW9jaw==
 ---
 # Source: mushop/charts/catalogue/templates/oadb-secrets.yaml
 apiVersion: v1
@@ -147,52 +102,54 @@ type: Opaque
 data:
   oadb_admin_pw: ""
 ---
-# Source: mushop/charts/orders/templates/oadb-secrets.yaml
+# Source: mushop/charts/catalogue/templates/oadb-secrets.yaml
 apiVersion: v1
 kind: Secret
 metadata:
-  name: orders-oadb-connection
+  name: catalogue-oadb-connection
   labels: 
-    app.kubernetes.io/name: orders
-    helm.sh/chart: orders-0.1.0
+    app.kubernetes.io/name: catalogue
+    helm.sh/chart: catalogue-0.1.0
     app.kubernetes.io/instance: mushop
     app.kubernetes.io/version: "0.1.0"
     app.kubernetes.io/managed-by: Helm
 type: Opaque
 data:
-  oadb_wallet_pw: bW9jaw==
+  oadb_service: bW9jaw==
+  oadb_user: dGVzdF9jYXRhbG9ndWVfdXNlcg==
+  oadb_pw: Y2F0YWxvZ3VlX2RlRkFVbHQzMjEj
+---
+# Source: mushop/charts/catalogue/templates/oadb-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: catalogue-oadb-credentials
+  labels: 
+    app.kubernetes.io/name: catalogue
+    helm.sh/chart: catalogue-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  oadb_user: bW9jaw==
+  oadb_pw: bW9jaw==
   oadb_service: bW9jaw==
 ---
-# Source: mushop/charts/orders/templates/oadb-secrets.yaml
+# Source: mushop/charts/catalogue/templates/oadb-secrets.yaml
 apiVersion: v1
 kind: Secret
 metadata:
-  name: orders-oadb-credentials
+  name: catalogue-oadb-wallet
   labels: 
-    app.kubernetes.io/name: orders
-    helm.sh/chart: orders-0.1.0
+    app.kubernetes.io/name: catalogue
+    helm.sh/chart: catalogue-0.1.0
     app.kubernetes.io/instance: mushop
     app.kubernetes.io/version: "0.1.0"
     app.kubernetes.io/managed-by: Helm
 type: Opaque
 data:
-  oadb_user: dGVzdF9vcmRlcnNfdXNlcg==
-  oadb_pw: b3JkZXJzX2RlRkFVbHQzMjEj
----
-# Source: mushop/charts/orders/templates/oadb-secrets.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: orders-oadb-wallet
-  labels: 
-    app.kubernetes.io/name: orders
-    helm.sh/chart: orders-0.1.0
-    app.kubernetes.io/instance: mushop
-    app.kubernetes.io/version: "0.1.0"
-    app.kubernetes.io/managed-by: Helm
-type: Opaque
-data:
-  {}
+  oadb_admin_pw: ""
 ---
 # Source: mushop/charts/orders/templates/oadb-secrets.yaml
 apiVersion: v1
@@ -208,37 +165,57 @@ metadata:
 type: Opaque
 data:
   oadb_admin_pw: ""
+  oadb_wallet_pw: bW9jaw==
+  oadb_service: bW9jaw==
 ---
-# Source: mushop/charts/user/templates/oadb-secrets.yaml
+# Source: mushop/charts/orders/templates/oadb-secrets.yaml
 apiVersion: v1
 kind: Secret
 metadata:
-  name: user-oadb-wallet
+  name: orders-oadb-connection
   labels: 
-    app.kubernetes.io/name: user
-    helm.sh/chart: user-0.1.0
+    app.kubernetes.io/name: orders
+    helm.sh/chart: orders-0.1.0
     app.kubernetes.io/instance: mushop
     app.kubernetes.io/version: "0.1.0"
     app.kubernetes.io/managed-by: Helm
 type: Opaque
 data:
-  {}
+  oadb_wallet_pw: bW9jaw==
+  oadb_service: bW9jaw==
+  oadb_user: dGVzdF9vcmRlcnNfdXNlcg==
+  oadb_pw: b3JkZXJzX2RlRkFVbHQzMjEj
 ---
-# Source: mushop/charts/user/templates/oadb-secrets.yaml
+# Source: mushop/charts/orders/templates/oadb-secrets.yaml
 apiVersion: v1
 kind: Secret
 metadata:
-  name: user-oadb-credentials
+  name: orders-oadb-credentials
   labels: 
-    app.kubernetes.io/name: user
-    helm.sh/chart: user-0.1.0
+    app.kubernetes.io/name: orders
+    helm.sh/chart: orders-0.1.0
     app.kubernetes.io/instance: mushop
     app.kubernetes.io/version: "0.1.0"
     app.kubernetes.io/managed-by: Helm
 type: Opaque
 data:
-  oadb_user: dGVzdF91c2VyX3VzZXI=
-  oadb_pw: dXNlcl9kZUZBVWx0MzIxIw==
+  oadb_user: bW9jaw==
+  oadb_pw: bW9jaw==
+---
+# Source: mushop/charts/orders/templates/oadb-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: orders-oadb-wallet
+  labels: 
+    app.kubernetes.io/name: orders
+    helm.sh/chart: orders-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  oadb_admin_pw: ""
 ---
 # Source: mushop/charts/user/templates/oadb-secrets.yaml
 apiVersion: v1
@@ -260,6 +237,40 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: user-oadb-connection
+  labels: 
+    app.kubernetes.io/name: user
+    helm.sh/chart: user-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  oadb_user: dGVzdF91c2VyX3VzZXI=
+  oadb_service: bW9jaw==
+  oadb_pw: dXNlcl9kZUZBVWx0MzIxIw==
+---
+# Source: mushop/charts/user/templates/oadb-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: user-oadb-credentials
+  labels: 
+    app.kubernetes.io/name: user
+    helm.sh/chart: user-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  oadb_user: bW9jaw==
+  oadb_admin_pw: ""
+  oadb_pw: bW9jaw==
+---
+# Source: mushop/charts/user/templates/oadb-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: user-oadb-wallet
   labels: 
     app.kubernetes.io/name: user
     helm.sh/chart: user-0.1.0
@@ -500,6 +511,26 @@ metadata:
 spec:
   selector:
     app.kubernetes.io/name: edge
+    app.kubernetes.io/instance: mushop
+  ports:
+    - port: 80
+      name: http
+      targetPort: 8080
+---
+# Source: mushop/charts/events/templates/events-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mushop-events
+  labels:
+    app.kubernetes.io/name: events
+    helm.sh/chart: events-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    app.kubernetes.io/name: events
     app.kubernetes.io/instance: mushop
   ports:
     - port: 80
@@ -1062,6 +1093,73 @@ spec:
         - name: config
           configMap:
             name: mushop-edge
+---
+# Source: mushop/charts/events/templates/events-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mushop-events
+  labels:
+    app.kubernetes.io/name: events
+    helm.sh/chart: events-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: events
+      app.kubernetes.io/name: events
+      app.kubernetes.io/instance: mushop
+  template:
+    metadata:
+      labels:
+        app: events
+        version: "0.0.2"
+        app.kubernetes.io/name: events
+        app.kubernetes.io/instance: mushop
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
+    spec:
+      containers:
+        - name: events
+          image: "iad.ocir.io/oracle/ateam/mushop-events:0.0.2"
+          imagePullPolicy: IfNotPresent
+          command: ["/app"]
+          args:
+          - -port=8080
+          env:
+            
+          ports:
+            - name: http
+              containerPort: 8080
+          livenessProbe:
+            periodSeconds: 120
+            httpGet:
+              path: /health
+              port: http
+          readinessProbe:
+            periodSeconds: 10
+            httpGet:
+              path: /health
+              port: http
+          resources:
+            limits:
+              cpu: 200m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 64Mi
+          securityContext:
+            capabilities:
+              add:
+              - NET_BIND_SERVICE
+              drop:
+              - all
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 10001
 ---
 # Source: mushop/charts/fulfillment/templates/fulfillment-deployment.yaml
 apiVersion: apps/v1
@@ -1653,6 +1751,26 @@ spec:
         averageUtilization: 70
         type: Utilization
     type: Resource
+---
+# Source: mushop/charts/events/templates/events-hpa.yaml
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: mushop-events
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: mushop-events
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - resource:
+        name: cpu
+        target:
+          averageUtilization: 70
+          type: Utilization
+      type: Resource
 ---
 # Source: mushop/charts/storefront/templates/storefront-hpa.yaml
 apiVersion: autoscaling/v2beta2

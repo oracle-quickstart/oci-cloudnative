@@ -1,76 +1,91 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: orders
   labels:
     name: orders
+    app.kubernetes.io/name: orders
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: orders
+      app.kubernetes.io/name: orders
   template:
     metadata:
       labels:
         name: orders
+        app.kubernetes.io/name: orders
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "80"
     spec: 
       containers:
       - name: orders
-        image: iad.ocir.io/oracle/ateam/mushop-orders:1.0.3
+        image: iad.ocir.io/oracle/ateam/mushop-orders:2.2.2
         imagePullPolicy: Always
+        ports:
+          - name: http
+            containerPort: 80
+        livenessProbe:
+          initialDelaySeconds: 30
+          periodSeconds: 15
+          failureThreshold: 5
+          httpGet:
+            path: /actuator/health/liveness
+            port: http
+        readinessProbe:
+          initialDelaySeconds: 30
+          periodSeconds: 5
+          httpGet:
+            path: /actuator/health/readiness
+            port: http
         env:
         - name: ZIPKIN
           value: zipkin.jaeger.svc.cluster.local
         - name: JAVA_OPTS
-          value: -Xms128m -Xmx256m -XX:+UseG1GC -Dlogging.level.mushop.orders=TRACE  -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
-        - name: TNS_ADMIN
-          value: /app/config
+          value: -Xms32m -Xmx150m -XX:MaxRAM=150m -Djava.security.egd=file:/dev/urandom -Doracle.jdbc.fanEnabled=false -XX:+UnlockExperimentalVMOptions -XX:+UseZGC -Dlogging.level.mushop.orders=INFO -Dspring.zipkin.enabled=false
+        - name: NATS_HOST
+          value: "nats"
+        - name: NATS_PORT
+          value: "4222"
+        - name: ORDERS_NEW
+          value: "orders"
+        - name: ORDERS_SHIPPED
+          value: "shipments"
         - name: OADB_USER
           valueFrom:
             secretKeyRef:
-              name: orders-oadb-connection
+              name: orders-oadb-credentials
               key: oadb_user
         - name: OADB_PW
           valueFrom:
             secretKeyRef:
-              name: orders-oadb-connection
+              name: orders-oadb-credentials
               key: oadb_pw
         - name: OADB_SERVICE
           valueFrom:
             secretKeyRef:
               name: orders-oadb-connection
               key: oadb_service   
-        - name: ATP_TRUST_PASS
-          valueFrom:
-            secretKeyRef:
-              name: orders-oadb-connection
-              key: oadb_wallet_pw 
-        - name: ATP_KEY_PASS
-          valueFrom:
-            secretKeyRef:
-              name: orders-oadb-connection
-              key: oadb_wallet_pw
-        ports:
-        - containerPort: 80
         volumeMounts:
         - mountPath: /tmp
           name: tmp-volume
-        - mountPath: /app/config/keystore.jks
-          subPath: keystore.jks
-          name: wallet
-          readOnly: true
-        - mountPath: /app/config/truststore.jks
-          subPath: truststore.jks
-          name: wallet
-          readOnly: true
-        - mountPath: /app/config/tnsnames.ora
-          subPath: tnsnames.ora
-          name: wallet
+        # for init container
+        - name: wallet
+          mountPath: /wallet/
           readOnly: true
       volumes:
         - name: tmp-volume
           emptyDir:
             medium: Memory
+        # local wallet
         - name: wallet
           secret:
             secretName: orders-oadb-wallet
             defaultMode: 256
       nodeSelector:
         beta.kubernetes.io/os: linux
+        

@@ -50,7 +50,7 @@ Download and install [Istio Service Mesh]({{< ref "istio.md" >}})
 
   ```shell--macos-linux
     cat << EOF | kubectl apply -f -
-    apiVersion: extensions/v1beta1
+    apiVersion: apps/v1
     kind: Deployment
     metadata:
       labels:
@@ -81,7 +81,7 @@ Download and install [Istio Service Mesh]({{< ref "istio.md" >}})
   ```
 
   ```shell--win
-  "apiVersion: extensions/v1beta1
+  "apiVersion: apps/v1
   kind: Deployment
   metadata:
     labels:
