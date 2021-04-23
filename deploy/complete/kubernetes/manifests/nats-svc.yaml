@@ -1,0 +1,32 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nats
+  annotations:
+    prometheus.io/path: "/prometheus"
+  labels:
+    app.kubernetes.io/name: nats
+    helm.sh/chart: nats-0.1.0
+    app.kubernetes.io/instance: mushop
+    run: nats
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    app.kubernetes.io/name: nats
+    app.kubernetes.io/instance: mushop
+    run: nats
+  ports:
+    - name: client
+      port: 4222
+      protocol: TCP
+      targetPort: 4222
+    - name: routes
+      port: 6222
+      protocol: TCP
+      targetPort: 6222
+    - name: monitoring
+      port: 8222
+      protocol: TCP
+      targetPort: 8222

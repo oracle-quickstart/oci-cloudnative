@@ -1,0 +1,53 @@
+---
+# Source: mushop/charts/fulfillment/templates/fulfillment-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fulfillment
+  labels:
+    app.kubernetes.io/name: fulfillment
+    helm.sh/chart: fulfillment-0.1.0
+    app.kubernetes.io/instance: mushop
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+    run: fulfillment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fulfillment
+      app.kubernetes.io/name: fulfillment
+      app.kubernetes.io/instance: mushop
+      run: fulfillment
+  template:
+    metadata:
+      labels:
+        app: fulfillment
+        version: "1.1.0"
+        app.kubernetes.io/name: fulfillment
+        app.kubernetes.io/instance: mushop
+        run: fulfillment
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /prometheus
+        prometheus.io/port: "80"
+    spec:
+      containers:
+        - name: fulfillment
+          image: "iad.ocir.io/oracle/ateam/mushop-fulfillment:1.1.0"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+          env:
+            - name: NATS_HOST
+              value: "nats"
+            - name: NATS_PORT
+              value: "4222"
+            - name: ORDERS_NEW
+              value: "orders"
+            - name: ORDERS_SHIPPED
+              value: "shipments"
+            - name: SIMULATION_DELAY
+              value: "10000"
