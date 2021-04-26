@@ -25,9 +25,9 @@ You can also include Web Application Firewall (WAF), DNS or other components as 
 
 ![MuShop Basic Infra MSZ Demo](../../images/basic/00-Topology-v1.2.0.MSZ-demo.svg)
 
-### Special Note for Enabling DNS and WAF 
+### Enabling DNS and WAF 
 
-In order to enable certificate generation via terraform, you must create a publicly available domain name, and point the (NS) record to OCI DNS.  This can be done prior to running the terraform.  Once complete, allow some time for that to propagate, roughly 30 minutes to be safe.  This can be verified via `dig` or `nslookup`.
+In order to enable certificate generation via terraform, you must create a publicly available domain name, and point the (NS) record to OCI DNS.  This can be done prior to running the terraform scripts.  Once complete, allow some time for that to propagate, roughly 30 minutes to be safe.  This can be verified via `dig` or `nslookup`. An example from Google Cloud DNS, where `mushop` is a subdomain for `example.com`, which would equate to the OCI DNS name of `mushop.example.com`.
 
 ![DNS Delegation](../../images/basic/DNS-Delegation.png)
 
