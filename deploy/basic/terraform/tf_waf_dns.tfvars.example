@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Oracle and/or its affiliates. All rights reserved.
+i Copyright (c) 2020 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 #
 
@@ -51,7 +51,7 @@ create_new_encryption_key     = false
 encryption_key_id             = "ocid1.key.oc1.iad.xxx"
 
 # Always Free only or support other shapes
-use_only_always_free_elegible_resources = false
+use_only_always_free_eligible_resources = false
 
 # Object Storage
 object_storage_mushop_media_compartment_ocid = "ocid1.compartment.oc1..xxx" # e.g.: "ocid1.compartment..."
@@ -67,11 +67,11 @@ acme_server_url = "https://acme-v02.api.letsencrypt.org/directory"
 
 # If DNS is disabled, the ACME certificate is not enabled either, and WAF cannot be used
 enable_dns_zone = true
-dns_zone_name = "mushop.my.domain"
+dns_zone_name = "mushop.example.com"
 
 # An entry into DNS for the MuShop Load Balancer
 # This will be accessible directly if WAF is disabled
-dns_lb_entry = "mushop-internal"
+dns_lb_entry = "internal"
 
 # Whether to use WAF and add a challenge
 # If you enable WAF, you will get the following changes
