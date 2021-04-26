@@ -1,20 +1,29 @@
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: user
   labels:
     name: user
+    app.kubernetes.io/name: user
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: user
+      app.kubernetes.io/name: user
   template:
     metadata:
       labels:
         name: user
+        app: user
+        app.kubernetes.io/name: user
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
       containers:
       - name: user
-        image: iad.ocir.io/oracle/ateam/mushop-user:1.0.0
+        image: iad.ocir.io/oracle/ateam/mushop-user:1.1.0
         imagePullPolicy: Always
         ports:
         - name: http
@@ -23,12 +32,12 @@ spec:
         - name: OADB_USER
           valueFrom:
             secretKeyRef:
-              name: user-oadb-connection
+              name: user-oadb-credentials
               key: oadb_user
         - name: OADB_PW
           valueFrom:
             secretKeyRef:
-              name: user-oadb-connection
+              name: user-oadb-credentials
               key: oadb_pw
         - name: OADB_SERVICE
           valueFrom:

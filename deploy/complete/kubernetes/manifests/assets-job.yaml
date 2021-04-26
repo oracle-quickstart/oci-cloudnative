@@ -1,0 +1,30 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: assets-deploy-1
+  labels: 
+    app.kubernetes.io/name: assets
+spec:
+  ttlSecondsAfterFinished: 120
+  backoffLimit: 1
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "false"
+      labels:
+        app.kubernetes.io/name: assets
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: init
+          image: "iad.ocir.io/oracle/ateam/mushop-assets:1.0.1"
+          imagePullPolicy: IfNotPresent
+          command: ["node", "deploy.js"]
+          env:
+            - name: BUCKET_PAR
+              valueFrom:
+                secretKeyRef:
+                  name: bucket
+                  key: parUrl
+                  optional: true

@@ -1,22 +1,30 @@
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: storefront
   labels:
     name: storefront
     layer: client
+    app.kubernetes.io/name: storefront
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: storefront
+      app.kubernetes.io/name: storefront
   template:
     metadata:
       labels:
         name: storefront
         layer: client
+        app.kubernetes.io/name: storefront
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
       containers:
       - name: storefront
-        image: iad.ocir.io/oracle/ateam/mushop-storefront:2.0
+        image: iad.ocir.io/oracle/ateam/mushop-storefront:2.1
         imagePullPolicy: Always
         ports:
         - name: http

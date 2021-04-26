@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: assets
+  labels:
+    app.kubernetes.io/name: assets
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: assets
+      app.kubernetes.io/name: assets
+  template:
+    metadata:
+      labels:
+        app: assets
+        version: "1.0.1"
+        app.kubernetes.io/name: assets
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
+    spec:
+      containers:
+        - name: assets
+          image: "iad.ocir.io/oracle/ateam/mushop-assets:1.0.1"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 3000
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+          resources:
+            limits:
+              cpu: 300m
+              memory: 300Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          securityContext:
+            capabilities:
+              add:
+              - NET_BIND_SERVICE
+              drop:
+              - all
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 10001

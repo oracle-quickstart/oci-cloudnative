@@ -7,15 +7,15 @@ terraform {
   required_providers {
     oci = {
       source  = "hashicorp/oci"
-      version = ">= 4.20.0"
+      version = ">= 4.23.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "1.11.2" # Latest version as March 2021 = 2.0.2. Using 1.11.2 (March, 2020) for ORM compatibility
+      version = "1.11.2" # Latest version as April 2021 = 2.1.0. Using 1.11.2 (March, 2020) for ORM compatibility
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "1.1.1" # Latest version as March 2021 = 2.0.3. Using 1.1.1 (March, 2020) for ORM compatibility
+      version = "1.1.1" # Latest version as April 2021 = 2.1.1. Using 1.1.1 (March, 2020) for ORM compatibility
     }
     tls = {
       source  = "hashicorp/tls"

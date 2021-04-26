@@ -1,9 +1,13 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: etcd-operator
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: etcd-operator
+      app.kubernetes.io/name: etcd-operator
   template:
     metadata:
       labels:

@@ -5,9 +5,12 @@ metadata:
   name: user
   labels:
     name: user
+    app.kubernetes.io/name: user
 spec:
-  ports:
-  - port: 80
-    targetPort: 3000
   selector:
     name: user
+    app.kubernetes.io/name: user
+  ports:
+  - port: 80
+    name: http
+    targetPort: 3000
