@@ -5,15 +5,19 @@ metadata:
   name: catalogue
   labels:
     name: catalogue
+    app.kubernetes.io/name: catalogue
 spec:
   replicas: 1
   selector:
     matchLabels:
       name: catalogue
+      app.kubernetes.io/name: catalogue
   template:
     metadata:
       labels:
         name: catalogue
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
       terminationGracePeriodSeconds: 5
       containers:
@@ -24,19 +28,20 @@ spec:
           args:
           - -port=80
           ports:
-          - containerPort: 80
+            - name: http
+              containerPort: 80
           env:
           - name: ZIPKIN
             value:
           - name: OADB_USER
             valueFrom:
               secretKeyRef:
-                name: catalogue-oadb-connection
+                name: catalogue-oadb-credentials
                 key: oadb_user
           - name: OADB_PW
             valueFrom:
               secretKeyRef:
-                name: catalogue-oadb-connection
+                name: catalogue-oadb-credentials
                 key: oadb_pw
           - name: OADB_SERVICE
             valueFrom:

@@ -13,7 +13,7 @@ resource "oci_objectstorage_bucket" "mushop" {
 
 resource "oci_objectstorage_object" "mushop_wallet" {
   bucket    = oci_objectstorage_bucket.mushop.name
-  content   = data.oci_database_autonomous_database_wallet.autonomous_database_wallet.content
+  content   = oci_database_autonomous_database_wallet.autonomous_database_wallet.content
   namespace = data.oci_objectstorage_namespace.user_namespace.namespace
   object    = "mushop_atp_wallet"
 }

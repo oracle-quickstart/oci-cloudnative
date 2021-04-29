@@ -1,16 +1,24 @@
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: payment
   labels:
     name: payment
+    app.kubernetes.io/name: payment
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: payment
+      app.kubernetes.io/name: payment
   template:
     metadata:
       labels:
         name: payment
+        app.kubernetes.io/name: payment
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
       containers:
       - name: payment
@@ -23,7 +31,8 @@ spec:
             cpu: 99m
             memory: 100Mi
         ports:
-        - containerPort: 80
+          - name: http
+            containerPort: 80
         securityContext:
           capabilities:
             drop:

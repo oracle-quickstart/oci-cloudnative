@@ -1,4 +1,4 @@
-# Copyright (c) 2019, 2020 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2019-2021 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -19,7 +19,7 @@ output "generated_private_key_pem" {
 }
 
 output "dev" {
-  value = "Made with \u2764 by Oracle A-Team Alumni"
+  value = "Made with \u2764 by Oracle Developers"
 }
 
 output "comments" {

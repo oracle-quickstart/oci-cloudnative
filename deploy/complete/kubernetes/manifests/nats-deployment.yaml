@@ -1,0 +1,57 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nats
+  labels:
+    app.kubernetes.io/name: nats
+    run: nats
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nats
+      app.kubernetes.io/name: nats
+      run: nats
+  template:
+    metadata:
+      labels:
+        app: nats
+        version: "2.1.2"
+        app.kubernetes.io/name: nats
+        run: nats
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "7777"
+    spec:
+      containers:
+        - name: nats
+          image: "nats:2.1.2"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: client
+              containerPort: 4222
+              protocol: TCP
+            - name: routes
+              containerPort: 6222
+              protocol: TCP
+            - name: monitoring
+              containerPort: 8222
+              protocol: TCP
+        - name: nats-exporter
+          image: "synadia/prometheus-nats-exporter:0.6.2"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 7777
+          args:
+            - -D 
+            - -varz 
+            - -channelz
+            - -connz
+            - -serverz
+            - -subz
+            - -gatewayz
+            - "http://localhost:8222"

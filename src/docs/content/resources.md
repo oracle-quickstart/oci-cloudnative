@@ -29,10 +29,13 @@ disablePrevNext: true
   - [Streaming service](https://github.com/oracle/oci-service-broker/blob/master/charts/oci-service-broker/docs/oss.md#oracle-streaming-oci-service-broker)
 
 {{< switcher "One" "Two" "Three" >}}
+
 - Tab one content
+
     ```ts
     const foo: string = 'blah blah';
     ```
+
 - Tab two content
 - Tab three content
 {{< /switcher >}}

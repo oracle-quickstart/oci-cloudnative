@@ -7,7 +7,7 @@ resource "kubernetes_namespace" "mushop_namespace" {
   metadata {
     name = "mushop"
   }
-  depends_on = [oci_containerengine_node_pool.oke_mushop_node_pool]
+  depends_on = [oci_containerengine_node_pool.oke_node_pool]
 }
 
 # Deploy mushop chart
@@ -19,7 +19,7 @@ resource "helm_release" "mushop" {
 
   set {
     name  = "global.mock.service"
-    value = var.mushop_mock_mode_all ? "all" : "false"
+    value = var.mushop_mock_mode_all ? "all" : "none"
   }
   set {
     name  = "global.oadbAdminSecret"

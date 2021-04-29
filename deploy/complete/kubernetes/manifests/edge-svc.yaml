@@ -6,10 +6,13 @@ metadata:
   labels:
     name: edge
     layer: client
+    app.kubernetes.io/name: edge
 spec:
   selector:
     name: edge
     layer: client
+    app.kubernetes.io/name: edge
   ports:
-  - port: 80
-    targetPort: 8080
+    - port: 80
+      name: http
+      targetPort: 8080

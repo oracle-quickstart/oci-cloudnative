@@ -49,7 +49,7 @@ autonomous_database_password = <generated>
 
 comments = The application URL will be unavailable for a few minutes after provisioning, while the application is configured
 
-dev = Made with ❤ by Oracle A-Team
+dev = Made with ❤ by Oracle Developers
 
 lb_public_url = http://xxx.xxx.xxx.xxx
 ```

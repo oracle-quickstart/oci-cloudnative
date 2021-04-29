@@ -6,10 +6,13 @@ metadata:
   labels:
     name: storefront
     layer: client
+    app.kubernetes.io/name: storefront
 spec:
   selector:
     name: storefront
     layer: client
+    app.kubernetes.io/name: storefront
   ports:
-  - port: 8080
+  - port: 80
+    name: http
     targetPort: 8080

@@ -4,9 +4,12 @@ metadata:
   name: orders
   labels:
     name: orders
+    app.kubernetes.io/name: orders
 spec:
-  ports:
-  - port: 80
-    targetPort: 80
   selector:
     name: orders
+    app.kubernetes.io/name: orders
+  ports:
+    - port: 80
+      name: http
+      targetPort: 80

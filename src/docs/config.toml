@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2020, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2020, 2021 Oracle and/or its affiliates. All rights reserved.
 # The Universal Permissive License (UPL), Version 1.0
 #
 baseURL = ""
@@ -9,9 +9,9 @@ theme = "redwood"
 relativeURLs = true
 
 [params]
-editURL = "https://github.com/oracle-quickstart/oci-cloudnative/tree/master/docs/content/"
+editURL = "https://github.com/oracle-quickstart/oci-cloudnative/tree/master/src/docs/content/"
 showVisitedLinks = false
-author = "Oracle A-Team Alumni"
+author = "Oracle Developers"
 organization = "Oracle"
 description = "Oracle Cloud Native Workshop"
 keywords = ["Kubernetes", "OCI", "OKE", "Microservices"]

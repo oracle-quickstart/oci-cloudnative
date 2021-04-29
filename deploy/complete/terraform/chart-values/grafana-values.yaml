@@ -2,24 +2,33 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
-datasources: 
-  datasources.yaml:
-    apiVersion: 1
-    datasources:
-    - name: Prometheus
-      type: prometheus
-      url: http://prometheus-server.mushop-utilities.svc.cluster.local
-      access: proxy
-      isDefault: true
-      disableDeletion: true
-      editable: false
 dashboards:
   default:
-    cluster-metrics:
+    k8s-cluster:
+      gnetId: 7249
+      revision: 1
+      datasource: Prometheus
+    k8s-cluster-metrics:
+      gnetId: 11663
+      revision: 1
+      datasource: Prometheus
+    k8s-cluster-metrics-simple:
       gnetId: 6417
       revision: 1
       datasource: Prometheus
-    pods:
+    k8s-pods-monitoring:
+      gnetId: 13498
+      revision: 1
+      datasource: Prometheus
+    k8s-memory:
+      gnetId: 13421
+      revision: 1
+      datasource: Prometheus
+    k8s-networking:
+      gnetId: 12658
+      revision: 1
+      datasource: Prometheus
+    k8s-pods:
       gnetId: 6336
       revision: 1
       datasource: Prometheus
@@ -27,6 +36,18 @@ dashboards:
       gnetId: 12464
       revision: 2
       datasource: Prometheus
+    nginx-ingress-controller:
+      gnetId: 9614
+      revision: 1
+      datasource: Prometheus
+    oci-compute:
+      gnetId: 13596
+      revision: 1
+      datasource: Oracle Cloud Infrastructure Metrics
+    oci-oke:
+      gnetId: 13594
+      revision: 1
+      datasource: Oracle Cloud Infrastructure Metrics
 dashboardProviders:
    dashboardproviders.yaml:
      apiVersion: 1
@@ -46,14 +67,13 @@ sidecar:
   dashboards:
     enabled: true
     label: grafana_dashboard
-grafana.ini:
-  server:
-    root_url: "%(protocol)s://%(domain)s:%(http_port)s/grafana"
 persistence:
   enabled: true
 plugins:
-  - oci-datasource
+  - oci-logs-datasource
+  - oci-metrics-datasource
   - grafana-kubernetes-app
   - grafana-worldmap-panel
   - grafana-piechart-panel
   - btplc-status-dot-panel
+  - grafana-github-datasource

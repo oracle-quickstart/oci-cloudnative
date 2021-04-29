@@ -4,7 +4,7 @@
 # 
 
 # Oracle Instant Client version
-ARG oracleClientVersion=19.8
+ARG oracleClientVersion=19.10
 
 ###############################
 #    ----- STOREFRONT -----   #
@@ -99,7 +99,7 @@ RUN rm -rf node_modules products hero *.md
 ###############################
 
 # ##### Go Builder image
-FROM golang:1.14 AS catalogue-builder
+FROM golang:1.16 AS catalogue-builder
 WORKDIR /go/src/mushop/catalogue
 
 # # Catalogue Go Source
@@ -107,12 +107,23 @@ COPY src/catalogue/cmd/cataloguesvc/*.go cmd/cataloguesvc/
 COPY src/catalogue/*.go ./
 COPY src/catalogue/go.mod ./
 
+# # Get Go Modules
+RUN go get .
+RUN go get mushop/catalogue/cmd/cataloguesvc
+
 # # Build Catalogue service
 RUN GO111MODULE=on GOARCH=amd64 GOOS=linux \
   go build -a \
   -ldflags="-s -w" \
   -installsuffix cgo \
   -o /catalogue mushop/catalogue/cmd/cataloguesvc
+
+# # # Build Catalogue service
+# RUN GO111MODULE=on GOARCH=arm64 GOOS=linux \
+#   go build -a \
+#   -ldflags="-s -w" \
+#   -installsuffix cgo \
+#   -o /catalogue-arm64 mushop/catalogue/cmd/cataloguesvc
 
 #    ------ Catalogue ------  #
 
@@ -157,6 +168,7 @@ WORKDIR /
 COPY --from=storefront-builder /app/storefront/build /app/storefront
 COPY --from=api-builder /app/api /app/api
 COPY --from=catalogue-builder /catalogue /app/catalogue/catalogue
+# COPY --from=catalogue-builder /catalogue-arm64 /app/catalogue/catalogue-arm64
 COPY src/catalogue/VERSION /app/catalogue/
 
 # Create zip package of the Apps and local images

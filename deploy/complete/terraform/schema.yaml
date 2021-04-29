@@ -2,8 +2,9 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
-title: "MuShop App"
-description: "Oracle Container Engine (OKE) stack for MuShop CloudNative App"
+title: "MuShop Cloud Native App"
+description: "MuShop: eCommerce microservices demo App for Oracle's Container Engine for Kubernetes (OKE)"
+informationalText: "This stack provision a new OKE cluster (optionally can re-use an existent one), enable Kubernetes cluster autoscaler, provision ATP database and create the necessary tables for the app to run, provision Object Storage with catalogue service images. Deploy the MuShop Complete App. It also allows you to change advanced features for the Kubernetes cluster and the app, such as Node Pool details, Customer-Managed Encryption Keys with OCI Vault (KMS), and more"
 schemaVersion: 1.1.0
 version: "20190304"
 
@@ -20,36 +21,57 @@ variableGroups:
     - tenancy_ocid
     - region
     visible: false
-  - title: "OKE General Configuration"
+
+  - title: "General Configuration"
+    variables:
+    - app_name   
+    - show_advanced
+    - mushop_mock_mode_all
+    # - mushop_atp
+    # - mushop_oss
+    
+  - title: "OKE Cluster Configuration"
     variables:
     - create_new_oke_cluster
+    - existent_oke_cluster_compartment_ocid
     - existent_oke_cluster_id
-    - cluster_name
     - k8s_version
-    - cluster_visibility
-    - use_encryption
-    - create_new_encryption_key
-    - encryption_key_id
-    visible: true
+    - cluster_workers_visibility
+    - cluster_endpoint_visibility
+    - create_new_compartment_for_oke
+
   - title: "OKE Worker Nodes"
     variables:
-    - node_pool_shape
+    - cluster_autoscaler_enabled
     - num_pool_workers
+    - cluster_autoscaler_min_nodes
+    - cluster_autoscaler_max_nodes
+    - existent_oke_nodepool_id_for_autoscaler
+    - node_pool_shape
+    - node_pool_node_shape_config_ocpus
+    - node_pool_node_shape_config_memory_in_gbs
+    - generate_public_ssh_key
+    - public_ssh_key
+    - image_operating_system
+    - image_operating_system_version
     - node_pool_name
-    visible: #($create_new_oke_cluster = true)
-      and:
-        - create_new_oke_cluster
-  - title: "Add Ons"
+
+  - title: "Dynamic Group and Policies"
     variables:
-    - cluster_options_add_ons_is_kubernetes_dashboard_enabled
-    visible: true
-  - title: "MuShop Features"
+    - create_dynamic_group_for_nodes_in_compartment
+    - existent_dynamic_group_for_nodes_in_compartment
+    - create_compartment_policies
+    - create_tenancy_policies
+
+  - title: "Encryption using OCI Vault (KMS)"
     variables:
-    - mushop_mock_mode_all
-    - mushop_atp
-    - mushop_oss
-    visible: true
-  - title: "MuShop Utilities"
+    - use_encryption_from_oci_vault
+    - create_new_encryption_key
+    - existent_encryption_key_id
+    - create_vault_policies_for_group
+    - user_admin_group_for_vault_policy
+
+  - title: "Cluster Utilities (MuShop Utilities)"
     variables:
     - grafana_enabled
     - prometheus_enabled
@@ -58,36 +80,25 @@ variableGroups:
     - metrics_server_enabled
     - catalog_enabled
     visible:
-      eq:
-      - ${show_advanced}
-      - Yes
-  - title: "Advanced Options"
-    variables:
-    - show_advanced
-    - generate_public_ssh_key
-    - public_ssh_key
-    - image_operating_system
-    - image_operating_system_version
-    visible: #($create_new_oke_cluster = true)
       and:
-        - create_new_oke_cluster
+        - show_advanced
+
   - title: "Network Configuration"
     variables:
-      - network_strategy 
-      - vcn_id 
-      - vcn_display_name 
-      - vcn_cidr_block 
-      - vcn_dns_label            
-      - subnet_type 
-      - subnet_span 
-      - subnet_id 
-      - subnet_display_name       
-      - subnet_cidr_block      
+      - network_strategy
+      - vcn_id
+      - vcn_display_name
+      - vcn_cidr_block
+      - vcn_dns_label
+      - subnet_type
+      - subnet_span
+      - subnet_id
+      - subnet_display_name
+      - subnet_cidr_block
       - subnet_dns_label
     visible:
-      eq:
-      - ${show_advanced}
-      - Yes
+      and:
+        - show_advanced
 
   - title: "Extras Hidden"
     variables:
@@ -96,9 +107,10 @@ variableGroups:
       - private_key_path
       - network_cidrs
       - cluster_options_admission_controller_options_is_pod_security_policy_enabled
-      - node_pool_node_shape_config_memory_in_gbs
-      - node_pool_node_shape_config_ocpus
+      - cluster_options_add_ons_is_kubernetes_dashboard_enabled
       - ingress_load_balancer_shape
+      - node_pool_boot_volume_size_in_gbs
+      - oke_compartment_description
     visible: false
 
   - title: "OCI Services Hidden"
@@ -125,205 +137,362 @@ variables:
     description: "The compartment in which to create compute instance(s)"
     required: true
 
+  app_name:
+    type: string
+    title: "Cluster Name Prefix"
+    required: true
+    visible:
+      and:
+        - create_new_oke_cluster
+
+  show_advanced:
+    type: boolean
+    title: "Show advanced options?"
+    description: "Shows advanced options, allowing enable customer-managed encryption keys, select your ssh key, select/unselect cluster utilities, do not create policies, and other advanced options"
+    visible: true
+
+  # MuShop
+  mushop_mock_mode_all:
+    visible: yes
+    type: boolean
+    required: true
+    title: "Enable Mock Mode (If enabled, does NOT provision ATP Database, Streaming or Object Storage)"
+
+  # OKE Cluster
   create_new_oke_cluster:
     type: boolean
     title: "Create new OKE Cluster"
-    description: "Creates a new OKE cluster, node pool and network resources"
 
-  existent_oke_cluster_id:
-    type: string
-    title: "OKE Cluster id"
-    description: "Cluster Id of the existent OKE"
+  existent_oke_cluster_compartment_ocid:
+    type: oci:identity:compartment:id
+    title: "Existent OKE Cluster Compartment"
+    description: "The compartment where you find the existent OKE Cluster"
+    default: compartment_ocid
     required: true
-    visible: #($create_new_oke_cluster = false)
+    visible:
       not:
         - create_new_oke_cluster
 
-  cluster_name:
-    type: string
-    title: "Cluster Name Prefix"
-    description: "OKE cluster name prefix"
+  existent_oke_cluster_id:
+    type: oci:container:cluster:id
+    title: "Existent OKE Cluster"
     required: true
-    visible: #($create_new_oke_cluster = true)
-      and:
+    dependsOn:
+      compartmentId: existent_oke_cluster_compartment_ocid
+    visible:
+      not:
         - create_new_oke_cluster
 
   k8s_version:
     type: enum
-    enum:
+    enum: # Necessary hardcoded supported versions, as ORM does not retrieve the versions from OKE.
+    - "Latest"
+    - "v1.19.7"
     - "v1.18.10"
     - "v1.17.13"
     - "v1.16.15"
-    - "v1.15.12"
     title: "Kubernetes Version"
-    description: "Kubernetes version installed on your master and worker nodes"
     required: true
-    visible: #($create_new_oke_cluster = true)
+    visible:
       and:
         - create_new_oke_cluster
+        - show_advanced
 
-  cluster_visibility:
+  cluster_workers_visibility:
     type: enum
     enum:
     - "Private"
     - "Public"
-    title: "Choose visibility type"
-    description: "The Kubernetes worker nodes that are created will be hosted in public or private subnet(s)"
+    title: "Choose Worker Nodes visibility type"
     required: true
-    visible: #($create_new_oke_cluster = true)
+    visible:
       and:
         - create_new_oke_cluster
 
-  use_encryption:
-      type: boolean
-      title: "Use Encryption"
-      visible: #($show_advanced  == ""Yes"")
-        eq:
-          - show_advanced 
-          - "Yes"
-
-  create_new_encryption_key:
-      type: boolean
-      title: "Create new Vault and Key"
-      visible: #($show_advanced  == ""Yes"")
-        eq:
-          - show_advanced 
-          - "Yes"
-
-  encryption_key_id:
-      type: string
-      title: "Existent Encryption Key OCID"
-      visible: #($show_advanced  == ""Yes"")
-        eq:
-          - show_advanced 
-          - "Yes"
-
-  node_pool_shape:
-    type: oci:core:instanceshape:name
-    title: "Worker Node Shape"
-    description: "The shape for all nodes in the node pool."
+  cluster_endpoint_visibility:
+    type: enum
+    enum:
+    # - "Private"
+    - "Public"
+    title: "Choose Kubernetes API Endpoint visibility type"
     required: true
-    dependsOn:
-      compartmentId: ${compartment_ocid}
+    visible:
+      and:
+        - create_new_oke_cluster
+
+  create_new_compartment_for_oke:
+    type: boolean
+    title: "Create new Compartment"
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
+
+  cluster_autoscaler_enabled:
+    type: boolean
+    title: "Enable Cluster Autoscaler"    
 
   num_pool_workers:
     type: integer
     title: "Number of Worker Nodes"
-    description: "The number of worker nodes in the node pool."
     minimum: 1
     maximum: 1000
     required: true
+    visible:
+      and:
+        - and:
+          - create_new_oke_cluster
+        - not:
+          - cluster_autoscaler_enabled
+
+  cluster_autoscaler_min_nodes:
+    type: integer
+    title: "Autoscaler: Minimum number of nodes"
+    minimum: 1
+    maximum: 1000
+    required: true
+    visible:
+      and:
+        - cluster_autoscaler_enabled
+
+  cluster_autoscaler_max_nodes:
+    type: integer
+    title: "Autoscaler: Maximum number of node"
+    minimum: 1
+    maximum: 1000
+    required: true
+    visible:
+      and:
+        - cluster_autoscaler_enabled
+
+  existent_oke_nodepool_id_for_autoscaler:
+    type: string
+    title: "OKE Nodepool id"
+    required: true
+    visible:
+      and:
+        - and:
+          - cluster_autoscaler_enabled
+        - not:
+          - create_new_oke_cluster
+
+  node_pool_shape:
+    type: oci:core:instanceshape:name
+    title: "Select a shape for the Worker Nodes instances"
+    required: true
+    dependsOn:
+      compartmentId: compartment_ocid
+    visible:
+      and:
+        - create_new_oke_cluster
+
+  node_pool_node_shape_config_ocpus:
+    type: integer
+    minimum: 1
+    maximum: 64
+    title: "Number of OCPUs"
+    visible:
+      and:
+        - and:
+          - create_new_oke_cluster
+        - or:
+          - eq:
+            - node_pool_shape 
+            - "VM.Standard.E3.Flex"
+          - eq:
+            - node_pool_shape 
+            - "VM.Standard.E4.Flex"
+
+  node_pool_node_shape_config_memory_in_gbs:
+    type: integer
+    minimum: 1
+    maximum: 1024
+    title: "Amount of memory (GB)"
+    visible:
+      and:
+        - and:
+          - create_new_oke_cluster
+        - or:
+          - eq:
+            - node_pool_shape 
+            - "VM.Standard.E3.Flex"
+          - eq:
+            - node_pool_shape 
+            - "VM.Standard.E4.Flex"
 
   node_pool_name:
     type: string
     title: "Node Pool Name"
-    description: "Name of the node pool"
     required: true
-    visible: #($show_advanced  == ""Yes"")
-      eq:
-        - show_advanced 
-        - "Yes"
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
 
   cluster_options_add_ons_is_kubernetes_dashboard_enabled:
     type: boolean
     title: "Kubernetes Dashboard Enabled"
-    visible: #($create_new_oke_cluster = true)
-      and:
-        - create_new_oke_cluster
-
-  # Advanced Options
-  show_advanced:
-    type: enum
-    enum:
-    - "No"
-    - "Yes"
-    default: "No"
-    title: "Open Advanced Options"
-    required: true
+    visible: false
 
   generate_public_ssh_key:
     type: boolean
     title: "Auto generate public ssh key?"
     required: true
-    visible: #($show_advanced  == ""Yes"")
-      eq:
-        - show_advanced 
-        - "Yes"
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
 
   public_ssh_key:
     type: oci:core:ssh:publickey
     title: "Import your own SSH public key"
     additionalProps:
       allowMultiple: true
-    description: "In order to access your private nodes with a public SSH key you will need to set up a bastion host (a.k.a. jump box). If using public nodes, bastion is not needed. Left blank to not import keys."
     required: false
     pattern: "((^(ssh-rsa AAAAB3NzaC1yc2|ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNT|ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzOD|ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1Mj|ssh-ed25519 AAAAC3NzaC1lZDI1NTE5|ssh-dss AAAAB3NzaC1kc3)[0-9A-Za-z+\/]+[=]{0,3})( [^,]*)?)(,((ssh-rsa AAAAB3NzaC1yc2|ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNT|ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzOD|ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1Mj|ssh-ed25519 AAAAC3NzaC1lZDI1NTE5|ssh-dss AAAAB3NzaC1kc3)[0-9A-Za-z+\/]+[=]{0,3})( [^,]*)?)*$"
-    visible: #($show_advanced  == ""Yes"") + ($generate_public_ssh_key  == "false")
+    visible:
       and:
-        - eq:
-          - show_advanced 
-          - "Yes"
+        - and:
+          - create_new_oke_cluster
+          - show_advanced
         - not:
           - generate_public_ssh_key
 
   image_operating_system:
     type: enum
     title: "Image OS"
-    description: "The OS/image installed on all nodes in the node pool."
     enum:
       - "Oracle Linux"
     required: true
-    visible: #($show_advanced  == ""Yes"")
-      eq:
-        - show_advanced 
-        - "Yes"
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
 
   image_operating_system_version:
     type: string
     required: true
     title: "Image OS Version"
-    description: "The OS/image version installed on all nodes in the node pool."
-    visible: #($show_advanced  == ""Yes"")
-      eq:
-        - show_advanced 
-        - "Yes"
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
 
-  mushop_mock_mode_all:
-    visible: yes
+  # Dynamic Groups and Policies for Instance Principals and Autoscaler
+  create_dynamic_group_for_nodes_in_compartment:
     type: boolean
+    title: "Create Dynamic Group for Worker Nodes in the Compartment"
     required: true
-    title: "Enable Mock Mode"
-    description: "Enable Mock Mode for MuShop all Services"
+    visible:
+      and:
+        - show_advanced
 
+  existent_dynamic_group_for_nodes_in_compartment:
+    type: string
+    required: true
+    title: "Existent Dynamic Group"
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - or:
+          - create_compartment_policies
+          - create_tenancy_policies
+        - not:
+          - create_dynamic_group_for_nodes_in_compartment
+        
+  create_compartment_policies:
+    type: boolean
+    title: "Create Compartment Policies"
+    required: true
+    visible:
+      and:
+        - show_advanced
+
+  create_tenancy_policies:
+    type: boolean
+    title: "Create Tenancy Policies"
+    required: true
+    visible:
+      and:
+        - show_advanced
+
+  # Encryption options
+  use_encryption_from_oci_vault:
+    type: boolean
+    title: "Encrypt using Customer-Managed Keys instead of Oracle Managed Encryption"
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
+
+  create_new_encryption_key:
+    type: boolean
+    title: "Create new Vault and Key"
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
+        - use_encryption_from_oci_vault
+
+  existent_encryption_key_id:
+    type: string
+    title: "Existent Encryption Key OCID"
+    required: true
+    visible:
+      and:
+        - and:
+          - create_new_oke_cluster
+          - show_advanced
+          - use_encryption_from_oci_vault
+        - not:
+          - create_new_encryption_key
+
+  create_vault_policies_for_group:
+    type: boolean
+    title: "Create policies for the user group to manage vault and keys"
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
+        - use_encryption_from_oci_vault
+        - create_new_encryption_key
+
+  user_admin_group_for_vault_policy:
+    type: string
+    title: "Specify your group to include the policy"
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
+        - use_encryption_from_oci_vault
+        - create_new_encryption_key
+        - create_vault_policies_for_group
+
+  # Cluster Utilities
   grafana_enabled:
     type: boolean
     title: "Grafana"
-    description: "Enable Grafana Dashboards"
 
   prometheus_enabled:
     type: boolean
     title: "Prometheus"
-    description: "Enable Prometheus"
 
   metrics_server_enabled:
     type: boolean
     title: "Metrics Server"
-    description: "Enable Metrics Server for Auto Scaling"
-
-  catalog_enabled:
-    type: boolean
-    title: "Service Catalog"
-    description: "Enable Service Catalog to use with OCI Service Broker"
 
   ingress_nginx_enabled:
-      type: boolean
-      title: "Ingress NGINX"
-      description: "Enable Ingress Nginx for Services (Provision a Load Balancer)"
+    type: boolean
+    title: "Ingress NGINX"
 
   cert_manager_enabled:
     type: boolean
     title: "Certificate Management"
-    description: "Enable x509 Certificate Management"
+
+  catalog_enabled:
+    type: boolean
+    title: "Service Catalog"
 
   # mushop_atp:
   #   visible: yes
@@ -342,65 +511,69 @@ variables:
   #   description: "Enable Oracle Streaming for all Services"
 
   # Network Type Options
-  network_strategy:
-    type: enum
-    title: Network Strategy
-    description: Create or use existing Network Stack (VCN and Subnet)
-    enum:
-      - "Create New VCN and Subnet"
-      # - "Use Existing VCN and Subnet"
-    required: true
-    default: "Create New VCN and Subnet"
+  # network_strategy:
+  #   type: enum
+  #   title: Network Strategy
+  #   description: Create or use existing Network Stack (VCN and Subnet)
+  #   enum:
+  #     - "Create New VCN and Subnet"
+  #     # - "Use Existing VCN and Subnet"
+  #   required: true
+  #   default: "Create New VCN and Subnet"
+  #   visible:
+  #     and:
+  #       - create_new_oke_cluster
+  #       - show_advanced
 
-  subnet_type:
-    visible: #($network_strategy  == ""Create New VCN and Subnet"")
-      eq:
-        - network_strategy 
-        - "Create New VCN and Subnet"
-    type: enum
-    title: Subnet Type
-    description: Choose between private and public subnets
-    enum:
-      - "Private Subnet"
-      - "Public Subnet"
-    required: true
-    default: "Private Subnet"
+  # subnet_type:
+  #   visible: #($network_strategy  == ""Create New VCN and Subnet"")
+  #     eq:
+  #       - network_strategy 
+  #       - "Create New VCN and Subnet"
+  #   type: enum
+  #   title: Subnet Type
+  #   description: Choose between private and public subnets
+  #   enum:
+  #     - "Private Subnet"
+  #     - "Public Subnet"
+  #   required: true
+  #   default: "Private Subnet"
 
-  vcn_id:
-    visible: #($network_strategy  == "Use Existing VCN and Subnet")
-      eq:
-        - network_strategy 
-        - "Use Existing VCN and Subnet"
-    type: oci:core:vcn:id
-    dependsOn:
-      compartmentId: compartment_ocid 
-    required: true
-    title: Existing Network
-    description: An existing Virtual Cloud Network (VCN) in which to create the compute instances, network resources, and load balancers. If not specified, a new VCN is created.
+  # vcn_id:
+  #   visible: #($network_strategy  == "Use Existing VCN and Subnet")
+  #     eq:
+  #       - network_strategy 
+  #       - "Use Existing VCN and Subnet"
+  #   type: oci:core:vcn:id
+  #   dependsOn:
+  #     compartmentId: compartment_ocid 
+  #   required: true
+  #   title: Existing Network
+  #   description: An existing Virtual Cloud Network (VCN) in which to create the compute instances, network resources, and load balancers. If not specified, a new VCN is created.
 
-  vcn_cidr_block:
-    visible: #($network_strategy  == ""Create New VCN and Subnet"")
-      eq:
-        - network_strategy 
-        - "Create New VCN and Subnet"
-    type: string
-    required: true
-    default: 10.20.0.0/16
-    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
-    title: VCN CIDR BLOCK
-    description: The CIDR of the new Virtual Cloud Network (VCN). If you plan to peer this VCN with another VCN, the VCNs must not have overlapping CIDRs.
+  # vcn_cidr_block:
+  #   visible: #($network_strategy  == ""Create New VCN and Subnet"")
+  #     eq:
+  #       - network_strategy 
+  #       - "Create New VCN and Subnet"
+  #   type: string
+  #   required: true
+  #   default: 10.20.0.0/16
+  #   pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+  #   title: VCN CIDR BLOCK
+  #   description: The CIDR of the new Virtual Cloud Network (VCN). If you plan to peer this VCN with another VCN, the VCNs must not have overlapping CIDRs.
 
-  subnet_cidr_block:
-    visible: #($network_strategy  == ""Create New VCN and Subnet"")
-      eq:
-        - network_strategy 
-        - "Create New VCN and Subnet"
-    type: string
-    default: 10.20.10.0/24
-    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
-    required: true
-    title: Subnet CIDR
-    description: The CIDR of the new Subnet. The new subnet's CIDR should not overlap with any other subnet CIDRs.
+  # subnet_cidr_block:
+  #   visible: #($network_strategy  == ""Create New VCN and Subnet"")
+  #     eq:
+  #       - network_strategy 
+  #       - "Create New VCN and Subnet"
+  #   type: string
+  #   default: 10.20.10.0/24
+  #   pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+  #   required: true
+  #   title: Subnet CIDR
+  #   description: The CIDR of the new Subnet. The new subnet's CIDR should not overlap with any other subnet CIDRs.
 
 outputGroups:
   - title: Mushop endpoints
@@ -408,46 +581,101 @@ outputGroups:
       - mushop_url
       - grafana_url
       - external_ip
-  - title: Passwords
+      - mushop_url_https
+
+  - title: Passwords and Keys
     outputs:
       - autonomous_database_password
       - grafana_admin_password
+      - generated_private_key_pem
+
   - title: Comments
     outputs:
       - comments
+      - deploy_id
+      - deployed_to_region
+      - deployed_oke_kubernetes_version
+
+  - title: Dev Notes
+    outputs:
       - dev
+      - mushop_source_code
 
 outputs:
   mushop_url_button:
-      type: link
-      title: MuShop URL Button
-      displayText: Open MuShop
+    type: link
+    title: MuShop URL Button
+    displayText: Open MuShop
+    visible: true
+
   mushop_url:
     type: link
     title: MuShop
     displayText: Storefront
+    visible: true
+
+  mushop_url_https:
+    type: string
+    title: MuShop URL with HTTPS and Hostname
+    displayText: https://<hostname>
+    visible: false
+
+  external_ip:
+    type: string
+    title: Ingress LoadBalancer External IP
+    displayText: Ingress Nginx LoadBalancer External IP Address
+    visible: true
+
   grafana_url:
     type: link
     title: Grafana
     displayText: Dashboards
+    visible: true
+
   autonomous_database_password:
     type: string
     title: DB Admin Password
     displayText: Autonomous Database Admin Password
-    sensitive: true
+    visible: true
+
   grafana_admin_password:
     type: string
     title: Grafana Admin Password
     displayText: Grafana Admin Password
-    sensitive: true
+    visible: true
+
+  deploy_id:
+    type: string
+    title: "Deployment Id"
+    visible: true
+
+  deployed_to_region:
+    type: string
+    title: "Deployed using Region"
+    visible: true
+
+  deployed_oke_kubernetes_version:
+    type: string
+    title: "OKE Kubernetes version deployed"
+    visible: true
+
   comments:
     type: string
     title: Comments
     displayText: Comments
+    visible: true
+
   dev:
     type: string
     title: dev
-    displayText: dev note from A-Team
+    displayText: dev note from Oracle Developers
+    visible: true
+
+  mushop_source_code:
+    type: link
+    title: MuShop Repo with sources and deployment scripts
+    visible: true
+
   kubeconfig_for_kubectl:
     type: string
     title: kubeconfig

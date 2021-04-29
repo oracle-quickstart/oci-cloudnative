@@ -6,9 +6,12 @@ metadata:
   labels:
     name: session
     layer: client
+    app.kubernetes.io/name: session
 spec:
-  ports:
-  - port: 6379
   selector:
     name: session
     layer: client
+    app.kubernetes.io/name: session
+  ports:
+  - port: 6379
+    name: redis

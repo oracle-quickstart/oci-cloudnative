@@ -1,11 +1,11 @@
-# Copyright (c) 2020 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2020, 2021 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
 # OCI authentication
-tenancy_ocid = "ocid1.tenancy....."
-fingerprint = "" # e.g.: "5f:53:..." or leave blank if using CloudShell
-user_ocid = ""  # e.g.: "ocid1.user..." or leave blank if using CloudShell
+tenancy_ocid     = "ocid1.tenancy....."
+fingerprint      = "" # e.g.: "5f:53:..." or leave blank if using CloudShell
+user_ocid        = "" # e.g.: "ocid1.user..." or leave blank if using CloudShell
 private_key_path = "" # e.g.: "/users/user/.oci/oci_api_key.pem" or leave blank if using CloudShell
 
 # Deployment compartment
@@ -15,29 +15,54 @@ compartment_ocid = "ocid1.compartment...."
 region = "us-ashburn-1"
 
 # OKE Cluster
-## cluster_visibility
-cluster_visibility = "Private"
+
+## Cluster Workers visibility
+cluster_workers_visibility = "Private"
+
+## Cluster API Endpoint visibility
+cluster_endpoint_visibility = "Public"
+
 ## create_new_oke_cluster
-create_new_oke_cluster = true
-existent_oke_cluster_id         = ""  # e.g.: ocid1.cluster.oc1...
+create_new_oke_cluster         = true
+existent_oke_cluster_id        = "" # e.g.: ocid1.cluster.oc1...
+create_new_compartment_for_oke = false
+
+## Create Dynamic group and Policies for Autoscaler and OCI Metrics and Logging
+create_dynamic_group_for_nodes_in_compartment = true
+create_compartment_policies                   = true
+create_tenancy_policies                       = true
+
 ## Encryption (OCI Vault/Key Management/KMS)
-use_encryption            = false
-create_new_encryption_key = false
-encryption_key_id         = "" # e.g.: "ocid1.key.oc1..."
+use_encryption_from_oci_vault = false
+create_new_encryption_key     = false
+existent_encryption_key_id    = "" # e.g.: "ocid1.key.oc1..."
+
+# Enable Cluster Autoscaler
+cluster_autoscaler_enabled              = true
+cluster_autoscaler_min_nodes            = 3
+cluster_autoscaler_max_nodes            = 10
+existent_oke_nodepool_id_for_autoscaler = "" # e.g.: ocid1.nodepool.oc1...
 
 # OKE Worker Nodes (Compute)
-num_pool_workers        = 3
-node_pool_shape         = "VM.Standard2.1"
-generate_public_ssh_key = true # if true, auto generate public and private keys and assign to the node pool.
-public_ssh_key          = "" # if generate_public_ssh_key=true, public_ssh_key is ignored. if generate_public_ssh_key=false, assign public_ssh_key, that can be nothing if ""
+num_pool_workers                          = 3 # If autoscaler is enabled, uses the value from cluster_autoscaler_min_nodes for the initial node pool number of nodes
+node_pool_shape                           = "VM.Standard.E3.Flex"
+node_pool_node_shape_config_ocpus         = 1
+node_pool_node_shape_config_memory_in_gbs = 16
+generate_public_ssh_key                   = true # if true, auto generate public and private keys and assign to the node pool.
+public_ssh_key                            = ""   # if generate_public_ssh_key=true, public_ssh_key is ignored. if generate_public_ssh_key=false, assign public_ssh_key, that can be nothing if ""
+
+# Ingress Loadbalancer
+ingress_load_balancer_shape = "100Mbps"
 
 # MuShop
+
 ## Enable Mock Mode
 mushop_mock_mode_all = false # Set to true if do not want to provision ATP, ObjectStorage and mock all services
+
 ## Common Services (MuShop Utilities)
-grafana_enabled = true
-prometheus_enabled = true
+grafana_enabled        = true
+prometheus_enabled     = true
 metrics_server_enabled = true
-catalog_enabled = true
-ingress_nginx_enabled = true
-cert_manager_enabled = true
+catalog_enabled        = false
+ingress_nginx_enabled  = true
+cert_manager_enabled   = true

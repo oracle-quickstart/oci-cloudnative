@@ -109,7 +109,7 @@ resource "oci_core_nat_gateway" "mushop_nat_gateway" {
   vcn_id         = oci_core_virtual_network.mushop_main_vcn.id
   freeform_tags  = local.common_tags
 
-  count = var.use_only_always_free_elegible_resources ? 0 : ((var.instance_visibility == "Private") ? 0 : 0)
+  count = var.use_only_always_free_eligible_resources ? 0 : ((var.instance_visibility == "Private") ? 0 : 0)
 }
 
 resource "oci_core_internet_gateway" "mushop_internet_gateway" {
@@ -127,7 +127,7 @@ resource "oci_core_service_gateway" "mushop_service_gateway" {
     service_id = lookup(data.oci_core_services.all_services.services[0], "id")
   }
 
-  count = var.use_only_always_free_elegible_resources ? 0 : 1
+  count = var.use_only_always_free_eligible_resources ? 0 : 1
 }
 
 resource "oci_core_local_peering_gateway" "main_local_peering_gateway" {
@@ -147,7 +147,7 @@ resource "oci_core_local_peering_gateway" "lb_local_peering_gateway" {
   count = var.create_secondary_vcn ? 1 : 0
 }
 
-resource oci_core_network_security_group atp_nsg {
+resource "oci_core_network_security_group" "atp_nsg" {
   compartment_id = var.compartment_ocid
   display_name   = "atp_nsg"
   freeform_tags  = local.common_tags
@@ -155,7 +155,7 @@ resource oci_core_network_security_group atp_nsg {
 
   count = (var.autonomous_database_visibility == "Private") ? 1 : 0
 }
-resource oci_core_network_security_group_security_rule atp_nsg_rule_1 {
+resource "oci_core_network_security_group_security_rule" "atp_nsg_rule_1" {
   destination_type          = ""
   direction                 = "INGRESS"
   network_security_group_id = oci_core_network_security_group.atp_nsg[0].id
@@ -165,7 +165,7 @@ resource oci_core_network_security_group_security_rule atp_nsg_rule_1 {
 
   count = (var.autonomous_database_visibility == "Private") ? 1 : 0
 }
-resource oci_core_network_security_group_security_rule atp_nsg_rule_2 {
+resource "oci_core_network_security_group_security_rule" "atp_nsg_rule_2" {
   destination               = lookup(var.network_cidrs, "MAIN-VCN-CIDR")
   destination_type          = "CIDR_BLOCK"
   direction                 = "EGRESS"

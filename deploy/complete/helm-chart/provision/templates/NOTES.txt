@@ -7,7 +7,7 @@
  |_|  |_|\__,_|_____/|_| |_|\___/| .__/ 
                                  | |    
                                  |_|    
-      Made with ♥ by Oracle A-Team
+    Made with ♥ by Oracle Developers
 ########################################
 
 ## OCI Resources

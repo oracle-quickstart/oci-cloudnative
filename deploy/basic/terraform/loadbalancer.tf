@@ -1,14 +1,22 @@
-# Copyright (c) 2019, 2020 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2019-2021 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
 resource "oci_load_balancer_load_balancer" "mushop_lb" {
   compartment_id = (var.lb_compartment_ocid != "") ? var.lb_compartment_ocid : var.compartment_ocid
   display_name   = "mushop-${random_string.deploy_id.result}"
-  shape          = var.lb_shape
+  shape          = local.lb_shape
   subnet_ids     = [oci_core_subnet.mushop_lb_subnet.id]
   is_private     = "false"
   freeform_tags  = local.common_tags
+
+  dynamic "shape_details" {
+    for_each = local.lb_shape == "flexible" ? [1] : []
+    content {
+      minimum_bandwidth_in_mbps = local.lb_shape_details_minimum_bandwidth_in_mbps
+      maximum_bandwidth_in_mbps = local.lb_shape_details_maximum_bandwidth_in_mbps
+    }
+  }
 }
 
 resource "oci_load_balancer_backend_set" "mushop_bes" {

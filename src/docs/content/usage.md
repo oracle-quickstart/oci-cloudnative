@@ -436,6 +436,7 @@ Light Panel
 > Markdownish SVG diagrams from [mermaid](https://mermaid-js.github.io/mermaid/#/)
 
 {{% grid col="1-2" y="top" %}}
+
 ```markdown
 {{</* mermaid class="uk-text-center" */>}}
 graph TD
