@@ -21,14 +21,19 @@ If using local Terraform or on CloudShell:
 - Run `terraform init` to init the terraform providers
 - Run `terraform apply` to create the resources on OCI
 
-You can also include Web Application Firewall (WAF), DNS or other components as desired.  Note that a public certificate will be required for WAF, and thus requires a DNS zone be created.  See below for more specific instructions.
+*OPTIONAL* - You can also include Web Application Firewall (WAF), DNS or other components as desired.  Note that additional requirements exist in order to use these features:
+- A publicly available domain name with control over sub-domains
+- You must not select the "always free" option because WAF and DNS are not available in always free
+- WAF requires a public SSL Certificate, which is generated via Let's Encrypt (see below)
+
+The additional networking that can be added results in an architecture like this:
 
 ![MuShop Basic Infra MSZ Demo](../../images/basic/00-Topology-v1.2.0.MSZ-demo.svg)
 
 ### Enabling DNS, Certificates and WAF 
 
-The following combinations are available:
-- No DNS, No Certificate, no WAF (default)
+The following combinations are available.  Each of these combinations adds to the previous one.  By default, there are no advanced networking options enabled, and the free tier will imply only the first combination:
+- Free tier only - No DNS, No Certificate, no WAF (default)
 - DNS domain only, no SSL Listener
 - DNS domain with Let's Encrypt Certificate and SSL Listener
 - DNS domain with WAF and SSL only (no HTTP) - access to internal LB is restricted
