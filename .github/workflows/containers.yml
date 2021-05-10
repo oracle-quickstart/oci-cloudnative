@@ -37,19 +37,13 @@ jobs:
         done
         echo "::set-output name=matrix::$(echo ${services_prep[@]} | jq -sc '{"include": . }')"
 
-  debug:
+  payload:
     needs: services_updated
     runs-on: ubuntu-latest
 
     steps:
-    - name: Matrix Echo
+    - name: Service(s) Matrix Info
       run: echo ">>> ${{ needs.services_updated.outputs.matrix }} <<<"
-
-    # - name: Matrix fromJson
-    #   run: echo ">>> ${{ fromJson(needs.get_versions_to_be_updated.outputs.matrix) }} <<<"
-
-    # - name: Test Outputs
-    #   run: echo 1-${{needs.get_versions_to_be_updated.outputs.output1}} 2-${{needs.get_versions_to_be_updated.outputs.output2}} 3-${{needs.get_versions_to_be_updated.outputs.output3}} 4-${{needs.get_versions_to_be_updated.outputs.output4}}
 
   build:
     needs: services_updated
