@@ -19,3 +19,36 @@ jobs:
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
+    - name: Get updated service's VERSION files
+      id: version_services
+      run: |
+        # Gets VERSION files (e.g. src/api/VERSION) that has been updated
+        # updated_version_file contains the full path to the VERSION file (e.g. src/api/VERSION)
+        services_prep=()
+        for updated_version_file in $(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} ${{ github.event.before }} | grep "VERSION");
+        do
+          service=$(cut -d "/" -f 2 <<< "$updated_version_file")
+          echo "::group::Processing $service"
+          folder=${updated_version_file%"/VERSION"}
+          service_version=$(cat $updated_version_file)
+          service_platforms=$(cat $folder/PLATFORMS 2>/dev/null || echo "linux/amd64")
+          services_prep+=("{\"service\":\"$service\", \"version\":\"$service_version\", \"platforms\":\"$service_platforms\", \"version_file_path\":\"$updated_version_file\"}")
+          echo "::endgroup::"
+        done
+        echo "::set-output name=matrix::$(echo ${services_prep[@]} | jq -sc '{"include": . }')"
+
+  debug:
+    needs: services_updated
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Matrix Echo
+      run: echo ">>> ${{ needs.services_updated.outputs.matrix }} <<<"
+
+    # - name: Matrix fromJson
+    #   run: echo ">>> ${{ fromJson(needs.get_versions_to_be_updated.outputs.matrix) }} <<<"
+
+    # - name: Test Outputs
+    #   run: echo 1-${{needs.get_versions_to_be_updated.outputs.output1}} 2-${{needs.get_versions_to_be_updated.outputs.output2}} 3-${{needs.get_versions_to_be_updated.outputs.output3}} 4-${{needs.get_versions_to_be_updated.outputs.output4}}
+
+  
