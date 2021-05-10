@@ -1,4 +1,4 @@
-name: Build and Push Container Images to Registry
+name: Build and Publish Container Images to Registry
 
 on:
   push:
@@ -51,7 +51,6 @@ jobs:
     strategy:
       matrix: ${{fromJson(needs.services_updated.outputs.matrix)}}
     outputs:
-      container_image_id: ${{ steps.prepare.outputs.container_image_id }}
       service_version: ${{ steps.prepare.outputs.service_version }}
     steps:
     - name: Checkout
@@ -131,7 +130,6 @@ jobs:
           echo ::set-output name=container_tags::$DOCKER_TAGS
           echo ::set-output name=service_folder::$FOLDER
           echo ::set-output name=build_platforms::$PLATFORMS
-          echo ::set-output name=container_image_id::$IMAGE_ID
           echo ::set-output name=service_version::$VERSION
           echo ::set-output name=build_title::$NEXT_STEP_TITLE
 
