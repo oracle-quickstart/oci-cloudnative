@@ -1,0 +1,21 @@
+name: Build and Push Container Images to Registry
+
+on:
+  push:
+    branches: [ main ]
+    paths: ['src/**/VERSION']
+  pull_request:
+    branches: [ main ]
+    paths: ['src/**/VERSION']
+
+jobs:
+
+  services_updated:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.version_services.outputs.matrix }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
