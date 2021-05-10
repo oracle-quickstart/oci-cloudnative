@@ -51,4 +51,109 @@ jobs:
     # - name: Test Outputs
     #   run: echo 1-${{needs.get_versions_to_be_updated.outputs.output1}} 2-${{needs.get_versions_to_be_updated.outputs.output2}} 3-${{needs.get_versions_to_be_updated.outputs.output3}} 4-${{needs.get_versions_to_be_updated.outputs.output4}}
 
-  
+  build:
+    needs: services_updated
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{fromJson(needs.services_updated.outputs.matrix)}}
+    outputs:
+      container_image_id: ${{ steps.prepare.outputs.container_image_id }}
+      service_version: ${{ steps.prepare.outputs.service_version }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+
+    - name: Set up Docker Buildx (moby/buildkit)
+      id: buildx
+      uses: docker/setup-buildx-action@v1
+      with:
+          install: true
+
+    - name: Pre-build info
+      run: |
+          # Metadata
+          # Get the service name and prefix it with "mushop"
+          # E.g. "mushop-api", "mushop-fulfillment"
+          IMAGE_NAME="mushop-${{ matrix.service }}"
+
+          echo "::group::Service Metadata"
+          echo "SERVICE >>> ${{ matrix.service }}"
+          echo "VERSION >>> ${{ matrix.version }}"
+          echo "PLATFORMS >>> ${{ matrix.platforms }}"
+          echo "AVAILABLE PLATFORMS >>> ${{ steps.buildx.outputs.platforms }}"
+          echo "IMAGE_NAME >>> ${IMAGE_NAME}"
+          echo "::endgroup::"
+
+    - name: Prepare parameters for build with BuildKit
+      id: prepare
+      run: |
+          # Get variables
+          echo "::group::Prepare Variables"
+          VERSION=${{ matrix.version }}
+          PLATFORMS=${{ matrix.platforms }}
+          FILE_PATH=${{ matrix.version_file_path }}
+          FOLDER=${FILE_PATH%"/VERSION"}
+          SERVICE=${{ matrix.service }}
+          DOCKER_TAGS=""
+          NEXT_STEP_TITLE=""
+          
+          # Get the service name and prefix it with "mushop"
+          # E.g. "mushop-api", "mushop-fulfillment"
+          IMAGE_NAME="mushop-$SERVICE"
+          IMAGE_ID=${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPOSITORY }}/$IMAGE_NAME
+          echo "::endgroup::"
+
+          echo "::group::Prepare Container Tags"
+          # Strip version for tags semver
+          SEMREG='[^0-9]*\([0-9]*\)[.]\([0-9]*\)[.]\([0-9]*\)\([0-9A-Za-z-]*\)'
+          SEM=`echo $VERSION | sed -e "s#^v##"`
+          TAGS=$SEM
+          MAJOR=`echo $SEM | sed -e "s#$SEMREG#\1#"`
+          MINOR=`echo $SEM | sed -e "s#$SEMREG#\2#"`
+          PATCH=`echo $SEM | sed -e "s#$SEMREG#\3#"`
+          SPECIAL=`echo $SEM | sed -e "s#$SEMREG#\4#"`
+          ## add semantic tags
+          if [ "$MAJOR" != "$SEM" ] && [ -z "$SPECIAL" ]; then
+              TAGS="$SEM $MAJOR.$MINOR $MAJOR latest"
+              if [ -n "$SPECIAL" ]; then
+                  TAGS="$MAJOR.$MINOR.$PATCH $TAGS"
+              fi
+          fi
+
+          for tag in $TAGS; do
+            DOCKER_TAGS+="$IMAGE_ID:$tag,"
+            echo "tag >>> ${tag}"
+          done
+          echo "::endgroup::"
+
+          if [${{ github.event_name == 'push' }}]; then
+            NEXT_STEP_TITLE="and Publish "
+          fi
+
+          echo "NEXT_STEP_TITLE >>> $NEXT_STEP_TITLE"
+          echo ::set-output name=container_tags::$DOCKER_TAGS
+          echo ::set-output name=service_folder::$FOLDER
+          echo ::set-output name=build_platforms::$PLATFORMS
+          echo ::set-output name=container_image_id::$IMAGE_ID
+          echo ::set-output name=service_version::$VERSION
+          echo ::set-output name=build_title::$NEXT_STEP_TITLE
+
+    - name: Login to Container Registry
+      if: ${{ github.event_name == 'push' }}
+      uses: docker/login-action@v1 
+      with:
+        registry: ${{ secrets.DOCKER_REGISTRY_URL }}
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build ${{ steps.prepare.outputs.build_title }}- ${{ matrix.service }}
+      if: success()
+      uses: docker/build-push-action@v2
+      with:
+        context: ${{ steps.prepare.outputs.service_folder }}
+        platforms: ${{ steps.prepare.outputs.build_platforms }}
+        push: ${{ github.event_name == 'push' }}
+        tags: ${{ steps.prepare.outputs.container_tags }}
