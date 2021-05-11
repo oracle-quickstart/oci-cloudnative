@@ -30,3 +30,25 @@ The Dockerfile should be able to successfully build the image on the PR before c
 Together with the Dockerfile, the service folder should contain the VERSION one-line file, with the semver (major.minor.patch) format.
 
 Optionally, if the service supports, add the PLATFORMS one-line file with the architecture platform to be included on the Container Image Manifest. e.g.: (linux/amd64,linux/arm64). If not file is included, the build defaults to linux/amd64.
+
+Service Example:
+
+```profile
+src
+│   README.md (this file)
+│
+└───payment
+│   │   Dockerfile
+│   │   VERSION
+│   │   PLATFORMS
+│   │   service.go
+│   │
+│   └───cmd
+│       │   main.go
+│       │   ...
+│   
+└───load
+    │   Dockerfile
+    │   VERSION
+    │   ...
+```
