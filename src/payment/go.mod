@@ -1,6 +1,6 @@
 module github.com/junior/mushop/src/payment
 
-go 1.12
+go 1.16
 
 require (
 	github.com/Shopify/sarama v1.23.1 // indirect
@@ -10,7 +10,6 @@ require (
 	github.com/gogo/googleapis v1.2.0 // indirect
 	github.com/gogo/status v1.1.0 // indirect
 	github.com/gorilla/mux v1.7.3
-	github.com/microservices-demo/payment v0.0.0-20180427185901-3c33dbf915e2
 	github.com/opentracing-contrib/go-observer v0.0.0-20170622124052-a52f23424492 // indirect
 	github.com/opentracing-contrib/go-stdlib v0.0.0-20190519235532-cf7a6c988dc9 // indirect
 	github.com/opentracing/opentracing-go v1.1.0
