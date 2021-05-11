@@ -2,7 +2,7 @@ version: '2'
 
 services:
   payment:
-    image: weaveworksdemos/payment
+    image: mushop/payment
     hostname: payment
     restart: always
     cap_drop:
