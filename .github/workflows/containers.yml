@@ -15,17 +15,28 @@ jobs:
     outputs:
       matrix: ${{ steps.version_services.outputs.matrix }}
     steps:
+    - name: Gets commit SHA for Checkout and VERSION check
+      id: commit_sha
+      run: |
+        # Gets commit SHA for Checkout and VERSION check
+        if ${{ github.event_name == 'pull_request' }}; then
+          VERSION_COMMIT_SHA="${{ github.event.pull_request.head.sha }}"
+        else
+          VERSION_COMMIT_SHA="${{ github.sha }}"
+        fi
+        echo ::set-output name=version_commit_sha::$VERSION_COMMIT_SHA
     - name: Checkout
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
+        ref: ${{ steps.commit_sha.outputs.version_commit_sha }}
     - name: Get updated service's VERSION files
       id: version_services
       run: |
         # Gets VERSION files (e.g. src/api/VERSION) that has been updated
         # updated_version_file contains the full path to the VERSION file (e.g. src/api/VERSION)
         services_prep=()
-        for updated_version_file in $(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} ${{ github.event.before }} | grep "VERSION");
+        for updated_version_file in $(git diff-tree --no-commit-id --name-only -r ${{ steps.commit_sha.outputs.version_commit_sha }} ${{ github.event.before }} | grep "VERSION");
         do
           service=$(cut -d "/" -f 2 <<< "$updated_version_file")
           echo "::group::Processing $service"
@@ -148,3 +159,12 @@ jobs:
         platforms: ${{ steps.prepare.outputs.build_platforms }}
         push: ${{ github.event_name == 'push' }}
         tags: ${{ steps.prepare.outputs.container_tags }}
+
+  published_notification:
+    needs: [services_updated,build]
+    if: ${{ success() && github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Notify that Images have been published
+      run: echo "Published"
