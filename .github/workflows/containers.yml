@@ -142,6 +142,7 @@ jobs:
           echo ::set-output name=build_platforms::$PLATFORMS
           echo ::set-output name=service_version::$VERSION
           echo ::set-output name=build_title::$NEXT_STEP_TITLE
+          echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
 
     - name: Login to Container Registry
       if: ${{ github.event_name == 'push' }}
@@ -159,6 +160,13 @@ jobs:
         platforms: ${{ steps.prepare.outputs.build_platforms }}
         push: ${{ github.event_name == 'push' }}
         tags: ${{ steps.prepare.outputs.container_tags }}
+        labels: |
+          org.opencontainers.image.url='${{ github.event.repository.html_url }}/${{ steps.prepare.outputs.service_folder }}'
+          org.opencontainers.image.documentation='${{ github.event.repository.html_url }}/${{ steps.prepare.outputs.service_folder }}/README.md'
+          org.opencontainers.image.source=${{ github.event.repository.clone_url }}
+          org.opencontainers.image.created=${{ steps.prepare.outputs.created }}
+          org.opencontainers.image.version=${{ steps.prepare.outputs.service_version }}
+          org.opencontainers.image.revision=${{ github.sha }}
 
   published_notification:
     needs: [services_updated,build]
