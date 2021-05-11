@@ -13,10 +13,10 @@ Checkout the API Spec [here](https://mushop.docs.apiary.io)
 ### Using native Go tools
 
 In order to build the project locally you need to make sure that the repository directory is located in the correct
-$GOPATH directory: $GOPATH/src/github.com/microservices-demo/payment/. Once that is in place you can build by running:
+$GOPATH directory: $GOPATH/src/github.com/oracle-quickstart/oci-cloudnative/src/payment/. Once that is in place you can build by running:
 
 ```shell
-cd $GOPATH/src/github.com/microservices-demo/payment/paymentsvc/
+cd $GOPATH/src/github.com/oracle-quickstart/oci-cloudnative/src/payment/
 go build -o payment
 ```
 
@@ -30,7 +30,7 @@ The result is a binary named `payment`, in the current directory.
 
 ### Using Go native
 
-If you followed to Go build instructions, you should have a "payment" binary in $GOPATH/src/github.com/microservices-demo/payment/cmd/paymentsvc/.
+If you followed to Go build instructions, you should have a "payment" binary in $GOPATH/src/github.com/oracle-quickstart/oci-cloudnative/src/payment/cmd/paymentsvc/.
 To run it use:
 
 ```shell
