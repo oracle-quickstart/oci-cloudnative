@@ -9,17 +9,27 @@ FROM --platform=${BUILDPLATFORM:-linux/amd64} golang:1.16 AS go-builder
 ARG TARGETOS
 ARG TARGETARCH
 
+# Payment Go Source
 WORKDIR /go/src/mushop/payment
 COPY cmd/*.go cmd/
 COPY *.go .
 COPY go.mod .
 COPY go.sum .
 
-RUN GO111MODULE=on GOARCH=${TARGETARCH} CGO_ENABLED=0 GOOS=${TARGETOS} \
+# Build Payment service
+RUN GOARCH=${TARGETARCH} CGO_ENABLED=0 GOOS=${TARGETOS} \
     go build -a \
     -installsuffix cgo \
     -o /payment cmd/main.go
 
-FROM --platform=${TARGETPLATFORM:-linux/amd64} alpine:3.13
+##### Payment Service Image
+FROM --platform=${TARGETPLATFORM:-linux/amd64} oraclelinux:8-slim
+
+ARG TARGETPLATFORM
+ARG LICENSE
+
 COPY --from=go-builder /payment /
 CMD ["/payment", "-port=80"]
+
+LABEL org.opencontainers.image.title="payment" \
+    org.opencontainers.image.architecture="${TARGETPLATFORM}"
