@@ -20,7 +20,6 @@ RUN GO111MODULE=on GOARCH=${TARGETARCH} CGO_ENABLED=0 GOOS=${TARGETOS} \
     -installsuffix cgo \
     -o /payment cmd/main.go
 
-FROM alpine:3.13
+FROM --platform=${TARGETPLATFORM:-linux/amd64} alpine:3.13
 COPY --from=go-builder /payment /
-COPY --from=go-builder /go/src/mushop/payment/go.mod /
 CMD ["/payment", "-port=80"]
