@@ -107,7 +107,11 @@ jobs:
           # Get the service name and prefix it with "mushop"
           # E.g. "mushop-api", "mushop-fulfillment"
           IMAGE_NAME="mushop-$SERVICE"
-          IMAGE_ID=${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPOSITORY }}/$IMAGE_NAME
+          if ${{ github.event_name == 'pull_request' }}; then
+            IMAGE_ID=local/$IMAGE_NAME
+          else
+            IMAGE_ID=${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPOSITORY }}/$IMAGE_NAME
+          fi
           echo "::endgroup::"
 
           echo "::group::Prepare Container Tags"
