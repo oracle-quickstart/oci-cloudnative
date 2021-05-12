@@ -28,8 +28,15 @@ FROM --platform=${TARGETPLATFORM:-linux/amd64} oraclelinux:8-slim
 ARG TARGETPLATFORM
 ARG LICENSE
 
-COPY --from=go-builder /payment /
-CMD ["/payment", "-port=80"]
+RUN groupadd -r app -g 1000 && \
+    useradd -u 1000 -r -g app -m -d /app -s /sbin/nologin -c "App user" app && \
+    chmod 755 /app
+
+WORKDIR /app
+USER app
+
+COPY --from=go-builder /payment /app/
+CMD ["/app/payment", "-port=80"]
 
 LABEL org.opencontainers.image.title="payment" \
     org.opencontainers.image.architecture="${TARGETPLATFORM}"
