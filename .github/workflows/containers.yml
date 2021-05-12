@@ -2,10 +2,10 @@ name: Build and Publish Container Images to Registry
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
     paths: ['src/**/VERSION']
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
     paths: ['src/**/VERSION']
 
 jobs:
