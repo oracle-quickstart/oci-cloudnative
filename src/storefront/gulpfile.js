@@ -113,7 +113,7 @@ gulp.task('images', function(done) {
       }),
       mozjpeg({quality: 85}),
     ])
-    .on('error', e => done()).on('end', () => done())))
+      .on('error', e => done()).on('end', () => done())))
     .pipe(gulp.dest(`${opt.buildDir}/images`));
 });
 

@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: load
-        image: iad.ocir.io/oracle/ateam/mushop-load:2.0.0
+        image: iad.ocir.io/oracle/ateam/mushop-load:2.1.0
         imagePullPolicy: Always
         args: ["-h", "edge", "-c", "15", "-r", "120"]
       nodeSelector:

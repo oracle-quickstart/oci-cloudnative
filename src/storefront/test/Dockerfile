@@ -1,4 +1,4 @@
-FROM node:10-alpine
+FROM node:14-alpine
 EXPOSE 3000
 
 RUN apk update && apk add --no-cache \
