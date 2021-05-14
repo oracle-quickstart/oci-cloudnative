@@ -22,4 +22,4 @@ securityContext:
   readOnlyRootFilesystem: true
 
 service:
-  port: 8080
+  port: 80
