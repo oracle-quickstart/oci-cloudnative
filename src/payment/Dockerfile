@@ -36,7 +36,7 @@ WORKDIR /app
 USER app
 
 COPY --from=go-builder /payment /app/
-CMD ["/app/payment", "-port=80"]
+CMD ["/app/payment", "-port=8080"]
 
 LABEL org.opencontainers.image.title="payment" \
     org.opencontainers.image.architecture="${TARGETPLATFORM}"
