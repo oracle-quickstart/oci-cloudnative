@@ -2,14 +2,13 @@
  * Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
  * The Universal Permissive License (UPL), Version 1.0
  */
-(function (){
+ (function (){
   'use strict';
   
   require('dotenv').config();
 
-  const redis = require('redis')
-  const session = require('express-session')
-  let RedisStore = require('connect-redis')(session)
+  var session      = require("express-session"),
+      RedisStore   = require('connect-redis')(session);
 
   const sessionKeyMap = {
     REDIS: 'SESSION_REDIS',
@@ -63,11 +62,8 @@
         console.log('Using the redis based session manager');
       }
 
-      let redisClient = redis.createClient({ host: SESSION_REDIS })
-      redisClient.on('error', console.log)
-
       return {
-        store: SESSION_REDIS && new RedisStore({ client: redisClient }),
+        store: SESSION_REDIS && new RedisStore({ host: SESSION_REDIS }),
         secret: SESSION_SECRET || 'mustoresecret',
         name: 'mu.sid',
         resave: false,
