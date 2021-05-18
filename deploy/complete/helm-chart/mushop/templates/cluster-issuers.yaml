@@ -41,7 +41,7 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: {{ include "mushop.fullname" . }}-selfsigning
+  name: {{ include "mushop.fullname" . }}-selfsigned
 spec:
   selfSigned: {}
 {{- end -}}
