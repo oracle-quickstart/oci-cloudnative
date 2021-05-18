@@ -5,7 +5,25 @@
 # MuShop
 ## Ingress/LoadBalancer
 variable "ingress_load_balancer_shape" {
-  default = "100Mbps"
+  default = "flexible" # 100Mbps
+}
+variable "ingress_load_balancer_shape_flex_min" {
+  default = "10"
+}
+variable "ingress_load_balancer_shape_flex_max" {
+  default = "100"
+}
+variable "ingress_hosts" {
+  default = ""
+}
+variable "ingress_cluster_issuer" {
+  default = "letsencrypt-prod"
+}
+variable "ingress_email_issuer" {
+  default = "no-reply@mushop.ateam.cloud"
+}
+variable "ingress_tls" {
+  default = false
 }
 
 ## Features
