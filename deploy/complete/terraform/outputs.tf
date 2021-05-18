@@ -3,13 +3,13 @@
 # 
 
 output "mushop_url_button" {
-  value       = format("http://%s", local.mushop_ingress_ip)
+  value       = format("${local.mushop_url_protocol}://%s", local.mushop_ingress_hostname)
   description = "MuShop Storefront URL for ORM button"
 
   depends_on = [helm_release.ingress_nginx]
 }
 output "mushop_url" {
-  value       = format("http://%s", local.mushop_ingress_ip)
+  value       = format("${local.mushop_url_protocol}://%s", local.mushop_ingress_hostname)
   description = "MuShop Storefront URL"
 
   depends_on = [helm_release.ingress_nginx]
@@ -21,7 +21,7 @@ output "mushop_url_https" {
   depends_on = [helm_release.ingress_nginx]
 }
 output "grafana_url" {
-  value       = format("http://%s/grafana", local.mushop_ingress_ip)
+  value       = format("${local.mushop_url_protocol}://%s/grafana", local.mushop_ingress_hostname)
   description = "Grafana Dashboards URL"
 
   depends_on = [helm_release.ingress_nginx]
@@ -42,5 +42,6 @@ output "mushop_source_code" {
 }
 locals {
   mushop_ingress_ip       = data.kubernetes_service.mushop_ingress.load_balancer_ingress[0].ip
-  mushop_ingress_hostname = data.kubernetes_service.mushop_ingress.load_balancer_ingress[0].hostname == "" ? data.kubernetes_service.mushop_ingress.load_balancer_ingress[0].ip : data.kubernetes_service.mushop_ingress.load_balancer_ingress[0].hostname
+  mushop_ingress_hostname = var.ingress_hosts == "" ? data.kubernetes_service.mushop_ingress.load_balancer_ingress[0].ip : split(",",var.ingress_hosts)[0]
+  mushop_url_protocol = var.ingress_tls ? "https" : "http"
 }
