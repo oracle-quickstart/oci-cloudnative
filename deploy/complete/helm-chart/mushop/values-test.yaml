@@ -15,7 +15,7 @@ ingress:
 
   # Value can be either prod or staging
   # This controls the cluster issuer what's used in Ingress
-  clusterIssuer: prod
+  clusterIssuer: letsencrypt-staging
 
   # Used for ACME registration (if TLS is set)
   email: "no-reply@ateam-oracle.com"
