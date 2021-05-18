@@ -32,10 +32,10 @@ output "external_ip" {
   depends_on = [helm_release.ingress_nginx]
 }
 output "autonomous_database_password" {
-  value     = random_string.autonomous_database_admin_password.result
+  value = random_string.autonomous_database_admin_password.result
 }
 output "grafana_admin_password" {
-  value     = nonsensitive(data.kubernetes_secret.mushop_utils_grafana.data.admin-password) # Required for TF 0.15, as automatically generate an error if is not marked as sensitive
+  value = nonsensitive(data.kubernetes_secret.mushop_utils_grafana.data.admin-password) # Required for TF 0.15, as automatically generate an error if is not marked as sensitive
   # value     = data.kubernetes_secret.mushop_utils_grafana.data.admin-password # TF 0.14 version support by ORM does not support nonsensitive function
 }
 output "mushop_source_code" {
@@ -43,6 +43,6 @@ output "mushop_source_code" {
 }
 locals {
   mushop_ingress_ip       = data.kubernetes_service.mushop_ingress.load_balancer_ingress[0].ip
-  mushop_ingress_hostname = var.ingress_hosts == "" ? data.kubernetes_service.mushop_ingress.load_balancer_ingress[0].ip : split(",",var.ingress_hosts)[0]
-  mushop_url_protocol = var.ingress_tls ? "https" : "http"
+  mushop_ingress_hostname = var.ingress_hosts == "" ? data.kubernetes_service.mushop_ingress.load_balancer_ingress[0].ip : split(",", var.ingress_hosts)[0]
+  mushop_url_protocol     = var.ingress_tls ? "https" : "http"
 }
