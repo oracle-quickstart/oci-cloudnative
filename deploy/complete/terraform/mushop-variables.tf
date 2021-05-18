@@ -22,7 +22,7 @@ variable "ingress_load_balancer_shape_flex_max" {
 }
 variable "ingress_hosts" {
   default = ""
-  description = "Enter a valid full qualified domain name. You will need to map the domain name to the EXTERNAL-IP address on your DNS provider (DNS Registry type - A). If you have multiple domain names, include separated by comma. e.g.: mushop.example.com,catshop.com"
+  description = "Enter a valid full qualified domain name (FQDN). You will need to map the domain name to the EXTERNAL-IP address on your DNS provider (DNS Registry type - A). If you have multiple domain names, include separated by comma. e.g.: mushop.example.com,catshop.com"
 }
 variable "cert_manager_enabled" {
   default     = true
