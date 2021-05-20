@@ -1,5 +1,15 @@
 # CHANGELOG
 
+2021-05-18 (v2.3.0)
+
+- Support for flexible Load Balancer annotations on Ingress-Nginx
+- Support for domain name (FQDN) for ingress
+- Better variables and schema for Certificate management
+- Cert-manager updates
+- Schema updates for Ingress new features
+- Cluster Utilities version updates
+- apiVersion and manifest updates on deprecated items
+
 2021-04-08 (v2.2.0)
 
 - OKE Cluster Autoscaler support

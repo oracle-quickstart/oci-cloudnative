@@ -52,7 +52,15 @@ generate_public_ssh_key                   = true # if true, auto generate public
 public_ssh_key                            = ""   # if generate_public_ssh_key=true, public_ssh_key is ignored. if generate_public_ssh_key=false, assign public_ssh_key, that can be nothing if ""
 
 # Ingress Loadbalancer
-ingress_load_balancer_shape = "100Mbps"
+ingress_nginx_enabled                = true
+ingress_load_balancer_shape          = "flexible" # Flexible, 10Mbps, 100Mbps, 400Mbps or 8000Mps
+ingress_load_balancer_shape_flex_min = "10"
+ingress_load_balancer_shape_flex_max = "100"
+ingress_hosts                        = "" # Optional. If you have multiple domain names, include separated by comma. e.g.: mushop.example.com,catshop.com
+cert_manager_enabled                 = true
+ingress_tls                          = false
+ingress_cluster_issuer               = "letsencrypt-staging" # Values examples: letsencrypt-prod, letsencrypt-staging and selfsigned
+ingress_email_issuer                 = "no-reply@mushop.ateam.cloud"
 
 # MuShop
 
@@ -64,5 +72,3 @@ grafana_enabled        = true
 prometheus_enabled     = true
 metrics_server_enabled = true
 catalog_enabled        = false
-ingress_nginx_enabled  = true
-cert_manager_enabled   = true

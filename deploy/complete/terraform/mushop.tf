@@ -34,9 +34,29 @@ resource "helm_release" "mushop" {
     value = var.db_wallet_name
   }
   # set {
-  #   name  = "global.oosBucketSecret" # Commented until come with solution to gracefull removal of objects when terraform destroy
+  #   name  = "global.oosBucketSecret" # Commented until come with solution to gracefully removal of objects when terraform destroy
   #   value = var.oos_bucket_name
   # }
+  set {
+    name  = "ingress.enabled"
+    value = var.ingress_nginx_enabled
+  }
+  set {
+    name  = "ingress.hosts"
+    value = "{${var.ingress_hosts}}"
+  }
+  set {
+    name  = "ingress.clusterIssuer"
+    value = var.cert_manager_enabled ? var.ingress_cluster_issuer : ""
+  }
+  set {
+    name  = "ingress.email"
+    value = var.ingress_email_issuer
+  }
+  set {
+    name  = "ingress.tls"
+    value = var.ingress_tls
+  }
   set {
     name  = "tags.atp"
     value = var.mushop_mock_mode_all ? false : true
@@ -46,7 +66,7 @@ resource "helm_release" "mushop" {
     value = var.mushop_mock_mode_all ? false : false
   }
 
-  depends_on = [helm_release.ingress_nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
+  depends_on = [helm_release.ingress_nginx, helm_release.cert_manager] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
 
   timeout = 500
 }

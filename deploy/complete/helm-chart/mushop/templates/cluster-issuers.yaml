@@ -1,9 +1,8 @@
-# Copyright (c) 2019, 2020 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2019-2021 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
-
 {{- if .Values.ingress.clusterIssuer }}
-apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: {{ include "mushop.fullname" . }}-letsencrypt-prod
@@ -21,7 +20,7 @@ spec:
         ingress:
           class: nginx
 ---
-apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: {{ include "mushop.fullname" . }}-letsencrypt-staging
@@ -39,10 +38,10 @@ spec:
         ingress:
           class: nginx
 ---
-apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: {{ include "mushop.fullname" . }}-selfsigning
+  name: {{ include "mushop.fullname" . }}-selfsigned
 spec:
   selfSigned: {}
 {{- end -}}
