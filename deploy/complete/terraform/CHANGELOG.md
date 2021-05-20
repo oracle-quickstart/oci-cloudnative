@@ -1,6 +1,6 @@
 # CHANGELOG
 
-2021-05-18 (v2.2.1)
+2021-05-18 (v2.3.0)
 
 - Support for flexible Load Balancer annotations on Ingress-Nginx
 - Support for domain name (FQDN) for ingress
