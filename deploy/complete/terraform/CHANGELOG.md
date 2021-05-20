@@ -5,6 +5,7 @@
 - Support for flexible Load Balancer annotations on Ingress-Nginx
 - Support for domain name (FQDN) for ingress
 - Better variables and schema for Certificate management
+- Cert-manager updates
 - Schema updates for Ingress new features
 - Cluster Utilities version updates
 - apiVersion and manifest updates on deprecated items
