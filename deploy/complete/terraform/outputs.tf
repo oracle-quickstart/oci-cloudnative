@@ -26,6 +26,12 @@ output "grafana_url" {
 
   depends_on = [helm_release.ingress_nginx]
 }
+output "domain_name" {
+  value       = var.ingress_hosts != "" ? local.mushop_ingress_hostname : null
+  description = "Domain name"
+
+  depends_on = [helm_release.ingress_nginx]
+}
 output "external_ip" {
   value = local.mushop_ingress_ip
 
