@@ -3,7 +3,10 @@
 # 
 
 # OCI Services
-## Autonomous Database
+##**************************************************************************
+##                        Autonomous Database
+##**************************************************************************
+
 ### creates an ATP database
 resource "oci_database_autonomous_database" "mushop_autonomous_database" {
   admin_password           = random_string.autonomous_database_admin_password.result
@@ -175,7 +178,9 @@ resource "kubernetes_job" "wallet_extractor_job" {
 }
 ### OADB Wallet extraction </>
 
-## Object Storage
+##**************************************************************************
+##                          Object Storage
+##**************************************************************************
 resource "oci_objectstorage_bucket" "mushop_catalogue_bucket" {
   compartment_id = local.oke_compartment_ocid
   namespace      = data.oci_objectstorage_namespace.ns.namespace
@@ -211,7 +216,10 @@ resource "kubernetes_secret" "oos_bucket" {
   count = var.mushop_mock_mode_all ? 0 : 1
 }
 
-## OCI KMS Vault
+##**************************************************************************
+##                            OCI KMS Vault
+##**************************************************************************
+
 ### OCI Vault vault
 resource "oci_kms_vault" "mushop_vault" {
   compartment_id = local.oke_compartment_ocid
