@@ -109,7 +109,7 @@ resource "helm_release" "ingress_nginx" {
   name       = "mushop-utils-ingress-nginx" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.ingress_nginx
   chart      = "ingress-nginx"
-  version    = "3.30.0"
+  version    = "3.31.0"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = true
 
@@ -159,13 +159,17 @@ resource "helm_release" "cert_manager" {
   chart      = "cert-manager"
   version    = "1.3.1"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
-  wait       = false
+  wait       = true # wait to allow the webhook be properly configured
 
   set {
     name  = "installCRDs"
     value = true
   }
 
+  set {
+    name  = "webhook.timeoutSeconds"
+    value = "30"
+  }
   depends_on = [helm_release.ingress_nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
 
   count = var.cert_manager_enabled ? 1 : 0
