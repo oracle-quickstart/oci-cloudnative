@@ -682,6 +682,7 @@ outputGroups:
       - mushop_url
       - grafana_url
       - external_ip
+      - domain_name
       - mushop_url_https
 
   - title: Passwords and Keys
@@ -732,6 +733,12 @@ outputs:
     title: Grafana
     displayText: Dashboards
     visible: true
+
+  domain_name:
+    type: string
+    title: Domain Name
+    displayText: Full Qualified Domain Name
+    visible: true    
 
   autonomous_database_password:
     type: string
