@@ -68,7 +68,7 @@ resource "helm_release" "mushop" {
 
   set {
     name  = "api.env.newsletterSubscribeUrl"
-    value = oci_apigateway_deployment.newsletter_subscription.endpoint
+    value = "${oci_apigateway_deployment.newsletter_subscription.endpoint}/subscribe"
     # value = "https://[API_GATEWAY_URL]/newsletter/subscribe"
   }
 
