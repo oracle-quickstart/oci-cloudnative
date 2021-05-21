@@ -66,6 +66,12 @@ resource "helm_release" "mushop" {
     value = var.mushop_mock_mode_all ? false : false
   }
 
+  set {
+    name  = "api.env.newsletterSubscribeUrl"
+    value = oci_apigateway_deployment.newsletter_subscription.endpoint
+    # value = "https://[API_GATEWAY_URL]/newsletter/subscribe"
+  }
+
   depends_on = [helm_release.ingress_nginx, helm_release.cert_manager] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
 
   timeout = 500
