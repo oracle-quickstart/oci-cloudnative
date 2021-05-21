@@ -192,6 +192,8 @@ data "kubernetes_secret" "mushop_utils_grafana" {
     namespace = kubernetes_namespace.cluster_utilities_namespace.id
   }
   depends_on = [helm_release.grafana, helm_release.mushop]
+
+  count = var.grafana_enabled ? 1 : 0
 }
 
 locals {
