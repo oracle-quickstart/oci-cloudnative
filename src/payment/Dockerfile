@@ -4,7 +4,7 @@
 # 
 
 ##### Go Builder image
-FROM --platform=${BUILDPLATFORM:-linux/amd64} golang:1.16 AS go-builder
+FROM --platform=${TARGETPLATFORM:-linux/amd64} golang:1.16 AS go-builder
 
 ARG TARGETOS
 ARG TARGETARCH
@@ -17,7 +17,7 @@ COPY go.mod .
 COPY go.sum .
 
 # Build Payment service
-RUN GOARCH=${TARGETARCH} CGO_ENABLED=0 GOOS=${TARGETOS} \
+RUN GOARCH=${TARGETARCH:-amd64} CGO_ENABLED=0 GOOS=${TARGETOS:-linux} \
     go build -a \
     -installsuffix cgo \
     -o /payment cmd/main.go
@@ -37,6 +37,7 @@ USER app
 
 COPY --from=go-builder /payment /app/
 CMD ["/app/payment", "-port=8080"]
+EXPOSE 8080
 
 LABEL org.opencontainers.image.title="payment" \
     org.opencontainers.image.architecture="${TARGETPLATFORM}"
