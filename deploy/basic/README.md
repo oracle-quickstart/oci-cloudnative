@@ -2,10 +2,10 @@
 
 This is a Terraform configuration that deploys the MuShop basic sample application on [Oracle Cloud Infrastructure (OCI)][oci].
 
-MuShop basic is a 3-tier web application that implements an e-commerce site. 
+MuShop basic is a 3-tier web application that implements an e-commerce site.
 It is built to showcase the features of [Oracle Cloud Infrastructure (OCI)][oci].
-This application is designed to run using only the Always Free tier resources. 
-The repository contains the application code as well as the [Terraform][tf] code to create a [Resource Manager][orm] stack, 
+This application is designed to run using only the Always Free tier resources.
+The repository contains the application code as well as the [Terraform][tf] code to create a [Resource Manager][orm] stack,
 that creates all the required resources and configures the application on the created resources.
 
 ## Topology
@@ -33,37 +33,81 @@ The application uses a typical topology for a 3-tier web application as follows
 
 ## Build
 
+### Build Single Architecture (Standard: linux/amd64)
+
 1. Clone https://github.com/oracle/oci-quickstart-cloudnative
 1. From the root of the repo execute the command:
-  
- `docker build -t mushop-basic -f deploy/basic/Dockerfile .`
 
-3. Generate Stack Zip Package for OCI Resource Manager
+    ```shell
+    docker build -t mushop-basic -f deploy/basic/Dockerfile .
+    ```
 
-`docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic-stack.zip /transfer/mushop-basic-stack.zip`
+1. Generate Stack Zip Package for OCI Resource Manager
 
-or under windows powershell:
+    ```shell
+    docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic-stack.zip /transfer/mushop-basic-stack.zip
+    ```
 
-`docker run -v "$((pwd).path -replace '\\', '/'):/transfer" --rm --entrypoint cp mushop-basic:latest /package/mushop-basic-stack.zip /transfer/mushop-basic-stack.zip`
+    or under Windows powershell:
+
+    ```shell
+    docker run -v "$((pwd).path -replace '\\', '/'):/transfer" --rm --entrypoint cp mushop-basic:latest /package/mushop-basic-stack.zip /transfer/mushop-basic-stack.zip
+    ```
 
 This creates a `.zip` file in your working directory that can be imported in to OCI Resource Manager.
 
-## Using local or CloudShell terraform instead of ORM stack
+### Build Multi-Arch (Example: linux/amd64, linux/arm64)
+
+1. Clone https://github.com/oracle/oci-quickstart-cloudnative
+1. From the root of the repo execute the command:
+
+    ```shell
+    # Create the Multi-Arch builder if not already created
+    docker buildx create --name multibuilder
+    docker buildx use multibuilder
+    ```
+
+    ```shell
+    docker buildx build --pull --rm --platform linux/amd64,linux/arm64 --load -t mushop-basic -f deploy/basic/Dockerfile .
+    ```
+
+1. Generate Stack Zip Package for OCI Resource Manager
+    * linux/amd64 (or default builder)
+
+        ```shell
+        docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic-stack.zip /transfer/mushop-basic-stack.zip
+        ```
+
+    * linux/arm64
+
+        ```shell
+        docker buildx imagetools inspect
+        # Get the sha
+        docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic-stack.zip /transfer/mushop-basic-stack.zip
+        ```
+
+This creates a `.zip` file in your working directory that can be imported in to OCI Resource Manager.
+
+## Deploying using local or CloudShell *Terraform* instead of ORM stack
 
 After complete the Build steps 1 and 2, generate the binaries:
 
-- From the root of the repo execute the command:
+* From the root of the repo execute the command:
 
-`docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic.tar.gz /transfer/deploy/basic/terraform/scripts/mushop-basic.tar.gz`
+    ```shell
+    docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic.tar.gz /transfer/deploy/basic/terraform/scripts/mushop-basic.tar.gz
+    ```
 
-- Copy mushop media images to populate the object storage:
+* Copy mushop media images to populate the object storage:
 
-`docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest -vr /basic/images/ /transfer/deploy/basic/terraform/`
+    ```shell
+    docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest -vr /basic/images/ /transfer/deploy/basic/terraform/
+    ```
 
-- Rename the file `terraform.tfvars.example` to `terraform.tfvars`
-- Change the credentials variables to your user and any other desirable variables
-- Run `terraform init` to init the terraform providers
-- Run `terraform apply` to create the resources on OCI
+* Rename the file `terraform.tfvars.example` to `terraform.tfvars`
+* Change the credentials variables to your user and any other desirable variables
+* Run `terraform init` to init the terraform providers
+* Run `terraform apply` to create the resources on OCI
 
 [oci]: https://cloud.oracle.com/en_US/cloud-infrastructure
 [orm]: https://docs.cloud.oracle.com/iaas/Content/ResourceManager/Concepts/resourcemanager.htm
