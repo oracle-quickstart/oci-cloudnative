@@ -32,7 +32,7 @@ spec:
           args:
           - -port=8080
           ports:
-            - name: http
+            - name: http-alt
               containerPort: 8080
           env:
             - name: ZIPKIN
@@ -43,13 +43,13 @@ spec:
           livenessProbe:
             httpGet:
               path: /health
-              port: http
+              port: http-alt
             initialDelaySeconds: 120
             periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /health
-              port: http
+              port: http-alt
             initialDelaySeconds: 10
             periodSeconds: 5
           resources:
