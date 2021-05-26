@@ -10,7 +10,7 @@ ARG oracleClientVersion=19.10
 #    ----- STOREFRONT -----   #
 #    Build stage (node/npm)   #
 ###############################
-FROM node:12-alpine as storefront-builder
+FROM --platform=${BUILDPLATFORM:-linux/amd64} node:14-alpine as storefront-builder
 
 RUN apk update && apk add --no-cache \
     autoconf \
@@ -50,7 +50,7 @@ RUN npm run build
 #    ----- API Gateway -----  #
 #    Build stage (node/npm)   #
 ###############################
-FROM node:12-alpine as api-builder
+FROM --platform=${TARGETPLATFORM:-linux/amd64} node:14-alpine as api-builder
 
 WORKDIR /app/api
 COPY src/api/. .
@@ -65,7 +65,7 @@ RUN rm -rf test scripts && \
 ###############################
 #  ----- Image Assets -----   #
 ###############################
-FROM node:12-alpine as assets-builder
+FROM --platform=${BUILDPLATFORM:-linux/amd64} node:14-alpine as assets-builder
 
 RUN apk update && apk add --no-cache \
     autoconf \
@@ -99,31 +99,29 @@ RUN rm -rf node_modules products hero *.md
 ###############################
 
 # ##### Go Builder image
-FROM golang:1.16 AS catalogue-builder
+FROM --platform=${TARGETPLATFORM:-linux/amd64} golang:1.16 AS catalogue-builder
+
+ARG TARGETARCH
+ARG TARGETOS
+
 WORKDIR /go/src/mushop/catalogue
 
 # # Catalogue Go Source
 COPY src/catalogue/cmd/cataloguesvc/*.go cmd/cataloguesvc/
 COPY src/catalogue/*.go ./
 COPY src/catalogue/go.mod ./
+COPY src/catalogue/go.sum ./
 
 # # Get Go Modules
 RUN go get .
 RUN go get mushop/catalogue/cmd/cataloguesvc
 
 # # Build Catalogue service
-RUN GO111MODULE=on GOARCH=amd64 GOOS=linux \
+RUN GO111MODULE=on GOARCH=${TARGETARCH:-amd64} GOOS=${TARGETOS:-linux} \
   go build -a \
   -ldflags="-s -w" \
   -installsuffix cgo \
   -o /catalogue mushop/catalogue/cmd/cataloguesvc
-
-# # # Build Catalogue service
-# RUN GO111MODULE=on GOARCH=arm64 GOOS=linux \
-#   go build -a \
-#   -ldflags="-s -w" \
-#   -installsuffix cgo \
-#   -o /catalogue-arm64 mushop/catalogue/cmd/cataloguesvc
 
 #    ------ Catalogue ------  #
 
@@ -133,7 +131,7 @@ RUN GO111MODULE=on GOARCH=amd64 GOOS=linux \
 ###############################
 
 # Base image with Oracle Instant Client Basic Lite
-FROM oraclelinux:7-slim AS base
+FROM --platform=${TARGETPLATFORM:-linux/amd64} oraclelinux:7-slim AS base
 ARG oracleClientVersion
 RUN yum clean metadata && \
   yum update -y && \
@@ -160,7 +158,7 @@ RUN chmod +x /docker_entrypoint.sh
 ###############################
 
 # Runtime Image
-FROM base
+FROM --platform=${TARGETPLATFORM:-linux/amd64} base
 ARG oracleClientVersion
 WORKDIR /
 
