@@ -67,9 +67,25 @@ This creates a `.zip` file in your working directory that can be imported in to 
     docker buildx use multibuilder
     ```
 
-    ```shell
-    docker buildx build --pull --rm --platform linux/amd64,linux/arm64 --load -t mushop-basic -f deploy/basic/Dockerfile .
-    ```
+    Note: Building Multi-Arch and loading locally (using --load) is not supported by Docker. You need to build one platform at time.
+
+    * linux/amd64
+
+        ```shell
+        docker buildx build --pull --rm --platform linux/amd64 --load -t mushop-basic -f deploy/basic/Dockerfile .
+        ```
+
+    * linux/arm64
+
+        ```shell
+        docker buildx build --pull --rm --platform linux/arm64 --load -t mushop-basic-arm64 -f deploy/basic/Dockerfile .
+        ```
+
+    * linux/amd64,linux/arm64 if pushing the mushop builder to local registry:
+
+        ```shell
+        docker buildx build --pull --rm --platform linux/amd64,linux/arm64 --push -t <registry>/mushop-basic -f deploy/basic/Dockerfile .
+        ```
 
 1. Generate Stack Zip Package for OCI Resource Manager
     * linux/amd64 (or default builder)
@@ -81,9 +97,7 @@ This creates a `.zip` file in your working directory that can be imported in to 
     * linux/arm64
 
         ```shell
-        docker buildx imagetools inspect
-        # Get the sha
-        docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic-stack.zip /transfer/mushop-basic-stack.zip
+        docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic-arm64:latest /package/mushop-basic-stack.zip /transfer/mushop-basic-arm64-stack.zip
         ```
 
 This creates a `.zip` file in your working directory that can be imported in to OCI Resource Manager.
