@@ -22,14 +22,14 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: catalogue
-          image: iad.ocir.io/oracle/ateam/mushop-catalogue:1.2
+          image: iad.ocir.io/oracle/ateam/mushop-catalogue:1.4
           imagePullPolicy: Always
-          command: ["/app"]
+          command: ["/app/catalogue"]
           args:
-          - -port=80
+          - -port=8080
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8080
           env:
           - name: ZIPKIN
             value:
@@ -58,13 +58,13 @@ spec:
           livenessProbe:
             httpGet:
               path: /health
-              port: 80
+              port: 8080
             initialDelaySeconds: 120
             periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /health
-              port: 80
+              port: 8080
             initialDelaySeconds: 10
             periodSeconds: 5
           resources:
