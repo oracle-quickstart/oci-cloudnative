@@ -97,7 +97,7 @@ This creates a `.zip` file in your working directory that can be imported in to 
     * linux/arm64
 
         ```shell
-        docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic-arm64:latest /package/mushop-basic-stack.zip /transfer/mushop-basic-arm64-stack.zip
+        docker run -v $PWD:/transfer --rm --platform linux/arm64 --entrypoint cp mushop-basic-arm64:latest /package/mushop-basic-stack.zip /transfer/mushop-basic-arm64-stack.zip
         ```
 
 This creates a `.zip` file in your working directory that can be imported in to OCI Resource Manager.
@@ -106,22 +106,33 @@ This creates a `.zip` file in your working directory that can be imported in to 
 
 After complete the Build steps 1 and 2, generate the binaries:
 
-* From the root of the repo execute the command:
+1. From the root of the repo execute the command:
+    * linux/amd64 (or default builder)
 
-    ```shell
-    docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic.tar.gz /transfer/deploy/basic/terraform/scripts/mushop-basic.tar.gz
-    ```
+        ```shell
+        docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic.tar.gz /transfer/deploy/basic/terraform/scripts/mushop-basic.tar.gz
+        ```
 
-* Copy mushop media images to populate the object storage:
+    * linux/arm64
+
+        ```shell
+        docker run -v $PWD:/transfer --rm --platform linux/arm64 --entrypoint cp mushop-basic-arm64:latest /package/mushop-basic.tar.gz /transfer/deploy/basic/terraform/scripts/mushop-basic.tar.gz
+        ```
+
+        ```shell
+        docker run -v $PWD:/transfer --rm --platform linux/arm64 --entrypoint cp mushop-basic-arm64:latest /basic/PLATFORM /transfer/deploy/basic/PLATFORM
+        ```
+
+1. Copy mushop media images to populate the object storage:
 
     ```shell
     docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest -vr /basic/images/ /transfer/deploy/basic/terraform/
     ```
 
-* Rename the file `terraform.tfvars.example` to `terraform.tfvars`
-* Change the credentials variables to your user and any other desirable variables
-* Run `terraform init` to init the terraform providers
-* Run `terraform apply` to create the resources on OCI
+1. Rename the file `terraform.tfvars.example` to `terraform.tfvars`
+1. Change the credentials variables to your user and any other desirable variables
+1. Run `terraform init` to init the terraform providers
+1. Run `terraform apply` to create the resources on OCI
 
 [oci]: https://cloud.oracle.com/en_US/cloud-infrastructure
 [orm]: https://docs.cloud.oracle.com/iaas/Content/ResourceManager/Concepts/resourcemanager.htm
