@@ -35,7 +35,7 @@ The application uses a typical topology for a 3-tier web application as follows
 
 ### Build Single Architecture (Standard: linux/amd64)
 
-1. Clone https://github.com/oracle/oci-quickstart-cloudnative
+1. Clone <https://github.com/oracle/oci-quickstart-cloudnative>
 1. From the root of the repo execute the command:
 
     ```shell
@@ -58,7 +58,7 @@ This creates a `.zip` file in your working directory that can be imported in to 
 
 ### Build Multi-Arch (Example: linux/amd64, linux/arm64)
 
-1. Clone https://github.com/oracle/oci-quickstart-cloudnative
+1. Clone <https://github.com/oracle/oci-quickstart-cloudnative>
 1. From the root of the repo execute the command:
 
     ```shell
