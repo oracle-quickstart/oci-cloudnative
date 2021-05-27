@@ -123,7 +123,7 @@ RUN GO111MODULE=on GOARCH=${TARGETARCH:-amd64} GOOS=${TARGETOS:-linux} \
   -installsuffix cgo \
   -o /catalogue mushop/catalogue/cmd/cataloguesvc
 
-RUN printf '${TARGETPLATFORM:-linux/amd64}' >/PLATFORM
+RUN printf 'platform = "${TARGETPLATFORM:-linux/amd64}"' >/PLATFORM.auto.tfvars
 
 #    ------ Catalogue ------  #
 
@@ -172,7 +172,7 @@ COPY deploy/basic/terraform/schema.yaml /basic/
 COPY deploy/basic/terraform/scripts /basic/scripts
 COPY src/catalogue/dbdata/atp_mushop_catalogue.sql /basic/scripts/
 COPY --from=assets-builder /app/assets/dist /basic/images
-COPY --from=catalogue-builder /PLATFORM /basic/PLATFORM
+COPY --from=catalogue-builder /PLATFORM.auto.tfvars /basic/PLATFORM.auto.tfvars
 RUN cp /package/mushop-basic.tar.gz /basic/scripts/
 RUN zip -r /package/mushop-basic-stack.zip .
 
