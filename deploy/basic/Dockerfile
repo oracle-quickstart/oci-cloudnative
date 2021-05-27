@@ -123,15 +123,17 @@ RUN GO111MODULE=on GOARCH=${TARGETARCH:-amd64} GOOS=${TARGETOS:-linux} \
   -installsuffix cgo \
   -o /catalogue mushop/catalogue/cmd/cataloguesvc
 
+RUN printf '${TARGETPLATFORM:-linux/amd64}' >/PLATFORM
+
 #    ------ Catalogue ------  #
 
 ###############################
-#    ----- Base Image ------  #
-#      Everything needed      #
+#  ----- Runtime Image -----  #
+#   runtime app and stack     #
 ###############################
 
 # Base image with Oracle Instant Client Basic Lite
-FROM --platform=${TARGETPLATFORM:-linux/amd64} oraclelinux:7-slim AS base
+FROM --platform=${TARGETPLATFORM:-linux/amd64} oraclelinux:7-slim
 ARG oracleClientVersion
 RUN yum clean metadata && \
   yum update -y && \
@@ -150,23 +152,12 @@ COPY deploy/basic/terraform/scripts/httpd.conf /etc/httpd/conf/
 COPY deploy/basic/terraform/scripts/docker_entrypoint.sh /
 RUN chmod +x /docker_entrypoint.sh
 
-#    ----- Base Image ------  #
-
-###############################
-#  ----- Runtime Image -----  #
-#   runtime app and stack     #
-###############################
-
-# Runtime Image
-FROM --platform=${TARGETPLATFORM:-linux/amd64} base
-ARG oracleClientVersion
 WORKDIR /
 
 # Copy Services apps
 COPY --from=storefront-builder /app/storefront/build /app/storefront
 COPY --from=api-builder /app/api /app/api
 COPY --from=catalogue-builder /catalogue /app/catalogue/catalogue
-# COPY --from=catalogue-builder /catalogue-arm64 /app/catalogue/catalogue-arm64
 COPY src/catalogue/VERSION /app/catalogue/
 
 # Create zip package of the Apps and local images
@@ -181,6 +172,7 @@ COPY deploy/basic/terraform/schema.yaml /basic/
 COPY deploy/basic/terraform/scripts /basic/scripts
 COPY src/catalogue/dbdata/atp_mushop_catalogue.sql /basic/scripts/
 COPY --from=assets-builder /app/assets/dist /basic/images
+COPY --from=catalogue-builder /PLATFORM /basic/PLATFORM
 RUN cp /package/mushop-basic.tar.gz /basic/scripts/
 RUN zip -r /package/mushop-basic-stack.zip .
 
@@ -191,4 +183,4 @@ EXPOSE 80
 EXPOSE 3000
 EXPOSE 3005
 
-#    ----- Base Image ------  #
+#    ----- Runtime Image ------  #
