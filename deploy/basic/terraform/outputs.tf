@@ -33,6 +33,9 @@ output "deploy_id" {
 output "deployed_to_region" {
   value = local.region_to_deploy
 }
+output "platform" {
+  value = var.platform
+}
 
 output "mushop_basic_source_code" {
   value = "https://github.com/oracle-quickstart/oci-cloudnative/tree/master/deploy/basic"
