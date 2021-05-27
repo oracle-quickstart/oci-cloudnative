@@ -164,6 +164,11 @@ variable "services_in_mock_mode" {
   default = "carts,orders,users"
 }
 
+# Target Platform
+variable "platform" {
+  default = "linux/amd64"
+}
+
 # Always Free only or support other shapes
 variable "use_only_always_free_eligible_resources" {
   default = true
@@ -179,7 +184,7 @@ locals {
 
 # Shapes
 locals {
-  compute_shape_micro = "VM.Standard.E2.1.Micro"
+  compute_shape_micro = var.platform == "linux/arm64" ? "VM.Standard.A1.Flex" : "VM.Standard.E2.1.Micro"
   compute_flexible_shapes = [
     "VM.Standard.E3.Flex",
     "VM.Standard.E4.Flex",
@@ -190,7 +195,13 @@ locals {
     "Cores for Standard.E4.Flex and BM.Standard.E4.128 Instances",
     "Cores for Standard.A1 based VM and BM Instances"
   ]
+  compute_arm_shapes = [
+    "VM.Standard.A1.Flex",
+    "BM.Standard.A1.160"
+  ]
   compute_shape_flexible_vs_descriptions = zipmap(local.compute_flexible_shapes, local.compute_shape_flexible_descriptions)
   compute_shape_description              = lookup(local.compute_shape_flexible_vs_descriptions, local.instance_shape, local.instance_shape)
   lb_shape_flexible                      = "flexible"
+  compute_arm_shape_check = var.platform == "linux/arm64" ? (contains(local.compute_arm_shapes, local.instance_shape) ? 0 : (
+    file("ERROR: Selected compute shape (${local.instance_shape}) not compatible with MuShop ${var.platform} stack"))) : 0
 }
