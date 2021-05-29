@@ -120,7 +120,7 @@ After complete the Build steps 1 and 2, generate the binaries:
         ```
 
         ```shell
-        docker run -v $PWD:/transfer --rm --platform linux/arm64 --entrypoint cp mushop-basic-arm64:latest /basic/PLATFORM.auto.tfvars /transfer/deploy/basic/PLATFORM.auto.tfvars
+        docker run -v $PWD:/transfer --rm --platform linux/arm64 --entrypoint cp mushop-basic-arm64:latest /basic/PLATFORM.auto.tfvars /transfer/deploy/basic/terraform/PLATFORM.auto.tfvars
         ```
 
 1. Copy mushop media images to populate the object storage:
@@ -129,6 +129,7 @@ After complete the Build steps 1 and 2, generate the binaries:
     docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest -vr /basic/images/ /transfer/deploy/basic/terraform/
     ```
 
+1. Go to `$PWD/deploy/basic/terraform/`
 1. Rename the file `terraform.tfvars.example` to `terraform.tfvars`
 1. Change the credentials variables to your user and any other desirable variables
 1. Run `terraform init` to init the terraform providers
