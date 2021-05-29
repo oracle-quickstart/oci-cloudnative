@@ -28,9 +28,10 @@ RUN npm config set loglevel warn \
   && npm set progress=false
 
 # install dependencies
+WORKDIR /tmp
 COPY src/storefront/package.json /tmp/package.json
 COPY src/storefront/package-lock.json /tmp/package-lock.json
-RUN cd /tmp && npm ci
+RUN npm ci
 RUN mkdir -p /app/storefront && cp -a /tmp/node_modules /app/storefront/
 RUN rm -rf /tmp/node_modules
 
@@ -103,6 +104,7 @@ FROM --platform=${TARGETPLATFORM:-linux/amd64} golang:1.16 AS catalogue-builder
 
 ARG TARGETARCH
 ARG TARGETOS
+ARG TARGETPLATFORM
 
 WORKDIR /go/src/mushop/catalogue
 
@@ -123,7 +125,7 @@ RUN GO111MODULE=on GOARCH=${TARGETARCH:-amd64} GOOS=${TARGETOS:-linux} \
   -installsuffix cgo \
   -o /catalogue mushop/catalogue/cmd/cataloguesvc
 
-RUN printf 'platform = "${TARGETPLATFORM:-linux/amd64}"' >/PLATFORM.auto.tfvars
+RUN printf 'platform = "'${TARGETPLATFORM:-linux/amd64}'"' >/PLATFORM.auto.tfvars
 
 #    ------ Catalogue ------  #
 
