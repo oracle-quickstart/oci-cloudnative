@@ -34,7 +34,7 @@ output "deployed_to_region" {
   value = local.region_to_deploy
 }
 output "platform" {
-  value = var.platform
+  value = local.compute_platform
 }
 
 output "mushop_basic_source_code" {
