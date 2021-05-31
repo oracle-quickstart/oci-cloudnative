@@ -123,7 +123,7 @@ RUN GO111MODULE=on GOARCH=amd64 GOOS=linux \
   -o /catalogue mushop/catalogue/cmd/cataloguesvc
 RUN apt-get update -y
 RUN apt-get install -y upx
-RUN upx -9 --best --lzma /catalogue
+RUN upx --best --lzma /catalogue
 
 #  --- Catalogue - amd64 ---  #
 
@@ -156,7 +156,7 @@ RUN GO111MODULE=on GOARCH=arm64 GOOS=linux \
   -o /catalogue mushop/catalogue/cmd/cataloguesvc
 RUN apt-get update -y
 RUN apt-get install -y upx
-RUN upx -9 --best --lzma /catalogue
+RUN upx --best --lzma /catalogue
 
 #  --- Catalogue - amd64 ---  #
 
@@ -196,7 +196,7 @@ COPY src/catalogue/VERSION /app/catalogue/
 
 # Create zip package of the Apps and local images
 # RUN mkdir /package && GZIP=-9 tar cvzf /package/mushop-basic.tar.gz /app
-RUN mkdir /package && tar cv /app | xz -9 > /package/mushop-basic.tar.xz
+RUN mkdir /package && tar cv /app | xz -3e > /package/mushop-basic.tar.xz
 
 # Create ORM package
 COPY deploy/basic/VERSION /
@@ -206,7 +206,7 @@ COPY deploy/basic/terraform/*.tfvars.example /basic/
 COPY deploy/basic/terraform/schema.yaml /basic/
 COPY deploy/basic/terraform/scripts /basic/scripts
 COPY src/catalogue/dbdata/atp_mushop_catalogue.sql /basic/scripts/
-COPY --from=assets-builder /app/assets/dist /basic/images
+# COPY --from=assets-builder /app/assets/dist /basic/images
 # COPY --from=catalogue-builder /PLATFORM.auto.tfvars /basic/PLATFORM.auto.tfvars
 RUN cp /package/mushop-basic.tar.xz /basic/scripts/
 RUN zip -9 -r /package/mushop-basic-stack.zip .
