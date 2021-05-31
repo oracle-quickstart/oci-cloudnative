@@ -97,14 +97,11 @@ RUN rm -rf node_modules products hero *.md
 ###############################
 #    ------ Catalogue ------  #
 #    Build stage (Go Build)   #
+#     Architecture: amd64     #
 ###############################
 
 # ##### Go Builder image
-FROM --platform=${TARGETPLATFORM:-linux/amd64} golang:1.16 AS catalogue-builder
-
-ARG TARGETARCH
-ARG TARGETOS
-ARG TARGETPLATFORM
+FROM --platform=linux/amd64 golang:1.16 AS catalogue-builder-amd64
 
 WORKDIR /go/src/mushop/catalogue
 
@@ -119,15 +116,49 @@ RUN go get .
 RUN go get mushop/catalogue/cmd/cataloguesvc
 
 # # Build Catalogue service
-RUN GO111MODULE=on GOARCH=${TARGETARCH:-amd64} GOOS=${TARGETOS:-linux} \
+RUN GO111MODULE=on GOARCH=amd64 GOOS=linux \
   go build -a \
   -ldflags="-s -w" \
   -installsuffix cgo \
   -o /catalogue mushop/catalogue/cmd/cataloguesvc
+RUN apt-get update -y
+RUN apt-get install -y upx
+RUN upx -9 --best --lzma /catalogue
 
-RUN printf 'platform = "'${TARGETPLATFORM:-linux/amd64}'"' >/PLATFORM.auto.tfvars
+#  --- Catalogue - amd64 ---  #
 
+###############################
 #    ------ Catalogue ------  #
+#    Build stage (Go Build)   #
+#     Architecture: arm64     #
+###############################
+
+# ##### Go Builder image
+FROM --platform=linux/arm64 golang:1.16 AS catalogue-builder-arm64
+
+WORKDIR /go/src/mushop/catalogue
+
+# # Catalogue Go Source
+COPY src/catalogue/cmd/cataloguesvc/*.go cmd/cataloguesvc/
+COPY src/catalogue/*.go ./
+COPY src/catalogue/go.mod ./
+COPY src/catalogue/go.sum ./
+
+# # Get Go Modules
+RUN go get .
+RUN go get mushop/catalogue/cmd/cataloguesvc
+
+# # Build Catalogue service
+RUN GO111MODULE=on GOARCH=arm64 GOOS=linux \
+  go build -a \
+  -ldflags="-s -w" \
+  -installsuffix cgo \
+  -o /catalogue mushop/catalogue/cmd/cataloguesvc
+RUN apt-get update -y
+RUN apt-get install -y upx
+RUN upx -9 --best --lzma /catalogue
+
+#  --- Catalogue - amd64 ---  #
 
 ###############################
 #  ----- Runtime Image -----  #
@@ -159,11 +190,13 @@ WORKDIR /
 # Copy Services apps
 COPY --from=storefront-builder /app/storefront/build /app/storefront
 COPY --from=api-builder /app/api /app/api
-COPY --from=catalogue-builder /catalogue /app/catalogue/catalogue
+COPY --from=catalogue-builder-amd64 /catalogue /app/catalogue/catalogue-amd64
+COPY --from=catalogue-builder-arm64 /catalogue /app/catalogue/catalogue-arm64
 COPY src/catalogue/VERSION /app/catalogue/
 
 # Create zip package of the Apps and local images
-RUN mkdir /package && GZIP=-9 tar cvzf /package/mushop-basic.tar.gz /app
+# RUN mkdir /package && GZIP=-9 tar cvzf /package/mushop-basic.tar.gz /app
+RUN mkdir /package && tar cv /app | xz -9 > /package/mushop-basic.tar.xz
 
 # Create ORM package
 COPY deploy/basic/VERSION /
@@ -174,9 +207,9 @@ COPY deploy/basic/terraform/schema.yaml /basic/
 COPY deploy/basic/terraform/scripts /basic/scripts
 COPY src/catalogue/dbdata/atp_mushop_catalogue.sql /basic/scripts/
 COPY --from=assets-builder /app/assets/dist /basic/images
-COPY --from=catalogue-builder /PLATFORM.auto.tfvars /basic/PLATFORM.auto.tfvars
-RUN cp /package/mushop-basic.tar.gz /basic/scripts/
-RUN zip -r /package/mushop-basic-stack.zip .
+# COPY --from=catalogue-builder /PLATFORM.auto.tfvars /basic/PLATFORM.auto.tfvars
+RUN cp /package/mushop-basic.tar.xz /basic/scripts/
+RUN zip -9 -r /package/mushop-basic-stack.zip .
 
 VOLUME ["/usr/lib/oracle/${oracleClientVersion}/client64/lib/network/admin/"]
 VOLUME ["/transfer/"]
