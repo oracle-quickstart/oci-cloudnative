@@ -28,7 +28,7 @@ resource "oci_objectstorage_preauthrequest" "mushop_wallet_preauth" {
 
 resource "oci_objectstorage_object" "mushop_basic" {
   bucket    = oci_objectstorage_bucket.mushop.name
-  source    = "./scripts/mushop-basic.tar.gz"
+  source    = "./scripts/mushop-basic.tar.xz"
   namespace = data.oci_objectstorage_namespace.user_namespace.namespace
   object    = "mushop_basic"
 }
