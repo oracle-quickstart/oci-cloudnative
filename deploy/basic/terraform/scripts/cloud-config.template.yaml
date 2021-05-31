@@ -67,7 +67,7 @@ write_files:
       [Service]
       Type=simple
       EnvironmentFile=/root/mushop.env
-      ExecStart=/app/catalogue/catalogue
+      ExecStart=/app/catalogue/catalogue-${catalogue_architecture}
 
       [Install]
       WantedBy=multi-user.target
