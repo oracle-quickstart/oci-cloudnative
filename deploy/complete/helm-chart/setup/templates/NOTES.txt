@@ -10,6 +10,26 @@
     Made with ♥ by Oracle Developers
 ########################################
 
+{{- $ingressConfig := index $.Values "ingress-nginx" -}}
+{{- if $ingressConfig.enabled }}
+
+## Ingress
+
+An nginx ingress controller has been installed, which includes a LoadBalancer
+resource in this namespace.
+
+- Locate the ingress controller EXTERNAL-IP address
+
+  kubectl get svc -n {{ .Release.Namespace }} {{ .Release.Name }}-ingress-nginx-controller
+
+No ingress has been deployed yet. If you access the EXTERNAL-IP now, it will direct you to 
+the default backend page.
+
+If you plan to use a hostname, you can update your DNS now, associating the EXTERNAL-IP
+address to the domain name you included on the values.yaml on the mushop chart.
+
+{{- end }}
+
 {{- if .Values.grafana.enabled }}
 
 ## Grafana
@@ -27,20 +47,6 @@ how to access the Grafana application.
   kubectl port-forward -n {{ .Release.Namespace }} svc/{{ .Release.Name }}-grafana 3000:80
 
 - Then open http://localhost:3000
-
-{{- end }}
-
-{{- $ingressConfig := index $.Values "ingress-nginx" -}}
-{{- if $ingressConfig.enabled }}
-
-## Ingress
-
-An nginx ingress controller has been installed, which includes a LoadBalancer
-resource in this namespace.
-
-- Locate the ingress controller EXTERNAL-IP address
-
-  kubectl get svc -n {{ .Release.Namespace }} {{ .Release.Name }}-ingress-nginx-controller
 
 {{- end }}
 

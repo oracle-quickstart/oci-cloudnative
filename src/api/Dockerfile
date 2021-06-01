@@ -1,12 +1,12 @@
 #
-# Copyright (c) 2019, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2019-2021 Oracle and/or its affiliates. All rights reserved.
 # The Universal Permissive License (UPL), Version 1.0
 #
 
 ###############################
 #    Build stage (node/npm)   #
 ###############################
-FROM node:10-alpine as node-builder
+FROM --platform=${TARGETPLATFORM:-linux/amd64} node:14-alpine
 ENV NODE_ENV "production"
 
 RUN npm config set loglevel warn \
@@ -28,7 +28,6 @@ RUN npm prune --production
 ###############################
 #      Runtime (node/npm)     #
 ###############################
-FROM node-builder
 ENV PORT 3000
 EXPOSE 3000
 

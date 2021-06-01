@@ -1,9 +1,9 @@
 #
-# Copyright (c) 2019, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2019-2021 Oracle and/or its affiliates. All rights reserved.
 # The Universal Permissive License (UPL), Version 1.0
 #
 
-FROM node:10-alpine
+FROM node:14-alpine
 
 RUN apk update && apk add make
 

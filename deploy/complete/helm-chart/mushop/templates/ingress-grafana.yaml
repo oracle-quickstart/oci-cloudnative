@@ -13,7 +13,7 @@ spec:
   type: ExternalName
   externalName: mushop-utils-grafana.mushop-utilities
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ include "mushop.fullname" . }}-grafana
@@ -36,19 +36,25 @@ spec:
       http:
         paths:
         - path: /grafana(/|$)(.*)
+          pathType: Prefix
           backend:
             # intentionally w/o .Release.Name for metrics workshop
-            serviceName: mushop-grafana-ingress
-            servicePort: 80
+            service:
+              name: mushop-grafana-ingress
+              port:
+                number: 80
     {{- end -}}
     {{ else }}
     - http:
         paths:
         - path: /grafana(/|$)(.*)
+          pathType: Prefix
           backend:
             # intentionally w/o .Release.Name for metrics workshop
-            serviceName: mushop-grafana-ingress
-            servicePort: 80
+            service:
+              name: mushop-grafana-ingress
+              port:
+                number: 80
     {{- end -}}
   {{- if .Values.ingress.tls }}
   tls:

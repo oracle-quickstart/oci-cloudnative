@@ -33,7 +33,7 @@ services:
       - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Dlogging.level.mushop.carts=TRACE -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
 
   payment:
-    image: iad.ocir.io/oracle/ateam/mushop-payment:0.0.1
+    image: iad.ocir.io/oracle/ateam/mushop-payment:1.0.1
     hostname: payment
     restart: always
   
