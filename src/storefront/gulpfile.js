@@ -11,7 +11,6 @@ const gulp     = require('gulp'),
   del          = require('del'),
   imagemin     = require('gulp-imagemin'),
   pngquant     = require('imagemin-pngquant'),
-  mozjpeg      = require('imagemin-mozjpeg'),
   cache        = require('gulp-cache'),
   autoprefixer = require('autoprefixer'),
   postcss      = require('gulp-postcss'),
@@ -105,13 +104,12 @@ gulp.task('images', function(done) {
     .pipe(cache(imagemin([
       pngquant(),
       imagemin.gifsicle({interlaced: true}),
-      imagemin.jpegtran({progressive: true}),
+      imagemin.mozjpeg({progressive: true, quality: 85}),
       imagemin.svgo({
         plugins: [
           { removeViewBox: true },
         ]
       }),
-      mozjpeg({quality: 85}),
     ])
       .on('error', e => done()).on('end', () => done())))
     .pipe(gulp.dest(`${opt.buildDir}/images`));
@@ -162,7 +160,7 @@ gulp.task('server', function() {
     port: 3000,
     ui: false,
     routes: { '/': 'index.html' },
-    middleware: [ proxy('/api', {
+    middleware: [ proxy.createProxyMiddleware('/api', {
       target: API_PROXY,
       pathRewrite: { '^/api': '' },
     }) ],
