@@ -46,7 +46,7 @@ module.exports = {
   },
   plugins: [
     new webpack.BannerPlugin({
-      banner: `Copyright © ${new Date().getFullYear()}, Oracle and/or its affiliates. All rights reserved.\nThe Universal Permissive License (UPL), Version 1.0`
+      banner: `Copyright (c) ${new Date().getFullYear()}, Oracle and/or its affiliates. All rights reserved.\nThe Universal Permissive License (UPL), Version 1.0`
     }),
     new webpack.DefinePlugin({
       VERSION: JSON.stringify(VERSION || pkg.version),

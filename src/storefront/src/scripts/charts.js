@@ -3,7 +3,7 @@
  * The Universal Permissive License (UPL), Version 1.0
  */
 
-import echarts from 'echarts/lib/echarts';
+import * as echarts from 'echarts/lib/echarts';
 import 'echarts/lib/chart/graph';
 import 'echarts/lib/chart/bar';
 import 'echarts/lib/chart/custom';
