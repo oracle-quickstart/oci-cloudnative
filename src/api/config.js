@@ -7,8 +7,9 @@
   
   require('dotenv').config();
 
-  var session      = require("express-session"),
-      RedisStore   = require('connect-redis')(session);
+  // var session      = require("express-session"),
+  //     RedisStore   = require('connect-redis')(session);
+  const session = require("express-session");
 
   const sessionKeyMap = {
     REDIS: 'SESSION_REDIS',
@@ -58,8 +59,10 @@
         [keys.SECRET]: SESSION_SECRET,
       } = this.env();
 
+      let RedisStore;
       if (!!SESSION_REDIS) {
         console.log('Using the redis based session manager');
+        RedisStore = require('connect-redis')(session);
       }
 
       return {
