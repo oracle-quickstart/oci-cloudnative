@@ -11,9 +11,9 @@ const dist = path.join(__dirname, config.dist);
 const optimize = async dir => await imagemin([`${dir}/*`], {
   destination: dist,
   plugins: [
-    pngquant(),
+    pngquant({quality: [0.3, 0.5]}),
     jpegtran({progressive: true}),
-    mozjpeg({quality: 85}),
+    mozjpeg({progressive: true, quality: 65}),
   ],
 }).then(files => console.log(`Optimized ${files.length} images in ./${dir}`));
 
