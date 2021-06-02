@@ -1,11 +1,11 @@
 #
-# Copyright (c) 2020, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2020-2021 Oracle and/or its affiliates. All rights reserved.
 # The Universal Permissive License (UPL), Version 1.0
 #
 ###############################
 #    Build stage (node/npm)   #
 ###############################
-FROM node:10-alpine as builder
+FROM --platform=${BUILDPLATFORM:-linux/amd64} node:14-alpine as builder
 
 RUN apk update && apk add --no-cache \
     autoconf \
@@ -37,7 +37,7 @@ RUN npm prune --production
 ############################
 # Runtime container (node) #
 ############################
-FROM node:10-alpine
+FROM --platform=${TARGETPLATFORM:-linux/amd64} node:14-alpine
 
 WORKDIR /app
 COPY --from=builder /src/*js* /app/
