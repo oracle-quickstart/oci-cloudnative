@@ -26,18 +26,18 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
+            - name: http-alt
               containerPort: 8080
             - name: status
               containerPort: 8888
           livenessProbe:
             httpGet:
               path: /
-              port: http
+              port: http-alt
           readinessProbe:
             httpGet:
               path: /
-              port: http
+              port: http-alt
           volumeMounts:
           - mountPath: /tmp
             name: tmp-volume

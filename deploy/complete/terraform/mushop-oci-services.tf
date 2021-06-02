@@ -3,7 +3,10 @@
 # 
 
 # OCI Services
-## Autonomous Database
+##**************************************************************************
+##                        Autonomous Database
+##**************************************************************************
+
 ### creates an ATP database
 resource "oci_database_autonomous_database" "mushop_autonomous_database" {
   admin_password           = random_string.autonomous_database_admin_password.result
@@ -175,7 +178,9 @@ resource "kubernetes_job" "wallet_extractor_job" {
 }
 ### OADB Wallet extraction </>
 
-## Object Storage
+##**************************************************************************
+##                          Object Storage
+##**************************************************************************
 resource "oci_objectstorage_bucket" "mushop_catalogue_bucket" {
   compartment_id = local.oke_compartment_ocid
   namespace      = data.oci_objectstorage_namespace.ns.namespace
@@ -211,7 +216,10 @@ resource "kubernetes_secret" "oos_bucket" {
   count = var.mushop_mock_mode_all ? 0 : 1
 }
 
-## OCI KMS Vault
+##**************************************************************************
+##                            OCI KMS Vault
+##**************************************************************************
+
 ### OCI Vault vault
 resource "oci_kms_vault" "mushop_vault" {
   compartment_id = local.oke_compartment_ocid
@@ -245,3 +253,99 @@ locals {
   vault_key_key_shape_length    = 32
   vault_type                    = ["DEFAULT", "VIRTUAL_PRIVATE"]
 }
+
+##**************************************************************************
+##                        OCI Email Delivery
+##**************************************************************************
+
+### Email Sender
+resource oci_email_sender sender {
+  compartment_id = local.oke_compartment_ocid
+  email_address = "mushop@example.com"
+}
+
+##**************************************************************************
+##                      Oracle Cloud Functions
+##**************************************************************************
+
+resource oci_functions_application mushop_app {
+  compartment_id = local.oke_compartment_ocid
+  config = {
+  }
+
+  display_name = "mushop-app"
+
+  subnet_ids = [
+    "ocid1.subnet.oc1.iad.aaaaaaaa42sjodlddrusobb4snlgxljmugqcozmg6t2jqnpjjqxktvcedgea",
+  ]
+  syslog_url = ""
+  trace_config {
+    domain_id  = ""
+    is_enabled = "false"
+  }
+}
+
+resource oci_functions_function fn_newsletter_subscription {
+  application_id = oci_functions_application.mushop_app.id
+  config = {
+    "APPROVED_SENDER_EMAIL" = "mushop@example.com"
+    "SMTP_HOST"             = "smtp.us-ashburn-1.oraclecloud.com"
+    "SMTP_PASSWORD"         = "eHE$Dkz1{o0l[!TO7]_["
+    "SMTP_PORT"             = "587"
+    "SMTP_USER"             = "ocid1.user.oc1..aaaaaaaabg6t4g34bocgsv7wgpxiihh77h3mrtit3uwu7hks3hgla6tpemhq@ocid1.tenancy.oc1..aaaaaaaalwkamojx2qgmih3uq52wbxtjyaqqanjwfvcf56n5c2ugmhnefz5q.mo.com"
+  }
+
+  display_name = "newsletter-subscription"
+
+  image              = "iad.ocir.io/ociateam/mushop/newsletter-subscription:0.1.0"
+  memory_in_mbs      = "128"
+  timeout_in_seconds = "30"
+  trace_config {
+    is_enabled = "false"
+  }
+}
+
+##**************************************************************************
+##                          OCI API Gateway
+##**************************************************************************
+
+resource oci_apigateway_gateway mushop_gateway {
+  compartment_id = local.oke_compartment_ocid
+  display_name  = "mushop-gateway"
+  endpoint_type = "PUBLIC"
+  response_cache_details {
+    type = "NONE"
+  }
+  subnet_id = "ocid1.subnet.oc1.iad.aaaaaaaa42sjodlddrusobb4snlgxljmugqcozmg6t2jqnpjjqxktvcedgea"
+}
+
+resource oci_apigateway_deployment newsletter_subscription {
+  compartment_id = local.oke_compartment_ocid
+
+  display_name = "newsletter-subscription"
+  gateway_id  = oci_apigateway_gateway.mushop_gateway.id
+  path_prefix = "/newsletter"
+  specification {
+    logging_policies {
+      execution_log {
+        is_enabled = "true"
+        log_level  = "ERROR"
+      }
+    }
+
+    routes {
+      backend {
+        function_id = oci_functions_function.fn_newsletter_subscription.id
+        type = "ORACLE_FUNCTIONS_BACKEND"
+      }
+      logging_policies {
+
+      }
+      methods = [
+        "POST",
+      ]
+      path = "/subscribe"
+    }
+  }
+}
+

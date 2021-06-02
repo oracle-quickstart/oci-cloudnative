@@ -179,16 +179,25 @@ locals {
 
 # Shapes
 locals {
-  compute_shape_micro = "VM.Standard.E2.1.Micro"
+  compute_shape_micro = local.compute_platform == "linux/arm64" ? "VM.Standard.A1.Flex" : "VM.Standard.E2.1.Micro"
   compute_flexible_shapes = [
     "VM.Standard.E3.Flex",
-    "VM.Standard.E4.Flex"
+    "VM.Standard.E4.Flex",
+    "VM.Standard.A1.Flex"
   ]
   compute_shape_flexible_descriptions = [
     "Cores for Standard.E3.Flex and BM.Standard.E3.128 Instances",
-    "Cores for Standard.E4.Flex and BM.Standard.E4.128 Instances"
+    "Cores for Standard.E4.Flex and BM.Standard.E4.128 Instances",
+    "Cores for Standard.A1 based VM and BM Instances"
+  ]
+  compute_arm_shapes = [
+    "VM.Standard.A1.Flex",
+    "BM.Standard.A1.160"
   ]
   compute_shape_flexible_vs_descriptions = zipmap(local.compute_flexible_shapes, local.compute_shape_flexible_descriptions)
   compute_shape_description              = lookup(local.compute_shape_flexible_vs_descriptions, local.instance_shape, local.instance_shape)
+  compute_platform = contains(local.compute_arm_shapes, var.instance_shape) ? "linux/arm64" : "linux/amd64"
   lb_shape_flexible                      = "flexible"
+  compute_arm_shape_check = local.compute_platform == "linux/arm64" ? (contains(local.compute_arm_shapes, local.instance_shape) ? 0 : (
+    file("ERROR: Selected compute shape (${local.instance_shape}) not compatible with MuShop ${local.compute_platform} stack"))) : 0
 }

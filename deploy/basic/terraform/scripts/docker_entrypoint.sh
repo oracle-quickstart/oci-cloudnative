@@ -15,6 +15,12 @@ export CATALOGUE_PORT=3005
 export CATALOGUE_URL=http://localhost:${CATALOGUE_PORT}
 
 echo "Environment: $(uname -a)";
+architecture=""
+case $(uname -m) in
+    x86_64) architecture="amd64" ;;
+    aarch64) architecture="arm64" ;;
+esac
+echo "Architecture: $architecture";
 
 echo "Launching Storefront...";
 /usr/sbin/httpd -D FOREGROUND &
@@ -23,4 +29,4 @@ echo "Launching API...";
 node /app/api/server.js &
 
 echo "Launching Catalogue...";
-/app/catalogue/catalogue
+/app/catalogue/catalogue-$architecture

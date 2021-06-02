@@ -1,5 +1,11 @@
 # CHANGELOG
 
+2021-05-26 (v2.4.0)
+
+- E-mail newsletter service included on the stack
+- Leveraging and automatically deploying OCI API Gateway (newsletter)
+- Leveraging and automatically deploying OCI Functions (newsletter)
+
 2021-05-18 (v2.3.0)
 
 - Support for flexible Load Balancer annotations on Ingress-Nginx

@@ -50,8 +50,8 @@ unzip /root/wallet.zip -d /usr/lib/oracle/${oracle_client_version}/client64/lib/
 sqlplus ADMIN/"${atp_pw}"@${db_name}_tp @/root/catalogue.sql
 
 # Get binaries
-get_object /root/mushop-bin.tar.gz ${mushop_app_par}
-tar zxvf /root/mushop-bin.tar.gz -C /
+get_object /root/mushop-bin.tar.xz ${mushop_app_par}
+tar xvf /root/mushop-bin.tar.xz -C /
 
 # Allow httpd access to storefront
 chcon -R -t httpd_sys_content_t /app/storefront/
