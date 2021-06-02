@@ -121,9 +121,6 @@ RUN GO111MODULE=on GOARCH=amd64 GOOS=linux \
   -ldflags="-s -w" \
   -installsuffix cgo \
   -o /catalogue mushop/catalogue/cmd/cataloguesvc
-RUN apt-get update -y
-RUN apt-get install -y upx
-RUN upx --best --lzma /catalogue
 
 #  --- Catalogue - amd64 ---  #
 
@@ -154,11 +151,8 @@ RUN GO111MODULE=on GOARCH=arm64 GOOS=linux \
   -ldflags="-s -w" \
   -installsuffix cgo \
   -o /catalogue mushop/catalogue/cmd/cataloguesvc
-RUN apt-get update -y
-RUN apt-get install -y upx
-RUN upx --best --lzma /catalogue
 
-#  --- Catalogue - amd64 ---  #
+#  --- Catalogue - arm64 ---  #
 
 ###############################
 #  ----- Runtime Image -----  #
@@ -178,6 +172,8 @@ RUN yum clean metadata && \
   yum -y install oracle-nodejs-release-el7 && \
   yum -y install nodejs && \
   yum -y install httpd && \
+  yum -y install oracle-epel-release-el7 && \
+  yum -y install upx && \
   yum clean all && \
   rm -rf /var/cache/yum
 
@@ -194,8 +190,11 @@ COPY --from=catalogue-builder-amd64 /catalogue /app/catalogue/catalogue-amd64
 COPY --from=catalogue-builder-arm64 /catalogue /app/catalogue/catalogue-arm64
 COPY src/catalogue/VERSION /app/catalogue/
 
+# UPX catalogues
+RUN upx --best --lzma /app/catalogue/catalogue-amd64
+RUN upx --best --lzma /app/catalogue/catalogue-arm64
+
 # Create zip package of the Apps and local images
-# RUN mkdir /package && GZIP=-9 tar cvzf /package/mushop-basic.tar.gz /app
 RUN mkdir /package && tar cv /app | xz -3e > /package/mushop-basic.tar.xz
 
 # Create ORM package
@@ -206,8 +205,7 @@ COPY deploy/basic/terraform/*.tfvars.example /basic/
 COPY deploy/basic/terraform/schema.yaml /basic/
 COPY deploy/basic/terraform/scripts /basic/scripts
 COPY src/catalogue/dbdata/atp_mushop_catalogue.sql /basic/scripts/
-# COPY --from=assets-builder /app/assets/dist /basic/images
-# COPY --from=catalogue-builder /PLATFORM.auto.tfvars /basic/PLATFORM.auto.tfvars
+COPY --from=assets-builder /app/assets/dist/ /basic/images/
 RUN cp /package/mushop-basic.tar.xz /basic/scripts/
 RUN zip -9 -r /package/mushop-basic-stack.zip .
 
