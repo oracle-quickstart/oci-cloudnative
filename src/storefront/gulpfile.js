@@ -102,9 +102,9 @@ gulp.task('scripts', function() {
 gulp.task('images', function(done) {
   return gulp.src('src/images/**/*')
     .pipe(cache(imagemin([
-      pngquant(),
+      pngquant({quality: [0.3, 0.5]}),
       imagemin.gifsicle({interlaced: true}),
-      imagemin.mozjpeg({progressive: true, quality: 85}),
+      imagemin.mozjpeg({progressive: true, quality: 55}),
       imagemin.svgo({
         plugins: [
           { removeViewBox: true },
