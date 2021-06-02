@@ -13,7 +13,7 @@ const optimize = async dir => await imagemin([`${dir}/*`], {
   plugins: [
     pngquant({quality: [0.3, 0.5]}),
     jpegtran({progressive: true}),
-    mozjpeg({progressive: true, quality: 65}),
+    mozjpeg({progressive: true, quality: 45}),
   ],
 }).then(files => console.log(`Optimized ${files.length} images in ./${dir}`));
 
