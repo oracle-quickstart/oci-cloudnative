@@ -110,13 +110,13 @@ After complete the Build steps 1 and 2, generate the binaries:
     * linux/amd64 (or default builder)
 
         ```shell
-        docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic.tar.gz /transfer/deploy/basic/terraform/scripts/mushop-basic.tar.gz
+        docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic.tar.xz /transfer/deploy/basic/terraform/scripts/mushop-basic.tar.xz
         ```
 
     * linux/arm64
 
         ```shell
-        docker run -v $PWD:/transfer --rm --platform linux/arm64 --entrypoint cp mushop-basic-arm64:latest /package/mushop-basic.tar.gz /transfer/deploy/basic/terraform/scripts/mushop-basic.tar.gz
+        docker run -v $PWD:/transfer --rm --platform linux/arm64 --entrypoint cp mushop-basic-arm64:latest /package/mushop-basic.tar.xz /transfer/deploy/basic/terraform/scripts/mushop-basic.tar.xz
         ```
 
         ```shell
