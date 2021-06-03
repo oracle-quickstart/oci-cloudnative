@@ -43,7 +43,7 @@ const pugOpt = {
   basedir: 'src/templates',
   doctype: 'html',
   pretty: true,
-  locals: {
+  data: {
     VERSION,
     TIMESTAMP: new Date().toISOString().split('.').shift(),
   }
