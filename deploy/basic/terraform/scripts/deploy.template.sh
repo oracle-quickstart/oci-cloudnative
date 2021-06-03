@@ -44,7 +44,7 @@ get_media_pars() {
 get_object /root/wallet.64 ${wallet_par}
 # Setup ATP wallet files
 base64 --decode /root/wallet.64 > /root/wallet.zip
-unzip /root/wallet.zip -d /usr/lib/oracle/${oracle_client_version}/client64/lib/network/admin/
+unzip -o /root/wallet.zip -d /usr/lib/oracle/${oracle_client_version}/client64/lib/network/admin/
 
 # Init DB
 sqlplus ADMIN/"${atp_pw}"@${db_name}_tp @/root/catalogue.sql
