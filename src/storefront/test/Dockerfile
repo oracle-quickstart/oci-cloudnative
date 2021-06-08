@@ -17,7 +17,7 @@ RUN npm install -g gulp
 
 # install dependencies
 COPY package.json /tmp/
-RUN cd /tmp && npm install
+RUN cd /tmp && npm install --include=dev
 RUN mkdir -p /usr/src/app && cp -a /tmp/node_modules /usr/src/app/
 
 ENV NODE_ENV "development"
