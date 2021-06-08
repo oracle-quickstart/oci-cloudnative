@@ -183,6 +183,8 @@ data "kubernetes_service" "mushop_ingress" {
     namespace = kubernetes_namespace.cluster_utilities_namespace.id
   }
   depends_on = [helm_release.ingress_nginx]
+
+  count = var.ingress_nginx_enabled ? 1 : 0
 }
 
 ## Kubernetes Secret: Grafana Admin Password
