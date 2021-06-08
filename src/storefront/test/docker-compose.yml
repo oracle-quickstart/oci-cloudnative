@@ -7,19 +7,31 @@ version: '3'
 
 services:
 
+  # Storefront static product images
+  assets:
+    build:
+      context: ../../assets
+      dockerfile: ./Dockerfile
+    image: mushop/assets
+    restart: always
+    environment:
+      - reschedule:on-node-failure
+      - PORT=3000
+    ports:
+      - "8081:3000"
+
   # Storefront API service (node)
   api:
     build:
       context: ../../api
       dockerfile: ./Dockerfile
     image: mushop/api
-    hostname: api
     restart: always
     environment:
       - reschedule:on-node-failure
       - PORT=3000
       - MOCK_MODE=all
-      - STATIC_MEDIA_URL
+      - STATIC_MEDIA_URL=${STATIC_MEDIA_URL:-http://localhost:8081}
       - NODE_ENV=development
     ports:
       - "8080:3000"
