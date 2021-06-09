@@ -54,6 +54,10 @@ variable "newsletter_subscription_enabled" {
   default     = true
   description = "Enables newsletter subscription feature. Deploys API Gateway, Newsletter Function and uses Email Sender service"
 }
+variable "newsletter_email_sender" {
+  description = "Email sender for Newsletter Subscription"
+  default = "no-reply@mushop.ateam.cloud"
+}
 
 ## Common Services (MuShop Utilities)
 variable "grafana_enabled" {

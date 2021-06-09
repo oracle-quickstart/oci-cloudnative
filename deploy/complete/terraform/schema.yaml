@@ -143,6 +143,7 @@ variableGroups:
       - db_connection_name
       - db_wallet_name
       - oos_bucket_name
+      - newsletter_email_sender
     visible: false
 
 variables:
