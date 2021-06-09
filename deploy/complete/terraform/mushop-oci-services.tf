@@ -258,48 +258,48 @@ locals {
 ##**************************************************************************
 
 ### OCI Service User
-resource oci_identity_user oci_service_user {
+resource "oci_identity_user" "oci_service_user" {
   compartment_id = var.tenancy_ocid
-  description = "${var.app_name} Service User for deployment ${random_string.deploy_id.result}"
-  name = "${local.app_name_normalized}-service-user-${random_string.deploy_id.result}"
-
-  provider = oci.home_region
-
-  count = var.create_oci_service_user ? 1 : 0 
-}
-resource oci_identity_group oci_service_user {
-  compartment_id = var.tenancy_ocid
-  description = "${var.app_name} Service User Group for deployment ${random_string.deploy_id.result}"
-  name = "${local.app_name_normalized}-service-user-group-${random_string.deploy_id.result}"
+  description    = "${var.app_name} Service User for deployment ${random_string.deploy_id.result}"
+  name           = "${local.app_name_normalized}-service-user-${random_string.deploy_id.result}"
 
   provider = oci.home_region
 
   count = var.create_oci_service_user ? 1 : 0
 }
-resource oci_identity_user_group_membership oci_service_user {
+resource "oci_identity_group" "oci_service_user" {
+  compartment_id = var.tenancy_ocid
+  description    = "${var.app_name} Service User Group for deployment ${random_string.deploy_id.result}"
+  name           = "${local.app_name_normalized}-service-user-group-${random_string.deploy_id.result}"
+
+  provider = oci.home_region
+
+  count = var.create_oci_service_user ? 1 : 0
+}
+resource "oci_identity_user_group_membership" "oci_service_user" {
   group_id = oci_identity_group.oci_service_user[0].id
-  user_id = oci_identity_user.oci_service_user[0].id
-  
+  user_id  = oci_identity_user.oci_service_user[0].id
+
   provider = oci.home_region
 
   count = var.create_oci_service_user ? 1 : 0
 }
-resource oci_identity_user_capabilities_management oci_service_user {
+resource "oci_identity_user_capabilities_management" "oci_service_user" {
   user_id = oci_identity_user.oci_service_user[0].id
 
-  can_use_api_keys = "false"
-  can_use_auth_tokens = "false"
-  can_use_console_password = "false"
+  can_use_api_keys             = "false"
+  can_use_auth_tokens          = "false"
+  can_use_console_password     = "false"
   can_use_customer_secret_keys = "false"
-  can_use_smtp_credentials = var.newsletter_subscription_enabled ? "true" : "false" 
+  can_use_smtp_credentials     = var.newsletter_subscription_enabled ? "true" : "false"
 
   provider = oci.home_region
 
   count = var.create_oci_service_user ? 1 : 0
 }
-resource oci_identity_smtp_credential oci_service_user {
+resource "oci_identity_smtp_credential" "oci_service_user" {
   description = "${local.app_name_normalized}-service-user-smtp-credential-${random_string.deploy_id.result}"
-  user_id = oci_identity_user.oci_service_user[0].id
+  user_id     = oci_identity_user.oci_service_user[0].id
 
   provider = oci.home_region
 
@@ -311,43 +311,43 @@ resource oci_identity_smtp_credential oci_service_user {
 ##**************************************************************************
 
 ### Email Sender
-resource oci_email_sender newsletter_email_sender {
+resource "oci_email_sender" "newsletter_email_sender" {
   compartment_id = local.oke_compartment_ocid
-  email_address = var.newsletter_email_sender
+  email_address  = var.newsletter_email_sender
 
-  count = var.newsletter_subscription_enabled ? 1 : 0 
+  count = var.newsletter_subscription_enabled ? 1 : 0
 }
 
 ##**************************************************************************
 ##                      Oracle Cloud Functions
 ##**************************************************************************
 
-resource oci_functions_application app_function {
+resource "oci_functions_application" "app_function" {
   compartment_id = local.oke_compartment_ocid
-  display_name = "${var.app_name} Application (${random_string.deploy_id.result})"
-  subnet_ids = [oci_core_subnet.apigw_fn_subnet.0.id,]
+  display_name   = "${var.app_name} Application (${random_string.deploy_id.result})"
+  subnet_ids     = [oci_core_subnet.apigw_fn_subnet.0.id, ]
 
-  config = {}
+  config     = {}
   syslog_url = ""
   trace_config {
     domain_id  = ""
     is_enabled = "false"
   }
 
-  count = var.newsletter_subscription_enabled ? 1 : 0 
+  count = var.newsletter_subscription_enabled ? 1 : 0
 }
 
-resource oci_functions_function newsletter_subscription {
+resource "oci_functions_function" "newsletter_subscription" {
   application_id = oci_functions_application.app_function.0.id
-  display_name = local.newsletter_function_display_name
-  image              = "${var.newsletter_subscription_function_image}:${var.newsletter_subscription_function_image_version}"
-  memory_in_mbs      = local.newsletter_function_memory_in_mbs
+  display_name   = local.newsletter_function_display_name
+  image          = "${var.newsletter_subscription_function_image}:${var.newsletter_subscription_function_image_version}"
+  memory_in_mbs  = local.newsletter_function_memory_in_mbs
   config = {
-    "APPROVED_SENDER_EMAIL": var.newsletter_email_sender,
-    "SMTP_HOST": local.newsletter_function_smtp_host,
-    "SMTP_PORT": local.newsletter_function_smtp_port,
-    "SMTP_USER": oci_identity_smtp_credential.oci_service_user.0.username,
-    "SMTP_PASSWORD": oci_identity_smtp_credential.oci_service_user.0.password,
+    "APPROVED_SENDER_EMAIL" : var.newsletter_email_sender,
+    "SMTP_HOST" : local.newsletter_function_smtp_host,
+    "SMTP_PORT" : local.newsletter_function_smtp_port,
+    "SMTP_USER" : oci_identity_smtp_credential.oci_service_user.0.username,
+    "SMTP_PASSWORD" : oci_identity_smtp_credential.oci_service_user.0.password,
   }
 
   timeout_in_seconds = local.newsletter_function_timeout_in_seconds
@@ -358,22 +358,22 @@ resource oci_functions_function newsletter_subscription {
   count = var.newsletter_subscription_enabled ? 1 : 0
 }
 locals {
-  newsletter_function_display_name = "newsletter-subscription"
-  newsletter_function_memory_in_mbs = "128"
+  newsletter_function_display_name       = "newsletter-subscription"
+  newsletter_function_memory_in_mbs      = "128"
   newsletter_function_timeout_in_seconds = "30"
-  newsletter_function_smtp_host = "smtp.email.${var.region}.oci.oraclecloud.com"
-  newsletter_function_smtp_port = "587"
+  newsletter_function_smtp_host          = "smtp.email.${var.region}.oci.oraclecloud.com"
+  newsletter_function_smtp_port          = "587"
 }
 
 ##**************************************************************************
 ##                          OCI API Gateway
 ##**************************************************************************
 
-resource oci_apigateway_gateway app_gateway {
+resource "oci_apigateway_gateway" "app_gateway" {
   compartment_id = local.oke_compartment_ocid
-  endpoint_type = "PUBLIC"
-  subnet_id = oci_core_subnet.apigw_fn_subnet.0.id
-  display_name = "${var.app_name} API Gateway (${random_string.deploy_id.result})"
+  endpoint_type  = "PUBLIC"
+  subnet_id      = oci_core_subnet.apigw_fn_subnet.0.id
+  display_name   = "${var.app_name} API Gateway (${random_string.deploy_id.result})"
 
   response_cache_details {
     type = "NONE"
@@ -382,13 +382,13 @@ resource oci_apigateway_gateway app_gateway {
   count = var.newsletter_subscription_enabled ? 1 : 0
 }
 
-resource oci_apigateway_deployment newsletter_subscription {
+resource "oci_apigateway_deployment" "newsletter_subscription" {
   compartment_id = local.oke_compartment_ocid
-  gateway_id  = oci_apigateway_gateway.app_gateway.0.id
-  path_prefix = "/newsletter"
+  gateway_id     = oci_apigateway_gateway.app_gateway.0.id
+  path_prefix    = "/newsletter"
 
   display_name = local.newsletter_function_display_name
-  
+
   specification {
     logging_policies {
       execution_log {
@@ -400,13 +400,13 @@ resource oci_apigateway_deployment newsletter_subscription {
     routes {
       backend {
         function_id = oci_functions_function.newsletter_subscription.0.id
-        type = "ORACLE_FUNCTIONS_BACKEND"
+        type        = "ORACLE_FUNCTIONS_BACKEND"
       }
       logging_policies {
 
       }
-      methods = ["POST",]
-      path = "/subscribe"
+      methods = ["POST", ]
+      path    = "/subscribe"
     }
   }
 

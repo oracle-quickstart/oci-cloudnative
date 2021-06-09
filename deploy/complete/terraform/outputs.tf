@@ -21,7 +21,7 @@ output "mushop_url_https" {
   depends_on = [helm_release.ingress_nginx]
 }
 output "grafana_url" {
-  value       = var.grafana_enabled ? format("${local.mushop_url_protocol}://%s/grafana", local.mushop_ingress_hostname) : null 
+  value       = var.grafana_enabled ? format("${local.mushop_url_protocol}://%s/grafana", local.mushop_ingress_hostname) : null
   description = "Grafana Dashboards URL"
 
   depends_on = [helm_release.ingress_nginx]

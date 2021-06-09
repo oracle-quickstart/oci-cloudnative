@@ -233,7 +233,7 @@ resource "oci_core_security_list" "apigw_fn_security_list" {
   vcn_id         = oci_core_virtual_network.oke_vcn[0].id
 
   # Ingresses
-  
+
   ingress_security_rules {
     description = "Allow API Gateway receive requests"
     source      = lookup(var.network_cidrs, "SUBNET-REGIONAL-CIDR")
@@ -246,7 +246,7 @@ resource "oci_core_security_list" "apigw_fn_security_list" {
       min = local.https_port_number
     }
   }
-  
+
   # Egresses
 
   egress_security_rules {

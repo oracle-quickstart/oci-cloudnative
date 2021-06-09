@@ -55,15 +55,15 @@ variable "newsletter_subscription_enabled" {
   description = "Enables newsletter subscription feature. Deploys API Gateway, Newsletter Function and uses Email Sender service"
 }
 variable "newsletter_email_sender" {
-  default = "no-reply@mushop.ateam.cloud"
+  default     = "no-reply@mushop.ateam.cloud"
   description = "Email sender for Newsletter Subscription"
 }
 variable "newsletter_subscription_function_image" {
-  default = "iad.ocir.io/ociateam/mushop/newsletter-subscription"
+  default     = "iad.ocir.io/ociateam/mushop/newsletter-subscription"
   description = "Container Image for the Newsletter Subscription Function"
 }
 variable "newsletter_subscription_function_image_version" {
-  default = "0.1.0"
+  default     = "0.1.0"
   description = "Container Image Version for the Newsletter Subscription Function"
 }
 
