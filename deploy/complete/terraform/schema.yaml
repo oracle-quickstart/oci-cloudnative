@@ -144,6 +144,8 @@ variableGroups:
       - db_wallet_name
       - oos_bucket_name
       - newsletter_email_sender
+      - newsletter_subscription_function_image
+      - newsletter_subscription_function_image_version
     visible: false
 
 variables:
