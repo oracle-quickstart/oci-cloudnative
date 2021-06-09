@@ -27,6 +27,7 @@ variableGroups:
     - app_name   
     - show_advanced
     - mushop_mock_mode_all
+    - create_oci_service_user
     - newsletter_subscription_enabled
     # - mushop_atp
     # - mushop_oss
@@ -169,6 +170,12 @@ variables:
   mushop_mock_mode_all:
     type: boolean
     title: "Enable Mock Mode (If enabled, does NOT provision ATP Database, Streaming or Object Storage)"
+    required: true
+    visible: yes
+
+  create_oci_service_user:
+    type: boolean
+    title: "Creates OCI Service User"
     required: true
     visible: yes
 
