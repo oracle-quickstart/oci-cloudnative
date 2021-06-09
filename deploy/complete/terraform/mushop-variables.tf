@@ -46,6 +46,10 @@ variable "mushop_mock_mode_all" {
   default     = false
   description = "If enabled, will not provision ATP Database, Object Storage, or Streaming. The services will run in mock mode and will connect to an in-memory database, and the data will not persist"
 }
+variable "newsletter_subscription_enabled" {
+  default     = true
+  description = "Enables newsletter subscription feature. Deploys API Gateway, Newsletter Function and uses Email Sender service"
+}
 
 ## Common Services (MuShop Utilities)
 variable "grafana_enabled" {
