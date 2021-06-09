@@ -227,6 +227,44 @@ resource "oci_core_security_list" "oke_endpoint_security_list" {
   count = var.create_new_oke_cluster ? 1 : 0
 }
 
+resource "oci_core_security_list" "apigw_fn_security_list" {
+  compartment_id = local.oke_compartment_ocid
+  display_name   = "apigw-fn-seclist-${local.app_name_normalized}-${random_string.deploy_id.result}"
+  vcn_id         = oci_core_virtual_network.oke_vcn[0].id
+
+  # Ingresses
+  
+  ingress_security_rules {
+    description = "Allow API Gateway receive requests"
+    source      = lookup(var.network_cidrs, "SUBNET-REGIONAL-CIDR")
+    source_type = "CIDR_BLOCK"
+    protocol    = local.tcp_protocol_number
+    stateless   = false
+
+    tcp_options {
+      max = local.https_port_number
+      min = local.https_port_number
+    }
+  }
+  
+  # Egresses
+
+  egress_security_rules {
+    description      = "Allow API Gateway to forward requests to Functions via service conduit"
+    destination      = lookup(data.oci_core_services.all_services.services[0], "cidr_block")
+    destination_type = "SERVICE_CIDR_BLOCK"
+    protocol         = local.tcp_protocol_number
+    stateless        = false
+
+    tcp_options {
+      max = local.https_port_number
+      min = local.https_port_number
+    }
+  }
+
+  count = var.create_new_oke_cluster ? 1 : 0
+}
+
 locals {
   http_port_number                        = "80"
   https_port_number                       = "443"
