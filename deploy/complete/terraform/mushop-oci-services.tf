@@ -315,7 +315,7 @@ resource "oci_email_sender" "newsletter_email_sender" {
   compartment_id = local.oke_compartment_ocid
   email_address  = var.newsletter_email_sender
 
-  count = var.newsletter_subscription_enabled ? 1 : 0
+  count = var.create_new_oke_cluster ? (var.newsletter_subscription_enabled ? 1 : 0) : 0
 }
 
 ##**************************************************************************
@@ -334,7 +334,7 @@ resource "oci_functions_application" "app_function" {
     is_enabled = "false"
   }
 
-  count = var.newsletter_subscription_enabled ? 1 : 0
+  count = var.create_new_oke_cluster ? (var.newsletter_subscription_enabled ? 1 : 0) : 0
 }
 
 resource "oci_functions_function" "newsletter_subscription" {
@@ -355,7 +355,7 @@ resource "oci_functions_function" "newsletter_subscription" {
     is_enabled = "false"
   }
 
-  count = var.newsletter_subscription_enabled ? 1 : 0
+  count = var.create_new_oke_cluster ? (var.newsletter_subscription_enabled ? 1 : 0) : 0
 }
 locals {
   newsletter_function_display_name       = "newsletter-subscription"
@@ -379,7 +379,7 @@ resource "oci_apigateway_gateway" "app_gateway" {
     type = "NONE"
   }
 
-  count = var.newsletter_subscription_enabled ? 1 : 0
+  count = var.create_new_oke_cluster ? (var.newsletter_subscription_enabled ? 1 : 0) : 0
 }
 
 resource "oci_apigateway_deployment" "newsletter_subscription" {
@@ -410,6 +410,6 @@ resource "oci_apigateway_deployment" "newsletter_subscription" {
     }
   }
 
-  count = var.newsletter_subscription_enabled ? 1 : 0
+  count = var.create_new_oke_cluster ? (var.newsletter_subscription_enabled ? 1 : 0) : 0
 }
 
