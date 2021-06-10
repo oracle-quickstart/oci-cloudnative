@@ -48,12 +48,8 @@ output "mushop_source_code" {
   value = "https://github.com/oracle-quickstart/oci-cloudnative/"
 }
 locals {
-  mushop_ingress_ip       = var.ingress_nginx_enabled ? data.kubernetes_service.mushop_ingress.load_balancer_ingress[0].ip : "#Ingress_Not_Deployed"
-  mushop_ingress_hostname = var.ingress_nginx_enabled ? (var.ingress_hosts == "" ? data.kubernetes_service.mushop_ingress.load_balancer_ingress[0].ip : split(",", var.ingress_hosts)[0]) : "#Ingress_Not_Deployed"
+  mushop_ingress_ip       = var.ingress_nginx_enabled ? data.kubernetes_service.mushop_ingress.0.load_balancer_ingress.0.ip : "#Ingress_Not_Deployed"
+  mushop_ingress_hostname = var.ingress_nginx_enabled ? (var.ingress_hosts == "" ? data.kubernetes_service.mushop_ingress.0.load_balancer_ingress.0.ip : split(",", var.ingress_hosts)[0]) : "#Ingress_Not_Deployed"
   mushop_url_protocol     = var.ingress_tls ? "https" : "http"
   grafana_admin_password  = var.grafana_enabled ? data.kubernetes_secret.mushop_utils_grafana.0.data.admin-password : "Grafana_Not_Deployed"
-}
-
-output "temp" {
-  value = oci_apigateway_deployment.newsletter_subscription.endpoint
 }
