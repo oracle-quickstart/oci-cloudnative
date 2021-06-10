@@ -24,6 +24,18 @@ resource "oci_identity_policy" "app_compartment_policies" {
 
   count = var.create_compartment_policies ? 1 : 0
 }
+resource "oci_identity_policy" "kms_user_group_compartment_policies" {
+  name           = "${local.app_name_normalized}-kms-compartment-policies-${random_string.deploy_id.result}"
+  description    = "${var.app_name} KMS User Group Compartment Policies (${random_string.deploy_id.result})"
+  compartment_id = local.oke_compartment_ocid
+  statements     = local.kms_user_group_compartment_statements
+
+  depends_on = [oci_identity_dynamic_group.app_dynamic_group]
+
+  provider = oci.home_region
+
+  count = (var.create_compartment_policies && var.create_vault_policies_for_group) ? 1 : 0
+}
 resource "oci_identity_policy" "app_tenancy_policies" {
   name           = "${local.app_name_normalized}-tenancy-policies-${random_string.deploy_id.result}"
   description    = "${var.app_name} Tenancy Policies (${random_string.deploy_id.result})"
@@ -52,9 +64,11 @@ locals {
     local.oci_grafana_logs_statements,
     var.use_encryption_from_oci_vault ? local.allow_oke_use_oci_vault_keys_statements : [],
     var.cluster_autoscaler_enabled ? local.cluster_autoscaler_statements : [],
-    var.create_vault_policies_for_group ? local.allow_group_manage_vault_keys_statements : [],
     var.newsletter_subscription_enabled ? local.functions_statements : [],
     var.newsletter_subscription_enabled ? local.allow_service_user_group_use_email_statements : []
+  )
+   kms_user_group_compartment_statements = concat(
+    local.allow_group_manage_vault_keys_statements
   )
 }
 

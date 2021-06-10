@@ -226,7 +226,7 @@ resource "oci_kms_vault" "mushop_vault" {
   display_name   = "${local.vault_display_name} - ${random_string.deploy_id.result}"
   vault_type     = local.vault_type[0]
 
-  depends_on = [oci_identity_policy.kms_compartment_policies]
+  depends_on = [oci_identity_policy.kms_user_group_compartment_policies]
 
   count = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? 1 : 0) : 0
 }
