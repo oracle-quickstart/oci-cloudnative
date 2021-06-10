@@ -226,7 +226,7 @@ resource "oci_kms_vault" "mushop_vault" {
   display_name   = "${local.vault_display_name} - ${random_string.deploy_id.result}"
   vault_type     = local.vault_type[0]
 
-  depends_on = [oci_identity_policy.kms_compartment_policies]
+  depends_on = [oci_identity_policy.kms_user_group_compartment_policies]
 
   count = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? 1 : 0) : 0
 }
@@ -245,7 +245,6 @@ resource "oci_kms_key" "mushop_key" {
 }
 
 ### Vault and Key definitions
-
 locals {
   vault_display_name            = "MuShop Vault"
   vault_key_display_name        = "MuShop Key"
@@ -255,76 +254,141 @@ locals {
 }
 
 ##**************************************************************************
+##                        OCI Service User
+##**************************************************************************
+
+### OCI Service User
+resource "oci_identity_user" "oci_service_user" {
+  compartment_id = var.tenancy_ocid
+  description    = "${var.app_name} Service User for deployment ${random_string.deploy_id.result}"
+  name           = "${local.app_name_normalized}-service-user-${random_string.deploy_id.result}"
+
+  provider = oci.home_region
+
+  count = var.create_oci_service_user ? 1 : 0
+}
+resource "oci_identity_group" "oci_service_user" {
+  compartment_id = var.tenancy_ocid
+  description    = "${var.app_name} Service User Group for deployment ${random_string.deploy_id.result}"
+  name           = "${local.app_name_normalized}-service-user-group-${random_string.deploy_id.result}"
+
+  provider = oci.home_region
+
+  count = var.create_oci_service_user ? 1 : 0
+}
+resource "oci_identity_user_group_membership" "oci_service_user" {
+  group_id = oci_identity_group.oci_service_user[0].id
+  user_id  = oci_identity_user.oci_service_user[0].id
+
+  provider = oci.home_region
+
+  count = var.create_oci_service_user ? 1 : 0
+}
+resource "oci_identity_user_capabilities_management" "oci_service_user" {
+  user_id = oci_identity_user.oci_service_user[0].id
+
+  can_use_api_keys             = "false"
+  can_use_auth_tokens          = "false"
+  can_use_console_password     = "false"
+  can_use_customer_secret_keys = "false"
+  can_use_smtp_credentials     = var.newsletter_subscription_enabled ? "true" : "false"
+
+  provider = oci.home_region
+
+  count = var.create_oci_service_user ? 1 : 0
+}
+resource "oci_identity_smtp_credential" "oci_service_user" {
+  description = "${local.app_name_normalized}-service-user-smtp-credential-${random_string.deploy_id.result}"
+  user_id     = oci_identity_user.oci_service_user[0].id
+
+  provider = oci.home_region
+
+  count = var.create_oci_service_user ? (oci_identity_user_capabilities_management.oci_service_user.0.can_use_smtp_credentials ? 1 : 0) : 0
+}
+
+##**************************************************************************
 ##                        OCI Email Delivery
 ##**************************************************************************
 
 ### Email Sender
-resource oci_email_sender sender {
+resource "oci_email_sender" "newsletter_email_sender" {
   compartment_id = local.oke_compartment_ocid
-  email_address = "mushop@example.com"
+  email_address  = var.newsletter_email_sender
+
+  count = var.create_new_oke_cluster ? (var.newsletter_subscription_enabled ? 1 : 0) : 0
 }
 
 ##**************************************************************************
 ##                      Oracle Cloud Functions
 ##**************************************************************************
 
-resource oci_functions_application mushop_app {
+resource "oci_functions_application" "app_function" {
   compartment_id = local.oke_compartment_ocid
-  config = {
-  }
+  display_name   = "${var.app_name} Application (${random_string.deploy_id.result})"
+  subnet_ids     = [oci_core_subnet.apigw_fn_subnet.0.id, ]
 
-  display_name = "mushop-app"
-
-  subnet_ids = [
-    "ocid1.subnet.oc1.iad.aaaaaaaa42sjodlddrusobb4snlgxljmugqcozmg6t2jqnpjjqxktvcedgea",
-  ]
+  config     = {}
   syslog_url = ""
   trace_config {
     domain_id  = ""
     is_enabled = "false"
   }
+
+  count = var.create_new_oke_cluster ? (var.newsletter_subscription_enabled ? 1 : 0) : 0
 }
 
-resource oci_functions_function fn_newsletter_subscription {
-  application_id = oci_functions_application.mushop_app.id
+resource "oci_functions_function" "newsletter_subscription" {
+  application_id = oci_functions_application.app_function.0.id
+  display_name   = local.newsletter_function_display_name
+  image          = "${var.newsletter_subscription_function_image}:${var.newsletter_subscription_function_image_version}"
+  memory_in_mbs  = local.newsletter_function_memory_in_mbs
   config = {
-    "APPROVED_SENDER_EMAIL" = "mushop@example.com"
-    "SMTP_HOST"             = "smtp.us-ashburn-1.oraclecloud.com"
-    "SMTP_PASSWORD"         = "eHE$Dkz1{o0l[!TO7]_["
-    "SMTP_PORT"             = "587"
-    "SMTP_USER"             = "ocid1.user.oc1..aaaaaaaabg6t4g34bocgsv7wgpxiihh77h3mrtit3uwu7hks3hgla6tpemhq@ocid1.tenancy.oc1..aaaaaaaalwkamojx2qgmih3uq52wbxtjyaqqanjwfvcf56n5c2ugmhnefz5q.mo.com"
+    "APPROVED_SENDER_EMAIL" : var.newsletter_email_sender,
+    "SMTP_HOST" : local.newsletter_function_smtp_host,
+    "SMTP_PORT" : local.newsletter_function_smtp_port,
+    "SMTP_USER" : oci_identity_smtp_credential.oci_service_user.0.username,
+    "SMTP_PASSWORD" : oci_identity_smtp_credential.oci_service_user.0.password,
   }
 
-  display_name = "newsletter-subscription"
-
-  image              = "iad.ocir.io/ociateam/mushop/newsletter-subscription:0.1.0"
-  memory_in_mbs      = "128"
-  timeout_in_seconds = "30"
+  timeout_in_seconds = local.newsletter_function_timeout_in_seconds
   trace_config {
     is_enabled = "false"
   }
+
+  count = var.create_new_oke_cluster ? (var.newsletter_subscription_enabled ? 1 : 0) : 0
+}
+locals {
+  newsletter_function_display_name       = "newsletter-subscription"
+  newsletter_function_memory_in_mbs      = "128"
+  newsletter_function_timeout_in_seconds = "60"
+  newsletter_function_smtp_host          = "smtp.email.${var.region}.oci.oraclecloud.com"
+  newsletter_function_smtp_port          = "587"
 }
 
 ##**************************************************************************
 ##                          OCI API Gateway
 ##**************************************************************************
 
-resource oci_apigateway_gateway mushop_gateway {
+resource "oci_apigateway_gateway" "app_gateway" {
   compartment_id = local.oke_compartment_ocid
-  display_name  = "mushop-gateway"
-  endpoint_type = "PUBLIC"
+  endpoint_type  = "PUBLIC"
+  subnet_id      = oci_core_subnet.apigw_fn_subnet.0.id
+  display_name   = "${var.app_name} API Gateway (${random_string.deploy_id.result})"
+
   response_cache_details {
     type = "NONE"
   }
-  subnet_id = "ocid1.subnet.oc1.iad.aaaaaaaa42sjodlddrusobb4snlgxljmugqcozmg6t2jqnpjjqxktvcedgea"
+
+  count = var.create_new_oke_cluster ? (var.newsletter_subscription_enabled ? 1 : 0) : 0
 }
 
-resource oci_apigateway_deployment newsletter_subscription {
+resource "oci_apigateway_deployment" "newsletter_subscription" {
   compartment_id = local.oke_compartment_ocid
+  gateway_id     = oci_apigateway_gateway.app_gateway.0.id
+  path_prefix    = "/newsletter"
 
-  display_name = "newsletter-subscription"
-  gateway_id  = oci_apigateway_gateway.mushop_gateway.id
-  path_prefix = "/newsletter"
+  display_name = local.newsletter_function_display_name
+
   specification {
     logging_policies {
       execution_log {
@@ -335,17 +399,17 @@ resource oci_apigateway_deployment newsletter_subscription {
 
     routes {
       backend {
-        function_id = oci_functions_function.fn_newsletter_subscription.id
-        type = "ORACLE_FUNCTIONS_BACKEND"
+        function_id = oci_functions_function.newsletter_subscription.0.id
+        type        = "ORACLE_FUNCTIONS_BACKEND"
       }
       logging_policies {
 
       }
-      methods = [
-        "POST",
-      ]
-      path = "/subscribe"
+      methods = ["POST", ]
+      path    = "/subscribe"
     }
   }
+
+  count = var.create_new_oke_cluster ? (var.newsletter_subscription_enabled ? 1 : 0) : 0
 }
 

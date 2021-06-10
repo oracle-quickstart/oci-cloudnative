@@ -18,7 +18,7 @@ resource "helm_release" "prometheus" {
   name       = "prometheus"
   repository = local.helm_repository.prometheus
   chart      = "prometheus"
-  version    = "14.0.0"
+  version    = "14.1.1"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
@@ -37,7 +37,7 @@ resource "helm_release" "grafana" {
   name       = "mushop-utils-grafana" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.grafana
   chart      = "grafana"
-  version    = "6.9.1"
+  version    = "6.12.0"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
@@ -109,7 +109,7 @@ resource "helm_release" "ingress_nginx" {
   name       = "mushop-utils-ingress-nginx" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.ingress_nginx
   chart      = "ingress-nginx"
-  version    = "3.31.0"
+  version    = "3.33.0"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = true
 
@@ -183,6 +183,8 @@ data "kubernetes_service" "mushop_ingress" {
     namespace = kubernetes_namespace.cluster_utilities_namespace.id
   }
   depends_on = [helm_release.ingress_nginx]
+
+  count = var.ingress_nginx_enabled ? 1 : 0
 }
 
 ## Kubernetes Secret: Grafana Admin Password

@@ -58,7 +58,9 @@ COPY src/api/. .
 
 # Prune (prom-client removed to fix KBs for orm stack)
 RUN rm -rf test scripts && \
+    rm package-lock.json && \
     npm uninstall prom-client && \
+    npm uninstall connect-redis && \
     npm prune --production
 
 #    ----- API Gateway -----  #
@@ -198,8 +200,8 @@ RUN upx --best --lzma /app/catalogue/catalogue-arm64
 RUN mkdir /package && tar cv /app | xz -3e > /package/mushop-basic.tar.xz
 
 # Create ORM package
-COPY deploy/basic/VERSION /
 WORKDIR /basic
+COPY deploy/basic/terraform/VERSION /basic/
 COPY deploy/basic/terraform/*.tf /basic/
 COPY deploy/basic/terraform/*.tfvars.example /basic/
 COPY deploy/basic/terraform/schema.yaml /basic/

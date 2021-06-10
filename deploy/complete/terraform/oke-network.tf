@@ -37,7 +37,6 @@ resource "oci_core_subnet" "oke_nodes_subnet" {
 
   count = var.create_new_oke_cluster ? 1 : 0
 }
-
 resource "oci_core_subnet" "oke_lb_subnet" {
   cidr_block                 = lookup(var.network_cidrs, "LB-SUBNET-REGIONAL-CIDR")
   compartment_id             = local.oke_compartment_ocid
@@ -48,6 +47,19 @@ resource "oci_core_subnet" "oke_lb_subnet" {
   route_table_id             = oci_core_route_table.oke_public_route_table[0].id
   dhcp_options_id            = oci_core_virtual_network.oke_vcn[0].default_dhcp_options_id
   security_list_ids          = [oci_core_security_list.oke_lb_security_list[0].id]
+
+  count = var.create_new_oke_cluster ? 1 : 0
+}
+resource "oci_core_subnet" "apigw_fn_subnet" {
+  cidr_block                 = lookup(var.network_cidrs, "APIGW-FN-SUBNET-REGIONAL-CIDR")
+  compartment_id             = local.oke_compartment_ocid
+  display_name               = "apigw-fn-subnet-${local.app_name_normalized}-${random_string.deploy_id.result}"
+  dns_label                  = "apigwfn${random_string.deploy_id.result}"
+  vcn_id                     = oci_core_virtual_network.oke_vcn[0].id
+  prohibit_public_ip_on_vnic = false
+  route_table_id             = oci_core_route_table.apigw_fn_route_table[0].id
+  dhcp_options_id            = oci_core_virtual_network.oke_vcn[0].default_dhcp_options_id
+  security_list_ids          = [oci_core_security_list.apigw_fn_security_list[0].id]
 
   count = var.create_new_oke_cluster ? 1 : 0
 }
@@ -76,6 +88,20 @@ resource "oci_core_route_table" "oke_public_route_table" {
   compartment_id = local.oke_compartment_ocid
   vcn_id         = oci_core_virtual_network.oke_vcn[0].id
   display_name   = "oke-public-route-table-${local.app_name_normalized}-${random_string.deploy_id.result}"
+
+  route_rules {
+    description       = "Traffic to/from internet"
+    destination       = lookup(var.network_cidrs, "ALL-CIDR")
+    destination_type  = "CIDR_BLOCK"
+    network_entity_id = oci_core_internet_gateway.oke_internet_gateway[0].id
+  }
+
+  count = var.create_new_oke_cluster ? 1 : 0
+}
+resource "oci_core_route_table" "apigw_fn_route_table" {
+  compartment_id = local.oke_compartment_ocid
+  vcn_id         = oci_core_virtual_network.oke_vcn[0].id
+  display_name   = "apigw-fn-route-table-${local.app_name_normalized}-${random_string.deploy_id.result}"
 
   route_rules {
     description       = "Traffic to/from internet"

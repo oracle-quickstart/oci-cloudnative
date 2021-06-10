@@ -135,7 +135,7 @@ data "template_file" "cloud_init" {
     mushop_media_pars_list_content = base64gzip(data.template_file.mushop_media_pars_list.rendered)
     catalogue_password             = random_string.catalogue_db_password.result
     catalogue_port                 = local.catalogue_port
-    catalogue_architecture = split("/", local.compute_platform)[1]
+    catalogue_architecture         = split("/", local.compute_platform)[1]
     mock_mode                      = var.services_in_mock_mode
     db_name                        = oci_database_autonomous_database.mushop_autonomous_database.db_name
     assets_url                     = var.object_storage_mushop_media_visibility == "Private" ? "" : "https://objectstorage.${var.region}.oraclecloud.com/n/${oci_objectstorage_bucket.mushop_media.namespace}/b/${oci_objectstorage_bucket.mushop_media.name}/o/"

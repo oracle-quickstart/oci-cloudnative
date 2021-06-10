@@ -1,10 +1,19 @@
 # CHANGELOG
 
-2021-05-26 (v2.4.0)
+2021-06-09 (v2.4.0)
 
 - E-mail newsletter service included on the stack
 - Leveraging and automatically deploying OCI API Gateway (newsletter)
 - Leveraging and automatically deploying OCI Functions (newsletter)
+- Leveraging OCI Email Delivery (newsletter)
+- Multi-arch support for Catalogue Service (amd64 and Arm64)
+- Multi-arch support for Payment Service (amd64 and Arm64)
+- Multi-arch support for Assets Service (amd64 and Arm64)
+- Multi-arch support for Storefront Service (amd64 and Arm64)
+- Multi-arch support for API Service (amd64 and Arm64)
+- Policies improved
+- Cluster Utilities versions updated
+- Multiple small improvements and fixes
 
 2021-05-18 (v2.3.0)
 

@@ -46,6 +46,26 @@ variable "mushop_mock_mode_all" {
   default     = false
   description = "If enabled, will not provision ATP Database, Object Storage, or Streaming. The services will run in mock mode and will connect to an in-memory database, and the data will not persist"
 }
+variable "create_oci_service_user" {
+  default     = true
+  description = "Creates OCI Service User. Service user is needed for Email Delivery (Newsletter feature) and Stream services."
+}
+variable "newsletter_subscription_enabled" {
+  default     = true
+  description = "Enables newsletter subscription feature. Deploys API Gateway, Newsletter Function and uses Email Sender service"
+}
+variable "newsletter_email_sender" {
+  default     = "no-reply@mushop.ateam.cloud"
+  description = "Email sender for Newsletter Subscription"
+}
+variable "newsletter_subscription_function_image" {
+  default     = "iad.ocir.io/ociateam/mushop/newsletter-subscription"
+  description = "Container Image for the Newsletter Subscription Function"
+}
+variable "newsletter_subscription_function_image_version" {
+  default     = "0.1.0"
+  description = "Container Image Version for the Newsletter Subscription Function"
+}
 
 ## Common Services (MuShop Utilities)
 variable "grafana_enabled" {

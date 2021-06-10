@@ -68,8 +68,7 @@ resource "helm_release" "mushop" {
 
   set {
     name  = "api.env.newsletterSubscribeUrl"
-    value = "${oci_apigateway_deployment.newsletter_subscription.endpoint}/subscribe"
-    # value = "https://[API_GATEWAY_URL]/newsletter/subscribe"
+    value = "${oci_apigateway_deployment.newsletter_subscription.0.endpoint}/subscribe"
   }
 
   depends_on = [helm_release.ingress_nginx, helm_release.cert_manager] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.

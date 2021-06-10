@@ -14,7 +14,7 @@ umbrella chart included here. Either complete the setup, or follow these instruc
 1. Add the helm repository:
 
     ```shell
-    helm repo add svc-cat https://svc-catalog-charts.storage.googleapis.com
+    helm repo add svc-cat https://kubernetes-sigs.github.io/service-catalog
     ```
 
 1. Create a namespace:

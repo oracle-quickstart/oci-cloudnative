@@ -27,6 +27,8 @@ variableGroups:
     - app_name   
     - show_advanced
     - mushop_mock_mode_all
+    - create_oci_service_user
+    - newsletter_subscription_enabled
     # - mushop_atp
     # - mushop_oss
     
@@ -141,6 +143,9 @@ variableGroups:
       - db_connection_name
       - db_wallet_name
       - oos_bucket_name
+      - newsletter_email_sender
+      - newsletter_subscription_function_image
+      - newsletter_subscription_function_image_version
     visible: false
 
 variables:
@@ -168,6 +173,18 @@ variables:
   mushop_mock_mode_all:
     type: boolean
     title: "Enable Mock Mode (If enabled, does NOT provision ATP Database, Streaming or Object Storage)"
+    required: true
+    visible: yes
+
+  create_oci_service_user:
+    type: boolean
+    title: "Creates OCI Service User"
+    required: true
+    visible: yes
+
+  newsletter_subscription_enabled:
+    type: boolean
+    title: "Enable Newsletter Subscription Function"
     required: true
     visible: yes
 

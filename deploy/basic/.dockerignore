@@ -7,6 +7,7 @@
 **/coverage
 **/node_modules
 **/Makefile
+**/test
 
 # Terraform
 ## Local .terraform directories
