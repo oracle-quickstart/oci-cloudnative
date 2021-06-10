@@ -6,7 +6,7 @@ resource "oci_identity_dynamic_group" "app_dynamic_group" {
   name           = "${local.app_name_normalized}-dg-${random_string.deploy_id.result}"
   description    = "${var.app_name} Cluster Dynamic Group"
   compartment_id = var.tenancy_ocid
-  matching_rule  = "ANY {${join(",",local.dynamic_group_matching_rules)}}"
+  matching_rule  = "ANY {${join(",", local.dynamic_group_matching_rules)}}"
 
   provider = oci.home_region
 
@@ -60,9 +60,9 @@ locals {
 
 # Individual Rules
 locals {
-  instances_in_compartment_rule = ["ALL {instance.compartment.id = '${local.oke_compartment_ocid}'}"]
-  clusters_in_compartment_rule = ["ALL {resource.type = 'cluster', resource.compartment.id = '${local.oke_compartment_ocid}'}"]
-  functions_in_compartment_rule = ["ALL {resource.type = 'fnfunc', resource.compartment.id = '${local.oke_compartment_ocid}'}"]
+  instances_in_compartment_rule    = ["ALL {instance.compartment.id = '${local.oke_compartment_ocid}'}"]
+  clusters_in_compartment_rule     = ["ALL {resource.type = 'cluster', resource.compartment.id = '${local.oke_compartment_ocid}'}"]
+  functions_in_compartment_rule    = ["ALL {resource.type = 'fnfunc', resource.compartment.id = '${local.oke_compartment_ocid}'}"]
   api_gateways_in_compartment_rule = ["ALL {resource.type = 'ApiGateway', resource.compartment.id = '${local.oke_compartment_ocid}'}"]
 }
 
@@ -106,7 +106,7 @@ locals {
 
 # Conditional locals
 locals {
-  app_dynamic_group           = var.create_dynamic_group_for_nodes_in_compartment ? oci_identity_dynamic_group.app_dynamic_group.0.name : "void"
+  app_dynamic_group      = var.create_dynamic_group_for_nodes_in_compartment ? oci_identity_dynamic_group.app_dynamic_group.0.name : "void"
   oci_service_user_group = var.create_oci_service_user ? oci_identity_group.oci_service_user.0.name : "void"
   oci_vault_key_id       = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? oci_kms_key.mushop_key[0].id : var.existent_encryption_key_id) : "void"
 }

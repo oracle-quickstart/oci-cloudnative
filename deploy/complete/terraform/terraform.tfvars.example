@@ -76,7 +76,6 @@ newsletter_email_sender                        = "no-reply@mushop.ateam.cloud"
 newsletter_subscription_function_image         = "iad.ocir.io/ociateam/mushop/newsletter-subscription"
 newsletter_subscription_function_image_version = "0.1.0"
 
-
 ## Common Services (MuShop Utilities)
 grafana_enabled        = true
 prometheus_enabled     = true
