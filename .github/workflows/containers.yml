@@ -36,7 +36,7 @@ jobs:
         # Gets VERSION files (e.g. src/api/VERSION) that has been updated
         # updated_version_file contains the full path to the VERSION file (e.g. src/api/VERSION)
         services_prep=()
-        for updated_version_file in $(git diff-tree --no-commit-id --name-only -r ${{ steps.commit_sha.outputs.version_commit_sha }} ${{ github.event.before }} | grep "VERSION");
+        for updated_version_file in $(git diff-tree --no-commit-id --name-only -r ${{ steps.commit_sha.outputs.version_commit_sha }} ${{ github.event.before }} | grep '\<src/[a-z]*/VERSION\>');
         do
           service=$(cut -d "/" -f 2 <<< "$updated_version_file")
           echo "::group::Processing $service"
