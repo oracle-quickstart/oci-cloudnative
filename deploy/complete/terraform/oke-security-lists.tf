@@ -235,8 +235,8 @@ resource "oci_core_security_list" "apigw_fn_security_list" {
   # Ingresses
 
   ingress_security_rules {
-    description = "Allow API Gateway receive requests"
-    source      = lookup(var.network_cidrs, "SUBNET-REGIONAL-CIDR")
+    description = "Allow API Gateway to receive requests"
+    source      = lookup(var.network_cidrs, "ALL-CIDR")
     source_type = "CIDR_BLOCK"
     protocol    = local.tcp_protocol_number
     stateless   = false
@@ -253,13 +253,8 @@ resource "oci_core_security_list" "apigw_fn_security_list" {
     description      = "Allow API Gateway to forward requests to Functions via service conduit"
     destination      = lookup(data.oci_core_services.all_services.services[0], "cidr_block")
     destination_type = "SERVICE_CIDR_BLOCK"
-    protocol         = local.tcp_protocol_number
+    protocol         = local.all_protocols
     stateless        = false
-
-    tcp_options {
-      max = local.https_port_number
-      min = local.https_port_number
-    }
   }
 
   count = var.create_new_oke_cluster ? 1 : 0
