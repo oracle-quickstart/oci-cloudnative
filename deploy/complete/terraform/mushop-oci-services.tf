@@ -360,7 +360,7 @@ resource "oci_functions_function" "newsletter_subscription" {
 locals {
   newsletter_function_display_name       = "newsletter-subscription"
   newsletter_function_memory_in_mbs      = "128"
-  newsletter_function_timeout_in_seconds = "30"
+  newsletter_function_timeout_in_seconds = "60"
   newsletter_function_smtp_host          = "smtp.email.${var.region}.oci.oraclecloud.com"
   newsletter_function_smtp_port          = "587"
 }
