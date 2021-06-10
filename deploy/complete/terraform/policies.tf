@@ -4,7 +4,7 @@
 
 resource "oci_identity_dynamic_group" "app_dynamic_group" {
   name           = "${local.app_name_normalized}-dg-${random_string.deploy_id.result}"
-  description    = "${var.app_name} Cluster Dynamic Group"
+  description    = "${var.app_name} Cluster Dynamic Group (${random_string.deploy_id.result})"
   compartment_id = var.tenancy_ocid
   matching_rule  = "ANY {${join(",", local.dynamic_group_matching_rules)}}"
 
