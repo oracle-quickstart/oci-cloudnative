@@ -54,9 +54,9 @@ variable "newsletter_subscription_enabled" {
   default     = true
   description = "Enables newsletter subscription feature. Deploys API Gateway, Newsletter Function and uses Email Sender service"
 }
-variable "newsletter_email_sender" {
+variable "newsletter_email_sender_suffix" {
   default     = "no-reply@mushop.ateam.cloud"
-  description = "Email sender for Newsletter Subscription"
+  description = "Email sender suffix for Newsletter Subscription. The deployment id will added as prefix. e.g.: xyz1-no-reply@mushop.ateam.cloud"
 }
 variable "newsletter_subscription_function_image" {
   default     = "iad.ocir.io/ociateam/mushop/newsletter-subscription"
