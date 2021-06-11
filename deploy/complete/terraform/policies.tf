@@ -67,7 +67,7 @@ locals {
     var.newsletter_subscription_enabled ? local.functions_statements : [],
     var.newsletter_subscription_enabled ? local.allow_service_user_group_use_email_statements : []
   )
-   kms_user_group_compartment_statements = concat(
+  kms_user_group_compartment_statements = concat(
     local.allow_group_manage_vault_keys_statements
   )
 }
