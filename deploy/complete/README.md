@@ -4,7 +4,7 @@ MuShop Complete is a polyglot micro-services application built to showcase a clo
 
 The [helm chart documentation][chartdocs] walks through the deployment process and various options for customizing the deployment.
 
-#### Topology
+## Topology
 
 The following diagram shows the topology created by this stack.
 
