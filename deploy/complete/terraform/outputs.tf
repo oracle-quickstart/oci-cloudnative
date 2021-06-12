@@ -41,7 +41,7 @@ output "autonomous_database_password" {
   value = random_string.autonomous_database_admin_password.result
 }
 output "grafana_admin_password" {
-  value = var.grafana_enabled ? nonsensitive(local.grafana_admin_password) : null # Required for TF 0.15, as automatically generate an error if is not marked as sensitive
+  value = var.grafana_enabled ? nonsensitive(local.grafana_admin_password) : null # Required for TF >= 0.15, as automatically generate an error if is not marked as sensitive
   # value     = local.grafana_admin_password # TF 0.14 version support by ORM does not support nonsensitive function
 }
 output "mushop_source_code" {

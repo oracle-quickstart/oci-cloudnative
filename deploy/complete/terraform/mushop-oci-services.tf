@@ -174,6 +174,8 @@ resource "kubernetes_job" "wallet_extractor_job" {
     # ttl_seconds_after_finished = 120 # Not supported by TF K8s provider 1.8. ORM need to update provider
   }
 
+  depends_on = [kubernetes_deployment.cluster_autoscaler_deployment, helm_release.ingress_nginx]
+
   count = var.mushop_mock_mode_all ? 0 : 1
 }
 ### OADB Wallet extraction </>
