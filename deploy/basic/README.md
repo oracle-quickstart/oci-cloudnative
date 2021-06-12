@@ -33,14 +33,23 @@ The application uses a typical topology for a 3-tier web application as follows
 
 ## Build
 
-### Build Single Architecture (Standard: linux/amd64)
+### Build to generate stack (Stack will contain amd64 and arm64 binaries)
 
 1. Clone <https://github.com/oracle/oci-quickstart-cloudnative>
 1. From the root of the repo execute the command:
 
-    ```shell
-    docker build -t mushop-basic -f deploy/basic/Dockerfile .
-    ```
+    * Create the Multi-Arch builder if not already created
+
+        ```shell
+        docker buildx create --name multibuilder
+        docker buildx use multibuilder
+        ```
+
+    * Build image
+
+        ```shell
+        docker buildx build --pull --rm --load -t mushop-basic -f deploy/basic/Dockerfile .
+        ```
 
 1. Generate Stack Zip Package for OCI Resource Manager
 
@@ -56,18 +65,25 @@ The application uses a typical topology for a 3-tier web application as follows
 
 This creates a `.zip` file in your working directory that can be imported in to OCI Resource Manager.
 
-### Build Multi-Arch (Example: linux/amd64, linux/arm64)
+### Build to run services locally. Multi-Arch (Example: linux/amd64, linux/arm64)
 
 1. Clone <https://github.com/oracle/oci-quickstart-cloudnative>
 1. From the root of the repo execute the command:
 
-    ```shell
-    # Create the Multi-Arch builder if not already created
-    docker buildx create --name multibuilder
-    docker buildx use multibuilder
-    ```
+    * Create the Multi-Arch builder if not already created
 
-    Note: Building Multi-Arch and loading locally (using --load) is not supported by Docker. You need to build one platform at time.
+        ```shell
+        docker buildx create --name multibuilder
+        docker buildx use multibuilder
+        ```
+
+    * Create the Multi-Arch builder if not already created
+
+        ```shell
+        docker buildx build --pull --rm --load -t mushop-basic -f deploy/basic/Dockerfile .
+        ```
+
+    Note: Building Multi-Arch and loading locally (using --load) currently is not supported by Docker. You need to build one platform at time.
 
     * linux/amd64
 
@@ -87,20 +103,18 @@ This creates a `.zip` file in your working directory that can be imported in to 
         docker buildx build --pull --rm --platform linux/amd64,linux/arm64 --push -t <registry>/mushop-basic -f deploy/basic/Dockerfile .
         ```
 
-1. Generate Stack Zip Package for OCI Resource Manager
+1. Run locally
     * linux/amd64 (or default builder)
 
         ```shell
-        docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic-stack.zip /transfer/mushop-basic-stack.zip
+        docker run --rm -it mushop-basic:latest
         ```
 
     * linux/arm64
 
         ```shell
-        docker run -v $PWD:/transfer --rm --platform linux/arm64 --entrypoint cp mushop-basic-arm64:latest /package/mushop-basic-stack.zip /transfer/mushop-basic-arm64-stack.zip
+        docker run --rm -it mushop-basic-arm64:latest
         ```
-
-This creates a `.zip` file in your working directory that can be imported in to OCI Resource Manager.
 
 ## Deploying using local or CloudShell *Terraform* instead of ORM stack
 
