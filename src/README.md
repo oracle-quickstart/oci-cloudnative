@@ -10,7 +10,7 @@ Source code for each service of the MuShop solution
 | [assets](./src/assets)                                   | Node.js          |                     | amd64  arm64 | Populates initial images to be consumed by Catalogue service |   |
 | [carts](./src/carts)                                     | Java             | Autonomous DB (ATP) |     amd64    | Provides shopping carts for users |   |
 | [catalogue](./src/catalogue)                             | Go               | Autonomous DB (ATP) | amd64  arm64 | Provides catalogue/product information stored on Oracle Autonomous Database. Uses GOdror with GoKit and OCI Service Broker    |  |
-| [dbtools](./src/dbtools)                                 | Oracle DB Client | Autonomous DB (ATP) |     amd64    | Simple image with Oracle Instant Client, SQLce and dev tools |   |
+| [dbtools](./src/dbtools)                                 | Oracle DB Client | Autonomous DB (ATP) | amd64  arm64 |  Simple image with Oracle Instant Client, SQLce and dev tools |   |
 | [edge-router](./src/edge-router)                         | traefik          | Development only    |     amd64    | Optional Edge routing container for MuShop backend/frontend services. Used for running development environments                   |   |
 | [events](./src/events)                                   | Go               | OCI Streaming       |     amd64    | Capture events on the Storefront and showcase OCI Streams                   |   |
 | [fulfillment](./src/fulfillment)                         | Micronaut        |                     |     amd64    | fulfillment service showcasing Micronaut and Java                   |   |
