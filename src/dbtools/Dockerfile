@@ -10,11 +10,12 @@ ARG clientVersion=19.10
 FROM --platform=${TARGETPLATFORM:-linux/amd64} oraclelinux:8-slim
 
 ARG clientVersion
+
 RUN microdnf update && \
     microdnf install oracle-release-el8 && \
-    microdnf install oracle-instantclient-basic && \
-    microdnf install oracle-instantclient-sqlplus && \
-    microdnf install oracle-instantclient-tools && \
+    microdnf install oracle-instantclient${clientVersion}-basic && \
+    microdnf install oracle-instantclient${clientVersion}-sqlplus && \
+    microdnf install oracle-instantclient${clientVersion}-tools && \
     microdnf clean all && \
     rm -rf /var/cache/dnf && \
     rm -rf /var/cache/yum
