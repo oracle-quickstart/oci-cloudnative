@@ -52,8 +52,6 @@ COPY images/ /app/images/
 
 VOLUME ["/usr/lib/oracle/${clientVersion}/client64/lib/network/admin/"]
 ## Workaround to support current implementation. Will go away when fix issue #138
-RUN mkdir -p /usr/lib/oracle/19.3/client64/lib/network/ && \
-    ln -sfF /usr/lib/oracle/${clientVersion}/client64/lib/network/admin/ /usr/lib/oracle/19.3/client64/lib/network/ 
 VOLUME ["/usr/lib/oracle/19.3/client64/lib/network/admin/"]
 ## ##
 

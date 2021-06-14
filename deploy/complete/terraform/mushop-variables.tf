@@ -56,7 +56,7 @@ variable "newsletter_subscription_enabled" {
 }
 variable "newsletter_email_sender" {
   default     = "no-reply@mushop.ateam.cloud"
-  description = "Email sender for Newsletter Subscription"
+  description = "Email sender suffix for Newsletter Subscription. The deployment id will added as email suffix. e.g.: no-reply+xyz1@mushop.ateam.cloud"
 }
 variable "newsletter_subscription_function_image" {
   default     = "iad.ocir.io/ociateam/mushop/newsletter-subscription"

@@ -11,9 +11,12 @@
 - Multi-arch support for Assets Service (amd64 and Arm64)
 - Multi-arch support for Storefront Service (amd64 and Arm64)
 - Multi-arch support for API Service (amd64 and Arm64)
+- Multi-arch support for dbtools (amd64 and Arm64)
 - Policies improved
 - Cluster Utilities versions updated
 - Multiple small improvements and fixes
+- DB scripts improvements
+- catalogue service tweaks
 
 2021-05-18 (v2.3.0)
 

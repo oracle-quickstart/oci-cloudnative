@@ -174,6 +174,8 @@ resource "kubernetes_job" "wallet_extractor_job" {
     # ttl_seconds_after_finished = 120 # Not supported by TF K8s provider 1.8. ORM need to update provider
   }
 
+  depends_on = [kubernetes_deployment.cluster_autoscaler_deployment, helm_release.ingress_nginx]
+
   count = var.mushop_mock_mode_all ? 0 : 1
 }
 ### OADB Wallet extraction </>
@@ -313,7 +315,7 @@ resource "oci_identity_smtp_credential" "oci_service_user" {
 ### Email Sender
 resource "oci_email_sender" "newsletter_email_sender" {
   compartment_id = local.oke_compartment_ocid
-  email_address  = var.newsletter_email_sender
+  email_address  = local.newsletter_email_sender
 
   count = var.create_new_oke_cluster ? (var.newsletter_subscription_enabled ? 1 : 0) : 0
 }
@@ -343,7 +345,7 @@ resource "oci_functions_function" "newsletter_subscription" {
   image          = "${var.newsletter_subscription_function_image}:${var.newsletter_subscription_function_image_version}"
   memory_in_mbs  = local.newsletter_function_memory_in_mbs
   config = {
-    "APPROVED_SENDER_EMAIL" : var.newsletter_email_sender,
+    "APPROVED_SENDER_EMAIL" : local.newsletter_email_sender,
     "SMTP_HOST" : local.newsletter_function_smtp_host,
     "SMTP_PORT" : local.newsletter_function_smtp_port,
     "SMTP_USER" : oci_identity_smtp_credential.oci_service_user.0.username,
@@ -359,6 +361,7 @@ resource "oci_functions_function" "newsletter_subscription" {
 }
 locals {
   newsletter_function_display_name       = "newsletter-subscription"
+  newsletter_email_sender                = replace(var.newsletter_email_sender, "@", "+${random_string.deploy_id.result}@")
   newsletter_function_memory_in_mbs      = "128"
   newsletter_function_timeout_in_seconds = "60"
   newsletter_function_smtp_host          = "smtp.email.${var.region}.oci.oraclecloud.com"
