@@ -57,3 +57,5 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
       volumes: {{- include "catalogue.volumes" . | nindent 8 }}
+      securityContext:
+        fsGroup: 687467
