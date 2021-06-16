@@ -42,13 +42,14 @@ RUN microdnf update && \
     rm -rf /var/cache/dnf && \
     rm -rf /var/cache/yum
 
-RUN groupadd -r app -g $((1000 + $RANDOM)) && \
+RUN groupadd -r app -g 687467 && \
     useradd -u $((1000 + $RANDOM)) -r -g app -m -d /app -s /sbin/nologin -c "App user" app && \
-    chmod 755 /app
+    chmod 755 /app && \
+    chown -R app /usr/lib/oracle
 
 WORKDIR /app
-COPY --from=go-builder /catalogue /app/
-COPY images/ /app/images/
+COPY --from=go-builder --chown=app:app /catalogue /app/
+COPY --chown=app:app images/ /app/images/
 
 VOLUME ["/usr/lib/oracle/${clientVersion}/client64/lib/network/admin/"]
 ## Workaround to support current implementation. Will go away when fix issue #138

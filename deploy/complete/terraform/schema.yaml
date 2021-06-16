@@ -287,7 +287,7 @@ variables:
 
   cluster_autoscaler_max_nodes:
     type: integer
-    title: "Autoscaler: Maximum number of node"
+    title: "Autoscaler: Maximum number of nodes"
     minimum: 1
     maximum: 1000
     required: true

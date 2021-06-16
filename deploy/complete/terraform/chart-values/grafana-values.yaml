@@ -28,6 +28,14 @@ dashboards:
       gnetId: 12658
       revision: 1
       datasource: Prometheus
+    k8s-cluster-autoscaler:
+      gnetId: 3831
+      revision: 1
+      datasource: Prometheus
+    k8s-hpa:
+      gnetId: 10257
+      revision: 1
+      datasource: Prometheus
     k8s-pods:
       gnetId: 6336
       revision: 1
