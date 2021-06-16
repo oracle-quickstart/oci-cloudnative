@@ -1,18 +1,21 @@
 #
-# Copyright (c) 2019, 2020, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2019-2021 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
 ##### Oracle Instant Client version
-ARG clientVersion=21
+ARG clientVersion=19.10
+# Using 19.10 for multi platform support. Will change to 21 as soon Arm64 is supported
 
-FROM oraclelinux:8-slim
+FROM --platform=${TARGETPLATFORM:-linux/amd64} oraclelinux:8-slim
+
 ARG clientVersion
+
 RUN microdnf update && \
-    microdnf install oracle-instantclient-release-el8 && \
-    microdnf install oracle-instantclient-basic && \
-    microdnf install oracle-instantclient-sqlplus && \
-    microdnf install oracle-instantclient-tools && \
+    microdnf install oracle-release-el8 && \
+    microdnf install oracle-instantclient${clientVersion}-basic && \
+    microdnf install oracle-instantclient${clientVersion}-sqlplus && \
+    microdnf install oracle-instantclient${clientVersion}-tools && \
     microdnf clean all && \
     rm -rf /var/cache/dnf && \
     rm -rf /var/cache/yum
@@ -26,3 +29,6 @@ VOLUME ["/usr/lib/oracle/19.3/client64/lib/network/admin/"]
 ## ##
 
 CMD ["/bin/sh","-c","echo","Nothing to run"]
+
+LABEL org.opencontainers.image.title="dbtools" \
+    org.opencontainers.image.architecture="${TARGETPLATFORM}"

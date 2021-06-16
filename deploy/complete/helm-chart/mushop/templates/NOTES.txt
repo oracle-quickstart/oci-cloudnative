@@ -33,7 +33,7 @@ Access the application on your ingress controller service IP address:
 (Will be a self-signed SSL certificate)
 
   Local: https://localhost
-  Cloud: https://xxx.xx.xx.xxx
+  Cloud: https://<EXTERNAL-IP>
 
 {{ end }}
 

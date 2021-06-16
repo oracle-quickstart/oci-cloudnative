@@ -27,6 +27,9 @@ BEGIN
 		ELSE
 			DBMS_OUTPUT.PUT_LINE ('Profile = MUSHOP_SERVICES exists, steps ignored');
 		END IF;
+	EXCEPTION
+		WHEN OTHERS THEN
+			DBMS_OUTPUT.PUT_LINE ('Profile creation step ignored');
 	END;
 
 	-- Schema User Creation

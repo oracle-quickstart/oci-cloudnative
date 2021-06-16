@@ -1,5 +1,5 @@
 #!/bin/bash -x
-# Copyright (c) 2019, 2020 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2019-2021 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 #
 #
@@ -44,14 +44,14 @@ get_media_pars() {
 get_object /root/wallet.64 ${wallet_par}
 # Setup ATP wallet files
 base64 --decode /root/wallet.64 > /root/wallet.zip
-unzip /root/wallet.zip -d /usr/lib/oracle/${oracle_client_version}/client64/lib/network/admin/
+unzip -o /root/wallet.zip -d /usr/lib/oracle/${oracle_client_version}/client64/lib/network/admin/
 
 # Init DB
 sqlplus ADMIN/"${atp_pw}"@${db_name}_tp @/root/catalogue.sql
 
 # Get binaries
-get_object /root/mushop-bin.tar.gz ${mushop_app_par}
-tar zxvf /root/mushop-bin.tar.gz -C /
+get_object /root/mushop-bin.tar.xz ${mushop_app_par}
+tar xvf /root/mushop-bin.tar.xz -C /
 
 # Allow httpd access to storefront
 chcon -R -t httpd_sys_content_t /app/storefront/

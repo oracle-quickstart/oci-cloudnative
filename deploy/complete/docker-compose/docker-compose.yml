@@ -78,7 +78,7 @@ services:
 
   # Storefront backend API service
   storefront:
-    image: iad.ocir.io/oracle/ateam/mushop-storefront:2.1.1
+    image: iad.ocir.io/oracle/ateam/mushop-storefront:2.2.0
     hostname: storefront
     restart: always
     cap_drop:
@@ -96,7 +96,7 @@ services:
 
   # OCI Catalog service
   catalogue:
-    image: iad.ocir.io/oracle/ateam/mushop-catalogue:1.2
+    image: iad.ocir.io/oracle/ateam/mushop-catalogue:1.4
     hostname: catalogue
     restart: always
     cap_drop:
@@ -155,7 +155,7 @@ services:
       - JAVA_OPTS=-Xms32m -Xmx128m -XX:MaxRAM=128m -Dlogging.level.mushop.orders=INFO -Djava.security.egd=file:/dev/urandom -Doracle.jdbc.fanEnabled=false -XX:+UnlockExperimentalVMOptions -XX:+UseZGC 
 
   payment:
-    image: iad.ocir.io/oracle/ateam/mushop-payment:0.0.1
+    image: iad.ocir.io/oracle/ateam/mushop-payment:1.0.1
     hostname: payment
     restart: always
     cap_drop:

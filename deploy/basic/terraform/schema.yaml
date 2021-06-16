@@ -226,6 +226,7 @@ variables:
     maximum: 64
     title: "Number of OCPUs"
     description: "You can customize the number of OCPUs to a flexible shape."
+    required: true
     visible:
       and:
         - not:
@@ -237,6 +238,9 @@ variables:
           - eq:
             - instance_shape 
             - "VM.Standard.E4.Flex"
+          - eq:
+            - instance_shape 
+            - "VM.Standard.A1.Flex"
 
   instance_shape_config_memory_in_gbs:
     type: integer
@@ -244,6 +248,7 @@ variables:
     maximum: 1024
     title: "Amount of memory (GB)"
     description: "You can customize the amount of memory allocated to a flexible shape."
+    required: true
     visible:
       and:
         - not:
@@ -255,6 +260,9 @@ variables:
           - eq:
             - instance_shape 
             - "VM.Standard.E4.Flex"
+          - eq:
+            - instance_shape 
+            - "VM.Standard.A1.Flex"
 
   image_operating_system:
     type: string
@@ -318,6 +326,7 @@ variables:
     maximum: 8000
     title: "Choose the minimum bandwidth"
     description: "Enter the minimum size of the flexible shape."
+    required: true
     visible:
       and:
         - and:
@@ -334,6 +343,7 @@ variables:
     maximum: 8000
     title: "Choose the maximum bandwidth"
     description: "Enter the maximum size of the flexible shape (Should be bigger than minimum size). The maximum service limit is set by your tenancy limits."
+    required: true
     visible:
       and:
         - and:
@@ -463,6 +473,7 @@ outputGroups:
       - deploy_id
       - deployed_to_region
       - mushop_basic_source_code
+      - platform
       - dev
       - comments
 

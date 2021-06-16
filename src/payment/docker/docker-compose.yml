@@ -2,9 +2,9 @@ version: '2'
 
 services:
     payment:
-        build: 
-            context: .
-            dockerfile: docker/payment/Dockerfile
+        build:
+            context: ..
+            dockerfile: ./Dockerfile
         image: mushop/payment
         hostname: payment
         restart: always

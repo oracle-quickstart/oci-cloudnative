@@ -65,11 +65,11 @@ spec:
             mountPath: /work/
       containers:
         - name: catalogue
-          image: iad.ocir.io/oracle/ateam/mushop-catalogue:1.3
+          image: iad.ocir.io/oracle/ateam/mushop-catalogue:1.4
           imagePullPolicy: Always
           command: ["/catalogue"]
           args:
-          - -port=80
+          - -port=8080
           ports:
           - containerPort: 80
           env:
@@ -118,7 +118,7 @@ spec:
               memory: 128Mi
           volumeMounts:
           - name: wallet
-            mountPath: /usr/lib/oracle/21/client64/lib/network/admin/
+            mountPath: /usr/lib/oracle/19.10/client64/lib/network/admin/
             readOnly: true
       volumes:
       - name: wallet-raw

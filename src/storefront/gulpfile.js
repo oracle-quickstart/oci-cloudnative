@@ -11,7 +11,6 @@ const gulp     = require('gulp'),
   del          = require('del'),
   imagemin     = require('gulp-imagemin'),
   pngquant     = require('imagemin-pngquant'),
-  mozjpeg      = require('imagemin-mozjpeg'),
   cache        = require('gulp-cache'),
   autoprefixer = require('autoprefixer'),
   postcss      = require('gulp-postcss'),
@@ -44,7 +43,7 @@ const pugOpt = {
   basedir: 'src/templates',
   doctype: 'html',
   pretty: true,
-  locals: {
+  data: {
     VERSION,
     TIMESTAMP: new Date().toISOString().split('.').shift(),
   }
@@ -67,7 +66,6 @@ gulp.task('html:views', function() {
 gulp.task('html', gulp.parallel('html:pages', 'html:views'));
 
 // Styles
-
 gulp.task('styles', function() {
   return gulp.src(['src/styles/**/*.less', '!src/styles/**/_*.less'])
     .pipe(less({ relativeUrls: true }))
@@ -82,7 +80,6 @@ gulp.task('styles', function() {
 });
 
 // Scripts
-
 gulp.task('scripts', function() {
   const wpconf = require('./webpack.config');
   const { production } = argv;
@@ -100,25 +97,34 @@ gulp.task('scripts', function() {
 
 // Images
 
-gulp.task('images', function(done) {
+// copy images into build
+gulp.task('image:copy', function() {
   return gulp.src('src/images/**/*')
+    .pipe(gulp.dest(`${opt.buildDir}/images`))
+});
+
+// optimize images 
+gulp.task('image:optimize', function(done) {
+  return gulp.src(`${opt.buildDir}/images/**/*`)
     .pipe(cache(imagemin([
-      pngquant(),
+      pngquant({quality: [0.3, 0.5]}),
       imagemin.gifsicle({interlaced: true}),
-      imagemin.jpegtran({progressive: true}),
+      imagemin.mozjpeg({progressive: true, quality: 55}),
       imagemin.svgo({
         plugins: [
           { removeViewBox: true },
         ]
       }),
-      mozjpeg({quality: 85}),
     ])
-    .on('error', e => done()).on('end', () => done())))
+      .on('error', e => done()) // gracefully fail
+      .on('end', () => done())
+    ))
     .pipe(gulp.dest(`${opt.buildDir}/images`));
 });
 
-// Copy
+gulp.task('images', gulp.series('image:copy', 'image:optimize'));
 
+// Copy
 gulp.task('copy', function() {
   return gulp.src([
     'src/*',
@@ -135,7 +141,6 @@ gulp.task('copy', function() {
 });
 
 // Revision
-
 gulp.task('rev', function() {
   return gulp.src([`${opt.buildDir}/scripts/**/*.js`, `${opt.buildDir}/styles/**/*.css`], {base: opt.buildDir})
     .pipe(rev())
@@ -162,7 +167,7 @@ gulp.task('server', function() {
     port: 3000,
     ui: false,
     routes: { '/': 'index.html' },
-    middleware: [ proxy('/api', {
+    middleware: [ proxy.createProxyMiddleware('/api', {
       target: API_PROXY,
       pathRewrite: { '^/api': '' },
     }) ],

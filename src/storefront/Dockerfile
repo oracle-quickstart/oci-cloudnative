@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2019, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2019-2021 Oracle and/or its affiliates. All rights reserved.
 # The Universal Permissive License (UPL), Version 1.0
 #
 ARG version
@@ -7,7 +7,7 @@ ARG version
 ###############################
 #    Build stage (node/npm)   #
 ###############################
-FROM node:10-alpine as builder
+FROM --platform=${BUILDPLATFORM:-linux/amd64} node:14-alpine as builder
 
 RUN apk update && apk add --no-cache \
     autoconf \
@@ -45,7 +45,7 @@ RUN npm run build
 ###############################
 # Webserver container (nginx) #
 ###############################
-FROM nginx:alpine as web
+FROM --platform=${TARGETPLATFORM:-linux/amd64} nginxinc/nginx-unprivileged:1.20-alpine
 
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf

@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: iad.ocir.io/oracle/ateam/mushop-assets
-  tag: 1.0.1
+  tag: 1.1.3
   pullPolicy: IfNotPresent
 
 osb: {}

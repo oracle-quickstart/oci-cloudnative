@@ -942,7 +942,7 @@ spec:
     metadata:
       labels:
         app: catalogue
-        version: "1.2"
+        version: "1.4"
         app.kubernetes.io/name: catalogue
         app.kubernetes.io/instance: mushop
         mockmode: "catalogue"
@@ -954,7 +954,7 @@ spec:
         
       containers:
         - name: catalogue
-          image: "iad.ocir.io/oracle/ateam/mushop-catalogue:1.2"
+          image: "iad.ocir.io/oracle/ateam/mushop-catalogue:1.4"
           imagePullPolicy: IfNotPresent
           command: ["/app"]
           args:
@@ -982,7 +982,7 @@ spec:
                   key: oadb_service
           volumeMounts:
             - name: wallet
-              mountPath: /usr/lib/oracle/19.3/client64/lib/network/admin/
+              mountPath: /usr/lib/oracle/19.10/client64/lib/network/admin/
               readOnly: true
           livenessProbe:
             httpGet:
@@ -1529,7 +1529,7 @@ spec:
     spec:
       containers:
         - name: storefront
-          image: "iad.ocir.io/oracle/ateam/mushop-storefront:2.1.2"
+          image: "iad.ocir.io/oracle/ateam/mushop-storefront:2.2"
           imagePullPolicy: IfNotPresent
           ports:
             - name: http

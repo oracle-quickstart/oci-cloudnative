@@ -28,12 +28,12 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["/app"]
+          command: ["/app/catalogue"]
           args:
-          - -port=80
+          - -port=8080
           ports:
-            - name: http
-              containerPort: 80
+            - name: http-alt
+              containerPort: 8080
           env:
             - name: ZIPKIN
               value: {{ .Values.env.zipkin }}
@@ -43,13 +43,13 @@ spec:
           livenessProbe:
             httpGet:
               path: /health
-              port: http
+              port: http-alt
             initialDelaySeconds: 120
             periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /health
-              port: http
+              port: http-alt
             initialDelaySeconds: 10
             periodSeconds: 5
           resources:
@@ -57,3 +57,5 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
       volumes: {{- include "catalogue.volumes" . | nindent 8 }}
+      securityContext:
+        fsGroup: 687467

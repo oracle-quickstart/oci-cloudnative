@@ -1,6 +1,6 @@
 module mushop/catalogue
 
-go 1.15
+go 1.16
 
 require (
 	github.com/DATA-DOG/go-sqlmock v1.5.0
@@ -9,9 +9,9 @@ require (
 	github.com/apache/thrift v0.13.0 // indirect
 	github.com/go-kit/kit v0.9.0
 	github.com/go-logfmt/logfmt v0.5.0 // indirect
-	github.com/godror/godror v0.24.2
+	github.com/godror/godror v0.25.1
 	github.com/gorilla/mux v1.8.0
-	github.com/jmoiron/sqlx v1.3.1
+	github.com/jmoiron/sqlx v1.3.4
 	github.com/opentracing-contrib/go-observer v0.0.0-20170622124052-a52f23424492 // indirect
 	github.com/opentracing/basictracer-go v1.0.0 // indirect
 	github.com/opentracing/opentracing-go v1.1.0

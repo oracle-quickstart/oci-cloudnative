@@ -26,18 +26,18 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: 80
+            - name: http-alt
+              containerPort: 8080
           livenessProbe:
             httpGet:
               path: /health
-              port: 80
+              port: http-alt
             initialDelaySeconds: 120
             periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /health
-              port: 80
+              port: http-alt
             initialDelaySeconds: 10
             periodSeconds: 5
           resources:

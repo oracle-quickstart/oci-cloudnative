@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
       - name: storefront
-        image: iad.ocir.io/oracle/ateam/mushop-storefront:2.1
+        image: iad.ocir.io/oracle/ateam/mushop-storefront:2.2
         imagePullPolicy: Always
         ports:
         - name: http

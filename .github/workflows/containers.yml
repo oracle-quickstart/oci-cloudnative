@@ -1,0 +1,182 @@
+name: Build and Publish Container Images to Registry
+
+on:
+  push:
+    branches: [ master ]
+    paths: ['src/**/VERSION']
+  pull_request:
+    branches: [ master ]
+    paths: ['src/**/VERSION']
+
+jobs:
+
+  services_updated:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.version_services.outputs.matrix }}
+    steps:
+    - name: Gets commit SHA for Checkout and VERSION check
+      id: commit_sha
+      run: |
+        # Gets commit SHA for Checkout and VERSION check
+        if ${{ github.event_name == 'pull_request' }}; then
+          VERSION_COMMIT_SHA="${{ github.event.pull_request.head.sha }}"
+        else
+          VERSION_COMMIT_SHA="${{ github.sha }}"
+        fi
+        echo ::set-output name=version_commit_sha::$VERSION_COMMIT_SHA
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        ref: ${{ steps.commit_sha.outputs.version_commit_sha }}
+    - name: Get updated service's VERSION files
+      id: version_services
+      run: |
+        # Gets VERSION files (e.g. src/api/VERSION) that has been updated
+        # updated_version_file contains the full path to the VERSION file (e.g. src/api/VERSION)
+        services_prep=()
+        for updated_version_file in $(git diff-tree --no-commit-id --name-only -r ${{ steps.commit_sha.outputs.version_commit_sha }} ${{ github.event.before }} | grep '\<src/[a-z]*/VERSION\>');
+        do
+          service=$(cut -d "/" -f 2 <<< "$updated_version_file")
+          echo "::group::Processing $service"
+          folder=${updated_version_file%"/VERSION"}
+          service_version=$(cat $updated_version_file)
+          service_platforms=$(cat $folder/PLATFORMS 2>/dev/null || echo "linux/amd64")
+          services_prep+=("{\"service\":\"$service\", \"version\":\"$service_version\", \"platforms\":\"$service_platforms\", \"version_file_path\":\"$updated_version_file\"}")
+          echo "::endgroup::"
+        done
+        echo "::set-output name=matrix::$(echo ${services_prep[@]} | jq -sc '{"include": . }')"
+
+  payload:
+    needs: services_updated
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Service(s) Matrix Info
+      run: echo ">>> ${{ needs.services_updated.outputs.matrix }} <<<"
+
+  build:
+    needs: services_updated
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{fromJson(needs.services_updated.outputs.matrix)}}
+    outputs:
+      service_version: ${{ steps.prepare.outputs.service_version }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+
+    - name: Set up Docker Buildx (moby/buildkit)
+      id: buildx
+      uses: docker/setup-buildx-action@v1
+      with:
+          install: true
+
+    - name: Pre-build info
+      run: |
+          # Metadata
+          # Get the service name and prefix it with "mushop"
+          # E.g. "mushop-api", "mushop-fulfillment"
+          IMAGE_NAME="mushop-${{ matrix.service }}"
+
+          echo "::group::Service Metadata"
+          echo "SERVICE >>> ${{ matrix.service }}"
+          echo "VERSION >>> ${{ matrix.version }}"
+          echo "PLATFORMS >>> ${{ matrix.platforms }}"
+          echo "AVAILABLE PLATFORMS >>> ${{ steps.buildx.outputs.platforms }}"
+          echo "IMAGE_NAME >>> ${IMAGE_NAME}"
+          echo "::endgroup::"
+
+    - name: Prepare parameters for build with BuildKit
+      id: prepare
+      run: |
+          # Get variables
+          echo "::group::Prepare Variables"
+          VERSION=${{ matrix.version }}
+          PLATFORMS=${{ matrix.platforms }}
+          FILE_PATH=${{ matrix.version_file_path }}
+          FOLDER=${FILE_PATH%"/VERSION"}
+          SERVICE=${{ matrix.service }}
+          DOCKER_TAGS=""
+          NEXT_STEP_TITLE=""
+          
+          # Get the service name and prefix it with "mushop"
+          # E.g. "mushop-api", "mushop-fulfillment"
+          IMAGE_NAME="mushop-$SERVICE"
+          if ${{ github.event_name == 'pull_request' }}; then
+            IMAGE_ID=local/$IMAGE_NAME
+          else
+            IMAGE_ID=${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPOSITORY }}/$IMAGE_NAME
+          fi
+          echo "::endgroup::"
+
+          echo "::group::Prepare Container Tags"
+          # Strip version for tags semver
+          SEMREG='[^0-9]*\([0-9]*\)[.]\([0-9]*\)[.]\([0-9]*\)\([0-9A-Za-z-]*\)'
+          SEM=`echo $VERSION | sed -e "s#^v##"`
+          TAGS=$SEM
+          MAJOR=`echo $SEM | sed -e "s#$SEMREG#\1#"`
+          MINOR=`echo $SEM | sed -e "s#$SEMREG#\2#"`
+          PATCH=`echo $SEM | sed -e "s#$SEMREG#\3#"`
+          SPECIAL=`echo $SEM | sed -e "s#$SEMREG#\4#"`
+          ## add semantic tags
+          if [ "$MAJOR" != "$SEM" ] && [ -z "$SPECIAL" ]; then
+              TAGS="$SEM $MAJOR.$MINOR $MAJOR latest"
+              if [ -n "$SPECIAL" ]; then
+                  TAGS="$MAJOR.$MINOR.$PATCH $TAGS"
+              fi
+          fi
+
+          for tag in $TAGS; do
+            DOCKER_TAGS+="$IMAGE_ID:$tag,"
+            echo "tag >>> ${tag}"
+          done
+          echo "::endgroup::"
+
+          if ${{ github.event_name == 'push' }}; then
+            NEXT_STEP_TITLE+="and Publish"
+          fi
+
+          echo ::set-output name=container_tags::$DOCKER_TAGS
+          echo ::set-output name=service_folder::$FOLDER
+          echo ::set-output name=build_platforms::$PLATFORMS
+          echo ::set-output name=service_version::$VERSION
+          echo ::set-output name=build_title::$NEXT_STEP_TITLE
+          echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+
+    - name: Login to Container Registry
+      if: ${{ github.event_name == 'push' }}
+      uses: docker/login-action@v1 
+      with:
+        registry: ${{ secrets.DOCKER_REGISTRY_URL }}
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build ${{ steps.prepare.outputs.build_title }} - ${{ matrix.service }}
+      if: success()
+      uses: docker/build-push-action@v2
+      with:
+        context: ${{ steps.prepare.outputs.service_folder }}
+        platforms: ${{ steps.prepare.outputs.build_platforms }}
+        push: ${{ github.event_name == 'push' }}
+        tags: ${{ steps.prepare.outputs.container_tags }}
+        labels: |
+          org.opencontainers.image.url='${{ github.event.repository.html_url }}/${{ steps.prepare.outputs.service_folder }}'
+          org.opencontainers.image.documentation='${{ github.event.repository.html_url }}/${{ steps.prepare.outputs.service_folder }}/README.md'
+          org.opencontainers.image.source=${{ github.event.repository.clone_url }}
+          org.opencontainers.image.created=${{ steps.prepare.outputs.created }}
+          org.opencontainers.image.version=${{ steps.prepare.outputs.service_version }}
+          org.opencontainers.image.revision=${{ github.sha }}
+
+  published_notification:
+    needs: [services_updated,build]
+    if: ${{ success() && github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Notify that Images have been published
+      run: echo "Published"
