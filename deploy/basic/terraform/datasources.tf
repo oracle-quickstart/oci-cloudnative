@@ -135,12 +135,12 @@ data "template_cloudinit_config" "nodes" {
 
 ## Files and Templatefiles
 locals {
-  httpd_conf = file("${path.module}/scripts/httpd.conf")
+  httpd_conf      = file("${path.module}/scripts/httpd.conf")
   setup_preflight = file("${path.module}/scripts/setup.preflight.sh")
   setup_template = templatefile("${path.module}/scripts/setup.template.sh",
     {
       oracle_client_version = var.oracle_client_version
-    })
+  })
   deploy_template = templatefile("${path.module}/scripts/deploy.template.sh",
     {
       oracle_client_version   = var.oracle_client_version
@@ -149,15 +149,15 @@ locals {
       mushop_media_visibility = var.object_storage_mushop_media_visibility
       mushop_app_par          = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.mushop_lite_preauth.access_uri}"
       wallet_par              = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.mushop_wallet_preauth.access_uri}"
-    })
+  })
   catalogue_sql_template = templatefile("${path.module}/scripts/catalogue.template.sql",
     {
       catalogue_password = random_string.catalogue_db_password.result
-    })
+  })
   mushop_media_pars_list = templatefile("${path.module}/scripts/mushop_media_pars_list.txt",
     {
       content = local.mushop_media_pars
-    })
+  })
   cloud_init = templatefile("${path.module}/scripts/cloud-config.template.yaml",
     {
       setup_preflight_sh_content     = base64gzip(local.setup_preflight)
@@ -172,7 +172,7 @@ locals {
       mock_mode                      = var.services_in_mock_mode
       db_name                        = oci_database_autonomous_database.mushop_autonomous_database.db_name
       assets_url                     = var.object_storage_mushop_media_visibility == "Private" ? "" : "https://objectstorage.${var.region}.oraclecloud.com/n/${oci_objectstorage_bucket.mushop_media.namespace}/b/${oci_objectstorage_bucket.mushop_media.name}/o/"
-    })
+  })
 }
 
 # Catalogue port

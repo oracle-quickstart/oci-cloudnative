@@ -6,7 +6,7 @@ output "lb_public_url" {
   value = format("http://%s", lookup(oci_load_balancer_load_balancer.mushop_lb.ip_address_details[0], "ip_address"))
 }
 output "autonomous_database_password" {
-  value = random_string.autonomous_database_admin_password.result
+  value     = random_string.autonomous_database_admin_password.result
   sensitive = true
 }
 output "dev" {
@@ -36,6 +36,6 @@ output "mushop_basic_source_code" {
 # Use of this resource for production deployments is not recommended. 
 # Instead, generate a private key file outside of Terraform and distribute it securely to the system where Terraform will be run.
 output "generated_private_key_pem" {
-  value = var.generate_public_ssh_key ? tls_private_key.compute_ssh_key.private_key_pem : "No Keys Auto Generated"
+  value     = var.generate_public_ssh_key ? tls_private_key.compute_ssh_key.private_key_pem : "No Keys Auto Generated"
   sensitive = true
 }
