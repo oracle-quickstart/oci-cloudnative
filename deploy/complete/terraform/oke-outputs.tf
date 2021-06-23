@@ -8,6 +8,7 @@
 # Instead, generate a private key file outside of Terraform and distribute it securely to the system where Terraform will be run.
 output "generated_private_key_pem" {
   value = var.generate_public_ssh_key ? tls_private_key.oke_worker_node_ssh_key.private_key_pem : "No Keys Auto Generated"
+  sensitive = true
 }
 output "dev" {
   value = "Made with \u2764 by Oracle Developers"
