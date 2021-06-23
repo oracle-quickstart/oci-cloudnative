@@ -1,5 +1,12 @@
 # CHANGELOG
 
+2021-06-22 (v3.0.0)
+
+- Updated to use Terraform 1.0.x
+- Sensitive fields special treatment
+- Terraform providers updated to use newer supported versions. (ORM now is supporting the latest)
+- Removal of compatibility workarounds for old/deprecated TF providers
+
 2021-06-09 (v2.4.0)
 
 - E-mail newsletter service included on the stack
