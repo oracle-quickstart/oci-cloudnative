@@ -170,7 +170,7 @@ resource "kubernetes_job" "wallet_extractor_job" {
         service_account_name = "wallet-extractor-sa"
       }
     }
-    backoff_limit = 1
+    backoff_limit              = 1
     ttl_seconds_after_finished = 120
   }
 
