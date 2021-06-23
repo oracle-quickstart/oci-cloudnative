@@ -171,7 +171,7 @@ resource "kubernetes_job" "wallet_extractor_job" {
       }
     }
     backoff_limit = 1
-    # ttl_seconds_after_finished = 120 # Not supported by TF K8s provider 1.8. ORM need to update provider
+    ttl_seconds_after_finished = 120
   }
 
   depends_on = [kubernetes_deployment.cluster_autoscaler_deployment, helm_release.ingress_nginx]
