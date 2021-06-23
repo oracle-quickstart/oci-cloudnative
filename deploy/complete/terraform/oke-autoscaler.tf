@@ -221,34 +221,16 @@ resource "kubernetes_deployment" "cluster_autoscaler_deployment" {
       spec {
         service_account_name = "cluster-autoscaler"
 
-        # < workaround to support ORM deprecated terraform providers
-        volume {
-          name = kubernetes_service_account.cluster_autoscaler_sa[0].default_secret_name
-
-          secret {
-            secret_name = kubernetes_service_account.cluster_autoscaler_sa[0].default_secret_name
-          }
-        }
-        # />
-
         container {
           image = local.cluster_autoscaler_image
           name  = "cluster-autoscaler"
 
-          # < workaround to support ORM deprecated terraform providers
-          volume_mount {
-            mount_path = "/var/run/secrets/kubernetes.io/serviceaccount"
-            name       = kubernetes_service_account.cluster_autoscaler_sa[0].default_secret_name
-            read_only  = true
-          }
-          # />
-
           resources {
-            limits {
+            limits = {
               cpu    = "100m"
               memory = "300Mi"
             }
-            requests {
+            requests = {
               cpu    = "100m"
               memory = "300Mi"
             }
