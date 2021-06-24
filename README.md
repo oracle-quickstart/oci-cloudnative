@@ -29,7 +29,7 @@ The steps below guide you through deploying the application on your tenancy usin
 
 1. Download the latest [`mushop-basic-stack-latest.zip`](../../releases/latest/download/mushop-basic-stack-latest.zip) file.
 2. [Login](https://cloud.oracle.com/resourcemanager/stacks/create) to Oracle Cloud Infrastructure to import the stack
-    > `Home > Solutions & Platform > Resource Manager > Stacks > Create Stack`
+    > `Home > Developer Services > Resource Manager > Stacks > Create Stack`
 3. Upload the `mushop-basic-stack-latest.zip` file that was downloaded earlier, and provide a name and description for the stack
 4. Configure the stack
    1. **Database Name** - You can choose to provide a database name (optional)
@@ -66,7 +66,7 @@ Follow these steps to completely remove all provisioned resources:
 
 1. Return to the Oracle Cloud Infrastructure [Console](https://cloud.oracle.com/resourcemanager/stacks)
 
-  > `Home > Solutions & Platform > Resource Manager > Stacks`
+  > `Home > Developer Services > Resource Manager > Stacks`
 
 1. Select the stack created previously to open the Stack Details view
 1. From the Stack Details, select `Terraform Actions > Destroy`
