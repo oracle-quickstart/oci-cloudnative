@@ -59,36 +59,49 @@ provider "oci" {
 
 # https://docs.cloud.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengdownloadkubeconfigfile.htm#notes
 provider "kubernetes" {
-  cluster_ca_certificate = base64decode(yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["clusters"][0]["cluster"]["certificate-authority-data"])
-  host                   = yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["clusters"][0]["cluster"]["server"]
+  host                   = yamldecode(local_file.kubeconfig.content)["clusters"][0]["cluster"]["server"]
+  cluster_ca_certificate = base64decode(yamldecode(local_file.kubeconfig.content)["clusters"][0]["cluster"]["certificate-authority-data"])
+  config_context = yamldecode(local_file.kubeconfig.content)["contexts"][0]["name"]
+
   exec {
-    api_version = yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["apiVersion"]
-    args = [yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][0],
-      yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][1],
-      yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][2],
-      yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][3],
-      yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][4],
-      yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][5],
-    yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][6]]
-    command = yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["command"]
+    api_version = yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["apiVersion"]
+    args = [yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][0],
+      yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][1],
+      yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][2],
+      yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][3],
+      yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][4],
+      yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][5],
+    yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][6]]
+    command = yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["command"]
+  }
+}
+
+resource "local_file" "kubeconfig" {
+  content  = local_file.oke_kubeconfig.content
+  filename = "generated/kubeconfig"
+
+  lifecycle {
+    ignore_changes = [content]
   }
 }
 
 # https://docs.cloud.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengdownloadkubeconfigfile.htm#notes
 provider "helm" {
   kubernetes {
-    cluster_ca_certificate = base64decode(yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["clusters"][0]["cluster"]["certificate-authority-data"])
-    host                   = yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["clusters"][0]["cluster"]["server"]
+    host                   = yamldecode(local_file.kubeconfig.content)["clusters"][0]["cluster"]["server"]
+    cluster_ca_certificate = base64decode(yamldecode(local_file.kubeconfig.content)["clusters"][0]["cluster"]["certificate-authority-data"])
+    config_context = yamldecode(local_file.kubeconfig.content)["contexts"][0]["name"]
+
     exec {
-      api_version = yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["apiVersion"]
-      args = [yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][0],
-        yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][1],
-        yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][2],
-        yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][3],
-        yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][4],
-        yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][5],
-      yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][6]]
-      command = yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["command"]
+      api_version = yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["apiVersion"]
+      args = [yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][0],
+        yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][1],
+        yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][2],
+        yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][3],
+        yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][4],
+        yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][5],
+      yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][6]]
+      command = yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["command"]
     }
   }
 }
