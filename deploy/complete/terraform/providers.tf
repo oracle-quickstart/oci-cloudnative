@@ -7,7 +7,7 @@ terraform {
   required_providers {
     oci = {
       source  = "hashicorp/oci"
-      version = ">= 4.31.0"
+      version = ">= 4.32.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
@@ -76,6 +76,7 @@ provider "kubernetes" {
   }
 }
 
+# Extra step to avoid Terraform Kubernetes provider interpolation. https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs#alert
 resource "local_file" "kubeconfig" {
   content  = local_file.oke_kubeconfig.content
   filename = "generated/kubeconfig"
