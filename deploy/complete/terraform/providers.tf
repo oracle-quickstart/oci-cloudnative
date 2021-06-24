@@ -61,7 +61,7 @@ provider "oci" {
 provider "kubernetes" {
   host                   = yamldecode(local_file.kubeconfig.content)["clusters"][0]["cluster"]["server"]
   cluster_ca_certificate = base64decode(yamldecode(local_file.kubeconfig.content)["clusters"][0]["cluster"]["certificate-authority-data"])
-  config_context = yamldecode(local_file.kubeconfig.content)["contexts"][0]["name"]
+  config_context         = yamldecode(local_file.kubeconfig.content)["contexts"][0]["name"]
 
   exec {
     api_version = yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["apiVersion"]
@@ -91,7 +91,7 @@ provider "helm" {
   kubernetes {
     host                   = yamldecode(local_file.kubeconfig.content)["clusters"][0]["cluster"]["server"]
     cluster_ca_certificate = base64decode(yamldecode(local_file.kubeconfig.content)["clusters"][0]["cluster"]["certificate-authority-data"])
-    config_context = yamldecode(local_file.kubeconfig.content)["contexts"][0]["name"]
+    config_context         = yamldecode(local_file.kubeconfig.content)["contexts"][0]["name"]
 
     exec {
       api_version = yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["apiVersion"]

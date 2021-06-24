@@ -806,5 +806,11 @@ outputs:
     title: kubeconfig
     displayText: kubeconfig for local kubectl run. Not used by ORM
     visible: false
+
+  sensitive_comments_local_tf:
+    type: string
+    title: kubeconfig
+    displayText: Instructions to get sensitive outputs on local Terraform. Not used by ORM
+    visible: false
   
 primaryOutputButton: mushop_url_button
