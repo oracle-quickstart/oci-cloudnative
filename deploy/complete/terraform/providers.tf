@@ -76,14 +76,10 @@ provider "kubernetes" {
   }
 }
 
-# Extra step to avoid Terraform Kubernetes provider interpolation. https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs#alert
+# Extra step to avoid Terraform Kubernetes provider interpolation. https://registry.terraform.io/providers/hashicorp/kubernetes/2.2.0/docs#stacking-with-managed-kubernetes-cluster-resources
 resource "local_file" "kubeconfig" {
-  content  = local_file.oke_kubeconfig.content
-  filename = "generated/kubeconfig"
-
-  lifecycle {
-    ignore_changes = [content]
-  }
+  content  = fileexists("${path.module}/generated/oke_kubeconfig") ? file("${path.module}/generated/oke_kubeconfig") : local_file.oke_kubeconfig.content
+  filename = "${path.module}/generated/kubeconfig"
 }
 
 # https://docs.cloud.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengdownloadkubeconfigfile.htm#notes

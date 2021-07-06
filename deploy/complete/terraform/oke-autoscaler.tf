@@ -30,7 +30,7 @@ resource "kubernetes_service_account" "cluster_autoscaler_sa" {
   }
   automount_service_account_token = true # workaround to support ORM deprecated terraform providers
 
-  depends_on = [oci_containerengine_node_pool.oke_node_pool]
+  depends_on = [oci_containerengine_node_pool.oke_node_pool, local_file.kubeconfig]
 }
 resource "kubernetes_cluster_role" "cluster_autoscaler_cr" {
   count = local.cluster_autoscaler_enabled ? 1 : 0
@@ -111,7 +111,7 @@ resource "kubernetes_cluster_role" "cluster_autoscaler_cr" {
     verbs          = ["get", "update"]
   }
 
-  depends_on = [oci_containerengine_node_pool.oke_node_pool]
+  depends_on = [oci_containerengine_node_pool.oke_node_pool, local_file.kubeconfig]
 }
 resource "kubernetes_role" "cluster_autoscaler_role" {
   count = local.cluster_autoscaler_enabled ? 1 : 0
@@ -137,7 +137,7 @@ resource "kubernetes_role" "cluster_autoscaler_role" {
     verbs          = ["delete", "get", "update", "watch"]
   }
 
-  depends_on = [oci_containerengine_node_pool.oke_node_pool]
+  depends_on = [oci_containerengine_node_pool.oke_node_pool, local_file.kubeconfig]
 }
 resource "kubernetes_cluster_role_binding" "cluster_autoscaler_crb" {
   count = local.cluster_autoscaler_enabled ? 1 : 0
@@ -160,7 +160,7 @@ resource "kubernetes_cluster_role_binding" "cluster_autoscaler_crb" {
     namespace = "kube-system"
   }
 
-  depends_on = [oci_containerengine_node_pool.oke_node_pool]
+  depends_on = [oci_containerengine_node_pool.oke_node_pool, local_file.kubeconfig]
 }
 resource "kubernetes_role_binding" "cluster_autoscaler_rb" {
   count = local.cluster_autoscaler_enabled ? 1 : 0
@@ -185,7 +185,7 @@ resource "kubernetes_role_binding" "cluster_autoscaler_rb" {
     namespace = "kube-system"
   }
 
-  depends_on = [oci_containerengine_node_pool.oke_node_pool]
+  depends_on = [oci_containerengine_node_pool.oke_node_pool, local_file.kubeconfig]
 }
 resource "kubernetes_deployment" "cluster_autoscaler_deployment" {
   count = local.cluster_autoscaler_enabled ? 1 : 0
@@ -255,5 +255,5 @@ resource "kubernetes_deployment" "cluster_autoscaler_deployment" {
     }
   }
 
-  depends_on = [oci_containerengine_node_pool.oke_node_pool]
+  depends_on = [oci_containerengine_node_pool.oke_node_pool, local_file.kubeconfig]
 }
