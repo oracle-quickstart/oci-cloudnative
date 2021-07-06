@@ -3,31 +3,31 @@
 # 
 
 terraform {
-  required_version = ">= 0.14"
+  required_version = ">= 1.0"
   required_providers {
     oci = {
       source  = "hashicorp/oci"
-      version = ">= 4.30.0"
+      version = ">= 4.32.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "1.11.2" # Latest version as April 2021 = 2.1.0. Using 1.11.2 (March, 2020) for ORM compatibility
+      version = "2.2.0" # Latest version as June 2021 = 2.3.2. Using 2.2.0 (May, 2021) for ORM compatibility
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "1.1.1" # Latest version as April 2021 = 2.1.1. Using 1.1.1 (March, 2020) for ORM compatibility
+      version = "2.1.0" # Latest version as June 2021 = 2.2.0. Using 2.1.0 (March, 2021) for ORM compatibility
     }
     tls = {
       source  = "hashicorp/tls"
-      version = "2.0.1" # Latest version as March 2021 = 3.1.0. Using 2.0.1 (April, 2020) for ORM compatibility
+      version = "3.1.0" # Latest version as June 2021 = 3.1.0.
     }
     local = {
       source  = "hashicorp/local"
-      version = "1.4.0" # Latest version as March 2021 = 2.1.0. Using 1.4.0 (September, 2019) for ORM compatibility
+      version = "2.1.0" # Latest version as June 2021 = 2.1.0.
     }
     random = {
       source  = "hashicorp/random"
-      version = "2.3.0" # Latest version as March 2021 = 3.1.0. Using 2.3.0 (July, 2020) for ORM compatibility
+      version = "3.1.0" # Latest version as June 2021 = 3.1.0.
     }
   }
 }
@@ -59,38 +59,46 @@ provider "oci" {
 
 # https://docs.cloud.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengdownloadkubeconfigfile.htm#notes
 provider "kubernetes" {
-  load_config_file       = "false" # Workaround for tf k8s provider < 1.11.1 to work with ORM
-  cluster_ca_certificate = base64decode(yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["clusters"][0]["cluster"]["certificate-authority-data"])
-  host                   = yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["clusters"][0]["cluster"]["server"]
+  host                   = yamldecode(local_file.kubeconfig.content)["clusters"][0]["cluster"]["server"]
+  cluster_ca_certificate = base64decode(yamldecode(local_file.kubeconfig.content)["clusters"][0]["cluster"]["certificate-authority-data"])
+  config_context         = yamldecode(local_file.kubeconfig.content)["contexts"][0]["name"]
+
   exec {
-    api_version = "client.authentication.k8s.io/v1beta1" # Workaround for tf k8s provider < 1.11.1 to work with orm - yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["apiVersion"]
-    args = [yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][0],
-      yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][1],
-      yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][2],
-      yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][3],
-      yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][4],
-      yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][5],
-    yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][6]]
-    command = yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["command"]
+    api_version = yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["apiVersion"]
+    args = [yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][0],
+      yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][1],
+      yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][2],
+      yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][3],
+      yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][4],
+      yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][5],
+    yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][6]]
+    command = yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["command"]
   }
+}
+
+# Extra step to avoid Terraform Kubernetes provider interpolation. https://registry.terraform.io/providers/hashicorp/kubernetes/2.2.0/docs#stacking-with-managed-kubernetes-cluster-resources
+resource "local_file" "kubeconfig" {
+  content  = fileexists("${path.module}/generated/oke_kubeconfig") ? file("${path.module}/generated/oke_kubeconfig") : local_file.oke_kubeconfig.content
+  filename = "${path.module}/generated/kubeconfig"
 }
 
 # https://docs.cloud.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengdownloadkubeconfigfile.htm#notes
 provider "helm" {
   kubernetes {
-    load_config_file       = "false" # Workaround for tf helm provider < 1.1.1 to work with ORM
-    cluster_ca_certificate = base64decode(yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["clusters"][0]["cluster"]["certificate-authority-data"])
-    host                   = yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["clusters"][0]["cluster"]["server"]
+    host                   = yamldecode(local_file.kubeconfig.content)["clusters"][0]["cluster"]["server"]
+    cluster_ca_certificate = base64decode(yamldecode(local_file.kubeconfig.content)["clusters"][0]["cluster"]["certificate-authority-data"])
+    config_context         = yamldecode(local_file.kubeconfig.content)["contexts"][0]["name"]
+
     exec {
-      api_version = yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["apiVersion"]
-      args = [yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][0],
-        yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][1],
-        yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][2],
-        yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][3],
-        yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][4],
-        yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][5],
-      yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["args"][6]]
-      command = yamldecode(data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content)["users"][0]["user"]["exec"]["command"]
+      api_version = yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["apiVersion"]
+      args = [yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][0],
+        yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][1],
+        yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][2],
+        yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][3],
+        yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][4],
+        yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][5],
+      yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][6]]
+      command = yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["command"]
     }
   }
 }

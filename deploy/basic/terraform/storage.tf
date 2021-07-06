@@ -1,4 +1,4 @@
-# Copyright (c) 2019, 2020 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2019-2021 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -43,7 +43,7 @@ resource "oci_objectstorage_preauthrequest" "mushop_lite_preauth" {
 
 resource "oci_objectstorage_object" "mushop_media_pars_list" {
   bucket    = oci_objectstorage_bucket.mushop.name
-  content   = data.template_file.mushop_media_pars_list.rendered
+  content   = local.mushop_media_pars_list
   namespace = data.oci_objectstorage_namespace.user_namespace.namespace
   object    = "mushop_media_pars_list.txt"
 }

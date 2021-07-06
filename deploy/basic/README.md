@@ -121,20 +121,9 @@ This creates a `.zip` file in your working directory that can be imported in to 
 After complete the Build steps 1 and 2, generate the binaries:
 
 1. From the root of the repo execute the command:
-    * linux/amd64 (or default builder)
 
-        ```shell
-        docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic.tar.xz /transfer/deploy/basic/terraform/scripts/mushop-basic.tar.xz
-        ```
-
-    * linux/arm64
-
-        ```shell
-        docker run -v $PWD:/transfer --rm --platform linux/arm64 --entrypoint cp mushop-basic-arm64:latest /package/mushop-basic.tar.xz /transfer/deploy/basic/terraform/scripts/mushop-basic.tar.xz
-        ```
-
-        ```shell
-        docker run -v $PWD:/transfer --rm --platform linux/arm64 --entrypoint cp mushop-basic-arm64:latest /basic/PLATFORM.auto.tfvars /transfer/deploy/basic/terraform/PLATFORM.auto.tfvars
+    ```shell
+    docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic.tar.xz /transfer/deploy/basic/terraform/scripts/mushop-basic.tar.xz
         ```
 
 1. Copy mushop media images to populate the object storage:
@@ -148,6 +137,7 @@ After complete the Build steps 1 and 2, generate the binaries:
 1. Change the credentials variables to your user and any other desirable variables
 1. Run `terraform init` to init the terraform providers
 1. Run `terraform apply` to create the resources on OCI
+1. To show sensitive outputs, use `terraform output autonomous_database_password` to show the ATP Admin password and `terraform output generated_private_key_pem` to show the private key for SSH access
 
 [oci]: https://cloud.oracle.com/en_US/cloud-infrastructure
 [orm]: https://docs.cloud.oracle.com/iaas/Content/ResourceManager/Concepts/resourcemanager.htm
