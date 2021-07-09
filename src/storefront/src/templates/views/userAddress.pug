@@ -60,9 +60,20 @@ div(mu-if="editing")
           div.uk-width-1-1
             label
               div.uk-form-label Country
-              select.uk-select(required name="country" mu-attr mu-attr-disabled="loading")
+              //- select from oci region countries :)
+              select.uk-select(required name="country" mu-attr mu-attr-disabled="loading" mu-attr-value="address.country")
                 option Choose
                 option(value="USA" selected) USA
+                option(value="AUS") AUS
+                option(value="BRA") BRA
+                option(value="CHL") CHL
+                option(value="JPN") JPN
+                option(value="NLD") NLD
+                option(value="SAU") SAU
+                option(value="KOR") KOR
+                option(value="CHE") CHE
+                option(value="ARE") ARE
+                option(value="GBR") GBR
 
           div.uk-width-1-1
             label
