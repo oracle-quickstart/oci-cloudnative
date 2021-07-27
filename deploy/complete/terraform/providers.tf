@@ -7,7 +7,7 @@ terraform {
   required_providers {
     oci = {
       source  = "hashicorp/oci"
-      version = ">= 4.32.0"
+      version = ">= 4.36.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
