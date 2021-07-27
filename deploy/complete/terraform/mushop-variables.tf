@@ -51,8 +51,8 @@ variable "create_oci_service_user" {
   description = "Creates OCI Service User. Service user is needed for Email Delivery (Newsletter feature) and Stream services."
 }
 variable "newsletter_subscription_enabled" {
-  default     = true
-  description = "Enables newsletter subscription feature. Deploys API Gateway, Newsletter Function and uses Email Sender service"
+  default     = false
+  description = "(Currently only supported on the US-Ashburn-1 region) Enables newsletter subscription feature. Deploys API Gateway, Newsletter Function and uses Email Sender service"
 }
 variable "newsletter_email_sender" {
   default     = "no-reply@mushop.ateam.cloud"

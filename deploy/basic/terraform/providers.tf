@@ -7,19 +7,23 @@ terraform {
   required_providers {
     oci = {
       source  = "hashicorp/oci"
-      version = ">= 4.31.0"
+      version = ">= 4.36.0"
+      # https://registry.terraform.io/providers/hashicorp/oci/4.36.0
     }
     local = {
       source  = "hashicorp/local"
       version = "2.1.0" # Latest version as June 2021 = 2.1.0.
+      # https://registry.terraform.io/providers/hashicorp/local/2.1.0
     }
     random = {
       source  = "hashicorp/random"
       version = "3.1.0" # Latest version as June 2021 = 3.1.0.
+      # https://registry.terraform.io/providers/hashicorp/random/3.1.0
     }
     tls = {
       source  = "hashicorp/tls"
       version = "3.1.0" # Latest version as June 2021 = 3.1.0.
+      # https://registry.terraform.io/providers/hashicorp/tls/3.1.0
     }
   }
 }
