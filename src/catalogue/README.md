@@ -1,6 +1,6 @@
 # Catalogue
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/oracle-quickstart/oci-cloudnative/tree/master/src/catalogue)](https://goreportcard.com/report/github.com/oracle-quickstart/oci-cloudnative/tree/master/src/catalogue)
+[![Go Report Card](https://goreportcard.com/badge/github.com/oracle-quickstart/oci-cloudnative)](https://goreportcard.com/report/github.com/oracle-quickstart/oci-cloudnative/tree/master/src/catalogue)
 
 A microservices demo service that provides catalogue/product information stored on Oracle Autonomous Database.
 
