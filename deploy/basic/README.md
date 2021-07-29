@@ -139,6 +139,18 @@ After complete the Build steps 1 and 2, generate the binaries:
 1. Run `terraform apply` to create the resources on OCI
 1. To show sensitive outputs, use `terraform output autonomous_database_password` to show the ATP Admin password and `terraform output generated_private_key_pem` to show the private key for SSH access
 
+## Running MuShop Basic APIs on Postman
+
+Testing MuShop Basic Services APIs with Postman.
+
+Note that these calls are intent to connect to the API endpoint, normally the ip address generated on the Load Balancer.
+
+| Service                                                  | Postman                                                                        |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| [api](./src/api)                                         | [![Run in Postman](https://run.pstmn.io/button.svg)][postman_button_api]       |
+| [catalogue](./src/catalogue)                             | [![Run in Postman](https://run.pstmn.io/button.svg)][postman_button_catalogue] |
+| [user](./src/user)                                       | [![Run in Postman](https://run.pstmn.io/button.svg)][postman_button_user]      |
+
 [oci]: https://cloud.oracle.com/en_US/cloud-infrastructure
 [orm]: https://docs.cloud.oracle.com/iaas/Content/ResourceManager/Concepts/resourcemanager.htm
 [tf]: https://www.terraform.io
@@ -155,3 +167,6 @@ After complete the Build steps 1 and 2, generate the binaries:
 [kms]: https://docs.cloud.oracle.com/en-us/iaas/Content/KeyManagement/Concepts/keyoverview.htm
 [magic_button]: https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg
 [magic_mushop_basic_stack]: https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/oracle-quickstart/oci-cloudnative/releases/latest/download/mushop-basic-stack-latest.zip
+[postman_button_api]: (https://app.getpostman.com/run-collection/29850-bf403236-1455-477c-b6a7-ada750c6ac48?action=collection%2Ffork&collection-url=entityId%3D29850-bf403236-1455-477c-b6a7-ada750c6ac48%26entityType%3Dcollection%26workspaceId%3D2bb2564c-20d3-43f8-aa5d-78663a37d5a4)
+[postman_button_catalogue]: https://app.getpostman.com/run-collection/29850-3aff32d8-4915-4dba-8597-c9ada30e114c?action=collection%2Ffork&collection-url=entityId%3D29850-3aff32d8-4915-4dba-8597-c9ada30e114c%26entityType%3Dcollection%26workspaceId%3D2bb2564c-20d3-43f8-aa5d-78663a37d5a4
+[postman_button_user]: https://app.getpostman.com/run-collection/29850-b4c04c61-d581-4fff-b1e3-0e3362faa430?action=collection%2Ffork&collection-url=entityId%3D29850-b4c04c61-d581-4fff-b1e3-0e3362faa430%26entityType%3Dcollection%26workspaceId%3D2bb2564c-20d3-43f8-aa5d-78663a37d5a4
