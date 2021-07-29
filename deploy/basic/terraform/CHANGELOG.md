@@ -1,5 +1,9 @@
 # CHANGELOG
 
+2021-07-28 (v2.0.1)
+
+- Terraform OCI Provider Updated to the latest
+
 2021-06-22 (v2.0.0)
 
 - Updated to use Terraform 1.0.x
