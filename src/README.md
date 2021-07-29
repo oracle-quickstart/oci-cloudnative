@@ -52,3 +52,15 @@ src
     │   VERSION
     │   ...
 ```
+
+## Running APIs on Postman
+
+| Service                                                  | Postman                                                                        |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| [api](./src/api)                                         | [![Run in Postman](https://run.pstmn.io/button.svg)][postman_button_api]       |
+| [catalogue](./src/catalogue)                             | [![Run in Postman](https://run.pstmn.io/button.svg)][postman_button_catalogue] |
+| [user](./src/user)                                       | [![Run in Postman](https://run.pstmn.io/button.svg)][postman_button_user]      |
+
+[postman_button_api]: (https://app.getpostman.com/run-collection/29850-bf403236-1455-477c-b6a7-ada750c6ac48?action=collection%2Ffork&collection-url=entityId%3D29850-bf403236-1455-477c-b6a7-ada750c6ac48%26entityType%3Dcollection%26workspaceId%3D2bb2564c-20d3-43f8-aa5d-78663a37d5a4)
+[postman_button_catalogue]: https://app.getpostman.com/run-collection/29850-3aff32d8-4915-4dba-8597-c9ada30e114c?action=collection%2Ffork&collection-url=entityId%3D29850-3aff32d8-4915-4dba-8597-c9ada30e114c%26entityType%3Dcollection%26workspaceId%3D2bb2564c-20d3-43f8-aa5d-78663a37d5a4
+[postman_button_user]: https://app.getpostman.com/run-collection/29850-b4c04c61-d581-4fff-b1e3-0e3362faa430?action=collection%2Ffork&collection-url=entityId%3D29850-b4c04c61-d581-4fff-b1e3-0e3362faa430%26entityType%3Dcollection%26workspaceId%3D2bb2564c-20d3-43f8-aa5d-78663a37d5a4
