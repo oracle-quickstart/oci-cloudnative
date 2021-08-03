@@ -228,7 +228,7 @@ export const Services = {
     name: 'Media',
     type: ServiceType.NODE,
     tech: TechType.OKE,
-    desc: `Product media source, intgrating with Object Storage`,
+    desc: `Product media source, integrating with Object Storage`,
   },
   EVENTS: {
     name: 'Tracking',
@@ -243,11 +243,11 @@ export const Services = {
     desc: `Client session management`,
   },
   CATALOG: {
-    name: 'Catalog',
+    name: 'Catalogue',
     type: ServiceType.GO,
     tech: TechType.OKE,
     basic: TechType.COMPUTE,
-    desc: `Product catalog services`,
+    desc: `Product catalogue services`,
   },
   CART: {
     name: 'Carts',

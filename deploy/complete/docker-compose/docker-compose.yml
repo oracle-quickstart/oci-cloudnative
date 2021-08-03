@@ -94,7 +94,7 @@ services:
     environment:
       - reschedule=on-node-failure
 
-  # OCI Catalog service
+  # OCI Catalogue service
   catalogue:
     image: iad.ocir.io/oracle/ateam/mushop-catalogue:1.4
     hostname: catalogue
