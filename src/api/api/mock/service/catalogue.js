@@ -27,7 +27,7 @@ module.exports = class MockCatalogueService extends MockServiceAbstract {
   }
 
   /**
-   * mock catalog service middleware
+   * mock catalogue service middleware
    * @param {express.router} router 
    */
   middleware(router) {

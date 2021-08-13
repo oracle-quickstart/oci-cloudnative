@@ -4,6 +4,10 @@
 
 A microservices demo service that provides payment services.
 
+## Run Payment Service APIs on postman
+
+[![Run in Postman](https://run.pstmn.io/button.svg)][postman_button_payment]
+
 ## API Spec
 
 Checkout the API Spec [here](https://mushop.docs.apiary.io)
@@ -66,3 +70,5 @@ You can authorize a payment by POSTing to the paymentAuth endpoint:
 curl -H "Content-Type: application/json" -X POST -d'{"Amount":40}'  http://localhost:8082/paymentAuth
 {"authorised":true}
 ```
+
+[postman_button_payment]: https://god.gw.postman.com/run-collection/29850-cd57303a-f3df-4a22-8e18-09cd2218d94a?action=collection%2Ffork&collection-url=entityId%3D29850-cd57303a-f3df-4a22-8e18-09cd2218d94a%26entityType%3Dcollection%26workspaceId%3D8e00caeb-8484-4be3-aa3c-3c3721e169b7

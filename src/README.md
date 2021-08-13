@@ -52,3 +52,19 @@ src
     │   VERSION
     │   ...
 ```
+
+## Running APIs on Postman
+
+Testing MuShop Services APIs with Postman.
+
+| Service                                                  | Postman                                                                        |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| [catalogue](./src/catalogue)                             | [![Run in Postman](https://run.pstmn.io/button.svg)][postman_button_catalogue] |
+| [user](./src/user)                                       | [![Run in Postman](https://run.pstmn.io/button.svg)][postman_button_user]      |
+| [payment](./src/payment)                                 | [![Run in Postman](https://run.pstmn.io/button.svg)][postman_button_payment]   |
+| [api](./src/api)                                         | [![Run in Postman](https://run.pstmn.io/button.svg)][postman_button_api]       |
+
+[postman_button_catalogue]: https://god.gw.postman.com/run-collection/29850-a9fbedc3-2178-442c-9bee-7fd8c52194b1?action=collection%2Ffork&collection-url=entityId%3D29850-a9fbedc3-2178-442c-9bee-7fd8c52194b1%26entityType%3Dcollection%26workspaceId%3D8e00caeb-8484-4be3-aa3c-3c3721e169b7
+[postman_button_user]: https://god.gw.postman.com/run-collection/29850-d02fc1f5-cec7-4f00-9f25-092e64e7f726?action=collection%2Ffork&collection-url=entityId%3D29850-d02fc1f5-cec7-4f00-9f25-092e64e7f726%26entityType%3Dcollection%26workspaceId%3D8e00caeb-8484-4be3-aa3c-3c3721e169b7
+[postman_button_payment]: https://god.gw.postman.com/run-collection/29850-cd57303a-f3df-4a22-8e18-09cd2218d94a?action=collection%2Ffork&collection-url=entityId%3D29850-cd57303a-f3df-4a22-8e18-09cd2218d94a%26entityType%3Dcollection%26workspaceId%3D8e00caeb-8484-4be3-aa3c-3c3721e169b7
+[postman_button_api]: ()

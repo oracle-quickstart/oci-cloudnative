@@ -142,3 +142,9 @@ by this service.
 |---|---|---|
 | `/health` | Readiness healthcheck | `GET` |
 | `/metrics` | Prometheus metrics endpoint | `GET` |
+
+### Run User Service APIs on postman
+
+[![Run in Postman](https://run.pstmn.io/button.svg)][postman_button_user]
+
+[postman_button_user]: https://god.gw.postman.com/run-collection/29850-d02fc1f5-cec7-4f00-9f25-092e64e7f726?action=collection%2Ffork&collection-url=entityId%3D29850-d02fc1f5-cec7-4f00-9f25-092e64e7f726%26entityType%3Dcollection%26workspaceId%3D8e00caeb-8484-4be3-aa3c-3c3721e169b7
