@@ -6,9 +6,9 @@ A microservices demo service that provides catalogue/product information stored 
 
 This service is built, tested and released by Github Actions.
 
-## Run APIs on postman
+## Run Catalogue Service APIs on postman
 
-[![Run in Postman](https://run.pstmn.io/button.svg)][postman_catalogue]
+[![Run in Postman](https://run.pstmn.io/button.svg)][postman_button_catalogue]
 
 ## API Spec
 
@@ -79,4 +79,4 @@ when done you can run:
 docker-compose -f docker-compose-zipkin.yml down
 ```
 
-[postman_catalogue]: https://god.gw.postman.com/run-collection/29850-a9fbedc3-2178-442c-9bee-7fd8c52194b1?action=collection%2Ffork&collection-url=entityId%3D29850-a9fbedc3-2178-442c-9bee-7fd8c52194b1%26entityType%3Dcollection%26workspaceId%3D8e00caeb-8484-4be3-aa3c-3c3721e169b7
+[postman_button_catalogue]: https://god.gw.postman.com/run-collection/29850-a9fbedc3-2178-442c-9bee-7fd8c52194b1?action=collection%2Ffork&collection-url=entityId%3D29850-a9fbedc3-2178-442c-9bee-7fd8c52194b1%26entityType%3Dcollection%26workspaceId%3D8e00caeb-8484-4be3-aa3c-3c3721e169b7
