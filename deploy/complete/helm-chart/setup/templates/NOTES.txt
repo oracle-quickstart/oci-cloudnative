@@ -35,7 +35,7 @@ address to the domain name you included on the values.yaml on the mushop chart.
 ## Grafana
 
 An instance of Grafana was installed with this chart. These instructions describe
-how to access the Grafana application. 
+how to access the Grafana application from local service.
 
 - Get the admin password:
 
@@ -47,6 +47,13 @@ how to access the Grafana application.
   kubectl port-forward -n {{ .Release.Namespace }} svc/{{ .Release.Name }}-grafana 3000:80
 
 - Then open http://localhost:3000
+
+{{- if $ingressConfig.enabled }}
+NOTE: After deploy the MuShop application, a new ingress will be created for Grafana
+  and will be accessible via loadbalancer_host/grafana.
+  Loadbalancer_host can be http://EXTERNAL-IP/grafana or https://domain/grafana
+  depending on the ingress values entered during MuShop chart deployment.
+{{- end }}
 
 {{- end }}
 
