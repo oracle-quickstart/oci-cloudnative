@@ -22,7 +22,7 @@ prometheus:
 
 # https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md
 catalog:
-  enabled: true
+  enabled: false
 
 # https://kubernetes.github.io/ingress-nginx/
 # https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx
@@ -110,6 +110,7 @@ grafana:
   grafana.ini:
     server:
       root_url: "%(protocol)s://%(domain)s:%(http_port)s/grafana"
+      serve_from_sub_path: true
   persistence:
     enabled: true
   plugins:
