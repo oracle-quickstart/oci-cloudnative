@@ -255,11 +255,5 @@ resource "kubernetes_deployment" "cluster_autoscaler_deployment" {
     }
   }
 
-  timeouts {
-    create = "1h"
-    update = "1h"
-    delete = "10m"
-  }
-
   depends_on = [oci_containerengine_node_pool.oke_node_pool, local_file.kubeconfig]
 }
