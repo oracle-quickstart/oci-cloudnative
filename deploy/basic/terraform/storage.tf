@@ -23,7 +23,7 @@ resource "oci_objectstorage_preauthrequest" "mushop_wallet_preauth" {
   name         = "mushop_wallet_preauth"
   namespace    = data.oci_objectstorage_namespace.user_namespace.namespace
   time_expires = timeadd(timestamp(), "30m")
-  object       = oci_objectstorage_object.mushop_wallet.object
+  object_name       = oci_objectstorage_object.mushop_wallet.object
 }
 
 resource "oci_objectstorage_object" "mushop_basic" {
@@ -38,7 +38,7 @@ resource "oci_objectstorage_preauthrequest" "mushop_lite_preauth" {
   name         = "mushop_lite_preauth"
   namespace    = data.oci_objectstorage_namespace.user_namespace.namespace
   time_expires = timeadd(timestamp(), "30m")
-  object       = oci_objectstorage_object.mushop_basic.object
+  object_name       = oci_objectstorage_object.mushop_basic.object
 }
 
 resource "oci_objectstorage_object" "mushop_media_pars_list" {
@@ -53,7 +53,7 @@ resource "oci_objectstorage_preauthrequest" "mushop_media_pars_list_preauth" {
   name         = "mushop_media_pars_list_preauth"
   namespace    = data.oci_objectstorage_namespace.user_namespace.namespace
   time_expires = timeadd(timestamp(), "30m")
-  object       = oci_objectstorage_object.mushop_media_pars_list.object
+  object_name       = oci_objectstorage_object.mushop_media_pars_list.object
 }
 
 # Static assets bucket
@@ -84,7 +84,7 @@ resource "oci_objectstorage_preauthrequest" "mushop_media_pars_preauth" {
 
   bucket       = oci_objectstorage_bucket.mushop_media.name
   namespace    = oci_objectstorage_bucket.mushop_media.namespace
-  object       = each.value.object
+  object_name       = each.value.object
   name         = "mushop_media_pars_par"
   access_type  = "ObjectRead"
   time_expires = timeadd(timestamp(), "30m")
