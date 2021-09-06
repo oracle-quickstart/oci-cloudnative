@@ -42,7 +42,7 @@ From `deploy/complete/helm-chart` directory:
       --namespace mushop-utilities
     ```
 
-    > **OPTIONAL** If will be provisioning ATP, Stream and Object Storage with OCI Service Broker, you should enable the Service Catalog  `catalog.enabled` to `true` in `values.yaml` or by adding the command line flag `--set catalog.enabled=true` in the `helm install` command above.
+    > **OPTIONAL** In case you are provisioning ATP, Stream, and Object Storage with **OCI Service Broker**. In that case, you should enable the Service Catalog `catalog.enabled` to `true` in `values.yaml` or by adding the command line flag `--set catalog.enabled=true` in the `helm install` command above.
 
     ```shell--helm3
     helm install mushop-utils setup \
