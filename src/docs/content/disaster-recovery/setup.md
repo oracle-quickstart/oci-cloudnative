@@ -145,6 +145,7 @@ Follow the instructions provided [here](https://www.oracle.com/webfolder/technet
     mymushop mushop -n mushop
     ```
 - Setup the ingress
+A TLS secret is used for SSL termination on the ingress controller. To generate the secret for this example, a self-signed certificate is used. While this is okay for testing, for production, use a certificate signed by a Certificate Authority.
 
     ```bash
     openssl req -x509 -nodes -days 365 \
