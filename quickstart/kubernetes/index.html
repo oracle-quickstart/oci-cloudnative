@@ -630,6 +630,14 @@
         <li>
           <ul>
             <li><a href="#setup">Setup</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#heading"></a>
+      <ul>
+        <li>
+          <ul>
             <li><a href="#deploy-mushop">Deploy MuShop</a></li>
           </ul>
         </li>
@@ -702,6 +710,7 @@ Infrastructure involves the use of the following helm charts:</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">kubectl create ns mushop
 </code></pre></div><hr>
 <h3 id="setup">Setup</h3>
+<h1 id="heading"></h1>
 <p>MuShop provides an umbrella helm chart called <code>setup</code>, which includes several
 <em>recommended</em> installations on the cluster. These represent common 3rd party
 services, which integrate with Oracle Cloud Infrastructure or enable certain
@@ -741,16 +750,16 @@ application features.</p>
 <td>true</td>
 </tr>
 <tr>
-<td><a href="https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md">Service Catalog</a></td>
-<td>Service Catalog chart utilized by Oracle Service Broker</td>
-<td><code>catalog.enabled</code></td>
-<td>true</td>
-</tr>
-<tr>
 <td><a href="https://github.com/jetstack/cert-manager/blob/master/README.md">Cert Manager</a></td>
 <td>x509 certificate management for Kubernetes</td>
 <td><code>cert-manager.enabled</code></td>
 <td>true</td>
+</tr>
+<tr>
+<td><a href="https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md">Service Catalog</a></td>
+<td>Service Catalog chart utilized by Oracle Service Broker</td>
+<td><code>catalog.enabled</code></td>
+<td>false</td>
 </tr>
 <tr>
 <td><a href="https://github.com/helm/charts/blob/master/stable/jenkins/README.md">Jenkins</a></td>
@@ -777,15 +786,19 @@ application features.</p>
 </code></pre><pre><code class="language-shell--helm3" data-lang="shell--helm3">kubectl create ns mushop-utilities
 </code></pre><pre><code class="language-shell--helm3" data-lang="shell--helm3">helm install mushop-utils setup \
   --namespace mushop-utilities
-</code></pre></li>
-</ol>
-<blockquote>
+</code></pre><blockquote>
+<p><strong>OPTIONAL</strong> In case you are provisioning ATP, Stream, and Object Storage with <strong>OCI Service Broker</strong>. In that case, you should enable the Service Catalog <code>catalog.enabled</code> to <code>true</code> in <code>values.yaml</code> or by adding the command line flag <code>--set catalog.enabled=true</code> in the <code>helm install</code> command above.</p>
+</blockquote>
+<pre><code class="language-shell--helm3" data-lang="shell--helm3">helm install mushop-utils setup \
+  --namespace mushop-utilities \
+  --set catalog.enabled=true
+</code></pre><blockquote>
 <p><strong>OPTIONAL</strong> The Jenkins automation server can be enabled by setting <code>jenkins.enabled</code> to <code>true</code> in <code>values.yaml</code> or by adding the command line flag <code>--set jenkins.enabled=true</code> in the <code>helm install</code> command above.</p>
 </blockquote>
 <pre><code class="language-shell--helm3" data-lang="shell--helm3">helm install mushop-utils setup \
   --namespace mushop-utilities \
   --set jenkins.enabled=true
-</code></pre><ol>
+</code></pre></li>
 <li>
 <p><strong>NOTE</strong> the public <code>EXTERNAL-IP</code> assigned to the ingress controller load balancer:</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">kubectl get svc mushop-utils-ingress-nginx-controller <span class="se">\

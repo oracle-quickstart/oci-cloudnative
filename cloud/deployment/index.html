@@ -735,10 +735,10 @@ values:</p>
 </table>
 <div uk-grid class="switcher-border uk-margin-bottom uk-grid-small ">
   <div class="uk-width-1-1 ">
-    <ul class="uk-tab" uk-tab="connect: #switcher-87"><li><a href="#">Manual Steps</a></li><li><a href="#">Automated (Using OCI Service Broker)</a></li></ul>
+    <ul class="uk-tab" uk-tab="connect: #switcher-46"><li><a href="#">Manual Steps</a></li><li><a href="#">Automated (Using OCI Service Broker)</a></li></ul>
   </div>
   <div class="">
-    <ul id='switcher-87' class='uk-switcher'>
+    <ul id='switcher-46' class='uk-switcher'>
 <li>
 <p>Follow the steps outlined below to provision and configure the cluster with cloud service connection details.</p>
 <h3 id="atp-database">ATP Database</h3>
@@ -824,6 +824,9 @@ oss-connection    Opaque    2      3m
 <p>As an alternative to manually provisioning, the included <a href="https://github.com/oracle-quickstart/oci-cloudnative/tree/master/deploy/complete/helm-chart/provision"><code>provision</code></a>
 chart is an application of the open-source <a href="https://github.com/oracle/oci-service-broker">OCI Service Broker</a>
 for <em>provisioning</em> Oracle Cloud Infrastructure services. This implementation utilizes <a href="https://github.com/openservicebrokerapi/servicebroker/blob/v2.14/spec.md">Open Service Broker</a> in Oracle Container Engine for Kubernetes or in other Kubernetes clusters.</p>
+<blockquote>
+<p><strong>Note:</strong> The OCI Service Broker depends on the Service Catalog, so make sure that you run the setup chart with the <code>catalog.enabled=true</code>.</p>
+</blockquote>
 <pre><code class="language-shell--linux-macos" data-lang="shell--linux-macos">cd deploy/complete/helm-chart
 </code></pre><pre><code class="language-shell--win" data-lang="shell--win">dir deploy/complete/helm-chart
 </code></pre><ol>
@@ -841,14 +844,14 @@ secret to the <code>mushop-utilities</code> namespace:</p>
 <li>
 <p>Deploy the OCI service broker on your cluster. This is done with the <a href="https://github.com/oracle/oci-service-broker">Oracle OCI Service Broker</a> helm chart:</p>
 <pre><code class="language-shell--helm2" data-lang="shell--helm2">helm install \
-  https://github.com/oracle/oci-service-broker/releases/download/v1.5.2/oci-service-broker-1.5.2.tgz \
+  https://github.com/oracle/oci-service-broker/releases/download/v1.6.0/oci-service-broker-1.6.0.tgz \
   --namespace mushop-utilities \
   --name oci-broker \
   --set ociCredentials.secretName=oci-credentials \
   --set storage.etcd.useEmbedded=true \
   --set tls.enabled=false
 </code></pre><pre><code class="language-shell--helm3" data-lang="shell--helm3">helm install oci-broker \
-  https://github.com/oracle/oci-service-broker/releases/download/v1.5.2/oci-service-broker-1.5.2.tgz \
+  https://github.com/oracle/oci-service-broker/releases/download/v1.6.0/oci-service-broker-1.6.0.tgz \
   --namespace mushop-utilities \
   --set ociCredentials.secretName=oci-credentials \
   --set storage.etcd.useEmbedded=true \
