@@ -157,21 +157,25 @@ A TLS secret is used for SSL termination on the ingress controller. To generate 
     ```
     ```bash
     cat << EOF | kubectl -n mushop apply -f -
-    apiVersion: networking.k8s.io/v1beta1
+    apiVersion: networking.k8s.io/v1
     kind: Ingress
     metadata:
-    name: mushop
-    annotations:
+      name: mushop
+      annotations:
         kubernetes.io/ingress.class: "nginx"
     spec:
-    tls:
-    - secretName: tls-secret
-    rules:
-    - http:
-        paths:
-        - backend:
-            serviceName: edge
-            servicePort: 80
+      tls:
+      - secretName: tls-secret
+      rules:
+      - http:
+          paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: edge
+                port: 
+                  number: 80
     EOF
     ```
 
@@ -277,21 +281,25 @@ unzip <wallet_zip_file> -d /tmp/wallet_remote
 
     ```bash
     cat << EOF | kubectl -n mushop apply -f -
-    apiVersion: networking.k8s.io/v1beta1
+    apiVersion: networking.k8s.io/v1
     kind: Ingress
     metadata:
-    name: mushop
-    annotations:
+      name: mushop
+      annotations:
         kubernetes.io/ingress.class: "nginx"
     spec:
-    tls:
-    - secretName: tls-secret
-    rules:
-    - http:
-        paths:
-        - backend:
-            serviceName: edge
-            servicePort: 80
+      tls:
+      - secretName: tls-secret
+      rules:
+      - http:
+          paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: edge
+                port: 
+                  number: 80
     EOF
     ```
 
