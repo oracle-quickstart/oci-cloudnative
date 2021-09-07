@@ -135,6 +135,8 @@ As an alternative to manually provisioning, the included [`provision`](https://g
 chart is an application of the open-source [OCI Service Broker](https://github.com/oracle/oci-service-broker)
 for _provisioning_ Oracle Cloud Infrastructure services. This implementation utilizes [Open Service Broker](https://github.com/openservicebrokerapi/servicebroker/blob/v2.14/spec.md) in Oracle Container Engine for Kubernetes or in other Kubernetes clusters.
 
+> **Note:** The OCI Service Broker depends on the Service Catalog, so make sure that you run the setup chart with the `catalog.enabled=true`.
+
 ```shell--linux-macos
 cd deploy/complete/helm-chart
 ```
@@ -160,7 +162,7 @@ secret to the `mushop-utilities` namespace:
 
     ```shell--helm2
     helm install \
-      https://github.com/oracle/oci-service-broker/releases/download/v1.5.2/oci-service-broker-1.5.2.tgz \
+      https://github.com/oracle/oci-service-broker/releases/download/v1.6.0/oci-service-broker-1.6.0.tgz \
       --namespace mushop-utilities \
       --name oci-broker \
       --set ociCredentials.secretName=oci-credentials \
@@ -170,7 +172,7 @@ secret to the `mushop-utilities` namespace:
 
     ```shell--helm3
     helm install oci-broker \
-      https://github.com/oracle/oci-service-broker/releases/download/v1.5.2/oci-service-broker-1.5.2.tgz \
+      https://github.com/oracle/oci-service-broker/releases/download/v1.6.0/oci-service-broker-1.6.0.tgz \
       --namespace mushop-utilities \
       --set ociCredentials.secretName=oci-credentials \
       --set storage.etcd.useEmbedded=true \
