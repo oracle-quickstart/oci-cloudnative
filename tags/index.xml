@@ -6,7 +6,34 @@
     <description>Recent content in Tags on MuShop</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 24 Jun 2020 16:48:49 -0700</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 10 Aug 2021 13:29:23 -0600</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Autonomous Data Guard</title>
+      <link>/tags/autonomous-data-guard/</link>
+      <pubDate>Tue, 10 Aug 2021 13:29:23 -0600</pubDate>
+      
+      <guid>/tags/autonomous-data-guard/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Autonomous Transaction Processing</title>
+      <link>/tags/autonomous-transaction-processing/</link>
+      <pubDate>Tue, 10 Aug 2021 13:29:23 -0600</pubDate>
+      
+      <guid>/tags/autonomous-transaction-processing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Disaster Recovery</title>
+      <link>/tags/disaster-recovery/</link>
+      <pubDate>Tue, 10 Aug 2021 13:29:23 -0600</pubDate>
+      
+      <guid>/tags/disaster-recovery/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Automation</title>
       <link>/tags/automation/</link>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Disaster Recovery on MuShop</title>
+    <link>/disaster-recovery/</link>
+    <description>Recent content in Disaster Recovery on MuShop</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 10 Aug 2021 13:29:23 -0600</lastBuildDate><atom:link href="/disaster-recovery/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Setup</title>
+      <link>/disaster-recovery/setup/</link>
+      <pubDate>Tue, 10 Aug 2021 13:29:23 -0600</pubDate>
+      
+      <guid>/disaster-recovery/setup/</guid>
+      <description>Introduction In this section we detail the steps required to perform a DR solution between us-phoenix-1 and us-ashburn-1 regions. These regions are used as an example, you can choose the regions of your choice.
+Set Environment Variables export COMPARTMENT_ID=&amp;lt;COMPARTMENT_ID&amp;gt; export DB_NAME=demoadb export DB_DISPLAY_NAME=demoadb export DB_PASSWORD=&amp;lt;DB_PASSWORD&amp;gt; export WALLET_PW=&amp;lt;DB_WALLET_PASSWORD&amp;gt; export DB_SERVICE_NAME=${DB_NAME}_tp export WALLET_ZIP=/tmp/Wallet_${DB_NAME}.zip export PRIMARY_REGION=us-phoenix-1 export FAILOVER_REGION=us-ashburn-1  Do refer the autonomous database password criteria&amp;rsquo;s here
+Setup ADB (Autonomous Database)   Create the Source ADB (Autonomous Database)</description>
+    </item>
+    
+  </channel>
+</rss>

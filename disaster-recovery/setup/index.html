@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Setup :: MuShop</title>
+  
+  <meta name="application-name" content="MuShop"/>
+<meta name="description" content="Oracle Cloud Native Workshop">
+<meta name="keywords" content="Kubernetes,OCI,OKE,Microservices">
+
+<meta property="og:title" content="MuShop - Setup" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/disaster-recovery/setup/" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../../icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../icons/favicon-16x16.png">
+  <link rel="manifest" href="../../icons/site.webmanifest">
+  <link rel="mask-icon" href="../../icons/safari-pinned-tab.svg" color="#41727e">
+  <meta name="msapplication-TileColor" content="#c74634">
+  <meta name="theme-color" content="#fcfbfa">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="stylesheet" type="text/css" href="../../sass/main.min.579b1ef900caab9f4034f2fab782c459ab9ddb6c2dd914fed6155812ffd82484.css" integrity="sha256-V5se&#43;QDKq59ANPL6t4LEWaud22wt2RT&#43;1hVYEv/YJIQ=">
+  <link rel="stylesheet" type="text/css" href="../../fonts/fonts.min.58744946497c59fa8a6ac77636ea480457079e54512cf3dcb552592b56503cc1.css" integrity="sha256-WHRJRkl8WfqKasd2NupIBFcHnlRRLPPctVJZK1ZQPME=">
+  <link rel="stylesheet" type="text/css" href="../../sass/mushop.min.c31ca585e7b3a90dfeb2fd0ac2d7d93ff0af82ea19b0cab20c8539d987761606.css" integrity="sha256-wxylheezqQ3&#43;sv0KwtfZP/CvguoZsMqyDIU52Yd2FgY=">
+</head>
+
+  <body class="" data-url="../../disaster-recovery/setup/">
+    
+<div class="uk-navbar-container uk-hidden@s">
+  <div class="">
+    <nav role="navigation" class="uk-light uk-navbar" uk-navbar>
+      <div class="uk-navbar-left">
+        <a href="../../index.html" class="uk-navbar-item uk-logo">
+          <img
+            alt="MuShop"
+            class="uk-width-small"
+            src="../../images/logo.dark.png">
+        </a>
+      </div>
+      <div class="uk-navbar-right">
+        <a class="uk-navbar-toggle" uk-navbar-toggle-icon uk-toggle="target: #navigation"></a>
+      </div>
+    </nav>
+  </div>
+</div>
+
+
+<div class="uk-grid">
+  
+  
+  <aside
+    id="navigation"
+    class="rw-sidebar uk-offcanvas uk-width-1-1 uk-width-1-3@s uk-width-1-4@m uk-width-1-5@l uk-width-1-6@xl uk-light uk-padding-remove"
+    uk-offcanvas="overlay: true;">
+    <div class="uk-offcanvas-bar uk-padding-small">
+      
+      
+      <section>
+        <div class="uk-margin-bottom uk-visible@s">
+          <a href="../../index.html" class="uk-logo">
+            <img src="../../images/logo.dark.png" alt="MuShop">
+          </a>
+        </div>
+        <div class="uk-margin-bottom">
+          <form class="uk-search uk-search-default uk-width-expand">
+  <span class="uk-search-icon-flip" uk-search-icon></span>
+  <input id="search" class="uk-search-input uk-width-expand" type="search" placeholder="Search...">
+</form>
+<div id="search-results" class="uk-background-primary uk-text-small"></div>
+        </div>
+        <ul class="uk-nav uk-nav-primary" uk-nav="multiple: true; toggle: > a .uk-icon">
+          <li class="uk-nav-divider"></li>
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/introduction/" title="Introduction" class="">
+    <a href="../../introduction/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Introduction</div>
+      </div>
+    </a>
+    
+    
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/quickstart/" title="Getting Started" class=" uk-parent">
+    <a href="../../quickstart/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Getting Started</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
+      </div>
+    </a>
+    
+    
+    <ul class="uk-nav-sub">
+      
+      
+      
+      
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/quickstart/basic/" title="Always Free" class="">
+      <a href="../../quickstart/basic/" class="uk-text-truncate">
+        Always Free
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/quickstart/kubernetes/" title="Kubernetes Deployment" class="">
+      <a href="../../quickstart/kubernetes/" class="uk-text-truncate">
+        Kubernetes Deployment
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+    </ul>
+  
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/cloud/" title="Cloud Infrastructure" class=" uk-parent">
+    <a href="../../cloud/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Cloud Infrastructure</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
+      </div>
+    </a>
+    
+    
+    <ul class="uk-nav-sub">
+      
+      
+      
+      
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/cloud/prerequisites/" title="Prerequisites" class="">
+      <a href="../../cloud/prerequisites/" class="uk-text-truncate">
+        Prerequisites
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/cloud/setup/" title="Setup" class="">
+      <a href="../../cloud/setup/" class="uk-text-truncate">
+        Setup
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/cloud/deployment/" title="Deployment" class="">
+      <a href="../../cloud/deployment/" class="uk-text-truncate">
+        Deployment
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+    </ul>
+  
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/observability/" title="Observability" class=" uk-parent">
+    <a href="../../observability/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Observability</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
+      </div>
+    </a>
+    
+    
+    <ul class="uk-nav-sub">
+      
+      
+        
+      
+      
+      
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/observability/monitoring/" title="Grafana Monitoring" class="">
+      <a href="../../observability/monitoring/" class="uk-text-truncate">
+        Grafana Monitoring
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/observability/istio/" title="Istio Service Mesh" class="">
+      <a href="../../observability/istio/" class="uk-text-truncate">
+        Istio Service Mesh
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/observability/canary/" title="Canary Deployment" class="">
+      <a href="../../observability/canary/" class="uk-text-truncate">
+        Canary Deployment
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/observability/oci-monitoring/" title="OCI Monitoring" class="">
+      <a href="../../observability/oci-monitoring/" class="uk-text-truncate">
+        OCI Monitoring
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/observability/oci-healthcheck/" title="OCI Health Checks" class="">
+      <a href="../../observability/oci-healthcheck/" class="uk-text-truncate">
+        OCI Health Checks
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+  
+  
+  <li data-nav-id="/observability/observability-example/" title="Observability Example" class=" uk-parent">
+    <a href="../../observability/observability-example/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Observability Example</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
+      </div>
+    </a>
+    
+    
+    <ul class="uk-nav-sub">
+      
+      
+      
+      
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/observability/observability-example/setup/" title="Setup" class="">
+      <a href="../../observability/observability-example/setup/" class="uk-text-truncate">
+        Setup
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/observability/observability-example/usecase/" title="Use Case" class="">
+      <a href="../../observability/observability-example/usecase/" class="uk-text-truncate">
+        Use Case
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+    </ul>
+  
+  </li>
+  
+
+ 
+
+        
+      
+    </ul>
+  
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/disaster-recovery/" title="Disaster Recovery" class=" uk-parent uk-open">
+    <a href="../../disaster-recovery/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Disaster Recovery</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
+      </div>
+    </a>
+    
+    
+    <ul class="uk-nav-sub">
+      
+      
+      
+      
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/disaster-recovery/setup/" title="Setup" class="uk-active">
+      <a href="../../disaster-recovery/setup/" class="uk-text-truncate">
+        Setup
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+    </ul>
+  
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/extras/" title="Extras" class=" uk-parent">
+    <a href="../../extras/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Extras</div><span class="uk-flex-none" uk-icon="icon: triangle-right; ratio: 1.5"></span>
+      </div>
+    </a>
+    
+    
+    <ul class="uk-nav-sub">
+      
+      
+      
+      
+      
+        
+        
+
+
+  
+    
+    <li data-nav-id="/extras/jenkins/" title="Jenkins" class="">
+      <a href="../../extras/jenkins/" class="uk-text-truncate">
+        Jenkins
+      </a>
+    </li>
+    
+  
+
+ 
+
+        
+      
+    </ul>
+  
+  </li>
+  
+
+ 
+
+          
+            
+
+
+  
+  
+  
+  <li data-nav-id="/cleanup/" title="Cleanup" class="">
+    <a href="../../cleanup/">
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="uk-text-truncate">Cleanup</div>
+      </div>
+    </a>
+    
+    
+  </li>
+  
+
+ 
+
+          
+          <li class="uk-nav-divider"></li>
+        </ul>
+      </section>
+      
+      <section>
+        <ul class="uk-nav uk-nav-default" uk-nav>
+          
+          
+          <li>
+            <a title="More Information" href="../../resources" class="uk-text-truncate">
+              <span uk-icon='icon: info; ratio: 1.25'></span>
+              <span class="uk-text-middle">More Information</span>
+              
+            </a>
+          </li>
+          <li>
+            <a title="Acknowledgements" href="../../acknowledgements" class="uk-text-truncate">
+              <span uk-icon='icon: users; ratio: 1.25'></span>
+              <span class="uk-text-middle">Acknowledgements</span>
+              
+            </a>
+          </li>
+          <li>
+            <a title="Tags" href="../../tags" class="uk-text-truncate">
+              <span uk-icon='icon: tag; ratio: 1.25'></span>
+              <span class="uk-text-middle">Tags</span>
+              
+            </a>
+          </li>
+          <li>
+            <a title="GitHub Source" href="https://github.com/oracle-quickstart/oci-cloudnative" class="uk-text-truncate">
+              <span uk-icon='icon: github; ratio: 1.25'></span>
+              <span class="uk-text-middle">GitHub Source</span>
+              
+            </a>
+          </li>
+          <li>
+            <a title="Report Issue" href="https://github.com/oracle-quickstart/oci-cloudnative/issues" class="uk-text-truncate">
+              <span uk-icon='icon: warning; ratio: 1.25'></span>
+              <span class="uk-text-middle">Report Issue</span>
+              
+            </a>
+          </li>
+            <li>
+              <a title='Edit this page' href="https://github.com/oracle-quickstart/oci-cloudnative/tree/master/src/docs/content/disaster-recovery/setup.md" target="blank">
+                <span uk-icon="pencil"></span>
+                <span class="uk-text-middle">Edit this page</span>
+              </a>
+            </li>
+            
+          
+        </ul>
+      </section>
+      <section class="uk-margin-top">
+        <hr>
+        <ul id="rw-settings" class="uk-nav uk-nav-default" uk-nav>
+  <li class="uk-grid uk-grid-small uk-flex-middle uk-flex-between uk-flex-nowrap uk-text-nowrap">
+  <div class="uk-width-1-4">
+    
+    <span>Theme</span>
+  </div>
+  <div class="uk-button-group rw-setting"
+    setting="theme"
+    target="html, .content-container" ><button class="uk-button uk-button-small uk-button-secondary
+    uk-active" toggle="uk-background-default" >
+      Light
+    </button><button class="uk-button uk-button-small uk-button-secondary
+    " toggle="uk-light uk-background-secondary" >
+      Dark
+    </button></div>
+</li>
+
+
+  <li class="uk-grid uk-grid-small uk-flex-middle uk-flex-between uk-flex-nowrap uk-text-nowrap">
+  <div class="uk-width-1-4">
+    
+    <span>OS</span>
+  </div>
+  <div class="uk-button-group rw-setting"
+    setting="platform"
+    target="html" ><button class="uk-button uk-button-small uk-button-secondary
+    uk-active" toggle="stg-os-macos" >
+      Mac
+    </button><button class="uk-button uk-button-small uk-button-secondary
+    " toggle="stg-os-linux" >
+      Linux
+    </button><button class="uk-button uk-button-small uk-button-secondary
+    " toggle="stg-os-windows" >
+      Windows
+    </button></div>
+</li>
+<li class="uk-grid uk-grid-small uk-flex-middle uk-flex-between uk-flex-nowrap uk-text-nowrap">
+  <div class="uk-width-1-4">
+    
+    <span>Helm</span>
+  </div>
+  <div class="uk-button-group rw-setting"
+    setting="helm"
+    target="html" ><button class="uk-button uk-button-small uk-button-secondary
+    uk-active" toggle="stg-helm-3" >
+      3.x
+    </button><button class="uk-button uk-button-small uk-button-secondary
+    " toggle="stg-helm-2" >
+      2.x
+    </button></div>
+</li>
+</ul>
+
+
+
+      </section>
+      <section class="uk-text-small uk-text-lighter uk-margin-top">
+        <hr>
+        <div class="uk-text-muted">
+  <div class="uk-margin-small">
+    Made with <span uk-icon="icon: heart; ratio: 0.75"></span> by Oracle Developers
+  </div>
+  Copyright © 2021 Oracle and/or its affiliates. All rights reserved.
+</div>
+      </section>
+    </div>
+  </aside>
+  
+  <div class="uk-width-1-1 uk-width-1-3@s uk-width-1-4@m uk-width-1-5@l uk-width-1-6@xl uk-visible@s"></div>
+
+
+
+    <div class="content-container uk-width-expand">
+      <div class="uk-position-relative">
+        <div id="content" class="uk-grid uk-container-xlarge" uk-grid>
+          
+
+<div class="uk-flex-last uk-width-1-4 uk-visible@l">
+  <aside id="toc-nav" uk-sticky="offset: 40">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#introduction">Introduction</a>
+          <ul>
+            <li><a href="#set-environment-variables">Set Environment Variables</a></li>
+            <li><a href="#setup-adb-autonomous-database">Setup ADB (Autonomous Database)</a></li>
+          </ul>
+        </li>
+        <li><a href="#create-oke-oracle-cloud-infrastructure-container-engine-for-kubernetes-clusters">Create OKE (Oracle Cloud Infrastructure Container Engine for Kubernetes) clusters</a>
+          <ul>
+            <li><a href="#setup-mushop-on-source-us-phoenix-1">Setup Mushop on Source (<code>us-phoenix-1</code>)</a></li>
+            <li><a href="#perform-autonomous-transaction-processing-atp-failover">Perform Autonomous Transaction Processing (ATP) Failover</a></li>
+            <li><a href="#mushop-setup-disaster-recovery-dr-site-us-ashburn-1">MuShop Setup (Disaster Recovery (DR) site <code>us-ashburn-1</code>)</a></li>
+            <li><a href="#verify-the-application-at-dr">Verify the application at DR</a></li>
+            <li><a href="#dr-testing">DR Testing</a></li>
+            <li><a href="#waf-and-dns-traffic-steering">WAF and DNS traffic steering</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    <hr/>
+    
+  <div>
+    
+    <a class="uk-label" href="../../tags/autonomous-data-guard">
+      <span uk-icon="tag"></span>
+      Autonomous Data Guard
+    </a>
+    
+    <a class="uk-label" href="../../tags/autonomous-transaction-processing">
+      <span uk-icon="tag"></span>
+      Autonomous Transaction Processing
+    </a>
+    
+    <a class="uk-label" href="../../tags/disaster-recovery">
+      <span uk-icon="tag"></span>
+      Disaster Recovery
+    </a>
+    
+  </div>
+
+  </aside>
+</div>
+
+
+          <main class="uk-width-expand">
+            <header>
+  
+  
+    <ul class="uk-breadcrumb uk-margin-top uk-text-small">
+    
+  
+  <li><a href='../../'>Home</a></li> <li><a href='../../disaster-recovery/'>Disaster Recovery</a></li> <li>Setup</li>
+    </ul></header>
+
+
+
+            <h1 class="rw-accent">Setup</h1>
+              
+  <h2 id="introduction">Introduction</h2>
+<p>In this section we detail the steps required to perform a DR solution between
+<code>us-phoenix-1</code> and <code>us-ashburn-1</code> regions. These regions are used as an example,
+you can choose the regions of your choice.</p>
+<h3 id="set-environment-variables">Set Environment Variables</h3>
+<pre><code>export COMPARTMENT_ID=&lt;COMPARTMENT_ID&gt;
+export DB_NAME=demoadb
+export DB_DISPLAY_NAME=demoadb
+export DB_PASSWORD=&lt;DB_PASSWORD&gt;
+export WALLET_PW=&lt;DB_WALLET_PASSWORD&gt;
+export DB_SERVICE_NAME=${DB_NAME}_tp
+export WALLET_ZIP=/tmp/Wallet_${DB_NAME}.zip  
+export PRIMARY_REGION=us-phoenix-1
+export FAILOVER_REGION=us-ashburn-1
+</code></pre>
+<p>Do refer the autonomous database password criteria&rsquo;s <a href="https://docs.oracle.com/en/cloud/paas/autonomous-database/adbsa/manage-users-create.html#GUID-72DFAF2A-C4C3-4FAC-A75B-846CC6EDBA3F">here</a></p>
+<h3 id="setup-adb-autonomous-database">Setup ADB (Autonomous Database)</h3>
+<ul>
+<li>
+<p>Create the Source ADB (Autonomous Database)</p>
+<pre><code> oci db autonomous-database create --compartment-id ${COMPARTMENT_ID} \
+ --db-name ${DB_NAME} --admin-password ${DB_PASSWORD} --db-version 19c \
+ --cpu-core-count 1 --data-storage-size-in-tbs 1 \
+ --display-name ${DB_DISPLAY_NAME} --region ${PRIMARY_REGION}
+</code></pre></li>
+<li>
+<p>Fetch the Source ADB (Autonomous Database) OCID</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"> <span class="nv">DB_ID</span><span class="o">=</span><span class="k">$(</span>oci db autonomous-database list -c <span class="si">${</span><span class="nv">COMPARTMENT_ID</span><span class="si">}</span> <span class="se">\
+</span><span class="se"></span> --region <span class="si">${</span><span class="nv">PRIMARY_REGION</span><span class="si">}</span> --display-name <span class="nv">$DB_NAME</span> <span class="se">\
+</span><span class="se"></span> --query <span class="s2">&#34;data[?\&#34;db-name\&#34;==&#39;</span><span class="si">${</span><span class="nv">DB_NAME</span><span class="si">}</span><span class="s2">&#39;].id | [0]&#34;</span> --raw-output<span class="k">)</span>
+</code></pre></div></li>
+<li>
+<p>Create the DR ADB (Autonomous Database)</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"> oci db autonomous-database create-adb-cross-region-data-guard-details <span class="se">\
+</span><span class="se"></span> --compartment-id <span class="si">${</span><span class="nv">COMPARTMENT_ID</span><span class="si">}</span> --db-name <span class="si">${</span><span class="nv">DB_NAME</span><span class="si">}</span> --source-id <span class="si">${</span><span class="nv">DB_ID</span><span class="si">}</span> <span class="se">\
+</span><span class="se"></span> --cpu-core-count <span class="m">1</span> --data-storage-size-in-tbs <span class="m">1</span> <span class="se">\
+</span><span class="se"></span> --region <span class="si">${</span><span class="nv">FAILOVER_REGION</span><span class="si">}</span> --db-version 19c
+</code></pre></div></li>
+<li>
+<p>Download and extract autonomous database wallet from source ADB</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"> oci db autonomous-database generate-wallet --autonomous-database-id <span class="si">${</span><span class="nv">DB_ID</span><span class="si">}</span><span class="se">\
+</span><span class="se"></span>  --password <span class="si">${</span><span class="nv">WALLET_PW</span><span class="si">}</span> --file <span class="si">${</span><span class="nv">WALLET_ZIP</span><span class="si">}</span> --region <span class="nv">$PRIMARY_REGION</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"> unzip <span class="si">${</span><span class="nv">WALLET_ZIP</span><span class="si">}</span> -d /tmp/wallet_source
+</code></pre></div></li>
+</ul>
+<div uk-alert class="uk-alert-information uk-grid uk-grid-collapse uk-flex-nowrap "><span uk-icon="icon: information; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span><div class="uk-width-expand">
+<p>Keep this wallet handy as we will need to add it as OKE secret later on.</p>
+<p>The database wallet on standby(DR) will not be available for download until the failover.
+The wallet has to be separately downloaded for primary and remote region&rsquo;s as tnsnames.ora DNS entries are different.</p>
+</div></div>
+<h2 id="create-oke-oracle-cloud-infrastructure-container-engine-for-kubernetes-clusters">Create OKE (Oracle Cloud Infrastructure Container Engine for Kubernetes) clusters</h2>
+<p>Follow the instructions provided <a href="https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/index.html#DefineClusterDetails">here</a> on both primary and DR sites.</p>
+<h3 id="setup-mushop-on-source-us-phoenix-1">Setup Mushop on Source (<code>us-phoenix-1</code>)</h3>
+<ul>
+<li>
+<p>Update chart dependencies</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> oci-cloudnative/deploy/complete/helm-chart 
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">helm dependency update ./setup 
+</code></pre></div></li>
+<li>
+<p>Install Setup Charts</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">helm install mushop-utils setup --namespace mushop-utilities --create-namespace
+</code></pre></div></li>
+<li>
+<p>Create MuShop namespace</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl create namespace mushop
+</code></pre></div></li>
+<li>
+<p>Add the following secrets</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl create secret generic oci-credentials <span class="se">\
+</span><span class="se"></span>    --namespace mushop <span class="se">\
+</span><span class="se"></span>    --from-literal<span class="o">=</span><span class="nv">tenancy</span><span class="o">=</span>&lt;TENANCY_OCID&gt; <span class="se">\
+</span><span class="se"></span>    --from-literal<span class="o">=</span><span class="nv">user</span><span class="o">=</span>&lt;USER_OCID&gt; <span class="se">\
+</span><span class="se"></span>    --from-literal<span class="o">=</span><span class="nv">region</span><span class="o">=</span>&lt;USER_OCI_REGION&gt; <span class="se">\
+</span><span class="se"></span>    --from-literal<span class="o">=</span><span class="nv">fingerprint</span><span class="o">=</span>&lt;USER_PUBLIC_API_KEY_FINGERPRINT&gt; <span class="se">\
+</span><span class="se"></span>    --from-literal<span class="o">=</span><span class="nv">passphrase</span><span class="o">=</span>&lt;PASSPHRASE_STRING&gt; <span class="se">\
+</span><span class="se"></span>    --from-file<span class="o">=</span><span class="nv">privatekey</span><span class="o">=</span>&lt;PATH_OF_USER_PRIVATE_API_KEY&gt;
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl create secret generic oadb-admin <span class="se">\
+</span><span class="se"></span>    --namespace mushop <span class="se">\
+</span><span class="se"></span>    --from-literal<span class="o">=</span><span class="nv">oadb_admin_pw</span><span class="o">=</span><span class="si">${</span><span class="nv">DB_PASSWORD</span><span class="si">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl create secret generic oadb-wallet <span class="se">\
+</span><span class="se"></span>    --namespace mushop --from-file<span class="o">=</span>/tmp/wallet_source
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl create secret generic oadb-connection <span class="se">\
+</span><span class="se"></span>    --namespace mushop <span class="se">\
+</span><span class="se"></span>    --from-literal<span class="o">=</span><span class="nv">oadb_wallet_pw</span><span class="o">=</span><span class="si">${</span><span class="nv">WALLET_PW</span><span class="si">}</span> <span class="se">\
+</span><span class="se"></span>    --from-literal<span class="o">=</span><span class="nv">oadb_service</span><span class="o">=</span><span class="si">${</span><span class="nv">DB_SERVICE_NAME</span><span class="si">}</span>
+</code></pre></div></li>
+<li>
+<p>Edit/Add the following secrets to values-prod.yaml as shown below</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">cat mushop/values-prod.yaml
+</code></pre></div><p>Sample Output:</p>
+<pre><code>global:
+ociAuthSecret: oci-credentials        # OCI authentication credentials secret name
+ossStreamSecret:                      # Name of Stream Connection secret
+oadbAdminSecret: oadb-admin           # Name of DB Admin secret created earlier
+oadbWalletSecret: oadb-wallet         # Name of wallet secret created earlier
+oadbConnectionSecret: oadb-connection # Name of connection secret created earlier
+</code></pre></li>
+<li>
+<p>Install MuShop</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">helm install -f ./mushop/values-prod.yaml <span class="se">\
+</span><span class="se"></span>mymushop mushop -n mushop
+</code></pre></div></li>
+<li>
+<p>Setup the ingress
+A TLS secret is used for SSL termination on the ingress controller. To generate the secret for this example, a self-signed certificate is used. While this is okay for testing, for production, use a certificate signed by a Certificate Authority.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">openssl req -x509 -nodes -days <span class="m">365</span> <span class="se">\
+</span><span class="se"></span>-newkey rsa:2048 -keyout tls.key <span class="se">\
+</span><span class="se"></span>-out tls.crt -subj <span class="s2">&#34;/CN=nginxsvc/O=nginxsvc&#34;</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl create secret tls tls-secret --key tls.key --cert tls.crt -n mushop
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">cat <span class="s">&lt;&lt; EOF | kubectl -n mushop apply -f -
+</span><span class="s">apiVersion: networking.k8s.io/v1
+</span><span class="s">kind: Ingress
+</span><span class="s">metadata:
+</span><span class="s">  name: mushop
+</span><span class="s">  annotations:
+</span><span class="s">    kubernetes.io/ingress.class: &#34;nginx&#34;
+</span><span class="s">spec:
+</span><span class="s">  tls:
+</span><span class="s">  - secretName: tls-secret
+</span><span class="s">  rules:
+</span><span class="s">  - http:
+</span><span class="s">      paths:
+</span><span class="s">      - path: /
+</span><span class="s">        pathType: Prefix
+</span><span class="s">        backend:
+</span><span class="s">          service:
+</span><span class="s">            name: edge
+</span><span class="s">            port: 
+</span><span class="s">              number: 80
+</span><span class="s">EOF</span>
+</code></pre></div></li>
+<li>
+<p>Access the Source MuShop application using the ingress IP</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl get svc mushop-utils-ingress-nginx-controller <span class="se">\
+</span><span class="se"></span>--namespace mushop-utilities
+</code></pre></div></li>
+<li>
+<p>Verify the application at Source</p>
+<p>Access <code>https://&lt;primary-site-ingress-ip-address&gt;</code> and ensure that you would
+see the all the MuShop catalogue products listed without errors.</p>
+</li>
+</ul>
+<h3 id="perform-autonomous-transaction-processing-atp-failover">Perform Autonomous Transaction Processing (ATP) Failover</h3>
+<p>Go to OCI console and perform a failover.</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">OCI-Console -&gt; Oracle Database -&gt; Autonomous Transaction Processing (Standby db: `us-ashburn-1`) -&gt; Switchover
+</code></pre></div><div uk-alert class="uk-alert-information uk-grid uk-grid-collapse uk-flex-nowrap "><span uk-icon="icon: information; ratio: 1.2" class="uk-margin-small-right uk-flex-none"></span><div class="uk-width-expand">
+<p>Wait until the switchover completes fully and there are no &lsquo;role change in progress&rsquo;
+status on either side (Primary and Standby).</p>
+</div></div>
+<h3 id="mushop-setup-disaster-recovery-dr-site-us-ashburn-1">MuShop Setup (Disaster Recovery (DR) site <code>us-ashburn-1</code>)</h3>
+<p>Change your OKE cluster to point to DR. If you don&rsquo;t have a DR OKE cluster setup yet then refer to the <a href="#create-oke-oracle-cloud-infrastructure-container-engine-for-kubernetes-clusters">Create OKE clusters</a>
+section and create a OKE cluster at the DR region.</p>
+<ul>
+<li>Download and extract the DR ADB wallet</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">OCI-Console -&gt; Oracle Database -&gt; Autonomous Transaction Processing (Standby db: `us-ashburn-1`) -&gt; DB Connection -&gt; Download wallet
+</code></pre></div><p>Extract the wallet</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">unzip &lt;wallet_zip_file&gt; -d /tmp/wallet_remote
+</code></pre></div><ul>
+<li>
+<p>Create the secrets, set the region as <code>us-ashburn-1</code> in this case</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl create secret generic oci-credentials <span class="se">\
+</span><span class="se"></span>    --namespace mushop <span class="se">\
+</span><span class="se"></span>    --from-literal<span class="o">=</span><span class="nv">tenancy</span><span class="o">=</span>&lt;TENANCY_OCID&gt; <span class="se">\
+</span><span class="se"></span>    --from-literal<span class="o">=</span><span class="nv">user</span><span class="o">=</span>&lt;USER_OCID&gt; <span class="se">\
+</span><span class="se"></span>    --from-literal<span class="o">=</span><span class="nv">region</span><span class="o">=</span>&lt;USER_OCI_REGION&gt; <span class="se">\
+</span><span class="se"></span>    --from-literal<span class="o">=</span><span class="nv">fingerprint</span><span class="o">=</span>&lt;USER_PUBLIC_API_KEY_FINGERPRINT&gt; <span class="se">\
+</span><span class="se"></span>    --from-literal<span class="o">=</span><span class="nv">passphrase</span><span class="o">=</span>&lt;PASSPHRASE_STRING&gt; <span class="se">\
+</span><span class="se"></span>    --from-file<span class="o">=</span><span class="nv">privatekey</span><span class="o">=</span>&lt;PATH_OF_USER_PRIVATE_API_KEY&gt;
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl create secret generic oadb-wallet <span class="se">\
+</span><span class="se"></span>    --namespace mushop   --from-file<span class="o">=</span>/tmp/wallet_remote
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl create secret generic oadb-admin <span class="se">\
+</span><span class="se"></span>    --namespace mushop <span class="se">\
+</span><span class="se"></span>    --from-literal<span class="o">=</span><span class="nv">oadb_admin_pw</span><span class="o">=</span><span class="si">${</span><span class="nv">DB_PASSWORD</span><span class="si">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl create secret generic oadb-connection <span class="se">\
+</span><span class="se"></span>    --namespace mushop <span class="se">\
+</span><span class="se"></span>    --from-literal<span class="o">=</span><span class="nv">oadb_wallet_pw</span><span class="o">=</span><span class="si">${</span><span class="nv">WALLET_PW</span><span class="si">}</span> <span class="se">\
+</span><span class="se"></span>    --from-literal<span class="o">=</span><span class="nv">oadb_service</span><span class="o">=</span><span class="si">${</span><span class="nv">DB_SERVICE_NAME</span><span class="si">}</span>
+</code></pre></div></li>
+<li>
+<p>Edit/Add the following secrets to values-prod.yaml as shown below</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">cat mushop/values-prod.yaml
+</code></pre></div><p>Sample Output:</p>
+<pre><code>global:
+ociAuthSecret: oci-credentials        # OCI authentication credentials secret name
+ossStreamSecret:                      # Name of Stream Connection secret
+oadbAdminSecret: oadb-admin           # Name of DB Admin secret created earlier
+oadbWalletSecret: oadb-wallet         # Name of wallet secret created earlier
+oadbConnectionSecret: oadb-connection # Name of connection secret created earlier
+</code></pre></li>
+<li>
+<p>Install MuShop</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">helm install -f ./mushop/values-prod.yaml <span class="se">\
+</span><span class="se"></span>mymushop mushop -n mushop
+</code></pre></div></li>
+<li>
+<p>Set up the ingress (On DR <code>us-ashburn-1</code>)</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">openssl req -x509 -nodes -days <span class="m">365</span> <span class="se">\
+</span><span class="se"></span> -newkey rsa:2048 -keyout tls.key <span class="se">\
+</span><span class="se"></span> -out tls.crt -subj <span class="s2">&#34;/CN=nginxsvc/O=nginxsvc&#34;</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl create secret tls <span class="se">\
+</span><span class="se"></span>tls-secret --key tls.key --cert tls.crt -n mushop
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">cat <span class="s">&lt;&lt; EOF | kubectl -n mushop apply -f -
+</span><span class="s">apiVersion: networking.k8s.io/v1
+</span><span class="s">kind: Ingress
+</span><span class="s">metadata:
+</span><span class="s">  name: mushop
+</span><span class="s">  annotations:
+</span><span class="s">    kubernetes.io/ingress.class: &#34;nginx&#34;
+</span><span class="s">spec:
+</span><span class="s">  tls:
+</span><span class="s">  - secretName: tls-secret
+</span><span class="s">  rules:
+</span><span class="s">  - http:
+</span><span class="s">      paths:
+</span><span class="s">      - path: /
+</span><span class="s">        pathType: Prefix
+</span><span class="s">        backend:
+</span><span class="s">          service:
+</span><span class="s">            name: edge
+</span><span class="s">            port: 
+</span><span class="s">              number: 80
+</span><span class="s">EOF</span>
+</code></pre></div></li>
+</ul>
+<h3 id="verify-the-application-at-dr">Verify the application at DR</h3>
+<pre><code>kubectl get svc mushop-utils-ingress-nginx-controller -n mushop-utilities
+</code></pre>
+<p>Access <code>https://&lt;dr-site-ingress-ip-address&gt;</code> and ensure that you would see the
+all the MuShop catalogue products listed without errors.</p>
+<h3 id="dr-testing">DR Testing</h3>
+<p>Notice that the source (<code>us-phoenix-1</code>) site has lost access to all the
+products within Mushop and the DR site has access to all the products as we switched over.</p>
+<p>You can then ADB fail back to the primary site (<code>us-phoenix-1</code>) in this case and
+observe the opposite behavior.</p>
+<h3 id="waf-and-dns-traffic-steering">WAF and DNS traffic steering</h3>
+<p>Further, we can add WAF and DNS traffic steering policy to automatically switch
+the DNS from Source site to Destination site. For this we make use of creating
+a http healthcheck monitor on <code>https://&lt;primary-site-ingress-ip-address&gt;/api/catalogue</code>.
+When we failover the ATP (Autonomous Database) manually or when there is a disaster at
+Primary site, this check would then fail and automatically change the DNS to point to DR
+Ingress IP. The procedure to setup WAF and DNS are not included as part of this lab.</p>
+
+
+            </main>
+          </div> 
+        </div> 
+      </div> 
+    </div> 
+    
+<footer class="uk-position-fixed uk-position-bottom">
+  <div class="uk-grid">
+    
+    
+    <div class="uk-width-1-1 uk-width-1-3@s uk-width-1-4@m uk-width-1-5@l uk-width-1-6@xl uk-visible@s"></div>
+    <div class="uk-width-expand">
+      <div>
+      
+      
+      
+      
+
+
+  
+    
+    
+  
+
+  
+  
+  
+    
+  
+
+  
+  
+    
+
+
+  
+    
+      
+      
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+    
+  
+
+  
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+
+
+  
+
+
+  
+    
+
+
+  
+    
+    
+  
+
+  
+  
+  
+
+  
+  
+    
+
+
+  
+    
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+
+
+  
+    
+
+
+  
+    
+      
+      
+    
+  
+
+  
+  
+  
+
+  
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+
+
+  
+    
+
+
+  
+    
+  
+
+  
+  
+  
+
+  
+  
+
+
+  
+
+
+        <div class="uk-flex uk-flex-between uk-margin-top">
+          <a href="../../disaster-recovery/" title="Disaster Recovery" class="rw-page-prev uk-flex-first uk-flex uk-flex-left uk-flex-middle uk-text-truncate">
+            <span uk-icon="icon: chevron-left; ratio: 2.5" class="uk-margin-small-right uk-flex-none"></span>
+            <label class="uk-visible@m">Disaster Recovery</label>
+          </a><span></span>
+          <a href="../../extras/" title="Extras" class="rw-page-next uk-flex-last uk-flex uk-flex-right uk-flex-middle uk-flex-last uk-text-truncate">
+            <label class="uk-visible@m">Extras</label>
+            <span uk-icon="icon: chevron-right; ratio: 2.5" class="uk-margin-small-left uk-flex-none"></span>
+          </a></div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <script type="text/javascript">
+  (function(w, s) {
+    Object.assign(s, {
+      BaseURL: '',
+      RelURL: '\/',
+      cssConfig: {
+        table: 'uk-table uk-table-small uk-table-striped',
+        '#TableOfContents > ul': 'uk-nav uk-nav-default uk-nav-parent-icon',
+        '#TableOfContents > ul ul': 'uk-nav-sub',
+      },
+      uikit: {
+        '#TableOfContents > ul': ['scrollspyNav', { closest: 'li', offset: 10 }],
+        
+      }
+    });
+  })(window, window.Site = window.Site || {});
+</script>
+
+<script src="../../js/vendor.min.635fbc23a7f80d0fcee6728a32611ece1edb8302f818f627011b23dc8de8c6d4.js" ></script><script src="../../js/extras.min.a9bf7ac5b6f2ffe1f85649105cb5f3065ab48c7ce45fa8efd51bce9622933221.js"  async></script><script src="../../js/site.min.5a6d5008222f09cfe0ff51eb81d80c68d7d2fa56fa9ea1dd327f239f4c5d044d.js"  async></script>
+  </body>
+</html>
