@@ -1,5 +1,21 @@
 # CHANGELOG
 
+2021-07-28 (v3.0.1)
+
+- Terraform OCI Provider Updated to the latest
+- Updates the Cluster Utilities Helm charts versions
+- Updated Kubernetes versions available (1.20.8, 1.19.12 and 1.18.10). "Latest" will always get the latest available, even if not listed.
+- Change the default deployment behavior of the Functions to False.
+
+    **Note:** only supports the Ashburn-1 region (Temporary workaround until next drop that will support all regions for Functions. Limitation on the Oracle Function deployment)
+
+2021-06-22 (v3.0.0)
+
+- Updated to use Terraform 1.0.x
+- Sensitive fields special treatment
+- Terraform providers updated to use newer supported versions. (ORM now is supporting the latest)
+- Removal of compatibility workarounds for old/deprecated TF providers
+
 2021-06-09 (v2.4.0)
 
 - E-mail newsletter service included on the stack

@@ -7,7 +7,7 @@ resource "kubernetes_namespace" "mushop_namespace" {
   metadata {
     name = "mushop"
   }
-  depends_on = [oci_containerengine_node_pool.oke_node_pool]
+  depends_on = [oci_containerengine_node_pool.oke_node_pool, local_file.kubeconfig]
 }
 
 # Deploy mushop chart
@@ -68,7 +68,7 @@ resource "helm_release" "mushop" {
 
   set {
     name  = "api.env.newsletterSubscribeUrl"
-    value = "${oci_apigateway_deployment.newsletter_subscription.0.endpoint}/subscribe"
+    value = var.create_new_oke_cluster ? (var.newsletter_subscription_enabled ? "${oci_apigateway_deployment.newsletter_subscription.0.endpoint}/subscribe" : "") : ""
   }
 
   depends_on = [helm_release.ingress_nginx, helm_release.cert_manager] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.

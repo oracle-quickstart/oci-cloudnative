@@ -208,11 +208,22 @@ export class MuAttr extends MuMx.compose(null, MuCtxInheritOnly, MuCtxAttrMixin)
   }
 
   refresh() {
-    const bools = ['disabled', 'checked', 'selected', 'hidden'];
+    const bools = ['disabled', 'checked', 'hidden'];
+    const selects = ['selected', 'value'];
     this.getAttrs().forEach(p => {
       const bool = !!~bools.indexOf(p.to);
       const val = bool ? this._ctxAttrBool(p.src) : this._ctxAttrValue(p.src);
-      return (val || val === 0) ? this.node.setAttribute(p.to, val) : this.node.removeAttribute(p.to);
+      
+      if (this.node.nodeName === 'SELECT' && ~selects.indexOf(p.to)) {
+        Array.apply(null, this.node.querySelectorAll('option'))
+          .forEach(opt => {
+            return val == opt.getAttribute('value') ?
+              opt.setAttribute('selected', true) :
+              opt.removeAttribute('selected');
+          })
+      } else {
+        return (val || val === 0) ? this.node.setAttribute(p.to, val) : this.node.removeAttribute(p.to);
+      }
     });
   }
 }

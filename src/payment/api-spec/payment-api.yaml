@@ -1,0 +1,70 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: Payment service
+  description: 'Provides payment authorization service and blocks order > $105.'
+  license:
+    name: UPL-1.0
+    url: https://github.com/oracle/oci-quickstart-cloudnative/blob/master/LICENSE
+externalDocs:
+  description: Find out more about MuShop
+  url: https://oracle-quickstart.github.io/oci-cloudnative/
+servers:
+- url: http://localhost:8080
+- url: https://mushop_basic_lb_host/api
+- url: https://mushop.ateam.cloud/api
+tags:
+- name: Payment
+  description: Payment Authorization service
+  externalDocs:
+    description: Find out more
+    url: https://github.com/oracle-quickstart/oci-cloudnative/tree/master/src/payment
+paths:
+  /paymentAuth:
+    post:
+      tags:
+      - Payment
+      summary: Authorize payments for orders
+      description: Returns authorization status based on the value of the order
+      operationId: getPaymentAuth
+      requestBody:
+        description: Order Amount payload for Payment Authorization
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/paymentAuthRequest'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/paymentAuth'
+
+components:
+  schemas:
+    paymentAuthRequest:
+        type: object
+        properties:
+            amount:
+                type: integer
+                format: int32
+                pattern: ^[0-9]\d*$
+                example: 104
+        required:
+        - amount
+    paymentAuth:
+        type: object
+        properties:
+            authorised:
+                type: boolean
+        required:
+        - authorised
+
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+
+security:
+    - BasicAuth: []

@@ -55,7 +55,7 @@ umbrella chart included here. Either complete the setup, or follow these instruc
 1. Install the OCI service broker referencing the credentials above:
 
     ```text
-    helm install oci-service-broker https://github.com/oracle/oci-service-broker/releases/download/v1.5.2/oci-service-broker-1.5.2.tgz \
+    helm install oci-service-broker https://github.com/oracle/oci-service-broker/releases/download/v1.6.0/oci-service-broker-1.6.0.tgz \
       --namespace mushop \
       --set ociCredentials.secretName=oci-credentials \
       --set storage.etcd.useEmbedded=true \
@@ -64,9 +64,9 @@ umbrella chart included here. Either complete the setup, or follow these instruc
 
     >Note: instead of doing helm install like this, we could copy the .tgz file and use one helm install command to install everything.
 
-    >Another note: The OCI service broker pod will be failing due to a missing secret - that secret is deployed using the provision chart below. If we did the fix above (copy tgz manually and install everyhing using helm), then this wouldn't be happening.
+    >Another note: The OCI service broker pod will be failing due to a missing secret - that secret is deployed using the provision chart below. If we did the fix above (copy tgz manually and install everything using helm), then this wouldn't be happening.
 
-    >Etcd node: The above command will deploy the OCI Service Broker using an embedded etcd instance. It is not recommended to deploy the OCI Service Broker using an embedded etcd instance and tls disabled in production environments, instead a separate etcd cluster should be setup and used by the OCI Sevice Broker.
+    >Etcd node: The above command will deploy the OCI Service Broker using an embedded etcd instance. It is not recommended to deploy the OCI Service Broker using an embedded etcd instance and tls disabled in production environments, instead a separate etcd cluster should be setup and used by the OCI Service Broker.
 
 1. Create a `myvalues.yaml` file with the following information:
 

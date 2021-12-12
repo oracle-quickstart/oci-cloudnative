@@ -1,6 +1,6 @@
 {
   "name": "mushop-storefront",
-  "version": "2.2.3",
+  "version": "2.2.5",
   "description": "MuShop eCommerce demo",
   "scripts": {
     "start": "gulp",

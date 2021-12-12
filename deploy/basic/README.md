@@ -121,20 +121,9 @@ This creates a `.zip` file in your working directory that can be imported in to 
 After complete the Build steps 1 and 2, generate the binaries:
 
 1. From the root of the repo execute the command:
-    * linux/amd64 (or default builder)
 
-        ```shell
-        docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic.tar.xz /transfer/deploy/basic/terraform/scripts/mushop-basic.tar.xz
-        ```
-
-    * linux/arm64
-
-        ```shell
-        docker run -v $PWD:/transfer --rm --platform linux/arm64 --entrypoint cp mushop-basic-arm64:latest /package/mushop-basic.tar.xz /transfer/deploy/basic/terraform/scripts/mushop-basic.tar.xz
-        ```
-
-        ```shell
-        docker run -v $PWD:/transfer --rm --platform linux/arm64 --entrypoint cp mushop-basic-arm64:latest /basic/PLATFORM.auto.tfvars /transfer/deploy/basic/terraform/PLATFORM.auto.tfvars
+    ```shell
+    docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic.tar.xz /transfer/deploy/basic/terraform/scripts/mushop-basic.tar.xz
         ```
 
 1. Copy mushop media images to populate the object storage:
@@ -148,6 +137,20 @@ After complete the Build steps 1 and 2, generate the binaries:
 1. Change the credentials variables to your user and any other desirable variables
 1. Run `terraform init` to init the terraform providers
 1. Run `terraform apply` to create the resources on OCI
+1. To show sensitive outputs, use `terraform output autonomous_database_password` to show the ATP Admin password and `terraform output generated_private_key_pem` to show the private key for SSH access
+
+## Running MuShop Basic APIs on Postman
+
+Testing MuShop Basic Services APIs with Postman.
+
+Note that these calls are intent to connect to the API endpoint, normally the ip address generated on the Load Balancer.
+
+| Service                                                  | Postman                                                                        |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| [catalogue](./src/catalogue)                             | [![Run in Postman](https://run.pstmn.io/button.svg)][postman_button_catalogue] |
+| [user](./src/user)                                       | [![Run in Postman](https://run.pstmn.io/button.svg)][postman_button_user]      |
+| [payment](./src/payment)                                 | [![Run in Postman](https://run.pstmn.io/button.svg)][postman_button_payment]   |
+| [api](./src/api)                                         | [![Run in Postman](https://run.pstmn.io/button.svg)][postman_button_api]       |
 
 [oci]: https://cloud.oracle.com/en_US/cloud-infrastructure
 [orm]: https://docs.cloud.oracle.com/iaas/Content/ResourceManager/Concepts/resourcemanager.htm
@@ -165,3 +168,7 @@ After complete the Build steps 1 and 2, generate the binaries:
 [kms]: https://docs.cloud.oracle.com/en-us/iaas/Content/KeyManagement/Concepts/keyoverview.htm
 [magic_button]: https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg
 [magic_mushop_basic_stack]: https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/oracle-quickstart/oci-cloudnative/releases/latest/download/mushop-basic-stack-latest.zip
+[postman_button_catalogue]: https://god.gw.postman.com/run-collection/29850-a9fbedc3-2178-442c-9bee-7fd8c52194b1?action=collection%2Ffork&collection-url=entityId%3D29850-a9fbedc3-2178-442c-9bee-7fd8c52194b1%26entityType%3Dcollection%26workspaceId%3D8e00caeb-8484-4be3-aa3c-3c3721e169b7
+[postman_button_user]: https://god.gw.postman.com/run-collection/29850-d02fc1f5-cec7-4f00-9f25-092e64e7f726?action=collection%2Ffork&collection-url=entityId%3D29850-d02fc1f5-cec7-4f00-9f25-092e64e7f726%26entityType%3Dcollection%26workspaceId%3D8e00caeb-8484-4be3-aa3c-3c3721e169b7
+[postman_button_payment]: https://god.gw.postman.com/run-collection/29850-cd57303a-f3df-4a22-8e18-09cd2218d94a?action=collection%2Ffork&collection-url=entityId%3D29850-cd57303a-f3df-4a22-8e18-09cd2218d94a%26entityType%3Dcollection%26workspaceId%3D8e00caeb-8484-4be3-aa3c-3c3721e169b7
+[postman_button_api]: ()

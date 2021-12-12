@@ -7,7 +7,7 @@ resource "kubernetes_namespace" "cluster_utilities_namespace" {
   metadata {
     name = "mushop-utilities"
   }
-  depends_on = [oci_containerengine_node_pool.oke_node_pool]
+  depends_on = [oci_containerengine_node_pool.oke_node_pool, local_file.kubeconfig]
 }
 
 # MuShop Utilities helm charts
@@ -18,7 +18,7 @@ resource "helm_release" "prometheus" {
   name       = "prometheus"
   repository = local.helm_repository.prometheus
   chart      = "prometheus"
-  version    = "14.1.1"
+  version    = "14.4.1"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
@@ -37,13 +37,14 @@ resource "helm_release" "grafana" {
   name       = "mushop-utils-grafana" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.grafana
   chart      = "grafana"
-  version    = "6.12.0"
+  version    = "6.14.1"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
   set {
     name  = "grafana\\.ini.server.root_url"
     value = "%(protocol)s://%(domain)s:%(http_port)s/grafana"
+    type  = "string"
   }
 
   values = [
@@ -109,7 +110,7 @@ resource "helm_release" "ingress_nginx" {
   name       = "mushop-utils-ingress-nginx" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.ingress_nginx
   chart      = "ingress-nginx"
-  version    = "3.33.0"
+  version    = "3.34.0"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = true
 
@@ -120,14 +121,17 @@ resource "helm_release" "ingress_nginx" {
   set {
     name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/oci-load-balancer-shape"
     value = var.ingress_load_balancer_shape
+    type  = "string"
   }
   set {
     name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/oci-load-balancer-shape-flex-min"
     value = var.ingress_load_balancer_shape_flex_min
+    type  = "string"
   }
   set {
     name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/oci-load-balancer-shape-flex-max"
     value = var.ingress_load_balancer_shape_flex_max
+    type  = "string"
   }
 
   timeout = 1800 # workaround to wait the node be active for other charts
@@ -157,7 +161,7 @@ resource "helm_release" "cert_manager" {
   name       = "cert-manager"
   repository = local.helm_repository.jetstack
   chart      = "cert-manager"
-  version    = "1.3.1"
+  version    = "1.4.1"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = true # wait to allow the webhook be properly configured
 
