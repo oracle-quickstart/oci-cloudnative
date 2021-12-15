@@ -26,7 +26,7 @@ Oracle Cloud Infrastructure or enable certain features within the application.
 1. Install `setup` chart:
 
     ```bash
-    helm install mushop-utiils setup --namespace mushop-utilities --create-namespace
+    helm install mushop-utilities setup --namespace mushop-utilities --create-namespace
     ```
 
     > **NOTE:** It is possible that certain services may conflict with pre-existing installs. If so, try setting `--set <chart>.enabled=false` for any conflicting charts.
