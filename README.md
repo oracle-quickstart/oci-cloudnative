@@ -1,4 +1,4 @@
-# ![MuShop Logo](./images/logo.png)
+# ![MuShop Logo](./images/logo.png#gh-light-mode-only)![MuShop Logo - Dark Mode](./images/logo-inverse.png#gh-dark-mode-only)
 
 MuShop is a showcase of several [Oracle Cloud Infrastructure][oci] services in a unified reference application. The sample application implements an e-commerce platform built as a set of micro-services. The accompanying content can be used to get started with cloud native application development on [Oracle Cloud Infrastructure][oci].
 
@@ -77,7 +77,7 @@ Follow these steps to completely remove all provisioned resources:
 1. Once the destroy job has succeeded, return to the Stack Details page
 1. Click `Delete Stack` and confirm when prompted
 
-#### Topology
+#### Basic Topology
 
 The following diagram shows the topology created by this stack.
 
@@ -91,13 +91,13 @@ MuShop Complete is a polyglot micro-services application built to showcase a clo
 
 The [helm chart documentation][chartdocs] walks through the deployment process and various options for customizing the deployment.
 
-#### Topology
+### Complete Topology
 
 The following diagram shows the topology created by this stack.
 
 ![MuShop Complete Infra](./images/complete/00-Topology.png)
 
-#### [![Deploy to Oracle Cloud][magic_button]][magic_mushop_stack]
+### [![Deploy to Oracle Cloud][magic_button]][magic_mushop_stack]
 
 ## Questions
 

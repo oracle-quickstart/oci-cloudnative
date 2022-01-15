@@ -1,4 +1,4 @@
-# ![MuShop Logo](../../images/logo.png)        [![Deploy to Oracle Cloud][magic_button]][magic_mushop_stack]
+# ![MuShop Logo](../../images/logo.png#gh-light-mode-only)![MuShop Logo - Dark Mode](../../images/logo-inverse.png#gh-dark-mode-only)        [![Deploy to Oracle Cloud][magic_button]][magic_mushop_stack]
 
 MuShop Complete is a polyglot micro-services application built to showcase a cloud native approach to application development on [Oracle Cloud Infrastructure][oci] using Oracle's [cloud native](https://www.oracle.com/cloud/cloud-native/) services. MuShop Complete uses a Kubernetes cluster, and can be deployed using the provided `helm` charts (preferred), or Kubernetes manifests. It is recommended to use an Oracle Container Engine for Kubernetes cluster, however other Kubernetes distributions will also work.
 
