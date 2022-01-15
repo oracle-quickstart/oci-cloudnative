@@ -1,4 +1,4 @@
-# ![MuShop Logo](../../images/logo.png)        [![Deploy to Oracle Cloud][magic_button]][magic_mushop_basic_stack]
+# ![MuShop Logo](../../images/logo.png#gh-light-mode-only)![MuShop Logo - Dark Mode](../../images/logo-inverse.png#gh-dark-mode-only)        [![Deploy to Oracle Cloud][magic_button]][magic_mushop_basic_stack]
 
 This is a Terraform configuration that deploys the MuShop basic sample application on [Oracle Cloud Infrastructure (OCI)][oci].
 

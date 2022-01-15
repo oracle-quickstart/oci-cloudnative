@@ -1,4 +1,4 @@
-![MuShop Logo](../../images/logo.png)
+# ![MuShop Logo](../../images/logo.png#gh-light-mode-only)![MuShop Logo - Dark Mode](../../images/logo-inverse.png#gh-dark-mode-only)
 
 This document shows information on how to use MuShop Basic to deploy on OCI Maximum-Security Zones (MSZ) and use Cloud Guard.
 
