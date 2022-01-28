@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2019-2021 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2019-2022 Oracle and/or its affiliates. All rights reserved.
 # The Universal Permissive License (UPL), Version 1.0
 #
 ARG version
@@ -7,7 +7,7 @@ ARG version
 ###############################
 #    Build stage (node/npm)   #
 ###############################
-FROM --platform=${BUILDPLATFORM:-linux/amd64} node:14-alpine as builder
+FROM --platform=${BUILDPLATFORM:-linux/amd64} node:16-alpine as builder
 
 RUN apk update && apk add --no-cache \
     autoconf \
@@ -49,6 +49,7 @@ FROM --platform=${TARGETPLATFORM:-linux/amd64} nginxinc/nginx-unprivileged:1.20-
 
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY nginx/15-get-storefront-extra-config.sh /docker-entrypoint.d/15-get-storefront-extra-config.sh
 COPY --from=builder /usr/src/app/build /usr/share/nginx/html
 
 EXPOSE 8080
