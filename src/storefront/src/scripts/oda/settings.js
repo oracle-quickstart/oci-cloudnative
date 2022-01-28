@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2022, Oracle and/or its affiliates. All rights reserved.
+ * The Universal Permissive License (UPL), Version 1.0
+ */
+
 'use strict';
 
 // Set client auth mode - true to enable client auth, false to disable it
