@@ -95,6 +95,14 @@ gulp.task('scripts', function() {
     }));
 });
 
+// Scripts Extras
+gulp.task('oda:copy', function() {
+  return gulp.src('src/scripts/oda/*')
+    .pipe(gulp.dest(`${opt.buildDir}/scripts/oda`))
+});
+
+gulp.task('extras', gulp.series('oda:copy'));
+
 // Images
 
 // copy images into build
@@ -130,7 +138,8 @@ gulp.task('copy', function() {
     'src/*',
     '!src/images/*',
     '!src/styles/*',
-    '!src/scripts/*'
+    '!src/scripts/*',
+    '!src/scripts/oda/*'
   ], {
     base: 'src'
   })
@@ -208,7 +217,8 @@ gulp.task('watch:copy', function() {
     'src/*',
     '!src/images/*',
     '!src/styles/*',
-    '!src/scripts/*'
+    '!src/scripts/*',
+    '!src/scripts/oda/*'
   ], gulp.series('copy'));
 });
 
@@ -229,6 +239,7 @@ gulp.task('build', gulp.series(
     'scripts',
     'copy',
     'images',
+    'extras',
   )
 ));
 
