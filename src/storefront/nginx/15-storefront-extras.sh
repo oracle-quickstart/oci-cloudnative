@@ -4,12 +4,11 @@ set -e
 
 ME=$(basename $0)
 
-# WWW_DIR=/usr/share/nginx/html
-WWW_DIR=.
+WWW_DIR=/usr/share/nginx/html
 
 process_oda() {
-    # local ODA_SCRIPTS_DIR=/usr/share/nginx/html/scripts/oda
-    local ODA_SCRIPTS_DIR=.
+    local ODA_SCRIPTS_DIR=/usr/share/nginx/html/scripts/oda
+
     if [[ "${ODA_ENABLED}" = true ]]; then
         echo "$ME: Running sed to update index.html to enable ODA"
         sed -i '' -e 's|<!-- head placeholder 1 -->|<script src="scripts/oda/settings.js"></script>|g' ${WWW_DIR}/index.html
