@@ -84,4 +84,3 @@ plugins:
   - grafana-worldmap-panel
   - grafana-piechart-panel
   - btplc-status-dot-panel
-  - grafana-github-datasource

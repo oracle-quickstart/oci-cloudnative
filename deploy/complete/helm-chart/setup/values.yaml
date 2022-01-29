@@ -120,7 +120,6 @@ grafana:
     - grafana-worldmap-panel
     - grafana-piechart-panel
     - btplc-status-dot-panel
-    - grafana-github-datasource
 
 # https://github.com/helm/charts/blob/master/stable/jenkins/README.md
 jenkins:
