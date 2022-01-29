@@ -34,3 +34,11 @@ api:
   env:
     mediaUrl:                 # Object Storage URL for catalog image assets
     newsletterSubscribeUrl:   # Newsletter subscription endpoint (https://[API_GATEWAY_URL]/newsletter/subscribe)
+
+storefront:
+  env:
+    odaEnabled:               # Enables the Oracle Digital Assistant as widget on the storefront
+    odaUri:                   # Oracle Digital Assistant Channel URI to be used with MuShop
+    odaChannelId:             # Oracle Digital Assistant Channel Id to be used with MuShop
+    odaSecret:                # Used if client auth is enabled.
+    odaUserHiddenInitMessage: # Hidden Init Message if any. Makes the Digital Assistant proactive.
