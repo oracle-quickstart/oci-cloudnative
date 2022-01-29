@@ -18,7 +18,7 @@ resource "helm_release" "prometheus" {
   name       = "prometheus"
   repository = local.helm_repository.prometheus
   chart      = "prometheus"
-  version    = "14.4.1"
+  version    = "15.1.1"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
@@ -37,7 +37,7 @@ resource "helm_release" "grafana" {
   name       = "mushop-utils-grafana" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.grafana
   chart      = "grafana"
-  version    = "6.14.1"
+  version    = "6.21.1"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
@@ -89,9 +89,9 @@ EOF
 ## https://github.com/helm/charts/blob/master/stable/metrics-server/README.md
 resource "helm_release" "metrics_server" {
   name       = "metrics-server"
-  repository = local.helm_repository.stable
+  repository = local.helm_repository.metrics_server
   chart      = "metrics-server"
-  version    = "2.11.4"
+  version    = "3.7.0"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
@@ -110,7 +110,7 @@ resource "helm_release" "ingress_nginx" {
   name       = "mushop-utils-ingress-nginx" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.ingress_nginx
   chart      = "ingress-nginx"
-  version    = "3.34.0"
+  version    = "4.0.13"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = true
 
@@ -161,7 +161,7 @@ resource "helm_release" "cert_manager" {
   name       = "cert-manager"
   repository = local.helm_repository.jetstack
   chart      = "cert-manager"
-  version    = "1.4.1"
+  version    = "1.7.0"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = true # wait to allow the webhook be properly configured
 
@@ -211,5 +211,6 @@ locals {
     svc_catalog   = "https://kubernetes-sigs.github.io/service-catalog" # Service Catalog
     grafana       = "https://grafana.github.io/helm-charts"
     prometheus    = "https://prometheus-community.github.io/helm-charts"
+    metrics_server = "https://kubernetes-sigs.github.io/metrics-server"
   }
 }
