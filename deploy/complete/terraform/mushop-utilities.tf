@@ -86,7 +86,8 @@ EOF
   count = var.grafana_enabled ? 1 : 0
 }
 
-## https://github.com/helm/charts/blob/master/stable/metrics-server/README.md
+## https://github.com/kubernetes-sigs/metrics-server/blob/master/charts/metrics-server/README.md
+## https://artifacthub.io/packages/helm/metrics-server/metrics-server
 resource "helm_release" "metrics_server" {
   name       = "metrics-server"
   repository = local.helm_repository.metrics_server
