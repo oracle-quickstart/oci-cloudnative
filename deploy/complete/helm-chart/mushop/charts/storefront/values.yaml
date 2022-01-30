@@ -6,7 +6,7 @@ image:
   pullPolicy: Always
 
 env:
-  odaEnabled: false
+  odaEnabled:
   odaUri:
   odaChannelId:
   odaSecret:
@@ -22,7 +22,7 @@ resources:
 
 securityContext:
   runAsNonRoot: true
-  runAsUser: 10001
+  runAsUser: 101
   capabilities:
     drop:
       - all
@@ -31,7 +31,6 @@ securityContext:
       - CHOWN
       - SETGID
       - SETUID
-  readOnlyRootFilesystem: true
 
 hpa:
   enabled: true
