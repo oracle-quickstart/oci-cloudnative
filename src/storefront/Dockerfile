@@ -47,10 +47,14 @@ RUN npm run build
 ###############################
 FROM --platform=${TARGETPLATFORM:-linux/amd64} nginxinc/nginx-unprivileged:1.20-alpine
 
+USER root
+RUN chown -R nginx:nginx /usr/share/nginx
+USER nginx
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
-COPY nginx/default.conf /etc/nginx/conf.d/default.conf
-COPY nginx/15-get-storefront-extra-config.sh /docker-entrypoint.d/15-get-storefront-extra-config.sh
-COPY --from=builder /usr/src/app/build /usr/share/nginx/html
+COPY --chmod=666 nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY --chmod=555 nginx/15-storefront-extras.sh /docker-entrypoint.d/15-storefront-extras.sh
+COPY --chown=nginx:nginx --from=builder /usr/src/app/build /usr/share/nginx/html
+
 
 EXPOSE 8080
 EXPOSE 8888
