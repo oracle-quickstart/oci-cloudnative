@@ -30,6 +30,17 @@ spec:
               containerPort: 8080
             - name: status
               containerPort: 8888
+          env:
+          - name: ODA_ENABLED
+            value: "{{ .Values.env.odaEnabled }}"
+          - name: ODA_URI
+            value: "{{ .Values.env.odaUri }}"
+          - name: ODA_CHANNEL_ID
+            value: "{{ .Values.env.odaChannelId }}"
+          - name: ODA_SECRET
+            value: "{{ .Values.env.odaSecret }}"
+          - name: ODA_USER_INIT_MESSAGE
+            value: "{{ .Values.env.odaUserHiddenInitMessage }}"
           livenessProbe:
             httpGet:
               path: /
