@@ -2,4 +2,4 @@ apiVersion: v1
 appVersion: "1.0"
 description: MuShop App microservices chart
 name: mushop
-version: 0.1.1
+version: 0.1.2
