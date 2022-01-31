@@ -78,7 +78,7 @@ services:
 
   # Storefront backend API service
   storefront:
-    image: iad.ocir.io/oracle/ateam/mushop-storefront:2.2
+    image: iad.ocir.io/oracle/ateam/mushop-storefront:2.3.0
     hostname: storefront
     restart: always
     cap_drop:

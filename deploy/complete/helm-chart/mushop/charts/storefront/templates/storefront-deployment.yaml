@@ -30,6 +30,17 @@ spec:
               containerPort: 8080
             - name: status
               containerPort: 8888
+          env:
+          - name: ODA_ENABLED
+            value: {{ .Values.env.odaEnabled | default "false" | quote }}
+          - name: ODA_URI
+            value: {{ .Values.env.odaUri | quote }}
+          - name: ODA_CHANNEL_ID
+            value: {{ .Values.env.odaChannelId | quote }}
+          - name: ODA_SECRET
+            value: {{ .Values.env.odaSecret | quote }}
+          - name: ODA_USER_INIT_MESSAGE
+            value: {{ .Values.env.odaUserHiddenInitMessage | quote }}
           livenessProbe:
             httpGet:
               path: /
@@ -45,6 +56,7 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+            readOnlyRootFilesystem: {{ if eq (.Values.env.odaEnabled | default false) true }}false{{ else }}true{{ end }}
       volumes:
         - name: tmp-volume
           emptyDir:

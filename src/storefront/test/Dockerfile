@@ -1,4 +1,6 @@
-FROM node:14-alpine
+FROM node:16-alpine
+	# checkov:skip=CKV_DOCKER_2: Local Development Image, not intended for production use
+	# checkov:skip=CKV_DOCKER_3: Local Development Image, not intended for production use
 EXPOSE 3000
 
 RUN apk update && apk add --no-cache \

@@ -1,4 +1,5 @@
-# https://github.com/helm/charts/blob/master/stable/metrics-server/README.md
+## https://github.com/kubernetes-sigs/metrics-server/blob/master/charts/metrics-server/README.md
+## https://artifacthub.io/packages/helm/metrics-server/metrics-server
 metrics-server:
   enabled: true
   args: [
@@ -120,7 +121,6 @@ grafana:
     - grafana-worldmap-panel
     - grafana-piechart-panel
     - btplc-status-dot-panel
-    - grafana-github-datasource
 
 # https://github.com/helm/charts/blob/master/stable/jenkins/README.md
 jenkins:

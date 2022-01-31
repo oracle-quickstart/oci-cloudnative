@@ -2,8 +2,15 @@ replicaCount: 1
 
 image:
   repository: iad.ocir.io/oracle/ateam/mushop-storefront
-  tag: 2.2
+  tag: 2.3
   pullPolicy: Always
+
+env:
+  odaEnabled:
+  odaUri:
+  odaChannelId:
+  odaSecret:
+  odaUserHiddenInitMessage:
 
 resources:
   limits:
@@ -15,7 +22,7 @@ resources:
 
 securityContext:
   runAsNonRoot: true
-  runAsUser: 10001
+  runAsUser: 101
   capabilities:
     drop:
       - all
@@ -24,7 +31,6 @@ securityContext:
       - CHOWN
       - SETGID
       - SETUID
-  readOnlyRootFilesystem: true
 
 hpa:
   enabled: true
