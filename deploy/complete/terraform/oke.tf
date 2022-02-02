@@ -11,6 +11,7 @@ resource "oci_containerengine_cluster" "oke_cluster" {
   endpoint_config {
     is_public_ip_enabled = (var.cluster_endpoint_visibility == "Private") ? false : true
     subnet_id            = oci_core_subnet.oke_k8s_endpoint_subnet[0].id
+    nsg_ids = []
   }
   options {
     service_lb_subnet_ids = [oci_core_subnet.oke_lb_subnet[0].id]
@@ -25,6 +26,12 @@ resource "oci_containerengine_cluster" "oke_cluster" {
       services_cidr = lookup(var.network_cidrs, "KUBERNETES-SERVICE-CIDR")
       pods_cidr     = lookup(var.network_cidrs, "PODS-CIDR")
     }
+  }
+  image_policy_config {
+    is_policy_enabled = false
+    # key_details {
+    #   # kms_key_id = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? oci_kms_key.mushop_key[0].id : var.existent_encryption_key_id) : null
+    # }
   }
   kms_key_id = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? oci_kms_key.mushop_key[0].id : var.existent_encryption_key_id) : null
 
