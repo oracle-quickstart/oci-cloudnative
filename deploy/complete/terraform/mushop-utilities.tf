@@ -1,4 +1,4 @@
-# Copyright (c) 2020, 2021 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2020-2022 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -51,7 +51,7 @@ resource "helm_release" "grafana" {
     name  = "grafana\\.ini.server.serve_from_sub_path"
     value = "true"
   }
-  
+
   values = [
     file("${path.module}/chart-values/grafana-values.yaml"), <<EOF
 datasources: 
@@ -211,12 +211,12 @@ data "kubernetes_secret" "mushop_utils_grafana" {
 locals {
   # Helm repos
   helm_repository = {
-    stable        = "https://charts.helm.sh/stable"
-    ingress_nginx = "https://kubernetes.github.io/ingress-nginx"
-    jetstack      = "https://charts.jetstack.io"                        # cert-manager
-    svc_catalog   = "https://kubernetes-sigs.github.io/service-catalog" # Service Catalog
-    grafana       = "https://grafana.github.io/helm-charts"
-    prometheus    = "https://prometheus-community.github.io/helm-charts"
+    stable         = "https://charts.helm.sh/stable"
+    ingress_nginx  = "https://kubernetes.github.io/ingress-nginx"
+    jetstack       = "https://charts.jetstack.io"                        # cert-manager
+    svc_catalog    = "https://kubernetes-sigs.github.io/service-catalog" # Service Catalog
+    grafana        = "https://grafana.github.io/helm-charts"
+    prometheus     = "https://prometheus-community.github.io/helm-charts"
     metrics_server = "https://kubernetes-sigs.github.io/metrics-server"
   }
 }
