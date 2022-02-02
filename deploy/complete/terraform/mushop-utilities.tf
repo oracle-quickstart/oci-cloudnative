@@ -7,7 +7,7 @@ resource "kubernetes_namespace" "cluster_utilities_namespace" {
   metadata {
     name = "mushop-utilities"
   }
-  depends_on = [oci_containerengine_node_pool.oke_node_pool, local_file.kubeconfig]
+  depends_on = [oci_containerengine_node_pool.oke_node_pool]
 }
 
 # MuShop Utilities helm charts
@@ -47,6 +47,11 @@ resource "helm_release" "grafana" {
     type  = "string"
   }
 
+  set {
+    name  = "grafana\\.ini.server.serve_from_sub_path"
+    value = "true"
+  }
+  
   values = [
     file("${path.module}/chart-values/grafana-values.yaml"), <<EOF
 datasources: 
