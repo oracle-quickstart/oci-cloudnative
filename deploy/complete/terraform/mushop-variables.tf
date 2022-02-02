@@ -78,7 +78,7 @@ variable "prometheus_enabled" {
 }
 variable "metrics_server_enabled" {
   default     = true
-  description = "Enable Metrics Server for Metrics, HPA, VPA and Cluster Auto Scaler"
+  description = "Enable Metrics Server for Metrics, HPA, VPA and Cluster Autoscaler"
 }
 variable "catalog_enabled" {
   default     = false
@@ -148,4 +148,26 @@ variable "autonomous_database_visibility" {
 }
 variable "autonomous_database_wallet_generate_type" {
   default = "SINGLE"
+}
+
+## Oracle Digital Assistant
+variable "oda_enabled" {
+  default     = false
+  description = "Enables Oracle Digital Assistant support on the storefront"
+}
+variable "oda_uri" {
+  default     = ""
+  description = "Oracle Digital Assistant server URI. Use the ODA hostname without http:// and slashes"
+}
+variable "oda_channel_id" {
+  default     = ""
+  description = "Oracle Digital Assistant channel ID"
+}
+variable "oda_channel_secret" {
+  default     = ""
+  description = "Oracle Digital Assistant channel secret. NOTE: Only necessary if Client Auth is enabled"
+}
+variable "oda_user_init_message" {
+  default     = ""
+  description = "Oracle Digital Assistant initial hidden message. Makes the Digital Assistant proactive"
 }
