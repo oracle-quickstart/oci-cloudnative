@@ -1,4 +1,4 @@
-# Copyright (c) 2020, 2021 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2020-2022 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -11,7 +11,7 @@ resource "oci_containerengine_cluster" "oke_cluster" {
   endpoint_config {
     is_public_ip_enabled = (var.cluster_endpoint_visibility == "Private") ? false : true
     subnet_id            = oci_core_subnet.oke_k8s_endpoint_subnet[0].id
-    nsg_ids = []
+    nsg_ids              = []
   }
   options {
     service_lb_subnet_ids = [oci_core_subnet.oke_lb_subnet[0].id]
