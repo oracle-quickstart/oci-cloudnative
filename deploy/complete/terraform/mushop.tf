@@ -71,6 +71,27 @@ resource "helm_release" "mushop" {
     value = var.create_new_oke_cluster ? (var.newsletter_subscription_enabled ? "${oci_apigateway_deployment.newsletter_subscription.0.endpoint}/subscribe" : "") : ""
   }
 
+  set {
+    name  = "storefront.env.odaEnabled"
+    value = var.oda_enabled
+  }
+  set {
+    name  = "storefront.env.odaUri"
+    value = var.oda_uri
+  }
+  set {
+    name  = "storefront.env.odaChannelId"
+    value = var.oda_channel_id
+  }
+  set {
+    name  = "storefront.env.odaSecret"
+    value = var.oda_channel_secret
+  }
+  set {
+    name  = "storefront.env.odaUserHiddenInitMessage"
+    value = var.oda_user_init_message
+  }
+
   depends_on = [helm_release.ingress_nginx, helm_release.cert_manager] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
 
   timeout = 500
