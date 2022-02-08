@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2020-2022 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -59,3 +59,10 @@ use_only_always_free_eligible_resources = true
 # Object Storage
 object_storage_mushop_media_compartment_ocid = "" # e.g.: "ocid1.compartment..."
 object_storage_mushop_media_visibility       = "Public"
+
+# Oracle Digital Assistant
+oda_enabled = false
+oda_uri = ""
+oda_channel_id = ""
+oda_secret = ""
+oda_user_init_message = ""
