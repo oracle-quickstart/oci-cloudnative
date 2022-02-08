@@ -1,5 +1,10 @@
 # CHANGELOG
 
+2022-02-07 (v2.1.0)
+
+- Terraform OCI Provider Updated to the latest
+- Oracle Digital Assistant support on the storefront
+
 2021-07-28 (v2.0.1)
 
 - Terraform OCI Provider Updated to the latest
