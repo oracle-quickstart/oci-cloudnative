@@ -10,7 +10,7 @@ ARG oracleClientVersion=19.10
 #    ----- STOREFRONT -----   #
 #    Build stage (node/npm)   #
 ###############################
-FROM --platform=${BUILDPLATFORM:-linux/amd64} node:14-alpine as storefront-builder
+FROM --platform=${BUILDPLATFORM:-linux/amd64} node:16-alpine as storefront-builder
 
 RUN apk update && apk add --no-cache \
     autoconf \
