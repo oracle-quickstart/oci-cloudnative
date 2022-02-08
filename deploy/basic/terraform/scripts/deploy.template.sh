@@ -73,14 +73,13 @@ fi
 ODA_ENABLED=${oda_enabled}
 if [[ "$ODA_ENABLED" = true ]]; then
 
-    local WWW_DIR=/app/storefront
-    local ODA_SCRIPTS_DIR=$WWW_DIR/scripts/oda
+    WWW_DIR=/app/storefront
+    ODA_SCRIPTS_DIR=$WWW_DIR/scripts/oda
 
     export ODA_URI=${oda_uri}
     export ODA_CHANNEL_ID=${oda_channel_id}
     export ODA_SECRET=${oda_secret}
     export ODA_USER_INIT_MESSAGE=${oda_user_init_message}
-
 
     echo "$ME: Preparing index.html to enable Oracle Digital Assistant"
     storefrontindex="$WWW_DIR/index.html"
