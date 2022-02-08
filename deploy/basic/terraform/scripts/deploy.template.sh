@@ -74,7 +74,7 @@ ODA_ENABLED=${oda_enabled}
 if [[ "$ODA_ENABLED" = true ]]; then
 
     local WWW_DIR=/app/storefront
-    local ODA_SCRIPTS_DIR=${WWW_DIR}/scripts/oda
+    local ODA_SCRIPTS_DIR=$WWW_DIR/scripts/oda
 
     export ODA_URI=${oda_uri}
     export ODA_CHANNEL_ID=${oda_channel_id}
@@ -83,13 +83,13 @@ if [[ "$ODA_ENABLED" = true ]]; then
 
 
     echo "$ME: Preparing index.html to enable Oracle Digital Assistant"
-    storefrontindex="${WWW_DIR}/index.html"
-    [ -w ${WWW_DIR} ] && echo "$ME: Enabling ODA SDK..." || (echo "$ME: File System Not Writable. Exiting..." && exit 0)
+    storefrontindex="$WWW_DIR/index.html"
+    [ -w $WWW_DIR ] && echo "$ME: Enabling ODA SDK..." || (echo "$ME: File System Not Writable. Exiting..." && exit 0)
     sed -i -e 's|<!-- head placeholder 1 -->|<script src="scripts/oda/settings.js"></script>|g' "$storefrontindex" || (echo "$ME: *** Failed to enable ODA SDK. Exiting..." && exit 0)
     sed -i -e 's|<!-- head placeholder 2 -->|<script src="scripts/oda/web-sdk.js" onload="initSdk('$(echo -e "\x27")'Bots'$(echo -e "\x27")')"></script>|g' "$storefrontindex" || (echo "$ME: *** Failed to enable ODA SDK. Exiting..." && exit 0)
 
     echo "$ME: Setting ODA variables"
-    odasettingsfile="${ODA_SCRIPTS_DIR}/settings.js"
+    odasettingsfile="$ODA_SCRIPTS_DIR/settings.js"
     [ -w $odasettingsfile ] && echo "$ME: Running envsubst to update ODA settings.js" || (echo "$ME: settings.js Not Writable. Exiting..." && exit 0)
     (tmpfile=$(mktemp) && \
     (cp -a $odasettingsfile $tmpfile) && \
