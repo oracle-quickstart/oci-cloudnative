@@ -61,8 +61,8 @@ object_storage_mushop_media_compartment_ocid = "" # e.g.: "ocid1.compartment..."
 object_storage_mushop_media_visibility       = "Public"
 
 # Oracle Digital Assistant
-oda_enabled = false
-oda_uri = ""
-oda_channel_id = ""
-oda_secret = ""
+oda_enabled           = false
+oda_uri               = ""
+oda_channel_id        = ""
+oda_secret            = ""
 oda_user_init_message = ""
