@@ -51,7 +51,7 @@ RUN npm run build
 #    ----- API Gateway -----  #
 #    Build stage (node/npm)   #
 ###############################
-FROM --platform=${TARGETPLATFORM:-linux/amd64} node:14-alpine as api-builder
+FROM --platform=${TARGETPLATFORM:-linux/amd64} node:16-alpine as api-builder
 
 WORKDIR /app/api
 COPY src/api/. .
@@ -68,7 +68,7 @@ RUN rm -rf test scripts && \
 ###############################
 #  ----- Image Assets -----   #
 ###############################
-FROM --platform=${BUILDPLATFORM:-linux/amd64} node:14-alpine as assets-builder
+FROM --platform=${BUILDPLATFORM:-linux/amd64} node:16-alpine as assets-builder
 
 RUN apk update && apk add --no-cache \
     autoconf \
@@ -103,7 +103,7 @@ RUN rm -rf node_modules products hero *.md
 ###############################
 
 # ##### Go Builder image
-FROM --platform=linux/amd64 golang:1.16 AS catalogue-builder-amd64
+FROM --platform=linux/amd64 golang:1.17 AS catalogue-builder-amd64
 
 WORKDIR /go/src/mushop/catalogue
 
@@ -133,7 +133,7 @@ RUN GO111MODULE=on GOARCH=amd64 GOOS=linux \
 ###############################
 
 # ##### Go Builder image
-FROM --platform=linux/arm64 golang:1.16 AS catalogue-builder-arm64
+FROM --platform=linux/arm64 golang:1.17 AS catalogue-builder-arm64
 
 WORKDIR /go/src/mushop/catalogue
 
