@@ -51,6 +51,15 @@ output "grafana_admin_password" {
   value     = var.grafana_enabled ? local.grafana_admin_password : null
   sensitive = true
 }
+output "mushop_source_code" {
+  value = "https://github.com/oracle-quickstart/oci-cloudnative/"
+}
+output "mushop_version" {
+  value = file("${path.module}/VERSION")
+}
+output "sensitive_comments_local_tf" {
+  value = "To get sensitive outputs, use `terraform output autonomous_database_password` or `terraform output grafana_admin_password` or `terraform output generated_private_key_pem`"
+}
 
 locals {
   mushop_ingress_ip       = var.ingress_nginx_enabled ? data.kubernetes_service.mushop_ingress.0.status.0.load_balancer.0.ingress.0.ip : "#Ingress_Not_Deployed"
