@@ -81,3 +81,10 @@ grafana_enabled        = true
 prometheus_enabled     = true
 metrics_server_enabled = true
 catalog_enabled        = false
+
+## Oracle Digital Assistant
+oda_enabled           = false
+oda_uri               = ""
+oda_channel_id        = ""
+oda_secret            = ""
+oda_user_init_message = ""
