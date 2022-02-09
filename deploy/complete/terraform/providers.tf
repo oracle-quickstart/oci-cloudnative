@@ -7,8 +7,8 @@ terraform {
   required_providers {
     oci = {
       source  = "hashicorp/oci"
-      version = ">= 4.61.0"
-      # https://registry.terraform.io/providers/hashicorp/oci/4.61.0
+      version = ">= 4.62.0"
+      # https://registry.terraform.io/providers/hashicorp/oci/4.62.0
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
@@ -63,48 +63,36 @@ provider "oci" {
   private_key_path = var.private_key_path
 }
 
+# New configuration to avoid Terraform Kubernetes provider interpolation. https://registry.terraform.io/providers/hashicorp/kubernetes/2.2.0/docs#stacking-with-managed-kubernetes-cluster-resources
+# Currently need to uncheck to refresh (--refresh=false) when destroying or else the terraform destroy will fail
+
 # https://docs.cloud.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengdownloadkubeconfigfile.htm#notes
 provider "kubernetes" {
-  host                   = yamldecode(local_file.kubeconfig.content)["clusters"][0]["cluster"]["server"]
-  cluster_ca_certificate = base64decode(yamldecode(local_file.kubeconfig.content)["clusters"][0]["cluster"]["certificate-authority-data"])
-  config_context         = yamldecode(local_file.kubeconfig.content)["contexts"][0]["name"]
-
+  host                   = local.cluster_endpoint
+  cluster_ca_certificate = local.cluster_ca_certificate
   exec {
-    api_version = yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["apiVersion"]
-    args = [yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][0],
-      yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][1],
-      yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][2],
-      yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][3],
-      yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][4],
-      yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][5],
-    yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][6]]
-    command = yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["command"]
+    api_version = "client.authentication.k8s.io/v1beta1"
+    args        = ["ce", "cluster", "generate-token", "--cluster-id", local.cluster_id, "--region", local.cluster_region]
+    command     = "oci"
   }
-}
-
-# Extra step to avoid Terraform Kubernetes provider interpolation. https://registry.terraform.io/providers/hashicorp/kubernetes/2.2.0/docs#stacking-with-managed-kubernetes-cluster-resources
-resource "local_file" "kubeconfig" {
-  content  = fileexists("${path.module}/generated/oke_kubeconfig") ? file("${path.module}/generated/oke_kubeconfig") : local_file.oke_kubeconfig.content
-  filename = "${path.module}/generated/kubeconfig"
 }
 
 # https://docs.cloud.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengdownloadkubeconfigfile.htm#notes
 provider "helm" {
   kubernetes {
-    host                   = yamldecode(local_file.kubeconfig.content)["clusters"][0]["cluster"]["server"]
-    cluster_ca_certificate = base64decode(yamldecode(local_file.kubeconfig.content)["clusters"][0]["cluster"]["certificate-authority-data"])
-    config_context         = yamldecode(local_file.kubeconfig.content)["contexts"][0]["name"]
-
+    host                   = local.cluster_endpoint
+    cluster_ca_certificate = local.cluster_ca_certificate
     exec {
-      api_version = yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["apiVersion"]
-      args = [yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][0],
-        yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][1],
-        yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][2],
-        yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][3],
-        yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][4],
-        yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][5],
-      yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["args"][6]]
-      command = yamldecode(local_file.kubeconfig.content)["users"][0]["user"]["exec"]["command"]
+      api_version = "client.authentication.k8s.io/v1beta1"
+      args        = ["ce", "cluster", "generate-token", "--cluster-id", local.cluster_id, "--region", local.cluster_region]
+      command     = "oci"
     }
   }
+}
+
+locals {
+  cluster_endpoint = yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["clusters"][0]["cluster"]["server"]
+  cluster_ca_certificate = base64decode(yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["clusters"][0]["cluster"]["certificate-authority-data"])
+  cluster_id = yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["users"][0]["user"]["exec"]["args"][4]
+  cluster_region = yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["users"][0]["user"]["exec"]["args"][6]
 }
