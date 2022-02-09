@@ -153,15 +153,15 @@ variable "autonomous_database_wallet_generate_type" {
 ## Oracle Digital Assistant
 variable "oda_enabled" {
   default     = false
-  description = "Enables Oracle Digital Assistant support on the storefront"
+  description = "Enables the Oracle Digital Assistant as widget on the storefront. (chatbot balloon will appear on the MuShop UI) \nNOTE: This stack currently does not provision ODA, you need to bring your ODA instance and bot details."
 }
 variable "oda_uri" {
   default     = ""
-  description = "Oracle Digital Assistant server URI. Use the ODA hostname without http:// and slashes"
+  description = "Oracle Digital Assistant server URI. Do not include https: and slashes. e.g.: oda-xxxxxxx-x.data..digitalassistant.oci.oraclecloud.com"
 }
 variable "oda_channel_id" {
   default     = ""
-  description = "Oracle Digital Assistant channel ID"
+  description = "Oracle Digital Assistant Channel Id to be used with MuShop."
 }
 variable "oda_channel_secret" {
   default     = ""
@@ -169,5 +169,5 @@ variable "oda_channel_secret" {
 }
 variable "oda_user_init_message" {
   default     = ""
-  description = "Oracle Digital Assistant initial hidden message. Makes the Digital Assistant proactive"
+  description = "Oracle Digital Assistant initial hidden user message. Makes the Digital Assistant proactive. e.g.: Trending Today"
 }

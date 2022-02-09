@@ -20,6 +20,12 @@ output "mushop_url_https" {
 
   depends_on = [helm_release.ingress_nginx]
 }
+output "mushop_url_alternative" {
+  value       = format("http://mushop-%s.nip.io", local.mushop_ingress_ip_hex)
+  description = "MuShop Storefront Alternative Hostname"
+
+  depends_on = [helm_release.ingress_nginx]
+}
 output "grafana_url" {
   value       = var.grafana_enabled ? format("${local.mushop_url_protocol}://%s/grafana", local.mushop_ingress_hostname) : null
   description = "Grafana Dashboards URL"
@@ -48,6 +54,7 @@ output "grafana_admin_password" {
 
 locals {
   mushop_ingress_ip       = var.ingress_nginx_enabled ? data.kubernetes_service.mushop_ingress.0.status.0.load_balancer.0.ingress.0.ip : "#Ingress_Not_Deployed"
+  mushop_ingress_ip_hex   = var.ingress_nginx_enabled ? join("", formatlist("%02x", split(".", data.kubernetes_service.mushop_ingress.0.status.0.load_balancer.0.ingress.0.ip))) : "#Ingress_Not_Deployed"
   mushop_ingress_hostname = var.ingress_nginx_enabled ? (data.kubernetes_service.mushop_ingress.0.status.0.load_balancer.0.ingress.0.hostname == "" ? local.mushop_ingress_ip : data.kubernetes_service.mushop_ingress.0.status.0.load_balancer.0.ingress.0.hostname) : "#Ingress_Not_Deployed"
   mushop_url_protocol     = var.ingress_tls ? "https" : "http"
   grafana_admin_password  = var.grafana_enabled ? data.kubernetes_secret.mushop_utils_grafana.0.data.admin-password : "Grafana_Not_Deployed"
