@@ -70,6 +70,14 @@ groupings:
     - object_storage_mushop_media_compartment_ocid
     - object_storage_mushop_media_visibility
 
+  - title: "Advanced Resource Options - Oracle Digital Assistant"
+    variables:
+    - oda_enabled
+    - oda_uri
+    - oda_channel_id
+    - oda_secret
+    - oda_user_init_message
+
   - title: "Extras Hidden"
     variables:
       - user_ocid
@@ -464,23 +472,83 @@ variables:
         - not:
           - use_only_always_free_eligible_resources
 
+  oda_enabled:
+    type: boolean
+    title: "Enable Oracle Digital Assistant?"
+    description: "Enables the Oracle Digital Assistant as widget on the storefront. (chatbot balloon will appear on the MuShop UI) \nNOTE: This stack currently does not provision ODA, you need to bring your ODA instance and bot details."
+    visible:
+      and:
+        - show_advanced
+
+  oda_uri:
+    type: string
+    title: "Oracle Digital Assistant URI"
+    description: "The ODA URI. Do not include https: and slashes. e.g.: oda-xxxxxxx-x.data..digitalassistant.oci.oraclecloud.com"
+    visible:
+      and:
+        - show_advanced
+        - oda_enabled
+
+  oda_channel_id:
+    type: string
+    title: "Oracle Digital Assistant Channel ID"
+    description: "Oracle Digital Assistant Channel Id to be used with MuShop."
+    visible:
+      and:
+        - show_advanced
+        - oda_enabled
+
+  oda_secret:
+    type: string
+    title: "Oracle Digital Assistant Channel Secret"
+    description: "Oracle Digital Assistant Channel Secret. Only used if client auth is enabled."
+    visible:
+      and:
+        - show_advanced
+        - oda_enabled
+
+  oda_user_init_message:
+    type: string
+    title: "Oracle Digital Assistant user hidden init message"
+    description: "Hidden Init Message if any. Makes the Digital Assistant proactive. e.g.: Trending Today"
+    visible:
+      and:
+        - show_advanced
+        - oda_enabled
+
 outputGroups:
-  - title: "MuShop App details"
+  - title: MuShop App details
     outputs:
       - lb_public_url
+      - lb_nip_host_url
+
+  - title: Passwords and Keys
+    outputs:
       - autonomous_database_password
       - generated_private_key_pem
+
+  - title: Deployment Info
+    outputs:
       - deploy_id
       - deployed_to_region
-      - mushop_basic_source_code
       - platform
+
+  - title: Dev Notes
+    outputs:
       - dev
       - comments
+      - mushop_source_code
+      - mushop_version
 
 outputs:
   lb_public_url:
     type: link
     title: Open
+    visible: true
+
+  lb_nip_host_url:
+    type: link
+    title: "Hostname"
     visible: true
   
   autonomous_database_password:
@@ -513,6 +581,11 @@ outputs:
   mushop_basic_source_code:
     type: link
     title: "MuShop Basic source code"
+    visible: true
+
+  mushop_basic_version:
+    type: string
+    title: "MuShop Basic Stack Version used"
     visible: true
 
   comments:
