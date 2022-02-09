@@ -631,7 +631,7 @@ variables:
   # Oracle Digital Assistant
   oda_enabled:
     type: boolean
-    title: "Oracle Digital Assistant support"
+    title: "Enable Oracle Digital Assistant support?"
   
   oda_uri:
     type: string
@@ -662,7 +662,7 @@ variables:
 
   oda_user_init_message:
     type: string
-    title: "Oracle Digital Assistant initial hidden message"
+    title: "Oracle Digital Assistant initial user hidden message"
     required: false
     visible:
       and:
@@ -776,6 +776,7 @@ outputGroups:
     outputs:
       - dev
       - mushop_source_code
+      - mushop_version
 
 outputs:
   mushop_url_button:
@@ -856,6 +857,11 @@ outputs:
   mushop_source_code:
     type: link
     title: MuShop Repo with sources and deployment scripts
+    visible: true
+
+  mushop_version:
+    type: string
+    title: MuShop Version used
     visible: true
 
   kubeconfig_for_kubectl:
