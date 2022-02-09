@@ -2,6 +2,9 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
+output "lb_public_url_button" {
+  value = format("http://%s", lookup(oci_load_balancer_load_balancer.mushop_lb.ip_address_details[0], "ip_address"))
+}
 output "lb_public_url" {
   value = format("http://%s", lookup(oci_load_balancer_load_balancer.mushop_lb.ip_address_details[0], "ip_address"))
 }

@@ -541,14 +541,21 @@ outputGroups:
       - mushop_version
 
 outputs:
+  lb_public_url_button:
+    type: link
+    title: MuShop URL Button
+    displayText: Open MuShop
+    visible: true
+
   lb_public_url:
     type: link
-    title: Open
+    title: MuShop
+    displayText: Storefront
     visible: true
 
   lb_nip_host_url:
     type: link
-    title: "Hostname"
+    title: "Alternative Hostname"
     visible: true
   
   autonomous_database_password:
