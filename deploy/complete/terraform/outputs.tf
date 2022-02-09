@@ -14,6 +14,9 @@ output "deployed_to_region" {
 output "mushop_source_code" {
   value = "https://github.com/oracle-quickstart/oci-cloudnative/"
 }
+output "mushop_version" {
+  value = file("${path.module}/VERSION")
+}
 output "sensitive_comments_local_tf" {
   value = "To get sensitive outputs, use `terraform output autonomous_database_password` or `terraform output grafana_admin_password` or `terraform output generated_private_key_pem`"
 }
