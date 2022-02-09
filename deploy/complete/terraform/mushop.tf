@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2020, 2022 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -7,7 +7,7 @@ resource "kubernetes_namespace" "mushop_namespace" {
   metadata {
     name = "mushop"
   }
-  depends_on = [oci_containerengine_node_pool.oke_node_pool, local_file.kubeconfig]
+  depends_on = [oci_containerengine_node_pool.oke_node_pool]
 }
 
 # Deploy mushop chart
@@ -69,6 +69,27 @@ resource "helm_release" "mushop" {
   set {
     name  = "api.env.newsletterSubscribeUrl"
     value = var.create_new_oke_cluster ? (var.newsletter_subscription_enabled ? "${oci_apigateway_deployment.newsletter_subscription.0.endpoint}/subscribe" : "") : ""
+  }
+
+  set {
+    name  = "storefront.env.odaEnabled"
+    value = var.oda_enabled
+  }
+  set {
+    name  = "storefront.env.odaUri"
+    value = var.oda_uri
+  }
+  set {
+    name  = "storefront.env.odaChannelId"
+    value = var.oda_channel_id
+  }
+  set {
+    name  = "storefront.env.odaSecret"
+    value = var.oda_channel_secret
+  }
+  set {
+    name  = "storefront.env.odaUserHiddenInitMessage"
+    value = var.oda_user_init_message
   }
 
   depends_on = [helm_release.ingress_nginx, helm_release.cert_manager] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.

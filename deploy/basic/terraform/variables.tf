@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2021 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2019-2022 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -157,6 +157,23 @@ variable "object_storage_mushop_media_compartment_ocid" {
 }
 variable "object_storage_mushop_media_visibility" {
   default = "Public"
+}
+
+# Oracle Digital Assistant
+variable "oda_enabled" {
+  default = false
+}
+variable "oda_uri" {
+  default = ""
+}
+variable "oda_channel_id" {
+  default = ""
+}
+variable "oda_secret" {
+  default = ""
+}
+variable "oda_user_init_message" {
+  default = ""
 }
 
 # MuShop Services

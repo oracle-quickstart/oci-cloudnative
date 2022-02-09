@@ -1,4 +1,4 @@
-# Copyright (c) 2020, 2021 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2020-2022 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -41,7 +41,7 @@ data "oci_identity_regions" "home_region" {
 }
 
 # Gets kubeconfig
-data "oci_containerengine_cluster_kube_config" "oke_cluster_kube_config" {
+data "oci_containerengine_cluster_kube_config" "oke" {
   cluster_id = var.create_new_oke_cluster ? oci_containerengine_cluster.oke_cluster[0].id : var.existent_oke_cluster_id
 
   depends_on = [oci_containerengine_node_pool.oke_node_pool]
@@ -67,25 +67,3 @@ resource "random_string" "deploy_id" {
   length  = 4
   special = false
 }
-
-### Passwords using random_string instead of random_password to be compatible with ORM (Need to update random provider)
-resource "random_string" "autonomous_database_wallet_password" {
-  length           = 16
-  special          = true
-  min_upper        = 3
-  min_lower        = 3
-  min_numeric      = 3
-  min_special      = 3
-  override_special = "{}#^*<>[]%~"
-}
-
-resource "random_string" "autonomous_database_admin_password" {
-  length           = 16
-  special          = true
-  min_upper        = 3
-  min_lower        = 3
-  min_numeric      = 3
-  min_special      = 3
-  override_special = "{}#^*<>[]%~"
-}
-

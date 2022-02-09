@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2021 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2019-2022 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -149,6 +149,11 @@ locals {
       mushop_media_visibility = var.object_storage_mushop_media_visibility
       mushop_app_par          = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.mushop_lite_preauth.access_uri}"
       wallet_par              = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.mushop_wallet_preauth.access_uri}"
+      oda_enabled             = var.oda_enabled
+      oda_uri                 = var.oda_uri
+      oda_channel_id          = var.oda_channel_id
+      oda_secret              = var.oda_secret
+      oda_user_init_message   = var.oda_user_init_message
   })
   catalogue_sql_template = templatefile("${path.module}/scripts/catalogue.template.sql",
     {

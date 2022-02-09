@@ -98,6 +98,17 @@ variableGroups:
       and:
         - show_advanced
 
+  - title: "Oracle Digital Assistant support"
+    variables:
+    - oda_enabled
+    - oda_uri
+    - oda_channel_id
+    - oda_channel_secret
+    - oda_user_init_message
+    visible:
+      and:
+        - show_advanced
+
   - title: "Network Configuration"
     variables:
       - network_strategy
@@ -217,9 +228,9 @@ variables:
     type: enum
     enum: # Necessary hardcoded supported versions, as ORM does not retrieve the versions from OKE.
     - "Latest"
-    - "v1.20.8"
-    - "v1.19.12"
-    - "v1.18.10"
+    - "v1.21.5"
+    - "v1.20.11"
+    - "v1.19.15"
     title: "Kubernetes Version"
     required: true
     visible:
@@ -331,6 +342,9 @@ variables:
           - eq:
             - node_pool_shape 
             - "VM.Standard.E4.Flex"
+          - eq:
+            - node_pool_shape 
+            - "VM.Standard.A1.Flex"
 
   node_pool_node_shape_config_memory_in_gbs:
     type: integer
@@ -348,6 +362,9 @@ variables:
           - eq:
             - node_pool_shape 
             - "VM.Standard.E4.Flex"
+          - eq:
+            - node_pool_shape 
+            - "VM.Standard.A1.Flex"
 
   node_pool_name:
     type: string
@@ -611,6 +628,47 @@ variables:
     type: boolean
     title: "Service Catalog"
 
+  # Oracle Digital Assistant
+  oda_enabled:
+    type: boolean
+    title: "Enable Oracle Digital Assistant support?"
+  
+  oda_uri:
+    type: string
+    title: "Oracle Digital Assistant URI"
+    required: false
+    visible:
+      and:
+        - show_advanced
+        - oda_enabled
+
+  oda_channel_id:
+    type: string
+    title: "Oracle Digital Assistant channel ID"
+    required: false
+    visible:
+      and:
+        - show_advanced
+        - oda_enabled
+
+  oda_channel_secret:
+    type: string
+    title: "Oracle Digital Assistant channel secret"
+    required: false
+    visible:
+      and:
+        - show_advanced
+        - oda_enabled
+
+  oda_user_init_message:
+    type: string
+    title: "Oracle Digital Assistant initial user hidden message"
+    required: false
+    visible:
+      and:
+        - show_advanced
+        - oda_enabled
+
   # mushop_atp:
   #   visible: yes
   #   type: boolean
@@ -718,6 +776,7 @@ outputGroups:
     outputs:
       - dev
       - mushop_source_code
+      - mushop_version
 
 outputs:
   mushop_url_button:
@@ -798,6 +857,11 @@ outputs:
   mushop_source_code:
     type: link
     title: MuShop Repo with sources and deployment scripts
+    visible: true
+
+  mushop_version:
+    type: string
+    title: MuShop Version used
     visible: true
 
   kubeconfig_for_kubectl:

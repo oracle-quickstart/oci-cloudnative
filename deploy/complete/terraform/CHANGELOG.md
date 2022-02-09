@@ -1,5 +1,14 @@
 # CHANGELOG
 
+2022-02-02 (v3.1.0)
+
+- Terraform OCI Provider Updated to the latest
+- Updates the Cluster Utilities Helm charts versions
+- Updated Kubernetes versions available (1.21.5, 1.20.11 and 1.19.15). "Latest" will always get the latest available, even if not listed.
+- Cluster Autoscaler updated to follow new versioning structure
+- Oracle Digital Assistant support on the storefront
+- Initial arm64 shapes for nodes support
+
 2021-07-28 (v3.0.1)
 
 - Terraform OCI Provider Updated to the latest

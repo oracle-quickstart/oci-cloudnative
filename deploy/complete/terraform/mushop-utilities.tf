@@ -1,4 +1,4 @@
-# Copyright (c) 2020, 2021 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2020-2022 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -7,7 +7,7 @@ resource "kubernetes_namespace" "cluster_utilities_namespace" {
   metadata {
     name = "mushop-utilities"
   }
-  depends_on = [oci_containerengine_node_pool.oke_node_pool, local_file.kubeconfig]
+  depends_on = [oci_containerengine_node_pool.oke_node_pool]
 }
 
 # MuShop Utilities helm charts
@@ -18,7 +18,7 @@ resource "helm_release" "prometheus" {
   name       = "prometheus"
   repository = local.helm_repository.prometheus
   chart      = "prometheus"
-  version    = "15.1.1"
+  version    = "15.1.3"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
@@ -37,7 +37,7 @@ resource "helm_release" "grafana" {
   name       = "mushop-utils-grafana" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.grafana
   chart      = "grafana"
-  version    = "6.21.1"
+  version    = "6.21.2"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
@@ -45,6 +45,11 @@ resource "helm_release" "grafana" {
     name  = "grafana\\.ini.server.root_url"
     value = "%(protocol)s://%(domain)s:%(http_port)s/grafana"
     type  = "string"
+  }
+
+  set {
+    name  = "grafana\\.ini.server.serve_from_sub_path"
+    value = "true"
   }
 
   values = [
@@ -92,7 +97,7 @@ resource "helm_release" "metrics_server" {
   name       = "metrics-server"
   repository = local.helm_repository.metrics_server
   chart      = "metrics-server"
-  version    = "3.7.0"
+  version    = "3.8.0"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
@@ -111,7 +116,7 @@ resource "helm_release" "ingress_nginx" {
   name       = "mushop-utils-ingress-nginx" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.ingress_nginx
   chart      = "ingress-nginx"
-  version    = "4.0.13"
+  version    = "4.0.17"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = true
 
@@ -162,7 +167,7 @@ resource "helm_release" "cert_manager" {
   name       = "cert-manager"
   repository = local.helm_repository.jetstack
   chart      = "cert-manager"
-  version    = "1.7.0"
+  version    = "1.7.1"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = true # wait to allow the webhook be properly configured
 
@@ -206,12 +211,11 @@ data "kubernetes_secret" "mushop_utils_grafana" {
 locals {
   # Helm repos
   helm_repository = {
-    stable        = "https://charts.helm.sh/stable"
-    ingress_nginx = "https://kubernetes.github.io/ingress-nginx"
-    jetstack      = "https://charts.jetstack.io"                        # cert-manager
-    svc_catalog   = "https://kubernetes-sigs.github.io/service-catalog" # Service Catalog
-    grafana       = "https://grafana.github.io/helm-charts"
-    prometheus    = "https://prometheus-community.github.io/helm-charts"
+    ingress_nginx  = "https://kubernetes.github.io/ingress-nginx"
+    jetstack       = "https://charts.jetstack.io"                        # cert-manager
+    svc_catalog    = "https://kubernetes-sigs.github.io/service-catalog" # Service Catalog
+    grafana        = "https://grafana.github.io/helm-charts"
+    prometheus     = "https://prometheus-community.github.io/helm-charts"
     metrics_server = "https://kubernetes-sigs.github.io/metrics-server"
   }
 }

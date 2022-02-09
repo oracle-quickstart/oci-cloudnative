@@ -78,7 +78,7 @@ variable "prometheus_enabled" {
 }
 variable "metrics_server_enabled" {
   default     = true
-  description = "Enable Metrics Server for Metrics, HPA, VPA and Cluster Auto Scaler"
+  description = "Enable Metrics Server for Metrics, HPA, VPA and Cluster Autoscaler"
 }
 variable "catalog_enabled" {
   default     = false
@@ -148,4 +148,26 @@ variable "autonomous_database_visibility" {
 }
 variable "autonomous_database_wallet_generate_type" {
   default = "SINGLE"
+}
+
+## Oracle Digital Assistant
+variable "oda_enabled" {
+  default     = false
+  description = "Enables the Oracle Digital Assistant as widget on the storefront. (chatbot balloon will appear on the MuShop UI) \nNOTE: This stack currently does not provision ODA, you need to bring your ODA instance and bot details."
+}
+variable "oda_uri" {
+  default     = ""
+  description = "Oracle Digital Assistant server URI. Do not include https: and slashes. e.g.: oda-xxxxxxx-x.data..digitalassistant.oci.oraclecloud.com"
+}
+variable "oda_channel_id" {
+  default     = ""
+  description = "Oracle Digital Assistant Channel Id to be used with MuShop."
+}
+variable "oda_channel_secret" {
+  default     = ""
+  description = "Oracle Digital Assistant channel secret. NOTE: Only necessary if Client Auth is enabled"
+}
+variable "oda_user_init_message" {
+  default     = ""
+  description = "Oracle Digital Assistant initial hidden user message. Makes the Digital Assistant proactive. e.g.: Trending Today"
 }

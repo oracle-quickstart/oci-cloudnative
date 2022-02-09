@@ -8,6 +8,8 @@
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 #
 
+ME=$(basename $0)
+
 get_object() {
     out_file=$1
     os_uri=$2
@@ -65,4 +67,30 @@ if [[ "$MUSHOP_MEDIA_VISIBILITY" == Private ]]; then
         echo "Loading MuShop Media Images to Catalogue..."
         get_media_pars /root/mushop_media_pars_list.txt
         echo "Images loaded"
+fi
+
+# If enabled, configure storefront to load ODA's web-sdk
+ODA_ENABLED=${oda_enabled}
+if [[ "$ODA_ENABLED" = true ]]; then
+
+    WWW_DIR=/app/storefront
+    ODA_SCRIPTS_DIR=$WWW_DIR/scripts/oda
+
+    export ODA_URI=${oda_uri}
+    export ODA_CHANNEL_ID=${oda_channel_id}
+    export ODA_SECRET=${oda_secret}
+    export ODA_USER_INIT_MESSAGE=${oda_user_init_message}
+
+    echo "$ME: Preparing index.html to enable Oracle Digital Assistant"
+    storefrontindex="$WWW_DIR/index.html"
+    [ -w $WWW_DIR ] && echo "$ME: Enabling ODA SDK..." || (echo "$ME: File System Not Writable. Exiting..." && exit 0)
+    sed -i -e 's|<!-- head placeholder 1 -->|<script src="scripts/oda/settings.js"></script>|g' "$storefrontindex" || (echo "$ME: *** Failed to enable ODA SDK. Exiting..." && exit 0)
+    sed -i -e 's|<!-- head placeholder 2 -->|<script src="scripts/oda/web-sdk.js" onload="initSdk('$(echo -e "\x27")'Bots'$(echo -e "\x27")')"></script>|g' "$storefrontindex" || (echo "$ME: *** Failed to enable ODA SDK. Exiting..." && exit 0)
+
+    echo "$ME: Setting ODA variables"
+    odasettingsfile="$ODA_SCRIPTS_DIR/settings.js"
+    [ -w $odasettingsfile ] && echo "$ME: Running envsubst to update ODA settings.js" || (echo "$ME: settings.js Not Writable. Exiting..." && exit 0)
+    (tmpfile=$(mktemp) && \
+    (cp -a $odasettingsfile $tmpfile) && \
+    (cat $odasettingsfile | envsubst > $tmpfile && mv $tmpfile $odasettingsfile)) || (echo "$ME: *** Failed to update settings.js. Exiting..." && exit 0)
 fi

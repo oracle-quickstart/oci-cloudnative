@@ -18,9 +18,9 @@ api:
 storefront:
   env:
     odaEnabled:               # Enables the Oracle Digital Assistant as widget on the storefront
-    odaUri:                   # Oracle Digital Assistant Channel URI to be used with MuShop
+    odaUri:                   # Oracle Digital Assistant URI to be used with MuShop
     odaChannelId:             # Oracle Digital Assistant Channel Id to be used with MuShop
-    odaSecret:                # Used if client auth is enabled.
+    odaSecret:                # Oracle Digital Assistant Channel Secret. Used if client auth is enabled.
     odaUserHiddenInitMessage: # Hidden Init Message if any. Makes the Digital Assistant proactive.
 
 carts:

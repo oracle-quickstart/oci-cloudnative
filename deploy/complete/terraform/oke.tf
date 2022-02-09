@@ -1,4 +1,4 @@
-# Copyright (c) 2020, 2021 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2020-2022 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -11,6 +11,7 @@ resource "oci_containerengine_cluster" "oke_cluster" {
   endpoint_config {
     is_public_ip_enabled = (var.cluster_endpoint_visibility == "Private") ? false : true
     subnet_id            = oci_core_subnet.oke_k8s_endpoint_subnet[0].id
+    nsg_ids              = []
   }
   options {
     service_lb_subnet_ids = [oci_core_subnet.oke_lb_subnet[0].id]
@@ -25,6 +26,12 @@ resource "oci_containerengine_cluster" "oke_cluster" {
       services_cidr = lookup(var.network_cidrs, "KUBERNETES-SERVICE-CIDR")
       pods_cidr     = lookup(var.network_cidrs, "PODS-CIDR")
     }
+  }
+  image_policy_config {
+    is_policy_enabled = false
+    # key_details {
+    #   # kms_key_id = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? oci_kms_key.mushop_key[0].id : var.existent_encryption_key_id) : null
+    # }
   }
   kms_key_id = var.use_encryption_from_oci_vault ? (var.create_new_encryption_key ? oci_kms_key.mushop_key[0].id : var.existent_encryption_key_id) : null
 
@@ -87,8 +94,8 @@ locals {
 
 # Local kubeconfig for when using Terraform locally. Not used by Oracle Resource Manager
 resource "local_file" "oke_kubeconfig" {
-  content  = data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content
-  filename = "${path.module}/generated/oke_kubeconfig"
+  content  = data.oci_containerengine_cluster_kube_config.oke.content
+  filename = "${path.module}/generated/kubeconfig"
 }
 
 # Generate ssh keys to access Worker Nodes, if generate_public_ssh_key=true, applies to the pool
