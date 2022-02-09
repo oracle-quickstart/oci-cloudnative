@@ -94,8 +94,8 @@ locals {
 
 # Local kubeconfig for when using Terraform locally. Not used by Oracle Resource Manager
 resource "local_file" "oke_kubeconfig" {
-  content  = data.oci_containerengine_cluster_kube_config.oke_cluster_kube_config.content
-  filename = "${path.module}/generated/oke_kubeconfig"
+  content  = data.oci_containerengine_cluster_kube_config.oke.content
+  filename = "${path.module}/generated/kubeconfig"
 }
 
 # Generate ssh keys to access Worker Nodes, if generate_public_ssh_key=true, applies to the pool
