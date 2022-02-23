@@ -28,7 +28,7 @@ variable "generate_public_ssh_key" {
   default = true
 }
 variable "instance_shape" {
-  default = "VM.Standard.E3.Flex"
+  default = "VM.Standard.A1.Flex"
 }
 variable "instance_ocpus" {
   default = 1
