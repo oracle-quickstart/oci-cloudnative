@@ -34,7 +34,7 @@ variable "instance_ocpus" {
   default = 1
 }
 variable "instance_shape_config_memory_in_gbs" {
-  default = 16
+  default = 6
 }
 variable "image_operating_system" {
   default = "Oracle Linux"
