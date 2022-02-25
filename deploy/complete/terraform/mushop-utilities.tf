@@ -18,7 +18,7 @@ resource "helm_release" "prometheus" {
   name       = "prometheus"
   repository = local.helm_repository.prometheus
   chart      = "prometheus"
-  version    = "15.1.3"
+  version    = "15.4.0"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
@@ -37,7 +37,7 @@ resource "helm_release" "grafana" {
   name       = "mushop-utils-grafana" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.grafana
   chart      = "grafana"
-  version    = "6.21.2"
+  version    = "6.22.0"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
@@ -97,7 +97,7 @@ resource "helm_release" "metrics_server" {
   name       = "metrics-server"
   repository = local.helm_repository.metrics_server
   chart      = "metrics-server"
-  version    = "3.8.0"
+  version    = "3.8.2"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
