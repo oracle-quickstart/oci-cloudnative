@@ -83,40 +83,15 @@ This creates a `.zip` file in your working directory that can be imported in to 
         docker buildx build --pull --rm --load -t mushop-basic -f deploy/basic/Dockerfile .
         ```
 
-    Note: Building Multi-Arch and loading locally (using --load) currently is not supported by Docker. You need to build one platform at time.
-
-    * linux/amd64
-
-        ```shell
-        docker buildx build --pull --rm --platform linux/amd64 --load -t mushop-basic -f deploy/basic/Dockerfile .
-        ```
-
-    * linux/arm64
-
-        ```shell
-        docker buildx build --pull --rm --platform linux/arm64 --load -t mushop-basic-arm64 -f deploy/basic/Dockerfile .
-        ```
-
-    * linux/amd64,linux/arm64 if pushing the mushop builder to local registry:
-
-        ```shell
-        docker buildx build --pull --rm --platform linux/amd64,linux/arm64 --push -t <registry>/mushop-basic -f deploy/basic/Dockerfile .
-        ```
-
 1. Run locally
-    * linux/amd64 (or default builder)
 
-        ```shell
-        docker run --rm -it mushop-basic:latest
-        ```
+    ```shell
+    docker run --rm -it -p 8888:80 mushop-basic:latest
+    ```
 
-    * linux/arm64
+1. Browse to http://localhost:8888
 
-        ```shell
-        docker run --rm -it mushop-basic-arm64:latest
-        ```
-
-## Deploying using local or CloudShell *Terraform* instead of ORM stack
+## Deploying using local or OCI CloudShell *Terraform* instead of ORM stack
 
 After complete the Build steps 1 and 2, generate the binaries:
 

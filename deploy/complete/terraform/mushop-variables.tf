@@ -47,7 +47,7 @@ variable "mushop_mock_mode_all" {
   description = "If enabled, will not provision ATP Database, Object Storage, or Streaming. The services will run in mock mode and will connect to an in-memory database, and the data will not persist"
 }
 variable "create_oci_service_user" {
-  default     = true
+  default     = false
   description = "Creates OCI Service User. Service user is needed for Email Delivery (Newsletter feature) and Stream services."
 }
 variable "newsletter_subscription_enabled" {

@@ -48,4 +48,4 @@ spec:
             periodSeconds: 5
       volumes: {{- include "user.volumes" . | nindent 8 }}
       nodeSelector:
-        beta.kubernetes.io/os: linux
+        kubernetes.io/os: linux

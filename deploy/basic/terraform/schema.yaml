@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2021 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2019-2022 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -20,10 +20,6 @@ groupings:
     - tenancy_ocid
     - region
 
-  - title: "General Configuration"
-    variables:
-    - num_nodes
-
   - title: "Optional Configuration"
     variables:
     - autonomous_database_name
@@ -43,6 +39,7 @@ groupings:
 
   - title: "Advanced Resource Options - Compute"
     variables:
+    - num_nodes
     - instance_shape
     - instance_ocpus
     - instance_shape_config_memory_in_gbs
@@ -115,6 +112,9 @@ variables:
     description: "Choose the number of compute instances to deploy."
     default: "2"
     required: true
+    visible:
+      and:
+        - show_advanced
 
   autonomous_database_name:
     type: string
@@ -521,6 +521,8 @@ outputGroups:
     outputs:
       - lb_public_url
       - lb_nip_host_url
+      - mushop_source_code
+      - mushop_version
 
   - title: Passwords and Keys
     outputs:
@@ -537,8 +539,6 @@ outputGroups:
     outputs:
       - dev
       - comments
-      - mushop_source_code
-      - mushop_version
 
 outputs:
   lb_public_url_button:
@@ -549,8 +549,7 @@ outputs:
 
   lb_public_url:
     type: link
-    title: MuShop
-    displayText: Storefront
+    title: MuShop URL
     visible: true
 
   lb_nip_host_url:
@@ -601,4 +600,4 @@ outputs:
     displayText: "The application URL will be unavailable for a few minutes after provisioning, while the application is configured"
     visible: true
   
-primaryOutputButton: ${lb_public_url}
+primaryOutputButton: ${lb_public_url_button}

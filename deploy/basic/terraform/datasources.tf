@@ -122,7 +122,7 @@ data "oci_core_services" "all_services" {
 }
 
 # Cloud Init
-data "template_cloudinit_config" "nodes" {
+data "cloudinit_config" "nodes" {
   gzip          = true
   base64_encode = true
 
