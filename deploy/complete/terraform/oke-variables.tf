@@ -183,7 +183,7 @@ variable "create_compartment_policies" {
   description = "Creates policies that will reside on the compartment. e.g.: Policies to support Cluster Autoscaler, OCI Logging datasource on Grafana"
 }
 variable "create_tenancy_policies" {
-  default     = true
+  default     = false
   description = "Creates policies that need to reside on the tenancy. e.g.: Policies to support OCI Metrics datasource on Grafana"
 }
 
