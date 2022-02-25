@@ -636,7 +636,7 @@ variables:
   oda_uri:
     type: string
     title: "Oracle Digital Assistant URI"
-    required: false
+    required: true
     visible:
       and:
         - show_advanced
@@ -645,7 +645,7 @@ variables:
   oda_channel_id:
     type: string
     title: "Oracle Digital Assistant channel ID"
-    required: false
+    required: true
     visible:
       and:
         - show_advanced
@@ -758,6 +758,7 @@ outputGroups:
       - external_ip
       - domain_name
       - mushop_url_https
+      - mushop_url_alternative
 
   - title: Passwords and Keys
     outputs:
@@ -814,6 +815,11 @@ outputs:
     title: Domain Name
     displayText: Full Qualified Domain Name
     visible: true    
+
+  mushop_url_alternative:
+    type: link
+    title: "Alternative Hostname"
+    visible: true
 
   autonomous_database_password:
     type: string
