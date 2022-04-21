@@ -6,7 +6,7 @@ locals {
   cluster_autoscaler_supported_k8s_versions           = { "1.18" = "1.18.3-4", "1.19" = "1.19.1-4", "1.20" = "1.20.0-4", "1.21" = "1.21.1-1" } # There's no API to get that list. Need to be updated manually
   cluster_autoscaler_image_version                    = lookup(local.cluster_autoscaler_supported_k8s_versions, local.k8s_major_minor_version, reverse(values(local.cluster_autoscaler_supported_k8s_versions))[0])
   cluster_autoscaler_image                            = "iad.ocir.io/oracle/oci-cluster-autoscaler:${local.cluster_autoscaler_image_version}"
-  cluster_autoscaler_log_verbosity                      = 4
+  cluster_autoscaler_log_level_verbosity              = 4
   cluster_autoscaler_node_pool                        = var.create_new_oke_cluster ? oci_containerengine_node_pool.oke_node_pool[0].id : var.existent_oke_nodepool_id_for_autoscaler
   cluster_autoscaler_min_nodes                        = var.cluster_autoscaler_min_nodes
   cluster_autoscaler_max_nodes                        = var.cluster_autoscaler_max_nodes
@@ -237,7 +237,7 @@ resource "kubernetes_deployment" "cluster_autoscaler_deployment" {
           }
           command = [
             "./cluster-autoscaler",
-            "--v=${local.cluster_autoscaler_log_verbosity}",
+            "--v=${local.cluster_autoscaler_log_level_verbosity}",
             "--stderrthreshold=info",
             "--cloud-provider=oci",
             "--max-node-provision-time=${local.cluster_autoscaler_max_node_provision_time}",
