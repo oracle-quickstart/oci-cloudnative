@@ -27,7 +27,7 @@ dependencies:
   - name: catalog
     version: 0.3.1
     condition: catalog.enabled
-    repository: https://kubernetes-sigs.github.io/service-catalog 
+    repository: https://kubernetes-retired.github.io/service-catalog 
   # cert-manager
   - name: cert-manager
     version: 1.7.1
