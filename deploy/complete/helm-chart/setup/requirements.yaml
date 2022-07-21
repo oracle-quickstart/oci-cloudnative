@@ -5,12 +5,12 @@
 dependencies:
   # Prometheus
   - name: prometheus
-    version: 15.8.4
+    version: 15.10.5
     condition: prometheus.enabled
     repository: https://prometheus-community.github.io/helm-charts
   # Grafana
   - name: grafana
-    version: 6.26.3
+    version: 6.32.5
     condition: grafana.enabled
     repository: https://grafana.github.io/helm-charts
   # HPA Metrics
@@ -20,17 +20,12 @@ dependencies:
     repository: https://kubernetes-sigs.github.io/metrics-server
   # Ingress Controller
   - name: ingress-nginx
-    version: 4.0.19
+    version: 4.2.0
     condition: ingress-nginx.enabled
     repository: https://kubernetes.github.io/ingress-nginx
-  # Service Catalog
-  - name: catalog
-    version: 0.3.1
-    condition: catalog.enabled
-    repository: https://kubernetes-sigs.github.io/service-catalog 
   # cert-manager
   - name: cert-manager
-    version: 1.8.0
+    version: 1.8.2
     condition: cert-manager.enabled
     repository: https://charts.jetstack.io
   # jenkins
