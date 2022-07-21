@@ -18,7 +18,7 @@ resource "helm_release" "prometheus" {
   name       = "prometheus"
   repository = local.helm_repository.prometheus
   chart      = "prometheus"
-  version    = "15.8.4"
+  version    = "15.10.5"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
@@ -37,7 +37,7 @@ resource "helm_release" "grafana" {
   name       = "mushop-utils-grafana" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.grafana
   chart      = "grafana"
-  version    = "6.26.3"
+  version    = "6.32.5"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
@@ -116,7 +116,7 @@ resource "helm_release" "ingress_nginx" {
   name       = "mushop-utils-ingress-nginx" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.ingress_nginx
   chart      = "ingress-nginx"
-  version    = "4.0.19"
+  version    = "4.2.0"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = true
 
@@ -148,18 +148,7 @@ resource "helm_release" "ingress_nginx" {
 }
 
 ## https://github.com/kubernetes-sigs/service-catalog/blob/master/charts/catalog/README.md
-resource "helm_release" "svc-cat" {
-  name       = "svc-cat"
-  repository = local.helm_repository.svc_catalog
-  chart      = "catalog"
-  version    = "0.3.1"
-  namespace  = kubernetes_namespace.cluster_utilities_namespace.id
-  wait       = false
-
-  depends_on = [helm_release.ingress_nginx] # Ugly workaround because of the oci pvc provisioner not be able to wait for the node be active and retry.
-
-  count = var.catalog_enabled ? 1 : 0
-}
+## *** Service Catalog removed. Project retired ***
 
 ## https://github.com/jetstack/cert-manager/blob/master/README.md
 ## https://artifacthub.io/packages/helm/cert-manager/cert-manager
@@ -167,7 +156,7 @@ resource "helm_release" "cert_manager" {
   name       = "cert-manager"
   repository = local.helm_repository.jetstack
   chart      = "cert-manager"
-  version    = "1.8.0"
+  version    = "1.8.2"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = true # wait to allow the webhook be properly configured
 
@@ -213,7 +202,6 @@ locals {
   helm_repository = {
     ingress_nginx  = "https://kubernetes.github.io/ingress-nginx"
     jetstack       = "https://charts.jetstack.io"                        # cert-manager
-    svc_catalog    = "https://kubernetes-sigs.github.io/service-catalog" # Service Catalog
     grafana        = "https://grafana.github.io/helm-charts"
     prometheus     = "https://prometheus-community.github.io/helm-charts"
     metrics_server = "https://kubernetes-sigs.github.io/metrics-server"
