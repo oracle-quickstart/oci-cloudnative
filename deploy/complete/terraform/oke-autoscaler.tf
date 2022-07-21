@@ -3,7 +3,7 @@
 # 
 
 locals {
-  cluster_autoscaler_supported_k8s_versions           = { "1.18" = "1.18.3-4", "1.19" = "1.19.1-4", "1.20" = "1.20.0-4", "1.21" = "1.21.1-1" } # There's no API to get that list. Need to be updated manually
+  cluster_autoscaler_supported_k8s_versions           = { "1.21" = "1.21.1-3", "1.22" = "1.22.2-4", "1.23" = "1.23.0-4", "1.24" = "1.24.0-5" } # There's no API to get that list. Need to be updated manually
   cluster_autoscaler_image_version                    = lookup(local.cluster_autoscaler_supported_k8s_versions, local.k8s_major_minor_version, reverse(values(local.cluster_autoscaler_supported_k8s_versions))[0])
   cluster_autoscaler_image                            = "iad.ocir.io/oracle/oci-cluster-autoscaler:${local.cluster_autoscaler_image_version}"
   cluster_autoscaler_log_level_verbosity              = 4
