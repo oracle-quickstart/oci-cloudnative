@@ -15,7 +15,7 @@ dependencies:
     repository: https://grafana.github.io/helm-charts
   # HPA Metrics
   - name: metrics-server
-    version: 3.8.2
+    version: 3.8.3
     condition: metrics-server.enabled
     repository: https://kubernetes-sigs.github.io/metrics-server
   # Ingress Controller
