@@ -31,7 +31,7 @@
     "@digikare/nestjs-prom": "^0.2.1",
     "@godaddy/terminus": "^4.2.0",
     "@nestjs/common": "^6.7.1",
-    "@nestjs/core": "^6.7.1",
+    "@nestjs/core": "^9.0.5",
     "@nestjs/passport": "^6.1.0",
     "@nestjs/platform-express": "^6.7.1",
     "@nestjs/terminus": "^6.5.5",
