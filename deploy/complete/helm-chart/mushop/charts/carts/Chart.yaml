@@ -1,5 +1,5 @@
 apiVersion: v1
 name: carts
-appVersion: 0.1.0
-version: 0.1.0
+appVersion: 1.5.0
+version: 0.1.1
 description: Helm chart for carts component of the MuShop
