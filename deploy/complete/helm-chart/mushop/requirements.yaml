@@ -1,45 +1,45 @@
 dependencies:
   - name: api
-    version: 0.1.0
+    version: 0.2.0
     condition: api.enabled
   - name: assets
-    version: 0.1.0
+    version: 0.2.0
     condition: assets.enabled
   - name: carts
-    version: 0.1.0
+    version: 0.1.1
     tags:
       - atp
   - name: catalogue
-    version: 0.1.0
+    version: 0.2.0
     tags:
       - atp
   - name: edge
-    version: 0.1.0
+    version: 0.2.0
     condition: edge.enabled
   - name: events
-    version: 0.1.0
+    version: 0.2.0
     tags:
       - streaming
   - name: orders
-    version: 0.1.0
+    version: 0.1.1
     tags:
       - atp
   - name: payment
-    version: 0.1.0
+    version: 0.1.1
     condition: payment.enabled
   - name: session
     version: 0.1.0
     condition: session.enabled
   - name: storefront
-    version: 0.2.0
+    version: 0.2.1
     condition: storefront.enabled
   - name: user
-    version: 0.1.0
+    version: 0.2.0
     tags:
       - atp
   - name: fulfillment
-    version: 0.1.0
+    version: 0.1.1
     condition: fulfillment.enabled
   - name: nats
-    version: 0.1.0
+    version: 0.1.1
     condition: nats.enabled

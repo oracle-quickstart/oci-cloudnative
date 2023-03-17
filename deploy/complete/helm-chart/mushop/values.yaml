@@ -5,6 +5,7 @@ global:
     instanceName: mushop
   ociAuthSecret:
   ossStreamSecret:
+  oadbService:
   oadbAdminSecret:
   oadbWalletSecret:
   oadbConnectionSecret:
@@ -60,8 +61,8 @@ user:
 
 secrets:
   streams:
-    streamId: 
-    messageEndpoint: 
+    streamId:
+    messageEndpoint:
   bucket:
     region:
     name:
