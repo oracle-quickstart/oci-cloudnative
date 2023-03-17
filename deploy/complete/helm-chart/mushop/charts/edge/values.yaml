@@ -36,4 +36,5 @@ securityContext:
   readOnlyRootFilesystem: true
 
 service:
+  type: ClusterIP
   port: 80
