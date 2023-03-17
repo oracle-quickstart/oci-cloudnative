@@ -141,7 +141,9 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 - name: wallet
   secret:
     secretName: {{ $wallet }}
+ {{- if ne .Values.global.mock.service "all" }}
     defaultMode: 256
+{{- end }}
 {{- end }}
 # service init configMap
 - name: initdb
