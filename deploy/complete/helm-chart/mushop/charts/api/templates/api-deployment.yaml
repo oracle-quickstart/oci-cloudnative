@@ -57,5 +57,7 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+{{- if not .Values.global.okeVirtualNodesSupport }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+{{- end }}
