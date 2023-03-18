@@ -54,9 +54,11 @@ spec:
             name: tmp-volume
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+{{- if not .Values.global.okeVirtualNodesSupport }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
             readOnlyRootFilesystem: {{ if eq (.Values.env.odaEnabled | default false) true }}false{{ else }}true{{ end }}
+{{- end }}
       volumes:
         - name: tmp-volume
           emptyDir:

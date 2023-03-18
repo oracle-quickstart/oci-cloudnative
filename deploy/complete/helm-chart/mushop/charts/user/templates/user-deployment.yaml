@@ -33,7 +33,9 @@ spec:
           env: {{- include "user.oadb.connection" . | nindent 12 }}
           volumeMounts: {{- include "user.mount.wallet" . | nindent 12 }}
           resources: {{- toYaml .Values.resources | nindent 12 }}
+{{- if not .Values.global.okeVirtualNodesSupport }}
           securityContext: {{- toYaml .Values.securityContext | nindent 12 }}
+{{- end }}
           livenessProbe:
             httpGet:
               path: /health

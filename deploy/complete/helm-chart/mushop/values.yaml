@@ -5,10 +5,12 @@ global:
     instanceName: mushop
   ociAuthSecret:
   ossStreamSecret:
+  oadbService:
   oadbAdminSecret:
   oadbWalletSecret:
   oadbConnectionSecret:
   oosBucketSecret:
+  okeVirtualNodesSupport: false
 
 # Depending on the scenario, certain resources might need to be skipped.
 # For example, --set tags.streaming=false to disable required streaming manifests
@@ -60,8 +62,8 @@ user:
 
 secrets:
   streams:
-    streamId: 
-    messageEndpoint: 
+    streamId:
+    messageEndpoint:
   bucket:
     region:
     name:
