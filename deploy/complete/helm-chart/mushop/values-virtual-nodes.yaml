@@ -1,0 +1,52 @@
+global:
+  mock:
+    service: "all"
+  okeVirtualNodesSupport: true
+
+tags:
+  streaming: false
+  atp: false
+
+ingress:
+  enabled: false
+
+api:
+  enabled: true
+
+assets:
+  enabled: true
+
+carts:
+  enabled: true
+
+catalogue:
+  enabled: true
+
+edge:
+  enabled: true
+  service:
+    type: LoadBalancer
+
+events:
+  enabled: true
+
+orders:
+  enabled: true
+
+payment:
+  enabled: false
+
+session:
+  enabled: true
+
+storefront:
+  enabled: true
+
+fulfillment:
+  enabled: true
+
+nats:
+  enabled: false
+
+user:
+  enabled: true
