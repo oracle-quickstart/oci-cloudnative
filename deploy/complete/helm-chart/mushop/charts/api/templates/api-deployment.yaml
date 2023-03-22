@@ -60,4 +60,6 @@ spec:
 {{- if not .Values.global.okeVirtualNodesSupport }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+{{- else }}
+      automountServiceAccountToken: false
 {{- end }}

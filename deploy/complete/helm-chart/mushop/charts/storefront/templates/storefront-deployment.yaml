@@ -58,6 +58,8 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
             readOnlyRootFilesystem: {{ if eq (.Values.env.odaEnabled | default false) true }}false{{ else }}true{{ end }}
+{{- else }}
+      automountServiceAccountToken: false
 {{- end }}
       volumes:
         - name: tmp-volume
