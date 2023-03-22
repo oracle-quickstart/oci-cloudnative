@@ -33,9 +33,6 @@ spec:
           env: {{- include "user.oadb.connection" . | nindent 12 }}
           volumeMounts: {{- include "user.mount.wallet" . | nindent 12 }}
           resources: {{- toYaml .Values.resources | nindent 12 }}
-{{- if not .Values.global.okeVirtualNodesSupport }}
-          securityContext: {{- toYaml .Values.securityContext | nindent 12 }}
-{{- end }}
           livenessProbe:
             httpGet:
               path: /health
@@ -48,6 +45,11 @@ spec:
               port: http
             initialDelaySeconds: 10
             periodSeconds: 5
+{{- if not .Values.global.okeVirtualNodesSupport }}
+          securityContext: {{- toYaml .Values.securityContext | nindent 12 }}
+{{- else }}
+      automountServiceAccountToken: false
+{{- end }}
       volumes: {{- include "user.volumes" . | nindent 8 }}
       nodeSelector:
         kubernetes.io/os: linux

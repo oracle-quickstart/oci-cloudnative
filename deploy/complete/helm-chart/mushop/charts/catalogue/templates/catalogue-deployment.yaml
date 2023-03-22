@@ -62,4 +62,6 @@ spec:
 {{- if not .Values.global.okeVirtualNodesSupport }}
       securityContext:
         fsGroup: 687467
+{{- else }}
+      automountServiceAccountToken: false
 {{- end }}
