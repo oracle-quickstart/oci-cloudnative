@@ -69,13 +69,13 @@ how to access the Jenkins application.
   kubectl get secret -n {{ .Release.Namespace }} {{ .Release.Name }}-jenkins \
     -o jsonpath="{.data.jenkins-admin-password}" | base64 --decode ; echo
 
-- Ensure that Jenkins is up and running
+- Ensure that Jenkins is up and running 
 
-  kubectl get deployment -n {{ .Release.Namespace }} {{ .Release.Name }}-jenkins
+  kubectl get StatefulSet -n {{ .Release.Namespace }} {{ .Release.Name }}-jenkins
 
 - Access Jenkins with admin/<password>:
 
-- {{ if .Values.jenkins.master.ingress.enabled -}}
+- {{ if .Values.jenkins.controller.ingress.enabled -}}
   Open http://<external-ip>/jenkins ( See above for how to locate the <external-ip> )
   Or alternatively,
   {{ end -}}

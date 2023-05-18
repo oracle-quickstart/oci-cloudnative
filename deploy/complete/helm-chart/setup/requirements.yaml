@@ -30,6 +30,6 @@ dependencies:
     repository: https://charts.jetstack.io
   # jenkins
   - name: jenkins
-    version: 2.1.0
+    version: 4.3.23
     condition: jenkins.enabled
-    repository: https://charts.helm.sh/stable
+    repository: https://charts.jenkins.io
