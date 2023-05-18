@@ -123,31 +123,39 @@ grafana:
     - grafana-piechart-panel
     - btplc-status-dot-panel
 
-# https://github.com/helm/charts/blob/master/stable/jenkins/README.md
+# https://github.com/jenkinsci/helm-charts/blob/main/charts/jenkins/README.md
 jenkins:
   enabled: false
-  master:
+  #https://github.com/jenkinsci/helm-charts/blob/main/charts/jenkins/values.yaml
+  controller:
     serviceType: ClusterIP
     jenkinsUriPrefix: "/jenkins"
     ingress:
       # enable ingress only if the ingress-controller `nginx-ingress` is enabled.
       enabled: true
-      paths:
-        - path: /jenkins
-          backend:
-            serviceName: >-
-              {{ template "jenkins.fullname" . }}
-            servicePort: 8080
-      apiVersion: "networking.k8s.io/v1beta1"
+      apiVersion: networking.k8s.io/v1
+      metadata:
+        annotations:
+          kubernetes.io/ingress.class: nginx
+          nginx.ingress.kubernetes.io/rewrite-target: /$2
       labels: {}
-      annotations:
-        kubernetes.io/ingress.class: nginx
+      spec:
+        rules:
+        - http:
+            paths:
+              - path: /jenkins(/|$)(.*)
+                pathType: Prefix
+                backend:
+                  service:
+                    name: mushop-setup-jenkins
+                    port: 
+                      number: 8080
     installPlugins:
-      - kubernetes:1.26.1
-      - workflow-job:2.39
-      - workflow-aggregator:2.6
-      - credentials-binding:1.23
-      - git:4.2.2
-      - configuration-as-code:1.41
-      - blueocean:1.23.2
-    
+        - kubernetes:3900.va_dce992317b_4
+        - workflow-aggregator:596.v8c21c963d92d
+        - git:5.0.1
+        - configuration-as-code:1625.v27444588cc3d
+        - blueocean:1.27.3
+        - credentials-binding:604.vb_64480b_c56ca_
+        - workflow-job:1292.v27d8cc3e2602
+
