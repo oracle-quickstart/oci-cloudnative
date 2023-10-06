@@ -44,7 +44,7 @@
     "imagemin-pngquant": "^9.0.2",
     "jest": "^27.0.3",
     "minimist": "^1.2.6",
-    "postcss": "^8.3.0",
+    "postcss": "^8.4.31",
     "pug": "^3.0.2",
     "webpack": "^4.46.0",
     "webpack-stream": "^6.1.2"
