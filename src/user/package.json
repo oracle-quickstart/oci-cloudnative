@@ -47,7 +47,7 @@
     "prom-client": "^11.5.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.5.2",
-    "typeorm": "^0.2.25"
+    "typeorm": "^0.3.0"
   },
   "devDependencies": {
     "@nestjs/testing": "^6.7.1",
