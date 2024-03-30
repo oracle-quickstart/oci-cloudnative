@@ -3,7 +3,7 @@
 # 
 
 locals {
-  cluster_autoscaler_supported_k8s_versions           = { "1.21" = "1.21.1-3", "1.22" = "1.22.2-4", "1.23" = "1.23.0-4", "1.24" = "1.24.0-5" } # There's no API to get that list. Need to be updated manually
+  cluster_autoscaler_supported_k8s_versions           = { "1.26" = "1.26.2-11", "1.27" = "1.27.2-9", "1.28" = "1.28.0-5", "1.29" = "1.29.0-3" } # There's no API to get that list. Need to be updated manually
   cluster_autoscaler_image_version                    = lookup(local.cluster_autoscaler_supported_k8s_versions, local.k8s_major_minor_version, reverse(values(local.cluster_autoscaler_supported_k8s_versions))[0])
   cluster_autoscaler_image                            = "iad.ocir.io/oracle/oci-cluster-autoscaler:${local.cluster_autoscaler_image_version}"
   cluster_autoscaler_log_level_verbosity              = 4
@@ -71,7 +71,7 @@ resource "kubernetes_cluster_role" "cluster_autoscaler_cr" {
   }
   rule {
     api_groups = [""]
-    resources  = ["pods", "services", "replicationcontrollers", "persistentvolumeclaims", "persistentvolumes"]
+    resources  = ["pods", "services", "replicationcontrollers", "persistentvolumeclaims", "persistentvolumes", "namespaces"]
     verbs      = ["watch", "list", "get"]
   }
   rule {
@@ -91,7 +91,7 @@ resource "kubernetes_cluster_role" "cluster_autoscaler_cr" {
   }
   rule {
     api_groups = ["storage.k8s.io"]
-    resources  = ["storageclasses", "csinodes"]
+    resources  = ["storageclasses", "csinodes", "csidrivers", "csistoragecapacities"]
     verbs      = ["watch", "list", "get"]
   }
   rule {
@@ -255,6 +255,10 @@ resource "kubernetes_deployment" "cluster_autoscaler_deployment" {
           env {
             name  = "OKE_USE_INSTANCE_PRINCIPAL"
             value = "true"
+          }
+          env {
+            name  = "OCI_SDK_APPEND_USER_AGENT"
+            value = "oci-oke-cluster-autoscaler"
           }
         }
       }
