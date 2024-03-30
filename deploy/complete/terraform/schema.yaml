@@ -228,9 +228,9 @@ variables:
     type: enum
     enum: # Necessary hardcoded supported versions, as ORM does not retrieve the versions from OKE.
     - "Latest"
-    - "v1.23.4"
-    - "v1.22.5"
-    - "v1.21.5"
+    - "v1.29.1"
+    - "v1.28.2"
+    - "v1.27.2"
     title: "Kubernetes Version"
     required: true
     visible:
@@ -814,7 +814,7 @@ outputs:
     type: string
     title: Domain Name
     displayText: Full Qualified Domain Name
-    visible: true    
+    visible: true
 
   mushop_url_alternative:
     type: link
@@ -878,8 +878,8 @@ outputs:
 
   sensitive_comments_local_tf:
     type: string
-    title: kubeconfig
-    displayText: Instructions to get sensitive outputs on local Terraform. Not used by ORM
+    title: Sensitive Output Comments
+    displayText: Instructions to get sensitive outputs on local Terraform/OpenToFu cli. Not used by ORM
     visible: false
-  
+
 primaryOutputButton: mushop_url_button
