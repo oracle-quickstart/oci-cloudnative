@@ -18,7 +18,7 @@ resource "helm_release" "prometheus" {
   name       = "prometheus"
   repository = local.helm_repository.prometheus
   chart      = "prometheus"
-  version    = "15.10.5"
+  version    = "25.18.0"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
@@ -37,7 +37,7 @@ resource "helm_release" "grafana" {
   name       = "mushop-utils-grafana" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.grafana
   chart      = "grafana"
-  version    = "6.32.5"
+  version    = "7.3.7"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
@@ -47,10 +47,10 @@ resource "helm_release" "grafana" {
     type  = "string"
   }
 
-  set {
-    name  = "grafana\\.ini.server.serve_from_sub_path"
-    value = "true"
-  }
+  # set {
+  #   name  = "grafana\\.ini.server.serve_from_sub_path"
+  #   value = "true"
+  # }
 
   values = [
     file("${path.module}/chart-values/grafana-values.yaml"), <<EOF
@@ -97,7 +97,7 @@ resource "helm_release" "metrics_server" {
   name       = "metrics-server"
   repository = local.helm_repository.metrics_server
   chart      = "metrics-server"
-  version    = "3.8.2"
+  version    = "3.12.0"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
@@ -116,7 +116,7 @@ resource "helm_release" "ingress_nginx" {
   name       = "mushop-utils-ingress-nginx" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.ingress_nginx
   chart      = "ingress-nginx"
-  version    = "4.2.0"
+  version    = "4.10.0"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = true
 
@@ -156,7 +156,7 @@ resource "helm_release" "cert_manager" {
   name       = "cert-manager"
   repository = local.helm_repository.jetstack
   chart      = "cert-manager"
-  version    = "1.8.2"
+  version    = "1.14.4"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = true # wait to allow the webhook be properly configured
 
