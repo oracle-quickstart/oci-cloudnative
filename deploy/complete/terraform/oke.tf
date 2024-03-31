@@ -43,7 +43,7 @@ resource "oci_containerengine_node_pool" "oke_node_pool" {
   compartment_id     = local.oke_compartment_ocid
   kubernetes_version = (var.k8s_version == "Latest") ? local.node_pool_k8s_latest_version : var.k8s_version
   name               = var.node_pool_name
-  node_shape         = var.node_pool_shape
+  node_shape         = var.node_pool_instance_shape.instanceShape
   ssh_public_key     = var.generate_public_ssh_key ? tls_private_key.oke_worker_node_ssh_key.public_key_openssh : var.public_ssh_key
 
   node_config_details {
@@ -61,8 +61,8 @@ resource "oci_containerengine_node_pool" "oke_node_pool" {
   dynamic "node_shape_config" {
     for_each = local.is_flexible_node_shape ? [1] : []
     content {
-      ocpus         = var.node_pool_node_shape_config_ocpus
-      memory_in_gbs = var.node_pool_node_shape_config_memory_in_gbs
+      ocpus         = var.node_pool_instance_shape.ocpus
+      memory_in_gbs = var.node_pool_instance_shape.memory
     }
   }
 
@@ -108,11 +108,12 @@ resource "tls_private_key" "oke_worker_node_ssh_key" {
 locals {
   cluster_k8s_latest_version   = reverse(sort(data.oci_containerengine_cluster_option.oke.kubernetes_versions))[0]
   node_pool_k8s_latest_version = reverse(sort(data.oci_containerengine_node_pool_option.oke.kubernetes_versions))[0]
-  deployed_k8s_version = var.create_new_oke_cluster ? (var.k8s_version == "Latest") ? local.cluster_k8s_latest_version : var.k8s_version :[
-    for x in data.oci_containerengine_clusters.oke.clusters : x.kubernetes_version if x.id == var.existent_oke_cluster_id][0]
+  deployed_k8s_version = var.create_new_oke_cluster ? (var.k8s_version == "Latest") ? local.cluster_k8s_latest_version : var.k8s_version : [
+  for x in data.oci_containerengine_clusters.oke.clusters : x.kubernetes_version if x.id == var.existent_oke_cluster_id][0]
 }
 
 # Checks if is using Flexible Compute Shapes
 locals {
-  is_flexible_node_shape = contains(local.compute_flexible_shapes, var.node_pool_shape)
+  # Checks if is using Flexible Compute Shapes
+  is_flexible_node_shape = contains(split(".", var.node_pool_instance_shape.instanceShape), "Flex")
 }

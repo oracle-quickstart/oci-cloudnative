@@ -1,42 +1,6 @@
-# Copyright (c) 2020-2022 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2020-2024 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
-# 
-
-terraform {
-  required_version = ">= 1.0"
-  required_providers {
-    oci = {
-      source  = "oracle/oci"
-      version = ">= 4.85.0"
-      # https://registry.terraform.io/providers/hashicorp/oci/4.85.0
-    }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "2.2.0" # Latest version as January 2022 = 2.7.1. Using 2.2.0 (May, 2021) for ORM compatibility (12 releases behind)
-      # https://registry.terraform.io/providers/hashicorp/kubernetes/2.2.0
-    }
-    helm = {
-      source  = "hashicorp/helm"
-      version = "2.1.0" # Latest version as January 2022 = 2.4.1. Using 2.1.0 (March, 2021) for ORM compatibility (7 releases behind)
-      # https://registry.terraform.io/providers/hashicorp/helm/2.1.0
-    }
-    tls = {
-      source  = "hashicorp/tls"
-      version = "3.1.0" # Latest version as January 2022 = 3.1.0.
-      # https://registry.terraform.io/providers/hashicorp/tls/3.1.0
-    }
-    local = {
-      source  = "hashicorp/local"
-      version = "2.1.0" # Latest version as January 2022 = 2.1.0.
-      # https://registry.terraform.io/providers/hashicorp/local/2.1.0
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = "3.1.0" # Latest version as January 2022 = 3.1.0.
-      # https://registry.terraform.io/providers/hashicorp/random/3.1.0
-    }
-  }
-}
+#
 
 provider "oci" {
   tenancy_ocid = var.tenancy_ocid

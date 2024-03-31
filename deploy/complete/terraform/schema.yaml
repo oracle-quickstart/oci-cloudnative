@@ -1,4 +1,4 @@
-# Copyright (c) 2020, 2021 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2020-2024 Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -49,9 +49,7 @@ variableGroups:
     - cluster_autoscaler_min_nodes
     - cluster_autoscaler_max_nodes
     - existent_oke_nodepool_id_for_autoscaler
-    - node_pool_shape
-    - node_pool_node_shape_config_ocpus
-    - node_pool_node_shape_config_memory_in_gbs
+    - node_pool_instance_shape
     - generate_public_ssh_key
     - public_ssh_key
     - image_operating_system
@@ -228,9 +226,9 @@ variables:
     type: enum
     enum: # Necessary hardcoded supported versions, as ORM does not retrieve the versions from OKE.
     - "Latest"
-    - "v1.23.4"
-    - "v1.22.5"
-    - "v1.21.5"
+    - "v1.29.1"
+    - "v1.28.2"
+    - "v1.27.2"
     title: "Kubernetes Version"
     required: true
     visible:
@@ -270,7 +268,7 @@ variables:
 
   cluster_autoscaler_enabled:
     type: boolean
-    title: "Enable Cluster Autoscaler"    
+    title: "Enable Cluster Autoscaler"
 
   num_pool_workers:
     type: integer
@@ -316,8 +314,8 @@ variables:
         - not:
           - create_new_oke_cluster
 
-  node_pool_shape:
-    type: oci:core:instanceshape:name
+  node_pool_instance_shape:
+    type: oci:core:instanceshapewithflex:name
     title: "Select a shape for the Worker Nodes instances"
     required: true
     dependsOn:
@@ -325,46 +323,6 @@ variables:
     visible:
       and:
         - create_new_oke_cluster
-
-  node_pool_node_shape_config_ocpus:
-    type: integer
-    minimum: 1
-    maximum: 64
-    title: "Number of OCPUs"
-    visible:
-      and:
-        - and:
-          - create_new_oke_cluster
-        - or:
-          - eq:
-            - node_pool_shape 
-            - "VM.Standard.E3.Flex"
-          - eq:
-            - node_pool_shape 
-            - "VM.Standard.E4.Flex"
-          - eq:
-            - node_pool_shape 
-            - "VM.Standard.A1.Flex"
-
-  node_pool_node_shape_config_memory_in_gbs:
-    type: integer
-    minimum: 1
-    maximum: 1024
-    title: "Amount of memory (GB)"
-    visible:
-      and:
-        - and:
-          - create_new_oke_cluster
-        - or:
-          - eq:
-            - node_pool_shape 
-            - "VM.Standard.E3.Flex"
-          - eq:
-            - node_pool_shape 
-            - "VM.Standard.E4.Flex"
-          - eq:
-            - node_pool_shape 
-            - "VM.Standard.A1.Flex"
 
   node_pool_name:
     type: string
@@ -446,7 +404,7 @@ variables:
           - create_tenancy_policies
         - not:
           - create_dynamic_group_for_nodes_in_compartment
-        
+
   create_compartment_policies:
     type: boolean
     title: "Create Compartment Policies"
@@ -546,7 +504,7 @@ variables:
           - show_advanced
           - ingress_nginx_enabled
         - eq:
-          - ingress_load_balancer_shape 
+          - ingress_load_balancer_shape
           - "flexible"
 
   ingress_load_balancer_shape_flex_max:
@@ -561,7 +519,7 @@ variables:
           - show_advanced
           - ingress_nginx_enabled
         - eq:
-          - ingress_load_balancer_shape 
+          - ingress_load_balancer_shape
           - "flexible"
 
   ingress_hosts:
@@ -632,7 +590,7 @@ variables:
   oda_enabled:
     type: boolean
     title: "Enable Oracle Digital Assistant support?"
-  
+
   oda_uri:
     type: string
     title: "Oracle Digital Assistant URI"
@@ -814,7 +772,7 @@ outputs:
     type: string
     title: Domain Name
     displayText: Full Qualified Domain Name
-    visible: true    
+    visible: true
 
   mushop_url_alternative:
     type: link
@@ -878,8 +836,8 @@ outputs:
 
   sensitive_comments_local_tf:
     type: string
-    title: kubeconfig
-    displayText: Instructions to get sensitive outputs on local Terraform. Not used by ORM
+    title: Sensitive Output Comments
+    displayText: Instructions to get sensitive outputs on local Terraform/OpenToFu cli. Not used by ORM
     visible: false
-  
+
 primaryOutputButton: mushop_url_button
