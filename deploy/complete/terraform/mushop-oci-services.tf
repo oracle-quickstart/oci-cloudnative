@@ -107,6 +107,21 @@ resource "kubernetes_service_account" "wallet_extractor_sa" {
     name      = "wallet-extractor-sa"
     namespace = kubernetes_namespace.mushop_namespace.id
   }
+  secret {
+    name = "wallet-extractor-sa-token"
+  }
+
+  count = var.mushop_mock_mode_all ? 0 : 1
+}
+resource "kubernetes_secret" "wallet_extractor_sa" {
+  metadata {
+    name = "wallet-extractor-sa-token"
+    namespace = kubernetes_namespace.mushop_namespace.id
+    annotations = {
+      "kubernetes.io/service-account.name" = kubernetes_service_account.wallet_extractor_sa.0.metadata.0.name
+    }
+  }
+  type                           = "kubernetes.io/service-account-token"
 
   count = var.mushop_mock_mode_all ? 0 : 1
 }
@@ -141,7 +156,7 @@ resource "kubernetes_job" "wallet_extractor_job" {
           args    = ["kubectl create secret generic oadb-wallet --from-file=/wallet"]
           volume_mount {
             mount_path = "/var/run/secrets/kubernetes.io/serviceaccount"
-            name       = kubernetes_service_account.wallet_extractor_sa[0].default_secret_name
+            name       = kubernetes_secret.wallet_extractor_sa.0.metadata.0.name # kubernetes_service_account.wallet_extractor_sa[0].default_secret_name
             read_only  = true
           }
           volume_mount {
@@ -151,9 +166,9 @@ resource "kubernetes_job" "wallet_extractor_job" {
           }
         }
         volume {
-          name = kubernetes_service_account.wallet_extractor_sa[0].default_secret_name
+          name = kubernetes_secret.wallet_extractor_sa.0.metadata.0.name # kubernetes_service_account.wallet_extractor_sa[0].default_secret_name
           secret {
-            secret_name = kubernetes_service_account.wallet_extractor_sa[0].default_secret_name
+            secret_name = kubernetes_secret.wallet_extractor_sa.0.metadata.0.name # kubernetes_service_account.wallet_extractor_sa[0].default_secret_name
           }
         }
         volume {
