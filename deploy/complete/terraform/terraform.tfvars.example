@@ -45,9 +45,11 @@ existent_oke_nodepool_id_for_autoscaler = "" # e.g.: ocid1.nodepool.oc1...
 
 # OKE Worker Nodes (Compute)
 num_pool_workers                          = 3 # If autoscaler is enabled, uses the value from cluster_autoscaler_min_nodes for the initial node pool number of nodes
-node_pool_shape                           = "VM.Standard.E3.Flex"
-node_pool_node_shape_config_ocpus         = 1
-node_pool_node_shape_config_memory_in_gbs = 16
+node_pool_instance_shape                  = {
+    "instanceShape" = "VM.Standard.E4.Flex"
+    "ocpus"         = 2
+    "memory"        = 16
+}
 generate_public_ssh_key                   = true # if true, auto generate public and private keys and assign to the node pool.
 public_ssh_key                            = ""   # if generate_public_ssh_key=true, public_ssh_key is ignored. if generate_public_ssh_key=false, assign public_ssh_key, that can be nothing if ""
 

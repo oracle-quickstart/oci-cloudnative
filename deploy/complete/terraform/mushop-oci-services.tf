@@ -115,13 +115,13 @@ resource "kubernetes_service_account" "wallet_extractor_sa" {
 }
 resource "kubernetes_secret" "wallet_extractor_sa" {
   metadata {
-    name = "wallet-extractor-sa-token"
+    name      = "wallet-extractor-sa-token"
     namespace = kubernetes_namespace.mushop_namespace.id
     annotations = {
       "kubernetes.io/service-account.name" = kubernetes_service_account.wallet_extractor_sa.0.metadata.0.name
     }
   }
-  type                           = "kubernetes.io/service-account-token"
+  type = "kubernetes.io/service-account-token"
 
   count = var.mushop_mock_mode_all ? 0 : 1
 }

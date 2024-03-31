@@ -201,7 +201,7 @@ locals {
   # Helm repos
   helm_repository = {
     ingress_nginx  = "https://kubernetes.github.io/ingress-nginx"
-    jetstack       = "https://charts.jetstack.io"                        # cert-manager
+    jetstack       = "https://charts.jetstack.io" # cert-manager
     grafana        = "https://grafana.github.io/helm-charts"
     prometheus     = "https://prometheus-community.github.io/helm-charts"
     metrics_server = "https://kubernetes-sigs.github.io/metrics-server"
