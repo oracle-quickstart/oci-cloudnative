@@ -12,20 +12,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
+
     - name: Setup Node
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
-        node-version: '14'
+        node-version: ''
+
     - name: Setup Hugo
       uses: peaceiris/actions-hugo@v2
       with:
-        hugo-version: '0.82.0'
+        hugo-version: '0.122.0'
         extended: true
+
     - name: Build Hugo Docs
       run: |
           cd src/docs
           make build
+
     - name: Publish to Github Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
