@@ -40,7 +40,7 @@ kubectl create secret generic oci-credentials \
 |--|--|
 | Provides steps for provisioning and connecting cloud services to the application | Uses OCI Service Broker to _provision_ **and** _connect_ the Autonomous Transaction Processing database |
 
-{{< switcher border=true tabs="Manual Steps|Automated (Using OCI Service Broker)" >}}
+{{< switcher border=true tabs="Manual Steps| **Deprecated** Automated (Using OCI Service Broker)" >}}
 
 <ul>
 <li>
@@ -185,7 +185,7 @@ secret to the `mushop-utilities` namespace:
     on the same namespace used by the `setup` chart. For convenience, the documentation
     commands defaults both the `setup` and OCI Service Broker charts to use
     the `mushop-utilities` namespace.
-  
+
 1. Next utilize the OCI Service Broker implementation to provision services by installing the included `provision` chart:
 
     ```shell--helm2
@@ -400,8 +400,9 @@ helm chart is installed using settings to leverage cloud backing services.
         ```
 
         ```shell--helm3
-        helm install mushop ./mushop \
+        helm upgrade --install mushop ./mushop \
           --namespace mushop \
+          --create-namespace \
           --values myvalues.yaml
         ```
 

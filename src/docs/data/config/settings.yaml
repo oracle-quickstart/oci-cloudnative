@@ -23,5 +23,5 @@ toggles:
       - label: 3.x
         toggle: stg-helm-3
         active: true
-      - label: 2.x
-        toggle: stg-helm-2
+      # - label: 2.x
+      #   toggle: stg-helm-2

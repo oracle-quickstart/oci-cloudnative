@@ -64,8 +64,9 @@ From `deploy/complete/helm-chart` directory:
     ```
 
     ```shell--helm3
-    helm install mushop mushop \
+    helm upgrade --install mushop mushop \
       --namespace mushop \
+      --create-namespace \
       --set global.mock.service="all"
     ```
 
