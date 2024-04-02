@@ -185,6 +185,7 @@ Content with aspect ratio of `2-1`
 > Display content as cards - usually in a grid
 
 {{% grid col="1-2" y="top" %}}
+
 ```markdown
 {{%/* grid col="1-2" */%}}
 {{%/* card style="primary" title="Primary" hover=true */%}}
@@ -225,6 +226,7 @@ Card body
 > Add a grid of inner contents using [grid](https://getuikit.com/docs/grid) and [flex](https://getuikit.com/docs/flex)
 
 {{% grid col="1-2" y="top" %}}
+
 ```markdown
 {{%/* grid col="1-3" */%}}
 - **Example**
@@ -235,6 +237,7 @@ Card body
 
 {{% wrapper %}}
 {{% grid col="1-3" %}}
+
 - **Example**
 - Item one
 - Item two
@@ -342,6 +345,7 @@ Slideshow items must be `<li>` type. Refer to [usage](https://getuikit.com/docs/
 > Create a tabbed content switcher
 
 {{% grid col="1-2" y="top" %}}
+
 ```markdown
 {{</* switcher left=true tabs="One|Two|Three" */>}}
 - Tab one content
@@ -355,10 +359,13 @@ Slideshow items must be `<li>` type. Refer to [usage](https://getuikit.com/docs/
 
 {{% wrapper %}}
 {{< switcher left=true tabs="One|Two|Three" >}}
+
 - Tab one content
+
     ```ts
     const foo: string = 'bar';
     ```
+
 - Tab two content
 - Tab three content
 {{< /switcher >}}
@@ -409,6 +416,7 @@ Slideshow items must be `<li>` type. Refer to [usage](https://getuikit.com/docs/
 > Wraps inner content with any `div` and specified classes. Useful for specifying markup with other UIkit features
 
 {{% grid col="1-2" y="top" %}}
+
 ```markdown
 {{%/* wrapper "uk-light uk-background-primary uk-panel uk-padding" */%}}
 Light Panel
