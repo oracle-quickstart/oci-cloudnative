@@ -342,6 +342,7 @@ Slideshow items must be `<li>` type. Refer to [usage](https://getuikit.com/docs/
 > Create a tabbed content switcher
 
 {{% grid col="1-2" y="top" %}}
+
 ```markdown
 {{</* switcher left=true tabs="One|Two|Three" */>}}
 - Tab one content
@@ -355,10 +356,13 @@ Slideshow items must be `<li>` type. Refer to [usage](https://getuikit.com/docs/
 
 {{% wrapper %}}
 {{< switcher left=true tabs="One|Two|Three" >}}
+
 - Tab one content
+
     ```ts
     const foo: string = 'bar';
     ```
+
 - Tab two content
 - Tab three content
 {{< /switcher >}}
