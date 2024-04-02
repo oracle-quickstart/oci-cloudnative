@@ -2,37 +2,44 @@ name: Publish Docs
 
 on:
   push:
-    branches: 
+    branches:
     - master
     - docs_update
     paths:
     - 'src/docs/**'
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-
     - name: Setup Node
       uses: actions/setup-node@v4
       with:
         node-version: ''
-
     - name: Setup Hugo
-      uses: peaceiris/actions-hugo@v2
-      with:
-        hugo-version: '0.122.0'
-        extended: true
-
+      run: |
+        sudo apt install -y hugo
     - name: Build Hugo Docs
       run: |
           cd src/docs
           make build
-
-    - name: Publish to Github Pages
-      uses: peaceiris/actions-gh-pages@v3
+    - name: Upload production artifact
+      uses: actions/upload-pages-artifact@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_branch: gh-pages
-        publish_dir: src/docs/public
+        path: ./src/docs/public
+
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
