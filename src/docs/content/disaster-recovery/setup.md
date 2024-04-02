@@ -33,40 +33,40 @@ Do refer the autonomous database password criteria's [here](https://docs.oracle.
 
 - Create the Source ADB (Autonomous Database)
 
-        ```shell
-            oci db autonomous-database create --compartment-id ${COMPARTMENT_ID} \
-            --db-name ${DB_NAME} --admin-password ${DB_PASSWORD} --db-version 19c \
-            --cpu-core-count 1 --data-storage-size-in-tbs 1 \
-            --display-name ${DB_DISPLAY_NAME} --region ${PRIMARY_REGION}
-        ```
+    ```shell
+        oci db autonomous-database create --compartment-id ${COMPARTMENT_ID} \
+        --db-name ${DB_NAME} --admin-password ${DB_PASSWORD} --db-version 19c \
+        --cpu-core-count 1 --data-storage-size-in-tbs 1 \
+        --display-name ${DB_DISPLAY_NAME} --region ${PRIMARY_REGION}
+    ```
 
 - Fetch the Source ADB (Autonomous Database) OCID
 
-        ```bash
-            DB_ID=$(oci db autonomous-database list -c ${COMPARTMENT_ID} \
-            --region ${PRIMARY_REGION} --display-name $DB_NAME \
-            --query "data[?\"db-name\"=='${DB_NAME}'].id | [0]" --raw-output)
-        ```
+    ```bash
+        DB_ID=$(oci db autonomous-database list -c ${COMPARTMENT_ID} \
+        --region ${PRIMARY_REGION} --display-name $DB_NAME \
+        --query "data[?\"db-name\"=='${DB_NAME}'].id | [0]" --raw-output)
+    ```
 
 - Create the DR ADB (Autonomous Database)
 
-        ```bash
-            oci db autonomous-database create-adb-cross-region-data-guard-details \
-            --compartment-id ${COMPARTMENT_ID} --db-name ${DB_NAME} --source-id ${DB_ID} \
-            --cpu-core-count 1 --data-storage-size-in-tbs 1 \
-            --region ${FAILOVER_REGION} --db-version 19c
-        ```
+    ```bash
+        oci db autonomous-database create-adb-cross-region-data-guard-details \
+        --compartment-id ${COMPARTMENT_ID} --db-name ${DB_NAME} --source-id ${DB_ID} \
+        --cpu-core-count 1 --data-storage-size-in-tbs 1 \
+        --region ${FAILOVER_REGION} --db-version 19c
+    ```
 
 - Download and extract autonomous database wallet from source ADB
 
-        ```bash
-            oci db autonomous-database generate-wallet --autonomous-database-id ${DB_ID}\
-            --password ${WALLET_PW} --file ${WALLET_ZIP} --region $PRIMARY_REGION
-        ```
+    ```bash
+        oci db autonomous-database generate-wallet --autonomous-database-id ${DB_ID}\
+        --password ${WALLET_PW} --file ${WALLET_ZIP} --region $PRIMARY_REGION
+    ```
 
-        ```bash
-            unzip ${WALLET_ZIP} -d /tmp/wallet_source
-        ```
+    ```bash
+        unzip ${WALLET_ZIP} -d /tmp/wallet_source
+    ```
 
 {{% alert style="information" icon="information" %}}
 Keep this wallet handy as we will need to add it as OKE secret later on.
@@ -83,115 +83,115 @@ Follow the instructions provided [here](https://www.oracle.com/webfolder/technet
 
 - Go to the chart folder
 
-        ```bash
-        cd oci-cloudnative/deploy/complete/helm-chart
-        ```
+    ```bash
+    cd oci-cloudnative/deploy/complete/helm-chart
+    ```
 
 - Install Setup Charts
 
-        ```shell--helm3
-        helm upgrade --install mushop-utils setup --dependency-update --namespace mushop-utilities --create-namespace
-        ```
+    ```shell--helm3
+    helm upgrade --install mushop-utils setup --dependency-update --namespace mushop-utilities --create-namespace
+    ```
 
 - Add the following secrets
 
-        ```bash
-        kubectl create secret generic oci-credentials \
-            --namespace mushop \
-            --from-literal=tenancy=<TENANCY_OCID> \
-            --from-literal=user=<USER_OCID> \
-            --from-literal=region=<USER_OCI_REGION> \
-            --from-literal=fingerprint=<USER_PUBLIC_API_KEY_FINGERPRINT> \
-            --from-literal=passphrase=<PASSPHRASE_STRING> \
-            --from-file=privatekey=<PATH_OF_USER_PRIVATE_API_KEY>
-        ```
+    ```bash
+    kubectl create secret generic oci-credentials \
+        --namespace mushop \
+        --from-literal=tenancy=<TENANCY_OCID> \
+        --from-literal=user=<USER_OCID> \
+        --from-literal=region=<USER_OCI_REGION> \
+        --from-literal=fingerprint=<USER_PUBLIC_API_KEY_FINGERPRINT> \
+        --from-literal=passphrase=<PASSPHRASE_STRING> \
+        --from-file=privatekey=<PATH_OF_USER_PRIVATE_API_KEY>
+    ```
 
-        ```bash
-        kubectl create secret generic oadb-admin \
-            --namespace mushop \
-            --from-literal=oadb_admin_pw=${DB_PASSWORD}
-        ```
+    ```bash
+    kubectl create secret generic oadb-admin \
+        --namespace mushop \
+        --from-literal=oadb_admin_pw=${DB_PASSWORD}
+    ```
 
-        ```bash
-        kubectl create secret generic oadb-wallet \
-            --namespace mushop --from-file=/tmp/wallet_source
-        ```
+    ```bash
+    kubectl create secret generic oadb-wallet \
+        --namespace mushop --from-file=/tmp/wallet_source
+    ```
 
-        ```bash
-        kubectl create secret generic oadb-connection \
-            --namespace mushop \
-            --from-literal=oadb_wallet_pw=${WALLET_PW} \
-            --from-literal=oadb_service=${DB_SERVICE_NAME}
-        ```
+    ```bash
+    kubectl create secret generic oadb-connection \
+        --namespace mushop \
+        --from-literal=oadb_wallet_pw=${WALLET_PW} \
+        --from-literal=oadb_service=${DB_SERVICE_NAME}
+    ```
 
 - Edit/Add the following secrets to values-prod.yaml as shown below
 
-        ```bash
-        cat mushop/values-prod.yaml
-        ```
+    ```bash
+    cat mushop/values-prod.yaml
+    ```
 
-    Sample Output:
+Sample Output:
 
-        ```
-        global:
-        ociAuthSecret: oci-credentials        # OCI authentication credentials secret name
-        ossStreamSecret:                      # Name of Stream Connection secret
-        oadbAdminSecret: oadb-admin           # Name of DB Admin secret created earlier
-        oadbWalletSecret: oadb-wallet         # Name of wallet secret created earlier
-        oadbConnectionSecret: oadb-connection # Name of connection secret created earlier
-        ```
+    ```yaml
+    global:
+    ociAuthSecret: oci-credentials        # OCI authentication credentials secret name
+    ossStreamSecret:                      # Name of Stream Connection secret
+    oadbAdminSecret: oadb-admin           # Name of DB Admin secret created earlier
+    oadbWalletSecret: oadb-wallet         # Name of wallet secret created earlier
+    oadbConnectionSecret: oadb-connection # Name of connection secret created earlier
+    ```
 
 - Install MuShop
 
-        ```shell--helm3
-        helm upgrade --install -f ./mushop/values-prod.yaml \
-        mymushop mushop -n mushop \
-        --create-namespace
-        ```
+    ```shell--helm3
+    helm upgrade --install -f ./mushop/values-prod.yaml \
+    mymushop mushop -n mushop \
+    --create-namespace
+    ```
 
 - Setup the ingress
 A TLS secret is used for SSL termination on the ingress controller. To generate the secret for this example, a self-signed certificate is used. While this is okay for testing, for production, use a certificate signed by a Certificate Authority.
 
-        ```bash
-        openssl req -x509 -nodes -days 365 \
-        -newkey rsa:2048 -keyout tls.key \
-        -out tls.crt -subj "/CN=nginxsvc/O=nginxsvc"
-        ```
+    ```bash
+    openssl req -x509 -nodes -days 365 \
+    -newkey rsa:2048 -keyout tls.key \
+    -out tls.crt -subj "/CN=nginxsvc/O=nginxsvc"
+    ```
 
-        ```bash
-        kubectl create secret tls tls-secret --key tls.key --cert tls.crt -n mushop
-        ```
+    ```bash
+    kubectl create secret tls tls-secret --key tls.key --cert tls.crt -n mushop
+    ```
 
-        ```bash
-        cat << EOF | kubectl -n mushop apply -f -
-        apiVersion: networking.k8s.io/v1
-        kind: Ingress
-        metadata:
-        name: mushop
-        annotations:
-            kubernetes.io/ingress.class: "nginx"
-        spec:
-        tls:
-        - secretName: tls-secret
-        rules:
-        - http:
-            paths:
-            - path: /
-                pathType: Prefix
-                backend:
-                service:
-                    name: edge
-                    port:
-                    number: 80
-        EOF
-        ```
+    ```bash
+    cat << EOF | kubectl -n mushop apply -f -
+    apiVersion: networking.k8s.io/v1
+    kind: Ingress
+    metadata:
+    name: mushop
+    annotations:
+        kubernetes.io/ingress.class: "nginx"
+    spec:
+    tls:
+    - secretName: tls-secret
+    rules:
+    - http:
+        paths:
+        - path: /
+            pathType: Prefix
+            backend:
+            service:
+                name: edge
+                port:
+                number: 80
+    EOF
+    ```
 
 - Access the Source MuShop application using the ingress IP
 
-        ```bash
-        kubectl get svc mushop-utils-ingress-nginx-controller \
-        --namespace mushop-utilities
-        ```
+    ```bash
+    kubectl get svc mushop-utils-ingress-nginx-controller \
+    --namespace mushop-utilities
+    ```
 
 - Verify the application at Source
 
@@ -202,9 +202,9 @@ A TLS secret is used for SSL termination on the ingress controller. To generate 
 
 Go to OCI console and perform a failover.
 
-    ```text
-    OCI-Console -> Oracle Database -> Autonomous Transaction Processing (Standby db: `us-ashburn-1`) -> Switchover
-    ```
+```text
+OCI-Console -> Oracle Database -> Autonomous Transaction Processing (Standby db: `us-ashburn-1`) -> Switchover
+```
 
 {{% alert style="information" icon="information" %}}
 Wait until the switchover completes fully and there are no 'role change in progress'
@@ -218,107 +218,107 @@ section and create a OKE cluster at the DR region.
 
 - Download and extract the DR ADB wallet
 
-        ```text
-        OCI-Console -> Oracle Database -> Autonomous Transaction Processing (Standby db: `us-ashburn-1`) -> DB Connection -> Download wallet
-        ```
+    ```text
+    OCI-Console -> Oracle Database -> Autonomous Transaction Processing (Standby db: `us-ashburn-1`) -> DB Connection -> Download wallet
+    ```
 
 Extract the wallet
 
-        ```bash
-        unzip <wallet_zip_file> -d /tmp/wallet_remote
-        ```
+    ```bash
+    unzip <wallet_zip_file> -d /tmp/wallet_remote
+    ```
 
 - Create the secrets, set the region as `us-ashburn-1` in this case
 
-        ```bash
-        kubectl create secret generic oci-credentials \
-            --namespace mushop \
-            --from-literal=tenancy=<TENANCY_OCID> \
-            --from-literal=user=<USER_OCID> \
-            --from-literal=region=<USER_OCI_REGION> \
-            --from-literal=fingerprint=<USER_PUBLIC_API_KEY_FINGERPRINT> \
-            --from-literal=passphrase=<PASSPHRASE_STRING> \
-            --from-file=privatekey=<PATH_OF_USER_PRIVATE_API_KEY>
-        ```
+    ```bash
+    kubectl create secret generic oci-credentials \
+        --namespace mushop \
+        --from-literal=tenancy=<TENANCY_OCID> \
+        --from-literal=user=<USER_OCID> \
+        --from-literal=region=<USER_OCI_REGION> \
+        --from-literal=fingerprint=<USER_PUBLIC_API_KEY_FINGERPRINT> \
+        --from-literal=passphrase=<PASSPHRASE_STRING> \
+        --from-file=privatekey=<PATH_OF_USER_PRIVATE_API_KEY>
+    ```
 
-        ```bash
-        kubectl create secret generic oadb-wallet \
-            --namespace mushop   --from-file=/tmp/wallet_remote
-        ```
+    ```bash
+    kubectl create secret generic oadb-wallet \
+        --namespace mushop   --from-file=/tmp/wallet_remote
+    ```
 
-        ```bash
-        kubectl create secret generic oadb-admin \
-            --namespace mushop \
-            --from-literal=oadb_admin_pw=${DB_PASSWORD}
-        ```
+    ```bash
+    kubectl create secret generic oadb-admin \
+        --namespace mushop \
+        --from-literal=oadb_admin_pw=${DB_PASSWORD}
+    ```
 
-        ```bash
-        kubectl create secret generic oadb-connection \
-            --namespace mushop \
-            --from-literal=oadb_wallet_pw=${WALLET_PW} \
-            --from-literal=oadb_service=${DB_SERVICE_NAME}
-        ```
+    ```bash
+    kubectl create secret generic oadb-connection \
+        --namespace mushop \
+        --from-literal=oadb_wallet_pw=${WALLET_PW} \
+        --from-literal=oadb_service=${DB_SERVICE_NAME}
+    ```
 
 - Edit/Add the following secrets to values-prod.yaml as shown below
 
-        ```bash
-        cat mushop/values-prod.yaml
-        ```
+    ```bash
+    cat mushop/values-prod.yaml
+    ```
 
-    Sample Output:
+Sample Output:
 
-        ```
-        global:
-        ociAuthSecret: oci-credentials        # OCI authentication credentials secret name
-        ossStreamSecret:                      # Name of Stream Connection secret
-        oadbAdminSecret: oadb-admin           # Name of DB Admin secret created earlier
-        oadbWalletSecret: oadb-wallet         # Name of wallet secret created earlier
-        oadbConnectionSecret: oadb-connection # Name of connection secret created earlier
-        ```
+    ```yaml
+    global:
+    ociAuthSecret: oci-credentials        # OCI authentication credentials secret name
+    ossStreamSecret:                      # Name of Stream Connection secret
+    oadbAdminSecret: oadb-admin           # Name of DB Admin secret created earlier
+    oadbWalletSecret: oadb-wallet         # Name of wallet secret created earlier
+    oadbConnectionSecret: oadb-connection # Name of connection secret created earlier
+    ```
 
 - Install MuShop
 
-        ```shell--helm3
-        helm upgrade --install -f ./mushop/values-prod.yaml \
-        mymushop mushop -n mushop
-        ```
+    ```shell--helm3
+    helm upgrade --install -f ./mushop/values-prod.yaml \
+    mymushop mushop -n mushop
+    ```
 
 - Set up the ingress (On DR `us-ashburn-1`)
 
-        ```bash
-        openssl req -x509 -nodes -days 365 \
-        -newkey rsa:2048 -keyout tls.key \
-        -out tls.crt -subj "/CN=nginxsvc/O=nginxsvc"
-        ```
+    ```bash
+    openssl req -x509 -nodes -days 365 \
+    -newkey rsa:2048 -keyout tls.key \
+    -out tls.crt -subj "/CN=nginxsvc/O=nginxsvc"
+    ```
 
-        ```bash
-        kubectl create secret tls \
-        tls-secret --key tls.key --cert tls.crt -n mushop
-        ```
+    ```bash
+    kubectl create secret tls \
+    tls-secret --key tls.key --cert tls.crt -n mushop
+    ```
 
-        ```bash
-        cat << EOF | kubectl -n mushop apply -f -
-        apiVersion: networking.k8s.io/v1
-        kind: Ingress
-        metadata:
-        name: mushop
-        annotations:
-            kubernetes.io/ingress.class: "nginx"
-        spec:
-        tls:
-        - secretName: tls-secret
-        rules:
-        - http:
-            paths:
-            - path: /
-                pathType: Prefix
-                backend:
-                service:
-                    name: edge
-                    port:
-                    number: 80
-        EOF
-        ```
+    ```bash
+    cat << EOF | kubectl -n mushop apply -f -
+    apiVersion: networking.k8s.io/v1
+    kind: Ingress
+    metadata:
+    name: mushop
+    annotations:
+        kubernetes.io/ingress.class: "nginx"
+    spec:
+    tls:
+    - secretName: tls-secret
+    rules:
+    - http:
+        paths:
+        - path: /
+            pathType: Prefix
+            backend:
+            service:
+                name: edge
+                port:
+                number: 80
+    EOF
+    ```
 
 ### Verify the application at DR
 
@@ -326,7 +326,6 @@ Extract the wallet
 
 Access `https://<dr-site-ingress-ip-address>` and ensure that you would see the
 all the MuShop catalogue products listed without errors.
-
 
 ### DR Testing
 
