@@ -91,7 +91,7 @@ The Hugo documentation theme is custom-built with [UIkit](https://getuikit.com/d
       ```
 
       ```shell--helm3
-      helm install mymushop ./mushop
+      helm upgrade --install mymushop ./mushop
       ```
     ```
 
