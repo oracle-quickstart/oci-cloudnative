@@ -33,40 +33,40 @@ Do refer the autonomous database password criteria's [here](https://docs.oracle.
 
 - Create the Source ADB (Autonomous Database)
 
-    ```shell
-        oci db autonomous-database create --compartment-id ${COMPARTMENT_ID} \
-        --db-name ${DB_NAME} --admin-password ${DB_PASSWORD} --db-version 19c \
-        --cpu-core-count 1 --data-storage-size-in-tbs 1 \
-        --display-name ${DB_DISPLAY_NAME} --region ${PRIMARY_REGION}
-    ```
+```shell
+    oci db autonomous-database create --compartment-id ${COMPARTMENT_ID} \
+    --db-name ${DB_NAME} --admin-password ${DB_PASSWORD} --db-version 19c \
+    --cpu-core-count 1 --data-storage-size-in-tbs 1 \
+    --display-name ${DB_DISPLAY_NAME} --region ${PRIMARY_REGION}
+```
 
 - Fetch the Source ADB (Autonomous Database) OCID
 
-    ```bash
-        DB_ID=$(oci db autonomous-database list -c ${COMPARTMENT_ID} \
-        --region ${PRIMARY_REGION} --display-name $DB_NAME \
-        --query "data[?\"db-name\"=='${DB_NAME}'].id | [0]" --raw-output)
-    ```
+```bash
+    DB_ID=$(oci db autonomous-database list -c ${COMPARTMENT_ID} \
+    --region ${PRIMARY_REGION} --display-name $DB_NAME \
+    --query "data[?\"db-name\"=='${DB_NAME}'].id | [0]" --raw-output)
+```
 
 - Create the DR ADB (Autonomous Database)
 
-    ```bash
-        oci db autonomous-database create-adb-cross-region-data-guard-details \
-        --compartment-id ${COMPARTMENT_ID} --db-name ${DB_NAME} --source-id ${DB_ID} \
-        --cpu-core-count 1 --data-storage-size-in-tbs 1 \
-        --region ${FAILOVER_REGION} --db-version 19c
-    ```
+```bash
+    oci db autonomous-database create-adb-cross-region-data-guard-details \
+    --compartment-id ${COMPARTMENT_ID} --db-name ${DB_NAME} --source-id ${DB_ID} \
+    --cpu-core-count 1 --data-storage-size-in-tbs 1 \
+    --region ${FAILOVER_REGION} --db-version 19c
+```
 
 - Download and extract autonomous database wallet from source ADB
 
-    ```bash
-        oci db autonomous-database generate-wallet --autonomous-database-id ${DB_ID}\
-        --password ${WALLET_PW} --file ${WALLET_ZIP} --region $PRIMARY_REGION
-    ```
+```bash
+    oci db autonomous-database generate-wallet --autonomous-database-id ${DB_ID}\
+    --password ${WALLET_PW} --file ${WALLET_ZIP} --region $PRIMARY_REGION
+```
 
-    ```bash
-        unzip ${WALLET_ZIP} -d /tmp/wallet_source
-    ```
+```bash
+    unzip ${WALLET_ZIP} -d /tmp/wallet_source
+```
 
 {{% alert style="information" icon="information" %}}
 Keep this wallet handy as we will need to add it as OKE secret later on.
@@ -132,14 +132,14 @@ Follow the instructions provided [here](https://www.oracle.com/webfolder/technet
 
 Sample Output:
 
-    ```yaml
-    global:
-    ociAuthSecret: oci-credentials        # OCI authentication credentials secret name
-    ossStreamSecret:                      # Name of Stream Connection secret
-    oadbAdminSecret: oadb-admin           # Name of DB Admin secret created earlier
-    oadbWalletSecret: oadb-wallet         # Name of wallet secret created earlier
-    oadbConnectionSecret: oadb-connection # Name of connection secret created earlier
-    ```
+```yaml
+global:
+ociAuthSecret: oci-credentials        # OCI authentication credentials secret name
+ossStreamSecret:                      # Name of Stream Connection secret
+oadbAdminSecret: oadb-admin           # Name of DB Admin secret created earlier
+oadbWalletSecret: oadb-wallet         # Name of wallet secret created earlier
+oadbConnectionSecret: oadb-connection # Name of connection secret created earlier
+```
 
 - Install MuShop
 
@@ -224,9 +224,9 @@ section and create a OKE cluster at the DR region.
 
 Extract the wallet
 
-    ```bash
-    unzip <wallet_zip_file> -d /tmp/wallet_remote
-    ```
+```bash
+unzip <wallet_zip_file> -d /tmp/wallet_remote
+```
 
 - Create the secrets, set the region as `us-ashburn-1` in this case
 
@@ -267,14 +267,14 @@ Extract the wallet
 
 Sample Output:
 
-    ```yaml
-    global:
-    ociAuthSecret: oci-credentials        # OCI authentication credentials secret name
-    ossStreamSecret:                      # Name of Stream Connection secret
-    oadbAdminSecret: oadb-admin           # Name of DB Admin secret created earlier
-    oadbWalletSecret: oadb-wallet         # Name of wallet secret created earlier
-    oadbConnectionSecret: oadb-connection # Name of connection secret created earlier
-    ```
+```yaml
+global:
+ociAuthSecret: oci-credentials        # OCI authentication credentials secret name
+ossStreamSecret:                      # Name of Stream Connection secret
+oadbAdminSecret: oadb-admin           # Name of DB Admin secret created earlier
+oadbWalletSecret: oadb-wallet         # Name of wallet secret created earlier
+oadbConnectionSecret: oadb-connection # Name of connection secret created earlier
+```
 
 - Install MuShop
 
