@@ -237,6 +237,7 @@ Card body
 
 {{% wrapper %}}
 {{% grid col="1-3" %}}
+
 - **Example**
 - Item one
 - Item two
