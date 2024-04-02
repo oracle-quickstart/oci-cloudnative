@@ -413,6 +413,7 @@ Slideshow items must be `<li>` type. Refer to [usage](https://getuikit.com/docs/
 > Wraps inner content with any `div` and specified classes. Useful for specifying markup with other UIkit features
 
 {{% grid col="1-2" y="top" %}}
+
 ```markdown
 {{%/* wrapper "uk-light uk-background-primary uk-panel uk-padding" */%}}
 Light Panel
