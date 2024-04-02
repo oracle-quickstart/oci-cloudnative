@@ -185,6 +185,7 @@ Content with aspect ratio of `2-1`
 > Display content as cards - usually in a grid
 
 {{% grid col="1-2" y="top" %}}
+
 ```markdown
 {{%/* grid col="1-2" */%}}
 {{%/* card style="primary" title="Primary" hover=true */%}}
