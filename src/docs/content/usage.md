@@ -226,6 +226,7 @@ Card body
 > Add a grid of inner contents using [grid](https://getuikit.com/docs/grid) and [flex](https://getuikit.com/docs/flex)
 
 {{% grid col="1-2" y="top" %}}
+
 ```markdown
 {{%/* grid col="1-3" */%}}
 - **Example**
