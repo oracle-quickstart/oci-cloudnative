@@ -13,8 +13,7 @@ require (
 	github.com/opentracing-contrib/go-observer v0.0.0-20170622124052-a52f23424492 // indirect
 	github.com/opentracing-contrib/go-stdlib v0.0.0-20190519235532-cf7a6c988dc9 // indirect
 	github.com/opentracing/opentracing-go v1.1.0
-	github.com/openzipkin-contrib/zipkin-go-opentracing v0.3.5 // indirect
-	github.com/openzipkin/zipkin-go-opentracing v0.3.5
+	github.com/openzipkin-contrib/zipkin-go-opentracing v0.3.5
 	github.com/prometheus/client_golang v1.0.0
 	github.com/sony/gobreaker v0.4.1 // indirect
 	github.com/streadway/handy v0.0.0-20190108123426-d5acb3125c2a
@@ -22,6 +21,6 @@ require (
 	github.com/uber/jaeger-lib v2.0.0+incompatible // indirect
 	github.com/weaveworks/common v0.0.0-20190714171817-ddeaa31513fd
 	github.com/weaveworks/promrus v1.2.0 // indirect
-	golang.org/x/net v0.0.0-20190724013045-ca1201d0de80
+	golang.org/x/net v0.23.0
 	google.golang.org/grpc v1.22.1 // indirect
 )
