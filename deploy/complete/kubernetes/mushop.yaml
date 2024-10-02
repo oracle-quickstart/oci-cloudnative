@@ -10,9 +10,8 @@ metadata:
     app.kubernetes.io/instance: mushop
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-  annotations:
-    kubernetes.io/ingress.class: nginx
 spec:
+  ingressClassName: nginx
   rules:
     # change this for user-specific ingress
     - host: mushop.example.com

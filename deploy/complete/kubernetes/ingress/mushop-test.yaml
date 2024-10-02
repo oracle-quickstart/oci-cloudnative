@@ -3,11 +3,11 @@ kind: Ingress
 metadata:
   name: mushop-test
   annotations:
-    kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     cert-manager.io/cluster-issuer: letsencrypt-prod
     cert-manager.io/acme-challenge-type: http01
 spec:
+  ingressClassName: nginx
   tls:
   - secretName: mushop-test-tls
     hosts:
