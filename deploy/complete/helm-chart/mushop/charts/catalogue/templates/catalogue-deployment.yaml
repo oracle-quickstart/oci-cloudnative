@@ -37,6 +37,7 @@ spec:
           env:
             - name: ZIPKIN
               value: {{ .Values.env.zipkin }}
+            {{- include "standby.catalogue.oadb.connection" . | nindent 12 }}
             {{- include "catalogue.oadb.connection" . | nindent 12 }}
           volumeMounts:
             {{- include "catalogue.mount.wallet" . | nindent 12 }}

@@ -51,6 +51,7 @@ func main() {
 		port          = flag.String("port", getEnv("CATALOGUE_PORT", "80"), "Port to bind HTTP listener")
 		images        = flag.String("images", "./images/", "Image path")
 		connectString = flag.String("CONNECTSTRING", os.Getenv("OADB_USER")+"/"+os.Getenv("OADB_PW")+"@"+os.Getenv("OADB_SERVICE"), "Connection String: [username[/password]@][tnsname]]")
+		standbyString = flag.String("STANDBY_CONNECTSTRING", os.Getenv("STANDBY_OADB_USER")+"/"+os.Getenv("STANDBY_OADB_PW")+"@"+os.Getenv("STANDBY_OADB_SERVICE"), "Standby DB connection string")
 		zip           = flag.String("zipkin", os.Getenv("ZIPKIN"), "Zipkin address")
 	)
 	flag.Parse()
@@ -109,18 +110,36 @@ func main() {
 	}
 
 	// Data domain.
+	/ Try connecting to the primary database
 	db, err := sqlx.Open("godror", *connectString)
 	if err != nil {
-		logger.Log("err", err)
-		os.Exit(1)
+		logger.Log("Error", "Failed to open Primary Database connection", "CONNECTSTRING", *connectString)
 	}
-	defer db.Close()
 
-	// Check if DB connection can be made, only for logging purposes, should not fail/exit
+	// Test the connection to the primary database
 	err = db.Ping()
 	if err != nil {
-		logger.Log("Error", "Unable to connect to Database", "CONNECTSTRING", connectString)
+		logger.Log("Error", "Unable to connect to Primary Database", "CONNECTSTRING", *connectString)
+
+		// Try connecting to the standby database if primary fails
+		db, err = sqlx.Open("godror", *standbyString)
+		if err != nil {
+			logger.Log("Error", "Failed to open Standby Database connection", "STANDBY_CONNECTSTRING", *standbyString)
+			os.Exit(1) // Exit if both connections fail
+		}
+
+		// Test the connection to the standby database
+		err = db.Ping()
+		if err != nil {
+			logger.Log("Error", "Unable to connect to Standby Database", "STANDBY_CONNECTSTRING", *standbyString)
+			os.Exit(1) // Exit if standby connection fails as well
+		}
+		logger.Log("Info", "Connected to Standby Database", "STANDBY_CONNECTSTRING", *standbyString)
+	} else {
+		logger.Log("Info", "Connected to Primary Database", "CONNECTSTRING", *connectString)
 	}
+
+	defer db.Close()
 
 	// Service domain.
 	var service catalogue.Service

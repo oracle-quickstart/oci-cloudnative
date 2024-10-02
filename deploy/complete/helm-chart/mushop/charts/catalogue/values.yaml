@@ -1,8 +1,9 @@
 replicaCount: 1
 
 image:
-  repository: iad.ocir.io/oracle/ateam/mushop-catalogue
-  tag: 1.4
+  # This is temporary repo where i have built the container.
+  repository: syd.ocir.io/apaccpt03/demo/mushop-catalogue
+  tag: latest
   pullPolicy: Always
 
 dbtools:
@@ -13,9 +14,9 @@ dbtools:
 osb: {}
 
 secrets:
-  oadbService:
-  oadbUser:
-  oadbPassword:
+  oadbService: 
+  oadbUser: 
+  oadbPassword: 
 
 resources:
   limits:
@@ -27,6 +28,8 @@ resources:
 
 env:
   zipkin:
+  primary_oadb_wallet_path: /usr/lib/oracle/19.3/client64/lib/network/admin/
+  standby_oadb_wallet_path: /usr/lib/oracle/19.3/client64/lib/network/admin/standby 
 
 hpa:
   enabled: true

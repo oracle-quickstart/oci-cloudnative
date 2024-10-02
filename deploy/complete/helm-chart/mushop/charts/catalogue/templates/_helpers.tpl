@@ -44,7 +44,43 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
+{{/* OADB Standby Connection environment */}}
+{{- define "standby.catalogue.oadb.connection" -}}
+{{- $drEnabled := .Values.secrets.drEnabled | default false -}}
+{{- $globalOsb := index (.Values.global | default .) "osb" -}}
+{{- $usesOsbDb := (index (.Values.global | default .Values) "osb").atp | default .Values.osb.atp -}}
+{{- $secretPrefix := (and .Values.osb.atp .Chart.Name) | default (and $globalOsb.atp ($globalOsb.instanceName | default "mushop")) | default .Chart.Name -}}
+{{- $connectionSecret := (and $usesOsbDb (printf "%s-oadb-connection" $secretPrefix)) | default .Values.oadbConnectionSecret | default (.Values.global.oadbConnectionSecret | default (printf "%s-oadb-connection" $secretPrefix)) -}}
+{{- $credentialSecret := (and $usesOsbDb (printf "%s-oadb-credentials" $secretPrefix)) | default .Values.oadbUserSecret | default (printf "%s-oadb-credentials" $secretPrefix) -}}
+{{- $primaryWalletPath := .Values.env.primary_oadb_wallet_path | default "/usr/lib/oracle/19.3/client64/lib/network/admin" -}}
+{{- $standbyWalletPath := .Values.env.standby_oadb_wallet_path | default "/usr/lib/oracle/19.3/client64/lib/network/admin" -}}
 
+{{- if $drEnabled }}
+- name: STANDBY_OADB_USER
+  {{- if $globalOsb.atp }}
+  value: {{ printf "mu_%s_user" .Chart.Name }}
+  {{- else }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ $credentialSecret }}
+      key: oadb_user
+  {{- end }}
+- name: STANDBY_OADB_PW
+  valueFrom:
+    secretKeyRef:
+      name: {{ $credentialSecret }}
+      key: oadb_pw
+- name: STANDBY_OADB_SERVICE
+  valueFrom:
+    secretKeyRef:
+      name: {{ $connectionSecret }}
+      key: oadb_service
+- name: PRIMARY_OADB_WALLET_PATH
+  value: "{{ $primaryWalletPath }}"
+- name: STANDBY_OADB_WALLET_PATH
+  value: "{{ $standbyWalletPath }}"
+{{- end -}}
+{{- end -}}
 
 {{/* OADB Connection environment */}}
 {{- define "catalogue.oadb.connection" -}}
@@ -72,6 +108,8 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
     secretKeyRef:
       name: {{ $connectionSecret }}
       key: oadb_service
+- name: PRIMARY_OADB_WALLET_PATH
+  value: {{ .Values.env.primary_oadb_wallet_path }}
 {{- end -}}
 
 {{/* OADB ADMIN environment */}}
@@ -90,7 +128,10 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/* OADB Wallet mount */}}
 {{- define "catalogue.mount.wallet" -}}
 - name: wallet
-  mountPath: /usr/lib/oracle/19.10/client64/lib/network/admin/
+  mountPath: /usr/lib/oracle/19.3/client64/lib/network/admin/
+  readOnly: true
+- name: standby-wallet
+  mountPath: /usr/lib/oracle/19.3/client64/lib/network/admin/standby
   readOnly: true
 {{- end -}}
 
@@ -123,8 +164,9 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/* CONTAINER VOLUME TEMPLATE */}}
 {{- define "catalogue.volumes" -}}
 {{- $globalOsb := index (.Values.global | default .) "osb" -}}
-{{- $wallet := .Values.oadbWalletSecret | default (.Values.global.oadbWalletSecret | default (printf "%s-oadb-wallet" .Chart.Name)) -}}
+{{- $wallet := .Values.secrets.oadbWalletSecret |default (.Values.oadbWalletSecret | default (.Values.global.oadbWalletSecret | default (printf "%s-oadb-wallet" .Chart.Name))) -}}
 {{- $walletBinding :=  printf "%s-oadb-wallet-binding" ((and .Values.osb.atp .Chart.Name) | default $globalOsb.instanceName | default "mushop") -}}
+{{- $standbyWallet := .Values.secrets.oadbStandbyWalletSecret -}}
 {{- if or .Values.osb.atp $globalOsb.atp }}
 # OSB wallet binding
 - name: wallet-binding
@@ -137,6 +179,9 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 - name: wallet
   secret:
     secretName: {{ $wallet }}
+- name: standby-wallet
+  secret:
+    secretName: {{ $standbyWallet }}
 {{- if ne .Values.global.mock.service "all" }}
     defaultMode: 256
 {{- end }}
