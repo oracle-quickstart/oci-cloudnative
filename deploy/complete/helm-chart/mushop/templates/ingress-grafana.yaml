@@ -20,15 +20,15 @@ metadata:
   labels:
 {{ include "mushop.labels" . | indent 4 }}
   annotations:
-    kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/rewrite-target: /$2
     {{- if .Values.ingress.tls }}
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     cert-manager.io/cluster-issuer: {{ include "mushop.fullname" . }}-{{ .Values.ingress.clusterIssuer }}
     cert-manager.io/acme-challenge-type: http01
     {{- end }}
-    
+
 spec:
+  ingressClassName: nginx
   rules:
     {{- if .Values.ingress.hosts }}
     {{- range $host := .Values.ingress.hosts }}

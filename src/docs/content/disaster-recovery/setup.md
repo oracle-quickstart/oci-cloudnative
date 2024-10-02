@@ -167,22 +167,21 @@ A TLS secret is used for SSL termination on the ingress controller. To generate 
     apiVersion: networking.k8s.io/v1
     kind: Ingress
     metadata:
-    name: mushop
-    annotations:
-        kubernetes.io/ingress.class: "nginx"
+        name: mushop
     spec:
-    tls:
-    - secretName: tls-secret
-    rules:
-    - http:
-        paths:
-        - path: /
-            pathType: Prefix
-            backend:
-            service:
-                name: edge
-                port:
-                number: 80
+        ingressClassName: nginx
+        tls:
+        - secretName: tls-secret
+        rules:
+        - http:
+            paths:
+            - path: /
+                pathType: Prefix
+                backend:
+                service:
+                    name: edge
+                    port:
+                    number: 80
     EOF
     ```
 
@@ -301,22 +300,21 @@ oadbConnectionSecret: oadb-connection # Name of connection secret created earlie
     apiVersion: networking.k8s.io/v1
     kind: Ingress
     metadata:
-    name: mushop
-    annotations:
-        kubernetes.io/ingress.class: "nginx"
+        name: mushop
     spec:
-    tls:
-    - secretName: tls-secret
-    rules:
-    - http:
-        paths:
-        - path: /
-            pathType: Prefix
-            backend:
-            service:
-                name: edge
-                port:
-                number: 80
+        ingressClassName: nginx
+        tls:
+        - secretName: tls-secret
+        rules:
+        - http:
+            paths:
+            - path: /
+                pathType: Prefix
+                backend:
+                service:
+                    name: edge
+                    port:
+                    number: 80
     EOF
     ```
 

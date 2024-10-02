@@ -18,7 +18,7 @@ resource "helm_release" "prometheus" {
   name       = "prometheus"
   repository = local.helm_repository.prometheus
   chart      = "prometheus"
-  version    = "25.18.0"
+  version    = "25.27.0"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
@@ -37,7 +37,7 @@ resource "helm_release" "grafana" {
   name       = "mushop-utils-grafana" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.grafana
   chart      = "grafana"
-  version    = "7.3.7"
+  version    = "8.5.1"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
@@ -97,7 +97,7 @@ resource "helm_release" "metrics_server" {
   name       = "metrics-server"
   repository = local.helm_repository.metrics_server
   chart      = "metrics-server"
-  version    = "3.12.0"
+  version    = "3.12.1"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = false
 
@@ -116,7 +116,7 @@ resource "helm_release" "ingress_nginx" {
   name       = "mushop-utils-ingress-nginx" # mushop-utils included to be backwards compatible to the docs and setup chart install
   repository = local.helm_repository.ingress_nginx
   chart      = "ingress-nginx"
-  version    = "4.10.0"
+  version    = "4.11.2"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = true
 
@@ -140,6 +140,11 @@ resource "helm_release" "ingress_nginx" {
     type  = "string"
   }
 
+  set {
+    name  = "controller.ingressClassResource.default"
+    value = true
+  }
+
   timeout = 1800 # workaround to wait the node be active for other charts
 
   depends_on = [kubernetes_deployment.cluster_autoscaler_deployment]
@@ -156,13 +161,18 @@ resource "helm_release" "cert_manager" {
   name       = "cert-manager"
   repository = local.helm_repository.jetstack
   chart      = "cert-manager"
-  version    = "1.14.4"
+  version    = "1.15.3"
   namespace  = kubernetes_namespace.cluster_utilities_namespace.id
   wait       = true # wait to allow the webhook be properly configured
 
   set {
-    name  = "installCRDs"
+    name  = "crds.enabled"
     value = true
+  }
+
+  set {
+    name  = "crds.keep"
+    value = false
   }
 
   set {
