@@ -1,0 +1,45 @@
+global:
+  ociAuthSecret:         # OCI authentication credentials secret name
+  ossStreamSecret:        # Name of Stream Connection secret
+  #oadbAdminSecret: oadb-admin           # Name of DB Admin secret created earlier
+  oadbWalletSecret: oadb-wallet         # Name of wallet secret created earlier
+  oadbConnectionSecret: oadb-connection # Name of connection secret created earlier
+  oadbService: "mushopxcme_tp"
+  oadbAdminSecret: oadb-admin
+  mock:
+    service: "false"
+
+env:
+  zipkin:
+
+catalogue:
+  secrets:
+    oadbAdminPassword:    # ADMIN password entered when provisioning ATP database
+    oadbService:          # TNS Name displayed when the Wallet is downloaded an example would be `mushopdb_TP`
+    oadbUser:             # can be changed as long as oadbAdminPassword is available
+    oadbPassword:         # can be changed as long as oadbAdminPassword is available
+    drEnabled: true
+    oadbWalletSecret: catalogue-oadb-wallet 
+    oadbStandbyWalletSecret: catalogue-standby-oadb-wallet
+    
+ingress:
+  enabled: true
+
+  hosts:
+    - mushop.ateam.cloud
+    - insecure.mushop.ateam.cloud
+
+  # Values examples: letsencrypt-prod, letsencrypt-staging, 
+  # This controls the cluster issuer what's used in Ingress
+  #clusterIssuer: letsencrypt-prod
+
+  # Used for ACME registration (if TLS is set)
+  #email: "no-reply@ateam-oracle.com"
+
+  # If TLS is provided, cert-manager needs to be installed.
+  #tls: true
+
+api:
+  env:
+    mediaUrl:                 # Object Storage URL for catalogue image assets
+    newsletterSubscribeUrl:   # Newsletter subscription endpoint (https://[API_GATEWAY_URL]/newsletter/subscribe)
