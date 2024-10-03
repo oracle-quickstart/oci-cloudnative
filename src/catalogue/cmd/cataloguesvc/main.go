@@ -20,6 +20,7 @@ import (
 	"net"
 	"net/http"
 
+
 	"path/filepath"
 
 	"mushop/catalogue"
@@ -48,13 +49,36 @@ func init() {
 
 func main() {
 	var (
-		port          = flag.String("port", getEnv("CATALOGUE_PORT", "80"), "Port to bind HTTP listener")
-		images        = flag.String("images", "./images/", "Image path")
-		connectString = flag.String("CONNECTSTRING", os.Getenv("OADB_USER")+"/"+os.Getenv("OADB_PW")+"@"+os.Getenv("OADB_SERVICE"), "Connection String: [username[/password]@][tnsname]]")
-		standbyString = flag.String("STANDBY_CONNECTSTRING", os.Getenv("STANDBY_OADB_USER")+"/"+os.Getenv("STANDBY_OADB_PW")+"@"+os.Getenv("STANDBY_OADB_SERVICE"), "Standby DB connection string")
-		zip           = flag.String("zipkin", os.Getenv("ZIPKIN"), "Zipkin address")
+		primary_oadb_user        = strings.TrimSpace(os.Getenv("OADB_USER"))
+		primary_oadb_pw          = strings.TrimSpace(os.Getenv("OADB_PW"))
+		//encoded_oadb_pw 		 = url.QueryEscape(primary_oadb_pw)
+		primary_oadb_service     = strings.TrimSpace(os.Getenv("OADB_SERVICE"))
+		primary_oadb_wallet_path = strings.TrimSpace(os.Getenv("PRIMARY_OADB_WALLET_PATH"))
+
+		standby_oadb_user        = strings.TrimSpace(os.Getenv("STANDBY_OADB_USER"))
+		standby_oadb_pw          = strings.TrimSpace(os.Getenv("STANDBY_OADB_PW"))
+		//standby_encoded_oadb_pw  = url.QueryEscape(standby_oadb_pw)
+		standby_oadb_service     = strings.TrimSpace(os.Getenv("STANDBY_OADB_SERVICE"))
+		standby_oadb_wallet_path = strings.TrimSpace(os.Getenv("STANDBY_OADB_WALLET_PATH"))
+
+		port              = flag.String("port", getEnv("CATALOGUE_PORT", "80"), "Port to bind HTTP listener")
+		images            = flag.String("images", "./images/", "Image path")
+		connectString     = flag.String("CONNECTSTRING", primary_oadb_user+"/\""+primary_oadb_pw+"\"@"+primary_oadb_service, "Connection String: [username[/password]@][tnsname]]")
+		primaryWalletPath = flag.String("PRIMARY_WALLET", primary_oadb_wallet_path, "Primary DB Wallet Path")
+		standbyString     = flag.String("STANDBY_CONNECTSTRING", standby_oadb_user+"/\""+standby_oadb_pw+"\"@"+standby_oadb_service, "Standby DB Connection String")
+		standbyWalletPath = flag.String("STANDBY_WALLET", standby_oadb_wallet_path, "Standby DB Wallet Path")
+		zip               = flag.String("zipkin", os.Getenv("ZIPKIN"), "Zipkin address")
 	)
+
+	// Parse the flag values
 	flag.Parse()
+
+	// Print some debug information
+	fmt.Println("Primary DB Connection String: ", *connectString)
+	fmt.Println("Primary Wallet Path: ", *primaryWalletPath)
+	fmt.Println("Standby DB Connection String: ", *standbyString)
+	fmt.Println("Standby Wallet Path: ", *standbyWalletPath)
+	fmt.Println("Zipkin address: ", *zip)
 
 	fmt.Fprintf(os.Stderr, "images: %q\n", *images)
 	abs, err := filepath.Abs(*images)
@@ -63,7 +87,7 @@ func main() {
 	fmt.Fprintf(os.Stderr, "Getwd: %q (%v)\n", pwd, err)
 	files, _ := filepath.Glob(*images + "/*")
 	fmt.Fprintf(os.Stderr, "ls: %q\n", files) // contains a list of all files in the current directory
-
+        fmt.Println("Primary Connection String:", *connectString)
 	// Mechanical stuff.
 	errc := make(chan error)
 
@@ -110,36 +134,47 @@ func main() {
 	}
 
 	// Data domain.
-	/ Try connecting to the primary database
+    // Try connecting to the primary database
+	err = os.Setenv("TNS_ADMIN", *primaryWalletPath)
+	fmt.Println("Primary Wallet TNS_ADMIN Env Set: ", os.Getenv("TNS_ADMIN"))
+
 	db, err := sqlx.Open("godror", *connectString)
 	if err != nil {
-		logger.Log("Error", "Failed to open Primary Database connection", "CONNECTSTRING", *connectString)
+		logger.Log("Error: Failed to open Primary Database connection. Details: ", err.Error(), *connectString)
 	}
 
 	// Test the connection to the primary database
 	err = db.Ping()
 	if err != nil {
-		logger.Log("Error", "Unable to connect to Primary Database", "CONNECTSTRING", *connectString)
+		logger.Log("Error: Unable to connect to Primary Database. Details: ", err.Error(), *connectString)
 
+
+		err = os.Setenv("TNS_ADMIN", *standbyWalletPath)
+		fmt.Println("Standby Wallet Env Set: ", os.Getenv("TNS_ADMIN"))
+		logger.Log(err)
+		//standbyConnectString := fmt.Sprintf("%s?TNS_ADMIN=%s", *standbyString, *standbyWalletPath)
 		// Try connecting to the standby database if primary fails
 		db, err = sqlx.Open("godror", *standbyString)
 		if err != nil {
-			logger.Log("Error", "Failed to open Standby Database connection", "STANDBY_CONNECTSTRING", *standbyString)
-			os.Exit(1) // Exit if both connections fail
+			logger.Log("Error: Failed to open standby Database connection. Details: ", err.Error(), *standbyString)
+			//os.Exit(1) // Exit if both connections fail
 		}
 
 		// Test the connection to the standby database
 		err = db.Ping()
 		if err != nil {
-			logger.Log("Error", "Unable to connect to Standby Database", "STANDBY_CONNECTSTRING", *standbyString)
-			os.Exit(1) // Exit if standby connection fails as well
-		}
+			logger.Log("Error: Failed to connect standby Database connection. Details: ", err.Error(), *standbyString)
+			//os.Exit(1) // Exit if standby connection fails as well
+		} else {
 		logger.Log("Info", "Connected to Standby Database", "STANDBY_CONNECTSTRING", *standbyString)
+		}
 	} else {
 		logger.Log("Info", "Connected to Primary Database", "CONNECTSTRING", *connectString)
 	}
 
 	defer db.Close()
+
+
 
 	// Service domain.
 	var service catalogue.Service
