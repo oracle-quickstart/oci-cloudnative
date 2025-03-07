@@ -11,7 +11,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "axios": "^0.21.4",
+    "axios": "^1.8.2",
     "core-js": "^3.13.1",
     "echarts": "^5.2.1",
     "uikit": "3.6.22"
@@ -23,7 +23,7 @@
     "babel-eslint": "^10.0.1",
     "babel-jest": "^27.0.2",
     "babel-loader": "^8.2.2",
-    "browser-sync": "^2.27.10",
+    "browser-sync": "^3.0.3",
     "del": "^6.0.0",
     "dotenv": "^10.0.0",
     "eslint": "^7.27.0",
