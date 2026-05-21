@@ -42,7 +42,7 @@
     "http-proxy-middleware": "^2.0.0",
     "imagemin-mozjpeg": "^9.0.0",
     "imagemin-pngquant": "^9.0.2",
-    "jest": "^27.0.3",
+    "jest": "^30.4.2",
     "minimist": "^1.2.6",
     "postcss": "^8.3.0",
     "pug": "^3.0.2",
