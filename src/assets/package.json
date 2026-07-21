@@ -19,10 +19,10 @@
     "node-static": "^0.7.11"
   },
   "devDependencies": {
-    "imagemin": "^7.0.1",
+    "imagemin": "^9.0.1",
     "imagemin-jpegtran": "^7.0.0",
     "imagemin-mozjpeg": "^9.0.0",
     "imagemin-pngquant": "^9.0.2",
-    "rimraf": "^3.0.2"
+    "rimraf": "^6.1.3"
   }
 }
